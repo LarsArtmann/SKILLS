@@ -1,8 +1,8 @@
 ---
 name: pareto-planning
-description: Creates a comprehensive execution plan using the Pareto principle (80/20 breakdown). Use when the user wants to plan work, break down a TODO list, identify high-impact tasks, or says "MAKE A PLAN", "PARETO", "comprehensive plan", or wants tasks sorted by impact with a mermaid.js execution graph written to docs/planning/.
+description: Creates a comprehensive execution plan using the Pareto principle (80/20 breakdown). Use when the user wants to plan work, break down a TODO list, identify high-impact tasks, or says "MAKE A PLAN", "PARETO", "comprehensive plan", or wants tasks sorted by impact with a D2 execution graph written to docs/planning/.
 metadata:
-  tags: planning, pareto, prioritization, mermaid, execution-graph
+  tags: planning, pareto, prioritization, d2, execution-graph
 ---
 
 # Pareto Planning
@@ -34,7 +34,7 @@ REPORT BACK WITH A TABLE VIEW WHEN DONE!
 
 ### Step 4: Write Plan to File
 
-WRITE YOUR PLAN WITH GOOD AMOUNTS OF CONTEXT INTO AN .md FILE with a mermaid.js execution graph at `docs/planning/<YYYY-MM-DD_HH_MM-SUPERB_NAME>.md`. THIS IS IMPORTANT!!!
+WRITE YOUR PLAN WITH GOOD AMOUNTS OF CONTEXT INTO AN .md FILE with a D2 execution graph at `docs/planning/<YYYY-MM-DD_HH_MM-SUPERB_NAME>.md`. THIS IS IMPORTANT!!!
 
 NOTE: Use the cli to get the current date.
 

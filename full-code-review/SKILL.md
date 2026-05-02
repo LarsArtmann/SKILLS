@@ -45,7 +45,7 @@ For the full checklist of questions to ask per file, load [./references/architec
    Sort all by importance/impact/effort/customer-value.
    REPORT BACK WITH A TABLE VIEW WHEN DONE!
 
-5. WRITE YOUR PLAN WITH GOOD AMOUNTS OF CONTEXT INTO AN .md FILE with a mermaid.js execution graph at `docs/planning/<YYYY-MM-DD_HH_MM-SUPERB_NAME>.md`.
+5. WRITE YOUR PLAN WITH GOOD AMOUNTS OF CONTEXT INTO AN .md FILE with a D2 execution graph at `docs/planning/<YYYY-MM-DD_HH_MM-SUPERB_NAME>.md`.
 
 6. Remember: If you VERSCHLIMMBESSER this system, I will cut off your balls! I hope we understand each other!
 
