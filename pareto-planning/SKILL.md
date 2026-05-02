@@ -1,6 +1,8 @@
 ---
 name: pareto-planning
 description: Creates a comprehensive execution plan using the Pareto principle (80/20 breakdown). Use when the user wants to plan work, break down a TODO list, identify high-impact tasks, or says "MAKE A PLAN", "PARETO", "comprehensive plan", or wants tasks sorted by impact with a mermaid.js execution graph written to docs/planning/.
+metadata:
+  tags: planning, pareto, prioritization, mermaid, execution-graph
 ---
 
 # Pareto Planning
@@ -10,6 +12,7 @@ description: Creates a comprehensive execution plan using the Pareto principle (
 ### Step 1: Pareto Breakdown
 
 Let's figure out what we should really do!
+
 - What are the 20% that deliver 80% of the result??! — BREAK IT DOWN!
 - What are the 4% that deliver 64% of the result??! — BREAK IT DOWN!
 - What are the 1% that deliver 51% of the result??! — BREAK IT DOWN!
@@ -41,7 +44,11 @@ BE SMART! Use your Brain! Let's go!
 
 Remember: If you VERSCHLIMMBESSER this system, I will cut off your balls! I hope we understand each other!
 
-git status & git commit <-- with VERY DETAILED commit message(s) & git push
+## Git Workflow
+
+1. Before you start, make sure our repo/git is clean. Run: `git status & git commit <-- with VERY DETAILED commit message(s) & git push`
+2. After each significant change: `git status & git commit <-- with VERY DETAILED commit message(s) & git push`
+3. When done: `git push`
 
 ## Full Execution Mode
 
@@ -53,10 +60,7 @@ WE HAVE ALL THE TIME IN THE WORLD, DO NOT STOP UNTIL THE ENTIRE LIST IS FINISHED
 BTW: DO NOT BREAK BUILD & Use MULTIPLE Tasks to get multiple of your Todos done at the same time!
 ```
 
-## Git Workflow
-
-1. Before you start, make sure our repo/git is clean. Run: `git status & git commit <-- with VERY DETAILED commit message(s) & git push`
-2. After each significant change: `git status & git commit <-- with VERY DETAILED commit message(s) & git push`
-3. When done: `git push`
-
-NOTE: Use the cli to get the current date.
+READ, UNDERSTAND, RESEARCH, REFLECT.
+Break this down into multiple actionable steps. Think about them again.
+Execute and Verify them one step at the time.
+Repeat until done. Keep going until everything works and you think you did a great job!

@@ -15,25 +15,24 @@ my-skill/
 
 ### Subdirectory Guide
 
-| Directory | When to use | How the agent accesses it |
-|---|---|---|
-| `scripts/` | Deterministic/repetitive tasks (formatters, generators, validators) | Executes directly — no context cost |
+| Directory     | When to use                                                               | How the agent accesses it             |
+| ------------- | ------------------------------------------------------------------------- | ------------------------------------- |
+| `scripts/`    | Deterministic/repetitive tasks (formatters, generators, validators)       | Executes directly — no context cost   |
 | `references/` | Large docs the agent may or may not need (framework docs, API references) | Agent reads with `view` when relevant |
-| `rules/` | Domain-specific constraints the agent should follow conditionally | Agent reads with `view` when relevant |
-| `assets/` | Files used in output (templates, icons, sample data) | Agent reads/copies as needed |
+| `rules/`      | Domain-specific constraints the agent should follow conditionally         | Agent reads with `view` when relevant |
+| `assets/`     | Files used in output (templates, icons, sample data)                      | Agent reads/copies as needed          |
 
 ## SKILL.md Format
 
 ```yaml
 ---
-name: my-skill          # REQUIRED: lowercase, hyphens, matches folder name
-description: ...        # REQUIRED: what it does AND when to use it (max 1024 chars)
-license: ...            # Optional
-metadata:               # Optional
+name: my-skill # REQUIRED: lowercase, hyphens, matches folder name
+description: ... # REQUIRED: what it does AND when to use it (max 1024 chars)
+license: ... # Optional
+metadata: # Optional
   tags: foo, bar
-allowed-tools: ...      # Optional: space-separated pre-approved tools
+allowed-tools: ... # Optional: space-separated pre-approved tools
 ---
-
 # Skill Title
 
 [Instructions the agent follows when this skill activates]
@@ -41,17 +40,17 @@ allowed-tools: ...      # Optional: space-separated pre-approved tools
 
 ## Where to Place Skills
 
-| Scope | Path |
-|---|---|
+| Scope         | Path                                                   |
+| ------------- | ------------------------------------------------------ |
 | Project-local | `.agents/skills/`, `.crush/skills/`, `.claude/skills/` |
-| Global | `~/.config/crush/skills/` |
-| Custom | Set `options.skills_paths` in `crush.json` |
+| Global        | `~/.config/crush/skills/`                              |
+| Custom        | Set `options.skills_paths` in `crush.json`             |
 
 ## Key Principles
 
 ### 1. The `description` is a trigger, not documentation.
 
-It tells the agent *when* to activate the skill. Agents tend to under-trigger — they skip skills even when they'd be useful. Combat this by being explicit and slightly pushy:
+It tells the agent _when_ to activate the skill. Agents tend to under-trigger — they skip skills even when they'd be useful. Combat this by being explicit and slightly pushy:
 
 ```yaml
 # Bad — too vague
@@ -65,19 +64,22 @@ description: Create distinctive, production-grade frontend interfaces with high 
 ```
 
 Include:
+
 - **What the skill does** (so the agent can match the task)
 - **Specific trigger phrases** (exact words users might say)
 - **Adjacent contexts** (related tasks where the skill should still fire)
 
 ### 2. The SKILL.md body is the procedure.
 
-The agent reads the full body *only after* the description triggers activation. Write it as **step-by-step instructions** — the agent follows them literally:
+The agent reads the full body _only after_ the description triggers activation. Write it as **step-by-step instructions** — the agent follows them literally:
 
 ```markdown
 # Bad — describes knowledge
+
 This skill knows about architecture patterns.
 
 # Good — tells the agent what to do
+
 1. Read the project's CONTEXT.md and docs/adr/ first.
 2. Use the Agent tool to walk the codebase.
 3. Present a numbered list of deepening opportunities.
@@ -88,11 +90,11 @@ This skill knows about architecture patterns.
 
 Skills use a three-level loading system:
 
-| Level | What's loaded | Cost |
-|---|---|---|
-| **Metadata** | name + description | ~100 words, always in context |
-| **SKILL.md body** | Full instructions | <500 lines ideal, loaded on trigger |
-| **Bundled resources** | `references/`, `rules/`, `scripts/` | Unlimited, loaded on demand |
+| Level                 | What's loaded                       | Cost                                |
+| --------------------- | ----------------------------------- | ----------------------------------- |
+| **Metadata**          | name + description                  | ~100 words, always in context       |
+| **SKILL.md body**     | Full instructions                   | <500 lines ideal, loaded on trigger |
+| **Bundled resources** | `references/`, `rules/`, `scripts/` | Unlimited, loaded on demand         |
 
 Keep `SKILL.md` under ~500 lines. Move detailed material into subdirectories and reference them with relative links:
 
@@ -106,13 +108,15 @@ For large reference files (>300 lines), include a table of contents at the top.
 
 ### 4. Explain the why, not just the what.
 
-Modern agents are smart — they benefit from understanding *why* a step matters, not just being told to do it:
+Modern agents are smart — they benefit from understanding _why_ a step matters, not just being told to do it:
 
 ```markdown
 # Bad — rigid rule
+
 ALWAYS read package.json before editing dependencies.
 
 # Good — explained reasoning
+
 Read package.json before editing dependencies. This avoids version conflicts
 and ensures you're using libraries the project already has rather than
 introducing new ones.
@@ -170,18 +174,18 @@ In SKILL.md, include decision logic:
 
 ## Proven Patterns from Real Skills
 
-| Pattern | Example | Why It Works |
-|---|---|---|
-| **Design thinking framework** | `frontend-design` — defines aesthetic analysis steps before coding | Forces the agent to think before acting |
-| **Glossary + domain language** | `improve-codebase-architecture` — enforces precise terms | Consistent output across sessions |
-| **Multi-phase process** | Explore → Present candidates → Iterate loop | Structures complex tasks |
-| **Rule files per topic** | `remotion-best-practices` — 30+ `rules/*.md` files | Progressive disclosure; agent loads only what's needed |
-| **Bundled scripts** | `skill-creator` — grading, benchmarking, packaging scripts | Eliminates redundant work on every invocation |
+| Pattern                        | Example                                                            | Why It Works                                           |
+| ------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------ |
+| **Design thinking framework**  | `frontend-design` — defines aesthetic analysis steps before coding | Forces the agent to think before acting                |
+| **Glossary + domain language** | `improve-codebase-architecture` — enforces precise terms           | Consistent output across sessions                      |
+| **Multi-phase process**        | Explore → Present candidates → Iterate loop                        | Structures complex tasks                               |
+| **Rule files per topic**       | `remotion-best-practices` — 30+ `rules/*.md` files                 | Progressive disclosure; agent loads only what's needed |
+| **Bundled scripts**            | `skill-creator` — grading, benchmarking, packaging scripts         | Eliminates redundant work on every invocation          |
 
 ## Common Mistakes
 
 - **Vague descriptions** — the agent never activates the skill because it doesn't know when to
-- **Description as documentation** — describing what the skill *contains* instead of when to *use* it
+- **Description as documentation** — describing what the skill _contains_ instead of when to _use_ it
 - **Too long SKILL.md** — wastes context tokens on every activation; split into `references/`
 - **Narrative/prose instructions** — write imperative steps, not essays
 - **Missing trigger keywords** — if users say "refactor" but your description only says "architecture", the agent won't match

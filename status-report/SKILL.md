@@ -10,6 +10,7 @@ description: Generates a full comprehensive status update of the project. Use wh
 FULL COMPREHENSIVE & DETAILED STATUS UPDATE! RIGHT NOW! THEN WAIT FOR INSTRUCTIONS!
 
 INCLUDE WORK:
+
 - a) FULLY DONE
 - b) PARTIALLY DONE
 - c) NOT STARTED

@@ -10,6 +10,7 @@ description: Generates mermaid.js architecture diagrams for the current system a
 Provide a mermaid.js graph on how the Events & Commands are currently architected. Research first!
 
 Write it to:
+
 ```
 docs/architecture-understanding/<YYYY-MM-DD_HH_MM-SESSION_NAME>.mmd
 ```
@@ -21,6 +22,7 @@ JUST THE mermaid.js graph. No commentary in the file. Research the actual code f
 Now provide a mermaid.js graph on how the Events & Commands SHOULD BE architected! Research first!
 
 Write it to:
+
 ```
 docs/architecture-understanding/<YYYY-MM-DD_HH_MM-SESSION_NAME-improved>.mmd
 ```
