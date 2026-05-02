@@ -36,7 +36,11 @@ skill-name/
 
 ## Installation
 
-Add to your project's `crush.json`:
+```bash
+npx skills add https://github.com/LarsArtmann/SKILLS
+```
+
+Or add to your project's `crush.json`:
 
 ```json
 {
