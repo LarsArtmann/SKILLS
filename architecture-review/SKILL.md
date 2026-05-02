@@ -1,6 +1,8 @@
 ---
 name: architecture-review
-description: Reviews the current architecture for scalability, modularity, service orientation, and composability. Use when the user asks about architecture quality, scalability, modularity, how to make the codebase more service-oriented or composable.
+description: Reviews the current architecture for scalability, modularity, service orientation, and composability. Use when the user asks about architecture quality, scalability, modularity, how to make the codebase more service-oriented or composable, or says "architecture review".
+metadata:
+  tags: architecture, scalability, modularity, service-oriented, composable
 ---
 
 # Architecture Review
@@ -19,3 +21,10 @@ description: Reviews the current architecture for scalability, modularity, servi
 3. Assess scalability of current patterns
 4. Evaluate composability and service orientation
 5. Provide concrete, actionable recommendations
+
+## Execution
+
+READ, UNDERSTAND, RESEARCH, REFLECT.
+Break this down into multiple actionable steps. Think about them again.
+Execute and Verify them one step at the time.
+Repeat until done. Keep going until everything works and you think you did a great job!
