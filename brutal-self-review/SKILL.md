@@ -41,7 +41,7 @@ Answer every question with full honesty:
 - Also consider how we could improve our Type models to create a better architecture while getting real work done well.
 - Make sure to take FULL advantage of existing libraries we are already using!
 
-For Go ecosystem libraries and architecture patterns, load [./references/go-ecosystem.md](references/go-ecosystem.md).
+For Go ecosystem libraries, architecture patterns, banned libraries, and required stack, use the `how-to-golang` skill. Load its SKILL.md at `/home/lars/projects/SKILLS/how-to-golang/SKILL.md` and follow its references for detailed library decisions, domain types, key patterns, and banned dependencies.
 
 ## Git Workflow
 
