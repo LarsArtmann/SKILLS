@@ -4,7 +4,7 @@ A collection of [Agent Skills](https://agentskills.io) for [Crush](https://crush
 
 ## What's Here
 
-14 skills, each a self-contained directory with a `SKILL.md` entrypoint:
+15 skills, each a self-contained directory with a `SKILL.md` entrypoint:
 
 | Skill                          | What It Does                                                                                                 |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------ |
@@ -18,6 +18,7 @@ A collection of [Agent Skills](https://agentskills.io) for [Crush](https://crush
 | **execution-mode**             | Two modes: deep reflection (`READ, UNDERSTAND, RESEARCH, REFLECT`) or aggressive execution (`GET SHIT DONE`) |
 | **features-audit**             | Creates/updates `FEATURES.md` from actual code                                                               |
 | **full-code-review**           | Comprehensive code review visiting every file                                                                |
+| **nix-review**                 | Reviews and improves .nix files — 50 problems, 52 checklist items, systemd hardening                        |
 | **nix-flake-migration**        | Migration proposals from justfile/shell scripts to nix flakes                                                |
 | **pareto-planning**            | 80/20 execution plans with D2 graphs                                                                         |
 | **status-report**              | Full project status updates written to `docs/status/`                                                        |
@@ -58,4 +59,4 @@ See [`how-to-write-skills.md`](how-to-write-skills.md) for a comprehensive guide
 
 ## Status
 
-All 14 skills are complete with validated frontmatter and metadata. See [`docs/status/`](docs/status/) for detailed progress reports.
+All 15 skills are complete with validated frontmatter and metadata. See [`docs/status/`](docs/status/) for detailed progress reports.
