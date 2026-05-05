@@ -174,7 +174,12 @@ run_pattern \
 
 run_pattern \
     "Manager/Handler classes (Python)" \
-    'class\s+\w*(Manager|Handler|Processor|Helper|Util|Utility)\b' \
+    'class\\s+\\w*(Manager|Handler|Processor|Helper|Util|Utility)\\b' \
+    "HIGH"
+
+run_pattern \
+    "Manager/Handler structs (Rust)" \
+    'struct\\s+\\w*(Manager|Handler|Processor|Helper|Util|Utility)\\b' \
     "HIGH"
 
 # ── MEDIUM: Implementation Leakage ─────────────────────────────────
@@ -194,6 +199,11 @@ run_pattern \
 run_pattern \
     "Impl suffix (Python)" \
     'class\s+\w*Impl\b' \
+    "MEDIUM"
+
+run_pattern \
+    "Impl suffix (Rust)" \
+    'struct\s+\w*Impl\b' \
     "MEDIUM"
 
 run_pattern \
@@ -236,6 +246,11 @@ run_pattern \
     'class\s+I[A-Z]\w*\(.*ABC' \
     "MEDIUM"
 
+run_pattern \
+    "I-prefix trait (Rust — anti-pattern)" \
+    'trait\s+I[A-Z]\w*' \
+    "MEDIUM"
+
 # ── MEDIUM: Boolean Non-Questions ──────────────────────────────────
 
 smell_header "MEDIUM — Boolean Non-Question Names"
@@ -262,6 +277,11 @@ run_pattern \
 
 run_pattern \
     "Boolean named 'status' (Python)" \
+    '(status|flag|check)\s*:\s*bool' \
+    "MEDIUM"
+
+run_pattern \
+    "Boolean named 'status' (Rust)" \
     '(status|flag|check)\s*:\s*bool' \
     "MEDIUM"
 

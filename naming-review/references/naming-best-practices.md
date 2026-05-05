@@ -13,7 +13,13 @@ This reference documents ideal naming patterns organized by category. Read this 
 - [Package and Module Naming](#package-and-module-naming)
 - [Domain-Driven Design Naming](#domain-driven-design-naming)
 - [Language-Specific Conventions](#language-specific-conventions)
+- [Error Naming](#error-naming)
+- [Test Naming](#test-naming)
+- [API and Database Naming](#api-and-database-naming)
+- [Config and Environment Variable Naming](#config-and-environment-variable-naming)
+- [Concurrent and Async Naming](#concurrent-and-async-naming)
 - [The Renaming Checklist](#the-renaming-checklist)
+- [Official Style Guide References](#official-style-guide-references)
 
 ---
 
@@ -767,6 +773,113 @@ PORT=8080              # which service?
 | Convention | Example | Anti-Pattern |
 |-----------|---------|-------------|
 | `enable_<feature>` or `<feature>_enabled` | `enable_dark_mode`, `payments_v2_enabled` | `flag1`, `new_stuff`, `toggle` |
+
+---
+
+## Concurrent and Async Naming
+
+Concurrency introduces naming concerns that don't exist in synchronous code.
+
+### Goroutine Naming (Go)
+
+Goroutines don't have names, but the functions launched as goroutines should be clearly named:
+
+```go
+// BAD — anonymous goroutine with unclear purpose
+go func() {
+    for range ticker.C {
+        // what does this do?
+    }
+}()
+
+// GOOD — named function launched as goroutine
+go pollForUpdates(ctx, updateChannel)
+go expireStaleSessions(ctx, sessionStore)
+go retryFailedPayments(ctx, paymentGateway)
+```
+
+### Channel Naming (Go)
+
+Channels are typed conduits — name them by what flows through them and the direction:
+
+```go
+// BAD — vague channel names
+ch := make(chan int)
+result := make(chan bool)
+data := make(chan []byte)
+
+// GOOD — describe what flows and direction
+orderStream := make(chan Order)        // incoming orders
+shutdownSignal := make(chan struct{})   // signal-only channel
+validationResult := make(chan error)    // result of validation
+```
+
+### Mutex Naming (Go)
+
+Mutexes protect specific state — name them by what they guard:
+
+```go
+// BAD — generic mutex name
+var mu sync.Mutex
+var lock sync.RWMutex
+
+// GOOD — name by what they protect
+var ordersMu sync.Mutex       // protects orders map
+var cacheMu sync.RWMutex      // protects cache (RWMutex for read-heavy)
+var balanceMu sync.Mutex      // protects account balance
+```
+
+### WaitGroup Naming (Go)
+
+```go
+// BAD — vague
+var wg sync.WaitGroup
+
+// GOOD — name by what they're waiting for
+var workersWg sync.WaitGroup   // waiting for worker goroutines
+var uploadsWg sync.WaitGroup   // waiting for upload goroutines
+```
+
+### Async Naming (TypeScript)
+
+```typescript
+// BAD — "Async" suffix adds nothing (the return type already says it)
+async function fetchUserAsync(): Promise<User> {}
+
+// GOOD — the async keyword and Promise return type already convey async
+async function fetchUser(): Promise<User> {}
+
+// GOOD — use suffix only to disambiguate sync vs async versions
+function readConfig(): Config                    // sync version
+function readConfigAsync(): Promise<Config>      // async version (when both exist)
+```
+
+### Future/Promise Naming
+
+```rust
+// Rust — name the future by what it produces, not by "Future" suffix
+// BAD
+type UserFuture = impl Future<Output = User>;
+// GOOD
+type PendingUser = impl Future<Output = User>;
+```
+
+### Context/Cancel Naming (Go)
+
+```go
+// BAD — vague context names
+ctx := context.Background()
+ctx2, cancel := context.WithTimeout(ctx, 5*time.Second)
+
+// GOOD — descriptive names for derived contexts
+ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+defer cancel()
+
+// For long-lived contexts, name by lifecycle
+bgCtx := context.Background()                    // background context
+requestCtx, cancel := context.WithTimeout(bgCtx, timeout) // per-request
+defer cancel()
+```
 
 ---
 
