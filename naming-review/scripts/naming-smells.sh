@@ -21,6 +21,12 @@
 
 set -euo pipefail
 
+if ! command -v rg &>/dev/null; then
+    echo "Error: ripgrep (rg) is required but not installed." >&2
+    echo "Install: https://github.com/BurntSushi/ripgrep#installation" >&2
+    exit 1
+fi
+
 PATH_TO_SCAN="${1:-.}"
 LANG_FILTER=""
 RIPGREP_OPTS="--no-heading --with-filename --line-number --sort path"
@@ -174,12 +180,12 @@ run_pattern \
 
 run_pattern \
     "Manager/Handler classes (Python)" \
-    'class\\s+\\w*(Manager|Handler|Processor|Helper|Util|Utility)\\b' \
+    'class\s+\w*(Manager|Handler|Processor|Helper|Util|Utility)\b' \
     "HIGH"
 
 run_pattern \
     "Manager/Handler structs (Rust)" \
-    'struct\\s+\\w*(Manager|Handler|Processor|Helper|Util|Utility)\\b' \
+    'struct\s+\w*(Manager|Handler|Processor|Helper|Util|Utility)\b' \
     "HIGH"
 
 # ── MEDIUM: Implementation Leakage ─────────────────────────────────
