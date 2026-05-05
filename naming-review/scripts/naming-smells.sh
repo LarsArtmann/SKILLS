@@ -27,9 +27,9 @@ if ! command -v rg &>/dev/null; then
     exit 1
 fi
 
-PATH_TO_SCAN="${1:-.}"
+PATH_TO_SCAN="."
 LANG_FILTER=""
-RIPGREP_OPTS="--no-heading --with-filename --line-number --sort path"
+RIPGREP_OPTS="--no-heading --with-filename --line-number --sort-path --glob '!**/naming-review/**'"
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
@@ -69,9 +69,11 @@ run_pattern() {
     local description="$1"
     local pattern="$2"
     local severity="$3"
-    local count
+    local matches
 
-    count=$(rg $TYPE_GLOB $RIPGREP_OPTS "$pattern" "$PATH_TO_SCAN" 2>/dev/null | head -30 | wc -l)
+    matches=$(rg $TYPE_GLOB $RIPGREP_OPTS "$pattern" "$PATH_TO_SCAN" 2>/dev/null || true)
+    local count
+    count=$(echo "$matches" | head -30 | grep -c . || true)
 
     if [[ "$count" -gt 0 ]]; then
         SMELL_COUNT=$((SMELL_COUNT + count))
@@ -80,7 +82,7 @@ run_pattern() {
         echo "  Pattern: $pattern"
         echo "  Matches: $count"
         echo "  ─────────────────────────────────────────────────────────"
-        rg $TYPE_GLOB $RIPGREP_OPTS "$pattern" "$PATH_TO_SCAN" 2>/dev/null | head -10
+        echo "$matches" | head -10
     fi
 }
 
@@ -311,12 +313,12 @@ smell_header "MEDIUM — Number-Suffixed Variables"
 
 run_pattern \
     "Number-suffixed variables (Go)" \
-    '\b\w+2\b\s*(,|\)|\s*[=:]|\s+\*)' \
+    '\b[a-z]+\d\b\s*(,|\)|\s*[=:])' \
     "MEDIUM"
 
 run_pattern \
     "Number-suffixed variables (TypeScript)" \
-    '\b\w+[0-9]+\b\s*[:=]' \
+    '\b[a-z]+\d\b\s*[:=]' \
     "MEDIUM"
 
 # ── Summary ────────────────────────────────────────────────────────
