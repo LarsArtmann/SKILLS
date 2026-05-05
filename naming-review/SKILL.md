@@ -187,12 +187,65 @@ The reason behind each naming rule matters more than the rule itself. A review t
 | 🟡 **Medium** | Name is unclear or inconsistent (abbreviations, synonym drift, tense mismatch) |
 | 🔵 **Low** | Style or convention issue (casing, minor redundancy, language-specific norms) |
 
+## Automated Detection
+
+Before manual review, run automated tools to surface low-hanging fruit. Don't reinvent what linters already do well.
+
+### Step 0: Run Linters
+
+Existing linters catch many naming issues automatically. Run them first, then focus manual review on deeper problems linters can't detect (honesty, domain alignment, split-brain terminology).
+
+| Language | Tool | Key Naming Rules | Install |
+|----------|------|-----------------|---------|
+| **Go** | `revive` (via `golangci-lint`) | `var-naming`, `exported`, `package-naming`, `receiver-naming` | `go install github.com/mgechev/revive@latest` |
+| **Go** | `golangci-lint` | Aggregates revive + golint + stylecheck | `go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest` |
+| **TypeScript** | `eslint` + `@typescript-eslint/naming-convention` | Enforces PascalCase types, camelCase variables, consistent enum casing | `npm add -D @typescript-eslint/eslint-plugin` |
+| **Rust** | `clippy` | `module_name_repetitions`, `enum_variant_names`, `wrong_self_convention`, `new_ret_no_self` | `rustup component add clippy` |
+| **Python** | `ruff` | N801-N818: PEP 8 naming (class, function, variable, constant naming) | `pip install ruff` |
+| **Python** | `pylint` | C0103 (invalid-name), C0144 (non-ascii-name) | `pip install pylint` |
+| **Java** | `checkstyle` | `TypeName`, `MethodName`, `ParameterName`, `ConstantName`, `LocalVariableName` | Maven/Gradle plugin |
+| **C#** | `.NET analyzers` | CA1707 (identifiers should not contain underscores), IDE1006 (naming styles) | Built-in with .NET SDK |
+
+After running linters, run `scripts/naming-smells.sh` for deeper pattern detection that linters miss (vague nouns, Manager/Handler classes, lying names, split-brain terminology). See `scripts/naming-smells.sh` for details.
+
+### Quick Grep Patterns
+
+Use these to rapidly surface common naming smells:
+
+```bash
+# Vague type names (Data, Info, Record, Item, Object, Thing)
+rg -i 'type\s+\w*(Data|Info|Record|Item|Object|Thing)\b' --type-add 'go:*.go' --type-add 'ts:*.ts' --type-add 'py:*.py' --type-add 'rs:*.rs' --type-add 'java:*.java'
+
+# Manager/Handler/Processor/Helper classes (likely need splitting)
+rg -i '(class|type|struct|interface)\s+\w*(Manager|Handler|Processor|Helper|Util|Utility)\b'
+
+# Impl suffix (architecture leakage)
+rg -i '(class|type|struct)\s+\w*Impl\b'
+
+# I-prefix interfaces outside C#
+rg -i 'interface\s+I[A-Z]' --type-add 'go:*.go' --type-add 'ts:*.ts' --type-add 'py:*.py' --type-add 'rs:*.rs'
+
+# Hungarian notation remnants
+rg -i '(str[A-Z]|int[A-Z]|bool[A-Z]|arr[A-Z]|obj[A-Z])\w+\s*(\:|=|\{)'
+
+# Boolean non-question names
+rg -i '(bool|boolean)\s+(status|flag|check|active|valid)\b'
+```
+
 ## References
 
 - `references/common-naming-problems.md` — Detailed catalogue of naming anti-patterns with before/after examples, organized by category
 - `references/naming-best-practices.md` — Ideal naming patterns per category, domain-driven design language guidelines, and language-specific conventions
+- `scripts/naming-smells.sh` — Automated detection of naming anti-patterns using grep/ripgrep
 
 Read these files when you need specific examples or deeper guidance on a particular issue category.
+
+## Related Skills
+
+- **full-code-review** — Broader code review that includes naming as one aspect. Use naming-review when you want focused, deep naming analysis
+- **code-quality-scan** — Runs linters that already catch some naming issues. naming-review goes deeper into semantics linters can't check
+- **deduplicate-code** — Finds code duplication which often reveals split-brain naming (same concept, different names)
+- **architecture-review** — Architecture issues often manifest as naming problems (Manager classes, Impl suffixes)
 
 ## Execution
 
