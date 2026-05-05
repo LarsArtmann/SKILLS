@@ -22,6 +22,7 @@ This reference documents real problems found across Nix codebases and community 
 ## Critical Issues (Build Breakers)
 
 ### 1. Placeholder/Fake Hashes
+
 Flakes that won't build because hashes are placeholders.
 
 ```nix
@@ -36,6 +37,7 @@ vendorHash = "";
 **Fix**: Run `nix build`, copy the expected hash from the error message. For `null` vendor hash (no deps), only use when the project truly has zero Go dependencies.
 
 ### 2. Impure Constructs in Build Derivations
+
 Anything that reaches outside the Nix sandbox breaks reproducibility.
 
 ```nix
@@ -50,6 +52,7 @@ ExecStartPre = "${pip} install structlog";
 **Fix**: All build-time dependencies must be declared as Nix derivations. Use `buildGoModule`, `callPackage`, or explicit `fetchurl`/`fetchTarball`.
 
 ### 3. Hardcoded Absolute Local Paths
+
 Completely non-portable — only works on one machine.
 
 ```nix
@@ -64,6 +67,7 @@ inputs.cmdguard = { url = "path:/home/lars/projects/cmdguard"; flake = false; };
 ## Purity & Reproducibility
 
 ### 4. `<nixpkgs>` Lookup Paths
+
 Lookup paths depend on system state (`$NIX_PATH`) — different results on different machines.
 
 ```nix
@@ -79,6 +83,7 @@ import nixpkgs { config = {}; overlays = []; }
 ```
 
 ### 5. Unquoted URLs
+
 RFC 45 deprecates unquoted URLs — they cause subtle parsing issues.
 
 ```nix
@@ -89,6 +94,7 @@ url = "github:user/repo";
 ```
 
 ### 6. `builtins.path` vs Bare Paths
+
 Without `builtins.path`, the derivation depends on the parent directory name — breaks reproducibility.
 
 ```nix
@@ -99,6 +105,7 @@ src = builtins.path { path = ./.; name = "myproject"; };
 ```
 
 ### 7. IFD (Import From Derivation)
+
 Using `builtins.readFile`, `builtins.import`, or `builtins.hashFile` on a derivation output blocks evaluation. Nix evaluation is single-threaded, so IFD serializes everything.
 
 ```nix
@@ -125,6 +132,7 @@ pkgs.runCommand "app-config" { inherit generatedConfig; } ''
 ```
 
 ### 8. Shallow `//` Merge on Nested Attrs
+
 The `//` operator is shallow — it replaces entire nested attribute sets rather than merging them.
 
 ```nix
@@ -140,6 +148,7 @@ The `//` operator is shallow — it replaces entire nested attribute sets rather
 ## Structural Issues
 
 ### 9. Re-instantiating nixpkgs
+
 Each `import nixpkgs {}` creates a separate evaluation — slow and can cause inconsistencies.
 
 ```nix
@@ -155,6 +164,7 @@ eachDefaultSystem (system: let pkgs = nixpkgs.legacyPackages.${system}; in ...)
 **Exception**: Explicit re-instantiation is OK when you need custom `config` (e.g., `allowUnfree`), but document why.
 
 ### 10. Duplicated vendorHash
+
 When the same hash appears in multiple derivations, updates require changing multiple locations.
 
 ```nix
@@ -173,7 +183,9 @@ in {
 ```
 
 ### 11. Monolithic Files
+
 Files over ~300 lines should be split. Real examples found:
+
 - 872 lines: niri compositor config (should be 5+ files)
 - 755 lines: SystemNix flake.nix (overlays should be extracted)
 - 741 lines: SigNoz service (should be split by component)
@@ -182,6 +194,7 @@ Files over ~300 lines should be split. Real examples found:
 - 433 lines: Yazi file manager config (should use external files)
 
 ### 12. Overlay Duplication Across Contexts
+
 When the same overlay is defined in two separate lists, they can drift.
 
 ```nix
@@ -195,6 +208,7 @@ perSystem._module.args.pkgs = import nixpkgs {
 **Fix**: Define overlays once in a shared `let` binding or use flake-parts' native overlay module.
 
 ### 13. Missing `meta` Section
+
 Package derivations without `meta` lack discoverability and documentation.
 
 ```nix
@@ -221,6 +235,7 @@ packages.default = pkgs.buildGoModule {
 ## Correctness Issues
 
 ### 14. Wrong Systemd Option Types
+
 Systemd expects specific string values, not booleans.
 
 ```nix
@@ -236,6 +251,7 @@ RestrictNamespaces = "yes";
 ```
 
 ### 15. Disabled Security Hardening
+
 Overriding sandbox options to `false` should have documented justification.
 
 ```nix
@@ -248,6 +264,7 @@ NoNewPrivileges = lib.mkForce false;
 **Review criterion**: Every `= false` on a security option needs a comment explaining why it's necessary for that specific service.
 
 ### 16. Race Conditions in ExecStartPre/ExecStartPost
+
 Scripts that depend on services not yet ready.
 
 ```nix
@@ -259,6 +276,7 @@ ExecStart = "${cfg.package}/bin/use-token";
 **Fix**: Use `BindsTo` + `After` ordering, or `ExecStartPre` with retry loops, or separate systemd dependencies.
 
 ### 17. `version` Hardcoded Instead of Git-Derived
+
 Hardcoded versions become stale and don't reflect actual code state.
 
 ```nix
@@ -276,16 +294,18 @@ version = self.rev or self.dirtyRev or "dev";
 ## Consistency Issues
 
 ### 18. Inconsistent Formatter Choice
+
 Multiple formatters across projects defeats the purpose.
 
-| Formatter | Status |
-|-----------|--------|
-| `nixfmt` (RFC 166 style) | **Recommended** — Nix project official |
-| `alejandra` | Acceptable but declining — prefer nixfmt |
-| `nixpkgs-fmt` | Deprecated — migrate to nixfmt |
-| None | **Must add** |
+| Formatter                | Status                                   |
+| ------------------------ | ---------------------------------------- |
+| `nixfmt` (RFC 166 style) | **Recommended** — Nix project official   |
+| `alejandra`              | Acceptable but declining — prefer nixfmt |
+| `nixpkgs-fmt`            | Deprecated — migrate to nixfmt           |
+| None                     | **Must add**                             |
 
 ### 19. Inconsistent nixpkgs Channel
+
 Some projects use `nixos-unstable`, others `nixpkgs-unstable`. These are different channels.
 
 ```nix
@@ -297,11 +317,14 @@ url = "github:NixOS/nixpkgs/nixpkgs-unstable";  # Standalone channel
 **Fix**: Standardize on one. `nixos-unstable` has more packages and is more tested.
 
 ### 20. Missing `checks` or `formatter`
+
 Every flake should define at minimum:
+
 - `formatter` (use `nixfmt` or `treefmt-nix`)
 - `checks` (format check, build check, test)
 
 ### 21. Missing `follows` for Shared Inputs
+
 Without `follows`, each input brings its own nixpkgs — duplicated dependencies, bloated closure.
 
 ```nix
@@ -333,6 +356,7 @@ inputs = {
 ## NixOS Module Issues
 
 ### 22. Hardcoded Usernames
+
 The username `lars` (or any specific name) appearing in NixOS modules makes them non-reusable.
 
 ```nix
@@ -344,6 +368,7 @@ systemd.services.myapp.Service.User = "lars";
 **Fix**: Create an option `services.myapp.user` with a default, or use `config.users.users.${cfg.user}`.
 
 ### 23. Missing Option Types
+
 Options without `type` accept any value — bugs hide until runtime.
 
 ```nix
@@ -361,6 +386,7 @@ options.myService.port = lib.mkOption {
 ```
 
 ### 24. Relative Path Fragility
+
 Deep relative imports break when files move.
 
 ```nix
@@ -371,6 +397,7 @@ import ./../../../lib/systemd.nix
 **Fix**: Use module system imports or `inputs.self.outPath`-based paths. At minimum, document the dependency clearly.
 
 ### 25. Double Import / Redundant Module Loading
+
 Importing the same module from multiple places is confusing even though Nix deduplicates.
 
 ```nix
@@ -383,6 +410,7 @@ imports = [ ../../common/programs/fish.nix ../../common/programs/bash.nix ];
 **Fix**: Import each module in exactly one place. Use the module system's natural composition.
 
 ### 26. Missing Assertions
+
 Options with constraints (port ranges, required co-services) should validate at build time.
 
 ```nix
@@ -400,6 +428,7 @@ assertions = [
 ```
 
 ### 27. Missing `mkPackageOption` for Package Options
+
 When a module takes a package parameter, use `mkPackageOption` for consistency.
 
 ```nix
@@ -420,6 +449,7 @@ options.myService.package = lib.mkPackageOption pkgs "myService" { };
 ## Secret Management Issues
 
 ### 28. Secrets in Plain Text
+
 SSH keys, API keys, passwords in Nix configs are visible in the Nix store.
 
 ```nix
@@ -432,11 +462,13 @@ hashedPassword = "$argon2id$v=19$m=...";
 **Fix**: Use `sops-nix`, `agenix`, or `pass` for all secrets. The Nix store is world-readable.
 
 ### 29. Inconsistent Secret Management
+
 Some secrets via sops, some hardcoded, some in plaintext files.
 
 **Fix**: Establish one secrets strategy project-wide. Document it in the project README or AGENTS.md.
 
 ### 30. Sensitive Infrastructure in Nix Configs
+
 IPs, hostnames, and internal network topology in Nix files reveal infrastructure details.
 
 ```nix
@@ -453,6 +485,7 @@ services.caddy.virtualHosts."internal.company.com" = {
 ## Source Management Issues
 
 ### 31. `rec` Attrset Anti-Pattern
+
 `rec` makes dependencies implicit — hard to read and can cause surprising evaluation order issues and infinite recursion.
 
 ```nix
@@ -472,6 +505,7 @@ in { inherit a b; }
 ```
 
 ### 32. `with` Statement Anti-Pattern
+
 `with` breaks static analysis, makes variable sources unclear, and has non-intuitive scoping (the `with` scope is not available inside function arguments).
 
 ```nix
@@ -493,6 +527,7 @@ buildInputs = builtins.attrValues {
 **Exception**: `with pkgs;` inside a small, scoped list is acceptable.
 
 ### 33. `builtins.readFile` for Dynamic Configs
+
 Reading files at evaluation time that might not exist — also triggers IFD if the path is a derivation.
 
 ```nix
@@ -503,6 +538,7 @@ plugins = builtins.readFile ./plugins/.plugins-list;
 **Fix**: Use `lib.filesystem.listFilesRecursive` or declare the list explicitly.
 
 ### 34. `builtins.getEnv` in Derivations
+
 Environment variables are impure — different results on different machines.
 
 ```nix
@@ -513,6 +549,7 @@ HOME = builtins.getEnv "HOME";
 **Fix**: Use explicit paths or pass values as derivation arguments.
 
 ### 35. Not Using `lib.fileset` for Source Filtering
+
 The modern `lib.fileset` API is more efficient and compositional than `lib.sources` or raw `cleanSource`.
 
 ```nix
@@ -538,6 +575,7 @@ src = lib.fileset.toSource {
 ## Performance Issues
 
 ### 36. Excessive `mkIf` Wrapping
+
 Unnecessary `mkIf` adds overhead for simple boolean assignments.
 
 ```nix
@@ -549,6 +587,7 @@ services.myService.enable = cfg.enable;
 ```
 
 ### 37. No Garbage Collection Configuration
+
 Without GC, the Nix store grows unbounded.
 
 ```nix
@@ -562,6 +601,7 @@ nix.optimise.automatic = true;
 ```
 
 ### 38. Missing Binary Cache Configuration
+
 Not configuring caches means rebuilding everything from source.
 
 ```nix
@@ -583,6 +623,7 @@ nix.settings = {
 ## Overlay Issues
 
 ### 39. Infinite Recursion in Overlays
+
 Using `final` to reference the symbol you're overriding causes infinite recursion.
 
 ```nix
@@ -598,6 +639,7 @@ final: prev: {
 ```
 
 ### 40. Using `rec` in Overlays
+
 Using `rec` to cross-reference overlay packages breaks composability with other overlays.
 
 ```nix
@@ -615,6 +657,7 @@ final: prev: {
 ```
 
 ### 41. External Parameters in Overlays
+
 Overlays should be parameter-free — they're composed by the package set.
 
 ```nix
@@ -631,6 +674,7 @@ final: prev: {
 ```
 
 ### 42. Using `prev` for Dependencies Instead of `final`
+
 When a package depends on other packages that may be overridden by other overlays, use `final`.
 
 ```nix
@@ -656,6 +700,7 @@ final: prev: {
 ## DevShell Issues
 
 ### 43. Using `buildInputs` Instead of `packages`
+
 In modern nixpkgs, `packages` is the preferred attribute in `mkShell`.
 
 ```nix
@@ -671,6 +716,7 @@ devShells.default = pkgs.mkShell {
 ```
 
 ### 44. Heavy Operations in shellHook
+
 shellHook runs on every shell entry — keep it fast. No `npm install`, no network access.
 
 ```nix
@@ -688,6 +734,7 @@ shellHook = ''
 ```
 
 ### 45. `mkShellNoCC` When No Compiler Needed
+
 If your devShell doesn't need a C compiler, use `mkShellNoCC` for faster shell entry.
 
 ```nix
@@ -698,6 +745,7 @@ devShells.default = pkgs.mkShellNoCC {
 ```
 
 ### 46. Missing `inputsFrom` for Shared Shells
+
 In monorepos or multi-project setups, use `inputsFrom` to compose shells.
 
 ```nix
@@ -713,6 +761,7 @@ devShells.full = pkgs.mkShell {
 ## Systemd Hardening Issues
 
 ### 47. Minimal Hardening Applied
+
 Most services should have at least basic systemd security directives. Use `systemd-analyze security <service>` to measure.
 
 ```nix
@@ -737,6 +786,7 @@ serviceConfig = {
 ```
 
 ### 48. Network Services Missing `RestrictAddressFamilies`
+
 Services that need network access should explicitly declare which address families they use.
 
 ```nix
@@ -747,6 +797,7 @@ serviceConfig = {
 ```
 
 ### 49. Missing `MemoryMax` on Services
+
 Without memory limits, a buggy service can consume all system memory.
 
 ```nix
@@ -757,6 +808,7 @@ serviceConfig = {
 ```
 
 ### 50. Using `DynamicUser` for Simple Services
+
 For services that don't need a persistent user or home directory, `DynamicUser = true` is simpler and more secure.
 
 ```nix

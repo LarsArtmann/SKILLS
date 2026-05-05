@@ -145,13 +145,13 @@ pkgs.buildGoModule {
 
 ### Input URL Formats
 
-| Format | Use When |
-|--------|----------|
-| `"github:owner/repo"` | Public GitHub repos — fastest |
-| `"github:owner/repo/ref"` | Pin to branch/tag/commit |
-| `"git+ssh://git@github.com/owner/repo"` | Private repos |
-| `"path:./relative"` | Local development only |
-| `"https://example.com/archive.tar.gz"` | Tarball archives |
+| Format                                  | Use When                      |
+| --------------------------------------- | ----------------------------- |
+| `"github:owner/repo"`                   | Public GitHub repos — fastest |
+| `"github:owner/repo/ref"`               | Pin to branch/tag/commit      |
+| `"git+ssh://git@github.com/owner/repo"` | Private repos                 |
+| `"path:./relative"`                     | Local development only        |
+| `"https://example.com/archive.tar.gz"`  | Tarball archives              |
 
 **Avoid**: `path:/absolute/path` — non-portable, only works on your machine.
 
@@ -408,11 +408,11 @@ in
 
 ### Overlay `final`/`prev` Rules
 
-| Context | Use | Why |
-|---------|-----|-----|
-| Overriding an existing package | `prev.package` | Avoids infinite recursion |
-| Referencing dependencies | `final.dependency` | Respects other overlays |
-| Adding new packages | `prev.callPackage` | Standard pattern |
+| Context                        | Use                | Why                       |
+| ------------------------------ | ------------------ | ------------------------- |
+| Overriding an existing package | `prev.package`     | Avoids infinite recursion |
+| Referencing dependencies       | `final.dependency` | Respects other overlays   |
+| Adding new packages            | `prev.callPackage` | Standard pattern          |
 
 ```nix
 final: prev: {

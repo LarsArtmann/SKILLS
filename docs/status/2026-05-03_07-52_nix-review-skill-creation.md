@@ -52,12 +52,12 @@ Created a comprehensive `nix-review` skill that reviews and improves `.nix` file
 
 ### Deliverables
 
-| File | Lines | Content |
-|------|-------|---------|
-| `SKILL.md` | 207 | 5-step review process, 52 checklist items, severity guide, report template |
-| `references/common-problems.md` | 768 | 50 documented problems with anti-pattern + fix code examples |
-| `references/best-practices.md` | 573 | 9 sections with ideal code templates for all major Nix patterns |
-| **Total** | **1548** | |
+| File                            | Lines    | Content                                                                    |
+| ------------------------------- | -------- | -------------------------------------------------------------------------- |
+| `SKILL.md`                      | 207      | 5-step review process, 52 checklist items, severity guide, report template |
+| `references/common-problems.md` | 768      | 50 documented problems with anti-pattern + fix code examples               |
+| `references/best-practices.md`  | 573      | 9 sections with ideal code templates for all major Nix patterns            |
+| **Total**                       | **1548** |                                                                            |
 
 ### Installation Location
 
@@ -155,6 +155,7 @@ Created a comprehensive `nix-review` skill that reviews and improves `.nix` file
 **Should the nix-review skill live in the SKILLS repo (`/home/lars/projects/SKILLS/`) or only at the installed location (`~/.config/crush/skills/nix-review/`)?**
 
 The SKILLS repo has other skills (code-quality-scan, architecture-review, etc.) but they appear to be separate copies. The nix-review skill was created at the installed location where Crush actually loads it from. I'm not sure if:
+
 - Skills in the SKILLS repo are automatically installed/synced
 - The SKILLS repo is just a backup/version-control copy
 - Both locations need to be maintained independently
@@ -166,29 +167,31 @@ This matters because the skill needs to be version-controlled but also needs to 
 
 ## Sources Researched (Phase 2)
 
-| Source | URL | Content Extracted |
-|--------|-----|-------------------|
-| nix.dev best practices | https://nix.dev/guides/best-practices | `with`, `rec`, `<nixpkgs>`, `builtins.path`, shallow `//` |
-| NixOS Wiki — Overlays | https://wiki.nixos.org/wiki/Overlays | final/prev rules, infinite recursion, scoped overlays |
-| NixOS Wiki — NixOS Modules | https://wiki.nixos.org/wiki/NixOS_modules | mkPackageOption, assertions, submodule patterns |
-| NixOS Wiki — Systemd Hardening | https://wiki.nixos.org/wiki/Systemd_Hardening | Baseline template, network services, DynamicUser |
-| zero-to-nix | https://zero-to-nix.com/concepts/flakes | Flake structure, inputs, outputs patterns |
-| flake-parts docs | /websites/flake_parts (Context7) | perSystem, module system, nixpkgs instantiation |
-| Nixpkgs manual | Source filtering docs | lib.fileset, lib.sources, gitTracked |
-| Nixcademy | Various posts | Overlay techniques, IFD deep-dive |
-| Rocky Linux docs | Systemd hardening guide | Security directives, capability management |
-| notashelf.dev | NixOS insecurities & remedies | Practical hardening patterns |
+| Source                         | URL                                           | Content Extracted                                         |
+| ------------------------------ | --------------------------------------------- | --------------------------------------------------------- |
+| nix.dev best practices         | https://nix.dev/guides/best-practices         | `with`, `rec`, `<nixpkgs>`, `builtins.path`, shallow `//` |
+| NixOS Wiki — Overlays          | https://wiki.nixos.org/wiki/Overlays          | final/prev rules, infinite recursion, scoped overlays     |
+| NixOS Wiki — NixOS Modules     | https://wiki.nixos.org/wiki/NixOS_modules     | mkPackageOption, assertions, submodule patterns           |
+| NixOS Wiki — Systemd Hardening | https://wiki.nixos.org/wiki/Systemd_Hardening | Baseline template, network services, DynamicUser          |
+| zero-to-nix                    | https://zero-to-nix.com/concepts/flakes       | Flake structure, inputs, outputs patterns                 |
+| flake-parts docs               | /websites/flake_parts (Context7)              | perSystem, module system, nixpkgs instantiation           |
+| Nixpkgs manual                 | Source filtering docs                         | lib.fileset, lib.sources, gitTracked                      |
+| Nixcademy                      | Various posts                                 | Overlay techniques, IFD deep-dive                         |
+| Rocky Linux docs               | Systemd hardening guide                       | Security directives, capability management                |
+| notashelf.dev                  | NixOS insecurities & remedies                 | Practical hardening patterns                              |
 
 ---
 
 ## Files Changed This Session
 
 ### Created (at `~/.config/crush/skills/nix-review/`)
+
 - `SKILL.md` — 207 lines
 - `references/common-problems.md` — 768 lines
 - `references/best-practices.md` — 573 lines
 
 ### Not Modified (analysis only)
+
 - 88+ `.nix` files across `/home/lars/projects/` — read and analyzed, no changes applied
 
 ---

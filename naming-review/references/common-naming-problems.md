@@ -39,14 +39,14 @@ func touchAndGetUser(id string) User
 ```typescript
 // BAD — name says "validate" but it also sends email
 function validateRegistration(data: Registration) {
-    if (data.email) {
-        sendWelcomeEmail(data.email) // hidden side effect!
-    }
+  if (data.email) {
+    sendWelcomeEmail(data.email); // hidden side effect!
+  }
 }
 
 // GOOD — separate concerns
-function validateRegistration(data: Registration): ValidationResult
-function sendWelcomeEmail(email: string): void
+function validateRegistration(data: Registration): ValidationResult;
+function sendWelcomeEmail(email: string): void;
 ```
 
 ```python
@@ -82,11 +82,11 @@ A name that implies broad responsibility but does something narrow.
 ```typescript
 // BAD — "ProcessAll" but only handles credit card payments
 function processAllPayments(payment: Payment) {
-    // only handles credit cards, throws for others
+  // only handles credit cards, throws for others
 }
 
 // GOOD — name matches actual scope
-function processCreditCardPayment(payment: CreditCardPayment)
+function processCreditCardPayment(payment: CreditCardPayment);
 ```
 
 ### 4. Getter That Mutates
@@ -234,12 +234,12 @@ type ValidationOutcome struct{}
 // BAD — vague nouns
 class UserData {}
 interface PaymentInfo {}
-type OrderRecord = {}
+type OrderRecord = {};
 
 // GOOD — domain-specific
 class UserProfile {}
 interface PaymentReceipt {}
-type Order = {}
+type Order = {};
 ```
 
 ```python
@@ -317,39 +317,39 @@ These names are垃圾桶 — they collect unrelated behavior because the name is
 ```typescript
 // BAD — "Manager" that does 12 unrelated things
 class UserManager {
-    createUser() {}
-    deleteUser() {}
-    sendWelcomeEmail() {}
-    validatePassword() {}
-    generateReport() {}
-    auditAccess() {}
-    syncWithLDAP() {}
-    resetPassword() {}
+  createUser() {}
+  deleteUser() {}
+  sendWelcomeEmail() {}
+  validatePassword() {}
+  generateReport() {}
+  auditAccess() {}
+  syncWithLDAP() {}
+  resetPassword() {}
 }
 
 // GOOD — split by responsibility
 class UserRepository {
-    create() {}
-    delete() {}
-    findById() {}
+  create() {}
+  delete() {}
+  findById() {}
 }
 
 class UserAuthentication {
-    validatePassword() {}
-    resetPassword() {}
+  validatePassword() {}
+  resetPassword() {}
 }
 
 class UserNotification {
-    sendWelcomeEmail() {}
+  sendWelcomeEmail() {}
 }
 
 class UserProvisioning {
-    syncWithLDAP() {}
+  syncWithLDAP() {}
 }
 
 class UserAuditLog {
-    generateReport() {}
-    auditAccess() {}
+  generateReport() {}
+  auditAccess() {}
 }
 ```
 
@@ -425,12 +425,12 @@ type User struct {
 ```typescript
 // BAD — "Exception" is already the class
 class NotFoundException extends Exception {
-    exceptionMessage: string;  // redundant
+  exceptionMessage: string; // redundant
 }
 
 // GOOD
 class NotFoundException extends Exception {
-    message: string;
+  message: string;
 }
 ```
 
@@ -567,8 +567,12 @@ abstract class BaseRepository {}
 class UserImpl extends AbstractUser {} // double leakage!
 
 // GOOD — compose behavior, name by role
-interface Authenticatable { authenticate(): boolean }
-interface Emailable { getEmail(): string }
+interface Authenticatable {
+  authenticate(): boolean;
+}
+interface Emailable {
+  getEmail(): string;
+}
 class User implements Authenticatable, Emailable {}
 
 // Or if inheritance is truly needed, name by what it IS:
@@ -856,16 +860,16 @@ When the team mixes conventions.
 
 ```typescript
 // BAD — mixed conventions in same file
-interface user_service {}    // snake_case interface
-type UserRepo = {}           // PascalCase type alias
-function getuser() {}        // all lowercase
-const MAX_RETRY = 3          // SCREAMING_SNAKE (OK for constants)
+interface user_service {} // snake_case interface
+type UserRepo = {}; // PascalCase type alias
+function getuser() {} // all lowercase
+const MAX_RETRY = 3; // SCREAMING_SNAKE (OK for constants)
 
 // GOOD — consistent TypeScript convention
-interface UserService {}      // PascalCase
-type UserRepo = {}            // PascalCase
-function getUser() {}         // camelCase
-const MAX_RETRY = 3          // SCREAMING_SNAKE for constants
+interface UserService {} // PascalCase
+type UserRepo = {}; // PascalCase
+function getUser() {} // camelCase
+const MAX_RETRY = 3; // SCREAMING_SNAKE for constants
 ```
 
 ---
@@ -915,23 +919,23 @@ func (m *UserManager) HandleRequest(req *Request) (*Response, error) {
 
 ### Review Against Checklist
 
-| # | Line | Identifier | Category | Issue | Better Name |
-|---|------|-----------|----------|-------|-------------|
-| 1 | 3 | `UserData` | Precision | Vague noun — "Data" carries no meaning | `User` or `UserProfile` |
-| 2 | 4 | `UserDataID` | Precision | Redundant with struct name | `ID` |
-| 3 | 5 | `UserName` | Precision | Redundant with struct name | `Name` |
-| 4 | 6 | `UserEmail` | Precision | Redundant with struct name | `Email` |
-| 5 | 7 | `status` | Boolean | Not a yes/no question | `isActive` or `isVerified` |
-| 6 | 8 | `Created` | Clarity | Ambiguous — is this a bool or a time? | `CreatedAt` |
-| 7 | 10 | `UserManager` | Precision | Manager is a vague trash-can name | Split: `UserRepository` + `UserAuthService` |
-| 8 | 13 | `ProcessUser` | Honesty + Precision | "Process" is vague; what does it do? | `SaveActiveUser` |
-| 9 | 13 | `m` | Clarity | Single-letter receiver | `mgr` → but rename the type too |
-| 10 | 13 | `ud` | Clarity | Non-universal abbreviation | `user` |
-| 11 | 18 | `GetUserInfo` | Honesty | Mutates state (updates Created, saves) | `TouchAndFetchUser` |
-| 12 | 18 | `GetUserInfo` | Precision | Returns `UserData` not "Info" | `FetchUser` (after renaming type) |
-| 13 | 22 | `"Error: user not found"` | Error Naming | Redundant "Error:" prefix; starts with uppercase | `"user not found"` |
-| 14 | 24 | `ud.Created = time.Now()` | Honesty | Hidden mutation in a "Get" function | Separate `TouchUserAccess` method |
-| 15 | 27 | `HandleRequest` | Precision | Vague verb "Handle" + vague noun "Request" | Specific: `ValidateRegistration`, `ProcessPayment`, etc. |
+| #   | Line | Identifier                | Category            | Issue                                            | Better Name                                              |
+| --- | ---- | ------------------------- | ------------------- | ------------------------------------------------ | -------------------------------------------------------- |
+| 1   | 3    | `UserData`                | Precision           | Vague noun — "Data" carries no meaning           | `User` or `UserProfile`                                  |
+| 2   | 4    | `UserDataID`              | Precision           | Redundant with struct name                       | `ID`                                                     |
+| 3   | 5    | `UserName`                | Precision           | Redundant with struct name                       | `Name`                                                   |
+| 4   | 6    | `UserEmail`               | Precision           | Redundant with struct name                       | `Email`                                                  |
+| 5   | 7    | `status`                  | Boolean             | Not a yes/no question                            | `isActive` or `isVerified`                               |
+| 6   | 8    | `Created`                 | Clarity             | Ambiguous — is this a bool or a time?            | `CreatedAt`                                              |
+| 7   | 10   | `UserManager`             | Precision           | Manager is a vague trash-can name                | Split: `UserRepository` + `UserAuthService`              |
+| 8   | 13   | `ProcessUser`             | Honesty + Precision | "Process" is vague; what does it do?             | `SaveActiveUser`                                         |
+| 9   | 13   | `m`                       | Clarity             | Single-letter receiver                           | `mgr` → but rename the type too                          |
+| 10  | 13   | `ud`                      | Clarity             | Non-universal abbreviation                       | `user`                                                   |
+| 11  | 18   | `GetUserInfo`             | Honesty             | Mutates state (updates Created, saves)           | `TouchAndFetchUser`                                      |
+| 12  | 18   | `GetUserInfo`             | Precision           | Returns `UserData` not "Info"                    | `FetchUser` (after renaming type)                        |
+| 13  | 22   | `"Error: user not found"` | Error Naming        | Redundant "Error:" prefix; starts with uppercase | `"user not found"`                                       |
+| 14  | 24   | `ud.Created = time.Now()` | Honesty             | Hidden mutation in a "Get" function              | Separate `TouchUserAccess` method                        |
+| 15  | 27   | `HandleRequest`           | Precision           | Vague verb "Handle" + vague noun "Request"       | Specific: `ValidateRegistration`, `ProcessPayment`, etc. |
 
 ### Generated Report
 
@@ -939,6 +943,7 @@ func (m *UserManager) HandleRequest(req *Request) (*Response, error) {
 # Naming Review Report
 
 ## Executive Summary
+
 - 15 identifiers reviewed in 1 file
 - 3 honesty issues (lying names, hidden mutation)
 - 4 clarity issues (abbreviations, ambiguous names)
@@ -947,27 +952,31 @@ func (m *UserManager) HandleRequest(req *Request) (*Response, error) {
 - 1 error naming issue (redundant "Error:" prefix)
 
 ## Honesty Issues (Must Fix)
-| # | Line | Identifier | Issue | Better Name |
-|---|------|-----------|-------|-------------|
-| 1 | 18 | GetUserInfo() | Mutates state (saves to DB) | TouchAndFetchUser() |
-| 2 | 24 | ud.Created = time.Now() | Hidden mutation in getter | Extract to TouchUserAccess() |
-| 3 | 13 | ProcessUser() | "Process" hides what actually happens | SaveActiveUser() |
+
+| #   | Line | Identifier              | Issue                                 | Better Name                  |
+| --- | ---- | ----------------------- | ------------------------------------- | ---------------------------- |
+| 1   | 18   | GetUserInfo()           | Mutates state (saves to DB)           | TouchAndFetchUser()          |
+| 2   | 24   | ud.Created = time.Now() | Hidden mutation in getter             | Extract to TouchUserAccess() |
+| 3   | 13   | ProcessUser()           | "Process" hides what actually happens | SaveActiveUser()             |
 
 ## Precision Issues (Should Fix)
-| # | Line | Identifier | Issue | Better Name |
-|---|------|-----------|-------|-------------|
-| 1 | 3 | UserData | Vague noun "Data" | User or UserProfile |
-| 2 | 10 | UserManager | Manager trash-can name | Split: UserRepository + UserAuthService |
-| 3 | 27 | HandleRequest | Vague verb + noun | ValidateRegistration (or specific action) |
-| 4 | 4-6 | UserDataID, UserName, UserEmail | Redundant with struct context | ID, Name, Email |
-| 5 | 13 | ud | Non-universal abbreviation | user |
+
+| #   | Line | Identifier                      | Issue                         | Better Name                               |
+| --- | ---- | ------------------------------- | ----------------------------- | ----------------------------------------- |
+| 1   | 3    | UserData                        | Vague noun "Data"             | User or UserProfile                       |
+| 2   | 10   | UserManager                     | Manager trash-can name        | Split: UserRepository + UserAuthService   |
+| 3   | 27   | HandleRequest                   | Vague verb + noun             | ValidateRegistration (or specific action) |
+| 4   | 4-6  | UserDataID, UserName, UserEmail | Redundant with struct context | ID, Name, Email                           |
+| 5   | 13   | ud                              | Non-universal abbreviation    | user                                      |
 
 ## Boolean Naming
-| # | Line | Identifier | Issue | Better Name |
-|---|------|-----------|-------|-------------|
-| 1 | 7 | status bool | Not a yes/no question | isActive |
-| 2 | 8 | Created time.Time | Ambiguous — bool or time? | CreatedAt |
+
+| #   | Line | Identifier        | Issue                     | Better Name |
+| --- | ---- | ----------------- | ------------------------- | ----------- |
+| 1   | 7    | status bool       | Not a yes/no question     | isActive    |
+| 2   | 8    | Created time.Time | Ambiguous — bool or time? | CreatedAt   |
 
 ## Strengths
+
 - Package name `service` is OK, though `user` would be more specific
 ```

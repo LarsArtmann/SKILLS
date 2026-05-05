@@ -27,16 +27,16 @@ Read every file. Do not skip any. Understanding the full picture is essential fo
 
 Classify each file into its role:
 
-| Category | Examples |
-|----------|----------|
-| **Flake entry** | `flake.nix` |
-| **Package definitions** | `pkgs/*.nix`, `package.nix` |
-| **NixOS modules** | `modules/**/*.nix` |
-| **Home Manager** | `home.nix`, `programs/*.nix` |
-| **Library functions** | `lib/*.nix` |
-| **Dev shells** | `devShells` sections |
-| **Tests/Checks** | `checks` sections, `tests/*.nix` |
-| **Templates** | `templates/*/flake.nix` |
+| Category                | Examples                         |
+| ----------------------- | -------------------------------- |
+| **Flake entry**         | `flake.nix`                      |
+| **Package definitions** | `pkgs/*.nix`, `package.nix`      |
+| **NixOS modules**       | `modules/**/*.nix`               |
+| **Home Manager**        | `home.nix`, `programs/*.nix`     |
+| **Library functions**   | `lib/*.nix`                      |
+| **Dev shells**          | `devShells` sections             |
+| **Tests/Checks**        | `checks` sections, `tests/*.nix` |
+| **Templates**           | `templates/*/flake.nix`          |
 
 ### Step 3: Review Against Checklist
 
@@ -132,31 +132,37 @@ Produce a structured report with these sections:
 # Nix Review Report
 
 ## Executive Summary
+
 - X files reviewed
 - Y critical issues (build breakers)
 - Z structural issues
 - W consistency issues
 
 ## Critical Issues (Must Fix)
-| # | File | Line | Issue | Fix |
-|---|------|------|-------|-----|
-| 1 | flake.nix | 42 | Placeholder vendorHash | Replace with actual hash |
+
+| #   | File      | Line | Issue                  | Fix                      |
+| --- | --------- | ---- | ---------------------- | ------------------------ |
+| 1   | flake.nix | 42   | Placeholder vendorHash | Replace with actual hash |
 
 ## Structural Issues (Should Fix)
-| # | File | Issue | Recommendation |
-|---|------|-------|----------------|
-| 1 | service.nix | 550 lines | Split into server/repos/runner modules |
+
+| #   | File        | Issue     | Recommendation                         |
+| --- | ----------- | --------- | -------------------------------------- |
+| 1   | service.nix | 550 lines | Split into server/repos/runner modules |
 
 ## Consistency Issues
-| # | Files | Issue | Fix |
-|---|-------|-------|-----|
-| 1 | 3 flakes | Formatter missing | Add `formatter = pkgs.nixfmt` |
+
+| #   | Files    | Issue             | Fix                           |
+| --- | -------- | ----------------- | ----------------------------- |
+| 1   | 3 flakes | Formatter missing | Add `formatter = pkgs.nixfmt` |
 
 ## Best Practice Violations
-| # | File | Violation | Better Approach |
-|---|------|-----------|-----------------|
+
+| #   | File | Violation | Better Approach |
+| --- | ---- | --------- | --------------- |
 
 ## Strengths (What's Done Well)
+
 - Good use of X pattern
 - Clean Y structure
 ```
@@ -171,6 +177,7 @@ When the user asks to fix issues:
 4. Fix best practice violations
 
 After each fix, verify:
+
 - `nix flake check` passes (or `nix build` for package flakes)
 - `nix fmt -- --check` passes (if formatter defined)
 - No regressions in other files
@@ -185,12 +192,12 @@ The reason for each check matters more than the check itself. A review that expl
 
 ## Severity Guide
 
-| Severity | Meaning |
-|----------|---------|
+| Severity        | Meaning                                             |
+| --------------- | --------------------------------------------------- |
 | 🔴 **Critical** | Won't build, security vulnerability, data loss risk |
-| 🟠 **High** | Wrong behavior, impurity, non-reproducible |
-| 🟡 **Medium** | Maintainability, consistency, structural debt |
-| 🔵 **Low** | Style, naming, minor improvements |
+| 🟠 **High**     | Wrong behavior, impurity, non-reproducible          |
+| 🟡 **Medium**   | Maintainability, consistency, structural debt       |
+| 🔵 **Low**      | Style, naming, minor improvements                   |
 
 ## References
 

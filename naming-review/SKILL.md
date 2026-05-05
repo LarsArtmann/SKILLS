@@ -19,14 +19,14 @@ Before manual review, run automated tools to surface low-hanging fruit. Don't re
 
 Run the appropriate linters for the project's language:
 
-| Language | Tool | Key Naming Rules |
-|----------|------|-----------------|
-| **Go** | `revive` or `golangci-lint` | `var-naming`, `exported`, `package-naming`, `receiver-naming` |
-| **TypeScript** | `eslint` + `@typescript-eslint/naming-convention` | PascalCase types, camelCase variables, consistent enum casing |
-| **Rust** | `clippy` | `module_name_repetitions`, `enum_variant_names`, `wrong_self_convention` |
-| **Python** | `ruff` | N801-N818: PEP 8 naming |
-| **Java** | `checkstyle` | `TypeName`, `MethodName`, `ParameterName`, `ConstantName` |
-| **C#** | `.NET analyzers` | CA1707, IDE1006 naming styles |
+| Language       | Tool                                              | Key Naming Rules                                                         |
+| -------------- | ------------------------------------------------- | ------------------------------------------------------------------------ |
+| **Go**         | `revive` or `golangci-lint`                       | `var-naming`, `exported`, `package-naming`, `receiver-naming`            |
+| **TypeScript** | `eslint` + `@typescript-eslint/naming-convention` | PascalCase types, camelCase variables, consistent enum casing            |
+| **Rust**       | `clippy`                                          | `module_name_repetitions`, `enum_variant_names`, `wrong_self_convention` |
+| **Python**     | `ruff`                                            | N801-N818: PEP 8 naming                                                  |
+| **Java**       | `checkstyle`                                      | `TypeName`, `MethodName`, `ParameterName`, `ConstantName`                |
+| **C#**         | `.NET analyzers`                                  | CA1707, IDE1006 naming styles                                            |
 
 Then run `scripts/naming-smells.sh` for deeper pattern detection that linters miss (vague nouns, Manager/Handler classes, Impl suffixes, split-brain terminology). This surfaces issues that require human judgment.
 
@@ -61,15 +61,16 @@ Extract all type/function names and group by domain:
 # Naming Glossary
 
 ## Domain: User Management
-| Code Name | Role | Potential Split-Brain |
-|-----------|------|-----------------------|
-| User | Type (struct) | |
-| Customer | Type (struct) | ← same as User? |
-| Client | Type (interface) | ← same as User/Customer? |
-| AccountHolder | Type (struct) | ← same as User? |
-| getUser | Function | |
-| fetchCustomer | Function | ← same as getUser? |
-| findClient | Function | ← same as getUser? |
+
+| Code Name     | Role             | Potential Split-Brain    |
+| ------------- | ---------------- | ------------------------ |
+| User          | Type (struct)    |                          |
+| Customer      | Type (struct)    | ← same as User?          |
+| Client        | Type (interface) | ← same as User/Customer? |
+| AccountHolder | Type (struct)    | ← same as User?          |
+| getUser       | Function         |                          |
+| fetchCustomer | Function         | ← same as getUser?       |
+| findClient    | Function         | ← same as getUser?       |
 ```
 
 When multiple names appear to represent the same domain concept, flag them for reconciliation. The glossary becomes the authoritative reference for the rest of the review.
@@ -78,13 +79,13 @@ When multiple names appear to represent the same domain concept, flag them for r
 
 Classify each identifier into its role:
 
-| Category | Examples |
-|----------|----------|
-| **Types** | structs, classes, interfaces, enums, type aliases |
-| **Functions** | methods, functions, procedures, constructors |
-| **Fields** | struct fields, class properties, object attributes |
-| **Variables** | local variables, parameters, constants |
-| **Packages/Modules** | package names, module names, namespace names |
+| Category             | Examples                                           |
+| -------------------- | -------------------------------------------------- |
+| **Types**            | structs, classes, interfaces, enums, type aliases  |
+| **Functions**        | methods, functions, procedures, constructors       |
+| **Fields**           | struct fields, class properties, object attributes |
+| **Variables**        | local variables, parameters, constants             |
+| **Packages/Modules** | package names, module names, namespace names       |
 
 ### Step 4: Review Against Checklist
 
@@ -165,6 +166,7 @@ Produce a structured report with these sections:
 # Naming Review Report
 
 ## Executive Summary
+
 - X identifiers reviewed
 - Y honesty issues (lying names, hidden side effects)
 - Z clarity issues (abbreviations, vagueness)
@@ -172,32 +174,38 @@ Produce a structured report with these sections:
 - V consistency issues (synonym drift, tense inconsistency)
 
 ## Honesty Issues (Must Fix)
-| # | File | Line | Identifier | Issue | Better Name |
-|---|------|------|-----------|-------|-------------|
-| 1 | user.go | 42 | getUser() | Mutates state | saveUser() |
+
+| #   | File    | Line | Identifier | Issue         | Better Name |
+| --- | ------- | ---- | ---------- | ------------- | ----------- |
+| 1   | user.go | 42   | getUser()  | Mutates state | saveUser()  |
 
 ## Clarity Issues (Should Fix)
-| # | File | Line | Identifier | Issue | Better Name |
-|---|------|------|-----------|-------|-------------|
-| 1 | order.go | 15 | usr | Unrecognizable abbreviation | user |
-| 2 | service.go | 8 | DataInfo | Vague noun | PaymentSummary |
+
+| #   | File       | Line | Identifier | Issue                       | Better Name    |
+| --- | ---------- | ---- | ---------- | --------------------------- | -------------- |
+| 1   | order.go   | 15   | usr        | Unrecognizable abbreviation | user           |
+| 2   | service.go | 8    | DataInfo   | Vague noun                  | PaymentSummary |
 
 ## Domain Alignment Issues
-| # | Files | Concept | Current Names | Canonical Name |
-|---|-------|---------|---------------|----------------|
-| 1 | 3 files | Customer | Client, Account, User | Customer |
+
+| #   | Files   | Concept  | Current Names         | Canonical Name |
+| --- | ------- | -------- | --------------------- | -------------- |
+| 1   | 3 files | Customer | Client, Account, User | Customer       |
 
 ## Consistency Issues
-| # | Operation | Files | Current Verbs | Standardize To |
-|---|-----------|-------|---------------|----------------|
-| 1 | Create | 5 files | create, new, make, add | create |
+
+| #   | Operation | Files   | Current Verbs          | Standardize To |
+| --- | --------- | ------- | ---------------------- | -------------- |
+| 1   | Create    | 5 files | create, new, make, add | create         |
 
 ## Implementation Leakage
-| # | File | Line | Identifier | Issue | Better Name |
-|---|------|------|-----------|-------|-------------|
-| 1 | repo.go | 22 | UserRepositoryImpl | Leaks architecture | SqlUserRepository or just UserRepository |
+
+| #   | File    | Line | Identifier         | Issue              | Better Name                              |
+| --- | ------- | ---- | ------------------ | ------------------ | ---------------------------------------- |
+| 1   | repo.go | 22   | UserRepositoryImpl | Leaks architecture | SqlUserRepository or just UserRepository |
 
 ## Strengths (Good Naming)
+
 - `calculateShippingCost()` — honest, precise, verb phrase
 - `PaymentConfirmed` event — domain language, past tense for events
 ```
@@ -213,11 +221,13 @@ When the user asks to fix naming issues:
 5. Fix implementation leakage (remove Impl/Base/Abstract/I prefixes)
 
 After each rename:
+
 - Run the project's test suite to verify nothing breaks
 - Use language-appropriate refactoring tools (LSP rename, `gofmt`, IDE refactoring)
 - Check for string references (reflection, config files, API contracts, serialized forms)
 
 **Important**: Renaming is a behavioral change only if external consumers depend on the name. Check for:
+
 - Public API consumers outside this codebase
 - Serialized field names (JSON, database columns, protobuf)
 - Reflection-based access
@@ -256,12 +266,12 @@ The reason behind each naming rule matters more than the rule itself. A review t
 
 ## Severity Guide
 
-| Severity | Meaning |
-|----------|---------|
-| 🔴 **Critical** | Name lies about behavior (hidden mutation, misleading scope) |
-| 🟠 **High** | Name carries no meaning (Data, Info, Handler, Manager, do, process) |
-| 🟡 **Medium** | Name is unclear or inconsistent (abbreviations, synonym drift, tense mismatch) |
-| 🔵 **Low** | Style or convention issue (casing, minor redundancy, language-specific norms) |
+| Severity        | Meaning                                                                        |
+| --------------- | ------------------------------------------------------------------------------ |
+| 🔴 **Critical** | Name lies about behavior (hidden mutation, misleading scope)                   |
+| 🟠 **High**     | Name carries no meaning (Data, Info, Handler, Manager, do, process)            |
+| 🟡 **Medium**   | Name is unclear or inconsistent (abbreviations, synonym drift, tense mismatch) |
+| 🔵 **Low**      | Style or convention issue (casing, minor redundancy, language-specific norms)  |
 
 ## References
 
