@@ -49,6 +49,18 @@ function validateRegistration(data: Registration): ValidationResult
 function sendWelcomeEmail(email: string): void
 ```
 
+```python
+# BAD — name says "get" but it also increments the view counter
+def get_article(article_id: str) -> Article:
+    article = db.find(article_id)
+    article.view_count += 1  # hidden mutation!
+    db.save(article)
+    return article
+
+# GOOD — name tells the truth
+def get_and_touch_article(article_id: str) -> Article
+```
+
 ### 2. Euphemistic Names
 
 Using soft language to describe destructive or significant operations.
@@ -138,6 +150,22 @@ func process(p *Payment, c *Customer, r *Receipt) {}
 func process(payment *Payment, customer *Customer, receipt *Receipt) {}
 ```
 
+```typescript
+// BAD — single letters except loop vars
+function calculate(p: Product, o: Order, c: Coupon): number {}
+
+// GOOD
+function calculate(product: Product, order: Order, coupon: Coupon): number {}
+```
+
+```python
+# BAD — single-letter parameters
+def process(p, c, r): ...
+
+# GOOD
+def process(payment, customer, receipt): ...
+```
+
 **Exceptions**: Loop counters (`i`, `j`, `k`), math variables (`x`, `y`, `z`, `n`), coordinate pairs (`x`, `y`), generic type parameters in Go/Rust/TypeScript (`T`, `K`, `V`).
 
 ### 8. Number Suffixes
@@ -202,6 +230,40 @@ type DatabaseConfig struct{}
 type ValidationOutcome struct{}
 ```
 
+```typescript
+// BAD — vague nouns
+class UserData {}
+interface PaymentInfo {}
+type OrderRecord = {}
+
+// GOOD — domain-specific
+class UserProfile {}
+interface PaymentReceipt {}
+type Order = {}
+```
+
+```python
+# BAD — vague nouns
+class UserData: ...
+class PaymentInfo: ...
+class OrderRecord: ...
+
+# GOOD — domain-specific
+class UserProfile: ...
+class PaymentReceipt: ...
+class Order: ...
+```
+
+```rust
+// BAD — vague nouns
+struct UserData {}
+struct PaymentInfo {}
+
+// GOOD — domain-specific
+struct UserProfile {}
+struct PaymentReceipt {}
+```
+
 **Why this matters**: `UserData` and `PaymentInfo` tell you nothing about what the type represents that you don't already know from its fields. The name should add meaning, not just confirm "this is data about payments."
 
 ### 11. Vague Verb Functions
@@ -222,6 +284,30 @@ func validateRequest(req *Request) {}
 func expireSession(session *Session) {}
 func calculateTaxAmount(subtotal decimal.Decimal) {}
 func generateInvoice(order *Order) {}
+```
+
+```typescript
+// BAD — vague verbs
+function processOrder(order: Order): void {}
+function handleRequest(req: Request): Response {}
+function doStuff(): void {}
+
+// GOOD — specific
+function shipOrder(order: Order): Shipment {}
+function validateRequest(req: Request): ValidationResult {}
+function generateInvoice(order: Order): Invoice {}
+```
+
+```python
+# BAD — vague verbs
+def process_order(order): ...
+def handle_request(request): ...
+def do_stuff(): ...
+
+# GOOD — specific
+def ship_order(order): ...
+def validate_request(request): ...
+def generate_invoice(order): ...
 ```
 
 ### 12. The "Manager/Handler/Processor" Class
@@ -265,6 +351,30 @@ class UserAuditLog {
     generateReport() {}
     auditAccess() {}
 }
+```
+
+```python
+# BAD — "Manager" collecting unrelated behavior
+class OrderManager:
+    def create_order(self): ...
+    def cancel_order(self): ...
+    def send_confirmation(self): ...
+    def calculate_tax(self): ...
+    def generate_invoice(self): ...
+
+# GOOD — split by responsibility
+class OrderRepository:
+    def create(self): ...
+    def cancel(self): ...
+
+class OrderNotification:
+    def send_confirmation(self): ...
+
+class TaxCalculator:
+    def calculate(self): ...
+
+class InvoiceGenerator:
+    def generate(self): ...
 ```
 
 ### 13. "Helper" and "Util" Classes
