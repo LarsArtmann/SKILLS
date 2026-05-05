@@ -51,7 +51,30 @@ Identify the primary language(s) — conventions differ by language and this ski
 
 **Exclude from review**: Generated code (protobuf, OpenAPI/Swagger, ORM models, graphql-codegen, TypeSpec output). These names are dictated by schemas or external tools — flagging them wastes time. If generated names are bad, fix the source schema or generator config, not the output.
 
-### Step 2: Categorize
+### Step 2: Build Naming Glossary
+
+Before checking individual identifiers, build a glossary of all type names and their relationships. This reveals split-brain terminology at a glance.
+
+Extract all type/function names and group by domain:
+
+```markdown
+# Naming Glossary
+
+## Domain: User Management
+| Code Name | Role | Potential Split-Brain |
+|-----------|------|-----------------------|
+| User | Type (struct) | |
+| Customer | Type (struct) | ← same as User? |
+| Client | Type (interface) | ← same as User/Customer? |
+| AccountHolder | Type (struct) | ← same as User? |
+| getUser | Function | |
+| fetchCustomer | Function | ← same as getUser? |
+| findClient | Function | ← same as getUser? |
+```
+
+When multiple names appear to represent the same domain concept, flag them for reconciliation. The glossary becomes the authoritative reference for the rest of the review.
+
+### Step 3: Categorize
 
 Classify each identifier into its role:
 
@@ -63,7 +86,7 @@ Classify each identifier into its role:
 | **Variables** | local variables, parameters, constants |
 | **Packages/Modules** | package names, module names, namespace names |
 
-### Step 3: Review Against Checklist
+### Step 4: Review Against Checklist
 
 For each identifier, check ALL categories below. Read `references/common-naming-problems.md` for detailed explanations and fixes of each issue.
 
@@ -86,7 +109,7 @@ For each identifier, check ALL categories below. Read `references/common-naming-
 
 - [ ] **No vague nouns** — `Data`, `Info`, `Record`, `Item`, `Object`, `Thing` carry no domain meaning
 - [ ] **No vague verbs** — `do`, `handle`, `process`, `manage`, `perform` say nothing about what actually happens
-- [ ] **No "Manager/Handler/Processor/Helper/Util/Utility" classes** — these are垃圾桶 names that collect unrelated behavior; split by responsibility
+- [ ] **No "Manager/Handler/Processor/Helper/Util/Utility" classes** — these are trash-can names that collect unrelated behavior; split by responsibility
 - [ ] **No redundancy with context** — `User.userName`, `Customer.customerEmail`, `Exception.exceptionMessage`
 - [ ] **No redundancy with type** — `nameString`, `amountDecimal`, `idGuid` — the type already says this
 
@@ -134,7 +157,7 @@ For each identifier, check ALL categories below. Read `references/common-naming-
 - [ ] **Python**: `snake_case` for functions/variables; `PascalCase` for classes; no `I` prefix for ABCs
 - [ ] **Java/C#**: `PascalCase` for classes/methods; `camelCase` for fields/variables; `I` prefix only in C# for interfaces
 
-### Step 4: Generate Report
+### Step 5: Generate Report
 
 Produce a structured report with these sections:
 
@@ -179,7 +202,7 @@ Produce a structured report with these sections:
 - `PaymentConfirmed` event — domain language, past tense for events
 ```
 
-### Step 5: Fix (When Requested)
+### Step 6: Fix (When Requested)
 
 When the user asks to fix naming issues:
 
@@ -201,6 +224,27 @@ After each rename:
 - Configuration files referencing the name
 
 When a rename would break external contracts, recommend but do not execute.
+
+### Rename Safety Check
+
+Before renaming any identifier, grep for references that won't be caught by refactoring tools:
+
+```bash
+# JSON/serialized references
+rg -i '"oldName"' --type-add 'json:*.json' --type-add 'yaml:*.yaml' --type-add 'toml:*.toml'
+
+# Database column references
+rg -i 'old_name' --type-add 'sql:*.sql'
+
+# Reflection-based access
+rg -i '"OldName"' --type-add 'go:*.go'  # string-based reflection
+
+# Config file references
+rg -i 'oldName' --type-add 'env:.env' --type-add 'yaml:*.yaml' --type-add 'toml:*.toml'
+
+# API documentation
+rg -i 'oldName' --type-add 'md:*.md' --type-add 'html:*.html'
+```
 
 ## Key Principles
 

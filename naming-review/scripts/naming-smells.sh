@@ -321,6 +321,63 @@ run_pattern \
     '\b[a-z]+\d\b\s*[:=]' \
     "MEDIUM"
 
+# ── HIGH: Split-Brain Detection (Go only) ──────────────────────────
+
+smell_header "HIGH — Potential Split-Brain Types (Go: similar struct fields, different names)"
+
+if [[ -z "$LANG_FILTER" || "$LANG_FILTER" == "go" ]]; then
+    echo "  Extracting Go struct definitions and comparing field overlap..."
+    echo ""
+
+    TMPFILE=$(mktemp)
+    trap "rm -f $TMPFILE" EXIT
+
+    # Extract struct names and their field names
+    rg -o --sort-path -g '*.go' --glob '!**/naming-review/**' \
+        'type\s+(\w+)\s+struct\s*\{([^}]+)\}' "$PATH_TO_SCAN" 2>/dev/null || true > "$TMPFILE"
+
+    if [[ -s "$TMPFILE" ]]; then
+        # Parse structs into "name field1,field2,field3" format
+        PARSED=$(mktemp)
+        while IFS= read -r line; do
+            struct_name=$(echo "$line" | sed -n 's/.*type\s\+\(\w\+\)\s\+struct.*/\1/p')
+            if [[ -n "$struct_name" ]]; then
+                fields=$(echo "$line" | sed 's/.*struct\s*{//' | sed 's/}//' | \
+                    sed 's/[[:space:]]\+/ /g' | \
+                    grep -oP '\b[A-Z]\w+' | sort -u | tr '\n' ',' | sed 's/,$//')
+                if [[ -n "$fields" ]]; then
+                    echo "$struct_name|$fields"
+                fi
+            fi
+        done < "$TMPFILE" > "$PARSED" 2>/dev/null || true
+
+        # Compare each pair for field overlap
+        if [[ -s "$PARSED" ]]; then
+            while IFS='|' read -r name1 fields1; do
+                while IFS='|' read -r name2 fields2; do
+                    if [[ "$name1" < "$name2" ]]; then
+                        # Count overlapping fields
+                        overlap=$(echo "$fields1" | tr ',' '\n' | grep -xFf <(echo "$fields2" | tr ',' '\n') 2>/dev/null | wc -l || true)
+                        total1=$(echo "$fields1" | tr ',' '\n' | wc -l || true)
+                        total2=$(echo "$fields2" | tr ',' '\n' | wc -l || true)
+                        min_fields=$((total1 < total2 ? total1 : total2))
+
+                        # Flag if >60% field overlap and both have 3+ fields
+                        if [[ "$min_fields" -ge 3 && "$overlap" -ge $((min_fields * 6 / 10)) ]]; then
+                            SMELL_COUNT=$((SMELL_COUNT + 1))
+                            echo "  [HIGH] Possible split-brain: $name1 vs $name2 ($overlap/$min_fields shared fields)"
+                        fi
+                    fi
+                done < "$PARSED"
+            done < "$PARSED"
+        fi
+        rm -f "$PARSED"
+    fi
+    echo ""
+    echo "  Note: Split-brain detection is heuristic-based. Verify manually."
+    echo "  These types may represent genuinely different concepts with similar fields."
+fi
+
 # ── Summary ────────────────────────────────────────────────────────
 
 echo ""

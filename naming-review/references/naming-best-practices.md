@@ -18,6 +18,7 @@ This reference documents ideal naming patterns organized by category. Read this 
 - [API and Database Naming](#api-and-database-naming)
 - [Config and Environment Variable Naming](#config-and-environment-variable-naming)
 - [Concurrent and Async Naming](#concurrent-and-async-naming)
+- [Observability Naming](#observability-naming)
 - [The Renaming Checklist](#the-renaming-checklist)
 - [Official Style Guide References](#official-style-guide-references)
 
@@ -909,6 +910,90 @@ Before renaming, verify:
 - The name is part of a public API contract — version the API
 - The cost of the rename exceeds the benefit — one-letter loop variables in a 5-line function
 - You're renaming to match your personal style, not to improve clarity
+
+---
+
+## Observability Naming
+
+Log messages, metric names, and trace spans are identifiers that need consistency just like code.
+
+### Log Message Naming
+
+| Element | Convention | Example | Anti-Pattern |
+|---------|-----------|---------|-------------|
+| **Structured log fields** | snake_case | `user_id`, `request_duration_ms` | `userId`, `RequestDuration` |
+| **Log levels** | Standard set only | `debug`, `info`, `warn`, `error` | `critical_alert`, `fyi` |
+| **Messages** | Start with lowercase, describe event | `"order placed successfully"` | `"Order Placed Successfully!"`, `"ok"` |
+
+```go
+// GOOD — structured, consistent field names
+slog.Info("order placed",
+    "order_id", order.ID,
+    "customer_id", order.CustomerID,
+    "total_amount", order.Total,
+    "item_count", len(order.Items),
+)
+
+// BAD — inconsistent field names, vague message
+slog.Info("Order processed!",
+    "orderId", order.ID,
+    "cust", order.CustomerID,
+    "amount", order.Total,
+)
+```
+
+### Metric Naming
+
+| Convention | Example | Anti-Pattern |
+|-----------|---------|-------------|
+| `namespace_unit_suffix` | `http_request_duration_seconds` | `httpReqDur`, `latency` |
+| Use standard units | `_seconds`, `_bytes`, `_total` | `_ms`, `_kb` |
+| Counters end in `_total` | `http_requests_total` | `http_request_count` |
+| Gauges describe current state | `active_connections` | `connections` |
+| Histograms describe distribution | `request_duration_seconds` | `latency_histogram` |
+
+```python
+# GOOD — Prometheus-style metric naming
+http_request_duration_seconds = Histogram(
+    "http_request_duration_seconds",
+    "HTTP request duration in seconds",
+    ["method", "path", "status_code"],
+)
+
+order_payment_total = Counter(
+    "order_payment_total",
+    "Total number of order payments",
+    ["payment_method", "status"],
+)
+
+# BAD — inconsistent units, vague names
+latency = Histogram("latency", "how long things take")
+payments = Counter("pays", "payments")
+```
+
+### Trace Span Naming
+
+| Convention | Example | Anti-Pattern |
+|-----------|---------|-------------|
+| `operation_type` format | `HTTP GET /api/orders`, `DB Query SELECT orders` | `handleRequest`, `do_db_thing` |
+| Include resource type | `Redis GET user:123` | `cache_read` |
+| Use uppercase for protocols | `HTTP POST /api/payments` | `http post /api/payments` |
+
+### Consistency Across Observability
+
+The same concept should use the same name in logs, metrics, and traces:
+
+```go
+// GOOD — consistent "order_id" across all three
+slog.Info("order placed", "order_id", id)
+orderCreatedTotal.Inc("order_id", id)
+span.SetAttributes(attribute.String("order_id", id))
+
+// BAD — three different names for the same thing
+slog.Info("order placed", "order_id", id)
+orderCreatedTotal.Inc("orderId", id)
+span.SetAttributes(attribute.String("order.orderId", id))
+```
 
 ---
 
