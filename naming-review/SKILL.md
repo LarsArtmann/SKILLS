@@ -13,11 +13,43 @@ A comprehensive review skill for making identifiers — especially data model na
 
 READ, UNDERSTAND, RESEARCH, REFLECT before each action.
 
+### Step 0: Run Automated Detection
+
+Before manual review, run automated tools to surface low-hanging fruit. Don't reinvent what linters already do well.
+
+Run the appropriate linters for the project's language:
+
+| Language | Tool | Key Naming Rules |
+|----------|------|-----------------|
+| **Go** | `revive` or `golangci-lint` | `var-naming`, `exported`, `package-naming`, `receiver-naming` |
+| **TypeScript** | `eslint` + `@typescript-eslint/naming-convention` | PascalCase types, camelCase variables, consistent enum casing |
+| **Rust** | `clippy` | `module_name_repetitions`, `enum_variant_names`, `wrong_self_convention` |
+| **Python** | `ruff` | N801-N818: PEP 8 naming |
+| **Java** | `checkstyle` | `TypeName`, `MethodName`, `ParameterName`, `ConstantName` |
+| **C#** | `.NET analyzers` | CA1707, IDE1006 naming styles |
+
+Then run `scripts/naming-smells.sh` for deeper pattern detection that linters miss (vague nouns, Manager/Handler classes, Impl suffixes, split-brain terminology). This surfaces issues that require human judgment.
+
+Quick grep for the most common smells:
+
+```bash
+# Vague type names
+rg -i 'type\s+\w*(Data|Info|Record|Item|Object|Thing)\b' --type-add 'go:*.go' --type-add 'ts:*.ts' --type-add 'py:*.py' --type-add 'rs:*.rs'
+
+# Manager/Handler/Processor classes
+rg -i '(class|type|struct|interface)\s+\w*(Manager|Handler|Processor|Helper|Util|Utility)\b'
+
+# Impl suffix (architecture leakage)
+rg -i '(class|type|struct)\s+\w*Impl\b'
+```
+
 ### Step 1: Discovery
 
 Find all source files in the target scope. Read every file that defines data models or functions. Understanding the full picture is essential for catching cross-cutting issues like inconsistent naming patterns, duplicated concepts under different names, and split-brain terminology.
 
 Identify the primary language(s) — conventions differ by language and this skill adapts accordingly.
+
+**Exclude from review**: Generated code (protobuf, OpenAPI/Swagger, ORM models, graphql-codegen, TypeSpec output). These names are dictated by schemas or external tools — flagging them wastes time. If generated names are bad, fix the source schema or generator config, not the output.
 
 ### Step 2: Categorize
 
@@ -186,51 +218,6 @@ The reason behind each naming rule matters more than the rule itself. A review t
 | 🟠 **High** | Name carries no meaning (Data, Info, Handler, Manager, do, process) |
 | 🟡 **Medium** | Name is unclear or inconsistent (abbreviations, synonym drift, tense mismatch) |
 | 🔵 **Low** | Style or convention issue (casing, minor redundancy, language-specific norms) |
-
-## Automated Detection
-
-Before manual review, run automated tools to surface low-hanging fruit. Don't reinvent what linters already do well.
-
-### Step 0: Run Linters
-
-Existing linters catch many naming issues automatically. Run them first, then focus manual review on deeper problems linters can't detect (honesty, domain alignment, split-brain terminology).
-
-| Language | Tool | Key Naming Rules | Install |
-|----------|------|-----------------|---------|
-| **Go** | `revive` (via `golangci-lint`) | `var-naming`, `exported`, `package-naming`, `receiver-naming` | `go install github.com/mgechev/revive@latest` |
-| **Go** | `golangci-lint` | Aggregates revive + golint + stylecheck | `go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest` |
-| **TypeScript** | `eslint` + `@typescript-eslint/naming-convention` | Enforces PascalCase types, camelCase variables, consistent enum casing | `npm add -D @typescript-eslint/eslint-plugin` |
-| **Rust** | `clippy` | `module_name_repetitions`, `enum_variant_names`, `wrong_self_convention`, `new_ret_no_self` | `rustup component add clippy` |
-| **Python** | `ruff` | N801-N818: PEP 8 naming (class, function, variable, constant naming) | `pip install ruff` |
-| **Python** | `pylint` | C0103 (invalid-name), C0144 (non-ascii-name) | `pip install pylint` |
-| **Java** | `checkstyle` | `TypeName`, `MethodName`, `ParameterName`, `ConstantName`, `LocalVariableName` | Maven/Gradle plugin |
-| **C#** | `.NET analyzers` | CA1707 (identifiers should not contain underscores), IDE1006 (naming styles) | Built-in with .NET SDK |
-
-After running linters, run `scripts/naming-smells.sh` for deeper pattern detection that linters miss (vague nouns, Manager/Handler classes, lying names, split-brain terminology). See `scripts/naming-smells.sh` for details.
-
-### Quick Grep Patterns
-
-Use these to rapidly surface common naming smells:
-
-```bash
-# Vague type names (Data, Info, Record, Item, Object, Thing)
-rg -i 'type\s+\w*(Data|Info|Record|Item|Object|Thing)\b' --type-add 'go:*.go' --type-add 'ts:*.ts' --type-add 'py:*.py' --type-add 'rs:*.rs' --type-add 'java:*.java'
-
-# Manager/Handler/Processor/Helper classes (likely need splitting)
-rg -i '(class|type|struct|interface)\s+\w*(Manager|Handler|Processor|Helper|Util|Utility)\b'
-
-# Impl suffix (architecture leakage)
-rg -i '(class|type|struct)\s+\w*Impl\b'
-
-# I-prefix interfaces outside C#
-rg -i 'interface\s+I[A-Z]' --type-add 'go:*.go' --type-add 'ts:*.ts' --type-add 'py:*.py' --type-add 'rs:*.rs'
-
-# Hungarian notation remnants
-rg -i '(str[A-Z]|int[A-Z]|bool[A-Z]|arr[A-Z]|obj[A-Z])\w+\s*(\:|=|\{)'
-
-# Boolean non-question names
-rg -i '(bool|boolean)\s+(status|flag|check|active|valid)\b'
-```
 
 ## References
 
