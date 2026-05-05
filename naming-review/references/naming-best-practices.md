@@ -575,6 +575,201 @@ C#-specific: The `I` prefix for interfaces IS the convention. This is the one la
 
 ---
 
+## Error Naming
+
+Errors are a special class of types with their own conventions per language.
+
+### Error Type Naming by Language
+
+| Language | Convention | Example | Anti-Pattern |
+|----------|-----------|---------|-------------|
+| **Go** | `Err` prefix for sentinel errors, `XxxError` for error types | `var ErrNotFound`, `type ValidationError struct` | `var NotFound`, `type Error struct` |
+| **TypeScript** | `XxxError` class suffix | `class PaymentError extends Error` | `class PaymentErr`, `class Error extends Error` |
+| **Rust** | `XxxError` enum/struct suffix | `enum ParseError`, `struct DatabaseError` | `enum Error`, `struct Err` |
+| **Python** | `XxxError` class suffix (PEP 8) | `class ConfigurationError(Exception)` | `class ConfigFault`, `class Err` |
+| **Java** | `XxxException` class suffix | `class InsufficientFundsException` | `class InsufficientFundsError`, `class FundsEx` |
+| **C#** | `XxxException` class suffix | `class PaymentDeclinedException` | `class PaymentDeclinedError` |
+
+### Error Value Naming (Go)
+
+```go
+// GOOD — sentinel errors with Err prefix
+var ErrNotFound      = errors.New("user not found")
+var ErrAlreadyExists = errors.New("user already exists")
+var ErrUnauthorized  = errors.New("unauthorized access")
+
+// GOOD — custom error types with domain-specific names
+type ValidationError struct {
+    Field   string
+    Message string
+}
+
+// BAD — generic names
+var NotFound = errors.New("not found")     // is this an error or a variable?
+type Error struct {}                       // what kind of error?
+type UserErr struct {}                     // non-standard abbreviation
+```
+
+### Error Message Naming
+
+Error messages are user-facing strings, not identifiers. They should:
+- Start with a lowercase letter (Go convention, since they may be wrapped)
+- Describe what went wrong, not what to do about it
+- Include relevant context (IDs, names, values)
+- Not include "error" or "Error" in the message — the type already says that
+
+```go
+// GOOD
+errors.New("user not found")
+errors.New("payment declined: insufficient funds")
+errors.New("connection refused after 3 retries")
+
+// BAD
+errors.New("Error: user not found")      // redundant "Error"
+errors.New("Not found")                    // what wasn't found?
+errors.New("Something went wrong")         // no context
+```
+
+---
+
+## Test Naming
+
+Tests have their own naming conventions that differ from production code.
+
+### Test Function Naming by Language
+
+| Language | Convention | Example |
+|----------|-----------|---------|
+| **Go** | `Test<Unit>_<Scenario>_<Expected>` | `TestUser_CreateWithEmail_ReturnsUser` |
+| **TypeScript** | `should <expected> when <scenario>` | `should return user when created with email` |
+| **Rust** | `test_<unit>_<scenario>_<expected>` | `test_user_create_with_email_returns_user` |
+| **Python** | `test_<unit>_<scenario>_<expected>` | `test_user_create_with_email_returns_user` |
+| **Java** | `should<Expected>When<Scenario>` | `shouldReturnUserWhenCreatedWithEmail` |
+| **C#** | `<Scenario>_<Expected>` | `CreateWithEmail_ReturnsUser` |
+
+### Test Naming Principles
+
+1. **Test names are specifications** — they describe expected behavior, not implementation
+2. **Read as a sentence** — "should return 404 when user not found"
+3. **No test numbers** — `testCreateUser1`, `testCreateUser2` is meaningless; use `testCreateUser_WhenEmailMissing_Returns400`
+4. **No "test" in test names** — the framework already marks it as a test
+5. **Arrange-Act-Assert** naming: describe the state, the action, and the expected outcome
+
+```go
+// BAD — vague, no scenario
+func TestUser(t *testing.T) {}
+
+// BAD — implementation-focused
+func TestCreateUserFunction(t *testing.T) {}
+
+// BAD — numbered
+func TestCreateUser1(t *testing.T) {}
+
+// GOOD — scenario and expectation
+func TestUser_CreateWithEmail_ReturnsUser(t *testing.T) {}
+func TestUser_CreateWithDuplicateEmail_ReturnsConflictError(t *testing.T) {}
+func TestUser_DeleteNonExistent_ReturnsNotFoundError(t *testing.T) {}
+```
+
+```typescript
+// BAD
+it('works', () => {});
+it('test create user', () => {});
+
+// GOOD
+it('should return user when created with valid email', () => {});
+it('should return 409 when email already exists', () => {});
+it('should send welcome email after successful registration', () => {});
+```
+
+### Test Double Naming
+
+| Role | Name Pattern | Example |
+|------|-------------|---------|
+| **Stub** | `Stub` suffix | `StubPaymentGateway` — returns canned responses |
+| **Spy** | `Spy` suffix | `SpyEmailSender` — records calls for verification |
+| **Mock** | `Mock` prefix/suffix | `MockUserRepository` — verifies expectations |
+| **Fake** | `Fake` prefix | `FakeUserRepository` — working in-memory implementation |
+| **Dummy** | `Dummy` prefix | `DummyLogger` — passed but never used |
+
+---
+
+## API and Database Naming
+
+### REST API Naming
+
+| Element | Convention | Example | Anti-Pattern |
+|---------|-----------|---------|-------------|
+| **Resource paths** | plural nouns, kebab-case | `/api/customers`, `/api/order-items` | `/api/Customer`, `/api/getCustomer` |
+| **Actions** | verb only when not CRUD | `/api/orders/{id}/cancel`, `/api/payments/{id}/refund` | `/api/cancelOrder` |
+| **Query params** | camelCase | `?sortBy=createdAt`, `?pageSize=50` | `?sort_by`, `?ps=50` |
+| **HTTP methods** | Use properly | `GET /orders`, `POST /orders`, `DELETE /orders/{id}` | `GET /deleteOrder` |
+| **Status codes** | Semantic, not numeric | `404 Not Found`, `409 Conflict` | `200 { error: "not found" }` |
+
+### Database Naming
+
+| Element | Convention | Example | Anti-Pattern |
+|---------|-----------|---------|-------------|
+| **Table names** | plural, snake_case | `customers`, `order_items` | `Customer`, `tblCustomer` |
+| **Column names** | snake_case | `created_at`, `user_id` | `createdAt`, `UserID` |
+| **Primary key** | `id` or `<table_singular>_id` | `id`, `user_id` (for FK references) | `pk_user`, `user_id` (as PK itself) |
+| **Foreign key** | `<referenced_table_singular>_id` | `customer_id`, `order_id` | `cust_fk`, `ref_customer` |
+| **Join table** | combination of both tables | `customers_products`, `users_roles` | `cp_map`, `link_tbl` |
+| **Index** | `idx_<table>_<columns>` | `idx_users_email`, `idx_orders_customer_id` | `idx1`, `email_index` |
+| **Boolean column** | `is_`/`has_`/`can_` prefix | `is_active`, `has_verified_email` | `active`, `flag` |
+
+### JSON Field Naming
+
+| Style | Convention | Example |
+|-------|-----------|---------|
+| **JavaScript/TS API** | camelCase | `{ "firstName": "Ada", "createdAt": "2024-01-01" }` |
+| **Go API** | PascalCase or camelCase | `{ "FirstName": "Ada" }` or with `json:"firstName"` tag |
+| **Python API** | snake_case | `{ "first_name": "Ada", "created_at": "2024-01-01" }` |
+
+Choose one style per API and stick to it. Document the convention in the API specification.
+
+---
+
+## Config and Environment Variable Naming
+
+### Environment Variables
+
+| Convention | Example | When |
+|-----------|---------|------|
+| `SCREAMING_SNAKE_CASE` | `DATABASE_URL`, `MAX_RETRIES`, `API_KEY` | Shell env vars (POSIX convention) |
+| Prefix with service name | `PAYMENT_STRIPE_KEY`, `AUTH_JWT_SECRET` | Multi-service projects to avoid collisions |
+
+```bash
+# GOOD — prefixed, descriptive
+PAYMENT_STRIPE_API_KEY=sk_live_...
+AUTH_JWT_SECRET=...
+DATABASE_URL=postgres://...
+LOG_LEVEL=info
+SERVER_PORT=8080
+
+# BAD — unprefixed collisions, vague
+KEY=sk_live_...        # what key?
+SECRET=...             # which secret?
+DB=postgres://...      # which database?
+PORT=8080              # which service?
+```
+
+### Config File Keys
+
+| Format | Convention | Example |
+|--------|-----------|---------|
+| YAML/TOML | snake_case | `max_retries: 3`, `database_url: "..."` |
+| JSON | camelCase or snake_case (pick one) | `{ "maxRetries": 3 }` or `{ "max_retries": 3 }` |
+| .env | SCREAMING_SNAKE_CASE | `MAX_RETRIES=3` |
+
+### Feature Flags
+
+| Convention | Example | Anti-Pattern |
+|-----------|---------|-------------|
+| `enable_<feature>` or `<feature>_enabled` | `enable_dark_mode`, `payments_v2_enabled` | `flag1`, `new_stuff`, `toggle` |
+
+---
+
 ## The Renaming Checklist
 
 Before renaming, verify:
