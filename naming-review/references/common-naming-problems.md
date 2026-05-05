@@ -867,3 +867,107 @@ type UserRepo = {}            // PascalCase
 function getUser() {}         // camelCase
 const MAX_RETRY = 3          // SCREAMING_SNAKE for constants
 ```
+
+---
+
+## Worked Example: Full Mini-Review
+
+This example shows how to apply the checklist to a real file, from discovery to report.
+
+### Input File: `user_service.go`
+
+```go
+package service
+
+type UserData struct {
+    UserDataID    string
+    UserName      string
+    UserEmail     string
+    status        bool
+    Created       time.Time
+}
+
+type UserManager struct {
+    db *sql.DB
+}
+
+func (m *UserManager) ProcessUser(ud *UserData) error {
+    if ud.status {
+        return m.db.Save(ud)
+    }
+    return nil
+}
+
+func (m *UserManager) GetUserInfo(id string) (*UserData, error) {
+    ud, err := m.db.Find(id)
+    if err != nil {
+        return nil, fmt.Errorf("Error: user not found")
+    }
+    ud.Created = time.Now() // update last access
+    m.db.Save(ud)
+    return ud, nil
+}
+
+func (m *UserManager) HandleRequest(req *Request) (*Response, error) {
+    // ... 50 lines of business logic ...
+}
+```
+
+### Review Against Checklist
+
+| # | Line | Identifier | Category | Issue | Better Name |
+|---|------|-----------|----------|-------|-------------|
+| 1 | 3 | `UserData` | Precision | Vague noun — "Data" carries no meaning | `User` or `UserProfile` |
+| 2 | 4 | `UserDataID` | Precision | Redundant with struct name | `ID` |
+| 3 | 5 | `UserName` | Precision | Redundant with struct name | `Name` |
+| 4 | 6 | `UserEmail` | Precision | Redundant with struct name | `Email` |
+| 5 | 7 | `status` | Boolean | Not a yes/no question | `isActive` or `isVerified` |
+| 6 | 8 | `Created` | Clarity | Ambiguous — is this a bool or a time? | `CreatedAt` |
+| 7 | 10 | `UserManager` | Precision | Manager is a vague trash-can name | Split: `UserRepository` + `UserAuthService` |
+| 8 | 13 | `ProcessUser` | Honesty + Precision | "Process" is vague; what does it do? | `SaveActiveUser` |
+| 9 | 13 | `m` | Clarity | Single-letter receiver | `mgr` → but rename the type too |
+| 10 | 13 | `ud` | Clarity | Non-universal abbreviation | `user` |
+| 11 | 18 | `GetUserInfo` | Honesty | Mutates state (updates Created, saves) | `TouchAndFetchUser` |
+| 12 | 18 | `GetUserInfo` | Precision | Returns `UserData` not "Info" | `FetchUser` (after renaming type) |
+| 13 | 22 | `"Error: user not found"` | Error Naming | Redundant "Error:" prefix; starts with uppercase | `"user not found"` |
+| 14 | 24 | `ud.Created = time.Now()` | Honesty | Hidden mutation in a "Get" function | Separate `TouchUserAccess` method |
+| 15 | 27 | `HandleRequest` | Precision | Vague verb "Handle" + vague noun "Request" | Specific: `ValidateRegistration`, `ProcessPayment`, etc. |
+
+### Generated Report
+
+```markdown
+# Naming Review Report
+
+## Executive Summary
+- 15 identifiers reviewed in 1 file
+- 3 honesty issues (lying names, hidden mutation)
+- 4 clarity issues (abbreviations, ambiguous names)
+- 5 precision issues (vague nouns, Manager class, vague verbs)
+- 2 boolean naming issues (status, Created)
+- 1 error naming issue (redundant "Error:" prefix)
+
+## Honesty Issues (Must Fix)
+| # | Line | Identifier | Issue | Better Name |
+|---|------|-----------|-------|-------------|
+| 1 | 18 | GetUserInfo() | Mutates state (saves to DB) | TouchAndFetchUser() |
+| 2 | 24 | ud.Created = time.Now() | Hidden mutation in getter | Extract to TouchUserAccess() |
+| 3 | 13 | ProcessUser() | "Process" hides what actually happens | SaveActiveUser() |
+
+## Precision Issues (Should Fix)
+| # | Line | Identifier | Issue | Better Name |
+|---|------|-----------|-------|-------------|
+| 1 | 3 | UserData | Vague noun "Data" | User or UserProfile |
+| 2 | 10 | UserManager | Manager trash-can name | Split: UserRepository + UserAuthService |
+| 3 | 27 | HandleRequest | Vague verb + noun | ValidateRegistration (or specific action) |
+| 4 | 4-6 | UserDataID, UserName, UserEmail | Redundant with struct context | ID, Name, Email |
+| 5 | 13 | ud | Non-universal abbreviation | user |
+
+## Boolean Naming
+| # | Line | Identifier | Issue | Better Name |
+|---|------|-----------|-------|-------------|
+| 1 | 7 | status bool | Not a yes/no question | isActive |
+| 2 | 8 | Created time.Time | Ambiguous — bool or time? | CreatedAt |
+
+## Strengths
+- Package name `service` is OK, though `user` would be more specific
+```
