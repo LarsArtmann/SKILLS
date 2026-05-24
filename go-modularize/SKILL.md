@@ -412,7 +412,7 @@ If the project uses `go:generate`, protobuf, or other code generation:
 
 Map all `go:generate` directives and their cross-module dependencies.
 
-### 2.7 Report back
+### 2.8 Report back
 
 Present findings as:
 
@@ -742,7 +742,7 @@ After creating or modifying a module's go.mod:
 
 ### 6.5 Build system updates
 
-If the project uses a build system (flake.nix, Makefile, etc.), update it to:
+If the project uses a build system (flake.nix, CI scripts, etc.), update it to:
 
 - Build each module independently
 - Run tests per module
@@ -761,7 +761,7 @@ If the project uses `go mod vendor`:
 - Add `vendor/` to `.gitignore` per project convention
 - Update CI to run the correct vendor command for the chosen approach
 
-### 6.6 When stuck
+### 6.7 When stuck
 
 Do not stop for perceived difficulty — exhaust these alternatives first:
 
@@ -773,7 +773,7 @@ Do not stop for perceived difficulty — exhaust these alternatives first:
 
 Only report back to the user after exhausting all five alternatives.
 
-### 6.7 Final verification
+### 6.8 Final verification
 
 When all steps are complete and everything passes:
 
