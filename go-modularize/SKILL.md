@@ -7,16 +7,10 @@ description: >
   or says "modularize", "split modules", "sub-modules", "go.mod per package",
   "multi-module Go project", "module boundaries", "dependency isolation",
   "Go workspace", "go.work", "CQRS modularization", "break apart Go project",
-  "this Go project is too big", "too coupled", "Go package boundaries".
+  "too coupled", "Go package boundaries".
   Also trigger when the user asks how to structure a Go project into multiple
-  modules, wants to break a large Go project into smaller pieces, wants a
-  modularization proposal with execution plan, or wants to improve module
-  boundaries in an already-partially-modularized Go project — including refining
-  existing go.mod splits, fixing replace directives, or consolidating god-packages.
-  Covers dependency graph analysis, module boundary identification, DAG enforcement,
-  type model alignment, replace directive strategy, go.work setup, test dependency
-  isolation, versioning strategy, interface extraction, and iterative self-review
-  with git hygiene.
+  modules, wants to break a large Go project into smaller pieces, or wants to
+  improve module boundaries in an already-partially-modularized Go project.
 metadata:
   tags: go, modularization, monorepo, multi-module, go.mod, architecture, refactoring,
         go.work, replace-directives, versioning
@@ -44,6 +38,62 @@ multi-module setups.
 
 ---
 
+## Design Principles — Unix Philosophy for Go Modules
+
+These principles guide every decision in this skill. When in doubt, return here.
+
+| Principle | Application to Go Modules |
+|---|---|
+| **Do one thing well** | Each module has a single, clear purpose. If you cannot describe it in one sentence, the boundary is wrong. |
+| **Small is beautiful** | Prefer many small, focused modules over few large ones. A module with 2 packages is fine. A module with 20 is a red flag. |
+| **Composition over monoliths** | Modules compose via interfaces. Consumers import what they need, never the whole system. |
+| **Thin textual interfaces** | Go interfaces are the "pipes" of module architecture — thin, explicit, easy to inspect. Define what, not how. |
+| **Mechanism, not policy** | Core modules define *what* (interfaces, types, domain logic). Infrastructure modules define *how* (implementations). Never mix them. |
+| **Fail noisily** | Build failures at module boundaries are *good* — they catch coupling early. Do not suppress them with `replace` hacks or clever workarounds. |
+| **Opaque internals** | Every module exposes a thin surface (interfaces + types). Internals are opaque, like file descriptors hide implementation. Use `internal/` to enforce this. |
+
+**Litmus test for every proposed module:** Does it do one thing well? Can I compose it with other modules like Unix pipes? If not, redraw the boundary.
+
+---
+
+## When NOT to Modularize
+
+Modularization adds overhead — more go.mod files, more version management, more CI
+complexity. Before starting Phase 1, check if the project actually benefits:
+
+| Signal | Do not modularize |
+|---|---|
+| Small project | Under 10 packages, single domain — a monolith is simpler |
+| Single developer | No ownership boundaries needed — coupling is manageable |
+| No external consumers | If nobody imports your packages, module boundaries add friction with no payoff |
+| Prototype / spike | Modularize after the design stabilizes, not before |
+| All packages change together | If every commit touches 80% of packages, boundaries are artificial |
+
+**If 3+ of these apply, stop and discuss with the user before proceeding.**
+Modularization should solve a real problem, not satisfy an aesthetic urge.
+
+---
+
+## Known Failure Modes
+
+These are the top ways Go modularization goes wrong. Keep this catalog handy during
+execution — if you hit one, the mitigation is here.
+
+| # | Failure | Cause | Mitigation |
+|---|---|---|---|
+| 1 | **Import cycles** | Circular deps between new modules | Enforce DAG before execution (Phase 3.2). If a cycle appears, boundaries are wrong — redraw. |
+| 2 | **Transitive dep bloat** | Module A depends on B's heavy external deps | Extract thin interface modules. Consumers depend on interfaces, not implementations. |
+| 3 | **Test dep leaks** | Test-only libs appear in production go.mod | Audit with `go mod why -m <dep>` per module. Move test helpers to separate modules. |
+| 4 | **go.work / replace conflicts** | Both `go.work` and `replace` directives for the same pair | Pick one strategy (see Phase 3.3). Never mix both. |
+| 5 | **Broken consumers** | External import paths change without redirect | Use `go.mod` redirect tags or `// Deprecated` annotations. |
+| 6 | **internal/ access breakage** | Moving a package behind `internal/` blocks cross-module access | Remember: `internal/` restricts access to the *module* tree, not just the package tree. A sub-module's `internal/` is invisible to all other modules. |
+| 7 | **Error type inaccessibility** | `errors.Is`/`errors.As` fail because error types moved to a module the consumer doesn't import | Keep sentinel errors and error types in the interface module (core), not in implementations. |
+| 8 | **Over-modularization** | 15 micro-modules that should be 4 | Merge modules that always change together. "Small is beautiful" does not mean "atomized." |
+| 9 | **Stale go.work** | `go.work` references deleted or renamed modules | Run `go work sync` after every structural change. Commit `go.work` and `go.work.sum` together. |
+| 10 | **Flake build breakage** | `flake.nix` references old module paths | Update flake.nix immediately after each module move (Phase 6.4). |
+
+---
+
 ## Tooling Reference
 
 These commands are essential for dependency analysis. Run them early and often:
@@ -60,7 +110,8 @@ These commands are essential for dependency analysis. Run them early and often:
 For generating a visual dependency graph of internal packages only:
 
 ```bash
-go mod graph | grep '^<module-name>' | column -t -s ' '
+MODULE=$(head -1 go.mod | cut -d' ' -f2)
+go mod graph | grep "^${MODULE}" | column -t -s ' '
 ```
 
 ---
@@ -88,7 +139,8 @@ This tells you immediately:
 | Monolith | Single go.mod, all packages in one tree | Full modularization from scratch |
 | Partial split | Multiple go.mods with `replace` directives, some packages still coupled | Refine boundaries, fix leaks |
 | Workspace mode | go.work file coordinating multiple modules | Audit workspace structure |
-| Already split | Clean DAG, minimal replace, independent CI per module | Skip to Phase 5 reflection only |
+| Over-modularized | 10+ micro-modules, high inter-module coupling, modules that always change together | Merge and reorganize |
+| Already split | Clean DAG, minimal replace, independent CI per module | Skip to Phase 7 reflection only |
 
 ### 1.3 Map the existing module landscape
 
@@ -98,6 +150,7 @@ For each existing go.mod, extract:
 - Direct dependencies (internal + external)
 - Whether deps are production or test-only
 - `replace` directive targets (local path vs versioned)
+- Packages behind `internal/` (these are inaccessible to other modules)
 
 ### 1.4 Report findings
 
@@ -108,6 +161,50 @@ Present a summary table:
 | ... | ... | ... | ... | ... | Clean / Leaky / Broken |
 
 **Do not propose changes yet.** Report state so the user can course-correct.
+
+### 1.5 Re-modularization assessment
+
+**Only when Phase 1 detects existing modules (partial split, over-modularized, or
+workspace mode).** Skip for monoliths.
+
+If modules already exist, the problem is rarely "add more modules." It is usually
+"the existing boundaries are wrong." Before proposing anything new:
+
+1. **Score existing boundaries** — For each current module, rate:
+   - **Cohesion:** Do all packages in this module belong together? (1–5)
+   - **Coupling:** Does this module depend on things it should not? (1–5, lower is better)
+   - **Independence:** Can this module be built, tested, and versioned alone? (yes/no)
+
+2. **Identify wrong seams** — Common patterns:
+   - **Layer-based split** (all handlers in one module, all storage in another) → should be
+     domain-based instead
+   - **Accidental split** (modules created because "we should modularize" without clear purpose)
+   - **Historical artifacts** (modules that made sense at the time but no longer do)
+
+3. **Classify the remodel** — For each existing module, decide:
+
+   | Action | When |
+   |---|---|
+   | **Keep** | Cohesion high, coupling low, clear purpose |
+   | **Merge** | Always changes together with another module, or too small to justify its own go.mod |
+   | **Split** | Contains multiple unrelated concerns (god-module) |
+   | **Reorganize** | Right packages, wrong boundaries — move packages between modules |
+   | **Retire** | No longer used, empty, or fully absorbed by another module |
+
+4. **Map the transition** — Build a migration matrix:
+
+   | Old Module | Old Path | Action | New Module(s) | Migration Path |
+   |---|---|---|---|---|
+   | ... | ... | Keep / Merge / Split / Reorganize / Retire | ... | ... |
+
+5. **Plan deprecation** — For modules being retired or merged:
+   - Add `// Deprecated:` comments to all exported symbols pointing to the new location
+   - If the module has external consumers: create a final release with deprecation notices
+   - Use `go.mod` redirect tags (`// deprecated` comment) if the module path is changing
+   - Set a sunset timeline (e.g., remove after 2 minor versions)
+
+Present the assessment before continuing to Phase 2. The user may disagree with the
+scores or the remodel classification.
 
 ---
 
@@ -125,6 +222,7 @@ Read every package. Map:
 - Public API surface per package (exported types, interfaces, functions)
 - Shared types and utilities
 - Test patterns and testhelpers
+- Error types and where they are defined (critical for cross-module `errors.Is`/`errors.As`)
 
 ### 2.2 Identify coupling points
 
@@ -135,16 +233,17 @@ Find:
 - Types shared across domain boundaries
 - Configuration that crosses module lines
 - Test-only dependencies listed as production requires in go.mod
+- Sentinel errors or error types used across package boundaries
 
 ### 2.3 Detect god-packages
 
-A god-package is a single package with 15+ files spanning multiple concerns.
-Signs to look for:
+A god-package is a single package with many files spanning multiple concerns.
+Signs to look for (these are rules of thumb, not hard limits):
 
-- File names suggest unrelated concepts (e.g. `bus.go`, `store.go`, `codec.go`,
-  `snapshot.go`, `upcaster.go` all in one package)
+- 15+ files with names suggesting unrelated concepts (e.g. `bus.go`, `store.go`,
+  `codec.go`, `snapshot.go`, `upcaster.go` all in one package)
 - More than 30 exported symbols
-- Multiple distinct "clusters" of types that don't reference each other
+- Multiple distinct "clusters" of types that do not reference each other
 
 For each god-package, list the concern clusters it contains. These are candidates
 for package-level splits (within a module) that should happen *before* or *alongside*
@@ -155,13 +254,41 @@ module-level splits.
 Load the `how-to-golang` skill for canonical project structure, required/banned
 libraries, domain type patterns, and architecture patterns.
 
-### 2.5 Report back
+### 2.5 Audit `internal/` usage
+
+When splitting into modules, `internal/` packages behave differently:
+
+- `internal/` in module A is accessible only to packages within module A's tree
+- Other modules — even in the same repo — cannot import it
+- Moving a package behind `internal/` in a sub-module will break any cross-module imports
+
+Check which `internal/` packages are imported from outside their module tree. These
+need either:
+- Extraction to a non-internal location, or
+- Duplication in the consuming module, or
+- Interface extraction so consumers depend on an interface, not the internal package
+
+### 2.6 Audit error types
+
+For cross-module error handling:
+
+- Sentinel errors (`var ErrNotFound = errors.New(...)`) must live in the module that
+  *defines the interface*, not the implementation
+- Custom error types must be importable by any consumer that needs to check them
+- If `errors.Is(err, core.ErrNotFound)` should work across modules, `ErrNotFound`
+  must be in a module that both producer and consumer import
+
+Map all error types to their proposed module and verify accessibility.
+
+### 2.7 Report back
 
 Present findings as:
 
 - Current dependency graph (table or D2 diagram)
 - Module boundary candidates with rationale
 - God-package decomposition candidates
+- `internal/` access violations after proposed split
+- Error type placement analysis
 - Coupling risks and mitigation strategies
 - Recommended module structure at a glance
 
@@ -182,11 +309,12 @@ For every module (existing or new):
 | Field | Content |
 |---|---|
 | Name & path | e.g. `/core`, `/storage`, `/projection` |
-| Purpose | One sentence |
+| Purpose | One sentence (if you cannot, the module is too broad) |
 | Dependencies (prod) | Which other sub-modules it imports in production code |
 | Dependencies (test) | Which sub-modules it imports only in `_test.go` files |
 | Public API | Types and functions exposed to other modules |
 | Internal packages | Packages not meant for external consumption |
+| Error types | Sentinel errors and custom error types, with justification for placement |
 | External deps | go.mod requirements (third-party libraries) |
 
 ### 3.2 Enforce DAG structure
@@ -224,6 +352,7 @@ Rules:
 - Never mix `replace` directives AND `go.work` for the same module pair
 - `go.work` belongs in `.gitignore` only if every consumer uses published versions
 - Verify `go mod tidy` works both with and without the workspace
+- Always commit `go.work` and `go.work.sum` together
 
 ### 3.4 Plan test dependency isolation
 
@@ -231,8 +360,10 @@ Cross-module test dependencies are a common source of coupling. For each module,
 categorize its imports:
 
 - **Production deps** — used in non-test code → listed in `require` block
-- **Test deps** — used only in `_test.go` files → listed with `// indirect` or
-  in a separate test-only pattern
+- **Test deps** — used only in `_test.go` files → still listed in `require` block
+  (Go does not have a separate test-only require block). Audit with
+  `go mod why -m <dep>` to confirm which deps are test-only and ensure they are
+  not pulling in unnecessary transitive production deps.
 
 **Testhelpers strategy:** If a `testhelpers` package exists:
 
@@ -275,21 +406,38 @@ Choose before executing, not after:
 Document the chosen strategy in the proposal. If using independent semver, specify
 the git tag format (e.g. `module-name/v1.2.3`) from the start — retrofitting is painful.
 
-### 3.7 Write the proposal
+### 3.7 Plan breaking change prevention
+
+If the project has external consumers (published to GOPROXY or imported by other repos):
+
+- Map all currently exported symbols and their import paths
+- After modularization, verify every exported symbol still exists at the same path
+  or has a clear redirect
+- Use `go api-compare` or manual audit to detect breaking changes
+- For module path changes: use GOPROXY redirects or `go.mod` `replace` directives
+  with `// deprecated` comments pointing to the new path
+- Test the migration: create a consumer that imports the old paths, verify it still
+  compiles after modularization
+
+### 3.8 Write the proposal
 
 Write to `docs/modularization/PROPOSAL.md` with:
 
 1. **Executive summary** — Why modularize, what changes, expected benefits
 2. **Current state analysis** — Dependency graph, coupling hotspots, god-packages
-3. **Proposed module structure** — Table from 3.1 + dependency diagram (D2 or ASCII)
-4. **DAG verification** — Proof that the proposed structure is acyclic
-5. **Replace / workspace strategy** — Which approach and why
-6. **Test dependency isolation** — Production vs test dep classification per module
-7. **Interface extraction plan** — Which modules get interface/impl splits
-8. **Versioning strategy** — Chosen approach with rationale
-9. **Migration strategy** — Ordered steps, each independently executable
-10. **Risk assessment** — What could go wrong, how to mitigate
-11. **Build system impact** — Changes needed to flake.nix, Makefile, CI/CD
+3. **Re-modularization assessment** (if applicable) — Scores, remodel classification,
+   migration matrix, deprecation plan
+4. **Proposed module structure** — Table from 3.1 + dependency diagram (D2 or ASCII)
+5. **DAG verification** — Proof that the proposed structure is acyclic
+6. **Replace / workspace strategy** — Which approach and why
+7. **Test dependency isolation** — Production vs test dep classification per module
+8. **Interface extraction plan** — Which modules get interface/impl splits
+9. **Error type placement** — Where sentinel and custom errors live, with accessibility check
+10. **Versioning strategy** — Chosen approach with rationale
+11. **Breaking change analysis** — Affected import paths, redirect/deprecation plan
+12. **Migration strategy** — Ordered steps, each independently executable
+13. **Risk assessment** — What could go wrong, how to mitigate (reference failure modes)
+14. **Build system impact** — Changes needed to flake.nix, CI/CD
 
 Commit the proposal:
 
@@ -312,24 +460,28 @@ docs(modularization): add modularization proposal for <project>
 **Goal:** Critically evaluate the proposal before investing execution effort.
 This is a separate phase with a different mindset — slow, critical, paranoid.
 
-### 4.1 Answer every question honestly
+### 4.1 Proposal-specific review checklist
 
-1. What did you forget?
-2. What could you have done better?
-3. What could you still improve?
-4. Did you create any split brains — duplicate type definitions across modules
-   that should be shared, or shared types that should be duplicated?
-5. Are the module boundaries at the right granularity — too fine? too coarse?
-6. Is there existing code that already fits the requirements for each module
-   (i.e., can we avoid creating new packages by reusing what's there)?
-7. Can type models be improved to create cleaner module interfaces?
-8. Are you leveraging well-established Go libraries instead of reinventing?
-9. Does the replace/workspace strategy actually work? Have you verified the
-   import paths resolve correctly?
-10. Are test-only dependencies isolated from production go.mod files?
-11. Will CI/CD actually be faster after modularization, or have you just moved
-    the bottleneck?
-12. Is the versioning strategy realistic for how this project is consumed?
+Generate a review checklist *from the specific proposal*, not from generic questions.
+For each proposed module, ask:
+
+| # | Question | Check |
+|---|---|---|
+| 1 | What did you forget? | Any packages not assigned to a module? Any imports not accounted for? |
+| 2 | What could be improved? | Are any modules doing more than one thing? Any Unix principle violations? |
+| 3 | Split brains? | Duplicate type definitions across modules that should be shared? Shared types that should be duplicated? |
+| 4 | Right granularity? | Any module with 15+ packages (too coarse)? Any module with 1 trivial package (too fine)? |
+| 5 | Existing code reuse? | Can existing code fill the role without creating new packages? |
+| 6 | Type model quality? | Can type improvements create cleaner module interfaces? |
+| 7 | Reinventing the wheel? | Are you leveraging well-established Go libraries instead of writing custom code? |
+| 8 | Import paths verified? | Does the replace/workspace strategy actually work? Did you trace the full import chain? |
+| 9 | Test deps isolated? | Are test-only deps absent from production go.mod files? Audit with `go mod why`. |
+| 10 | CI actually faster? | Will modularization speed up CI, or just move the bottleneck? Estimate per-module test times. |
+| 11 | Versioning realistic? | Does the versioning strategy match how this project is actually consumed? |
+| 12 | Error types accessible? | Can consumers use `errors.Is`/`errors.As` across module boundaries? Trace the imports. |
+| 13 | internal/ safe? | Did moving packages behind `internal/` break any cross-module imports? |
+| 14 | Over-modularized? | Should any proposed modules be merged? Do they always change together? |
+| 15 | Consumers broken? | Will external consumers compile after this change? Run the breaking change analysis. |
 
 ### 4.2 Cross-reference with how-to-golang
 
@@ -355,18 +507,19 @@ explaining what changed and why.
 
 Each task must:
 
-- Be completable in 15–30 minutes
-- Leave the project in a buildable, testable state
+- Be the smallest unit that leaves the project buildable and testable
 - Be independently revertable (single commit)
 
-### 5.2 Sort by Pareto impact
+### 5.2 Sort by concrete Pareto tiers
 
-| Tier | Impact | Examples |
-|---|---|---|
-| 1% → 51% | Foundational | Extract core module, fix import paths |
-| 4% → 64% | High leverage | Split god-packages, isolate test deps |
-| 20% → 80% | Broad value | Add go.work, update CI, documentation |
-| Remaining | Polish | Versioning setup, cleanup, examples |
+Sort tasks into tiers by concrete module category:
+
+| Tier | Impact | What goes here | Examples |
+|---|---|---|---|
+| 1 — Core | Foundational. Without this, nothing else works. | Extract core/domain module, fix all import paths to reference it | Create `core/go.mod`, move domain types, update all imports |
+| 2 — Untangle | High leverage. Fixes the most painful coupling. | Split god-packages, isolate test deps, break circular replace directives | Extract `storage/` from god-package, create `testhelpers/go.mod` |
+| 3 — Infrastructure | Broad value. Completes the module graph. | Extract infrastructure modules, add go.work, update CI per module | Create `storage/go.mod`, `projection/go.mod`, write `go.work` |
+| 4 — Polish | Long-term health. Can ship without, but should not. | Versioning setup, deprecation notices, documentation, examples | Add semver tags, write migration guide, update README |
 
 ### 5.3 Verify no duplicate work
 
@@ -381,7 +534,7 @@ For each task, check:
 Write to `docs/modularization/EXECUTION_PLAN.md` with:
 
 - Ordered task list with dependencies between tasks
-- Estimated effort per task
+- Tier assignment per task
 - Verification steps (how to confirm the task worked)
 - Rollback instructions per task
 
@@ -400,7 +553,7 @@ Before starting execution, establish a safety net:
 - Create a branch: `git checkout -b modularize/<short-description>`
 - Each commit is a checkpoint — `git revert <sha>` undoes one step
 - If multiple steps fail, `git reset --soft` to the last known-good commit
-  (only with user approval)
+  (`--soft` preserves working tree — safe to use without approval)
 - Never force push the modularize branch
 
 ### 6.2 Execute one step at a time
@@ -416,7 +569,18 @@ For each task in the execution plan:
 7. If everything passes: `git commit` with detailed message
 8. If anything fails: fix immediately or revert — never accumulate broken state
 
-### 6.3 Per-module verification checklist
+### 6.3 Mini-reflection after each step
+
+After each commit, pause and ask:
+
+- Did this step reveal that the plan needs adjusting?
+- Did an unexpected coupling surface? Should boundaries shift?
+- Is the project still on track for the Unix principle test? (Does each module do one thing well?)
+
+If the answer to any of these is "no," update the execution plan before continuing.
+Do not blindly follow a plan that reality has invalidated.
+
+### 6.4 Per-module verification checklist
 
 After creating or modifying a module's go.mod:
 
@@ -426,9 +590,12 @@ After creating or modifying a module's go.mod:
 - [ ] `go mod tidy` changes nothing (already clean)
 - [ ] No production dependency on test-only modules
 - [ ] Import paths are correct (module path matches directory structure)
+- [ ] Error types are accessible from consuming modules
+- [ ] `internal/` packages are not imported from outside the module tree
 - [ ] If using go.work: root-level `go build ./...` still works
+- [ ] `go.work` and `go.work.sum` are committed together
 
-### 6.4 Build system updates
+### 6.5 Build system updates
 
 If the project uses `flake.nix`, update it to:
 
@@ -438,53 +605,65 @@ If the project uses `flake.nix`, update it to:
 
 Verify `nix build` and `nix flake check` pass after each modularization step.
 
-### 6.5 When stuck
+### 6.6 When stuck
 
-Report back and ask questions if genuinely stuck on something ambiguous.
 Do not stop for perceived difficulty — exhaust these alternatives first:
 
 1. Search for similar patterns in Go ecosystem projects
 2. Check if the Go standard library solves it
 3. Try a different module boundary
 4. Simplify — merge two modules that resist clean separation
+5. Consult the Known Failure Modes table above
 
-### 6.6 Final push
+Only report back to the user after exhausting all five alternatives.
+
+### 6.7 Final verification
 
 When all steps are complete and everything passes:
 
 - Run full test suite one final time
 - Verify `go work sync` (if applicable)
-- `git push`
+- Run the breaking change analysis from Phase 3.7 — confirm no external consumers are broken
 
 ---
 
 ## Phase 7 — Final Reflection
 
-After execution, reflect together on what makes this modularization superb:
+After execution, reflect on what makes this modularization superb. These questions
+should feel familiar — they were asked as mini-reflections during execution. Now
+answer them for the final state:
 
 1. **Structure** — Is the module layout clean and intuitive? Would a newcomer
    understand it in under 5 minutes?
-2. **Dependencies** — Are all directions correct? No cycles? No upward dependencies?
+2. **Unix principles** — Does each module do one thing well? Can they compose like
+   pipes? Is mechanism separated from policy?
+3. **Dependencies** — Are all directions correct? No cycles? No upward dependencies?
    Run `go mod graph` to verify.
-3. **Independence** — Can each module be versioned, tested, and built independently?
+4. **Independence** — Can each module be versioned, tested, and built independently?
    Prove it: build each module in isolation.
-4. **Robustness** — What would make this modularization last 3+ years without regret?
-5. **Naming** — Are module names honest, domain-aligned, and consistent with
+5. **Robustness** — What would make this modularization last 3+ years without regret?
+6. **Naming** — Are module names honest, domain-aligned, and consistent with
    Go conventions?
-6. **Granularity** — Should any module be further split or merged? Any god-packages
-   that survived the split?
-7. **Documentation** — What needs updating?
-   - README.md — reflects new structure
-   - AGENTS.md — build/test commands per module
-   - CONTEXT.md — domain glossary still accurate
-   - flake.nix — builds and tests per module
-   - CI/CD config — parallel per-module jobs
-8. **CI/CD** — Can builds be parallelized per module? Are test boundaries clean?
-   Does CI actually run faster now?
-9. **Types** — Are shared types in the right module? Are impossible states
-   unrepresentable? Any split brains introduced?
-10. **Replace/workspace hygiene** — Are replace directives clean? Is go.work
+7. **Granularity** — Should any module be further split or merged? Any god-packages
+   that survived the split? Any micro-modules that should be combined?
+8. **Error types** — Can `errors.Is`/`errors.As` work across all module boundaries
+   that need it? Are sentinel errors in the right modules?
+9. **internal/ hygiene** — Are `internal/` packages truly internal? Any accidental
+   cross-module access?
+10. **Documentation** — What needs updating?
+    - README.md — reflects new structure
+    - AGENTS.md — build/test commands per module
+    - CONTEXT.md — domain glossary still accurate
+    - flake.nix — builds and tests per module
+    - CI/CD config — parallel per-module jobs
+11. **CI/CD** — Can builds be parallelized per module? Are test boundaries clean?
+    Does CI actually run faster now?
+12. **Types** — Are shared types in the right module? Are impossible states
+    unrepresentable? Any split brains introduced?
+13. **Replace/workspace hygiene** — Are replace directives clean? Is go.work
     minimal? Will consumers of published modules have a clean experience?
+14. **Deprecation** — Are retired modules properly deprecated? Do migration paths
+    exist for consumers?
 
 Update all documentation to reflect the new structure. Commit the final state.
 
@@ -512,7 +691,8 @@ All modularization artifacts go to `docs/modularization/`:
 | After Phase 5 (execution plan) | Commit the plan |
 | After each Phase 6 step | Commit with detailed message |
 | After Phase 7 (reflection) | Commit documentation updates |
-| Final | `git push` only when everything passes |
+
+Do not push unless the user explicitly requests it.
 
 ---
 
@@ -520,5 +700,5 @@ All modularization artifacts go to `docs/modularization/`:
 
 READ, UNDERSTAND, RESEARCH, REFLECT.
 Break this down into multiple actionable steps. Think about them again.
-Execute and Verify them one step at a time.
+Execute and verify them one step at a time.
 Repeat until done. Keep going until everything works and you did a great job!
