@@ -644,6 +644,17 @@ If the project uses a build system (flake.nix, Makefile, etc.), update it to:
 
 Verify the build system passes after each modularization step.
 
+### 6.6 Vendor directory handling
+
+If the project uses `go mod vendor`:
+
+- Each module maintains its own `vendor/` directory
+- After splitting, run `go mod vendor` in each module independently
+- If using `go.work`: `go work vendor` creates a single merged vendor directory at root
+- Decide early: **per-module vendor** vs **workspace vendor** — do not mix approaches
+- Add `vendor/` to `.gitignore` per project convention
+- Update CI to run the correct vendor command for the chosen approach
+
 ### 6.6 When stuck
 
 Do not stop for perceived difficulty — exhaust these alternatives first:
