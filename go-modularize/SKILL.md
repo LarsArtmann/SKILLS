@@ -557,7 +557,8 @@ If the project has external consumers (published to GOPROXY or imported by other
 - Map all currently exported symbols and their import paths
 - After modularization, verify every exported symbol still exists at the same path
   or has a clear redirect
-- Use `go api-compare` or manual audit to detect breaking changes
+- Manually audit exported symbols before and after modularization (compare `go doc -all`
+  output), or use `golang.org/x/exp/cmd/api-diff` if available
 - For module path changes: use GOPROXY redirects or `go.mod` `replace` directives
   with `// deprecated` comments pointing to the new path
 - Test the migration: create a consumer that imports the old paths, verify it still
