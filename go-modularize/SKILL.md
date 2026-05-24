@@ -84,18 +84,18 @@ Modularization should solve a real problem, not satisfy an aesthetic urge.
 These are the top ways Go modularization goes wrong. Keep this catalog handy during
 execution — if you hit one, the mitigation is here.
 
-| # | Failure | Cause | Mitigation |
-|---|---|---|---|
-| 1 | **Import cycles** | Circular deps between new modules | Enforce DAG before execution (Phase 3.2). If a cycle appears, boundaries are wrong — redraw. |
-| 2 | **Transitive dep bloat** | Module A depends on B's heavy external deps | Extract thin interface modules. Consumers depend on interfaces, not implementations. |
-| 3 | **Test dep leaks** | Test-only libs appear in production go.mod | Audit with `go mod why -m <dep>` per module. Move test helpers to separate modules. |
-| 4 | **go.work / replace conflicts** | Both `go.work` and `replace` directives for the same pair | Pick one strategy (see Phase 3.3). Never mix both. |
-| 5 | **Broken consumers** | External import paths change without redirect | Use `go.mod` redirect tags or `// Deprecated` annotations. |
-| 6 | **internal/ access breakage** | Moving a package behind `internal/` blocks cross-module access | Remember: `internal/` restricts access to the *module* tree, not just the package tree. A sub-module's `internal/` is invisible to all other modules. |
-| 7 | **Error type inaccessibility** | `errors.Is`/`errors.As` fail because error types moved to a module the consumer doesn't import | Keep sentinel errors and error types in the interface module (core), not in implementations. |
-| 8 | **Over-modularization** | 15 micro-modules that should be 4 | Merge modules that always change together. "Small is beautiful" does not mean "atomized." |
-| 9 | **Stale go.work** | `go.work` references deleted or renamed modules | Run `go work sync` after every structural change. Commit `go.work` and `go.work.sum` together. |
-| 10 | **Flake build breakage** | `flake.nix` references old module paths | Update flake.nix immediately after each module move (Phase 6.4). |
+| # | Failure | Cause | How to Detect | Mitigation |
+|---|---|---|---|---|
+| 1 | **Import cycles** | Circular deps between new modules | `go build ./...` fails with "import cycle not allowed" | Enforce DAG before execution (Phase 3.2). If a cycle appears, boundaries are wrong — redraw. |
+| 2 | **Transitive dep bloat** | Module A depends on B's heavy external deps | `go mod graph` shows large dependency trees for thin modules | Extract thin interface modules. Consumers depend on interfaces, not implementations. |
+| 3 | **Test dep leaks** | Test-only libs appear in production go.mod | `go mod why -m <dep>` shows only `_test.go` imports for a dep in `require` block | Move test helpers to separate modules. Audit each module's go.mod. |
+| 4 | **go.work / replace conflicts** | Both `go.work` and `replace` directives for the same pair | `grep -r 'replace' */go.mod` finds replace while go.work exists | Pick one strategy (see Phase 3.3). Never mix both. |
+| 5 | **Broken consumers** | External import paths change without redirect | Consumer project fails to `go get` after modularization | Use `go.mod` redirect tags or `// Deprecated` annotations. |
+| 6 | **internal/ access breakage** | Moving a package behind `internal/` blocks cross-module access | `go build` fails with "use of internal package" from another module | Remember: `internal/` restricts access to the *module* tree, not just the package tree. A sub-module's `internal/` is invisible to all other modules. |
+| 7 | **Error type inaccessibility** | `errors.Is`/`errors.As` fail because error types moved to a module the consumer doesn't import | Tests pass locally (workspace provides all modules) but fail in isolation or for external consumers | Keep sentinel errors and error types in the interface module (core), not in implementations. |
+| 8 | **Over-modularization** | 15 micro-modules that should be 4 | `git log --stat` shows same files always changed together across modules | Merge modules that always change together. "Small is beautiful" does not mean "atomized." |
+| 9 | **Stale go.work** | `go.work` references deleted or renamed modules | `go work sync` reports errors or `go build` fails at root | Run `go work sync` after every structural change. Commit `go.work` and `go.work.sum` together. |
+| 10 | **Build system breakage** | Build system references old module paths | `nix build`, `make`, or CI fails after module moves | Update build system immediately after each module move. |
 
 ---
 
