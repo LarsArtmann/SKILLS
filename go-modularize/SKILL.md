@@ -108,9 +108,12 @@ These commands are essential for dependency analysis. Run them early and often:
 | `go mod graph` | Show full dependency graph (direct + transitive) |
 | `go mod why -m <package>` | Explain why a specific dependency exists |
 | `go mod tidy` | Clean up unused dependencies |
+| `go mod verify` | Verify downloaded modules match expected checksums |
 | `go vet ./...` | Detect import cycles and other issues |
 | `go list ./...` | List all packages in the module |
 | `go work sync` | Sync go.work file with module state |
+| `GOWORK=off go build ./...` | Test build without workspace — verify modules resolve without go.work |
+| `go work edit -fmt` | Format and clean up go.work file |
 
 For generating a visual dependency graph of internal packages only:
 
