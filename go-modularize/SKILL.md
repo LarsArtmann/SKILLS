@@ -458,7 +458,7 @@ Write to `docs/modularization/PROPOSAL.md` with:
 11. **Breaking change analysis** — Affected import paths, redirect/deprecation plan
 12. **Migration strategy** — Ordered steps, each independently executable
 13. **Risk assessment** — What could go wrong, how to mitigate (reference failure modes)
-14. **Build system impact** — Changes needed to flake.nix, CI/CD
+14. **Build system impact** — Changes needed to build system (flake.nix, if applicable) and CI/CD
 
 Commit the proposal:
 
@@ -582,8 +582,8 @@ Before starting execution, establish a safety net:
 For each task in the execution plan:
 
 1. Make the change
-2. Run build: `go build ./...` (or `nix build` if using flakes)
-3. Run tests: `go test ./...` (or `nix run .#test`)
+2. Run build: `go build ./...` (or project's build command)
+3. Run tests: `go test ./...` (or project's test command)
 4. Run lint: `go vet ./...` (or project's lint command)
 5. Verify imports resolve: `go mod tidy && go mod verify`
 6. If using go.work: `go work sync`
@@ -618,13 +618,13 @@ After creating or modifying a module's go.mod:
 
 ### 6.5 Build system updates
 
-If the project uses `flake.nix`, update it to:
+If the project uses a build system (flake.nix, Makefile, etc.), update it to:
 
 - Build each module independently
 - Run tests per module
 - Provide aggregated checks at the root level
 
-Verify `nix build` and `nix flake check` pass after each modularization step.
+Verify the build system passes after each modularization step.
 
 ### 6.6 When stuck
 
@@ -675,7 +675,7 @@ answer them for the final state:
     - README.md — reflects new structure
     - AGENTS.md — build/test commands per module
     - CONTEXT.md — domain glossary still accurate
-    - flake.nix — builds and tests per module
+    - Build system (flake.nix, etc.) — builds and tests per module
     - CI/CD config — parallel per-module jobs
 11. **CI/CD** — Can builds be parallelized per module? Are test boundaries clean?
     Does CI actually run faster now?
