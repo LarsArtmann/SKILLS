@@ -66,16 +66,22 @@ These principles guide every decision in this skill. When in doubt, return here.
 Modularization adds overhead — more go.mod files, more version management, more CI
 complexity. Before starting Phase 1, check if the project actually benefits:
 
-| Signal | Do not modularize |
-|---|---|
-| Small project | Under 10 packages, single domain — a monolith is simpler |
-| Single developer | No ownership boundaries needed — coupling is manageable |
-| No external consumers | If nobody imports your packages, module boundaries add friction with no payoff |
-| Prototype / spike | Modularize after the design stabilizes, not before |
-| All packages change together | If every commit touches 80% of packages, boundaries are artificial |
+| Signal | Weight | Why |
+|---|---|---|
+| Small project | High | Under 10 packages, single domain — a monolith is simpler |
+| Single developer | Medium | No ownership boundaries needed — coupling is manageable |
+| No external consumers | Medium | If nobody imports your packages, module boundaries add friction with no payoff |
+| Prototype / spike | High | Modularize after the design stabilizes, not before |
+| All packages change together | High | If every commit touches 80% of packages, boundaries are artificial |
 
-**If 3+ of these apply, stop and discuss with the user before proceeding.**
-Modularization should solve a real problem, not satisfy an aesthetic urge.
+**Scoring:**
+- **3+ High signals** → Stop. Do not modularize. Discuss with the user.
+- **2 High + 1 Medium** → Consider partial modularization — extract only the core/domain module to establish a clean API surface.
+- **1 High or less** → Proceed with full modularization.
+
+**Partial modularization** is a valid outcome. If the project only needs a `core/` module
+to decouple domain types from infrastructure, that's a good result. Not every project
+needs 5+ modules.
 
 ---
 
