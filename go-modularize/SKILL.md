@@ -122,6 +122,19 @@ MODULE=$(head -1 go.mod | cut -d' ' -f2)
 go mod graph | grep "^${MODULE}" | column -t -s ' '
 ```
 
+### Minimum Go Versions
+
+| Feature | Go Version |
+|---|---|
+| Multi-module workspaces (`go.work`) | 1.18+ |
+| `go work sync` | 1.22+ (earlier versions have limited support) |
+| `go.work.sum` auto-management | 1.21+ |
+| Workspace vendor mode (`go work vendor`) | 1.22+ |
+
+Before starting, check `go version` in the project. If the project's `go.mod` specifies
+an older Go version, either upgrade it first or plan to use `replace` directives instead
+of `go.work`.
+
 ---
 
 ## Phase 1 — Detect Current State
