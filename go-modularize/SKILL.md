@@ -7,13 +7,18 @@ description: >
   or says "modularize", "split modules", "sub-modules", "go.mod per package",
   "multi-module Go project", "module boundaries", "dependency isolation",
   "Go workspace", "go.work", "CQRS modularization", "break apart Go project",
-  "too coupled", "Go package boundaries".
+  "too coupled", "Go package boundaries", "remodularize", "re-modularize",
+  "merge modules", "too many modules", "wrong module boundaries",
+  "over-modularized", "consolidate modules", "fix module structure".
   Also trigger when the user asks how to structure a Go project into multiple
   modules, wants to break a large Go project into smaller pieces, or wants to
-  improve module boundaries in an already-partially-modularized Go project.
+  improve module boundaries in an already-partially-modularized Go project —
+  including merging over-split modules, fixing wrong boundaries, and cleaning
+  up replace directive tangles.
 metadata:
   tags: go, modularization, monorepo, multi-module, go.mod, architecture, refactoring,
-        go.work, replace-directives, versioning
+        go.work, replace-directives, versioning, re-modularization, merge-modules,
+        module-boundaries, internal-packages, error-types, unix-philosophy
 ---
 
 # Go Modularize
