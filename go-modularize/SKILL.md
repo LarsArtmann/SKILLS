@@ -346,8 +346,20 @@ Dependency direction must be a directed acyclic graph:
 - Infrastructure modules → depend on core only
 - Integration/example modules → depend on core + infrastructure
 - Test helper modules → depend on core only (never on infrastructure)
+- Application modules (`cmd/`) → depend on everything needed to wire the app; they are **leaf nodes** in the DAG — nothing depends on them
 
 If you find a cycle, the boundaries are wrong. Redraw before proceeding.
+
+**Special case — `cmd/` packages:** Packages in `cmd/` contain `main()` functions. They
+cannot be imported by other packages, so they are always leaf nodes in the dependency
+graph. Each `cmd/` binary can be its own module or grouped with related binaries.
+Decision criteria:
+
+| Strategy | When |
+|---|---|
+| One `cmd/` module for all binaries | All binaries share the same dependencies and are released together |
+| One module per `cmd/` binary | Different binaries have very different dependency sets or release cycles |
+| `cmd/` stays in root module | Simple projects where the overhead of a separate module isn't justified |
 
 **Special case — bidirectional test dependencies:** Sometimes module A's tests import
 module B, and module B's tests import module A. This is acceptable in `_test.go` files
