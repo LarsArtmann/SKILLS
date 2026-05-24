@@ -307,6 +307,24 @@ For cross-module error handling:
 
 Map all error types to their proposed module and verify accessibility.
 
+### 2.7 Audit code generation and generated code
+
+If the project uses `go:generate`, protobuf, or other code generation:
+
+- **Generated code placement** — Generated files should live in the module that *consumes*
+  them, not in a shared "generated" module. Protobuf-generated types that define domain
+  concepts belong in `core/`. Generated clients belong in the module that uses them.
+- **Generation scripts** — `go:generate` directives must work per-module. If a generate
+  directive spans modules (e.g., generating code in module A from definitions in module B),
+  it must run from module A's directory with module B as a dependency.
+- **Build order** — Generated code creates a chicken-and-egg problem: module A needs
+  generated code that depends on module B types. Solution: generate into the module that
+  owns the types, not the one that consumes them.
+- **`.proto` / `.graphql` / OpenAPI files** — Keep source definitions in the module that
+  owns the domain concepts. Generate clients in consuming modules.
+
+Map all `go:generate` directives and their cross-module dependencies.
+
 ### 2.7 Report back
 
 Present findings as:
