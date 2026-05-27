@@ -156,7 +156,6 @@ complexity. Before starting Phase 1, check if the project actually benefits:
 | Signal | Weight | Why |
 |---|---|---|
 | Small project | High | Under 10 packages, single domain — a monolith is simpler |
-| Single developer | Medium | No ownership boundaries needed — coupling is manageable |
 | No external consumers | Medium | If nobody imports your packages, module boundaries add friction with no payoff |
 | Prototype / spike | High | Modularize after the design stabilizes, not before |
 | All packages change together | High | If every commit touches 80% of packages, boundaries are artificial |
