@@ -17,8 +17,8 @@ description: >
   up replace directive tangles.
 metadata:
   tags: go, modularization, monorepo, multi-module, go.mod, architecture, refactoring,
-        go.work, replace-directives, versioning, re-modularization, merge-modules,
-        module-boundaries, internal-packages, error-types, unix-philosophy
+    go.work, replace-directives, versioning, re-modularization, merge-modules,
+    module-boundaries, internal-packages, error-types, unix-philosophy
 ---
 
 # Go Modularize
@@ -47,15 +47,15 @@ multi-module setups.
 
 These principles guide every decision in this skill. When in doubt, return here.
 
-| Principle | Application to Go Modules |
-|---|---|
-| **Do one thing well** | Each module has a single, clear purpose. If you cannot describe it in one sentence, the boundary is wrong. |
-| **Small is beautiful** | Prefer many small, focused modules over few large ones. A module with 2 packages is fine. A module with 20 is a red flag. |
-| **Composition over monoliths** | Modules compose via interfaces. Consumers import what they need, never the whole system. |
-| **Thin textual interfaces** | Go interfaces are the "pipes" of module architecture — thin, explicit, easy to inspect. Define what, not how. |
-| **Mechanism, not policy** | Core modules define *what* (interfaces, types, domain logic). Infrastructure modules define *how* (implementations). Never mix them. |
-| **Fail noisily** | Build failures at module boundaries are *good* — they catch coupling early. Do not suppress them with `replace` hacks or clever workarounds. |
-| **Opaque internals** | Every module exposes a thin surface (interfaces + types). Internals are opaque, like file descriptors hide implementation. Use `internal/` to enforce this. |
+| Principle                      | Application to Go Modules                                                                                                                                   |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Do one thing well**          | Each module has a single, clear purpose. If you cannot describe it in one sentence, the boundary is wrong.                                                  |
+| **Small is beautiful**         | Prefer many small, focused modules over few large ones. A module with 2 packages is fine. A module with 20 is a red flag.                                   |
+| **Composition over monoliths** | Modules compose via interfaces. Consumers import what they need, never the whole system.                                                                    |
+| **Thin textual interfaces**    | Go interfaces are the "pipes" of module architecture — thin, explicit, easy to inspect. Define what, not how.                                               |
+| **Mechanism, not policy**      | Core modules define _what_ (interfaces, types, domain logic). Infrastructure modules define _how_ (implementations). Never mix them.                        |
+| **Fail noisily**               | Build failures at module boundaries are _good_ — they catch coupling early. Do not suppress them with `replace` hacks or clever workarounds.                |
+| **Opaque internals**           | Every module exposes a thin surface (interfaces + types). Internals are opaque, like file descriptors hide implementation. Use `internal/` to enforce this. |
 
 **Litmus test for every proposed module:** Does it do one thing well? Can I compose it with other modules like Unix pipes? If not, redraw the boundary.
 
@@ -137,13 +137,13 @@ github.com/org/eventstore/
 
 ### Key decisions in this example
 
-| Decision | Rationale |
-|---|---|
-| `core/` has zero internal deps | Domain types must not depend on infrastructure (Unix: mechanism, not policy) |
-| `errors.go` in `core/` | `ErrNotFound` must be importable by storage consumers without importing storage |
-| `memory/` is separate from `storage/` | Test adapters should not force production deps on consumers |
-| `testhelpers/` depends only on core | Prevents transitive dep from core → storage through test helpers |
-| `cmd/` stays in root | Leaf node — nothing imports it, shares deps with root |
+| Decision                                | Rationale                                                                                        |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `core/` has zero internal deps          | Domain types must not depend on infrastructure (Unix: mechanism, not policy)                     |
+| `errors.go` in `core/`                  | `ErrNotFound` must be importable by storage consumers without importing storage                  |
+| `memory/` is separate from `storage/`   | Test adapters should not force production deps on consumers                                      |
+| `testhelpers/` depends only on core     | Prevents transitive dep from core → storage through test helpers                                 |
+| `cmd/` stays in root                    | Leaf node — nothing imports it, shares deps with root                                            |
 | `codec.go` in core, not separate module | JSON codec is small and tightly coupled to domain types — splitting would be over-modularization |
 
 ---
@@ -153,14 +153,15 @@ github.com/org/eventstore/
 Modularization adds overhead — more go.mod files, more version management, more CI
 complexity. Before starting Phase 1, check if the project actually benefits:
 
-| Signal | Weight | Why |
-|---|---|---|
-| Small project | High | Under 10 packages, single domain — a monolith is simpler |
-| No external consumers | Medium | If nobody imports your packages, module boundaries add friction with no payoff |
-| Prototype / spike | High | Modularize after the design stabilizes, not before |
-| All packages change together | High | If every commit touches 80% of packages, boundaries are artificial |
+| Signal                       | Weight | Why                                                                            |
+| ---------------------------- | ------ | ------------------------------------------------------------------------------ |
+| Small project                | High   | Under 10 packages, single domain — a monolith is simpler                       |
+| No external consumers        | Medium | If nobody imports your packages, module boundaries add friction with no payoff |
+| Prototype / spike            | High   | Modularize after the design stabilizes, not before                             |
+| All packages change together | High   | If every commit touches 80% of packages, boundaries are artificial             |
 
 **Scoring:**
+
 - **3+ High signals** → Stop. Do not modularize. Discuss with the user.
 - **2 High + 1 Medium** → Consider partial modularization — extract only the core/domain module to establish a clean API surface.
 - **1 High or less** → Proceed with full modularization.
@@ -176,18 +177,18 @@ needs 5+ modules.
 These are the top ways Go modularization goes wrong. Keep this catalog handy during
 execution — if you hit one, the mitigation is here.
 
-| # | Failure | Cause | How to Detect | Mitigation |
-|---|---|---|---|---|
-| 1 | **Import cycles** | Circular deps between new modules | `go build ./...` fails with "import cycle not allowed" | Enforce DAG before execution (Phase 3.2). If a cycle appears, boundaries are wrong — redraw. |
-| 2 | **Transitive dep bloat** | Module A depends on B's heavy external deps | `go mod graph` shows large dependency trees for thin modules | Extract thin interface modules. Consumers depend on interfaces, not implementations. |
-| 3 | **Test dep leaks** | Test-only libs appear in production go.mod | `go mod why -m <dep>` shows only `_test.go` imports for a dep in `require` block | Move test helpers to separate modules. Audit each module's go.mod. |
-| 4 | **go.work / replace conflicts** | Both `go.work` and `replace` directives for the same pair | `grep -r 'replace' */go.mod` finds replace while go.work exists | Pick one strategy (see Phase 3.3). Never mix both. |
-| 5 | **Broken consumers** | External import paths change without redirect | Consumer project fails to `go get` after modularization | Use `go.mod` redirect tags or `// Deprecated` annotations. |
-| 6 | **internal/ access breakage** | Moving a package behind `internal/` blocks cross-module access | `go build` fails with "use of internal package" from another module | Remember: `internal/` restricts access to the *module* tree, not just the package tree. A sub-module's `internal/` is invisible to all other modules. |
-| 7 | **Error type inaccessibility** | `errors.Is`/`errors.As` fail because error types moved to a module the consumer doesn't import | Tests pass locally (workspace provides all modules) but fail in isolation or for external consumers | Keep sentinel errors and error types in the interface module (core), not in implementations. |
-| 8 | **Over-modularization** | 15 micro-modules that should be 4 | `git log --stat` shows same files always changed together across modules | Merge modules that always change together. "Small is beautiful" does not mean "atomized." |
-| 9 | **Stale go.work** | `go.work` references deleted or renamed modules | `go work sync` reports errors or `go build` fails at root | Run `go work sync` after every structural change. Commit `go.work` and `go.work.sum` together. |
-| 10 | **Build system breakage** | Build system references old module paths | `nix build`, `make`, or CI fails after module moves | Update build system immediately after each module move. |
+| #   | Failure                         | Cause                                                                                          | How to Detect                                                                                       | Mitigation                                                                                                                                            |
+| --- | ------------------------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Import cycles**               | Circular deps between new modules                                                              | `go build ./...` fails with "import cycle not allowed"                                              | Enforce DAG before execution (Phase 3.2). If a cycle appears, boundaries are wrong — redraw.                                                          |
+| 2   | **Transitive dep bloat**        | Module A depends on B's heavy external deps                                                    | `go mod graph` shows large dependency trees for thin modules                                        | Extract thin interface modules. Consumers depend on interfaces, not implementations.                                                                  |
+| 3   | **Test dep leaks**              | Test-only libs appear in production go.mod                                                     | `go mod why -m <dep>` shows only `_test.go` imports for a dep in `require` block                    | Move test helpers to separate modules. Audit each module's go.mod.                                                                                    |
+| 4   | **go.work / replace conflicts** | Both `go.work` and `replace` directives for the same pair                                      | `grep -r 'replace' */go.mod` finds replace while go.work exists                                     | Pick one strategy (see Phase 3.3). Never mix both.                                                                                                    |
+| 5   | **Broken consumers**            | External import paths change without redirect                                                  | Consumer project fails to `go get` after modularization                                             | Use `go.mod` redirect tags or `// Deprecated` annotations.                                                                                            |
+| 6   | **internal/ access breakage**   | Moving a package behind `internal/` blocks cross-module access                                 | `go build` fails with "use of internal package" from another module                                 | Remember: `internal/` restricts access to the _module_ tree, not just the package tree. A sub-module's `internal/` is invisible to all other modules. |
+| 7   | **Error type inaccessibility**  | `errors.Is`/`errors.As` fail because error types moved to a module the consumer doesn't import | Tests pass locally (workspace provides all modules) but fail in isolation or for external consumers | Keep sentinel errors and error types in the interface module (core), not in implementations.                                                          |
+| 8   | **Over-modularization**         | 15 micro-modules that should be 4                                                              | `git log --stat` shows same files always changed together across modules                            | Merge modules that always change together. "Small is beautiful" does not mean "atomized."                                                             |
+| 9   | **Stale go.work**               | `go.work` references deleted or renamed modules                                                | `go work sync` reports errors or `go build` fails at root                                           | Run `go work sync` after every structural change. Commit `go.work` and `go.work.sum` together.                                                        |
+| 10  | **Build system breakage**       | Build system references old module paths                                                       | `nix build`, `make`, or CI fails after module moves                                                 | Update build system immediately after each module move.                                                                                               |
 
 ---
 
@@ -195,17 +196,17 @@ execution — if you hit one, the mitigation is here.
 
 These commands are essential for dependency analysis. Run them early and often:
 
-| Command | Purpose |
-|---|---|
-| `go mod graph` | Show full dependency graph (direct + transitive) |
-| `go mod why -m <package>` | Explain why a specific dependency exists |
-| `go mod tidy` | Clean up unused dependencies |
-| `go mod verify` | Verify downloaded modules match expected checksums |
-| `go vet ./...` | Detect import cycles and other issues |
-| `go list ./...` | List all packages in the module |
-| `go work sync` | Sync go.work file with module state |
+| Command                     | Purpose                                                               |
+| --------------------------- | --------------------------------------------------------------------- |
+| `go mod graph`              | Show full dependency graph (direct + transitive)                      |
+| `go mod why -m <package>`   | Explain why a specific dependency exists                              |
+| `go mod tidy`               | Clean up unused dependencies                                          |
+| `go mod verify`             | Verify downloaded modules match expected checksums                    |
+| `go vet ./...`              | Detect import cycles and other issues                                 |
+| `go list ./...`             | List all packages in the module                                       |
+| `go work sync`              | Sync go.work file with module state                                   |
 | `GOWORK=off go build ./...` | Test build without workspace — verify modules resolve without go.work |
-| `go work edit -fmt` | Format and clean up go.work file |
+| `go work edit -fmt`         | Format and clean up go.work file                                      |
 
 For generating a visual dependency graph of internal packages only:
 
@@ -216,12 +217,12 @@ go mod graph | grep "^${MODULE}" | column -t -s ' '
 
 ### Minimum Go Versions
 
-| Feature | Go Version |
-|---|---|
-| Multi-module workspaces (`go.work`) | 1.18+ |
-| `go work sync` | 1.22+ (earlier versions have limited support) |
-| `go.work.sum` auto-management | 1.21+ |
-| Workspace vendor mode (`go work vendor`) | 1.22+ |
+| Feature                                  | Go Version                                    |
+| ---------------------------------------- | --------------------------------------------- |
+| Multi-module workspaces (`go.work`)      | 1.18+                                         |
+| `go work sync`                           | 1.22+ (earlier versions have limited support) |
+| `go.work.sum` auto-management            | 1.21+                                         |
+| Workspace vendor mode (`go work vendor`) | 1.22+                                         |
 
 Before starting, check `go version` in the project. If the project's `go.mod` specifies
 an older Go version, either upgrade it first or plan to use `replace` directives instead
@@ -247,13 +248,13 @@ This tells you immediately:
 
 ### 1.2 Classify the starting state
 
-| State | Indicators | Approach |
-|---|---|---|
-| Monolith | Single go.mod, all packages in one tree | Full modularization from scratch |
-| Partial split | Multiple go.mods with `replace` directives, some packages still coupled | Refine boundaries, fix leaks |
-| Workspace mode | go.work file coordinating multiple modules | Audit workspace structure |
-| Over-modularized | 10+ micro-modules, high inter-module coupling, modules that always change together | Merge and reorganize |
-| Already split | Clean DAG, minimal replace, independent CI per module | Skip to Phase 7 reflection only |
+| State            | Indicators                                                                         | Approach                         |
+| ---------------- | ---------------------------------------------------------------------------------- | -------------------------------- |
+| Monolith         | Single go.mod, all packages in one tree                                            | Full modularization from scratch |
+| Partial split    | Multiple go.mods with `replace` directives, some packages still coupled            | Refine boundaries, fix leaks     |
+| Workspace mode   | go.work file coordinating multiple modules                                         | Audit workspace structure        |
+| Over-modularized | 10+ micro-modules, high inter-module coupling, modules that always change together | Merge and reorganize             |
+| Already split    | Clean DAG, minimal replace, independent CI per module                              | Skip to Phase 7 reflection only  |
 
 ### 1.3 Map the existing module landscape
 
@@ -269,9 +270,9 @@ For each existing go.mod, extract:
 
 Present a summary table:
 
-| Module | Path | Internal Deps | External Deps | Replace Directives | State |
-|---|---|---|---|---|---|
-| ... | ... | ... | ... | ... | Clean / Leaky / Broken |
+| Module | Path | Internal Deps | External Deps | Replace Directives | State                  |
+| ------ | ---- | ------------- | ------------- | ------------------ | ---------------------- |
+| ...    | ...  | ...           | ...           | ...                | Clean / Leaky / Broken |
 
 **Do not propose changes yet.** Report state so the user can course-correct.
 
@@ -296,19 +297,19 @@ If modules already exist, the problem is rarely "add more modules." It is usuall
 
 3. **Classify the remodel** — For each existing module, decide:
 
-   | Action | When |
-   |---|---|
-   | **Keep** | Cohesion high, coupling low, clear purpose |
-   | **Merge** | Always changes together with another module, or too small to justify its own go.mod |
-   | **Split** | Contains multiple unrelated concerns (god-module) |
-   | **Reorganize** | Right packages, wrong boundaries — move packages between modules |
-   | **Retire** | No longer used, empty, or fully absorbed by another module |
+   | Action         | When                                                                                |
+   | -------------- | ----------------------------------------------------------------------------------- |
+   | **Keep**       | Cohesion high, coupling low, clear purpose                                          |
+   | **Merge**      | Always changes together with another module, or too small to justify its own go.mod |
+   | **Split**      | Contains multiple unrelated concerns (god-module)                                   |
+   | **Reorganize** | Right packages, wrong boundaries — move packages between modules                    |
+   | **Retire**     | No longer used, empty, or fully absorbed by another module                          |
 
 4. **Map the transition** — Build a migration matrix:
 
-   | Old Module | Old Path | Action | New Module(s) | Migration Path |
-   |---|---|---|---|---|
-   | ... | ... | Keep / Merge / Split / Reorganize / Retire | ... | ... |
+   | Old Module | Old Path | Action                                     | New Module(s) | Migration Path |
+   | ---------- | -------- | ------------------------------------------ | ------------- | -------------- |
+   | ...        | ...      | Keep / Merge / Split / Reorganize / Retire | ...           | ...            |
 
 5. **Plan deprecation** — For modules being retired or merged:
    - Add `// Deprecated:` comments to all exported symbols pointing to the new location
@@ -359,7 +360,7 @@ Signs to look for (these are rules of thumb, not hard limits):
 - Multiple distinct "clusters" of types that do not reference each other
 
 For each god-package, list the concern clusters it contains. These are candidates
-for package-level splits (within a module) that should happen *before* or *alongside*
+for package-level splits (within a module) that should happen _before_ or _alongside_
 module-level splits.
 
 ### 2.4 Research Go multi-module patterns
@@ -377,6 +378,7 @@ When splitting into modules, `internal/` packages behave differently:
 
 Check which `internal/` packages are imported from outside their module tree. These
 need either:
+
 - Extraction to a non-internal location, or
 - Duplication in the consuming module, or
 - Interface extraction so consumers depend on an interface, not the internal package
@@ -386,7 +388,7 @@ need either:
 For cross-module error handling:
 
 - Sentinel errors (`var ErrNotFound = errors.New(...)`) must live in the module that
-  *defines the interface*, not the implementation
+  _defines the interface_, not the implementation
 - Custom error types must be importable by any consumer that needs to check them
 - If `errors.Is(err, core.ErrNotFound)` should work across modules, `ErrNotFound`
   must be in a module that both producer and consumer import
@@ -397,7 +399,7 @@ Map all error types to their proposed module and verify accessibility.
 
 If the project uses `go:generate`, protobuf, or other code generation:
 
-- **Generated code placement** — Generated files should live in the module that *consumes*
+- **Generated code placement** — Generated files should live in the module that _consumes_
   them, not in a shared "generated" module. Protobuf-generated types that define domain
   concepts belong in `core/`. Generated clients belong in the module that uses them.
 - **Generation scripts** — `go:generate` directives must work per-module. If a generate
@@ -437,16 +439,16 @@ READ, UNDERSTAND, RESEARCH, REFLECT before proposing anything.
 
 For every module (existing or new):
 
-| Field | Content |
-|---|---|
-| Name & path | e.g. `/core`, `/storage`, `/projection` |
-| Purpose | One sentence (if you cannot, the module is too broad) |
-| Dependencies (prod) | Which other sub-modules it imports in production code |
-| Dependencies (test) | Which sub-modules it imports only in `_test.go` files |
-| Public API | Types and functions exposed to other modules |
-| Internal packages | Packages not meant for external consumption |
-| Error types | Sentinel errors and custom error types, with justification for placement |
-| External deps | go.mod requirements (third-party libraries) |
+| Field               | Content                                                                  |
+| ------------------- | ------------------------------------------------------------------------ |
+| Name & path         | e.g. `/core`, `/storage`, `/projection`                                  |
+| Purpose             | One sentence (if you cannot, the module is too broad)                    |
+| Dependencies (prod) | Which other sub-modules it imports in production code                    |
+| Dependencies (test) | Which sub-modules it imports only in `_test.go` files                    |
+| Public API          | Types and functions exposed to other modules                             |
+| Internal packages   | Packages not meant for external consumption                              |
+| Error types         | Sentinel errors and custom error types, with justification for placement |
+| External deps       | go.mod requirements (third-party libraries)                              |
 
 ### 3.2 Enforce DAG structure
 
@@ -465,11 +467,11 @@ cannot be imported by other packages, so they are always leaf nodes in the depen
 graph. Each `cmd/` binary can be its own module or grouped with related binaries.
 Decision criteria:
 
-| Strategy | When |
-|---|---|
-| One `cmd/` module for all binaries | All binaries share the same dependencies and are released together |
-| One module per `cmd/` binary | Different binaries have very different dependency sets or release cycles |
-| `cmd/` stays in root module | Simple projects where the overhead of a separate module isn't justified |
+| Strategy                           | When                                                                     |
+| ---------------------------------- | ------------------------------------------------------------------------ |
+| One `cmd/` module for all binaries | All binaries share the same dependencies and are released together       |
+| One module per `cmd/` binary       | Different binaries have very different dependency sets or release cycles |
+| `cmd/` stays in root module        | Simple projects where the overhead of a separate module isn't justified  |
 
 **Special case — bidirectional test dependencies:** Sometimes module A's tests import
 module B, and module B's tests import module A. This is acceptable in `_test.go` files
@@ -480,11 +482,11 @@ but must never appear in production code. Document these clearly.
 Every multi-module Go repo needs a strategy for how modules reference each other during
 development. Choose based on project maturity:
 
-| Strategy | When to use | How |
-|---|---|---|
+| Strategy             | When to use                                 | How                                                  |
+| -------------------- | ------------------------------------------- | ---------------------------------------------------- |
 | `replace` directives | All modules in same repo, not yet published | `replace github.com/org/mod => ./mod` in each go.mod |
-| `go.work` file | 3+ modules, developer convenience | Single `go.work` at repo root listing all modules |
-| Versioned imports | Modules published to proxy | Remove all `replace`, use proper semver tags |
+| `go.work` file       | 3+ modules, developer convenience           | Single `go.work` at repo root listing all modules    |
+| Versioned imports    | Modules published to proxy                  | Remove all `replace`, use proper semver tags         |
 
 **Recommendation for most projects:** Start with `go.work` at the repo root.
 It's cleaner than per-module `replace` directives and Go tooling handles it well.
@@ -492,6 +494,7 @@ Each module's go.mod should be clean — no `replace` directives — and `go.wor
 handles local development. When publishing, `go.work` is ignored by consumers.
 
 Rules:
+
 - Never mix `replace` directives AND `go.work` for the same module pair
 - `go.work` belongs in `.gitignore` only if every consumer uses published versions
 - Verify `go mod tidy` works both with and without the workspace
@@ -530,6 +533,7 @@ Follow the Go convention:
   testing. Keep separate from production implementations.
 
 If a module exposes both interfaces and implementations, split into:
+
 - `module/` — interfaces and types (thin)
 - `module/adapters/` or `module/impl/` — concrete implementations
 
@@ -540,10 +544,10 @@ not the heavy implementation.
 
 Choose before executing, not after:
 
-| Strategy | How | Best for |
-|---|---|---|
-| Shared version | Single git tag `v1.2.3`, all modules bump together | Tight-coupled monorepo, single team |
-| Independent semver | Tags per module path `core/v1.2.3`, `storage/v2.0.0` | Published libraries, multiple consumers |
+| Strategy             | How                                                   | Best for                                 |
+| -------------------- | ----------------------------------------------------- | ---------------------------------------- |
+| Shared version       | Single git tag `v1.2.3`, all modules bump together    | Tight-coupled monorepo, single team      |
+| Independent semver   | Tags per module path `core/v1.2.3`, `storage/v2.0.0`  | Published libraries, multiple consumers  |
 | Root-only versioning | Only root module gets tags, sub-modules use `replace` | Internal projects, no external consumers |
 
 Document the chosen strategy in the proposal. If using independent semver, specify
@@ -606,26 +610,26 @@ This is a separate phase with a different mindset — slow, critical, paranoid.
 
 ### 4.1 Proposal-specific review checklist
 
-Generate a review checklist *from the specific proposal*, not from generic questions.
+Generate a review checklist _from the specific proposal_, not from generic questions.
 For each proposed module, ask:
 
-| # | Question | Check |
-|---|---|---|
-| 1 | What did you forget? | Any packages not assigned to a module? Any imports not accounted for? |
-| 2 | What could be improved? | Are any modules doing more than one thing? Any Unix principle violations? |
-| 3 | Split brains? | Duplicate type definitions across modules that should be shared? Shared types that should be duplicated? |
-| 4 | Right granularity? | Any module with 15+ packages (too coarse)? Any module with 1 trivial package (too fine)? |
-| 5 | Existing code reuse? | Can existing code fill the role without creating new packages? |
-| 6 | Type model quality? | Can type improvements create cleaner module interfaces? |
-| 7 | Reinventing the wheel? | Are you leveraging well-established Go libraries instead of writing custom code? |
-| 8 | Import paths verified? | Does the replace/workspace strategy actually work? Did you trace the full import chain? |
-| 9 | Test deps isolated? | Are test-only deps absent from production go.mod files? Audit with `go mod why`. |
-| 10 | CI actually faster? | Will modularization speed up CI, or just move the bottleneck? Estimate per-module test times. |
-| 11 | Versioning realistic? | Does the versioning strategy match how this project is actually consumed? |
-| 12 | Error types accessible? | Can consumers use `errors.Is`/`errors.As` across module boundaries? Trace the imports. |
-| 13 | internal/ safe? | Did moving packages behind `internal/` break any cross-module imports? |
-| 14 | Over-modularized? | Should any proposed modules be merged? Do they always change together? |
-| 15 | Consumers broken? | Will external consumers compile after this change? Run the breaking change analysis. |
+| #   | Question                | Check                                                                                                    |
+| --- | ----------------------- | -------------------------------------------------------------------------------------------------------- |
+| 1   | What did you forget?    | Any packages not assigned to a module? Any imports not accounted for?                                    |
+| 2   | What could be improved? | Are any modules doing more than one thing? Any Unix principle violations?                                |
+| 3   | Split brains?           | Duplicate type definitions across modules that should be shared? Shared types that should be duplicated? |
+| 4   | Right granularity?      | Any module with 15+ packages (too coarse)? Any module with 1 trivial package (too fine)?                 |
+| 5   | Existing code reuse?    | Can existing code fill the role without creating new packages?                                           |
+| 6   | Type model quality?     | Can type improvements create cleaner module interfaces?                                                  |
+| 7   | Reinventing the wheel?  | Are you leveraging well-established Go libraries instead of writing custom code?                         |
+| 8   | Import paths verified?  | Does the replace/workspace strategy actually work? Did you trace the full import chain?                  |
+| 9   | Test deps isolated?     | Are test-only deps absent from production go.mod files? Audit with `go mod why`.                         |
+| 10  | CI actually faster?     | Will modularization speed up CI, or just move the bottleneck? Estimate per-module test times.            |
+| 11  | Versioning realistic?   | Does the versioning strategy match how this project is actually consumed?                                |
+| 12  | Error types accessible? | Can consumers use `errors.Is`/`errors.As` across module boundaries? Trace the imports.                   |
+| 13  | internal/ safe?         | Did moving packages behind `internal/` break any cross-module imports?                                   |
+| 14  | Over-modularized?       | Should any proposed modules be merged? Do they always change together?                                   |
+| 15  | Consumers broken?       | Will external consumers compile after this change? Run the breaking change analysis.                     |
 
 ### 4.2 Cross-reference with how-to-golang
 
@@ -658,12 +662,12 @@ Each task must:
 
 Sort tasks into tiers by concrete module category:
 
-| Tier | Impact | What goes here | Examples |
-|---|---|---|---|
-| 1 — Core | Foundational. Without this, nothing else works. | Extract core/domain module, fix all import paths to reference it | Create `core/go.mod`, move domain types, update all imports |
-| 2 — Untangle | High leverage. Fixes the most painful coupling. | Split god-packages, isolate test deps, break circular replace directives | Extract `storage/` from god-package, create `testhelpers/go.mod` |
-| 3 — Infrastructure | Broad value. Completes the module graph. | Extract infrastructure modules, add go.work, update CI per module | Create `storage/go.mod`, `projection/go.mod`, write `go.work` |
-| 4 — Polish | Long-term health. Can ship without, but should not. | Versioning setup, deprecation notices, documentation, examples | Add semver tags, write migration guide, update README |
+| Tier               | Impact                                              | What goes here                                                           | Examples                                                         |
+| ------------------ | --------------------------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| 1 — Core           | Foundational. Without this, nothing else works.     | Extract core/domain module, fix all import paths to reference it         | Create `core/go.mod`, move domain types, update all imports      |
+| 2 — Untangle       | High leverage. Fixes the most painful coupling.     | Split god-packages, isolate test deps, break circular replace directives | Extract `storage/` from god-package, create `testhelpers/go.mod` |
+| 3 — Infrastructure | Broad value. Completes the module graph.            | Extract infrastructure modules, add go.work, update CI per module        | Create `storage/go.mod`, `projection/go.mod`, write `go.work`    |
+| 4 — Polish         | Long-term health. Can ship without, but should not. | Versioning setup, deprecation notices, documentation, examples           | Add semver tags, write migration guide, update README            |
 
 ### 5.3 Verify no duplicate work
 
@@ -828,24 +832,24 @@ Update all documentation to reflect the new structure. Commit the final state.
 
 All modularization artifacts go to `docs/modularization/`:
 
-| File | Content |
-|---|---|
-| `PROPOSAL.md` | Full modularization proposal with all decisions |
-| `DEPENDENCY_GRAPH.md` | Current and proposed dependency analysis |
-| `EXECUTION_PLAN.md` | Step-by-step migration with impact sorting |
+| File                  | Content                                         |
+| --------------------- | ----------------------------------------------- |
+| `PROPOSAL.md`         | Full modularization proposal with all decisions |
+| `DEPENDENCY_GRAPH.md` | Current and proposed dependency analysis        |
+| `EXECUTION_PLAN.md`   | Step-by-step migration with impact sorting      |
 
 ---
 
 ## Git Workflow
 
-| When | Action |
-|---|---|
-| Before starting | Ensure clean git state, create feature branch |
-| After Phase 3 (proposal) | Commit with detailed message |
-| After Phase 4 (self-review) | Commit proposal updates |
-| After Phase 5 (execution plan) | Commit the plan |
-| After each Phase 6 step | Commit with detailed message |
-| After Phase 7 (reflection) | Commit documentation updates |
+| When                           | Action                                        |
+| ------------------------------ | --------------------------------------------- |
+| Before starting                | Ensure clean git state, create feature branch |
+| After Phase 3 (proposal)       | Commit with detailed message                  |
+| After Phase 4 (self-review)    | Commit proposal updates                       |
+| After Phase 5 (execution plan) | Commit the plan                               |
+| After each Phase 6 step        | Commit with detailed message                  |
+| After Phase 7 (reflection)     | Commit documentation updates                  |
 
 Do not push unless the user explicitly requests it.
 
