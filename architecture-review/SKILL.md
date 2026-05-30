@@ -14,6 +14,10 @@ metadata:
    - Service oriented?
    - Composable?
 
+## Output
+
+Write the review to `docs/architecture-understanding/YYYY-MM-DD_HH-mm_<name>.html` where `<name>` is a short descriptive slug for the review focus (e.g. `modularity`, `service-orientation`, `coupling`). Use the current timestamp for the date prefix. Create the directory if it doesn't exist.
+
 ## Process
 
 1. Thoroughly research the codebase structure
@@ -21,6 +25,7 @@ metadata:
 3. Assess scalability of current patterns
 4. Evaluate composability and service orientation
 5. Provide concrete, actionable recommendations
+6. Write findings to the output file
 
 ## Execution
 
