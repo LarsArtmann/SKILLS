@@ -21,8 +21,11 @@ SKILLS/
 ├── README.md                    # Project overview, skills table, installation
 ├── how-to-write-skills.md       # Authoritative guide for writing new skills (currently at root)
 ├── originals/                   # Legacy raw prompt source material. DO NOT EDIT.
-│   └── 1.md … 17.md             #   Preserved for historical reference. The skills/
-│                                 #   directories are canonical (see docs/status/).
+│   └── <skill-name>.md            #   17 files named after the skill they seeded.
+│                                 #   Two skills (execution-mode, pareto-planning)
+│                                 #   have multiple originals reflecting distinct
+│                                 #   sub-prompts. Skills/ directories are canonical
+│                                 #   (see docs/status/).
 │
 ├── <skill-name>/                # One directory per skill (18 total)
 │   ├── SKILL.md                 # Required: YAML frontmatter + agent instructions
@@ -42,7 +45,7 @@ SKILLS/
 | `<skill-name>/SKILL.md` | Edit freely — this is the work product |
 | `<skill-name>/references/*.md` | Edit freely — supporting docs |
 | `<skill-name>/scripts/*` | Edit freely — but keep executable |
-| `originals/1.md`–`17.md` | **NEVER EDIT** — legacy source material, superseded by skills |
+| `originals/*.md` | **NEVER EDIT** — legacy source material, superseded by skills |
 | `README.md` | Update when adding/removing skills |
 | `how-to-write-skills.md` | Update when skill-writing guidance changes |
 
@@ -98,9 +101,17 @@ Large reference files (>300 lines) should include a table of contents at the top
 
 ## 5. Known Gotchas & Non-Obvious Patterns
 
-### 5.1 Legacy Files (`originals/1.md`–`originals/17.md`)
+### 5.1 Legacy Files (`originals/<skill-name>.md`)
 
-These are the original raw prompt snippets that were converted into the organized skill directories. They are **source material, not canonical**, preserved in `originals/` for historical reference. Any edits to them are wasted work. The skills in `<skill-name>/SKILL.md` are the canonical versions.
+The `originals/` directory holds the 17 raw prompt snippets that seeded
+this repository, one per skill directory plus a few sub-variants
+(`execution-mode-reflective` / `execution-mode-aggressive`,
+`pareto-planning` / `pareto-planning-execution-plan` /
+`pareto-planning-12min-task-decomposition`). Files are named after the
+skill they originally produced, so you can read the seed prompt that
+generated any given skill. They are **source material, not canonical** —
+any edits are wasted work. The skills in `<skill-name>/SKILL.md` are
+the canonical versions.
 
 ### 5.2 `git commit <--` Syntax Bug
 
@@ -175,7 +186,7 @@ Before making changes:
 | Don't | Why |
 | --- | --- |
 | Add a build system (Makefile, package.json, go.mod) | This repo has no compilable code |
-| Edit `originals/1.md`–`17.md` | Legacy source material; skills are canonical |
+| Edit `originals/*.md` | Legacy source material; skills are canonical |
 | Add tests or CI | No runnable code to test |
 | Rename skill directories without updating `name:` in frontmatter | Crush matches directory name to frontmatter `name` |
 | Write vague `description` fields | The skill will never activate |
