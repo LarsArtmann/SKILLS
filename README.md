@@ -12,47 +12,47 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Architecture & Design
 
-| Skill | What It Does | Status |
-| ----- | ------------ | ------ |
-| **architecture-review** | Reviews architecture for scalability, modularity, and composability | 🟡 Thin |
-| **architecture-visualization** | Generates D2 architecture diagrams — current state vs. ideal target | 🟢 Solid |
-| **data-model-review** | Reviews and redesigns data models using TypeScript's full type system | 🟢 Comprehensive |
-| **pareto-planning** | 80/20 execution plans with D2 dependency graphs | 🟢 Comprehensive |
+| Skill                          | What It Does                                                          | Status           |
+| ------------------------------ | --------------------------------------------------------------------- | ---------------- |
+| **architecture-review**        | Reviews architecture for scalability, modularity, and composability   | 🟡 Thin          |
+| **architecture-visualization** | Generates D2 architecture diagrams — current state vs. ideal target   | 🟢 Solid         |
+| **data-model-review**          | Reviews and redesigns data models using Go's type system              | 🟢 Comprehensive |
+| **pareto-planning**            | 80/20 execution plans with D2 dependency graphs                       | 🟢 Comprehensive |
 
 ### Code Quality & Review
 
-| Skill | What It Does | Status |
-| ----- | ------------ | ------ |
-| **brutal-self-review** | Brutally honest self-review of codebase state (Go projects) | 🟢 Solid |
-| **code-quality-scan** | Build, lint, and semantic duplication analysis | 🟡 Thin |
-| **deduplicate-code** | Find and eliminate semantic code duplication | 🟡 Thin |
-| **full-code-review** | Comprehensive review visiting every code and test file | 🟢 Comprehensive |
-| **naming-review** | Audits and improves naming for types, functions, and identifiers | 🟢 Comprehensive |
+| Skill                  | What It Does                                                     | Status           |
+| ---------------------- | ---------------------------------------------------------------- | ---------------- |
+| **brutal-self-review** | Brutally honest self-review of codebase state (Go projects)      | 🟢 Solid         |
+| **code-quality-scan**  | Build, lint, and semantic duplication analysis                   | 🟡 Thin          |
+| **deduplicate-code**   | Find and eliminate semantic code duplication                     | 🟡 Thin          |
+| **full-code-review**   | Comprehensive review visiting every code and test file           | 🟢 Comprehensive |
+| **naming-review**      | Audits and improves naming for types, functions, and identifiers | 🟢 Comprehensive |
 
 ### Go Ecosystem
 
-| Skill | What It Does | Status |
-| ----- | ------------ | ------ |
-| **bdd-testing** | BDD tests with `onsi/ginkgo` for Go projects | 🟡 Thin |
+| Skill             | What It Does                                          | Status           |
+| ----------------- | ----------------------------------------------------- | ---------------- |
+| **bdd-testing**   | BDD tests with `onsi/ginkgo` for Go projects          | 🟡 Thin          |
 | **go-modularize** | Splits Go monorepos into semi-independent sub-modules | 🟢 Comprehensive |
-| **how-to-golang** | Go development decision guide — what to use, not how | 🟢 Comprehensive |
+| **how-to-golang** | Go development decision guide — what to use, not how  | 🟢 Comprehensive |
 
 ### Nix & DevOps
 
-| Skill | What It Does | Status |
-| ----- | ------------ | ------ |
-| **nix-flake-migration** | Migration proposals from justfile/shell scripts to Nix flakes | 🟡 Thin |
-| **nix-review** | Reviews and improves `.nix` files — 50+ problems, checklist-driven | 🟢 Comprehensive |
+| Skill                   | What It Does                                                       | Status           |
+| ----------------------- | ------------------------------------------------------------------ | ---------------- |
+| **nix-flake-migration** | Migration proposals from justfile/shell scripts to Nix flakes      | 🟡 Thin          |
+| **nix-review**          | Reviews and improves `.nix` files — 50+ problems, checklist-driven | 🟢 Comprehensive |
 
 ### Project Intelligence
 
-| Skill | What It Does | Status |
-| ----- | ------------ | ------ |
-| **docs-freshness-check** | Verifies docs are up-to-date with the actual codebase | 🟡 Thin |
-| **execution-mode** | Two modes: deep reflection or aggressive execution | 🟢 Solid |
-| **features-audit** | Creates/updates `FEATURES.md` by studying actual code | 🟡 Thin |
-| **status-report** | Full project status updates written to `docs/status/` | 🟡 Thin |
-| **todo-list-builder** | Builds `TODO_LIST.md` from docs, verified against code | 🟢 Solid |
+| Skill                    | What It Does                                           | Status   |
+| ------------------------ | ------------------------------------------------------ | -------- |
+| **docs-freshness-check** | Verifies docs are up-to-date with the actual codebase  | 🟡 Thin  |
+| **execution-mode**       | Two modes: deep reflection or aggressive execution     | 🟢 Solid |
+| **features-audit**       | Creates/updates `FEATURES.md` by studying actual code  | 🟡 Thin  |
+| **status-report**        | Full project status updates written to `docs/status/`  | 🟡 Thin  |
+| **todo-list-builder**    | Builds `TODO_LIST.md` from docs, verified against code | 🟢 Solid |
 
 ## Quick Start
 

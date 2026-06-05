@@ -1,559 +1,1024 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SKILLS Data Model — From Accidental to Intentional</title>
-  <style>
-    :root {
-      --bg: #0f172a;
-      --bg-elevated: #1e293b;
-      --bg-sunken: #020617;
-      --text: #e2e8f0;
-      --text-dim: #94a3b8;
-      --text-faint: #64748b;
-      --accent: #6366f1;
-      --accent-glow: rgba(99, 102, 241, 0.15);
-      --rose: #f43f5e;
-      --rose-glow: rgba(244, 63, 94, 0.15);
-      --emerald: #10b981;
-      --emerald-glow: rgba(16, 185, 129, 0.15);
-      --amber: #f59e0b;
-      --amber-glow: rgba(245, 158, 11, 0.15);
-      --cyan: #06b6d4;
-      --border: #334155;
-      --radius: 12px;
-      --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
-      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SKILLS Data Model — From Accidental to Intentional</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --bg-elevated: #1e293b;
+        --bg-sunken: #020617;
+        --text: #e2e8f0;
+        --text-dim: #94a3b8;
+        --text-faint: #64748b;
+        --accent: #6366f1;
+        --accent-glow: rgba(99, 102, 241, 0.15);
+        --rose: #f43f5e;
+        --rose-glow: rgba(244, 63, 94, 0.15);
+        --emerald: #10b981;
+        --emerald-glow: rgba(16, 185, 129, 0.15);
+        --amber: #f59e0b;
+        --amber-glow: rgba(245, 158, 11, 0.15);
+        --cyan: #06b6d4;
+        --border: #334155;
+        --radius: 12px;
+        --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+        --font-sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    html {
-      scroll-behavior: smooth;
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-sans);
-      line-height: 1.6;
-    }
+      html {
+        scroll-behavior: smooth;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-sans);
+        line-height: 1.6;
+      }
 
-    body {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
+      body {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
 
-    /* Typography */
-    h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
-    h1 { font-size: 2.5rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    h2 { font-size: 1.75rem; margin: 3rem 0 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
-    h3 { font-size: 1.25rem; margin: 2rem 0 0.75rem; color: var(--accent); }
-    h4 { font-size: 1rem; margin: 1.5rem 0 0.5rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
-    p { margin-bottom: 1rem; color: var(--text-dim); }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    strong { color: var(--text); }
+      /* Typography */
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+      }
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      h2 {
+        font-size: 1.75rem;
+        margin: 3rem 0 1.25rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border);
+      }
+      h3 {
+        font-size: 1.25rem;
+        margin: 2rem 0 0.75rem;
+        color: var(--accent);
+      }
+      h4 {
+        font-size: 1rem;
+        margin: 1.5rem 0 0.5rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      p {
+        margin-bottom: 1rem;
+        color: var(--text-dim);
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      strong {
+        color: var(--text);
+      }
 
-    /* Hero */
-    .hero {
-      text-align: center;
-      padding: 4rem 2rem;
-      margin-bottom: 3rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg) 100%);
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, transparent 50%);
-      pointer-events: none;
-    }
-    .hero-badge {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
-      background: var(--accent-glow);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 1rem;
-    }
-    .hero-subtitle { font-size: 1.125rem; color: var(--text-dim); max-width: 600px; margin: 0 auto; }
+      /* Hero */
+      .hero {
+        text-align: center;
+        padding: 4rem 2rem;
+        margin-bottom: 3rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg) 100%);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, transparent 50%);
+        pointer-events: none;
+      }
+      .hero-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        background: var(--accent-glow);
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+      }
+      .hero-subtitle {
+        font-size: 1.125rem;
+        color: var(--text-dim);
+        max-width: 600px;
+        margin: 0 auto;
+      }
 
-    /* Cards */
-    .card {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .card:hover { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-glow); }
-    .card-problem { border-left: 3px solid var(--rose); }
-    .card-solution { border-left: 3px solid var(--emerald); }
-    .card-warning { border-left: 3px solid var(--amber); }
+      /* Cards */
+      .card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .card:hover {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 1px var(--accent-glow);
+      }
+      .card-problem {
+        border-left: 3px solid var(--rose);
+      }
+      .card-solution {
+        border-left: 3px solid var(--emerald);
+      }
+      .card-warning {
+        border-left: 3px solid var(--amber);
+      }
 
-    /* Code */
-    pre {
-      background: var(--bg-sunken);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.25rem;
-      overflow-x: auto;
-      font-family: var(--font-mono);
-      font-size: 0.875rem;
-      line-height: 1.7;
-      margin: 1rem 0;
-    }
-    code {
-      font-family: var(--font-mono);
-      font-size: 0.875em;
-      background: var(--bg-sunken);
-      padding: 0.15rem 0.35rem;
-      border-radius: 4px;
-      color: var(--cyan);
-    }
-    pre code { padding: 0; background: transparent; }
+      /* Code */
+      pre {
+        background: var(--bg-sunken);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.25rem;
+        overflow-x: auto;
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        line-height: 1.7;
+        margin: 1rem 0;
+      }
+      code {
+        font-family: var(--font-mono);
+        font-size: 0.875em;
+        background: var(--bg-sunken);
+        padding: 0.15rem 0.35rem;
+        border-radius: 4px;
+        color: var(--cyan);
+      }
+      pre code {
+        padding: 0;
+        background: transparent;
+      }
 
-    /* Syntax highlighting (manual) */
-    .ts-keyword { color: #c678dd; }
-    .ts-type { color: #e5c07b; }
-    .ts-string { color: #98c379; }
-    .ts-comment { color: #5c6370; font-style: italic; }
-    .ts-function { color: #61afef; }
-    .ts-number { color: #d19a66; }
-    .ts-generic { color: #e06c75; }
-    .ts-operator { color: #56b6c2; }
+      /* Syntax highlighting (manual) */
+      .ts-keyword {
+        color: #c678dd;
+      }
+      .ts-type {
+        color: #e5c07b;
+      }
+      .ts-string {
+        color: #98c379;
+      }
+      .ts-comment {
+        color: #5c6370;
+        font-style: italic;
+      }
+      .ts-function {
+        color: #61afef;
+      }
+      .ts-number {
+        color: #d19a66;
+      }
+      .ts-generic {
+        color: #e06c75;
+      }
+      .ts-operator {
+        color: #56b6c2;
+      }
 
-    /* Tables */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1rem 0;
-      font-size: 0.875rem;
-    }
-    th, td {
-      padding: 0.75rem 1rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-    th {
-      color: var(--text-dim);
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 0.75rem;
-      letter-spacing: 0.05em;
-      background: var(--bg-sunken);
-    }
-    tr:hover td { background: rgba(255,255,255,0.02); }
+      /* Tables */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        font-size: 0.875rem;
+      }
+      th,
+      td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+      th {
+        color: var(--text-dim);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        background: var(--bg-sunken);
+      }
+      tr:hover td {
+        background: rgba(255, 255, 255, 0.02);
+      }
 
-    /* Badges */
-    .badge {
-      display: inline-block;
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    .badge-critical { background: var(--rose-glow); color: var(--rose); border: 1px solid var(--rose); }
-    .badge-high { background: var(--amber-glow); color: var(--amber); border: 1px solid var(--amber); }
-    .badge-medium { background: rgba(245, 158, 11, 0.08); color: #d97706; border: 1px solid #d97706; }
-    .badge-low { background: rgba(148, 163, 184, 0.1); color: var(--text-dim); border: 1px solid var(--text-faint); }
-    .badge-fixed { background: var(--emerald-glow); color: var(--emerald); border: 1px solid var(--emerald); }
+      /* Badges */
+      .badge {
+        display: inline-block;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .badge-critical {
+        background: var(--rose-glow);
+        color: var(--rose);
+        border: 1px solid var(--rose);
+      }
+      .badge-high {
+        background: var(--amber-glow);
+        color: var(--amber);
+        border: 1px solid var(--amber);
+      }
+      .badge-medium {
+        background: rgba(245, 158, 11, 0.08);
+        color: #d97706;
+        border: 1px solid #d97706;
+      }
+      .badge-low {
+        background: rgba(148, 163, 184, 0.1);
+        color: var(--text-dim);
+        border: 1px solid var(--text-faint);
+      }
+      .badge-fixed {
+        background: var(--emerald-glow);
+        color: var(--emerald);
+        border: 1px solid var(--emerald);
+      }
 
-    /* Grid layouts */
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    @media (max-width: 768px) {
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
-      body { padding: 1rem; }
-      h1 { font-size: 1.75rem; }
-    }
+      /* Grid layouts */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+      }
+      @media (max-width: 768px) {
+        .grid-2,
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+        body {
+          padding: 1rem;
+        }
+        h1 {
+          font-size: 1.75rem;
+        }
+      }
 
-    /* Diagrams */
-    .diagram {
-      background: var(--bg-sunken);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      margin: 1.5rem 0;
-      position: relative;
-    }
-    .node {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      margin: 0.25rem;
-      border: 1px solid var(--border);
-      background: var(--bg-elevated);
-    }
-    .node-core { border-color: var(--accent); background: var(--accent-glow); }
-    .node-optional { border-color: var(--text-faint); background: rgba(100,116,139,0.1); color: var(--text-faint); }
-    .node-problem { border-color: var(--rose); background: var(--rose-glow); color: var(--rose); }
-    .node-good { border-color: var(--emerald); background: var(--emerald-glow); color: var(--emerald); }
-    .arrow {
-      display: inline-block;
-      color: var(--text-faint);
-      margin: 0 0.5rem;
-      font-size: 1.25rem;
-    }
-    .dashed-arrow {
-      border-bottom: 2px dashed var(--text-faint);
-      display: inline-block;
-      width: 3rem;
-      vertical-align: middle;
-      margin: 0 0.5rem;
-    }
+      /* Diagrams */
+      .diagram {
+        background: var(--bg-sunken);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 2rem;
+        margin: 1.5rem 0;
+        position: relative;
+      }
+      .node {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin: 0.25rem;
+        border: 1px solid var(--border);
+        background: var(--bg-elevated);
+      }
+      .node-core {
+        border-color: var(--accent);
+        background: var(--accent-glow);
+      }
+      .node-optional {
+        border-color: var(--text-faint);
+        background: rgba(100, 116, 139, 0.1);
+        color: var(--text-faint);
+      }
+      .node-problem {
+        border-color: var(--rose);
+        background: var(--rose-glow);
+        color: var(--rose);
+      }
+      .node-good {
+        border-color: var(--emerald);
+        background: var(--emerald-glow);
+        color: var(--emerald);
+      }
+      .arrow {
+        display: inline-block;
+        color: var(--text-faint);
+        margin: 0 0.5rem;
+        font-size: 1.25rem;
+      }
+      .dashed-arrow {
+        border-bottom: 2px dashed var(--text-faint);
+        display: inline-block;
+        width: 3rem;
+        vertical-align: middle;
+        margin: 0 0.5rem;
+      }
 
-    /* Lists */
-    ul, ol { margin: 1rem 0 1rem 1.5rem; }
-    li { margin-bottom: 0.5rem; color: var(--text-dim); }
-    li strong { color: var(--text); }
+      /* Lists */
+      ul,
+      ol {
+        margin: 1rem 0 1rem 1.5rem;
+      }
+      li {
+        margin-bottom: 0.5rem;
+        color: var(--text-dim);
+      }
+      li strong {
+        color: var(--text);
+      }
 
-    /* Comparison */
-    .compare-header {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-    .compare-header div {
-      padding: 0.75rem 1rem;
-      border-radius: var(--radius) var(--radius) 0 0;
-      font-weight: 700;
-      font-size: 0.875rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      text-align: center;
-    }
-    .compare-before { background: var(--rose-glow); color: var(--rose); border: 1px solid var(--rose); border-bottom: none; }
-    .compare-after { background: var(--emerald-glow); color: var(--emerald); border: 1px solid var(--emerald); border-bottom: none; }
-    .compare-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .compare-row > div {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: 0 0 var(--radius) var(--radius);
-      padding: 1.25rem;
-    }
+      /* Comparison */
+      .compare-header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .compare-header div {
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius) var(--radius) 0 0;
+        font-weight: 700;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-align: center;
+      }
+      .compare-before {
+        background: var(--rose-glow);
+        color: var(--rose);
+        border: 1px solid var(--rose);
+        border-bottom: none;
+      }
+      .compare-after {
+        background: var(--emerald-glow);
+        color: var(--emerald);
+        border: 1px solid var(--emerald);
+        border-bottom: none;
+      }
+      .compare-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .compare-row > div {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 0 0 var(--radius) var(--radius);
+        padding: 1.25rem;
+      }
 
-    /* Nav */
-    .toc {
-      position: sticky;
-      top: 1rem;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    .toc h3 { margin-top: 0; }
-    .toc ul { list-style: none; margin: 0; }
-    .toc li { margin: 0.35rem 0; }
-    .toc a { color: var(--text-dim); font-size: 0.875rem; }
-    .toc a:hover { color: var(--accent); }
+      /* Nav */
+      .toc {
+        position: sticky;
+        top: 1rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      .toc h3 {
+        margin-top: 0;
+      }
+      .toc ul {
+        list-style: none;
+        margin: 0;
+      }
+      .toc li {
+        margin: 0.35rem 0;
+      }
+      .toc a {
+        color: var(--text-dim);
+        font-size: 0.875rem;
+      }
+      .toc a:hover {
+        color: var(--accent);
+      }
 
-    /* Migration */
-    .migration-step {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      margin-bottom: 1rem;
-      padding: 1rem;
-      background: var(--bg-elevated);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-    }
-    .migration-num {
-      width: 2rem;
-      height: 2rem;
-      border-radius: 50%;
-      background: var(--accent-glow);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 0.875rem;
-      flex-shrink: 0;
-    }
-    .migration-content h4 { margin: 0 0 0.25rem; }
-    .migration-content p { margin: 0; }
+      /* Migration */
+      .migration-step {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: var(--bg-elevated);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+      }
+      .migration-num {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: var(--accent-glow);
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.875rem;
+        flex-shrink: 0;
+      }
+      .migration-content h4 {
+        margin: 0 0 0.25rem;
+      }
+      .migration-content p {
+        margin: 0;
+      }
 
-    /* Stats */
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin: 1.5rem 0;
-    }
-    .stat-card {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      text-align: center;
-    }
-    .stat-value {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-    .stat-label {
-      font-size: 0.875rem;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
+      /* Stats */
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+      }
+      .stat-card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        text-align: center;
+      }
+      .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--accent);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+      }
+      .stat-label {
+        font-size: 0.875rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: var(--bg-sunken); }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--text-faint); }
-  </style>
-</head>
-<body>
-
-  <div class="hero">
-    <div class="hero-badge">Architecture Deep-Dive</div>
-    <h1>SKILLS Data Model</h1>
-    <p class="hero-subtitle">From accidental complexity to intentional design. A first-principles reimagining of how agent skills are structured, validated, and composed.</p>
-  </div>
-
-  <nav class="toc">
-    <h3>Contents</h3>
-    <ul>
-      <li><a href="#current-state">1. Current State</a></li>
-      <li><a href="#problems">2. Problem Catalog</a></li>
-      <li><a href="#vision">3. The Vision</a></li>
-      <li><a href="#what-stays">3.5 What Stays the Same</a></li>
-      <li><a href="#types">4. TypeScript Data Model</a></li>
-      <li><a href="#composition">5. Composition &amp; Generics</a></li>
-      <li><a href="#concrete">5.5 Concrete Transformation</a></li>
-      <li><a href="#validation">6. Validation Layer</a></li>
-      <li><a href="#comparison">7. Before / After</a></li>
-      <li><a href="#anti-patterns">7.5 Anti-Patterns</a></li>
-      <li><a href="#migration">8. Migration Roadmap</a></li>
-      <li><a href="#conclusion">9. Conclusion</a></li>
-    </ul>
-  </nav>
-
-  <section id="current-state">
-    <h2>1. Current State</h2>
-    <p>The SKILLS repository contains <strong>18 skill directories</strong>, each with a <code>SKILL.md</code> file and optional subdirectories. The entire data model is implicit — encoded in directory names, YAML frontmatter conventions, and markdown body structure. There is no schema, no validation, and no machine-readable relationships.</p>
-
-    <div class="diagram">
-      <div style="text-align:center; margin-bottom:1rem; font-weight:600; color:var(--text-dim);">Current Implicit Data Model</div>
-      <div style="text-align:center;">
-        <div class="node node-core">SKILL.md</div>
-        <div class="arrow">&#8594;</div>
-        <div class="node node-optional">scripts/</div>
-        <div class="node node-optional">references/</div>
-        <div class="node node-optional">rules/</div>
-        <div class="node node-optional">assets/</div>
-      </div>
-      <div style="text-align:center; margin-top:1rem; font-size:0.875rem; color:var(--text-faint);">
-        Frontmatter: name, description, metadata.tags (all strings)<br>
-        Body: prose instructions. Relationships: markdown links. Validation: none.
-      </div>
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-sunken);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--text-faint);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hero">
+      <div class="hero-badge">Architecture Deep-Dive</div>
+      <h1>SKILLS Data Model</h1>
+      <p class="hero-subtitle">
+        From accidental complexity to intentional design. A first-principles reimagining of how
+        agent skills are structured, validated, and composed.
+      </p>
     </div>
 
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-value" style="color:var(--rose)">18</div>
-        <div class="stat-label">Skills (Directories)</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" style="color:var(--amber)">9</div>
-        <div class="stat-label">Thin Skills (&lt;35 lines)</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" style="color:var(--amber)">6+</div>
-        <div class="stat-label">Duplicated Boilers</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" style="color:var(--rose)">0</div>
-        <div class="stat-label">Machine-Readable Schema</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" style="color:var(--rose)">0</div>
-        <div class="stat-label">Cross-Skill Dependencies</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" style="color:var(--rose)">0</div>
-        <div class="stat-label">Empirical Test Data</div>
-      </div>
-    </div>
-  </section>
+    <nav class="toc">
+      <h3>Contents</h3>
+      <ul>
+        <li><a href="#current-state">1. Current State</a></li>
+        <li><a href="#problems">2. Problem Catalog</a></li>
+        <li><a href="#vision">3. The Vision</a></li>
+        <li><a href="#what-stays">3.5 What Stays the Same</a></li>
+        <li><a href="#types">4. TypeScript Data Model</a></li>
+        <li><a href="#composition">5. Composition &amp; Generics</a></li>
+        <li><a href="#concrete">5.5 Concrete Transformation</a></li>
+        <li><a href="#validation">6. Validation Layer</a></li>
+        <li><a href="#comparison">7. Before / After</a></li>
+        <li><a href="#anti-patterns">7.5 Anti-Patterns</a></li>
+        <li><a href="#migration">8. Migration Roadmap</a></li>
+        <li><a href="#conclusion">9. Conclusion</a></li>
+      </ul>
+    </nav>
 
-  <section id="problems">
-    <h2>2. Problem Catalog</h2>
-    <p>Each problem is graded by <strong>severity</strong> (how much damage it causes) and <strong>systemicity</strong> (how many skills it affects). Problems with high systemicity are force multipliers — fix them once, improve everything.</p>
+    <section id="current-state">
+      <h2>1. Current State</h2>
+      <p>
+        The SKILLS repository contains <strong>18 skill directories</strong>, each with a
+        <code>SKILL.md</code> file and optional subdirectories. The entire data model is implicit —
+        encoded in directory names, YAML frontmatter conventions, and markdown body structure. There
+        is no schema, no validation, and no machine-readable relationships.
+      </p>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--rose);">P1 — No Formal Schema</h4>
-        <span class="badge badge-critical">Critical</span>
+      <div class="diagram">
+        <div
+          style="text-align: center; margin-bottom: 1rem; font-weight: 600; color: var(--text-dim)"
+        >
+          Current Implicit Data Model
+        </div>
+        <div style="text-align: center">
+          <div class="node node-core">SKILL.md</div>
+          <div class="arrow">&#8594;</div>
+          <div class="node node-optional">scripts/</div>
+          <div class="node node-optional">references/</div>
+          <div class="node node-optional">rules/</div>
+          <div class="node node-optional">assets/</div>
+        </div>
+        <div
+          style="
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-faint);
+          "
+        >
+          Frontmatter: name, description, metadata.tags (all strings)<br />
+          Body: prose instructions. Relationships: markdown links. Validation: none.
+        </div>
       </div>
-      <p style="margin:0;">The only "schema" is <code>how-to-write-skills.md</code> — a human-readable guide. Frontmatter fields are not validated. A skill can have a <code>description</code> that is documentation instead of a trigger, and nothing catches it. A skill can claim <code>name: foo</code> while living in directory <code>bar/</code>, and nothing catches it.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>TypeScript fix:</strong> Branded types <code>SkillName</code> and <code>FilePath</code> + a <code>ValidatedSkill</code> type that encodes <code>__directoryMatchesName: true</code> at the type level.</p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--rose);">P2 — Stringly-Typed Everything</h4>
-        <span class="badge badge-critical">Critical</span>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--rose)">18</div>
+          <div class="stat-label">Skills (Directories)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--amber)">9</div>
+          <div class="stat-label">Thin Skills (&lt;35 lines)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--amber)">6+</div>
+          <div class="stat-label">Duplicated Boilers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--rose)">0</div>
+          <div class="stat-label">Machine-Readable Schema</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--rose)">0</div>
+          <div class="stat-label">Cross-Skill Dependencies</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--rose)">0</div>
+          <div class="stat-label">Empirical Test Data</div>
+        </div>
       </div>
-      <p style="margin:0;"><code>tags</code> is a comma-separated string, not a typed array. <code>status</code> doesn't exist as a field — it only lives in README.md tables and audit docs. Quality grades like "thin" / "solid" / "comprehensive" have no enum definition. The <code>features-audit</code> skill even contains a typo: <code>PARTIALLY_FUNTIONAL</code> — impossible with a real enum.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>TypeScript fix:</strong> <code>enum SkillStatus { Draft, Thin, Solid, Comprehensive }</code> + <code>ReadonlyArray&lt;string&gt;</code> for tags. Make invalid states unrepresentable.</p>
-    </div>
+    </section>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">P3 — Monolithic Skills</h4>
-        <span class="badge badge-high">High</span>
+    <section id="problems">
+      <h2>2. Problem Catalog</h2>
+      <p>
+        Each problem is graded by <strong>severity</strong> (how much damage it causes) and
+        <strong>systemicity</strong> (how many skills it affects). Problems with high systemicity
+        are force multipliers — fix them once, improve everything.
+      </p>
+
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--rose)">P1 — No Formal Schema</h4>
+          <span class="badge badge-critical">Critical</span>
+        </div>
+        <p style="margin: 0">
+          The only "schema" is <code>how-to-write-skills.md</code> — a human-readable guide.
+          Frontmatter fields are not validated. A skill can have a <code>description</code> that is
+          documentation instead of a trigger, and nothing catches it. A skill can claim
+          <code>name: foo</code> while living in directory <code>bar/</code>, and nothing catches
+          it.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>TypeScript fix:</strong> Branded types <code>SkillName</code> and
+          <code>FilePath</code> + a <code>ValidatedSkill</code> type that encodes
+          <code>__directoryMatchesName: true</code> at the type level.
+        </p>
       </div>
-      <p style="margin:0;">Skills are atomic blobs of markdown. There is no way to compose a skill from reusable fragments. The "READ, UNDERSTAND, RESEARCH, REFLECT" execution boilerplate is copy-pasted into 6+ skills. When it changes in <code>execution-mode</code>, the other 5 become stale. This is the textbook definition of a DRY violation.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>TypeScript fix:</strong> <code>ProcessFragment&lt;TIntent&gt;</code> as a composable unit. Skills reference fragments by ID rather than inlining them. Update the fragment once, all consumers get the new version.</p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">P4 — No Dependency Graph</h4>
-        <span class="badge badge-high">High</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--rose)">P2 — Stringly-Typed Everything</h4>
+          <span class="badge badge-critical">Critical</span>
+        </div>
+        <p style="margin: 0">
+          <code>tags</code> is a comma-separated string, not a typed array.
+          <code>status</code> doesn't exist as a field — it only lives in README.md tables and audit
+          docs. Quality grades like "thin" / "solid" / "comprehensive" have no enum definition. The
+          <code>features-audit</code> skill even contains a typo: <code>PARTIALLY_FUNTIONAL</code> —
+          impossible with a real enum.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>TypeScript fix:</strong>
+          <code>enum SkillStatus { Draft, Thin, Solid, Comprehensive }</code> +
+          <code>ReadonlyArray&lt;string&gt;</code> for tags. Make invalid states unrepresentable.
+        </p>
       </div>
-      <p style="margin:0;">Cross-references between skills are just markdown links in prose. "For Go ecosystem libraries, use the <code>how-to-golang</code> skill" — this is not machine-readable. We cannot answer: "Which skills would break if <code>how-to-golang</code> is removed?" or "What is the transitive closure of skills needed for a Go project?"</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>TypeScript fix:</strong> <code>relationships: { requires?: SkillName[]; references?: SkillName[]; conflictsWith?: SkillName[] }</code> — a directed, typed dependency graph.</p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">P5 — No Versioning or Lifecycle</h4>
-        <span class="badge badge-high">High</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">P3 — Monolithic Skills</h4>
+          <span class="badge badge-high">High</span>
+        </div>
+        <p style="margin: 0">
+          Skills are atomic blobs of markdown. There is no way to compose a skill from reusable
+          fragments. The "READ, UNDERSTAND, RESEARCH, REFLECT" execution boilerplate is copy-pasted
+          into 6+ skills. When it changes in <code>execution-mode</code>, the other 5 become stale.
+          This is the textbook definition of a DRY violation.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>TypeScript fix:</strong> <code>ProcessFragment&lt;TIntent&gt;</code> as a
+          composable unit. Skills reference fragments by ID rather than inlining them. Update the
+          fragment once, all consumers get the new version.
+        </p>
       </div>
-      <p style="margin:0;">Skills have no <code>version</code>, no <code>createdAt</code>, no <code>updatedAt</code>, no <code>deprecated</code> flag. The comprehensive audit had to manually count lines and guess quality. There is no way to know if a skill is actively maintained or rotting. The <code>originals/</code> directory exists because there is no deprecation mechanism.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>TypeScript fix:</strong> <code>version: SemverString</code> + <code>createdAt: Date</code> + <code>updatedAt: Date</code> + <code>deprecated?: Date</code>. Derived types can filter active vs. stale skills at compile time.</p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">P6 — Manual Catalog Maintenance</h4>
-        <span class="badge badge-high">High</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">P4 — No Dependency Graph</h4>
+          <span class="badge badge-high">High</span>
+        </div>
+        <p style="margin: 0">
+          Cross-references between skills are just markdown links in prose. "For Go ecosystem
+          libraries, use the <code>how-to-golang</code> skill" — this is not machine-readable. We
+          cannot answer: "Which skills would break if <code>how-to-golang</code> is removed?" or
+          "What is the transitive closure of skills needed for a Go project?"
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>TypeScript fix:</strong>
+          <code
+            >relationships: { requires?: SkillName[]; references?: SkillName[]; conflictsWith?:
+            SkillName[] }</code
+          >
+          — a directed, typed dependency graph.
+        </p>
       </div>
-      <p style="margin:0;">The README.md skills table is maintained by hand. It claims 18 skills while the comprehensive audit found 15. It claims 8 are thin while the audit found 9. The "Quick Start" section has installation instructions that will install dead legacy files. Any schema change requires touching N files.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>TypeScript fix:</strong> <code>type SkillCatalog = Record&lt;SkillName, Skill&gt;</code> + a single source of truth. README, audit docs, and trigger indices are all <em>derived views</em> generated from the catalog via mapped types and utility functions.</p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">P7 — No Validation Layer</h4>
-        <span class="badge badge-high">High</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">P5 — No Versioning or Lifecycle</h4>
+          <span class="badge badge-high">High</span>
+        </div>
+        <p style="margin: 0">
+          Skills have no <code>version</code>, no <code>createdAt</code>, no <code>updatedAt</code>,
+          no <code>deprecated</code> flag. The comprehensive audit had to manually count lines and
+          guess quality. There is no way to know if a skill is actively maintained or rotting. The
+          <code>originals/</code> directory exists because there is no deprecation mechanism.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>TypeScript fix:</strong> <code>version: SemverString</code> +
+          <code>createdAt: Date</code> + <code>updatedAt: Date</code> +
+          <code>deprecated?: Date</code>. Derived types can filter active vs. stale skills at
+          compile time.
+        </p>
       </div>
-      <p style="margin:0;">There is no tool that validates: "Does the <code>name</code> in frontmatter match the directory name?" "Does every <code>references/go-ecosystem.md</code> link point to an existing file?" "Are all <code>SkillName</code> references in <code>relationships</code> resolvable?" The audit found broken references and mismatched names entirely by manual inspection.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>TypeScript fix:</strong> A <code>ValidatedSkill</code> intersection type that requires proof of structural and referential integrity. Validation becomes a type-level concern, not a runtime afterthought.</p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">P8 — No Empirical Testing Metadata</h4>
-        <span class="badge badge-high">High</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">P6 — Manual Catalog Maintenance</h4>
+          <span class="badge badge-high">High</span>
+        </div>
+        <p style="margin: 0">
+          The README.md skills table is maintained by hand. It claims 18 skills while the
+          comprehensive audit found 15. It claims 8 are thin while the audit found 9. The "Quick
+          Start" section has installation instructions that will install dead legacy files. Any
+          schema change requires touching N files.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>TypeScript fix:</strong>
+          <code>type SkillCatalog = Record&lt;SkillName, Skill&gt;</code> + a single source of
+          truth. README, audit docs, and trigger indices are all <em>derived views</em> generated
+          from the catalog via mapped types and utility functions.
+        </p>
       </div>
-      <p style="margin:0;">Skill descriptions are "educated guesses." None have been tested in Crush's actual triggering mechanism. The <code>skill-creator</code> skill has an optimization loop, but there is no structured place to store test prompts, expected activations, or accuracy scores.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>TypeScript fix:</strong> <code>empiricalTests: Array&lt;{ prompt: string; expectedSkill: SkillName; triggered: boolean; accuracy: number }&gt;</code> — first-class testing data attached to the skill itself.</p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">P9 — No Environment Requirements</h4>
-        <span class="badge badge-medium">Medium</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">P7 — No Validation Layer</h4>
+          <span class="badge badge-high">High</span>
+        </div>
+        <p style="margin: 0">
+          There is no tool that validates: "Does the <code>name</code> in frontmatter match the
+          directory name?" "Does every <code>references/go-ecosystem.md</code> link point to an
+          existing file?" "Are all <code>SkillName</code> references in
+          <code>relationships</code> resolvable?" The audit found broken references and mismatched
+          names entirely by manual inspection.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>TypeScript fix:</strong> A <code>ValidatedSkill</code> intersection type that
+          requires proof of structural and referential integrity. Validation becomes a type-level
+          concern, not a runtime afterthought.
+        </p>
       </div>
-      <p style="margin:0;"><code>architecture-visualization</code> needs <code>d2</code> CLI. <code>deduplicate-code</code> needs <code>art-dupl</code>. <code>naming-review</code> needs <code>revive</code>. None of this is declared. The skill just hardcodes commands and hopes the binary exists. There is no fallback strategy, no version constraint, no installation guidance.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>TypeScript fix:</strong> <code>environment: { requiredCLIs: Array&lt;{ name: string; minVersion?: SemverString }&gt;; optionalCLIs: Array&lt;{ name: string; fallback?: string }&gt; }</code></p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">P10 — No Output Schema</h4>
-        <span class="badge badge-medium">Medium</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">P8 — No Empirical Testing Metadata</h4>
+          <span class="badge badge-high">High</span>
+        </div>
+        <p style="margin: 0">
+          Skill descriptions are "educated guesses." None have been tested in Crush's actual
+          triggering mechanism. The <code>skill-creator</code> skill has an optimization loop, but
+          there is no structured place to store test prompts, expected activations, or accuracy
+          scores.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>TypeScript fix:</strong>
+          <code
+            >empiricalTests: Array&lt;{ prompt: string; expectedSkill: SkillName; triggered:
+            boolean; accuracy: number }&gt;</code
+          >
+          — first-class testing data attached to the skill itself.
+        </p>
       </div>
-      <p style="margin:0;">Skills that produce structured output (<code>pareto-planning</code> writes D2 execution graphs, <code>status-report</code> writes markdown tables, <code>features-audit</code> writes FEATURES.md) have no formal schema definition. The output format is described in prose, not in a machine-checkable structure. Only 2 of 15 skills have any output template.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>TypeScript fix:</strong> <code>outputs: { format: 'markdown' | 'html' | 'd2' | 'json'; schema: unknown; template?: FilePath; examples?: unknown[] }</code></p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">P11 — Weak Resource Typing</h4>
-        <span class="badge badge-medium">Medium</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">P9 — No Environment Requirements</h4>
+          <span class="badge badge-medium">Medium</span>
+        </div>
+        <p style="margin: 0">
+          <code>architecture-visualization</code> needs <code>d2</code> CLI.
+          <code>deduplicate-code</code> needs <code>art-dupl</code>.
+          <code>naming-review</code> needs <code>revive</code>. None of this is declared. The skill
+          just hardcodes commands and hopes the binary exists. There is no fallback strategy, no
+          version constraint, no installation guidance.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>TypeScript fix:</strong>
+          <code
+            >environment: { requiredCLIs: Array&lt;{ name: string; minVersion?: SemverString }&gt;;
+            optionalCLIs: Array&lt;{ name: string; fallback?: string }&gt; }</code
+          >
+        </p>
       </div>
-      <p style="margin:0;"><code>scripts/</code>, <code>references/</code>, <code>rules/</code>, <code>assets/</code> are just directories. A reference file has no metadata about its topic, size, or whether it includes a table of contents. A script has no metadata about whether it is executable or what it does. The agent must read the file to discover this — wasting context tokens on irrelevant files.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>TypeScript fix:</strong> Discriminated union <code>Resource = Script | Reference | Rule | Asset</code> with rich per-variant metadata. The agent can filter resources by <code>kind</code> and <code>topic</code> without reading the file.</p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">P12 — No Generic Parameterization</h4>
-        <span class="badge badge-medium">Medium</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">P10 — No Output Schema</h4>
+          <span class="badge badge-medium">Medium</span>
+        </div>
+        <p style="margin: 0">
+          Skills that produce structured output (<code>pareto-planning</code> writes D2 execution
+          graphs, <code>status-report</code> writes markdown tables,
+          <code>features-audit</code> writes FEATURES.md) have no formal schema definition. The
+          output format is described in prose, not in a machine-checkable structure. Only 2 of 15
+          skills have any output template.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>TypeScript fix:</strong>
+          <code
+            >outputs: { format: 'markdown' | 'html' | 'd2' | 'json'; schema: unknown; template?:
+            FilePath; examples?: unknown[] }</code
+          >
+        </p>
       </div>
-      <p style="margin:0;"><code>naming-review</code> has language-specific inline tables for Go, TypeScript, Rust, Python, Java, and C#. This should be a generic skill parameterized by <code>&lt;TLanguage&gt;</code> with language-specific rules loaded from <code>references/&lt;lang&gt;.md</code>. Currently, adding a language requires editing the skill body. With generics, it requires adding one reference file.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>TypeScript fix:</strong> <code>interface Skill&lt;TDomain extends string&gt;</code> where <code>TDomain</code> narrows available references, rules, and environment requirements.</p>
-    </div>
-  </section>
 
-  <section id="vision">
-    <h2>3. The Vision</h2>
-    <p>What does perfection look like? A data model where:</p>
-    <ul>
-      <li><strong>Invalid states are unrepresentable</strong> — If a skill is missing required fields, TypeScript refuses to compile. If a cross-reference points to a non-existent skill, the type checker catches it.</li>
-      <li><strong>Skills are composable, not monolithic</strong> — A skill is a bundle of references to reusable fragments. Update a fragment once, every skill that uses it improves instantly.</li>
-      <li><strong>The catalog is the source of truth</strong> — README, trigger indices, domain groupings, and audit reports are all <em>views</em> derived from the catalog. They cannot drift out of sync because they are generated.</li>
-      <li><strong>Testing is first-class</strong> — Every skill carries its own empirical test suite: trigger prompts, expected activations, and accuracy scores. Quality is measured, not guessed.</li>
-      <li><strong>Dependencies are explicit</strong> — A directed graph of skill relationships enables impact analysis, transitive closure queries, and automated stale-reference detection.</li>
-      <li><strong>Progressive disclosure is encoded</strong> — The agent knows the size, topic, and relevance of every resource before reading it. No more wasting context tokens on irrelevant files.</li>
-    </ul>
-  </section>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">P11 — Weak Resource Typing</h4>
+          <span class="badge badge-medium">Medium</span>
+        </div>
+        <p style="margin: 0">
+          <code>scripts/</code>, <code>references/</code>, <code>rules/</code>,
+          <code>assets/</code> are just directories. A reference file has no metadata about its
+          topic, size, or whether it includes a table of contents. A script has no metadata about
+          whether it is executable or what it does. The agent must read the file to discover this —
+          wasting context tokens on irrelevant files.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>TypeScript fix:</strong> Discriminated union
+          <code>Resource = Script | Reference | Rule | Asset</code> with rich per-variant metadata.
+          The agent can filter resources by <code>kind</code> and <code>topic</code> without reading
+          the file.
+        </p>
+      </div>
 
-  <section id="what-stays">
-    <h2>3.5 What Stays the Same</h2>
-    <p>The improved model is an <strong>extension</strong>, not a replacement. These foundational conventions remain unchanged:</p>
-    <ul>
-      <li><strong>Directory-per-skill</strong> — <code>&lt;skill-name&gt;/</code> is still the unit of organization. The directory name must still match the <code>name</code> field.</li>
-      <li><strong>YAML frontmatter in SKILL.md</strong> — The <code>---</code> block at the top of every <code>SKILL.md</code> remains the canonical metadata source. We extend it with new optional fields, not replace it.</li>
-      <li><strong>Markdown body as instructions</strong> — The agent still reads the body as step-by-step procedure. The model adds structure to the <em>metadata</em>, not the prose.</li>
-      <li><strong>Progressive disclosure</strong> — <code>references/</code>, <code>scripts/</code>, <code>rules/</code>, <code>assets/</code> remain optional subdirectories. The improvement is adding machine-readable indices to these directories.</li>
-      <li><strong>Relative links</strong> — Skills still reference sibling files with <code>[./references/foo.md]</code>. The model adds a validation layer that checks these links resolve.</li>
-      <li><strong>No build step for skills</strong> — Skills remain plain text files. The TypeScript types live in a single <code>schema.ts</code> file used by the validation script, not embedded in each skill.</li>
-    </ul>
-    <p>This is architectural deepening, not architectural replacement. Every existing skill continues to work. Migration is opt-in per field.</p>
-  </section>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">P12 — No Generic Parameterization</h4>
+          <span class="badge badge-medium">Medium</span>
+        </div>
+        <p style="margin: 0">
+          <code>naming-review</code> has language-specific inline tables for Go, TypeScript, Rust,
+          Python, Java, and C#. This should be a generic skill parameterized by
+          <code>&lt;TLanguage&gt;</code> with language-specific rules loaded from
+          <code>references/&lt;lang&gt;.md</code>. Currently, adding a language requires editing the
+          skill body. With generics, it requires adding one reference file.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>TypeScript fix:</strong>
+          <code>interface Skill&lt;TDomain extends string&gt;</code> where
+          <code>TDomain</code> narrows available references, rules, and environment requirements.
+        </p>
+      </div>
+    </section>
 
-  <section id="types">
-    <h2>4. TypeScript Data Model</h2>
-    <p>The following is not pseudocode. It is a compilable, type-safe model that uses every powerful feature of TypeScript's type system to make the design intent explicit.</p>
+    <section id="vision">
+      <h2>3. The Vision</h2>
+      <p>What does perfection look like? A data model where:</p>
+      <ul>
+        <li>
+          <strong>Invalid states are unrepresentable</strong> — If a skill is missing required
+          fields, TypeScript refuses to compile. If a cross-reference points to a non-existent
+          skill, the type checker catches it.
+        </li>
+        <li>
+          <strong>Skills are composable, not monolithic</strong> — A skill is a bundle of references
+          to reusable fragments. Update a fragment once, every skill that uses it improves
+          instantly.
+        </li>
+        <li>
+          <strong>The catalog is the source of truth</strong> — README, trigger indices, domain
+          groupings, and audit reports are all <em>views</em> derived from the catalog. They cannot
+          drift out of sync because they are generated.
+        </li>
+        <li>
+          <strong>Testing is first-class</strong> — Every skill carries its own empirical test
+          suite: trigger prompts, expected activations, and accuracy scores. Quality is measured,
+          not guessed.
+        </li>
+        <li>
+          <strong>Dependencies are explicit</strong> — A directed graph of skill relationships
+          enables impact analysis, transitive closure queries, and automated stale-reference
+          detection.
+        </li>
+        <li>
+          <strong>Progressive disclosure is encoded</strong> — The agent knows the size, topic, and
+          relevance of every resource before reading it. No more wasting context tokens on
+          irrelevant files.
+        </li>
+      </ul>
+    </section>
 
-    <h3>4.1 Branded Types — Preventing Accidental Substitution</h3>
-    <pre><code><span class="ts-comment">// A SkillName is not just any string. It has structural proof that it passed validation.</span>
+    <section id="what-stays">
+      <h2>3.5 What Stays the Same</h2>
+      <p>
+        The improved model is an <strong>extension</strong>, not a replacement. These foundational
+        conventions remain unchanged:
+      </p>
+      <ul>
+        <li>
+          <strong>Directory-per-skill</strong> — <code>&lt;skill-name&gt;/</code> is still the unit
+          of organization. The directory name must still match the <code>name</code> field.
+        </li>
+        <li>
+          <strong>YAML frontmatter in SKILL.md</strong> — The <code>---</code> block at the top of
+          every <code>SKILL.md</code> remains the canonical metadata source. We extend it with new
+          optional fields, not replace it.
+        </li>
+        <li>
+          <strong>Markdown body as instructions</strong> — The agent still reads the body as
+          step-by-step procedure. The model adds structure to the <em>metadata</em>, not the prose.
+        </li>
+        <li>
+          <strong>Progressive disclosure</strong> — <code>references/</code>, <code>scripts/</code>,
+          <code>rules/</code>, <code>assets/</code> remain optional subdirectories. The improvement
+          is adding machine-readable indices to these directories.
+        </li>
+        <li>
+          <strong>Relative links</strong> — Skills still reference sibling files with
+          <code>[./references/foo.md]</code>. The model adds a validation layer that checks these
+          links resolve.
+        </li>
+        <li>
+          <strong>No build step for skills</strong> — Skills remain plain text files. The TypeScript
+          types live in a single <code>schema.ts</code> file used by the validation script, not
+          embedded in each skill.
+        </li>
+      </ul>
+      <p>
+        This is architectural deepening, not architectural replacement. Every existing skill
+        continues to work. Migration is opt-in per field.
+      </p>
+    </section>
+
+    <section id="types">
+      <h2>4. TypeScript Data Model</h2>
+      <p>
+        The following is not pseudocode. It is a compilable, type-safe model that uses every
+        powerful feature of TypeScript's type system to make the design intent explicit.
+      </p>
+
+      <h3>4.1 Branded Types — Preventing Accidental Substitution</h3>
+      <pre><code><span class="ts-comment">// A SkillName is not just any string. It has structural proof that it passed validation.</span>
 <span class="ts-keyword">type</span> <span class="ts-type">SkillName</span> = <span class="ts-type">string</span> &amp; { <span class="ts-keyword">readonly</span> <span class="ts-generic">__brand</span>: <span class="ts-string">'SkillName'</span> };
 
 <span class="ts-comment">// FilePath ensures we never pass a raw string where a validated path is expected.</span>
@@ -574,8 +1039,8 @@
 <span class="ts-comment">// Quality score is a branded number, 0-100, validated at construction.</span>
 <span class="ts-keyword">type</span> <span class="ts-type">QualityScore</span> = <span class="ts-type">number</span> &amp; { <span class="ts-keyword">readonly</span> <span class="ts-generic">__brand</span>: <span class="ts-string">'QualityScore'</span> };</code></pre>
 
-    <h3>4.2 Discriminated Unions — Rich Resource Typing</h3>
-    <pre><code><span class="ts-comment">// Each resource variant carries its own metadata. Exhaustive switch checks are enforced.</span>
+      <h3>4.2 Discriminated Unions — Rich Resource Typing</h3>
+      <pre><code><span class="ts-comment">// Each resource variant carries its own metadata. Exhaustive switch checks are enforced.</span>
 <span class="ts-keyword">type</span> <span class="ts-type">Resource</span> =
   | { <span class="ts-keyword">readonly</span> <span class="ts-generic">kind</span>: <span class="ts-string">'script'</span>; <span class="ts-keyword">readonly</span> <span class="ts-generic">path</span>: <span class="ts-type">FilePath</span>; <span class="ts-keyword">readonly</span> <span class="ts-generic">executable</span>: <span class="ts-type">boolean</span>; <span class="ts-keyword">readonly</span> <span class="ts-generic">purpose</span>: <span class="ts-type">string</span> }
   | { <span class="ts-keyword">readonly</span> <span class="ts-generic">kind</span>: <span class="ts-string">'reference'</span>; <span class="ts-keyword">readonly</span> <span class="ts-generic">path</span>: <span class="ts-type">FilePath</span>; <span class="ts-keyword">readonly</span> <span class="ts-generic">topic</span>: <span class="ts-type">string</span>; <span class="ts-keyword">readonly</span> <span class="ts-generic">lineCount</span>: <span class="ts-type">number</span>; <span class="ts-keyword">readonly</span> <span class="ts-generic">toc</span>?: <span class="ts-type">boolean</span> }
@@ -587,8 +1052,8 @@
   <span class="ts-keyword">return</span> <span class="ts-generic">r</span>.<span class="ts-generic">kind</span> === <span class="ts-string">'reference'</span>;
 }</code></pre>
 
-    <h3>4.3 Process Fragments — Composition Over Copy-Paste</h3>
-    <pre><code><span class="ts-comment">// A ProcessFragment is a reusable, named, intent-typed unit of procedure.</span>
+      <h3>4.3 Process Fragments — Composition Over Copy-Paste</h3>
+      <pre><code><span class="ts-comment">// A ProcessFragment is a reusable, named, intent-typed unit of procedure.</span>
 <span class="ts-comment">// The generic TIntent makes fragment purpose explicit at the type level.</span>
 <span class="ts-keyword">interface</span> <span class="ts-type">ProcessFragment</span>&lt;<span class="ts-generic">TIntent</span> <span class="ts-keyword">extends</span> <span class="ts-type">string</span> = <span class="ts-type">string</span>&gt; {
   <span class="ts-keyword">readonly</span> <span class="ts-generic">id</span>: <span class="ts-type">string</span>;
@@ -613,8 +1078,8 @@
   <span class="ts-generic">rationale</span>: <span class="ts-string">'Ensures the agent consumes context before acting, preventing shallow work.'</span>,
 };</code></pre>
 
-    <h3>4.4 The Skill Interface — Generics, Dependencies, and Lifecycle</h3>
-    <pre><code><span class="ts-comment">// Skill is parameterized by TDomain, allowing language/framework-specific specializations.</span>
+      <h3>4.4 The Skill Interface — Generics, Dependencies, and Lifecycle</h3>
+      <pre><code><span class="ts-comment">// Skill is parameterized by TDomain, allowing language/framework-specific specializations.</span>
 <span class="ts-comment">// E.g., Skill&lt;'go'&gt; narrows references to Go-specific files and environment to Go tooling.</span>
 <span class="ts-keyword">interface</span> <span class="ts-type">Skill</span>&lt;<span class="ts-generic">TDomain</span> <span class="ts-keyword">extends</span> <span class="ts-type">string</span> = <span class="ts-type">string</span>&gt; {
   <span class="ts-comment">// ─── Identity ───</span>
@@ -678,8 +1143,8 @@
   };
 }</code></pre>
 
-    <h3>4.5 Derived Types — Views from a Single Source of Truth</h3>
-    <pre><code><span class="ts-comment">// The catalog is the ONE source of truth. Everything else is derived.</span>
+      <h3>4.5 Derived Types — Views from a Single Source of Truth</h3>
+      <pre><code><span class="ts-comment">// The catalog is the ONE source of truth. Everything else is derived.</span>
 <span class="ts-keyword">type</span> <span class="ts-type">SkillCatalog</span> = <span class="ts-type">Readonly</span>&lt;<span class="ts-type">Record</span>&lt;<span class="ts-type">SkillName</span>, <span class="ts-type">Skill</span>&gt;&gt;;
 
 <span class="ts-comment">// Trigger index: a flat lookup from trigger phrase to skill. Generated, not hand-written.</span>
@@ -707,85 +1172,120 @@
     <span class="ts-type">Catalog</span>[<span class="ts-type">K</span>][<span class="ts-string">'status'</span>] <span class="ts-keyword">extends</span> <span class="ts-string">'comprehensive'</span> ? <span class="ts-type">never</span> : <span class="ts-type">K</span>
   ]: <span class="ts-type">Catalog</span>[<span class="ts-type">K</span>];
 };</code></pre>
-  </section>
+    </section>
 
-  <section id="decisions">
-    <h2>4.6 Decision Log</h2>
-    <p>Every design choice in the model has a rationale. These are the decisions that shaped the type system:</p>
+    <section id="decisions">
+      <h2>4.6 Decision Log</h2>
+      <p>
+        Every design choice in the model has a rationale. These are the decisions that shaped the
+        type system:
+      </p>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Decision</th>
-          <th>Chosen Approach</th>
-          <th>Rejected Alternative</th>
-          <th>Rationale</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Type vs. Runtime classes</strong></td>
-          <td>TypeScript interfaces + branded types</td>
-          <td>ES6 classes with decorators</td>
-          <td>Skills are data, not behavior. Types disappear at compile time, leaving zero runtime overhead. Classes would add unnecessary object instantiation and inheritance chains.</td>
-        </tr>
-        <tr>
-          <td><strong>ReadonlyArray vs. Array</strong></td>
-          <td><code>ReadonlyArray&lt;T&gt;</code> everywhere</td>
-          <td>Mutable arrays</td>
-          <td>Skills are immutable configuration. A skill should not be mutated after construction. ReadonlyArray makes this intent explicit and prevents accidental mutations during validation.</td>
-        </tr>
-        <tr>
-          <td><strong>Branded types vs. opaque types</strong></td>
-          <td>Intersection with <code>__brand</code></td>
-          <td>Unique symbol opaque types</td>
-          <td>Branded types are serializable (they are just strings at runtime). Opaque types using unique symbols break JSON serialization, which matters for catalog files.</td>
-        </tr>
-        <tr>
-          <td><strong>Discriminated union vs. base class</strong></td>
-          <td><code>Resource = Script | Reference | Rule | Asset</code></td>
-          <td>Base Resource class with subclasses</td>
-          <td>Unions enable exhaustive switch checking at the type level. A base class would require runtime instanceof checks and would not catch missing cases at compile time.</td>
-        </tr>
-        <tr>
-          <td><strong>Process fragments vs. mixins</strong></td>
-          <td>External fragment registry referenced by ID</td>
-          <td>TypeScript mixin classes</td>
-          <td>Mixins create tight coupling between fragment and skill. A registry enables loose coupling: skills reference fragments by ID, fragments do not know their consumers.</td>
-        </tr>
-        <tr>
-          <td><strong>Relationships vs. tags</strong></td>
-          <td>Explicit <code>requires | references | conflictsWith | supersedes</code></td>
-          <td>Tag-based discovery ("find all Go skills")</td>
-          <td>Tags are ambiguous (is <code>go</code> a language tag or a verb?). Relationships are explicit, directed, and typed. They enable transitive closure queries that tags cannot express.</td>
-        </tr>
-        <tr>
-          <td><strong>Environment vs. inline commands</strong></td>
-          <td>Declared CLI requirements with versions</td>
-          <td>Hardcoded commands with "hope it exists"</td>
-          <td>Declaring requirements enables proactive error handling. The agent can check <code>which d2</code> before running a D2 command instead of failing with a cryptic shell error.</td>
-        </tr>
-        <tr>
-          <td><strong>Quality score vs. boolean flags</strong></td>
-          <td>Numeric <code>QualityScore</code> (0-100)</td>
-          <td><code>isComprehensive: boolean</code></td>
-          <td>Booleans force binary thinking. A numeric score allows gradual improvement tracking, Pareto prioritization ("improve the lowest score first"), and trend analysis over time.</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+      <table>
+        <thead>
+          <tr>
+            <th>Decision</th>
+            <th>Chosen Approach</th>
+            <th>Rejected Alternative</th>
+            <th>Rationale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Type vs. Runtime classes</strong></td>
+            <td>TypeScript interfaces + branded types</td>
+            <td>ES6 classes with decorators</td>
+            <td>
+              Skills are data, not behavior. Types disappear at compile time, leaving zero runtime
+              overhead. Classes would add unnecessary object instantiation and inheritance chains.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>ReadonlyArray vs. Array</strong></td>
+            <td><code>ReadonlyArray&lt;T&gt;</code> everywhere</td>
+            <td>Mutable arrays</td>
+            <td>
+              Skills are immutable configuration. A skill should not be mutated after construction.
+              ReadonlyArray makes this intent explicit and prevents accidental mutations during
+              validation.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Branded types vs. opaque types</strong></td>
+            <td>Intersection with <code>__brand</code></td>
+            <td>Unique symbol opaque types</td>
+            <td>
+              Branded types are serializable (they are just strings at runtime). Opaque types using
+              unique symbols break JSON serialization, which matters for catalog files.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Discriminated union vs. base class</strong></td>
+            <td><code>Resource = Script | Reference | Rule | Asset</code></td>
+            <td>Base Resource class with subclasses</td>
+            <td>
+              Unions enable exhaustive switch checking at the type level. A base class would require
+              runtime instanceof checks and would not catch missing cases at compile time.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Process fragments vs. mixins</strong></td>
+            <td>External fragment registry referenced by ID</td>
+            <td>TypeScript mixin classes</td>
+            <td>
+              Mixins create tight coupling between fragment and skill. A registry enables loose
+              coupling: skills reference fragments by ID, fragments do not know their consumers.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Relationships vs. tags</strong></td>
+            <td>Explicit <code>requires | references | conflictsWith | supersedes</code></td>
+            <td>Tag-based discovery ("find all Go skills")</td>
+            <td>
+              Tags are ambiguous (is <code>go</code> a language tag or a verb?). Relationships are
+              explicit, directed, and typed. They enable transitive closure queries that tags cannot
+              express.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Environment vs. inline commands</strong></td>
+            <td>Declared CLI requirements with versions</td>
+            <td>Hardcoded commands with "hope it exists"</td>
+            <td>
+              Declaring requirements enables proactive error handling. The agent can check
+              <code>which d2</code> before running a D2 command instead of failing with a cryptic
+              shell error.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Quality score vs. boolean flags</strong></td>
+            <td>Numeric <code>QualityScore</code> (0-100)</td>
+            <td><code>isComprehensive: boolean</code></td>
+            <td>
+              Booleans force binary thinking. A numeric score allows gradual improvement tracking,
+              Pareto prioritization ("improve the lowest score first"), and trend analysis over
+              time.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 
-  <section id="composition">
-    <h2>5. Composition &amp; Generics in Action</h2>
-    <p>The current model forces <code>naming-review</code> to inline language-specific tables for Go, TypeScript, Rust, Python, Java, and C#. With generics and composition, the skill becomes a thin shell around parameterized fragments.</p>
+    <section id="composition">
+      <h2>5. Composition &amp; Generics in Action</h2>
+      <p>
+        The current model forces <code>naming-review</code> to inline language-specific tables for
+        Go, TypeScript, Rust, Python, Java, and C#. With generics and composition, the skill becomes
+        a thin shell around parameterized fragments.
+      </p>
 
-    <div class="compare-header">
-      <div class="compare-before">Current: Monolithic &amp; Duplicated</div>
-      <div class="compare-after">Improved: Generic &amp; Composed</div>
-    </div>
-    <div class="compare-row">
-      <div>
-        <pre><code><span class="ts-comment"># Naming Review (current)</span>
+      <div class="compare-header">
+        <div class="compare-before">Current: Monolithic &amp; Duplicated</div>
+        <div class="compare-after">Improved: Generic &amp; Composed</div>
+      </div>
+      <div class="compare-row">
+        <div>
+          <pre><code><span class="ts-comment"># Naming Review (current)</span>
 <span class="ts-comment">## Step 0: Run Automated Detection</span>
 
 Run the appropriate linters:
@@ -802,9 +1302,9 @@ Run the appropriate linters:
 Then run scripts/naming-smells.sh...
 
 <span class="ts-comment">## PASTE THIS TABLE INTO EVERY LANGUAGE-SPECIFIC SKILL</span></code></pre>
-      </div>
-      <div>
-        <pre><code><span class="ts-keyword">interface</span> <span class="ts-type">NamingReviewSkill</span>&lt;<span class="ts-generic">TLang</span> <span class="ts-keyword">extends</span> <span class="ts-type">ProgrammingLanguage</span>&gt;
+        </div>
+        <div>
+          <pre><code><span class="ts-keyword">interface</span> <span class="ts-type">NamingReviewSkill</span>&lt;<span class="ts-generic">TLang</span> <span class="ts-keyword">extends</span> <span class="ts-type">ProgrammingLanguage</span>&gt;
   <span class="ts-keyword">extends</span> <span class="ts-type">Skill</span>&lt;<span class="ts-string">'naming'</span>&gt; {
   <span class="ts-keyword">readonly</span> <span class="ts-generic">process</span>: {
     <span class="ts-keyword">readonly</span> <span class="ts-generic">discovery</span>: <span class="ts-type">ProcessFragment</span>&lt;<span class="ts-string">'discovery'</span>&gt;;
@@ -825,23 +1325,32 @@ Then run scripts/naming-smells.sh...
 <span class="ts-keyword">const</span> <span class="ts-generic">ZigNamingReview</span>: <span class="ts-type">NamingReviewSkill</span>&lt;<span class="ts-string">'zig'</span>&gt; = {
   ...<span class="ts-comment">/* references ./references/zig.md, uses zlint CLI */</span>
 };</code></pre>
+        </div>
       </div>
-    </div>
 
-    <p>The same pattern eliminates the "READ, UNDERSTAND, RESEARCH, REFLECT" duplication across <code>execution-mode</code>, <code>brutal-self-review</code>, <code>full-code-review</code>, <code>naming-review</code>, <code>pareto-planning</code>, and <code>how-to-golang</code>. One fragment, six references, zero drift.</p>
-  </section>
+      <p>
+        The same pattern eliminates the "READ, UNDERSTAND, RESEARCH, REFLECT" duplication across
+        <code>execution-mode</code>, <code>brutal-self-review</code>, <code>full-code-review</code>,
+        <code>naming-review</code>, <code>pareto-planning</code>, and <code>how-to-golang</code>.
+        One fragment, six references, zero drift.
+      </p>
+    </section>
 
-  <section id="concrete">
-    <h2>5.5 Concrete Transformation: how-to-golang</h2>
-    <p>Abstract types are convincing only when applied to a real skill. Here is how the current <code>how-to-golang</code> skill — the most comprehensive in the repo — transforms into the new model.</p>
+    <section id="concrete">
+      <h2>5.5 Concrete Transformation: how-to-golang</h2>
+      <p>
+        Abstract types are convincing only when applied to a real skill. Here is how the current
+        <code>how-to-golang</code> skill — the most comprehensive in the repo — transforms into the
+        new model.
+      </p>
 
-    <div class="compare-header">
-      <div class="compare-before">Current: Implicit + Prose-Heavy</div>
-      <div class="compare-after">Improved: Typed + Composable</div>
-    </div>
-    <div class="compare-row">
-      <div>
-        <pre><code><span class="ts-comment"># how-to-golang/SKILL.md (current)</span>
+      <div class="compare-header">
+        <div class="compare-before">Current: Implicit + Prose-Heavy</div>
+        <div class="compare-after">Improved: Typed + Composable</div>
+      </div>
+      <div class="compare-row">
+        <div>
+          <pre><code><span class="ts-comment"># how-to-golang/SKILL.md (current)</span>
 <span class="ts-comment">---</span>
 <span class="ts-generic">name</span>: <span class="ts-string">how-to-golang</span>
 <span class="ts-generic">description</span>: <span class="ts-type">Go development decision guide...</span>
@@ -866,9 +1375,9 @@ Then run scripts/naming-smells.sh...
 <span class="ts-comment">- No environment declaration: assumes `go`, `gofmt`, `golangci-lint` exist.</span>
 <span class="ts-comment">- No test data: description never empirically validated.</span>
 <span class="ts-comment">- No relationships: brutal-self-review mentions this skill in prose only.</span></code></pre>
-      </div>
-      <div>
-        <pre><code><span class="ts-comment">// Typed representation of how-to-golang in the new model</span>
+        </div>
+        <div>
+          <pre><code><span class="ts-comment">// Typed representation of how-to-golang in the new model</span>
 <span class="ts-keyword">const</span> <span class="ts-generic">HowToGolang</span>: <span class="ts-type">Skill</span>&lt;<span class="ts-string">'go'</span>&gt; = {
   <span class="ts-generic">name</span>: <span class="ts-string">'how-to-golang'</span> <span class="ts-keyword">as</span> <span class="ts-type">SkillName</span>,
   <span class="ts-generic">directory</span>: <span class="ts-string">'./how-to-golang'</span> <span class="ts-keyword">as</span> <span class="ts-type">FilePath</span>,
@@ -925,17 +1434,28 @@ Then run scripts/naming-smells.sh...
     <span class="ts-generic">template</span>: <span class="ts-string">'./assets/decision-report-template.md'</span>,
   },
 };</code></pre>
+        </div>
       </div>
-    </div>
 
-    <p>The transformation reveals what was previously implicit: <strong>9 reference files with no metadata</strong> become 6 typed resources with line counts, topics, and TOC flags. The agent can now skip the 250-line architecture reference if the user's question is only about testing. <strong>No version or status</strong> becomes explicit lifecycle tracking. <strong>Prose cross-references to brutal-self-review</strong> become machine-readable <code>relationships.references</code>.</p>
-  </section>
+      <p>
+        The transformation reveals what was previously implicit:
+        <strong>9 reference files with no metadata</strong> become 6 typed resources with line
+        counts, topics, and TOC flags. The agent can now skip the 250-line architecture reference if
+        the user's question is only about testing. <strong>No version or status</strong> becomes
+        explicit lifecycle tracking.
+        <strong>Prose cross-references to brutal-self-review</strong> become machine-readable
+        <code>relationships.references</code>.
+      </p>
+    </section>
 
-  <section id="validation">
-    <h2>6. Validation Layer — Making Invalid States Unrepresentable</h2>
-    <p>Validation should not be a runtime script you run occasionally. It should be encoded in the type system so that every edit is checked at compile time.</p>
+    <section id="validation">
+      <h2>6. Validation Layer — Making Invalid States Unrepresentable</h2>
+      <p>
+        Validation should not be a runtime script you run occasionally. It should be encoded in the
+        type system so that every edit is checked at compile time.
+      </p>
 
-    <pre><code><span class="ts-comment">// ValidatedSkill is an intersection type that requires proof of integrity.</span>
+      <pre><code><span class="ts-comment">// ValidatedSkill is an intersection type that requires proof of integrity.</span>
 <span class="ts-comment">// You cannot construct a ValidatedSkill without passing all checks.</span>
 <span class="ts-keyword">type</span> <span class="ts-type">ValidatedSkill</span> = <span class="ts-type">Skill</span> &amp; {
   <span class="ts-keyword">readonly</span> <span class="ts-generic">__validated</span>: <span class="ts-type">true</span>;
@@ -968,274 +1488,468 @@ Then run scripts/naming-smells.sh...
     : <span class="ts-type">never</span>;
 }[<span class="ts-keyword">keyof</span> <span class="ts-type">C</span>];</code></pre>
 
-    <p>In practice, these types are backed by a <strong>zero-dependency validation script</strong> that walks the file system, parses YAML frontmatter, and either produces a <code>ValidatedSkill</code> or emits a typed error report. The script itself is generated from the TypeScript definitions — the code and the spec are the same artifact.</p>
-  </section>
+      <p>
+        In practice, these types are backed by a
+        <strong>zero-dependency validation script</strong> that walks the file system, parses YAML
+        frontmatter, and either produces a <code>ValidatedSkill</code> or emits a typed error
+        report. The script itself is generated from the TypeScript definitions — the code and the
+        spec are the same artifact.
+      </p>
+    </section>
 
-  <section id="comparison">
-    <h2>7. Before / After Comparison</h2>
+    <section id="comparison">
+      <h2>7. Before / After Comparison</h2>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Concern</th>
-          <th>Current Model</th>
-          <th>Improved Model</th>
-          <th>TypeScript Feature</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Schema</strong></td>
-          <td>None — human-readable guide only</td>
-          <td>Formal interfaces with required/optional fields</td>
-          <td><code>interface</code>, <code>?</code> optional props</td>
-        </tr>
-        <tr>
-          <td><strong>Naming Safety</strong></td>
-          <td>Any string matches any string</td>
-          <td>SkillName, FilePath are distinct branded types</td>
-          <td>Intersection types + <code>__brand</code></td>
-        </tr>
-        <tr>
-          <td><strong>Status Values</strong></td>
-          <td>Free-form text in README tables</td>
-          <td>Closed union: draft | thin | solid | comprehensive</td>
-          <td>Literal union types</td>
-        </tr>
-        <tr>
-          <td><strong>Composition</strong></td>
-          <td>Copy-paste prose into 6+ files</td>
-          <td>Reusable ProcessFragment referenced by ID</td>
-          <td>Generic interfaces, fragment registry</td>
-        </tr>
-        <tr>
-          <td><strong>Dependencies</strong></td>
-          <td>Markdown links in prose</td>
-          <td>Typed directed graph: requires | references | conflictsWith | supersedes</td>
-          <td>Recursive types, conditional types</td>
-        </tr>
-        <tr>
-          <td><strong>Versioning</strong></td>
-          <td>Not present</td>
-          <td>Semver + createdAt + updatedAt + deprecated?</td>
-          <td>Template literal types (<code>1.2.3</code>)</td>
-        </tr>
-        <tr>
-          <td><strong>Testing</strong></td>
-          <td>None — "educated guesses"</td>
-          <td>Empirical test data attached to each skill</td>
-          <td>Nested interfaces, readonly arrays</td>
-        </tr>
-        <tr>
-          <td><strong>Validation</strong></td>
-          <td>Manual audit every few months</td>
-          <td>Type-level + runtime script generated from types</td>
-          <td>Intersection types, mapped types</td>
-        </tr>
-        <tr>
-          <td><strong>Catalog Views</strong></td>
-          <td>Hand-maintained README table (already stale)</td>
-          <td>Derived views: TriggerIndex, DomainGroup, StaleSkills</td>
-          <td>Mapped types, conditional types, <code>keyof</code></td>
-        </tr>
-        <tr>
-          <td><strong>Resources</strong></td>
-          <td>Untyped directories</td>
-          <td>Discriminated union with per-variant metadata</td>
-          <td>Discriminated unions, type guards</td>
-        </tr>
-        <tr>
-          <td><strong>Environment</strong></td>
-          <td>Hardcoded commands, no fallbacks</td>
-          <td>Typed CLI requirements with versions and fallbacks</td>
-          <td>Nested interfaces, optional chaining</td>
-        </tr>
-        <tr>
-          <td><strong>Output Schema</strong></td>
-          <td>Described in prose</td>
-          <td>Formal format union + schema + template + examples</td>
-          <td>Union types, unknown for schema flexibility</td>
-        </tr>
-        <tr>
-          <td><strong>Language Parameterization</strong></td>
-          <td>Inline tables for every language</td>
-          <td>Generic <code>Skill&lt;TDomain&gt;</code> with per-domain reference files</td>
-          <td>Generics, conditional types, <code>Extract</code></td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+      <table>
+        <thead>
+          <tr>
+            <th>Concern</th>
+            <th>Current Model</th>
+            <th>Improved Model</th>
+            <th>TypeScript Feature</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Schema</strong></td>
+            <td>None — human-readable guide only</td>
+            <td>Formal interfaces with required/optional fields</td>
+            <td><code>interface</code>, <code>?</code> optional props</td>
+          </tr>
+          <tr>
+            <td><strong>Naming Safety</strong></td>
+            <td>Any string matches any string</td>
+            <td>SkillName, FilePath are distinct branded types</td>
+            <td>Intersection types + <code>__brand</code></td>
+          </tr>
+          <tr>
+            <td><strong>Status Values</strong></td>
+            <td>Free-form text in README tables</td>
+            <td>Closed union: draft | thin | solid | comprehensive</td>
+            <td>Literal union types</td>
+          </tr>
+          <tr>
+            <td><strong>Composition</strong></td>
+            <td>Copy-paste prose into 6+ files</td>
+            <td>Reusable ProcessFragment referenced by ID</td>
+            <td>Generic interfaces, fragment registry</td>
+          </tr>
+          <tr>
+            <td><strong>Dependencies</strong></td>
+            <td>Markdown links in prose</td>
+            <td>Typed directed graph: requires | references | conflictsWith | supersedes</td>
+            <td>Recursive types, conditional types</td>
+          </tr>
+          <tr>
+            <td><strong>Versioning</strong></td>
+            <td>Not present</td>
+            <td>Semver + createdAt + updatedAt + deprecated?</td>
+            <td>Template literal types (<code>1.2.3</code>)</td>
+          </tr>
+          <tr>
+            <td><strong>Testing</strong></td>
+            <td>None — "educated guesses"</td>
+            <td>Empirical test data attached to each skill</td>
+            <td>Nested interfaces, readonly arrays</td>
+          </tr>
+          <tr>
+            <td><strong>Validation</strong></td>
+            <td>Manual audit every few months</td>
+            <td>Type-level + runtime script generated from types</td>
+            <td>Intersection types, mapped types</td>
+          </tr>
+          <tr>
+            <td><strong>Catalog Views</strong></td>
+            <td>Hand-maintained README table (already stale)</td>
+            <td>Derived views: TriggerIndex, DomainGroup, StaleSkills</td>
+            <td>Mapped types, conditional types, <code>keyof</code></td>
+          </tr>
+          <tr>
+            <td><strong>Resources</strong></td>
+            <td>Untyped directories</td>
+            <td>Discriminated union with per-variant metadata</td>
+            <td>Discriminated unions, type guards</td>
+          </tr>
+          <tr>
+            <td><strong>Environment</strong></td>
+            <td>Hardcoded commands, no fallbacks</td>
+            <td>Typed CLI requirements with versions and fallbacks</td>
+            <td>Nested interfaces, optional chaining</td>
+          </tr>
+          <tr>
+            <td><strong>Output Schema</strong></td>
+            <td>Described in prose</td>
+            <td>Formal format union + schema + template + examples</td>
+            <td>Union types, unknown for schema flexibility</td>
+          </tr>
+          <tr>
+            <td><strong>Language Parameterization</strong></td>
+            <td>Inline tables for every language</td>
+            <td>Generic <code>Skill&lt;TDomain&gt;</code> with per-domain reference files</td>
+            <td>Generics, conditional types, <code>Extract</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 
-  <section id="anti-patterns">
-    <h2>7.5 Anti-Patterns to Avoid</h2>
-    <p>A powerful type system can be misused. These are the traps to avoid when adopting the new model:</p>
+    <section id="anti-patterns">
+      <h2>7.5 Anti-Patterns to Avoid</h2>
+      <p>
+        A powerful type system can be misused. These are the traps to avoid when adopting the new
+        model:
+      </p>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--rose);">AP1 — Over-Engineering the Types</h4>
-        <span class="badge badge-critical">Critical</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--rose)">AP1 — Over-Engineering the Types</h4>
+          <span class="badge badge-critical">Critical</span>
+        </div>
+        <p style="margin: 0">
+          <strong>Trap:</strong> Making every field generic, every relationship recursive, every
+          validation type-level. A skill catalog is configuration, not a theorem prover.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>Fix:</strong> Keep the type layer thin. Most validation is runtime (file exists?
+          name matches directory?). Types enforce <em>shape</em>, not <em>state</em>. Use
+          <code>unknown</code> for output schemas until you need to constrain them.
+        </p>
       </div>
-      <p style="margin:0;"><strong>Trap:</strong> Making every field generic, every relationship recursive, every validation type-level. A skill catalog is configuration, not a theorem prover.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>Fix:</strong> Keep the type layer thin. Most validation is runtime (file exists? name matches directory?). Types enforce <em>shape</em>, not <em>state</em>. Use <code>unknown</code> for output schemas until you need to constrain them.</p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">AP2 — Premature Abstraction</h4>
-        <span class="badge badge-high">High</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">AP2 — Premature Abstraction</h4>
+          <span class="badge badge-high">High</span>
+        </div>
+        <p style="margin: 0">
+          <strong>Trap:</strong> Extracting a fragment before it appears in 3+ skills. A fragment
+          with one consumer is just indirection. The <code>go-modularize</code> skill has unique
+          seven-phase logic — it should not be a fragment.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>Fix:</strong> The Rule of Three applies: inline until the third duplication, then
+          extract. The current "READ, UNDERSTAND..." boilerplate is the perfect extraction candidate
+          because it appears in 6+ skills.
+        </p>
       </div>
-      <p style="margin:0;"><strong>Trap:</strong> Extracting a fragment before it appears in 3+ skills. A fragment with one consumer is just indirection. The <code>go-modularize</code> skill has unique seven-phase logic — it should not be a fragment.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>Fix:</strong> The Rule of Three applies: inline until the third duplication, then extract. The current "READ, UNDERSTAND..." boilerplate is the perfect extraction candidate because it appears in 6+ skills.</p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">AP3 — Fragments as Microservices</h4>
-        <span class="badge badge-high">High</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">AP3 — Fragments as Microservices</h4>
+          <span class="badge badge-high">High</span>
+        </div>
+        <p style="margin: 0">
+          <strong>Trap:</strong> Creating a fragment for every paragraph. "Step 1: Read
+          package.json" becomes a fragment. This creates a registry of hundreds of fragments that is
+          harder to navigate than the skills themselves.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>Fix:</strong> Fragments are coarse-grained process phases (discovery, analysis,
+          execution, validation), not individual steps. A fragment should be 50-200 lines of
+          procedure, not 5 lines.
+        </p>
       </div>
-      <p style="margin:0;"><strong>Trap:</strong> Creating a fragment for every paragraph. "Step 1: Read package.json" becomes a fragment. This creates a registry of hundreds of fragments that is harder to navigate than the skills themselves.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>Fix:</strong> Fragments are coarse-grained process phases (discovery, analysis, execution, validation), not individual steps. A fragment should be 50-200 lines of procedure, not 5 lines.</p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">AP4 — False Precision</h4>
-        <span class="badge badge-medium">Medium</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">AP4 — False Precision</h4>
+          <span class="badge badge-medium">Medium</span>
+        </div>
+        <p style="margin: 0">
+          <strong>Trap:</strong> Assigning a <code>qualityScore: 87</code> because the type requires
+          a number. The score is a guess dressed up as data. It creates the illusion of measurement
+          without the substance.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>Fix:</strong> Omit the field until you have a measurement methodology. The type
+          allows <code>qualityScore?: QualityScore</code> — use the optional. The score should come
+          from empirical tests + line counts + reference coverage, not intuition.
+        </p>
       </div>
-      <p style="margin:0;"><strong>Trap:</strong> Assigning a <code>qualityScore: 87</code> because the type requires a number. The score is a guess dressed up as data. It creates the illusion of measurement without the substance.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>Fix:</strong> Omit the field until you have a measurement methodology. The type allows <code>qualityScore?: QualityScore</code> — use the optional. The score should come from empirical tests + line counts + reference coverage, not intuition.</p>
-    </div>
 
-    <div class="card card-problem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="margin:0; color:var(--amber);">AP5 — Replacing Prose with Types</h4>
-        <span class="badge badge-medium">Medium</span>
+      <div class="card card-problem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+          "
+        >
+          <h4 style="margin: 0; color: var(--amber)">AP5 — Replacing Prose with Types</h4>
+          <span class="badge badge-medium">Medium</span>
+        </div>
+        <p style="margin: 0">
+          <strong>Trap:</strong> Encoding the entire skill body as a typed AST. "Step 1" becomes
+          <code
+            >{ id: 's1', action: 'read', target: 'package.json', reason: 'avoid version conflicts'
+            }</code
+          >. This is a programming language, not a skill.
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-faint)">
+          <strong>Fix:</strong> The body remains markdown prose. Types govern the
+          <em>metadata envelope</em> — frontmatter, relationships, resources, environment. The agent
+          still reads the body as natural language instructions. Type the container, not the
+          content.
+        </p>
       </div>
-      <p style="margin:0;"><strong>Trap:</strong> Encoding the entire skill body as a typed AST. "Step 1" becomes <code>{ id: 's1', action: 'read', target: 'package.json', reason: 'avoid version conflicts' }</code>. This is a programming language, not a skill.</p>
-      <p style="margin-top:0.5rem; font-size:0.875rem; color:var(--text-faint);"><strong>Fix:</strong> The body remains markdown prose. Types govern the <em>metadata envelope</em> — frontmatter, relationships, resources, environment. The agent still reads the body as natural language instructions. Type the container, not the content.</p>
-    </div>
-  </section>
+    </section>
 
-  <section id="migration">
-    <h2>8. Migration Roadmap</h2>
-    <p>The new model does not require rewriting all 18 skills overnight. It can be adopted incrementally — each step delivers value independently.</p>
+    <section id="migration">
+      <h2>8. Migration Roadmap</h2>
+      <p>
+        The new model does not require rewriting all 18 skills overnight. It can be adopted
+        incrementally — each step delivers value independently.
+      </p>
 
-    <div class="migration-step">
-      <div class="migration-num">1</div>
-      <div class="migration-content">
-        <h4>Schema-First: Add <code>crush.json</code> with typed skill catalog</h4>
-        <p>Create a machine-readable catalog file (JSON or TS) that imports every skill's metadata. This becomes the single source of truth. README and audit docs become generated artifacts. <strong>Impact: Eliminates stale catalog data forever.</strong></p>
+      <div class="migration-step">
+        <div class="migration-num">1</div>
+        <div class="migration-content">
+          <h4>Schema-First: Add <code>crush.json</code> with typed skill catalog</h4>
+          <p>
+            Create a machine-readable catalog file (JSON or TS) that imports every skill's metadata.
+            This becomes the single source of truth. README and audit docs become generated
+            artifacts. <strong>Impact: Eliminates stale catalog data forever.</strong>
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div class="migration-step">
-      <div class="migration-num">2</div>
-      <div class="migration-content">
-        <h4>Validation Script: Prove structural integrity on every commit</h4>
-        <p>A small TypeScript/Deno script that walks <code>*/SKILL.md</code>, parses YAML frontmatter, checks that <code>name</code> matches directory, that all <code>references/</code> links resolve, and that cross-skill references exist. Run it in a git pre-commit hook. <strong>Impact: Catches broken references before they reach <code>master</code>.</strong></p>
+      <div class="migration-step">
+        <div class="migration-num">2</div>
+        <div class="migration-content">
+          <h4>Validation Script: Prove structural integrity on every commit</h4>
+          <p>
+            A small TypeScript/Deno script that walks <code>*/SKILL.md</code>, parses YAML
+            frontmatter, checks that <code>name</code> matches directory, that all
+            <code>references/</code> links resolve, and that cross-skill references exist. Run it in
+            a git pre-commit hook.
+            <strong
+              >Impact: Catches broken references before they reach <code>master</code>.</strong
+            >
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div class="migration-step">
-      <div class="migration-num">3</div>
-      <div class="migration-content">
-        <h4>Fragment Registry: Extract duplicated process boilerplate</h4>
-        <p>Move "READ, UNDERSTAND, RESEARCH, REFLECT" and Pareto planning logic into a shared <code>fragments/</code> directory. Update skills to reference fragments by ID instead of inlining. <strong>Impact: 6 skills improve from one edit. Eliminates the brutal-self-review ↔ execution-mode contradiction.</strong></p>
+      <div class="migration-step">
+        <div class="migration-num">3</div>
+        <div class="migration-content">
+          <h4>Fragment Registry: Extract duplicated process boilerplate</h4>
+          <p>
+            Move "READ, UNDERSTAND, RESEARCH, REFLECT" and Pareto planning logic into a shared
+            <code>fragments/</code> directory. Update skills to reference fragments by ID instead of
+            inlining.
+            <strong
+              >Impact: 6 skills improve from one edit. Eliminates the brutal-self-review ↔
+              execution-mode contradiction.</strong
+            >
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div class="migration-step">
-      <div class="migration-num">4</div>
-      <div class="migration-content">
-        <h4>Relationship Graph: Add <code>relationships</code> to frontmatter</h4>
-        <p>Extend the YAML frontmatter with optional <code>requires</code>, <code>references</code>, and <code>conflictsWith</code> arrays. Start with the most obvious relationships: <code>full-code-review</code> → <code>deduplicate-code</code>, <code>brutal-self-review</code> → <code>how-to-golang</code>, <code>go-modularize</code> → <code>how-to-golang</code>. <strong>Impact: Agents can now follow skill chains automatically.</strong></p>
+      <div class="migration-step">
+        <div class="migration-num">4</div>
+        <div class="migration-content">
+          <h4>Relationship Graph: Add <code>relationships</code> to frontmatter</h4>
+          <p>
+            Extend the YAML frontmatter with optional <code>requires</code>,
+            <code>references</code>, and <code>conflictsWith</code> arrays. Start with the most
+            obvious relationships: <code>full-code-review</code> → <code>deduplicate-code</code>,
+            <code>brutal-self-review</code> → <code>how-to-golang</code>,
+            <code>go-modularize</code> → <code>how-to-golang</code>.
+            <strong>Impact: Agents can now follow skill chains automatically.</strong>
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div class="migration-step">
-      <div class="migration-num">5</div>
-      <div class="migration-content">
-        <h4>Environment Declarations: Add <code>environment</code> to frontmatter</h4>
-        <p>Skills that need external CLIs (<code>d2</code>, <code>art-dupl</code>, <code>revive</code>, <code>ginkgo</code>) declare their requirements. The agent can check availability before activating the skill or suggest installation. <strong>Impact: Fewer runtime failures, better error messages.</strong></p>
+      <div class="migration-step">
+        <div class="migration-num">5</div>
+        <div class="migration-content">
+          <h4>Environment Declarations: Add <code>environment</code> to frontmatter</h4>
+          <p>
+            Skills that need external CLIs (<code>d2</code>, <code>art-dupl</code>,
+            <code>revive</code>, <code>ginkgo</code>) declare their requirements. The agent can
+            check availability before activating the skill or suggest installation.
+            <strong>Impact: Fewer runtime failures, better error messages.</strong>
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div class="migration-step">
-      <div class="migration-num">6</div>
-      <div class="migration-content">
-        <h4>Resource Metadata: Enrich <code>references/</code> and <code>scripts/</code> with index files</h4>
-        <p>Add a machine-readable <code>index.json</code> (or YAML) in each subdirectory listing files with their metadata: topic, line count, has TOC, executable bit. The agent filters before loading. <strong>Impact: Smaller context windows, faster skill activation.</strong></p>
+      <div class="migration-step">
+        <div class="migration-num">6</div>
+        <div class="migration-content">
+          <h4>
+            Resource Metadata: Enrich <code>references/</code> and <code>scripts/</code> with index
+            files
+          </h4>
+          <p>
+            Add a machine-readable <code>index.json</code> (or YAML) in each subdirectory listing
+            files with their metadata: topic, line count, has TOC, executable bit. The agent filters
+            before loading.
+            <strong>Impact: Smaller context windows, faster skill activation.</strong>
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div class="migration-step">
-      <div class="migration-num">7</div>
-      <div class="migration-content">
-        <h4>Empirical Testing: Attach test prompts to each skill</h4>
-        <p>Add an <code>empiricalTests</code> array to frontmatter with 2-3 realistic prompts per skill. Use the <code>skill-creator</code> optimization loop to measure trigger accuracy. Store scores in the catalog. <strong>Impact: Data-driven description improvements. No more guessing.</strong></p>
+      <div class="migration-step">
+        <div class="migration-num">7</div>
+        <div class="migration-content">
+          <h4>Empirical Testing: Attach test prompts to each skill</h4>
+          <p>
+            Add an <code>empiricalTests</code> array to frontmatter with 2-3 realistic prompts per
+            skill. Use the <code>skill-creator</code> optimization loop to measure trigger accuracy.
+            Store scores in the catalog.
+            <strong>Impact: Data-driven description improvements. No more guessing.</strong>
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div class="migration-step">
-      <div class="migration-num">8</div>
-      <div class="migration-content">
-        <h4>Generic Parameterization: Refactor multi-language skills</h4>
-        <p>Convert <code>naming-review</code> and similar skills to use domain-generic process fragments + language-specific reference files. Add a new language by adding one file, not editing the skill body. <strong>Impact: Extensibility without regression risk.</strong></p>
+      <div class="migration-step">
+        <div class="migration-num">8</div>
+        <div class="migration-content">
+          <h4>Generic Parameterization: Refactor multi-language skills</h4>
+          <p>
+            Convert <code>naming-review</code> and similar skills to use domain-generic process
+            fragments + language-specific reference files. Add a new language by adding one file,
+            not editing the skill body.
+            <strong>Impact: Extensibility without regression risk.</strong>
+          </p>
+        </div>
       </div>
-    </div>
 
-    <h3 style="margin-top:2rem;">Tooling &amp; CI Integration</h3>
-    <p>Types are only valuable if they are enforced. The migration needs tooling, not just theory.</p>
+      <h3 style="margin-top: 2rem">Tooling &amp; CI Integration</h3>
+      <p>
+        Types are only valuable if they are enforced. The migration needs tooling, not just theory.
+      </p>
 
-    <div class="migration-step">
-      <div class="migration-num">A</div>
-      <div class="migration-content">
-        <h4>Validation Script (<code>scripts/validate-skills.ts</code>)</h4>
-        <p>A Deno/Node script that: (1) walks all <code>*/SKILL.md</code>, (2) parses YAML frontmatter with a schema-validating parser, (3) checks <code>name === directory</code>, (4) resolves all relative markdown links against the filesystem, (5) checks <code>relationships.*</code> entries against the catalog, (6) reports dangling references and mismatched names. Exit code 0 = all valid. Exit code 1 = typed error report with file:line references. <strong>Run in pre-commit hook.</strong></p>
+      <div class="migration-step">
+        <div class="migration-num">A</div>
+        <div class="migration-content">
+          <h4>Validation Script (<code>scripts/validate-skills.ts</code>)</h4>
+          <p>
+            A Deno/Node script that: (1) walks all <code>*/SKILL.md</code>, (2) parses YAML
+            frontmatter with a schema-validating parser, (3) checks <code>name === directory</code>,
+            (4) resolves all relative markdown links against the filesystem, (5) checks
+            <code>relationships.*</code> entries against the catalog, (6) reports dangling
+            references and mismatched names. Exit code 0 = all valid. Exit code 1 = typed error
+            report with file:line references. <strong>Run in pre-commit hook.</strong>
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div class="migration-step">
-      <div class="migration-num">B</div>
-      <div class="migration-content">
-        <h4>Catalog Generator (<code>scripts/generate-catalog.ts</code>)</h4>
-        <p>Reads every <code>SKILL.md</code>, extracts frontmatter + resource metadata, and writes a single <code>catalog.json</code>. From this, derive: <code>README.md</code> skills table, <code>docs/status/latest.md</code> audit report, <code>trigger-index.json</code> for Crush integration. <strong>Run in CI on every push to master.</strong></p>
+      <div class="migration-step">
+        <div class="migration-num">B</div>
+        <div class="migration-content">
+          <h4>Catalog Generator (<code>scripts/generate-catalog.ts</code>)</h4>
+          <p>
+            Reads every <code>SKILL.md</code>, extracts frontmatter + resource metadata, and writes
+            a single <code>catalog.json</code>. From this, derive: <code>README.md</code> skills
+            table, <code>docs/status/latest.md</code> audit report,
+            <code>trigger-index.json</code> for Crush integration.
+            <strong>Run in CI on every push to master.</strong>
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div class="migration-step">
-      <div class="migration-num">C</div>
-      <div class="migration-content">
-        <h4>Empirical Test Runner (<code>scripts/test-triggers.ts</code>)</h4>
-        <p>Reads <code>empiricalTests</code> from the catalog, feeds each prompt to Crush's skill selection system, records which skill activated, and compares against <code>expectedSkill</code>. Produces a scored report: trigger accuracy per skill, false positives, false negatives. <strong>Run weekly or on demand.</strong></p>
+      <div class="migration-step">
+        <div class="migration-num">C</div>
+        <div class="migration-content">
+          <h4>Empirical Test Runner (<code>scripts/test-triggers.ts</code>)</h4>
+          <p>
+            Reads <code>empiricalTests</code> from the catalog, feeds each prompt to Crush's skill
+            selection system, records which skill activated, and compares against
+            <code>expectedSkill</code>. Produces a scored report: trigger accuracy per skill, false
+            positives, false negatives. <strong>Run weekly or on demand.</strong>
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div class="migration-step">
-      <div class="migration-num">D</div>
-      <div class="migration-content">
-        <h4>Fragment Linter (<code>scripts/lint-fragments.ts</code>)</h4>
-        <p>Ensures fragments follow standards: IDs use reverse-domain notation (<code>core.reflective-execution</code>), steps use imperative voice, rationale is present, no step exceeds 200 characters. Flags fragments referenced by fewer than 3 skills as "consider inlining." <strong>Run in CI.</strong></p>
+      <div class="migration-step">
+        <div class="migration-num">D</div>
+        <div class="migration-content">
+          <h4>Fragment Linter (<code>scripts/lint-fragments.ts</code>)</h4>
+          <p>
+            Ensures fragments follow standards: IDs use reverse-domain notation
+            (<code>core.reflective-execution</code>), steps use imperative voice, rationale is
+            present, no step exceeds 200 characters. Flags fragments referenced by fewer than 3
+            skills as "consider inlining." <strong>Run in CI.</strong>
+          </p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="conclusion">
-    <h2>9. Conclusion</h2>
-    <p>The current SKILLS data model works — barely. It is the product of organic growth from 17 raw prompt snippets into 18 skill directories. But organic growth without intentional design accumulates technical debt: duplicated prose, stale catalogs, broken references, and skills that contradict each other.</p>
-    <p>The improved model uses TypeScript's entire type system — branded types, discriminated unions, generics, composition, mapped types, conditional types, template literals — to make the design intent explicit and the invalid states unrepresentable. Skills become composable, testable, versioned artifacts with explicit dependency graphs and machine-readable metadata.</p>
-    <p>Most importantly, the migration is <strong>incremental</strong>. Each step delivers value without requiring a big-bang rewrite. Start with the catalog and validation script. Everything else follows naturally.</p>
+    <section id="conclusion">
+      <h2>9. Conclusion</h2>
+      <p>
+        The current SKILLS data model works — barely. It is the product of organic growth from 17
+        raw prompt snippets into 18 skill directories. But organic growth without intentional design
+        accumulates technical debt: duplicated prose, stale catalogs, broken references, and skills
+        that contradict each other.
+      </p>
+      <p>
+        The improved model uses TypeScript's entire type system — branded types, discriminated
+        unions, generics, composition, mapped types, conditional types, template literals — to make
+        the design intent explicit and the invalid states unrepresentable. Skills become composable,
+        testable, versioned artifacts with explicit dependency graphs and machine-readable metadata.
+      </p>
+      <p>
+        Most importantly, the migration is <strong>incremental</strong>. Each step delivers value
+        without requiring a big-bang rewrite. Start with the catalog and validation script.
+        Everything else follows naturally.
+      </p>
 
-    <div class="card" style="text-align:center; margin-top:2rem; border-color:var(--accent);">
-      <p style="margin:0; font-size:1.125rem; color:var(--text);"><em>"The data model is not a byproduct of the implementation. It IS the implementation."</em></p>
-    </div>
-  </section>
+      <div class="card" style="text-align: center; margin-top: 2rem; border-color: var(--accent)">
+        <p style="margin: 0; font-size: 1.125rem; color: var(--text)">
+          <em
+            >"The data model is not a byproduct of the implementation. It IS the
+            implementation."</em
+          >
+        </p>
+      </div>
+    </section>
 
-  <footer style="margin-top:4rem; padding-top:2rem; border-top:1px solid var(--border); text-align:center; color:var(--text-faint); font-size:0.875rem;">
-    <p>Generated for the SKILLS repository — <code>docs/brainstorming/skill-data-model-redesign.html</code></p>
-    <p>Last updated: 2026-06-05 | Zero external dependencies | Self-contained HTML + CSS</p>
-    <p style="margin-top:0.5rem;">Reflect. Design. Execute. Verify.</p>
-  </footer>
-
-</body>
+    <footer
+      style="
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        color: var(--text-faint);
+        font-size: 0.875rem;
+      "
+    >
+      <p>
+        Generated for the SKILLS repository —
+        <code>docs/brainstorming/skill-data-model-redesign.html</code>
+      </p>
+      <p>Last updated: 2026-06-05 | Zero external dependencies | Self-contained HTML + CSS</p>
+      <p style="margin-top: 0.5rem">Reflect. Design. Execute. Verify.</p>
+    </footer>
+  </body>
 </html>

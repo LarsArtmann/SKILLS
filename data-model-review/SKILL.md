@@ -37,61 +37,73 @@ For every type, field, and relationship, ask these questions and record every pr
 Grade each problem by **severity** (critical/high/medium/low) and **systemicity** (how many types it affects).
 
 #### P1 — Stringly-Typed Everything (Critical)
+
 - Are identifiers stored as raw `string` instead of branded types?
 - Are enums represented as `string` instead of typed constants (iota)?
 - Are dates/times stored as `string` instead of `time.Time`?
 - Are monetary values stored as `float64` or `int` without a Money type?
 
 #### P2 — Pointer Fields as State Encoding (Critical)
+
 - Is `*time.Time` or `*string` used to encode state machine transitions? (e.g., `VerifiedAt *time.Time` means "not verified yet")
 - Are there structs where 3 pointer fields represent 8 possible states, but only 3 are valid?
 - **Fix**: Split into interface-based unions. `UnverifiedUser | VerifiedUser` via private method tags instead of `User { VerifiedAt *time.Time }`.
 
 #### P3 — No Validation at the Type Level (High)
+
 - Can a struct be constructed in an invalid state and still compile?
 - Are there runtime validators (`validate.Struct`, `validator.New`, custom `Validate()` methods) that the type system should enforce?
 - Is there validation duplicated between HTTP handlers, services, and DB layers?
 
 #### P4 — Primitive Obsession (High)
+
 - Are domain concepts represented as primitives? (`string` for Email, `int64` for UserID, `string` for ISBN)
 - **Fix**: Branded types. `type UserID string` with unexported method, or a thin struct wrapper.
 
 #### P5 — Missing Interface-Based Unions (High)
+
 - Are polymorphic types modeled with `Type string` + optional pointer fields for each variant?
 - Are there `if obj.Type == "x"` runtime checks that the compiler should enforce?
 - **Fix**: `type Event interface { event() }` with `ClickEvent`, `SubmitEvent`, `ErrorEvent` implementing the private method.
 
 #### P6 — No Composition, Only Inheritance (High)
+
 - Are base structs embedded blindly, creating deep coupling?
 - Are "base" structs used where interfaces would suffice?
 - Are create/update/response DTOs duplicated instead of composed from fragments?
 
 #### P7 — Implicit Relationships (Medium)
+
 - Are foreign keys stored as raw `string` / `int` with no type link to the parent?
 - Are bidirectional relationships maintained manually without type safety?
 - **Fix**: `type Order struct { CustomerID CustomerID }` using a branded ID instead of raw `int64`.
 
 #### P8 — No Versioning or Lifecycle (Medium)
+
 - Do structs have no `CreatedAt`, `UpdatedAt`, `Version` fields?
 - Is there no deprecation mechanism for old fields?
 - Are legacy types mixed with current types without separation?
 
 #### P9 — Duplicated Logic Across Types (High)
+
 - Is the same validation logic copied into multiple structs?
 - Are there "helper" functions that exist only because the main types are poorly designed?
 - **Fix**: Extract shared constraints into reusable interfaces and constructor functions.
 
 #### P10 — Weak Collection Types (Medium)
+
 - Are slices used where maps, sets, or iteration order matters?
 - Are map keys typed as `string` instead of a branded key type?
 - Are empty slices confused with nil slices semantically?
 
 #### P11 — No Generic Parameterization (Medium)
+
 - Are types duplicated for different entity kinds instead of using generics?
 - Is `UserPage` / `OrderPage` defined separately?
 - **Fix**: `type Page[T any] struct { Items []T; Total int; Page int }`.
 
 #### P12 — Missing Error Models (Medium)
+
 - Are errors returned as untyped `error` with string matching?
 - Are sentinel errors defined but not typed?
 - **Fix**: Custom error types implementing `error` with structured fields.
@@ -306,6 +318,7 @@ The HTML must include:
 12. **Conclusion** — Summary quote
 
 **Design requirements for the HTML:**
+
 - Single file, zero external dependencies (no CDN, no JS, no build step)
 - Dark theme with semantic color coding
 - Manual CSS syntax highlighting for Go

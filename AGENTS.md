@@ -40,14 +40,14 @@ SKILLS/
 
 ### Which files to edit
 
-| File/Dir | Action |
-| --- | --- |
-| `<skill-name>/SKILL.md` | Edit freely — this is the work product |
-| `<skill-name>/references/*.md` | Edit freely — supporting docs |
-| `<skill-name>/scripts/*` | Edit freely — but keep executable |
-| `originals/*.md` | **NEVER EDIT** — legacy source material, superseded by skills |
-| `README.md` | Update when adding/removing skills |
-| `how-to-write-skills.md` | Update when skill-writing guidance changes |
+| File/Dir                       | Action                                                        |
+| ------------------------------ | ------------------------------------------------------------- |
+| `<skill-name>/SKILL.md`        | Edit freely — this is the work product                        |
+| `<skill-name>/references/*.md` | Edit freely — supporting docs                                 |
+| `<skill-name>/scripts/*`       | Edit freely — but keep executable                             |
+| `originals/*.md`               | **NEVER EDIT** — legacy source material, superseded by skills |
+| `README.md`                    | Update when adding/removing skills                            |
+| `how-to-write-skills.md`       | Update when skill-writing guidance changes                    |
 
 ---
 
@@ -57,17 +57,17 @@ SKILLS/
 
 ```yaml
 ---
-name: skill-name           # lowercase, hyphens, MUST match directory name
-description: >             # THIS IS A TRIGGER, NOT DOCUMENTATION
+name: skill-name # lowercase, hyphens, MUST match directory name
+description: > # THIS IS A TRIGGER, NOT DOCUMENTATION
   Tells the agent WHEN to activate. Be explicit and pushy.
   Include what it does + exact trigger phrases + adjacent contexts.
   Max ~1024 chars.
 metadata:
-  tags: foo, bar           # comma-separated, helps with discovery
+  tags: foo, bar # comma-separated, helps with discovery
 ---
 ```
 
-**Critical nuance:** The `description` is read by Crush's skill selection system. If it is vague, the skill will never activate. If it describes what the skill *contains* rather than when to *use* it, the skill will never activate. Study existing good descriptions in `go-modularize`, `nix-review`, `how-to-golang`, `naming-review`.
+**Critical nuance:** The `description` is read by Crush's skill selection system. If it is vague, the skill will never activate. If it describes what the skill _contains_ rather than when to _use_ it, the skill will never activate. Study existing good descriptions in `go-modularize`, `nix-review`, `how-to-golang`, `naming-review`.
 
 ### 3.2 Body Style
 
@@ -79,11 +79,11 @@ metadata:
 
 ### 3.3 Progressive Disclosure
 
-| Level | What's loaded | Cost |
-| --- | --- | --- |
-| Metadata | `name` + `description` | ~100 words, always in context |
-| SKILL.md body | Full instructions | <500 lines ideal, loaded on trigger |
-| Bundled resources | `references/`, `rules/`, `scripts/`, `assets/` | Unlimited, loaded on demand |
+| Level             | What's loaded                                  | Cost                                |
+| ----------------- | ---------------------------------------------- | ----------------------------------- |
+| Metadata          | `name` + `description`                         | ~100 words, always in context       |
+| SKILL.md body     | Full instructions                              | <500 lines ideal, loaded on trigger |
+| Bundled resources | `references/`, `rules/`, `scripts/`, `assets/` | Unlimited, loaded on demand         |
 
 Large reference files (>300 lines) should include a table of contents at the top.
 
@@ -148,15 +148,15 @@ No skill currently uses the `allowed-tools` field. Adding it would reduce permis
 
 ## 6. High-Value Reference Files
 
-| File | Why It Matters |
-| --- | --- |
-| `how-to-write-skills.md` | Complete guide for skill authoring — frontmatter rules, description-as-trigger, progressive disclosure, common mistakes |
+| File                                                         | Why It Matters                                                                                                                           |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `how-to-write-skills.md`                                     | Complete guide for skill authoring — frontmatter rules, description-as-trigger, progressive disclosure, common mistakes                  |
 | `docs/status/2026-05-03_07-51_comprehensive-skills-audit.md` | Master audit: every skill graded, every issue catalogued, top 25 next tasks ranked by impact. Read this before any bulk improvement work |
-| `go-modularize/SKILL.md` | Best example of a rich, well-structured skill with concrete examples, decision tables, and failure mode catalog |
-| `nix-review/SKILL.md` | Best example of a checklist-driven review skill with severity guide |
-| `how-to-golang/SKILL.md` | Best example of a reference-heavy skill: 93-line entrypoint + 9 reference files |
-| `how-to-golang/references/` | Pattern to emulate for domain-specific deep dives |
-| `naming-review/SKILL.md` | Best example of a multi-step review with automated detection → manual review pipeline |
+| `go-modularize/SKILL.md`                                     | Best example of a rich, well-structured skill with concrete examples, decision tables, and failure mode catalog                          |
+| `nix-review/SKILL.md`                                        | Best example of a checklist-driven review skill with severity guide                                                                      |
+| `how-to-golang/SKILL.md`                                     | Best example of a reference-heavy skill: 93-line entrypoint + 9 reference files                                                          |
+| `how-to-golang/references/`                                  | Pattern to emulate for domain-specific deep dives                                                                                        |
+| `naming-review/SKILL.md`                                     | Best example of a multi-step review with automated detection → manual review pipeline                                                    |
 
 ---
 
@@ -183,15 +183,15 @@ Before making changes:
 
 ## 9. What NOT to Do
 
-| Don't | Why |
-| --- | --- |
-| Add a build system (Makefile, package.json, go.mod) | This repo has no compilable code |
-| Edit `originals/*.md` | Legacy source material; skills are canonical |
-| Add tests or CI | No runnable code to test |
+| Don't                                                            | Why                                                |
+| ---------------------------------------------------------------- | -------------------------------------------------- |
+| Add a build system (Makefile, package.json, go.mod)              | This repo has no compilable code                   |
+| Edit `originals/*.md`                                            | Legacy source material; skills are canonical       |
+| Add tests or CI                                                  | No runnable code to test                           |
 | Rename skill directories without updating `name:` in frontmatter | Crush matches directory name to frontmatter `name` |
-| Write vague `description` fields | The skill will never activate |
-| Put >500 lines in a single `SKILL.md` | Wastes context tokens; use `references/` |
-| Use rigid `ALWAYS`/`MUST`/`NEVER` without explaining why | Agents follow reasoning better than commandments |
+| Write vague `description` fields                                 | The skill will never activate                      |
+| Put >500 lines in a single `SKILL.md`                            | Wastes context tokens; use `references/`           |
+| Use rigid `ALWAYS`/`MUST`/`NEVER` without explaining why         | Agents follow reasoning better than commandments   |
 
 ---
 
@@ -199,12 +199,12 @@ Before making changes:
 
 These tools are referenced by skills but are **not** bundled in this repo. Agents should verify their availability or install them:
 
-| Tool | Referenced By | Purpose |
-| --- | --- | --- |
-| `d2` CLI | `architecture-visualization` | Render `.d2` diagrams to `.svg` |
-| `art-dupl` | `deduplicate-code`, `code-quality-scan` | Semantic code duplication detection |
-| `nix` / `nix flake check` | `code-quality-scan`, `nix-review` | Nix build/lint |
-| `revive` / `golangci-lint` | `naming-review` | Go naming lint |
-| `onsi/ginkgo` | `bdd-testing` | BDD testing framework |
+| Tool                       | Referenced By                           | Purpose                             |
+| -------------------------- | --------------------------------------- | ----------------------------------- |
+| `d2` CLI                   | `architecture-visualization`            | Render `.d2` diagrams to `.svg`     |
+| `art-dupl`                 | `deduplicate-code`, `code-quality-scan` | Semantic code duplication detection |
+| `nix` / `nix flake check`  | `code-quality-scan`, `nix-review`       | Nix build/lint                      |
+| `revive` / `golangci-lint` | `naming-review`                         | Go naming lint                      |
+| `onsi/ginkgo`              | `bdd-testing`                           | BDD testing framework               |
 
 **Note:** `how-to-golang` contains Go code snippets in its references. Some have known accuracy issues (flagged in the status report: `gopter` signature, `encoding/json/v2` Go version, E2E HTTP API). Validate code snippets before relying on them.
