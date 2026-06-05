@@ -198,7 +198,7 @@ type Semver = `${number}.${number}.${number}`;
 
 ### Step 5: Create the HTML Presentation
 
-Write a self-contained, zero-dependency HTML file at `docs/brainstorming/<date>-<slug>.html`.
+Write a self-contained, zero-dependency HTML file at `docs/brainstorming/YYYY-MM-DD_<slug>.html`.
 
 The HTML must include:
 
