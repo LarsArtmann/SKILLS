@@ -8,7 +8,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ## The Collection
 
-**18 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out).
+**19 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out).
 
 ### Architecture & Design
 
@@ -16,6 +16,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 | ----- | ------------ | ------ |
 | **architecture-review** | Reviews architecture for scalability, modularity, and composability | 🟡 Thin |
 | **architecture-visualization** | Generates D2 architecture diagrams — current state vs. ideal target | 🟢 Solid |
+| **data-model-review** | Reviews and redesigns data models using TypeScript's full type system | 🟢 Comprehensive |
 | **pareto-planning** | 80/20 execution plans with D2 dependency graphs | 🟢 Comprehensive |
 
 ### Code Quality & Review
@@ -98,7 +99,7 @@ New skills should follow the pattern of [`how-to-golang/`](how-to-golang/) (lean
 
 ## Quality & Status
 
-This repository is honest about its state. **10 skills are solid or comprehensive** and ready for daily use. **8 skills are thin** — they trigger correctly but need reference files, concrete examples, and output templates to produce consistently great results.
+This repository is honest about its state. **11 skills are solid or comprehensive** and ready for daily use. **8 skills are thin** — they trigger correctly but need reference files, concrete examples, and output templates to produce consistently great results.
 
 See [`docs/status/`](docs/status/) for detailed audit reports, including a comprehensive breakdown of every skill's strengths, gaps, and recommended next steps.
 
