@@ -7,7 +7,7 @@ metadata:
 
 # Nix Review
 
-A comprehensive review skill for making .nix files truly superb. Based on analysis of 88+ real .nix files across production codebases and community best practices from nix.dev, NixOS Wiki, Nixcademy, flake-parts docs, and systemd hardening guides.
+A comprehensive review skill for making .nix files truly superb. Based on analysis of 126+ real .nix files across production codebases (systematically standardized in 3 sessions) and community best practices from nix.dev, NixOS Wiki, Nixcademy, flake-parts docs, and systemd hardening guides.
 
 ## Process
 
@@ -59,27 +59,37 @@ For each file, check ALL categories below. Read `references/common-problems.md` 
 
 #### Structural
 
+- [ ] **Standard stack** — `flake-parts` + `treefmt-nix` + `systems` + `git-hooks-nix` for Go projects
 - [ ] **No unnecessary nixpkgs re-instantiation** — use `legacyPackages.${system}` instead of `import nixpkgs {}`
 - [ ] **No duplicated hashes** — extract `vendorHash` to a `let` binding
 - [ ] **Files under ~300 lines** — split monoliths into focused modules
 - [ ] **No overlay duplication** — same overlay defined in multiple contexts will drift
 - [ ] **Consistent `follows`** — all inputs that use nixpkgs should `follows = "nixpkgs"`
-- [ ] **Complete `meta` section** — description, license, mainProgram
+- [ ] **Complete `meta` section** — description, license, mainProgram, maintainers
+- [ ] **`nixosModules` at top level** — `flake.nixosModules`, never inside `perSystem`
+- [ ] **No empty overlays** — empty `overlays.default` blocks evaluation errors and clutter
 
 #### Correctness
 
 - [ ] **Security hardening justified** — every `ProtectHome = false` has a comment explaining why
 - [ ] **No race conditions** — ExecStartPre/ExecStartPost dependencies are properly ordered
 - [ ] **Source filtering is appropriate** — not too broad (includes `.git`) or too narrow
-- [ ] **Version derived from git** — `self.rev or "dev"`, not hardcoded `"0.1.0"`
+- [ ] **Version derived from git** — `self.rev or self.dirtyRev or "dev"`, not hardcoded `"0.1.0"`
+- [ ] **No empty overlays** — remove overlays that don't define any packages
+- [ ] **Overlay system ref correct** — `final.stdenv.system`, not `prev.system`
+- [ ] **`go.work` uses relative paths** — absolute paths break in CI and on other machines
 
 #### Consistency
 
-- [ ] **Formatter defined** — `nixfmt` (preferred) or `treefmt-nix`, never `nixpkgs-fmt`
-- [ ] **Single nixpkgs channel** — all inputs use same channel (`nixos-unstable` or `nixpkgs-unstable`)
-- [ ] **Checks defined** — at minimum: format check and build
+- [ ] **Formatter defined** — `treefmt-nix` with `nixfmt.enable = true` for Go projects
+- [ ] **Single nixpkgs channel** — standardize on `nixos-unstable` (Go projects); `nixpkgs-unstable` only for nix-darwin system flakes
+- [ ] **Checks defined** — `checks.format = config.treefmt.build.check self;` and `checks.build = config.packages.default;`
 - [ ] **No `rec` attrsets** — use `let ... in` for explicit dependencies
 - [ ] **No top-level `with`** — use explicit `inherit (pkgs)` for scoped imports
+- [ ] **Go version pinned** — `goPkg = pkgs.go_1_26;` in `let`, passed to `buildGoModule.override { go = goPkg; }`
+- [ ] **Overlay naming matches directory** — overlay attr name should match project directory name
+- [ ] **`lib.` not `pkgs.lib.`** — use `lib.licenses`, `lib.platforms`, not `pkgs.lib.licenses`
+- [ ] **No `inputs.self.packages`** — use `self.packages` directly
 
 #### NixOS Modules (if applicable)
 
@@ -112,10 +122,13 @@ For each file, check ALL categories below. Read `references/common-problems.md` 
 #### DevShells (if applicable)
 
 - [ ] **Uses `packages` not `buildInputs`** — modern mkShell convention
-- [ ] **Uses `mkShellNoCC`** when no C compiler needed
+- [ ] **Uses `mkShellNoCC`** when no C compiler needed (including CI devShells)
 - [ ] **Lightweight `shellHook`** — no network access, no heavy installs
 - [ ] **Env vars as attributes** — `GOWORK = "off"` not `shellHook = "export GOWORK=off"`
 - [ ] **`inputsFrom`** for composed shells in monorepos
+- [ ] **CI devShell defined** — `pkgs.mkShellNoCC { packages = [ go golangci-lint ]; GOWORK = "off"; }` (minimal, no interactive tools)
+- [ ] **`templ` in CI devShells** — when project uses templ, include it in CI packages
+- [ ] **`GOPRIVATE` propagated to CI** — when project has private Go deps, CI devShell needs `GOPRIVATE` env var
 
 #### Overlays (if applicable)
 
@@ -123,6 +136,10 @@ For each file, check ALL categories below. Read `references/common-problems.md` 
 - [ ] **No `rec` in overlays** — use `final` for cross-references
 - [ ] **No external parameters** — overlays should be self-contained
 - [ ] **Overlay exported** — `overlays.default` for external consumption
+- [ ] **Param convention** — `final: _prev:` when `prev` is unused (signals intent)
+- [ ] **System ref** — `self.packages.${final.stdenv.system}.default`, not `prev.system`
+- [ ] **Naming matches directory** — overlay attr should match project directory name (not binary name, unless intentionally different)
+- [ ] **No empty overlays** — remove `overlays.default = final: prev: { };` blocks
 
 ### Step 4: Generate Report
 

@@ -16,6 +16,7 @@ This reference documents real problems found across Nix codebases and community 
 - [Overlay Issues](#overlay-issues)
 - [DevShell Issues](#devshell-issues)
 - [Systemd Hardening Issues](#systemd-hardening-issues)
+- [Ecosystem Standardization Issues (Session 3 Findings)](#ecosystem-standardization-issues-session-3-findings)
 
 ---
 
@@ -818,3 +819,207 @@ serviceConfig = {
   StateDirectory = "my-service";
 };
 ```
+
+---
+
+## Ecosystem Standardization Issues (Session 3 Findings)
+
+Issues found across 126 projects during systematic standardization.
+
+### 51. Empty Overlays
+
+Empty overlays clutter the flake and can mask evaluation errors.
+
+```nix
+# ANTI-PATTERN — serves no purpose
+flake.overlays.default = final: prev: { };
+```
+
+**Fix**: Remove the overlay entirely if no packages are exported.
+
+### 52. `inputs.self.packages` Anti-Pattern
+
+Referencing packages through `inputs.self` is redundant and confusing.
+
+```nix
+# ANTI-PATTERN
+my-project = inputs.self.packages.${system}.default;
+
+# CORRECT
+my-project = self.packages.${system}.default;
+```
+
+### 53. `prev.system` in Overlays
+
+Using `prev.system` in overlays is wrong — `prev` is the package set before overlays, not a system accessor.
+
+```nix
+# BROKEN
+flake.overlays.default = final: prev: {
+  my-project = self.packages.${prev.system}.default;
+};
+
+# CORRECT
+flake.overlays.default = final: _prev: {
+  my-project = self.packages.${final.stdenv.system}.default;
+};
+```
+
+### 54. CI DevShell Uses `mkShell` Instead of `mkShellNoCC`
+
+CI devShells that use `mkShell` unnecessarily pull in a C compiler toolchain, bloating closure size and startup time.
+
+```nix
+# ANTI-PATTERN — slower CI, larger closure
+devShells.ci = pkgs.mkShell { packages = [ go golangci-lint ]; };
+
+# CORRECT — minimal, fast
+devShells.ci = pkgs.mkShellNoCC { packages = [ go golangci-lint ]; };
+```
+
+### 55. `pkgs.lib.licenses` Instead of `lib.licenses`
+
+In `perSystem`, `lib` is already available as a parameter. Using `pkgs.lib` is redundant.
+
+```nix
+# ANTI-PATTERN
+meta = with pkgs.lib; { license = licenses.mit; };
+
+# CORRECT
+meta = with lib; { license = licenses.mit; };
+```
+
+### 56. `nixpkgs.lib.platforms` Instead of `lib.platforms`
+
+Same issue as above — `lib` is already in scope in `perSystem`.
+
+```nix
+# ANTI-PATTERN
+meta = with lib; { platforms = nixpkgs.lib.platforms.all; };
+
+# CORRECT
+meta = with lib; { platforms = lib.platforms.all; };
+```
+
+### 57. Mixed `goPkg` Variable and Inline `pkgs.go_1_26`
+
+Mixing both styles in the same project (or across projects) creates inconsistency and confusion.
+
+```nix
+# ANTI-PATTERN — mixed styles in same file
+let goPkg = pkgs.go_1_26; in
+{
+  packages.default = pkgs.buildGoModule.override { go = pkgs.go_1_26; } { ... };
+  devShells.default = pkgs.mkShellNoCC { packages = [ goPkg ]; };
+}
+
+# CORRECT — single style throughout
+let
+  goPkg = pkgs.go_1_26;
+  buildGoModule = pkgs.buildGoModule.override { go = goPkg; };
+in
+{
+  packages.default = buildGoModule { ... };
+  devShells.default = pkgs.mkShellNoCC { packages = [ goPkg ]; };
+}
+```
+
+### 58. `checks.fmt` Instead of `checks.format`
+
+Inconsistent naming for the format check makes scripts and CI harder to write.
+
+```nix
+# ANTI-PATTERN — non-standard name
+checks.fmt = config.treefmt.build.check self;
+
+# CORRECT — standard name
+checks.format = config.treefmt.build.check self;
+```
+
+### 59. `programs.nixfmt.enable` Instead of `nixfmt.enable`
+
+`treefmt-nix` uses `nixfmt.enable`, not `programs.nixfmt.enable`.
+
+```nix
+# ANTI-PATTERN — wrong attribute path
+treefmt.programs.nixfmt.enable = true;
+
+# CORRECT
+treefmt.programs.nixfmt.enable = true;
+```
+
+Wait — that's the same. The actual issue is:
+
+```nix
+# ANTI-PATTERN (old API)
+treefmt.config.programs.nixfmt.enable = true;
+
+# CORRECT (current API)
+treefmt.programs.nixfmt.enable = true;
+```
+
+### 60. `treefmt.config` Instead of `treefmt.settings`
+
+Older treefmt-nix versions used `treefmt.config`. Current API uses `treefmt.settings` for formatter configuration and `treefmt.programs` for enablement.
+
+```nix
+# ANTI-PATTERN — old API
+treefmt.config = { programs.gofumpt.enable = true; };
+
+# CORRECT — current API
+treefmt.settings = { ... };
+treefmt.programs.gofumpt.enable = true;
+```
+
+### 61. `go.work` With Absolute Paths
+
+Absolute paths in `go.work` break on CI, other machines, and Nix builds.
+
+```
+// BROKEN — only works on one machine
+use /home/lars/projects/foo
+use /home/lars/projects/bar
+
+// CORRECT — portable
+use ./foo
+use ./bar
+```
+
+### 62. Missing `maintainers` in `meta`
+
+Empty or missing `maintainers` fields reduce accountability and discoverability.
+
+```nix
+# ANTI-PATTERN — empty maintainers
+meta = with lib; {
+  description = "...";
+  license = licenses.mit;
+  maintainers = [ ];  # or missing entirely
+};
+
+# CORRECT
+meta = with lib; {
+  description = "...";
+  license = licenses.mit;
+  maintainers = [ maintainers.larsartmann ];
+};
+```
+
+### 63. Overlay Attr Name Doesn't Match Directory
+
+When the overlay attribute name differs from the project directory name, it confuses consumers and breaks conventions.
+
+```nix
+# Directory: blog/
+# ANTI-PATTERN — confusing mismatch
+flake.overlays.default = final: _prev: {
+  blog-server = self.packages.${final.stdenv.system}.default;
+};
+
+# CORRECT — matches directory
+flake.overlays.default = final: _prev: {
+  blog = self.packages.${final.stdenv.system}.default;
+};
+```
+
+**Exception**: When the binary name intentionally differs (e.g., `index/` directory produces `indexer` binary), document with a comment.

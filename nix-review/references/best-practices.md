@@ -20,6 +20,8 @@ Read this section when you need specific guidance on how to write excellent Nix 
 
 ### The Ideal Go Project Flake
 
+Based on 126+ projects standardized across 3 sessions. This is the canonical pattern.
+
 ```nix
 {
   description = "Brief description of the project";
@@ -32,50 +34,83 @@ Read this section when you need specific guidance on how to write excellent Nix 
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ { self, flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = import inputs.systems;
 
-      imports = [ inputs.treefmt-nix.flakeModule ];
+      imports = [
+        inputs.treefmt-nix.flakeModule
+        inputs.git-hooks.flakeModule
+      ];
 
-      perSystem = { config, pkgs, ... }:
+      perSystem = { config, pkgs, lib, ... }:
         let
+          goPkg = pkgs.go_1_26;
+          buildGoModule = pkgs.buildGoModule.override { go = goPkg; };
           version = self.rev or self.dirtyRev or "dev";
           vendorHash = "sha256-..."; # Single source of truth
         in
         {
-          packages.default = pkgs.buildGoModule {
+          packages.default = buildGoModule {
             pname = "my-project";
             inherit version vendorHash;
             src = lib.fileset.toSource {
               root = ./.;
               fileset = lib.fileset.unions [
-                ./go.mod ./go.sum ./main.go ./internal
+                ./go.mod
+                ./go.sum
+                ./main.go
+                ./cmd
+                ./internal
               ];
             };
             ldflags = [ "-s" "-w" "-X main.version=${version}" ];
-            meta = with pkgs.lib; {
+            meta = with lib; {
               description = "Project description";
               license = licenses.mit;
+              maintainers = [ maintainers.larsartmann ];
               mainProgram = "my-project";
             };
           };
 
-          devShells.default = pkgs.mkShell {
-            packages = with pkgs; [ go gopls golangci-lint ];
+          devShells.default = pkgs.mkShellNoCC {
+            packages = with pkgs; [
+              goPkg
+              gopls
+              golangci-lint
+              templ
+            ];
             GOWORK = "off";
+            GOPRIVATE = "github.com/larsartmann";
+          };
+
+          devShells.ci = pkgs.mkShellNoCC {
+            packages = with pkgs; [ goPkg golangci-lint templ ];
+            GOWORK = "off";
+            GOPRIVATE = "github.com/larsartmann";
+          };
+
+          treefmt.programs = {
+            gofumpt.enable = true;
+            goimports.enable = true;
+            nixfmt.enable = true;
+            templ.enable = true;
           };
 
           checks = {
+            format = config.treefmt.build.check self;
             build = config.packages.default;
-            test = config.packages.default.overrideAttrs (_: { doCheck = true; });
           };
         };
 
-      flake.overlays.default = final: prev: {
-        my-project = final.callPackage ./package.nix { };
+      flake.overlays.default = final: _prev: {
+        my-project = self.packages.${final.stdenv.system}.default;
       };
     };
 }
@@ -83,15 +118,105 @@ Read this section when you need specific guidance on how to write excellent Nix 
 
 ### Key Flake Principles
 
-1. **Use `flake-parts`** for anything beyond a trivial single-package flake — it scales better than raw `eachDefaultSystem`
+1. **Use `flake-parts`** for anything beyond a trivial single-package flake — it scales better than raw `eachDefaultSystem` or `flake-utils`
 2. **Use `nix-systems/default`** for system lists — avoid hardcoding `["x86_64-linux" "aarch64-darwin"]`
 3. **Always set `follows`** on inputs that use nixpkgs — prevents dependency duplication
-4. **Derive version from git** — `self.rev or self.dirtyRev or "dev"`
-5. **Extract vendorHash to `let`** — single source of truth, not duplicated
-6. **Define `formatter`** — `nixfmt` or `treefmt-nix`
-7. **Define `checks`** — at minimum build and test
-8. **Export `overlays.default`** — enables consumption by other flakes
-9. **Complete `meta`** — description, license, mainProgram
+4. **Standard stack for Go projects** — `flake-parts` + `treefmt-nix` + `systems` + `git-hooks-nix`
+5. **Derive version from git** — `self.rev or self.dirtyRev or "dev"`
+6. **Extract vendorHash to `let`** — single source of truth, not duplicated
+7. **Pin Go version** — `goPkg = pkgs.go_1_26;` + `buildGoModule.override { go = goPkg; }`
+8. **Define `formatter`** via `treefmt-nix` — `nixfmt` for Nix, `gofumpt`/`goimports` for Go, `templ` when applicable
+9. **Define `checks`** — `checks.format = config.treefmt.build.check self;` + `checks.build = config.packages.default;`
+10. **Export `overlays.default`** — `final: _prev: { project-name = self.packages.${final.stdenv.system}.default; }`
+11. **Complete `meta`** — description, license, mainProgram, maintainers
+12. **CI devShell** — `mkShellNoCC` with only build/test tools, no interactive tools
+13. **`nixosModules` at top level** — `flake.nixosModules`, never inside `perSystem`
+
+### Go Version Pinning Pattern
+
+Always pin the Go version to avoid surprise breakages when nixpkgs updates.
+
+```nix
+perSystem = { config, pkgs, ... }:
+  let
+    goPkg = pkgs.go_1_26;
+    buildGoModule = pkgs.buildGoModule.override { go = goPkg; };
+  in
+  {
+    packages.default = buildGoModule { ... };
+
+    devShells.default = pkgs.mkShellNoCC {
+      packages = with pkgs; [ goPkg gopls golangci-lint ];
+    };
+  }
+```
+
+**Why**: `pkgs.go` changes silently when nixpkgs updates. Pinning ensures reproducible builds across time and machines.
+
+---
+
+## CI DevShell Pattern
+
+A minimal devShell for CI that excludes interactive tools (gopls, editors) to reduce closure size and startup time.
+
+```nix
+devShells.ci = pkgs.mkShellNoCC {
+  packages = with pkgs; [ goPkg golangci-lint templ ];
+  GOWORK = "off";
+  GOPRIVATE = "github.com/larsartmann";
+};
+```
+
+**Rules**:
+- Use `mkShellNoCC` — no C compiler needed for pure Go
+- Only build/test tools in `packages`
+- Propagate `GOPRIVATE` if project has private Go dependencies
+- Include `templ` if the project uses templ templates
+- Never include `gopls`, editors, or interactive tooling
+
+---
+
+## treefmt-nix Configuration
+
+Standard formatter stack for Go projects:
+
+```nix
+treefmt = {
+  projectRootFile = "go.mod";
+  programs = {
+    gofumpt.enable = true;
+    goimports.enable = true;
+    nixfmt.enable = true;
+    templ.enable = true;  # when project uses templ
+  };
+};
+```
+
+**Notes**:
+- `projectRootFile` should match the project's primary marker (`go.mod` for Go, `package.json` for Node, etc.)
+- `templ.enable` only when the project has `.templ` files
+- `nixfmt` (RFC 166 style) is the standard Nix formatter — never `nixpkgs-fmt`
+
+---
+
+## `nixosModules` Placement
+
+NixOS modules must be at `flake.nixosModules`, never inside `perSystem`.
+
+```nix
+outputs = inputs @ { self, flake-parts, ... }:
+  flake-parts.lib.mkFlake { inherit inputs; } {
+    # CORRECT — top level
+    flake.nixosModules.default = import ./module.nix;
+
+    perSystem = { config, pkgs, ... }: {
+      # WRONG — modules are not per-system
+      # nixosModules.default = ...;
+    };
+  };
+```
+
+**Why**: NixOS modules are system-agnostic configuration definitions. They are imported and evaluated by the target NixOS system, not by the flake's `perSystem`.
 
 ---
 
@@ -392,8 +517,8 @@ Define the overlay first, then use it everywhere:
 
 ```nix
 let
-  overlay = final: prev: {
-    my-tool = final.callPackage ./package.nix { };
+  overlay = final: _prev: {
+    my-tool = self.packages.${final.stdenv.system}.default;
   };
 in
 {
@@ -413,16 +538,34 @@ in
 | Overriding an existing package | `prev.package`     | Avoids infinite recursion |
 | Referencing dependencies       | `final.dependency` | Respects other overlays   |
 | Adding new packages            | `prev.callPackage` | Standard pattern          |
+| System reference               | `final.stdenv.system` | Correct system in overlay context |
+| Unused parameter               | `_prev`            | Signals `prev` is intentionally ignored |
 
 ```nix
-final: prev: {
-  # Override existing — use prev
-  hello = prev.hello.overrideAttrs (old: { patches = old.patches ++ [ ./fix.patch ]; });
-
-  # New package depending on other overlays — use final
-  myApp = prev.callPackage ./my-app.nix { boost = final.boost185; };
+final: _prev: {
+  # New package from flake's own packages — use final for system ref
+  my-project = self.packages.${final.stdenv.system}.default;
 }
 ```
+
+### Overlay Naming Convention
+
+The overlay attribute name should match the project directory name for clarity:
+
+```nix
+# Directory: my-project/
+# CORRECT
+flake.overlays.default = final: _prev: {
+  my-project = self.packages.${final.stdenv.system}.default;
+};
+
+# WRONG — confusing mismatch
+flake.overlays.default = final: _prev: {
+  my-server = self.packages.${final.stdenv.system}.default;
+};
+```
+
+**Exception**: When the binary name intentionally differs from the directory name (e.g., `index` directory produces `indexer` binary), document the mismatch in a comment.
 
 ### Scoped Overlays (for Package Sets)
 
@@ -443,8 +586,8 @@ final: prev: {
 ### Minimal DevShell
 
 ```nix
-devShells.default = pkgs.mkShell {
-  packages = with pkgs; [ go gopls golangci-lint ];
+devShells.default = pkgs.mkShellNoCC {
+  packages = with pkgs; [ goPkg gopls golangci-lint ];
   GOWORK = "off";
 };
 ```
@@ -461,8 +604,8 @@ devShells.default = pkgs.mkShellNoCC {
 ### Composed DevShell with inputsFrom
 
 ```nix
-devShells.full = pkgs.mkShell {
-  inputsFrom = [ self.devShells.x86_64-linux.frontend ];
+devShells.full = pkgs.mkShellNoCC {
+  inputsFrom = [ config.devShells.frontend config.devShells.backend ];
   packages = with pkgs; [ just ];
 };
 ```
@@ -470,20 +613,23 @@ devShells.full = pkgs.mkShell {
 ### CI DevShell (Minimal)
 
 ```nix
-devShells.ci = pkgs.mkShell {
-  packages = with pkgs; [ go golangci-lint ];
-  # No interactive tools — smaller closure, faster
+devShells.ci = pkgs.mkShellNoCC {
+  packages = with pkgs; [ goPkg golangci-lint templ ];
+  GOWORK = "off";
+  GOPRIVATE = "github.com/larsartmann";
 };
 ```
 
 ### DevShell Best Practices
 
 1. Use `packages` (not `buildInputs`) for tools
-2. Use `mkShellNoCC` when no C compiler needed
+2. Use `mkShellNoCC` when no C compiler needed (most Go projects)
 3. Keep `shellHook` lightweight — no network access, no heavy installs
 4. Use `inputsFrom` to compose shells in monorepos
 5. Export environment variables as direct attributes (`GOWORK = "off"`) not in shellHook
 6. Create a separate `ci` devShell with only build/test tools
+7. Propagate `GOPRIVATE` to CI devShell when project has private Go dependencies
+8. Include `templ` in CI devShell when project uses templ templates
 
 ---
 
@@ -527,7 +673,9 @@ nix.settings.auto-optimise-store = true;
 ```nix
 perSystem = { config, pkgs, ... }:
   let
-    pkg = pkgs.buildGoModule {
+    goPkg = pkgs.go_1_26;
+    buildGoModule = pkgs.buildGoModule.override { go = goPkg; };
+    pkg = buildGoModule {
       vendorHash = "sha256-...";
       # ...
     };
@@ -535,9 +683,13 @@ perSystem = { config, pkgs, ... }:
   {
     packages.default = pkg;
 
-    checks.test = pkg.overrideAttrs (_: {
-      doCheck = true;
-    });
+    checks = {
+      format = config.treefmt.build.check self;
+      build = pkg;
+      test = pkg.overrideAttrs (_: {
+        doCheck = true;
+      });
+    };
   };
 ```
 
