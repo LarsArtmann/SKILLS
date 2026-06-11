@@ -37,20 +37,20 @@ For every type, field, and relationship, ask these questions and record every pr
 
 Grade each problem by **severity** (critical/high/medium/low) and **systemicity** (how many types it affects).
 
-| # | Problem | Severity | Key Question |
-|---|---------|----------|--------------|
-| P1 | Stringly-Typed Everything | Critical | Are identifiers/raw `string` instead of branded types? |
-| P2 | Pointer Fields as State Encoding | Critical | Is `*time.Time` used to mean "not yet" instead of a union? |
-| P3 | No Validation at Type Level | High | Can a struct be constructed invalid and still compile? |
-| P4 | Primitive Obsession | High | Are domain concepts (`Email`, `UserID`) raw primitives? |
-| P5 | Missing Interface-Based Unions | High | Are polymorphic types `Type string` + optional pointers? |
-| P6 | No Composition, Only Embedding | High | Are base structs embedded blindly, creating deep coupling? |
-| P7 | Implicit Relationships | Medium | Are foreign keys raw `int` with no type link to parent? |
-| P8 | No Versioning or Lifecycle | Medium | No `CreatedAt`, `UpdatedAt`, `Version` fields? |
-| P9 | Duplicated Logic Across Types | High | Same validation copied into multiple structs? |
-| P10 | Weak Collection Types | Medium | Slices where maps/sets matter? Nil vs empty confusion? |
-| P11 | No Generic Parameterization | Medium | `UserPage` / `OrderPage` defined separately? |
-| P12 | Missing Error Models | Medium | Errors as untyped `error` with string matching? |
+| #   | Problem                          | Severity | Key Question                                               |
+| --- | -------------------------------- | -------- | ---------------------------------------------------------- |
+| P1  | Stringly-Typed Everything        | Critical | Are identifiers/raw `string` instead of branded types?     |
+| P2  | Pointer Fields as State Encoding | Critical | Is `*time.Time` used to mean "not yet" instead of a union? |
+| P3  | No Validation at Type Level      | High     | Can a struct be constructed invalid and still compile?     |
+| P4  | Primitive Obsession              | High     | Are domain concepts (`Email`, `UserID`) raw primitives?    |
+| P5  | Missing Interface-Based Unions   | High     | Are polymorphic types `Type string` + optional pointers?   |
+| P6  | No Composition, Only Embedding   | High     | Are base structs embedded blindly, creating deep coupling? |
+| P7  | Implicit Relationships           | Medium   | Are foreign keys raw `int` with no type link to parent?    |
+| P8  | No Versioning or Lifecycle       | Medium   | No `CreatedAt`, `UpdatedAt`, `Version` fields?             |
+| P9  | Duplicated Logic Across Types    | High     | Same validation copied into multiple structs?              |
+| P10 | Weak Collection Types            | Medium   | Slices where maps/sets matter? Nil vs empty confusion?     |
+| P11 | No Generic Parameterization      | Medium   | `UserPage` / `OrderPage` defined separately?               |
+| P12 | Missing Error Models             | Medium   | Errors as untyped `error` with string matching?            |
 
 For detailed fixes for each problem, load [./references/go-patterns.md](references/go-patterns.md).
 

@@ -12,6 +12,7 @@ Migrate projects to the standard Nix flake stack. Based on patterns validated ac
 ## Standard Stack
 
 The ecosystem standard for Go projects:
+
 - `flake-parts` (not `flake-utils` or raw `eachDefaultSystem`)
 - `treefmt-nix` with `nixfmt`, `gofumpt`, `goimports`, `templ`
 - `systems` input (not hardcoded system lists)
@@ -20,14 +21,14 @@ The ecosystem standard for Go projects:
 
 ## Migration Types
 
-| From | To | Key Changes |
-|------|-----|-------------|
-| `justfile` / `Makefile` | `flake.nix` | Commands become `apps` or `checks`; deps become `packages` |
-| `flake-utils` / `forEachSystem` | `flake-parts` | Replace `eachDefaultSystem` with `flake-parts.lib.mkFlake` |
-| Raw `flake.nix` | `flake-parts` + `treefmt-nix` | Add modules, extract per-system logic |
-| No formatter | `treefmt-nix` | Add `imports`, configure `treefmt.programs` |
-| No checks | Standard checks | Add `checks.format` + `checks.build` |
-| `mkShell` CI | `mkShellNoCC` CI | Use `mkShellNoCC` for faster CI shells |
+| From                            | To                            | Key Changes                                                |
+| ------------------------------- | ----------------------------- | ---------------------------------------------------------- |
+| `justfile` / `Makefile`         | `flake.nix`                   | Commands become `apps` or `checks`; deps become `packages` |
+| `flake-utils` / `forEachSystem` | `flake-parts`                 | Replace `eachDefaultSystem` with `flake-parts.lib.mkFlake` |
+| Raw `flake.nix`                 | `flake-parts` + `treefmt-nix` | Add modules, extract per-system logic                      |
+| No formatter                    | `treefmt-nix`                 | Add `imports`, configure `treefmt.programs`                |
+| No checks                       | Standard checks               | Add `checks.format` + `checks.build`                       |
+| `mkShell` CI                    | `mkShellNoCC` CI              | Use `mkShellNoCC` for faster CI shells                     |
 
 ## Process
 

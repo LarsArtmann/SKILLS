@@ -49,14 +49,14 @@ func (id UserID) IsZero() bool   { return id.value == "" }
 
 **When to choose which:**
 
-| Concern | Alias `type X string` | Struct Wrapper |
-| ------- | --------------------- | --------------- |
-| Zero value valid? | Yes (empty string) | No (constructor required) |
-| Runtime validation? | No | Yes |
-| JSON marshaling | Trivial | Needs custom MarshalJSON |
-| DB scanning | Works directly | Needs Valuer/Scanner |
-| Performance | Zero overhead | One pointer indirection |
-| Method set | None (unless added) | Rich |
+| Concern             | Alias `type X string` | Struct Wrapper            |
+| ------------------- | --------------------- | ------------------------- |
+| Zero value valid?   | Yes (empty string)    | No (constructor required) |
+| Runtime validation? | No                    | Yes                       |
+| JSON marshaling     | Trivial               | Needs custom MarshalJSON  |
+| DB scanning         | Works directly        | Needs Valuer/Scanner      |
+| Performance         | Zero overhead         | One pointer indirection   |
+| Method set          | None (unless added)   | Rich                      |
 
 ## Interface-Based Unions (Closed Unions)
 
@@ -354,12 +354,12 @@ func (oi OrderItems) Count() int      { return len(oi.Items) }
 
 ### Pointer vs Value Receivers
 
-| Use Value Receiver | Use Pointer Receiver |
-| ------------------ | -------------------- |
+| Use Value Receiver                | Use Pointer Receiver                 |
+| --------------------------------- | ------------------------------------ |
 | Immutable types (branded aliases) | Mutable types (structs with setters) |
-| Small structs (< 64 bytes) | Large structs (> 64 bytes) |
-| Types that must not be nil | Types where nil is a valid state |
-| Read-only methods | Write methods |
+| Small structs (< 64 bytes)        | Large structs (> 64 bytes)           |
+| Types that must not be nil        | Types where nil is a valid state     |
+| Read-only methods                 | Write methods                        |
 
 ```go
 // Value receiver — safe, no nil risk

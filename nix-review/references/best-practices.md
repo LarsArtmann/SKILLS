@@ -168,6 +168,7 @@ devShells.ci = pkgs.mkShellNoCC {
 ```
 
 **Rules**:
+
 - Use `mkShellNoCC` — no C compiler needed for pure Go
 - Only build/test tools in `packages`
 - Propagate `GOPRIVATE` if project has private Go dependencies
@@ -193,6 +194,7 @@ treefmt = {
 ```
 
 **Notes**:
+
 - `projectRootFile` should match the project's primary marker (`go.mod` for Go, `package.json` for Node, etc.)
 - `templ.enable` only when the project has `.templ` files
 - `nixfmt` (RFC 166 style) is the standard Nix formatter — never `nixpkgs-fmt`
@@ -533,13 +535,13 @@ in
 
 ### Overlay `final`/`prev` Rules
 
-| Context                        | Use                | Why                       |
-| ------------------------------ | ------------------ | ------------------------- |
-| Overriding an existing package | `prev.package`     | Avoids infinite recursion |
-| Referencing dependencies       | `final.dependency` | Respects other overlays   |
-| Adding new packages            | `prev.callPackage` | Standard pattern          |
-| System reference               | `final.stdenv.system` | Correct system in overlay context |
-| Unused parameter               | `_prev`            | Signals `prev` is intentionally ignored |
+| Context                        | Use                   | Why                                     |
+| ------------------------------ | --------------------- | --------------------------------------- |
+| Overriding an existing package | `prev.package`        | Avoids infinite recursion               |
+| Referencing dependencies       | `final.dependency`    | Respects other overlays                 |
+| Adding new packages            | `prev.callPackage`    | Standard pattern                        |
+| System reference               | `final.stdenv.system` | Correct system in overlay context       |
+| Unused parameter               | `_prev`               | Signals `prev` is intentionally ignored |
 
 ```nix
 final: _prev: {

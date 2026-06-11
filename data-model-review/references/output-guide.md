@@ -31,14 +31,31 @@ The data-model-review skill produces a self-contained HTML presentation at `docs
 ## Go Syntax Highlighting CSS Classes
 
 ```css
-.go-keyword { color: #c678dd; }   /* package, func, type, struct, interface */
-.go-type    { color: #e5c07b; }   /* int, string, bool, error, time.Time */
-.go-string  { color: #98c379; }   /* "quoted strings" */
-.go-comment { color: #5c6370; font-style: italic; } /* // comments */
-.go-func    { color: #61afef; }   /* function names */
-.go-number  { color: #d19a66; }   /* 42, 3.14 */
-.go-generic { color: #e06c75; }   /* T, ID in generics */
-.go-builtin { color: #56b6c2; }   /* make, len, cap, append */
+.go-keyword {
+  color: #c678dd;
+} /* package, func, type, struct, interface */
+.go-type {
+  color: #e5c07b;
+} /* int, string, bool, error, time.Time */
+.go-string {
+  color: #98c379;
+} /* "quoted strings" */
+.go-comment {
+  color: #5c6370;
+  font-style: italic;
+} /* // comments */
+.go-func {
+  color: #61afef;
+} /* function names */
+.go-number {
+  color: #d19a66;
+} /* 42, 3.14 */
+.go-generic {
+  color: #e06c75;
+} /* T, ID in generics */
+.go-builtin {
+  color: #56b6c2;
+} /* make, len, cap, append */
 ```
 
 ## Example Filename

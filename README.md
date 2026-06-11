@@ -12,12 +12,12 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Architecture & Design
 
-| Skill                          | What It Does                                                          | Status           |
-| ------------------------------ | --------------------------------------------------------------------- | ---------------- |
-| **architecture-review**        | Reviews architecture for scalability, modularity, and composability   | 🟡 Thin          |
-| **architecture-visualization** | Generates D2 architecture diagrams — current state vs. ideal target   | 🟢 Solid         |
-| **data-model-review**          | Reviews and redesigns data models using Go's type system              | 🟢 Comprehensive |
-| **pareto-planning**            | 80/20 execution plans with D2 dependency graphs                       | 🟢 Comprehensive |
+| Skill                          | What It Does                                                        | Status           |
+| ------------------------------ | ------------------------------------------------------------------- | ---------------- |
+| **architecture-review**        | Reviews architecture for scalability, modularity, and composability | 🟡 Thin          |
+| **architecture-visualization** | Generates D2 architecture diagrams — current state vs. ideal target | 🟢 Solid         |
+| **data-model-review**          | Reviews and redesigns data models using Go's type system            | 🟢 Comprehensive |
+| **pareto-planning**            | 80/20 execution plans with D2 dependency graphs                     | 🟢 Comprehensive |
 
 ### Code Quality & Review
 
