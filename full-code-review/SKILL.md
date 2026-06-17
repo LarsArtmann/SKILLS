@@ -29,27 +29,17 @@ For the full checklist of questions to ask per file, load [./references/architec
 
 1. Before you start, make sure our repo/git is clean. Run: `git status & git commit <-- with VERY DETAILED commit message(s) & git push`
 
-2. Let's figure out what we should really do!
-   - What are the 20% that deliver 80% of the result??! — BREAK IT DOWN!
-   - What are the 4% that deliver 64% of the result??! — BREAK IT DOWN!
-   - What are the 1% that deliver 51% of the result??! — BREAK IT DOWN!
-   - Start with 1%, then do 4%, then do the 20% — Then report back!
+2. **Delegate planning to the `pareto-planning` skill.** Do not re-implement Pareto
+   breakdown, task splitting, or the D2 execution graph here — that duplication is a
+   split brain. Load `pareto-planning/SKILL.md` and follow its process. It produces a
+   styled HTML plan with stat cards, badge-coded task tables, and an inline D2 execution
+   graph at `docs/planning/<YYYY-MM-DD_HH_MM-NAME>.html`.
 
-3. MAKE SURE TO CREATE A VERY COMPREHENSIVE PLAN FIRST!
-   Split the TODOs into small tasks 100min to 30min each (up to 27 tasks total)!
-   Sort all by importance/impact/effort/customer-value.
-   REPORT BACK WITH A TABLE VIEW WHEN DONE!
+3. Once the plan is written, return here and continue with the code review execution.
 
-4. THEN BREAK DOWN THE VERY COMPREHENSIVE & DETAILED PLAN INTO EVEN SMALLER TODOs!
-   EACH tasks max 15min each (up to 150 tasks total)!
-   Sort all by importance/impact/effort/customer-value.
-   REPORT BACK WITH A TABLE VIEW WHEN DONE!
+4. Remember: If you VERSCHLIMMBESSER this system, I will cut off your balls! I hope we understand each other!
 
-5. WRITE YOUR PLAN WITH GOOD AMOUNTS OF CONTEXT INTO AN .md FILE with a D2 execution graph at `docs/planning/<YYYY-MM-DD_HH_MM-SUPERB_NAME>.md`.
-
-6. Remember: If you VERSCHLIMMBESSER this system, I will cut off your balls! I hope we understand each other!
-
-7. BE SMART! Use your Brain! Let's go!
+5. BE SMART! Use your Brain! Let's go!
 
 ## Git Workflow
 
