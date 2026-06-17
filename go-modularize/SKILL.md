@@ -577,21 +577,21 @@ matrices, and risk tables that benefit from visual treatment.
 2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
 3. Write to `docs/modularization/<YYYY-MM-DD_PROPOSAL>.html` with:
 
-4. **Executive summary** — Why modularize, what changes, expected benefits
-5. **Current state analysis** — Dependency graph, coupling hotspots, god-packages
-6. **Re-modularization assessment** (if applicable) — Scores, remodel classification,
-   migration matrix, deprecation plan
-7. **Proposed module structure** — Table from 3.1 + dependency diagram (D2 or ASCII)
-8. **DAG verification** — Proof that the proposed structure is acyclic
-9. **Replace / workspace strategy** — Which approach and why
-10. **Test dependency isolation** — Production vs test dep classification per module
-11. **Interface extraction plan** — Which modules get interface/impl splits
-12. **Error type placement** — Where sentinel and custom errors live, with accessibility check
-13. **Versioning strategy** — Chosen approach with rationale
-14. **Breaking change analysis** — Affected import paths, redirect/deprecation plan
-15. **Migration strategy** — Ordered steps, each independently executable (use numbered-step components)
-16. **Risk assessment** — What could go wrong, how to mitigate (reference failure modes)
-17. **Build system impact** — Changes needed to build system (flake.nix, if applicable) and CI/CD
+   1. **Executive summary** — Why modularize, what changes, expected benefits
+   2. **Current state analysis** — Dependency graph, coupling hotspots, god-packages
+   3. **Re-modularization assessment** (if applicable) — Scores, remodel classification,
+      migration matrix, deprecation plan
+   4. **Proposed module structure** — Table from 3.1 + dependency diagram (render D2 → inline SVG)
+   5. **DAG verification** — Proof that the proposed structure is acyclic
+   6. **Replace / workspace strategy** — Which approach and why
+   7. **Test dependency isolation** — Production vs test dep classification per module
+   8. **Interface extraction plan** — Which modules get interface/impl splits
+   9. **Error type placement** — Where sentinel and custom errors live, with accessibility check
+   10. **Versioning strategy** — Chosen approach with rationale
+   11. **Breaking change analysis** — Affected import paths, redirect/deprecation plan
+   12. **Migration strategy** — Ordered steps, each independently executable (use numbered-step components)
+   13. **Risk assessment** — What could go wrong, how to mitigate (reference failure modes)
+   14. **Build system impact** — Changes needed to build system (flake.nix, if applicable) and CI/CD
 
 Commit the proposal:
 
