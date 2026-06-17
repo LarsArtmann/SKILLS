@@ -3,6 +3,7 @@ name: architecture-visualization
 description: Generates D2 architecture diagrams for the current system and/or the ideal target architecture. Use when the user wants architecture diagrams, visualizes Events & Commands flow, asks for D2 diagrams, or wants to see how the system IS vs how it SHOULD BE architected. Also trigger when the user asks about system architecture, component relationships, service dependencies, or any visual representation of codebase structure.
 metadata:
   tags: architecture, d2, visualization, diagram, events, commands
+allowed-tools: d2
 ---
 
 # Architecture Visualization

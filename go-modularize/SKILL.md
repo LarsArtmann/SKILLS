@@ -19,6 +19,7 @@ metadata:
   tags: go, modularization, monorepo, multi-module, go.mod, architecture, refactoring,
     go.work, replace-directives, versioning, re-modularization, merge-modules,
     module-boundaries, internal-packages, error-types, unix-philosophy
+allowed-tools: d2
 ---
 
 # Go Modularize
