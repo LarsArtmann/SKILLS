@@ -160,55 +160,25 @@ For each identifier, check ALL categories below. Read `references/common-naming-
 
 ### Step 5: Generate Report
 
-Produce a structured report with these sections:
+Write a **self-contained styled HTML report** — not a flat Markdown file. A naming review
+is a point-in-time audit with category-colored issue tables that benefit from visual treatment.
 
-```markdown
-# Naming Review Report
+1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
+2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+3. Write to `docs/reviews/<YYYY-MM-DD_HH-MM_naming-review.html`
+4. Map report sections to visual components:
+   - **Stat cards** for counts (identifiers reviewed / honesty / clarity / domain / consistency)
+   - **Badge-coded tables** per category — one table per issue class:
+     - `.card-problem` + `badge-critical` for **Honesty Issues** (Must Fix)
+     - `.card-warning` + `badge-high` for **Clarity Issues** (Should Fix)
+     - `.card-warning` + `badge-medium` for **Domain Alignment Issues**
+     - `.card-warning` + `badge-low` for **Consistency Issues**
+     - `.card-warning` + `badge-medium` for **Implementation Leakage**
+   - **`.card-solution`** for **Strengths** (good naming to preserve)
 
-## Executive Summary
+Each issue table uses the same column structure:
 
-- X identifiers reviewed
-- Y honesty issues (lying names, hidden side effects)
-- Z clarity issues (abbreviations, vagueness)
-- W domain alignment issues (split brains, jargon leakage)
-- V consistency issues (synonym drift, tense inconsistency)
-
-## Honesty Issues (Must Fix)
-
-| #   | File    | Line | Identifier | Issue         | Better Name |
-| --- | ------- | ---- | ---------- | ------------- | ----------- |
-| 1   | user.go | 42   | getUser()  | Mutates state | saveUser()  |
-
-## Clarity Issues (Should Fix)
-
-| #   | File       | Line | Identifier | Issue                       | Better Name    |
-| --- | ---------- | ---- | ---------- | --------------------------- | -------------- |
-| 1   | order.go   | 15   | usr        | Unrecognizable abbreviation | user           |
-| 2   | service.go | 8    | DataInfo   | Vague noun                  | PaymentSummary |
-
-## Domain Alignment Issues
-
-| #   | Files   | Concept  | Current Names         | Canonical Name |
-| --- | ------- | -------- | --------------------- | -------------- |
-| 1   | 3 files | Customer | Client, Account, User | Customer       |
-
-## Consistency Issues
-
-| #   | Operation | Files   | Current Verbs          | Standardize To |
-| --- | --------- | ------- | ---------------------- | -------------- |
-| 1   | Create    | 5 files | create, new, make, add | create         |
-
-## Implementation Leakage
-
-| #   | File    | Line | Identifier         | Issue              | Better Name                              |
-| --- | ------- | ---- | ------------------ | ------------------ | ---------------------------------------- |
-| 1   | repo.go | 22   | UserRepositoryImpl | Leaks architecture | SqlUserRepository or just UserRepository |
-
-## Strengths (Good Naming)
-
-- `calculateShippingCost()` — honest, precise, verb phrase
-- `PaymentConfirmed` event — domain language, past tense for events
-```
+| # | File | Line | Identifier | Issue | Better Name |
 
 ### Step 6: Fix (When Requested)
 
