@@ -214,3 +214,8 @@ These tools are referenced by skills but are **not** bundled in this repo. Agent
 | `onsi/ginkgo`              | `bdd-testing`                           | BDD testing framework               |
 
 **Note:** `how-to-golang` contains Go code snippets in its references. Some have known accuracy issues (flagged in the status report: `gopter` signature, `encoding/json/v2` Go version, E2E HTTP API). Validate code snippets before relying on them.
+
+## Note
+
+- This is a content repository -- no traditional build/test system
+- Validation: check YAML frontmatter format and skill structure manually
