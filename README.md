@@ -10,6 +10,12 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 **19 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out).
 
+### Shared Assets
+
+| Skill               | What It Does                                                          | Status           |
+| ------------------- | --------------------------------------------------------------------- | ---------------- |
+| **html-report-kit** | Shared dark-theme HTML design system for all report-producing skills  | 🟢 Solid         |
+
 ### Architecture & Design
 
 | Skill                          | What It Does                                                        | Status           |
@@ -24,7 +30,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 | Skill                  | What It Does                                                     | Status           |
 | ---------------------- | ---------------------------------------------------------------- | ---------------- |
 | **brutal-self-review** | Brutally honest self-review of codebase state (Go projects)      | 🟢 Solid         |
-| **code-quality-scan**  | Build, lint, and semantic duplication analysis                   | 🟡 Thin          |
+| **code-quality-scan**  | Build, lint, and semantic duplication analysis → HTML issue dashboard | 🟡 Thin          |
 | **deduplicate-code**   | Find and eliminate semantic code duplication                     | 🟡 Thin          |
 | **full-code-review**   | Comprehensive review visiting every code and test file           | 🟢 Comprehensive |
 | **naming-review**      | Audits and improves naming for types, functions, and identifiers | 🟢 Comprehensive |
@@ -41,7 +47,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 | Skill                   | What It Does                                                       | Status           |
 | ----------------------- | ------------------------------------------------------------------ | ---------------- |
-| **nix-flake-migration** | Migration proposals from justfile/shell scripts to Nix flakes      | 🟡 Thin          |
+| **nix-flake-migration** | Migration proposals from justfile/shell scripts to Nix flakes → HTML   | 🟡 Thin          |
 | **nix-review**          | Reviews and improves `.nix` files — 50+ problems, checklist-driven | 🟢 Comprehensive |
 
 ### Project Intelligence

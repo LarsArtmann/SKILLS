@@ -128,9 +128,9 @@ These contradict. When editing either skill, do not worsen the contradiction. Th
 
 9 of 18 skills are "thin" (<35 lines) and produce thin output. The comprehensive audit in `docs/status/2026-05-03_07-51_comprehensive-skills-audit.md` grades every skill and lists what each thin skill is missing. **Read this file before attempting to flesh out a skill** — it contains specific, actionable findings (e.g., "`bdd-testing` needs ginkgo syntax reference, test structure template, file naming conventions").
 
-### 5.5 Inter-Skill References Are Sparse
+### 5.5 Inter-Skill References
 
-Most skills do not reference sibling skills. When a skill's work overlaps with another (e.g., `full-code-review` finds duplications → should reference `deduplicate-code`), add cross-references. The `brutal-self-review` skill is the only one that currently references another (`how-to-golang`).
+The `full-code-review` skill now delegates planning to `pareto-planning` (previously inlined the same Pareto breakdown — a split brain). The `data-model-review` skill references `html-report-kit` for its design system. Seven report-producing skills (`status-report`, `pareto-planning`, `full-code-review`, `go-modularize`, `code-quality-scan`, `naming-review`, `nix-flake-migration`) all reference the shared `html-report-kit` skill for consistent HTML output. When adding cross-references, check this graph first.
 
 ### 5.6 `how-to-write-skills.md` Location
 
@@ -142,7 +142,13 @@ There is no `crush.json` in this repo, so Crush does not auto-discover these ski
 
 ### 5.8 `allowed-tools` Frontmatter Field
 
-No skill currently uses the `allowed-tools` field. Adding it would reduce permission prompts during execution. Consider it for skills that rely on specific CLI tools (e.g., `d2` for `architecture-visualization`, `art-dupl` for `deduplicate-code`).
+`pareto-planning` uses `allowed-tools: d2` to pre-approve the D2 CLI for graph rendering. Consider adding it to other skills that rely on specific CLI tools (e.g., `art-dupl` for `deduplicate-code`, `d2` for `architecture-visualization`).
+
+### 5.9 Shared HTML Design System (`html-report-kit`)
+
+Seven skills produce point-in-time reports as self-contained HTML files instead of Markdown. They all reference the shared `html-report-kit/` skill for the design system (dark theme, semantic color tokens, stat cards, severity badges, tables, before/after comparisons, syntax highlighting). When a new skill produces a snapshot report, point it at `html-report-kit` rather than inventing a new design.
+
+**The Artifact decision rule** (encoded in `how-to-write-skills.md`): Snapshot + HumanReport → HTML; Living + ToolParsed/EndUserDoc → Markdown. Never convert living docs (`FEATURES.md`, `TODO_LIST.md`) to HTML.
 
 ---
 
