@@ -28,32 +28,35 @@ The data-model-review skill produces a self-contained HTML presentation at `docs
 11. **Migration Roadmap** — numbered incremental steps with tooling
 12. **Conclusion** — summary quote
 
-## Go Syntax Highlighting CSS Classes
+## Syntax Highlighting CSS Classes
+
+Use the **shared language-agnostic** `.tok-*` classes from the `html-report-kit` skill,
+not data-model-specific classes:
 
 ```css
-.go-keyword {
+.tok-keyword {
   color: #c678dd;
 } /* package, func, type, struct, interface */
-.go-type {
+.tok-type {
   color: #e5c07b;
 } /* int, string, bool, error, time.Time */
-.go-string {
+.tok-string {
   color: #98c379;
 } /* "quoted strings" */
-.go-comment {
+.tok-comment {
   color: #5c6370;
   font-style: italic;
 } /* // comments */
-.go-func {
+.tok-func {
   color: #61afef;
 } /* function names */
-.go-number {
+.tok-number {
   color: #d19a66;
 } /* 42, 3.14 */
-.go-generic {
+.tok-generic {
   color: #e06c75;
 } /* T, ID in generics */
-.go-builtin {
+.tok-builtin {
   color: #56b6c2;
 } /* make, len, cap, append */
 ```

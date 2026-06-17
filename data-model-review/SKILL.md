@@ -94,24 +94,27 @@ Key patterns:
 
 Write a self-contained, zero-dependency HTML file at `docs/brainstorming/YYYY-MM-DD_<slug>.html`.
 
-For the complete output specification, load [./references/output-guide.md](references/output-guide.md).
+Use the **shared design system** from the `html-report-kit` skill:
+- Design spec: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
+- Template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+
+For data-model-specific output guidance (section structure, Go syntax highlighting
+examples), also load [./references/output-guide.md](references/output-guide.md).
 
 Required sections:
 
 1. **Hero** — Title, subtitle, architecture deep-dive badge
 2. **Table of Contents** — sticky nav
-3. **Current State** — stats (type count, problem count, severity breakdown)
-4. **Problem Catalog** — cards with severity badges and Go fixes
+3. **Current State** — stat cards (type count, problem count, severity breakdown)
+4. **Problem Catalog** — `.card-problem` cards with severity badges and Go fixes
 5. **The Vision** — what perfection looks like
-6. **Go Data Model** — type definitions with syntax highlighting
-7. **Composition in Action** — side-by-side before/after
+6. **Go Data Model** — type definitions with `.tok-*` syntax highlighting
+7. **Composition in Action** — side-by-side before/after (`.compare-*` components)
 8. **Validation Layer** — how invalid states become unrepresentable
 9. **Decision Log** — why each choice was made, with rejected alternatives
 10. **Anti-Patterns** — traps to avoid when adopting the new model
-11. **Migration Roadmap** — numbered incremental steps with tooling
+11. **Migration Roadmap** — numbered-step components (`.migration-step`)
 12. **Conclusion** — summary quote
-
-Design requirements: single file, zero dependencies, dark theme, manual CSS syntax highlighting, responsive grids, semantic color coding (rose=problem, emerald=solution, amber=warning).
 
 ### Step 6: Cross-Skill References
 
