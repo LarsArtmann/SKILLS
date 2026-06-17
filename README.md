@@ -12,9 +12,9 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Shared Assets
 
-| Skill               | What It Does                                                          | Status           |
-| ------------------- | --------------------------------------------------------------------- | ---------------- |
-| **html-report-kit** | Shared dark-theme HTML design system for all report-producing skills  | 🟢 Solid         |
+| Skill               | What It Does                                                         | Status   |
+| ------------------- | -------------------------------------------------------------------- | -------- |
+| **html-report-kit** | Shared dark-theme HTML design system for all report-producing skills | 🟢 Solid |
 
 ### Architecture & Design
 
@@ -27,13 +27,13 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Code Quality & Review
 
-| Skill                  | What It Does                                                     | Status           |
-| ---------------------- | ---------------------------------------------------------------- | ---------------- |
-| **brutal-self-review** | Brutally honest self-review of codebase state (Go projects)      | 🟢 Solid         |
+| Skill                  | What It Does                                                          | Status           |
+| ---------------------- | --------------------------------------------------------------------- | ---------------- |
+| **brutal-self-review** | Brutally honest self-review of codebase state (Go projects)           | 🟢 Solid         |
 | **code-quality-scan**  | Build, lint, and semantic duplication analysis → HTML issue dashboard | 🟡 Thin          |
-| **deduplicate-code**   | Find and eliminate semantic code duplication                     | 🟡 Thin          |
-| **full-code-review**   | Comprehensive review visiting every code and test file           | 🟢 Comprehensive |
-| **naming-review**      | Audits and improves naming for types, functions, and identifiers | 🟢 Comprehensive |
+| **deduplicate-code**   | Find and eliminate semantic code duplication                          | 🟡 Thin          |
+| **full-code-review**   | Comprehensive review visiting every code and test file                | 🟢 Comprehensive |
+| **naming-review**      | Audits and improves naming for types, functions, and identifiers      | 🟢 Comprehensive |
 
 ### Go Ecosystem
 
@@ -45,10 +45,10 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Nix & DevOps
 
-| Skill                   | What It Does                                                       | Status           |
-| ----------------------- | ------------------------------------------------------------------ | ---------------- |
-| **nix-flake-migration** | Migration proposals from justfile/shell scripts to Nix flakes → HTML   | 🟡 Thin          |
-| **nix-review**          | Reviews and improves `.nix` files — 50+ problems, checklist-driven | 🟢 Comprehensive |
+| Skill                   | What It Does                                                         | Status           |
+| ----------------------- | -------------------------------------------------------------------- | ---------------- |
+| **nix-flake-migration** | Migration proposals from justfile/shell scripts to Nix flakes → HTML | 🟡 Thin          |
+| **nix-review**          | Reviews and improves `.nix` files — 50+ problems, checklist-driven   | 🟢 Comprehensive |
 
 ### Project Intelligence
 

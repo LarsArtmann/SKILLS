@@ -151,11 +151,11 @@ Templates and examples eliminate ambiguity and produce consistent results across
 
 Not all output should be Markdown. Use this decision rule:
 
-| lifecycle | audience    | mutability | → format   |
-| --------- | ----------- | ---------- | ---------- |
-| Snapshot  | HumanReport | WriteOnce  | **HTML**   |
-| Living    | ToolParsed  | Upsert     | Markdown   |
-| Living    | EndUserDoc  | Upsert     | Markdown   |
+| lifecycle | audience    | mutability | → format |
+| --------- | ----------- | ---------- | -------- |
+| Snapshot  | HumanReport | WriteOnce  | **HTML** |
+| Living    | ToolParsed  | Upsert     | Markdown |
+| Living    | EndUserDoc  | Upsert     | Markdown |
 
 - **Snapshot reports** (status updates, reviews, plans, proposals, audits) are written
   once, read by humans, and never edited again → **HTML** with the shared
