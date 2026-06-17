@@ -569,7 +569,13 @@ If the project has external consumers (published to GOPROXY or imported by other
 
 ### 3.8 Write the proposal
 
-Write to `docs/modularization/PROPOSAL.md` with:
+Write a **self-contained styled HTML proposal** — not separate Markdown files. A
+modularization proposal is a point-in-time document with dependency diagrams, migration
+matrices, and risk tables that benefit from visual treatment.
+
+1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
+2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+3. Write to `docs/modularization/<YYYY-MM-DD_PROPOSAL>.html` with:
 
 1. **Executive summary** — Why modularize, what changes, expected benefits
 2. **Current state analysis** — Dependency graph, coupling hotspots, god-packages
@@ -583,7 +589,7 @@ Write to `docs/modularization/PROPOSAL.md` with:
 9. **Error type placement** — Where sentinel and custom errors live, with accessibility check
 10. **Versioning strategy** — Chosen approach with rationale
 11. **Breaking change analysis** — Affected import paths, redirect/deprecation plan
-12. **Migration strategy** — Ordered steps, each independently executable
+12. **Migration strategy** — Ordered steps, each independently executable (use numbered-step components)
 13. **Risk assessment** — What could go wrong, how to mitigate (reference failure modes)
 14. **Build system impact** — Changes needed to build system (flake.nix, if applicable) and CI/CD
 
@@ -679,7 +685,8 @@ For each task, check:
 
 ### 5.4 Write the plan
 
-Write to `docs/modularization/EXECUTION_PLAN.md` with:
+Write to `docs/modularization/<YYYY-MM-DD_EXECUTION_PLAN>.html` (or append as a section
+within the main proposal HTML) with:
 
 - Ordered task list with dependencies between tasks
 - Tier assignment per task
@@ -830,13 +837,15 @@ Update all documentation to reflect the new structure. Commit the final state.
 
 ## Output
 
-All modularization artifacts go to `docs/modularization/`:
+All modularization artifacts go to `docs/modularization/` as **self-contained HTML files**:
 
-| File                  | Content                                         |
-| --------------------- | ----------------------------------------------- |
-| `PROPOSAL.md`         | Full modularization proposal with all decisions |
-| `DEPENDENCY_GRAPH.md` | Current and proposed dependency analysis        |
-| `EXECUTION_PLAN.md`   | Step-by-step migration with impact sorting      |
+| File                                   | Content                                         |
+| -------------------------------------- | ----------------------------------------------- |
+| `<date>_PROPOSAL.html`                 | Full modularization proposal with all decisions |
+| `<date>_EXECUTION_PLAN.html`           | Step-by-step migration with impact sorting      |
+
+Use the shared [html-report-kit](../html-report-kit/SKILL.md) design system for all
+output. Dependency graphs render as D2→inline SVG within the HTML.
 
 ---
 
