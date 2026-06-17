@@ -33,7 +33,7 @@ The ecosystem standard for Go projects:
 ## Process
 
 1. **Discovery**: Read existing build files (`justfile`, `Makefile`, `.sh` scripts, current `flake.nix`)
-2. **Decision**: If `docs/proposals/<YYYY-MM-DD_nix-flake-migration.html` exists, STOP — do not overwrite. Otherwise proceed.
+2. **Decision**: If `docs/proposals/nix-flake-migration.html` or any `docs/proposals/<YYYY-MM-DD_nix-flake-migration.html` exists, STOP — do not overwrite. Otherwise proceed.
 3. **Map commands**: Translate `just` recipes / `make` targets to Nix constructs:
    - Build → `packages.default` via `buildGoModule`
    - Test → `checks.test` (override `doCheck = true`)
