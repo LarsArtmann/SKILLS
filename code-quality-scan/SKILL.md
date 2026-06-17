@@ -23,8 +23,17 @@ metadata:
 
 ## Output
 
-Create a sorted list of all our issues!
-Max 250 small tasks.
+Write a **self-contained styled HTML report** — a sorted issue dashboard.
+
+1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
+2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+3. Write to `docs/reviews/<YYYY-MM-DD_HH-MM_code-quality-scan.html`
+4. Map issues to visual components:
+   - **Stat cards** for counts (total issues / critical / high / medium / low)
+   - **Badge-coded table** with columns: #, Severity, File, Line, Issue, Suggested Fix
+   - Sort by severity (critical first), then by file
+   - Max 250 issues
+5. Use `date` CLI for the filename timestamp
 
 ## Execution
 
