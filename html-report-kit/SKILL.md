@@ -39,9 +39,9 @@ The vendored copy excludes this `SKILL.md` so the skills CLI doesn't detect a ne
 
 ## Two Template Variants
 
-| Variant | File | Best for |
-| ------- | ---- | -------- |
-| **Dark dashboard** | [./assets/report-template.html](./assets/report-template.html) | Status dashboards, scan results, high-density metrics |
+| Variant             | File                                                                               | Best for                                                                  |
+| ------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| **Dark dashboard**  | [./assets/report-template.html](./assets/report-template.html)                     | Status dashboards, scan results, high-density metrics                     |
 | **Editorial light** | [./assets/report-template-editorial.html](./assets/report-template-editorial.html) | Adoption feedback, architecture reviews, audit briefs, long-form findings |
 
 Both templates include the same component vocabulary (hero, stat/score cards, issue cards,

@@ -22,12 +22,12 @@ SKILLS/
 ├── how-to-write-skills.md       # Authoritative guide for writing new skills (currently at root)
 ├── originals/                   # Legacy raw prompt source material. DO NOT EDIT.
 │   └── <skill-name>.md            #   17 files named after the skill they seeded.
-│                                 #   Two skills (execution-mode, pareto-planning)
-│                                 #   have multiple originals reflecting distinct
-│                                 #   sub-prompts. Skills/ directories are canonical
-│                                 #   (see docs/status/).
+│                                 #   Two legacy source prompts produced
+│                                 #   multiple files (execution-mode,
+│                                 #   pareto-planning). Skills/ directories
+│                                 #   are canonical (see docs/status/).
 │
-├── <skill-name>/                # One directory per skill (18 total)
+├── <skill-name>/                # One directory per skill (19 total)
 │   ├── SKILL.md                 # Required: YAML frontmatter + agent instructions
 │   ├── scripts/                 # Optional: executable helpers (run without loading into context)
 │   ├── references/              # Optional: detailed docs loaded on demand via `view`
@@ -95,7 +95,7 @@ Large reference files (>300 lines) should include a table of contents at the top
 2. Create `my-skill/SKILL.md` with valid YAML frontmatter.
 3. Add optional `references/`, `scripts/`, `rules/`, `assets/` subdirectories as needed.
 4. Update `README.md` to include the new skill in the inventory table.
-5. Follow the pattern of `how-to-golang` for rich skills (lean SKILL.md + dense references) or `execution-mode` for focused skills (short, single-purpose).
+5. Follow the pattern of `how-to-golang` for rich skills (lean SKILL.md + dense references) or `architecture-visualization` for focused skills (short, single-purpose).
 
 ---
 
@@ -113,20 +113,17 @@ generated any given skill. They are **source material, not canonical** —
 any edits are wasted work. The skills in `<skill-name>/SKILL.md` are
 the canonical versions.
 
-### 5.2 `git commit <--` Syntax Bug
+### 5.2 `git commit <--` Syntax Bug (resolved)
 
-Four skills use this phrase: `brutal-self-review`, `full-code-review`, `pareto-planning`, `status-report`. The `<--` is **not** a git flag — it is a typo/artifact from the original prompts that should read "commit with a very detailed message". If you encounter this while editing a skill, fix it to clear prose.
+Historically four skills used the phrase `git commit <-- with VERY DETAILED commit message(s)`. The `<--` is **not** a git flag — it was a typo/artifact from the original prompts that should read "commit with a very detailed message". **All occurrences have been fixed** to clear prose. A guard (`scripts/check-skills.sh`) now fails if the typo reappears in any `SKILL.md`. If you encounter it in `originals/`, leave it — those are frozen source material.
 
-### 5.3 Contradictory Parallelism Instructions
+### 5.3 Parallelism (resolved)
 
-- `brutal-self-review` and `todo-list-builder` say: "Use 1 Sub Agent per file. ONLY 1 at a time."
-- `execution-mode` Mode 2 says: "Use MULTIPLE Tasks to get multiple Todos done at the same time."
-
-These contradict. When editing either skill, do not worsen the contradiction. The status report (see 5.5) flags this as a known issue.
+`brutal-self-review` and `todo-list-builder` instruct "Use 1 Sub Agent per file. ONLY 1 at a time." This previously contradicted the removed `execution-mode` skill, which said "Use MULTIPLE Tasks to get multiple Todos done at the same time." With `execution-mode` deleted, the contradiction no longer exists. Do not reintroduce conflicting parallelism guidance when editing either skill.
 
 ### 5.4 Thin Skills
 
-9 of 18 skills are "thin" (<35 lines) and produce thin output. The comprehensive audit in `docs/status/2026-05-03_07-51_comprehensive-skills-audit.md` grades every skill and lists what each thin skill is missing. **Read this file before attempting to flesh out a skill** — it contains specific, actionable findings (e.g., "`bdd-testing` needs ginkgo syntax reference, test structure template, file naming conventions").
+Skill depth varies. The authoritative status is the line count and a quality read of each `SKILL.md`; run `scripts/check-skills.sh` to surface the current thin ones. The comprehensive audit in `docs/status/2026-06-17_23-22_comprehensive-status.md` grades every skill and lists what each thin skill is missing. **Read the latest audit before attempting to flesh out a skill** — it contains specific, actionable findings (e.g., "`bdd-testing` needs ginkgo syntax reference, test structure template, file naming conventions").
 
 ### 5.5 Inter-Skill References
 
@@ -154,10 +151,10 @@ Skills that produce point-in-time reports write self-contained HTML files instea
 
 The Agent Skills spec has **no dependency system** — each skill is installed as a flat, self-contained unit. `bunx skills add LarsArtmann/SKILLS@<one-skill>` copies only that one directory, so a `../html-report-kit/...` sibling path dangles and the kit appears not to exist. To make every consumer work in every install mode (per-skill add/update, clone, `skills_paths`), the kit is **vendored** into each consumer:
 
-| Role | Path | Edit? |
-| ---- | ---- | ----- |
-| Canonical source of truth | `html-report-kit/` | **Yes** — edit here |
-| Vendored copy | `<consumer>/assets/html-report-kit/` | **No** — regenerated build artifact |
+| Role                      | Path                                 | Edit?                               |
+| ------------------------- | ------------------------------------ | ----------------------------------- |
+| Canonical source of truth | `html-report-kit/`                   | **Yes** — edit here                 |
+| Vendored copy             | `<consumer>/assets/html-report-kit/` | **No** — regenerated build artifact |
 
 Consumer skills reference the kit intra-skill via `./assets/html-report-kit/references/html-output-guide.md` and `./assets/html-report-kit/assets/report-template.html`. The canonical `html-report-kit/SKILL.md` is **excluded** from vendored copies so the skills CLI never mistakes a vendored directory for a standalone skill.
 

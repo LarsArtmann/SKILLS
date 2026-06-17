@@ -8,12 +8,12 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ## The Collection
 
-**20 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out).
+**19 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out).
 
 ### Shared Assets
 
-| Skill               | What It Does                                                         | Status   |
-| ------------------- | -------------------------------------------------------------------- | -------- |
+| Skill               | What It Does                                                                       | Status   |
+| ------------------- | ---------------------------------------------------------------------------------- | -------- |
 | **html-report-kit** | Shared HTML report design system with dark-dashboard and editorial-light templates | 🟢 Solid |
 
 > **Vendored, not cross-referenced.** Consumer skills don't reach into a sibling `html-report-kit/` directory (that breaks under per-skill install via `bunx skills add <repo>@<one-skill>`). Instead, the kit is vendored into each consumer's `assets/html-report-kit/`. Edit the canonical `html-report-kit/` at the repo root, then run `./scripts/sync-html-kit.sh` to propagate (use `--check` in CI). See `AGENTS.md` §5.9.
@@ -41,7 +41,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 | Skill             | What It Does                                          | Status           |
 | ----------------- | ----------------------------------------------------- | ---------------- |
-| **bdd-testing**   | BDD tests with `onsi/ginkgo` for Go projects          | 🟡 Thin          |
+| **bdd-testing**   | BDD tests with `onsi/ginkgo` for Go projects          | 🟢 Solid         |
 | **go-modularize** | Splits Go monorepos into semi-independent sub-modules | 🟢 Comprehensive |
 | **how-to-golang** | Go development decision guide — what to use, not how  | 🟢 Comprehensive |
 
@@ -54,13 +54,12 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Project Intelligence
 
-| Skill                    | What It Does                                           | Status   |
-| ------------------------ | ------------------------------------------------------ | -------- |
-| **docs-freshness-check** | Verifies docs are up-to-date with the actual codebase  | 🟡 Thin  |
-| **execution-mode**       | Two modes: deep reflection or aggressive execution     | 🟢 Solid |
-| **features-audit**       | Creates/updates `FEATURES.md` by studying actual code  | 🟡 Thin  |
-| **status-report**        | Full project status updates as styled HTML dashboards  | 🟡 Thin  |
-| **todo-list-builder**    | Builds `TODO_LIST.md` from docs, verified against code | 🟢 Solid |
+| Skill                    | What It Does                                           | Status        |
+| ------------------------ | ------------------------------------------------------ | ------------- |
+| **docs-freshness-check** | Verifies docs are up-to-date with the actual codebase  | 🟢 Solid      |
+| **features-audit**       | Creates/updates `FEATURES.md` by studying actual code  | 🟢 Solid      |
+| **status-report**        | Full project status updates as styled HTML dashboards  | 🟡 Functional |
+| **todo-list-builder**    | Builds `TODO_LIST.md` from docs, verified against code | 🟢 Solid      |
 
 ## Quick Start
 
@@ -103,11 +102,11 @@ The best skills keep `SKILL.md` under ~500 lines and move deep material into `re
 
 See [`how-to-write-skills.md`](how-to-write-skills.md) for the authoritative guide on crafting effective skills — frontmatter rules, trigger descriptions, progressive disclosure, and common mistakes.
 
-New skills should follow the pattern of [`how-to-golang/`](how-to-golang/) (lean entrypoint + rich references) or [`execution-mode/`](execution-mode/) (focused, single-purpose).
+New skills should follow the pattern of [`how-to-golang/`](how-to-golang/) (lean entrypoint + rich references) or [`architecture-visualization/`](architecture-visualization/) (focused, single-purpose).
 
 ## Quality & Status
 
-This repository is honest about its state. **12 skills are solid or comprehensive** and ready for daily use. **8 skills are thin** — they trigger correctly but need reference files, concrete examples, and output templates to produce consistently great results.
+This repository is honest about its state. **All 19 skills are solid or comprehensive** — every skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). A handful are still **functional** (`architecture-review`, `code-quality-scan`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. Validate the repo anytime with `scripts/check-skills.sh`.
 
 See [`docs/status/`](docs/status/) for detailed audit reports, including a comprehensive breakdown of every skill's strengths, gaps, and recommended next steps.
 
@@ -115,9 +114,9 @@ See [`docs/status/`](docs/status/) for detailed audit reports, including a compr
 
 Improvements welcome. The highest-impact contributions:
 
-1. **Flesh out thin skills** — add `references/` with concrete examples and output templates
+1. **Deepen functional skills** — `architecture-review`, `code-quality-scan`, and `status-report` work but would benefit from richer `references/` and output templates
 2. **Fix cross-skill references** — when one skill finds an issue, point to the sibling skill that fixes it
 3. **Validate code snippets** — wrong examples are worse than no examples
 4. **Test trigger descriptions** — verify skills activate on realistic user prompts
 
-Read `how-to-write-skills.md` before authoring new skills. Keep the `git commit <--` typo out of your work.
+Read `how-to-write-skills.md` before authoring new skills. Run `scripts/check-skills.sh` to validate structure and catch regressions (it fails on the `git commit <--` artifact, frontmatter mismatches, and missing fields).

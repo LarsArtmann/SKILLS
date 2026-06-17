@@ -41,7 +41,7 @@ treatment: stat cards, severity badges, color-coded sections.
 
 1. Run: `date` (cli) to get the current date-time
 2. Write a full status report at `docs/status/<YYYY-MM-DD_HH-MM_WELL-NAMED>.html`
-3. `git status & git commit <-- with VERY DETAILED commit message(s)`
+3. Run `git status`, then commit the report with a very detailed message.
 4. WAIT FOR FURTHER INSTRUCTIONS!
 
 ## Execution

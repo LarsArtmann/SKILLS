@@ -7,9 +7,9 @@ The shared design specification for all skills that produce HTML reports.
 The kit now ships two self-contained templates. Pick the one that matches the
 report's tone and audience.
 
-| Variant | File | Best for | Visual feel |
-| ------- | ---- | -------- | ----------- |
-| **Dark dashboard** | [`../assets/report-template.html`](../assets/report-template.html) | Status dashboards, scan results, high-density metrics | Dark slate + indigo, glass cards, radial glow |
+| Variant             | File                                                                                   | Best for                                              | Visual feel                                                   |
+| ------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------- |
+| **Dark dashboard**  | [`../assets/report-template.html`](../assets/report-template.html)                     | Status dashboards, scan results, high-density metrics | Dark slate + indigo, glass cards, radial glow                 |
 | **Editorial light** | [`../assets/report-template-editorial.html`](../assets/report-template-editorial.html) | Adoption feedback, architecture reviews, audit briefs | Warm paper + amber/teal, sticky sidebar, editorial typography |
 
 Both templates share the same component vocabulary (issue cards, callouts,
@@ -69,7 +69,8 @@ for typography.
   --border: #334155;
   --radius: 12px;
   --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 ```
 
@@ -91,19 +92,20 @@ for typography.
   --coral: #dc2626;
   --coral-light: #fef2f2;
   --font-heading: ui-rounded, "SF Pro Rounded", "Segoe UI Variable Display", system-ui, sans-serif;
-  --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
 }
 ```
 
 ## Semantic Color Coding
 
-| Meaning | Dark token | Dark class | Editorial token | Editorial class |
-| ------- | ---------- | ---------- | --------------- | --------------- |
-| Problem / error | `--rose` | `.card-problem`, `.issue-critical`, `.stat-bad`, `.severity-critical` | `--coral` | `.issue-critical`, `.score-bad`, `.severity-critical` |
-| Solution / good | `--emerald` | `.card-solution`, `.issue-nice`, `.stat-good`, `.severity-nice` | `--teal` | `.issue-nice`, `.score-good`, `.severity-nice`, `.callout-teal` |
-| Warning / risky | `--amber` | `.card-warning`, `.stat-warn`, `.severity-important` | `--amber` | `.issue-important`, `.score-warn`, `.severity-important`, `.callout-amber` |
-| Highlight | `--accent` | `.stat-value`, `.toc` | `--amber` | `.eyebrow`, `.tag.amber`, `h2 .num` |
+| Meaning         | Dark token  | Dark class                                                            | Editorial token | Editorial class                                                            |
+| --------------- | ----------- | --------------------------------------------------------------------- | --------------- | -------------------------------------------------------------------------- |
+| Problem / error | `--rose`    | `.card-problem`, `.issue-critical`, `.stat-bad`, `.severity-critical` | `--coral`       | `.issue-critical`, `.score-bad`, `.severity-critical`                      |
+| Solution / good | `--emerald` | `.card-solution`, `.issue-nice`, `.stat-good`, `.severity-nice`       | `--teal`        | `.issue-nice`, `.score-good`, `.severity-nice`, `.callout-teal`            |
+| Warning / risky | `--amber`   | `.card-warning`, `.stat-warn`, `.severity-important`                  | `--amber`       | `.issue-important`, `.score-warn`, `.severity-important`, `.callout-amber` |
+| Highlight       | `--accent`  | `.stat-value`, `.toc`                                                 | `--amber`       | `.eyebrow`, `.tag.amber`, `h2 .num`                                        |
 
 ## Component Catalog
 
@@ -185,9 +187,18 @@ renamed:
 
 ```html
 <div class="scorecard">
-  <div class="score-card score-good"><div class="score">8</div><div class="label">Passing</div></div>
-  <div class="score-card score-warn"><div class="score">3</div><div class="label">Warnings</div></div>
-  <div class="score-card score-bad"><div class="score">1</div><div class="label">Blockers</div></div>
+  <div class="score-card score-good">
+    <div class="score">8</div>
+    <div class="label">Passing</div>
+  </div>
+  <div class="score-card score-warn">
+    <div class="score">3</div>
+    <div class="label">Warnings</div>
+  </div>
+  <div class="score-card score-bad">
+    <div class="score">1</div>
+    <div class="label">Blockers</div>
+  </div>
 </div>
 ```
 
@@ -265,8 +276,16 @@ Full-width, hover-highlighted. Use badges inside cells for severity. Add
 
 ```html
 <table>
-  <thead><tr><th>Column</th></tr></thead>
-  <tbody><tr><td>Value</td></tr></tbody>
+  <thead>
+    <tr>
+      <th>Column</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Value</td>
+    </tr>
+  </tbody>
 </table>
 ```
 
@@ -290,11 +309,23 @@ Editorial light uses a single comparison table:
 ```html
 <table class="compare">
   <thead>
-    <tr><th>Issue</th><th>Severity</th><th>Status</th></tr>
+    <tr>
+      <th>Issue</th>
+      <th>Severity</th>
+      <th>Status</th>
+    </tr>
   </thead>
   <tbody>
-    <tr><td>Issue one</td><td class="no">Critical</td><td class="no">Open</td></tr>
-    <tr><td>Issue two</td><td class="no">Important</td><td class="yes">Fixed</td></tr>
+    <tr>
+      <td>Issue one</td>
+      <td class="no">Critical</td>
+      <td class="no">Open</td>
+    </tr>
+    <tr>
+      <td>Issue two</td>
+      <td class="no">Important</td>
+      <td class="yes">Fixed</td>
+    </tr>
   </tbody>
 </table>
 ```
@@ -341,9 +372,10 @@ Use to acknowledge what already works before listing problems.
 For module graphs, import trees, or lightweight architecture diagrams.
 
 ```html
-<div class="dep-tree"><span class="root">root</span>
-├── <span class="ok">wanted-dep</span>
-└── <span class="unwanted">unwanted-dep</span></div>
+<div class="dep-tree">
+  <span class="root">root</span> ├── <span class="ok">wanted-dep</span> └──
+  <span class="unwanted">unwanted-dep</span>
+</div>
 ```
 
 ### Inline Diagrams
@@ -368,9 +400,7 @@ For simple node-and-arrow visuals:
 ### Footer
 
 ```html
-<footer class="footer">
-  Generated YYYY-MM-DD &middot; Reviewed against version X.Y.Z
-</footer>
+<footer class="footer">Generated YYYY-MM-DD &middot; Reviewed against version X.Y.Z</footer>
 ```
 
 ## Syntax Highlighting
@@ -378,16 +408,37 @@ For simple node-and-arrow visuals:
 Use **language-agnostic** `.tok-*` classes (not `.go-*` or `.ts-*`):
 
 ```css
-.tok-keyword { color: #c678dd; } /* func, type, struct, if, return */
-.tok-type    { color: #e5c07b; } /* int, string, bool, error */
-.tok-string  { color: #98c379; } /* "quoted strings" */
-.tok-comment { color: #5c6370; font-style: italic; }
-.tok-func    { color: #61afef; } /* function names */
-.tok-number  { color: #d19a66; } /* 42, 3.14 */
-.tok-generic { color: #e06c75; } /* T, ID in generics */
-.tok-builtin { color: #56b6c2; } /* make, len, append, fmt.Println */
-.tok-punct   { color: #abb2bf; } /* { } ( ) ; = : */
-.tok-attr    { color: #d19a66; } /* Nix attribute names, struct tags */
+.tok-keyword {
+  color: #c678dd;
+} /* func, type, struct, if, return */
+.tok-type {
+  color: #e5c07b;
+} /* int, string, bool, error */
+.tok-string {
+  color: #98c379;
+} /* "quoted strings" */
+.tok-comment {
+  color: #5c6370;
+  font-style: italic;
+}
+.tok-func {
+  color: #61afef;
+} /* function names */
+.tok-number {
+  color: #d19a66;
+} /* 42, 3.14 */
+.tok-generic {
+  color: #e06c75;
+} /* T, ID in generics */
+.tok-builtin {
+  color: #56b6c2;
+} /* make, len, append, fmt.Println */
+.tok-punct {
+  color: #abb2bf;
+} /* { } ( ) ; = : */
+.tok-attr {
+  color: #d19a66;
+} /* Nix attribute names, struct tags */
 ```
 
 Apply manually by wrapping tokens in spans:
