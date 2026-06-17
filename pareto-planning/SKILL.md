@@ -3,6 +3,7 @@ name: pareto-planning
 description: Creates a comprehensive execution plan using the Pareto principle (80/20 breakdown). Use when the user wants to plan work, break down a TODO list, identify high-impact tasks, or says "MAKE A PLAN", "PARETO", "comprehensive plan", or wants tasks sorted by impact with a D2 execution graph written to docs/planning/.
 metadata:
   tags: planning, pareto, prioritization, d2, execution-graph
+allowed-tools: d2
 ---
 
 # Pareto Planning
@@ -34,7 +35,19 @@ REPORT BACK WITH A TABLE VIEW WHEN DONE!
 
 ### Step 4: Write Plan to File
 
-WRITE YOUR PLAN WITH GOOD AMOUNTS OF CONTEXT INTO AN .md FILE with a D2 execution graph at `docs/planning/<YYYY-MM-DD_HH_MM-SUPERB_NAME>.md`. THIS IS IMPORTANT!!!
+WRITE YOUR PLAN as a **self-contained styled HTML report** — not a flat Markdown file.
+A Pareto plan is a point-in-time snapshot with rich structure (tiers, tables, execution
+graphs) that benefits from visual treatment.
+
+1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
+2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+3. Render the D2 execution graph to SVG via `d2 plan.d2 plan.svg`, then inline the SVG
+   directly in the HTML `<body>` (no external file dependency).
+4. Map plan structure to components:
+   - **Stat cards** for task counts per Pareto tier (1% / 4% / 20%)
+   - **Badge-coded tables** for tasks sorted by impact/effort
+   - **`.card-problem`** for blockers, **`.card-solution`** for quick wins
+5. Write to `docs/planning/<YYYY-MM-DD_HH_MM-SUPERB_NAME>.html`
 
 NOTE: Use the cli to get the current date.
 
