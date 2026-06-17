@@ -33,7 +33,7 @@ The ecosystem standard for Go projects:
 ## Process
 
 1. **Discovery**: Read existing build files (`justfile`, `Makefile`, `.sh` scripts, current `flake.nix`)
-2. **Decision**: If `MIGRATION_TO_NIX_FLAKES_PROPOSAL.md` exists, STOP — do not overwrite. Otherwise proceed.
+2. **Decision**: If `docs/proposals/<YYYY-MM-DD_nix-flake-migration.html` exists, STOP — do not overwrite. Otherwise proceed.
 3. **Map commands**: Translate `just` recipes / `make` targets to Nix constructs:
    - Build → `packages.default` via `buildGoModule`
    - Test → `checks.test` (override `doCheck = true`)
@@ -41,9 +41,10 @@ The ecosystem standard for Go projects:
    - Run → `apps.default`
    - Dev setup → `devShells.default`
    - CI → `devShells.ci` (minimal, `mkShellNoCC`)
-4. **Write `flake.nix`** using the template below
-5. **Remove `just` from devShell** — `justfile` is deprecated in this ecosystem
-6. **Verify**: `nix flake check --no-build` must pass
+4. **Write proposal** as a self-contained styled HTML file at `docs/proposals/<YYYY-MM-DD_nix-flake-migration.html`. Load the shared design system from [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md) and copy [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html). Include: migration type (from the table above), before/after comparison of build commands, the full `flake.nix` template with Nix syntax highlighting (`.tok-*` classes), and the post-migration checklist as badge-coded items.
+5. **Write `flake.nix`** using the template below
+6. **Remove `just` from devShell** — `justfile` is deprecated in this ecosystem
+7. **Verify**: `nix flake check --no-build` must pass
 
 ## Go Project Template
 
