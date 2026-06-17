@@ -215,15 +215,28 @@ Use **language-agnostic** `.tok-*` classes (not `.go-*` or `.ts-*`):
 } /* T, ID in generics */
 .tok-builtin {
   color: #56b6c2;
-} /* make, len, append */
+} /* make, len, append, fmt.Println */
+.tok-punct {
+  color: #abb2bf;
+} /* { } ( ) ; = : */
+.tok-attr {
+  color: #d19a66;
+} /* Nix attribute names, struct tags */
 ```
 
 Apply manually by wrapping tokens in spans:
 
 ```html
-<pre><code><span class="tok-keyword">func</span> <span class="tok-func">main</span>() {
+<pre><code><span class="tok-comment">// Go example</span>
+<span class="tok-keyword">func</span> <span class="tok-func">main</span>() {
   <span class="tok-builtin">fmt</span>.<span class="tok-func">Println</span>(<span class="tok-string">"hello"</span>)
-}</code></pre>
+}
+
+<span class="tok-comment"># Nix example</span>
+<span class="tok-punct">{</span> <span class="tok-attr">pkgs</span><span class="tok-punct">,</span> <span class="tok-attr">lib</span><span class="tok-punct">,</span> ... <span class="tok-punct">}:</span>
+<span class="tok-attr">packages</span>.<span class="tok-attr">default</span> <span class="tok-punct">=</span> <span class="tok-builtin">pkgs</span>.<span class="tok-func">buildGoModule</span> <span class="tok-punct">{</span>
+  <span class="tok-attr">pname</span> <span class="tok-punct">=</span> <span class="tok-string">"my-project"</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre>
 ```
 
 ## Filename Convention
