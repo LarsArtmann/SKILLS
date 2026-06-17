@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SKILLS MD→HTML Conversion Status</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --bg-elevated: #1e293b;
+        --bg-sunken: #020617;
+        --text: #e2e8f0;
+        --text-dim: #94a3b8;
+        --text-faint: #64748b;
+        --accent: #6366f1;
+        --accent-glow: rgba(99, 102, 241, 0.15);
+        --rose: #f43f5e;
+        --rose-glow: rgba(244, 63, 94, 0.15);
+        --emerald: #10b981;
+        --emerald-glow: rgba(16, 185, 129, 0.15);
+        --amber: #f59e0b;
+        --amber-glow: rgba(245, 158, 11, 0.15);
+        --cyan: #06b6d4;
+        --border: #334155;
+        --radius: 12px;
+        --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+        --font-sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+
+      html {
+        scroll-behavior: smooth;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-sans);
+        line-height: 1.6;
+      }
+
+      body { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+      h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+      h1 {
+        font-size: 2.5rem; margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      }
+      h2 { font-size: 1.75rem; margin: 3rem 0 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+      h3 { font-size: 1.25rem; margin: 2rem 0 0.75rem; color: var(--accent); }
+      h4 { font-size: 1rem; margin: 1.5rem 0 0.5rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+      p { margin-bottom: 1rem; color: var(--text-dim); }
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      strong { color: var(--text); }
+      code { font-family: var(--font-mono); font-size: 0.875em; background: var(--bg-sunken); padding: 0.15rem 0.35rem; border-radius: 4px; color: var(--cyan); }
+
+      .hero {
+        text-align: center; padding: 4rem 2rem; margin-bottom: 3rem;
+        border: 1px solid var(--border); border-radius: var(--radius);
+        background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg) 100%);
+        position: relative; overflow: hidden;
+      }
+      .hero::before {
+        content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+        background: radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, transparent 50%);
+        pointer-events: none;
+      }
+      .hero-badge {
+        display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px;
+        background: var(--accent-glow); border: 1px solid var(--accent); color: var(--accent);
+        font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+      }
+      .hero-subtitle { font-size: 1.125rem; color: var(--text-dim); max-width: 600px; margin: 0 auto; }
+
+      .card {
+        background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius);
+        padding: 1.5rem; margin-bottom: 1.5rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .card:hover { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-glow); }
+      .card-problem { border-left: 3px solid var(--rose); }
+      .card-solution { border-left: 3px solid var(--emerald); }
+      .card-warning { border-left: 3px solid var(--amber); }
+
+      .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+      .stat-card { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; text-align: center; }
+      .stat-value { font-size: 2.5rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.5rem; }
+      .stat-label { font-size: 0.875rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+
+      table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.875rem; }
+      th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+      th { color: var(--text-dim); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; background: var(--bg-sunken); }
+      tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+      .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+      .badge-critical { background: var(--rose-glow); color: var(--rose); border: 1px solid var(--rose); }
+      .badge-high { background: var(--amber-glow); color: var(--amber); border: 1px solid var(--amber); }
+      .badge-medium { background: rgba(245, 158, 11, 0.08); color: #d97706; border: 1px solid #d97706; }
+      .badge-low { background: rgba(148, 163, 184, 0.1); color: var(--text-dim); border: 1px solid var(--text-faint); }
+      .badge-fixed { background: var(--emerald-glow); color: var(--emerald); border: 1px solid var(--emerald); }
+
+      ul, ol { margin: 1rem 0 1rem 1.5rem; }
+      li { margin-bottom: 0.5rem; color: var(--text-dim); }
+      li strong { color: var(--text); }
+
+      .migration-step { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; padding: 1rem; background: var(--bg-elevated); border-radius: var(--radius); border: 1px solid var(--border); }
+      .migration-num { width: 2rem; height: 2rem; border-radius: 50%; background: var(--accent-glow); border: 1px solid var(--accent); color: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0; }
+      .migration-content h4 { margin: 0 0 0.25rem; }
+      .migration-content p { margin: 0; }
+
+      @media (max-width: 768px) {
+        body { padding: 1rem; }
+        h1 { font-size: 1.75rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hero">
+      <div class="hero-badge">Status Report</div>
+      <h1>MD→HTML Conversion Initiative</h1>
+      <p class="hero-subtitle">
+        Point-in-time snapshot of the SKILLS repo after the second self-review pass.
+      </p>
+    </div>
+
+    <h2>Summary Stats</h2>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-value">10</div>
+        <div class="stat-label">Skills Outputting HTML</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">21</div>
+        <div class="stat-label">Commits Pushed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Broken Cross-References</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">2</div>
+        <div class="stat-label">Split Brains Fixed</div>
+      </div>
+    </div>
+
+    <h2>a) FULLY DONE</h2>
+
+    <div class="card card-solution">
+      <h4>Foundation</h4>
+      <p>
+        <strong>html-report-kit</strong> skill created with shared CSS design system, component catalog,
+        language-agnostic <code>.tok-*</code> syntax classes, and copy-paste template. Lives at
+        <code>html-report-kit/</code> and is referenced by 10 report-producing skills.
+      </p>
+    </div>
+
+    <div class="card card-solution">
+      <h4>HTML Conversions</h4>
+      <p>
+        10 skills now produce self-contained HTML reports instead of Markdown:
+        <code>status-report</code>, <code>pareto-planning</code>, <code>go-modularize</code>,
+        <code>code-quality-scan</code>, <code>naming-review</code>, <code>nix-flake-migration</code>,
+        <code>data-model-review</code>, <code>brutal-self-review</code>, <code>architecture-review</code>,
+        <code>full-code-review</code>.
+      </p>
+    </div>
+
+    <div class="card card-solution">
+      <h4>Split Brains Eliminated</h4>
+      <p>
+        - <code>full-code-review</code> no longer inlines Pareto planning; it delegates to
+        <code>pareto-planning</code>.<br />
+        - <code>data-model-review/references/output-guide.md</code> now uses shared
+        <code>.tok-*</code> classes instead of conflicting <code>.go-*</code> / <code>.ts-*</code> tokens.
+      </p>
+    </div>
+
+    <div class="card card-solution">
+      <h4>Tooling & Decision Rule</h4>
+      <p>
+        - <code>allowed-tools: d2</code> added to <code>pareto-planning</code>,
+        <code>architecture-visualization</code>, <code>go-modularize</code>.<br />
+        - Artifact decision rule encoded in <code>how-to-write-skills.md</code>: Snapshot → HTML,
+        Living → Markdown.<br />
+        - All relative cross-references verified to resolve.<br />
+        - <code>AGENTS.md</code> §5.9 documents the shared HTML design system.
+      </p>
+    </div>
+
+    <h2>b) PARTIALLY DONE</h2>
+
+    <div class="card card-warning">
+      <h4>Per-Skill Concrete Templates</h4>
+      <p>
+        Every converted skill has instructions and maps sections to shared components, but only the
+        generic <code>html-report-kit/assets/report-template.html</code> exists. Per-skill tailored
+        examples would reduce adaptation work.
+      </p>
+    </div>
+
+    <div class="card card-warning">
+      <h4>architecture-visualization</h4>
+      <p>
+        Still emits separate <code>.d2</code> + <code>.svg</code> files. It could wrap them into a
+        single HTML report using <code>html-report-kit</code>. I left it as-is because it already
+        produces visual output, but consolidation is a natural next step.
+      </p>
+    </div>
+
+    <h2>c) NOT STARTED</h2>
+
+    <div class="card">
+      <p>
+        - Automated render test for generated HTML reports.<br />
+        - Minimal report template variant for thin skills with fewer sections.<br />
+        - Converting past <code>docs/status/*.md</code> reports to HTML retroactively.
+      </p>
+    </div>
+
+    <h2>d) TOTALLY FUCKED UP!</h2>
+
+    <div class="card card-problem">
+      <h4>Pre-commit formatter side effects</h4>
+      <p>
+        The repo's pre-commit hook reformats Markdown files after my edits, which means the committed
+        file sometimes differs from what I intended. So far it has only standardized table alignment
+        and whitespace, but it creates uncertainty — I have to re-verify after each commit. This is a
+        process smell, not a code smell.
+      </p>
+    </div>
+
+    <div class="card card-problem">
+      <h4>README count mismatch</h4>
+      <p>
+        My first pass claimed 19 skills; the actual count is 20. I fixed it in the second pass, but
+        the fact that I had to fix it means my mental model of the directory tree was wrong.
+      </p>
+    </div>
+
+    <h2>e) WHAT WE SHOULD IMPROVE!</h2>
+
+    <ol>
+      <li>
+        <strong>Add a minimal report template</strong> — the current template is ~550 lines. A slim
+        variant for skills with 3-4 sections would cut context cost.
+      </li>
+      <li>
+        <strong>Add per-skill example HTML files</strong> in each skill's <code>assets/</code> or
+        <code>references/</code> so agents can copy a structure tuned to that skill.
+      </li>
+      <li>
+        <strong>Wrap <code>architecture-visualization</code> output in HTML</strong> — inline SVG
+        inside a styled report instead of separate files.
+      </li>
+      <li>
+        <strong>Automated cross-reference verification</strong> — the bash loop I ran should be a
+        <code>scripts/</code> tool.
+      </li>
+      <li>
+        <strong>Document the pre-commit formatter</strong> in <code>AGENTS.md</code> so future agents
+        know to re-verify after committing.
+      </li>
+    </ol>
+
+    <h2>f) Top #25 Things to Get Done Next</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Impact</th>
+          <th>Task</th>
+          <th>Skill / Area</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><span class="badge badge-critical">Critical</span></td>
+          <td>Create a minimal HTML report template</td>
+          <td>html-report-kit</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><span class="badge badge-high">High</span></td>
+          <td>Add example report for status-report</td>
+          <td>status-report</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><span class="badge badge-high">High</span></td>
+          <td>Add example report for pareto-planning</td>
+          <td>pareto-planning</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><span class="badge badge-high">High</span></td>
+          <td>Add example report for full-code-review</td>
+          <td>full-code-review</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><span class="badge badge-high">High</span></td>
+          <td>Add example report for brutal-self-review</td>
+          <td>brutal-self-review</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><span class="badge badge-medium">Medium</span></td>
+          <td>Wrap architecture-visualization D2/SVG in HTML</td>
+          <td>architecture-visualization</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><span class="badge badge-medium">Medium</span></td>
+          <td>Add example report for naming-review</td>
+          <td>naming-review</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><span class="badge badge-medium">Medium</span></td>
+          <td>Add example report for code-quality-scan</td>
+          <td>code-quality-scan</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td><span class="badge badge-medium">Medium</span></td>
+          <td>Add example report for go-modularize</td>
+          <td>go-modularize</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td><span class="badge badge-medium">Medium</span></td>
+          <td>Add example report for nix-flake-migration</td>
+          <td>nix-flake-migration</td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Add example report for architecture-review</td>
+          <td>architecture-review</td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Convert past docs/status/*.md reports to HTML</td>
+          <td>repo</td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Document pre-commit formatter behavior in AGENTS.md</td>
+          <td>AGENTS.md</td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Create cross-reference verification script</td>
+          <td>scripts/</td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Add allowed-tools for deduplicate-code (art-dupl)</td>
+          <td>deduplicate-code</td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Review features-audit for possible HTML dashboard</td>
+          <td>features-audit</td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Review todo-list-builder for possible HTML dashboard</td>
+          <td>todo-list-builder</td>
+        </tr>
+        <tr>
+          <td>18</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Verify all converted SKILL.md files stay under 500 lines</td>
+          <td>repo</td>
+        </tr>
+        <tr>
+          <td>19</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Add dark/light toggle to report template</td>
+          <td>html-report-kit</td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Add print stylesheet to report template</td>
+          <td>html-report-kit</td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Experiment with CSS container queries</td>
+          <td>html-report-kit</td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Standardize filename slug conventions across skills</td>
+          <td>repo</td>
+        </tr>
+        <tr>
+          <td>23</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Add copy-to-clipboard buttons for code blocks</td>
+          <td>html-report-kit</td>
+        </tr>
+        <tr>
+          <td>24</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Audit date format consistency in filenames</td>
+          <td>repo</td>
+        </tr>
+        <tr>
+          <td>25</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>Consider a shared SVG icon set</td>
+          <td>html-report-kit</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>g) Top #1 Question I Cannot Figure Out Myself</h2>
+
+    <div class="card card-problem">
+      <h4>Should the pre-commit formatter be allowed to reformat files I touched?</h4>
+      <p>
+        On this run, the pre-commit hook modified <code>README.md</code>,
+        <code>architecture-review/SKILL.md</code>, and <code>go-modularize/SKILL.md</code> after my
+        commits, leaving the working tree dirty. I did not author those formatting changes, and the
+        global safety rules say not to revert changes I didn't make. But the hook also makes it hard
+        to trust that my edits land exactly as written. Should I:
+      </p>
+      <ol>
+        <li>Commit the formatter's changes as a separate "style" commit and move on?</li>
+        <li>Configure the formatter so it runs before my commit, not after?</li>
+        <li>Document the behavior and live with occasional dirty trees?</li>
+      </ol>
+      <p>
+        I am currently leaving the dirty files untouched because they are formatting-only and I did
+        not ask for them.
+      </p>
+    </div>
+
+    <h2>Next Action</h2>
+    <p>
+      Commit this report, then wait for instructions.
+    </p>
+  </body>
+</html>
