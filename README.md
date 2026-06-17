@@ -8,7 +8,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ## The Collection
 
-**19 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out).
+**20 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out).
 
 ### Shared Assets
 
@@ -57,7 +57,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 | **docs-freshness-check** | Verifies docs are up-to-date with the actual codebase  | 🟡 Thin  |
 | **execution-mode**       | Two modes: deep reflection or aggressive execution     | 🟢 Solid |
 | **features-audit**       | Creates/updates `FEATURES.md` by studying actual code  | 🟡 Thin  |
-| **status-report**        | Full project status updates written to `docs/status/`  | 🟡 Thin  |
+| **status-report**        | Full project status updates as styled HTML dashboards    | 🟡 Thin  |
 | **todo-list-builder**    | Builds `TODO_LIST.md` from docs, verified against code | 🟢 Solid |
 
 ## Quick Start
@@ -105,7 +105,7 @@ New skills should follow the pattern of [`how-to-golang/`](how-to-golang/) (lean
 
 ## Quality & Status
 
-This repository is honest about its state. **11 skills are solid or comprehensive** and ready for daily use. **8 skills are thin** — they trigger correctly but need reference files, concrete examples, and output templates to produce consistently great results.
+This repository is honest about its state. **12 skills are solid or comprehensive** and ready for daily use. **8 skills are thin** — they trigger correctly but need reference files, concrete examples, and output templates to produce consistently great results.
 
 See [`docs/status/`](docs/status/) for detailed audit reports, including a comprehensive breakdown of every skill's strengths, gaps, and recommended next steps.
 

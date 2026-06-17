@@ -146,7 +146,7 @@ There is no `crush.json` in this repo, so Crush does not auto-discover these ski
 
 ### 5.9 Shared HTML Design System (`html-report-kit`)
 
-Seven skills produce point-in-time reports as self-contained HTML files instead of Markdown. They all reference the shared `html-report-kit/` skill for the design system (dark theme, semantic color tokens, stat cards, severity badges, tables, before/after comparisons, syntax highlighting). When a new skill produces a snapshot report, point it at `html-report-kit` rather than inventing a new design.
+Ten skills produce point-in-time reports as self-contained HTML files instead of Markdown. They all reference the shared `html-report-kit/` skill for the design system (dark theme, semantic color tokens, stat cards, severity badges, tables, before/after comparisons, syntax highlighting). When a new skill produces a snapshot report, point it at `html-report-kit` rather than inventing a new design.
 
 **The Artifact decision rule** (encoded in `how-to-write-skills.md`): Snapshot + HumanReport → HTML; Living + ToolParsed/EndUserDoc → Markdown. Never convert living docs (`FEATURES.md`, `TODO_LIST.md`) to HTML.
 
