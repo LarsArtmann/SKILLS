@@ -22,10 +22,12 @@ Write the review to `docs/architecture-understanding/YYYY-MM-DD_HH-mm_<name>.htm
 the directory if it doesn't exist.
 
 Use the shared design system from the `html-report-kit` skill:
+
 - Design spec: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
 - Template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
 
 Map the review to visual components:
+
 - **Stat cards** for module/package count, coupling score, interface count
 - **`.card-problem`** for coupling hotspots, scalability blockers
 - **`.card-solution`** for composability wins and concrete recommendations

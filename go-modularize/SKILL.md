@@ -577,7 +577,6 @@ matrices, and risk tables that benefit from visual treatment.
 1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
 2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
 3. Write to `docs/modularization/<YYYY-MM-DD_PROPOSAL>.html` with:
-
    1. **Executive summary** — Why modularize, what changes, expected benefits
    2. **Current state analysis** — Dependency graph, coupling hotspots, god-packages
    3. **Re-modularization assessment** (if applicable) — Scores, remodel classification,
