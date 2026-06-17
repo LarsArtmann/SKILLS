@@ -41,6 +41,26 @@ For the full checklist of questions to ask per file, load [./references/architec
 
 5. BE SMART! Use your Brain! Let's go!
 
+## Output
+
+Write the review findings as a **self-contained styled HTML report** at
+`docs/reviews/<YYYY-MM-DD_HH-MM_full-code-review.html`.
+
+A full code review produces a point-in-time audit of every file — issues,
+split brains, type-safety concerns, duplications — which benefits from
+visual treatment.
+
+1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
+2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+3. Map findings to visual components:
+   - **Stat cards** for files reviewed / issues found / split brains / TODOs added / fixed on the spot
+   - **`.card-problem`** for type-safety issues, split brains, duplications
+   - **`.card-warning`** for smaller improvements, naming smells, debt to ticket
+   - **`.card-solution`** for strong patterns and good work to preserve
+   - **Badge-coded tables** with columns: #, Severity, File, Line, Issue, Fix
+4. If you identified significant duplications, reference and delegate to the
+   `deduplicate-code` skill.
+
 ## Git Workflow
 
 - Before starting: `git status & git commit <-- with VERY DETAILED commit message(s) & git push`
