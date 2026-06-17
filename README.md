@@ -14,7 +14,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 | Skill               | What It Does                                                         | Status   |
 | ------------------- | -------------------------------------------------------------------- | -------- |
-| **html-report-kit** | Shared dark-theme HTML design system for all report-producing skills | 🟢 Solid |
+| **html-report-kit** | Shared HTML report design system with dark-dashboard and editorial-light templates | 🟢 Solid |
 
 ### Architecture & Design
 

@@ -2,15 +2,52 @@
 
 The shared design specification for all skills that produce HTML reports.
 
+## Two Template Variants
+
+The kit now ships two self-contained templates. Pick the one that matches the
+report's tone and audience.
+
+| Variant | File | Best for | Visual feel |
+| ------- | ---- | -------- | ----------- |
+| **Dark dashboard** | [`../assets/report-template.html`](../assets/report-template.html) | Status dashboards, scan results, high-density metrics | Dark slate + indigo, glass cards, radial glow |
+| **Editorial light** | [`../assets/report-template-editorial.html`](../assets/report-template-editorial.html) | Adoption feedback, architecture reviews, audit briefs | Warm paper + amber/teal, sticky sidebar, editorial typography |
+
+Both templates share the same component vocabulary (issue cards, callouts,
+scorecards, dep-trees, etc.) but use different palettes and layouts. A skill can
+copy either as its starting point.
+
+## When to Use HTML vs Markdown
+
+The `Artifact` decision rule (see `how-to-write-skills.md`):
+
+| lifecycle | audience    | mutability | → format |
+| --------- | ----------- | ---------- | -------- |
+| Snapshot  | HumanReport | WriteOnce  | **HTML** |
+| Living    | ToolParsed  | Upsert     | Markdown |
+| Living    | EndUserDoc  | Upsert     | Markdown |
+
+**HTML is for snapshot reports** — status updates, reviews, plans, proposals, audits.
+**Markdown is for living docs** — `FEATURES.md`, `TODO_LIST.md`, `AGENTS.md`.
+
 ## Design Requirements
 
 - **Single file**, zero external dependencies (no CDN, no JS, no build step, no external fonts)
-- **Dark theme** with semantic color coding
-- **Manual CSS syntax highlighting** via language-agnostic `.tok-*` classes
-- **Responsive grid layouts** for comparisons and stats
+- **Responsive** — sidebar collapses on narrow viewports, grids collapse to single column
 - **Self-contained** — anyone can open the `.html` file in a browser with no server
+- **Manual CSS syntax highlighting** via language-agnostic `.tok-*` classes
+- **Semantic color coding** — problem/solution/warning meanings are the same in both themes
+
+### Typography note
+
+Both templates use system font stacks so reports work offline. If you want the
+premium look of external fonts (e.g. Space Grotesk, Inter, JetBrains Mono), add
+the Google Fonts `<link>` and update `--font-heading`, `--font-body`, and
+`--font-mono` in `:root`. This is optional and trades the zero-dependency rule
+for typography.
 
 ## CSS Design Tokens
+
+### Dark dashboard theme
 
 ```css
 :root {
@@ -32,64 +69,154 @@ The shared design specification for all skills that produce HTML reports.
   --border: #334155;
   --radius: 12px;
   --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+```
+
+### Editorial light theme
+
+```css
+:root {
+  --bg: #faf9f7;
+  --bg-card: #ffffff;
+  --bg-code: #f6f5f3;
+  --ink: #1a1a2e;
+  --ink-secondary: #475569;
+  --ink-muted: #94a3b8;
+  --hairline: #e8e6e1;
+  --amber: #b45309;
+  --amber-light: #fef3c7;
+  --teal: #0e7490;
+  --teal-light: #ecfeff;
+  --coral: #dc2626;
+  --coral-light: #fef2f2;
+  --font-heading: ui-rounded, "SF Pro Rounded", "Segoe UI Variable Display", system-ui, sans-serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
 }
 ```
 
 ## Semantic Color Coding
 
-| Color   | Token       | Meaning         | CSS class             |
-| ------- | ----------- | --------------- | --------------------- |
-| Rose    | `--rose`    | Problem / error | `.card-problem`       |
-| Emerald | `--emerald` | Solution / good | `.card-solution`      |
-| Amber   | `--amber`   | Warning / risky | `.card-warning`       |
-| Indigo  | `--accent`  | Highlight       | `.stat-value`, `.toc` |
+| Meaning | Dark token | Dark class | Editorial token | Editorial class |
+| ------- | ---------- | ---------- | --------------- | --------------- |
+| Problem / error | `--rose` | `.card-problem`, `.issue-critical`, `.stat-bad`, `.severity-critical` | `--coral` | `.issue-critical`, `.score-bad`, `.severity-critical` |
+| Solution / good | `--emerald` | `.card-solution`, `.issue-nice`, `.stat-good`, `.severity-nice` | `--teal` | `.issue-nice`, `.score-good`, `.severity-nice`, `.callout-teal` |
+| Warning / risky | `--amber` | `.card-warning`, `.stat-warn`, `.severity-important` | `--amber` | `.issue-important`, `.score-warn`, `.severity-important`, `.callout-amber` |
+| Highlight | `--accent` | `.stat-value`, `.toc` | `--amber` | `.eyebrow`, `.tag.amber`, `h2 .num` |
 
 ## Component Catalog
 
-All components are defined in `../assets/report-template.html`. Copy what you need.
+All components are defined in the templates. Copy what you need and delete the
+rest.
+
+### Layout with Sidebar TOC
+
+Wrap content in `.layout` with `.sidebar` + `.main`. The sidebar is sticky and
+hidden below 1100px.
+
+```html
+<div class="layout">
+  <aside class="sidebar">
+    <nav>
+      <div class="label">Contents</div>
+      <a href="#summary">Summary</a>
+      <a href="#findings">Findings</a>
+    </nav>
+  </aside>
+  <main class="main">
+    <!-- report body -->
+  </main>
+</div>
+```
 
 ### Hero
 
-Title block with radial-gradient glow. Every report starts with one.
+Dark dashboard:
 
 ```html
 <div class="hero">
   <div class="hero-badge">Report Type</div>
   <h1>Report Title</h1>
-  <p class="hero-subtitle">Short description of what this report covers.</p>
+  <p class="hero-subtitle">Short description.</p>
 </div>
 ```
 
-### Stat Cards
+Editorial light:
 
-For metrics dashboards (issue counts, pass/fail, totals).
+```html
+<header class="hero">
+  <div class="eyebrow">REPORT TYPE &middot; YYYY-MM-DD</div>
+  <h1>Report Title</h1>
+  <p class="subtitle">One or two sentences that set the frame.</p>
+  <div class="meta">
+    <span class="tag amber">Scope: example</span>
+    <span class="tag">Version: 1.0.0</span>
+  </div>
+</header>
+```
+
+### Stat / Score Cards
+
+Both class vocabularies are aliased across templates, so you can use whichever
+name reads better; the markup stays portable if you switch themes later.
+
+Dark dashboard uses `.stat-grid` / `.stat-card` with optional state classes:
 
 ```html
 <div class="stat-grid">
-  <div class="stat-card">
-    <div class="stat-value">42</div>
-    <div class="stat-label">Label</div>
+  <div class="stat-card stat-good">
+    <div class="stat-value">35</div>
+    <div class="stat-label">Resolved</div>
+  </div>
+  <div class="stat-card stat-warn">
+    <div class="stat-value">3</div>
+    <div class="stat-label">Warnings</div>
+  </div>
+  <div class="stat-card stat-bad">
+    <div class="stat-value">1</div>
+    <div class="stat-label">Blockers</div>
   </div>
 </div>
 ```
 
-### Cards with Severity Borders
-
-For individual findings, problems, recommendations.
+Editorial light uses `.scorecard` / `.score-card` with the same state classes
+renamed:
 
 ```html
-<div class="card card-problem">
-  <!-- rose left border -->
-  <div class="card card-solution">
-    <!-- emerald left border -->
-    <div class="card card-warning">
-      <!-- amber left border -->
-      <div class="card"><!-- neutral --></div>
-    </div>
-  </div>
+<div class="scorecard">
+  <div class="score-card score-good"><div class="score">8</div><div class="label">Passing</div></div>
+  <div class="score-card score-warn"><div class="score">3</div><div class="label">Warnings</div></div>
+  <div class="score-card score-bad"><div class="score">1</div><div class="label">Blockers</div></div>
 </div>
 ```
+
+### General Cards
+
+Dark dashboard:
+
+```html
+<div class="card card-problem"><!-- rose left border --></div>
+<div class="card card-solution"><!-- emerald left border --></div>
+<div class="card card-warning"><!-- amber left border --></div>
+<div class="card"><!-- neutral --></div>
+```
+
+### Issue Cards
+
+Use for individual findings. Includes severity badge and file/line metadata.
+
+```html
+<div class="issue issue-critical">
+  <span class="severity severity-critical">Blocking</span>
+  <h3>Issue title</h3>
+  <div class="where">path/to/file.go:42-58</div>
+  <p>Description of the problem.</p>
+</div>
+```
+
+Variant classes: `.issue-critical`, `.issue-important`, `.issue-nice`.
+Severity classes: `.severity-critical`, `.severity-important`, `.severity-nice`.
 
 ### Badges
 
@@ -103,28 +230,49 @@ Inline severity indicators for tables and cards.
 <span class="badge badge-fixed">Fixed</span>
 ```
 
+### Callouts
+
+Dark dashboard:
+
+```html
+<div class="callout callout-solution">
+  <strong>Fix</strong>
+  Recommended action goes here.
+</div>
+<div class="callout callout-warning">
+  <strong>Watch out</strong>
+  Compounding factor or caveat.
+</div>
+```
+
+Editorial light:
+
+```html
+<div class="callout callout-teal">
+  <strong>Fix: recommended action</strong>
+  Concrete next step.
+</div>
+<div class="callout callout-amber">
+  <strong>The bottom line</strong>
+  Verdict or caveat.
+</div>
+```
+
 ### Tables
 
-Full-width, dark-themed, hover-highlighted. Use badges inside cells for severity.
+Full-width, hover-highlighted. Use badges inside cells for severity. Add
+`.compare` to the `<table>` for the editorial comparison style.
 
 ```html
 <table>
-  <thead>
-    <tr>
-      <th>Column</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Value</td>
-    </tr>
-  </tbody>
+  <thead><tr><th>Column</th></tr></thead>
+  <tbody><tr><td>Value</td></tr></tbody>
 </table>
 ```
 
 ### Before/After Comparison
 
-Side-by-side grid with colored headers.
+Dark dashboard uses a split grid with headers:
 
 ```html
 <div class="compare-header">
@@ -137,9 +285,23 @@ Side-by-side grid with colored headers.
 </div>
 ```
 
+Editorial light uses a single comparison table:
+
+```html
+<table class="compare">
+  <thead>
+    <tr><th>Issue</th><th>Severity</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Issue one</td><td class="no">Critical</td><td class="no">Open</td></tr>
+    <tr><td>Issue two</td><td class="no">Important</td><td class="yes">Fixed</td></tr>
+  </tbody>
+</table>
+```
+
 ### Numbered Steps
 
-For migration roadmaps, execution plans.
+For migration roadmaps and execution plans.
 
 ```html
 <div class="migration-step">
@@ -151,23 +313,42 @@ For migration roadmaps, execution plans.
 </div>
 ```
 
-### Table of Contents
-
-Sticky navigation for long reports.
+### Numbered Section Headings
 
 ```html
-<nav class="toc">
-  <h3>Contents</h3>
-  <ul>
-    <li><a href="#section">Section Name</a></li>
-  </ul>
-</nav>
+<h2><span class="num">01</span>Findings</h2>
+<h2><span class="num">&diams;</span>Strengths</h2>
 ```
 
-### Diagrams
+### Strengths List
 
-Inline visual structures using styled nodes and arrows (for lightweight diagrams;
-use D2→inline SVG for complex architectures).
+Use to acknowledge what already works before listing problems.
+
+```html
+<div class="strengths">
+  <div class="strength">
+    <div class="check">+</div>
+    <div class="text">
+      <strong>Specific strength</strong>
+      <span>Explain why it matters.</span>
+    </div>
+  </div>
+</div>
+```
+
+### Dependency Tree / ASCII Diagram
+
+For module graphs, import trees, or lightweight architecture diagrams.
+
+```html
+<div class="dep-tree"><span class="root">root</span>
+├── <span class="ok">wanted-dep</span>
+└── <span class="unwanted">unwanted-dep</span></div>
+```
+
+### Inline Diagrams
+
+For simple node-and-arrow visuals:
 
 ```html
 <div class="diagram">
@@ -180,10 +361,16 @@ use D2→inline SVG for complex architectures).
 ### Grid Layouts
 
 ```html
-<div class="grid-2">
-  <!-- 2 columns, collapses on mobile -->
-  <div class="grid-3"><!-- 3 columns, collapses on mobile --></div>
-</div>
+<div class="grid-2"><!-- 2 columns, collapses on mobile --></div>
+<div class="grid-3"><!-- 3 columns, collapses on mobile --></div>
+```
+
+### Footer
+
+```html
+<footer class="footer">
+  Generated YYYY-MM-DD &middot; Reviewed against version X.Y.Z
+</footer>
 ```
 
 ## Syntax Highlighting
@@ -191,37 +378,16 @@ use D2→inline SVG for complex architectures).
 Use **language-agnostic** `.tok-*` classes (not `.go-*` or `.ts-*`):
 
 ```css
-.tok-keyword {
-  color: #c678dd;
-} /* func, type, struct, if, return */
-.tok-type {
-  color: #e5c07b;
-} /* int, string, bool, error */
-.tok-string {
-  color: #98c379;
-} /* "quoted strings" */
-.tok-comment {
-  color: #5c6370;
-  font-style: italic;
-}
-.tok-func {
-  color: #61afef;
-} /* function names */
-.tok-number {
-  color: #d19a66;
-} /* 42, 3.14 */
-.tok-generic {
-  color: #e06c75;
-} /* T, ID in generics */
-.tok-builtin {
-  color: #56b6c2;
-} /* make, len, append, fmt.Println */
-.tok-punct {
-  color: #abb2bf;
-} /* { } ( ) ; = : */
-.tok-attr {
-  color: #d19a66;
-} /* Nix attribute names, struct tags */
+.tok-keyword { color: #c678dd; } /* func, type, struct, if, return */
+.tok-type    { color: #e5c07b; } /* int, string, bool, error */
+.tok-string  { color: #98c379; } /* "quoted strings" */
+.tok-comment { color: #5c6370; font-style: italic; }
+.tok-func    { color: #61afef; } /* function names */
+.tok-number  { color: #d19a66; } /* 42, 3.14 */
+.tok-generic { color: #e06c75; } /* T, ID in generics */
+.tok-builtin { color: #56b6c2; } /* make, len, append, fmt.Println */
+.tok-punct   { color: #abb2bf; } /* { } ( ) ; = : */
+.tok-attr    { color: #d19a66; } /* Nix attribute names, struct tags */
 ```
 
 Apply manually by wrapping tokens in spans:
@@ -246,4 +412,15 @@ docs/<category>/<YYYY-MM-DD>_<short-slug>.html
 ```
 
 Categories: `status/`, `planning/`, `architecture-understanding/`, `brainstorming/`,
-`reviews/`, `proposals/`.
+`reviews/`, `proposals/`, `feedback/`.
+
+## Quick Start
+
+1. Decide whether the report should feel like a **dashboard** (dark template)
+   or an **audit brief** (editorial template).
+2. Copy the chosen template to the target path.
+3. Open [`example-editorial-report.html`](./example-editorial-report.html) to see a
+   fully rendered report using every component.
+4. Delete the example sections you don't need.
+5. Replace placeholder text, ids, and TOC links.
+6. Keep the CSS design tokens intact unless you are intentionally theming.

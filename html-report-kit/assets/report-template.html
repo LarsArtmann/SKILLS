@@ -48,6 +48,60 @@
         padding: 2rem;
       }
 
+      /* Layout with optional sidebar TOC */
+      .layout {
+        display: flex;
+        gap: 2.5rem;
+      }
+      .sidebar {
+        width: 220px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 2rem;
+        align-self: flex-start;
+        height: calc(100vh - 4rem);
+        overflow-y: auto;
+        display: none;
+      }
+      .sidebar nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .sidebar .label {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-faint);
+        margin-bottom: 0.75rem;
+      }
+      .sidebar a {
+        font-size: 0.85rem;
+        color: var(--text-dim);
+        text-decoration: none;
+        padding: 0.35rem 0.75rem;
+        border-left: 2px solid transparent;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.15s ease;
+        line-height: 1.4;
+      }
+      .sidebar a:hover {
+        color: var(--accent);
+        border-left-color: var(--accent);
+        background: var(--accent-glow);
+      }
+      .main {
+        width: 100%;
+        min-width: 0;
+      }
+      @media (min-width: 1100px) {
+        .sidebar {
+          display: block;
+        }
+      }
+
       /* Typography */
       h1,
       h2,
@@ -69,6 +123,11 @@
         margin: 3rem 0 1.25rem;
         padding-bottom: 0.5rem;
         border-bottom: 1px solid var(--border);
+      }
+      h2 .num {
+        color: var(--accent);
+        font-weight: 700;
+        margin-right: 0.5rem;
       }
       h3 {
         font-size: 1.25rem;
@@ -485,6 +544,190 @@
         text-transform: uppercase;
         letter-spacing: 0.05em;
       }
+      .stat-good .stat-value {
+        color: var(--emerald);
+      }
+      .stat-warn .stat-value {
+        color: var(--amber);
+      }
+      .stat-bad .stat-value {
+        color: var(--rose);
+      }
+
+      /* Editorial-light aliases for portable markup */
+      .scorecard {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+      }
+      .score-card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        text-align: center;
+      }
+      .score-card .score {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--accent);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+      }
+      .score-card .label {
+        font-size: 0.875rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .score-good .score-card .score {
+        color: var(--emerald);
+      }
+      .score-warn .score-card .score {
+        color: var(--amber);
+      }
+      .score-bad .score-card .score {
+        color: var(--rose);
+      }
+
+      /* Issue cards */
+      .issue {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.75rem;
+        margin: 1.25rem 0;
+      }
+      .issue-critical {
+        border-left: 4px solid var(--rose);
+      }
+      .issue-important {
+        border-left: 4px solid var(--amber);
+      }
+      .issue-nice {
+        border-left: 4px solid var(--emerald);
+      }
+      .issue .severity {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        margin-bottom: 0.75rem;
+      }
+      .severity-critical {
+        background: var(--rose-glow);
+        color: var(--rose);
+      }
+      .severity-important {
+        background: var(--amber-glow);
+        color: var(--amber);
+      }
+      .severity-nice {
+        background: var(--emerald-glow);
+        color: var(--emerald);
+      }
+      .issue h3 {
+        margin-top: 0;
+      }
+      .issue .where {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--text-faint);
+        margin-bottom: 0.875rem;
+      }
+
+      /* Callouts */
+      .callout {
+        border-radius: var(--radius);
+        padding: 1.125rem 1.375rem;
+        margin: 1.25rem 0;
+        font-size: 0.9375rem;
+      }
+      .callout-solution {
+        background: rgba(16, 185, 129, 0.08);
+        border: 1px solid var(--emerald);
+      }
+      .callout-warning {
+        background: var(--amber-glow);
+        border: 1px solid var(--amber);
+      }
+      .callout strong {
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+
+      /* Strengths list */
+      .strengths {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        margin: 1.25rem 0;
+      }
+      .strength {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.875rem 1rem;
+        background: rgba(16, 185, 129, 0.08);
+        border: 1px solid var(--emerald);
+        border-radius: var(--radius);
+      }
+      .strength .check {
+        color: var(--emerald);
+        font-weight: 700;
+        font-size: 1.125rem;
+        flex-shrink: 0;
+        line-height: 1.5;
+      }
+      .strength .text {
+        font-size: 0.9rem;
+      }
+      .strength .text strong {
+        display: block;
+        margin-bottom: 0.125rem;
+      }
+      .strength .text span {
+        color: var(--text-dim);
+      }
+
+      /* Dep tree / ASCII diagram */
+      .dep-tree {
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        line-height: 1.8;
+        background: var(--bg-sunken);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.25rem 1.5rem;
+        margin: 1rem 0;
+        overflow-x: auto;
+        white-space: pre;
+      }
+      .dep-tree .root {
+        color: var(--amber);
+        font-weight: 600;
+      }
+      .dep-tree .unwanted {
+        color: var(--rose);
+      }
+      .dep-tree .ok {
+        color: var(--text-dim);
+      }
+
+      /* Footer */
+      .footer {
+        margin-top: 4rem;
+        padding: 2rem 0;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        font-size: 0.8125rem;
+        color: var(--text-faint);
+      }
 
       /* Scrollbar */
       ::-webkit-scrollbar {
@@ -504,111 +747,180 @@
     </style>
   </head>
   <body>
-    <!-- Hero -->
-    <div class="hero">
-      <div class="hero-badge">Report Type</div>
-      <h1>Report Title</h1>
-      <p class="hero-subtitle">One-sentence description of what this report covers.</p>
-    </div>
+    <div class="layout">
+      <!-- Sidebar TOC (hidden on narrow viewports) -->
+      <aside class="sidebar">
+        <nav>
+          <div class="label">Contents</div>
+          <a href="#summary">Summary</a>
+          <a href="#findings">Findings</a>
+          <a href="#issues">Issue Cards</a>
+          <a href="#proposal">Proposal</a>
+          <a href="#plan">Plan</a>
+        </nav>
+      </aside>
 
-    <!-- Table of Contents (optional, for long reports) -->
-    <nav class="toc">
-      <h3>Contents</h3>
-      <ul>
-        <li><a href="#summary">Summary</a></li>
-        <li><a href="#findings">Findings</a></li>
-      </ul>
-    </nav>
+      <main class="main">
+        <!-- Hero -->
+        <div class="hero">
+          <div class="hero-badge">Report Type</div>
+          <h1>Report Title</h1>
+          <p class="hero-subtitle">One-sentence description of what this report covers.</p>
+        </div>
 
-    <!-- Stats Dashboard -->
-    <h2 id="summary">Summary</h2>
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-value">42</div>
-        <div class="stat-label">Total Items</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">7</div>
-        <div class="stat-label">Critical</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">35</div>
-        <div class="stat-label">Resolved</div>
-      </div>
-    </div>
+        <!-- Table of Contents (alternative to sidebar; pick one) -->
+        <nav class="toc">
+          <h3>Contents</h3>
+          <ul>
+            <li><a href="#summary">Summary</a></li>
+            <li><a href="#findings">Findings</a></li>
+            <li><a href="#issues">Issue Cards</a></li>
+            <li><a href="#proposal">Proposal</a></li>
+            <li><a href="#plan">Plan</a></li>
+          </ul>
+        </nav>
 
-    <!-- Findings as Cards -->
-    <h2 id="findings">Findings</h2>
+        <!-- Stats Dashboard -->
+        <h2 id="summary"><span class="num">00</span>Summary</h2>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-value">42</div>
+            <div class="stat-label">Total Items</div>
+          </div>
+          <div class="stat-card stat-bad">
+            <div class="stat-value">7</div>
+            <div class="stat-label">Critical</div>
+          </div>
+          <div class="stat-card stat-good">
+            <div class="stat-value">35</div>
+            <div class="stat-label">Resolved</div>
+          </div>
+        </div>
 
-    <div class="card card-problem">
-      <h4>Critical Issue</h4>
-      <p>Description of the problem and its impact.</p>
-    </div>
+        <!-- Findings as Cards -->
+        <h2 id="findings"><span class="num">01</span>Findings</h2>
 
-    <div class="card card-solution">
-      <h4>Recommended Fix</h4>
-      <p>Description of the solution with rationale.</p>
-    </div>
+        <div class="card card-problem">
+          <h4>Critical Issue</h4>
+          <p>Description of the problem and its impact.</p>
+        </div>
 
-    <!-- Table with Badges -->
-    <h2>Issue Table</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Severity</th>
-          <th>Issue</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td><span class="badge badge-critical">Critical</span></td>
-          <td>Missing error handling</td>
-          <td><span class="badge badge-fixed">Fixed</span></td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td><span class="badge badge-high">High</span></td>
-          <td>Race condition</td>
-          <td><span class="badge badge-low">Open</span></td>
-        </tr>
-      </tbody>
-    </table>
+        <div class="card card-solution">
+          <h4>Recommended Fix</h4>
+          <p>Description of the solution with rationale.</p>
+        </div>
 
-    <!-- Before/After Comparison -->
-    <h2>Before / After</h2>
-    <div class="compare-header">
-      <div class="compare-before">Before</div>
-      <div class="compare-after">After</div>
-    </div>
-    <div class="compare-row">
-      <div>
-        <pre><code><span class="tok-comment">// Old code</span>
+        <!-- Issue Cards -->
+        <h2 id="issues"><span class="num">02</span>Issue Cards</h2>
+
+        <div class="issue issue-critical">
+          <span class="severity severity-critical">Blocking</span>
+          <h3>Critical finding title</h3>
+          <div class="where">path/to/file.go:42-58</div>
+          <p>Describe the problem and cite the code or behavior that proves it.</p>
+          <div class="callout callout-solution">
+            <strong>Fix</strong>
+            State the concrete recommended action.
+          </div>
+        </div>
+
+        <div class="issue issue-important">
+          <span class="severity severity-important">Important</span>
+          <h3>Important finding title</h3>
+          <div class="where">path/to/another.go:12-19</div>
+          <p>Explain the risk and why a careful reviewer would hesitate before shipping.</p>
+        </div>
+
+        <div class="issue issue-nice">
+          <span class="severity severity-nice">Nice to have</span>
+          <h3>Polish suggestion</h3>
+          <div class="where">docs/ or config</div>
+          <p>Minor documentation gaps or future-proofing suggestions go here.</p>
+        </div>
+
+        <!-- Strengths -->
+        <h2>Strengths</h2>
+        <div class="strengths">
+          <div class="strength">
+            <div class="check">+</div>
+            <div class="text">
+              <strong>Specific strength</strong>
+              <span>Explain why it matters and what it enables.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table with Badges -->
+        <h2>Issue Table</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Severity</th>
+              <th>Issue</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><span class="badge badge-critical">Critical</span></td>
+              <td>Missing error handling</td>
+              <td><span class="badge badge-fixed">Fixed</span></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><span class="badge badge-high">High</span></td>
+              <td>Race condition</td>
+              <td><span class="badge badge-low">Open</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Before/After Comparison -->
+        <h2 id="proposal">Before / After</h2>
+        <div class="compare-header">
+          <div class="compare-before">Before</div>
+          <div class="compare-after">After</div>
+        </div>
+        <div class="compare-row">
+          <div>
+            <pre><code><span class="tok-comment">// Old code</span>
 <span class="tok-keyword">func</span> <span class="tok-func">process</span>(data <span class="tok-type">interface</span>{}) { }</code></pre>
-      </div>
-      <div>
-        <pre><code><span class="tok-comment">// New code</span>
+          </div>
+          <div>
+            <pre><code><span class="tok-comment">// New code</span>
 <span class="tok-keyword">func</span> <span class="tok-func">process</span>[T <span class="tok-type">any</span>](data T) { }</code></pre>
-      </div>
-    </div>
+          </div>
+        </div>
 
-    <!-- Numbered Steps -->
-    <h2>Migration Plan</h2>
-    <div class="migration-step">
-      <div class="migration-num">1</div>
-      <div class="migration-content">
-        <h4>Add generic type parameter</h4>
-        <p>Update the function signature to accept a type parameter.</p>
-      </div>
-    </div>
-    <div class="migration-step">
-      <div class="migration-num">2</div>
-      <div class="migration-content">
-        <h4>Update all call sites</h4>
-        <p>Pass explicit types at each call site for type safety.</p>
-      </div>
+        <!-- ASCII Diagram -->
+        <h2>Dependency Tree</h2>
+        <div class="dep-tree"><span class="root">root</span>
+├── <span class="ok">wanted-dep</span>
+└── <span class="unwanted">unwanted-dep</span></div>
+
+        <!-- Numbered Steps -->
+        <h2 id="plan"><span class="num">03</span>Migration Plan</h2>
+        <div class="migration-step">
+          <div class="migration-num">1</div>
+          <div class="migration-content">
+            <h4>Add generic type parameter</h4>
+            <p>Update the function signature to accept a type parameter.</p>
+          </div>
+        </div>
+        <div class="migration-step">
+          <div class="migration-num">2</div>
+          <div class="migration-content">
+            <h4>Update all call sites</h4>
+            <p>Pass explicit types at each call site for type safety.</p>
+          </div>
+        </div>
+
+        <footer class="footer">
+          Generated YYYY-MM-DD &middot; All claims verified against source code where noted
+        </footer>
+      </main>
     </div>
   </body>
 </html>
