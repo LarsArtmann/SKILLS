@@ -38,12 +38,12 @@ The shared design specification for all skills that produce HTML reports.
 
 ## Semantic Color Coding
 
-| Color   | Token        | Meaning         | CSS class              |
-| ------- | ------------ | --------------- | ---------------------- |
-| Rose    | `--rose`     | Problem / error | `.card-problem`        |
-| Emerald | `--emerald`  | Solution / good | `.card-solution`       |
-| Amber   | `--amber`    | Warning / risky | `.card-warning`        |
-| Indigo  | `--accent`   | Highlight       | `.stat-value`, `.toc` |
+| Color   | Token       | Meaning         | CSS class             |
+| ------- | ----------- | --------------- | --------------------- |
+| Rose    | `--rose`    | Problem / error | `.card-problem`       |
+| Emerald | `--emerald` | Solution / good | `.card-solution`      |
+| Amber   | `--amber`   | Warning / risky | `.card-warning`       |
+| Indigo  | `--accent`  | Highlight       | `.stat-value`, `.toc` |
 
 ## Component Catalog
 
@@ -79,10 +79,16 @@ For metrics dashboards (issue counts, pass/fail, totals).
 For individual findings, problems, recommendations.
 
 ```html
-<div class="card card-problem">  <!-- rose left border -->
-<div class="card card-solution">  <!-- emerald left border -->
-<div class="card card-warning">   <!-- amber left border -->
-<div class="card">                <!-- neutral -->
+<div class="card card-problem">
+  <!-- rose left border -->
+  <div class="card card-solution">
+    <!-- emerald left border -->
+    <div class="card card-warning">
+      <!-- amber left border -->
+      <div class="card"><!-- neutral --></div>
+    </div>
+  </div>
+</div>
 ```
 
 ### Badges
@@ -103,8 +109,16 @@ Full-width, dark-themed, hover-highlighted. Use badges inside cells for severity
 
 ```html
 <table>
-  <thead><tr><th>Column</th></tr></thead>
-  <tbody><tr><td>Value</td></tr></tbody>
+  <thead>
+    <tr>
+      <th>Column</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Value</td>
+    </tr>
+  </tbody>
 </table>
 ```
 
@@ -166,8 +180,10 @@ use D2→inline SVG for complex architectures).
 ### Grid Layouts
 
 ```html
-<div class="grid-2">  <!-- 2 columns, collapses on mobile -->
-<div class="grid-3">  <!-- 3 columns, collapses on mobile -->
+<div class="grid-2">
+  <!-- 2 columns, collapses on mobile -->
+  <div class="grid-3"><!-- 3 columns, collapses on mobile --></div>
+</div>
 ```
 
 ## Syntax Highlighting
@@ -175,14 +191,31 @@ use D2→inline SVG for complex architectures).
 Use **language-agnostic** `.tok-*` classes (not `.go-*` or `.ts-*`):
 
 ```css
-.tok-keyword  { color: #c678dd; }  /* func, type, struct, if, return */
-.tok-type     { color: #e5c07b; }  /* int, string, bool, error */
-.tok-string   { color: #98c379; }  /* "quoted strings" */
-.tok-comment  { color: #5c6370; font-style: italic; }
-.tok-func     { color: #61afef; }  /* function names */
-.tok-number   { color: #d19a66; }  /* 42, 3.14 */
-.tok-generic  { color: #e06c75; }  /* T, ID in generics */
-.tok-builtin  { color: #56b6c2; }  /* make, len, append */
+.tok-keyword {
+  color: #c678dd;
+} /* func, type, struct, if, return */
+.tok-type {
+  color: #e5c07b;
+} /* int, string, bool, error */
+.tok-string {
+  color: #98c379;
+} /* "quoted strings" */
+.tok-comment {
+  color: #5c6370;
+  font-style: italic;
+}
+.tok-func {
+  color: #61afef;
+} /* function names */
+.tok-number {
+  color: #d19a66;
+} /* 42, 3.14 */
+.tok-generic {
+  color: #e06c75;
+} /* T, ID in generics */
+.tok-builtin {
+  color: #56b6c2;
+} /* make, len, append */
 ```
 
 Apply manually by wrapping tokens in spans:

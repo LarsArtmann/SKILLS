@@ -22,11 +22,11 @@ reinventing its own.
 
 The `Artifact` decision rule (see `how-to-write-skills.md`):
 
-| lifecycle | audience    | mutability | → format   |
-| --------- | ----------- | ---------- | ---------- |
-| Snapshot  | HumanReport | WriteOnce  | **HTML**   |
-| Living    | ToolParsed  | Upsert     | Markdown   |
-| Living    | EndUserDoc  | Upsert     | Markdown   |
+| lifecycle | audience    | mutability | → format |
+| --------- | ----------- | ---------- | -------- |
+| Snapshot  | HumanReport | WriteOnce  | **HTML** |
+| Living    | ToolParsed  | Upsert     | Markdown |
+| Living    | EndUserDoc  | Upsert     | Markdown |
 
 **HTML is for snapshot reports** — status updates, reviews, plans, proposals, audits.
 **Markdown is for living docs** — `FEATURES.md`, `TODO_LIST.md`, `AGENTS.md`.

@@ -95,6 +95,7 @@ Key patterns:
 Write a self-contained, zero-dependency HTML file at `docs/brainstorming/YYYY-MM-DD_<slug>.html`.
 
 Use the **shared design system** from the `html-report-kit` skill:
+
 - Design spec: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
 - Template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
 

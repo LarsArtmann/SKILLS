@@ -147,6 +147,25 @@ Output: feat(auth): implement JWT-based authentication
 
 Templates and examples eliminate ambiguity and produce consistent results across sessions.
 
+#### Choosing the Output Format: HTML vs Markdown
+
+Not all output should be Markdown. Use this decision rule:
+
+| lifecycle | audience    | mutability | → format   |
+| --------- | ----------- | ---------- | ---------- |
+| Snapshot  | HumanReport | WriteOnce  | **HTML**   |
+| Living    | ToolParsed  | Upsert     | Markdown   |
+| Living    | EndUserDoc  | Upsert     | Markdown   |
+
+- **Snapshot reports** (status updates, reviews, plans, proposals, audits) are written
+  once, read by humans, and never edited again → **HTML** with the shared
+  [`html-report-kit`](./html-report-kit/SKILL.md) design system.
+- **Living docs** (`FEATURES.md`, `TODO_LIST.md`, `AGENTS.md`) are continuously edited,
+  parsed by tooling, and kept up-to-date → **Markdown**.
+
+Never convert a living doc to HTML — it breaks tools that grep, upsert, or
+incrementally edit the file.
+
 ## Organizing Multi-Domain Skills
 
 When a skill covers multiple frameworks or variants, organize by domain so the agent loads only what's relevant:
