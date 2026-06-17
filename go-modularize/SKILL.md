@@ -574,8 +574,8 @@ Write a **self-contained styled HTML proposal** — not separate Markdown files.
 modularization proposal is a point-in-time document with dependency diagrams, migration
 matrices, and risk tables that benefit from visual treatment.
 
-1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
-2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
+2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
 3. Write to `docs/modularization/<YYYY-MM-DD_PROPOSAL>.html` with:
    1. **Executive summary** — Why modularize, what changes, expected benefits
    2. **Current state analysis** — Dependency graph, coupling hotspots, god-packages
@@ -844,7 +844,7 @@ All modularization artifacts go to `docs/modularization/` as **self-contained HT
 | `<date>_PROPOSAL.html`       | Full modularization proposal with all decisions |
 | `<date>_EXECUTION_PLAN.html` | Step-by-step migration with impact sorting      |
 
-Use the shared [html-report-kit](../html-report-kit/SKILL.md) design system for all
+Use the shared [html-report-kit](./assets/html-report-kit/references/html-output-guide.md) design system for all
 output. Dependency graphs render as D2→inline SVG within the HTML.
 
 ---

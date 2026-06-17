@@ -27,8 +27,8 @@ Write a **self-contained styled HTML dashboard** — not a flat Markdown file. A
 report is a point-in-time snapshot meant for human consumption, so it gets the full visual
 treatment: stat cards, severity badges, color-coded sections.
 
-1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
-2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
+2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
 3. Map each status category to a visual component:
    - **Stat cards** for counts (done / partial / broken / fucked up)
    - **`.card-problem`** for TOTALLY FUCKED UP items

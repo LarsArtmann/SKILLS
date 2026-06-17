@@ -166,6 +166,15 @@ Not all output should be Markdown. Use this decision rule:
 Never convert a living doc to HTML — it breaks tools that grep, upsert, or
 incrementally edit the file.
 
+**Referencing the kit from a consumer skill:** consumer skills must NOT point at
+`../html-report-kit/` — that sibling path breaks under per-skill install
+(`bunx skills add <repo>@<one-skill>` copies only one directory, so the sibling
+vanishes). The kit is **vendored** into each consumer's `assets/html-report-kit/`;
+reference it intra-skill as `./assets/html-report-kit/references/html-output-guide.md`
+and `./assets/html-report-kit/assets/report-template.html`. Edit the canonical
+`html-report-kit/` at the repo root, then run `./scripts/sync-html-kit.sh` to
+propagate to all consumers (use `--check` in CI). See `AGENTS.md` §5.9.
+
 ## Organizing Multi-Domain Skills
 
 When a skill covers multiple frameworks or variants, organize by domain so the agent loads only what's relevant:

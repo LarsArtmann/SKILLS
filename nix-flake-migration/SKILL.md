@@ -41,7 +41,7 @@ The ecosystem standard for Go projects:
    - Run → `apps.default`
    - Dev setup → `devShells.default`
    - CI → `devShells.ci` (minimal, `mkShellNoCC`)
-4. **Write proposal** as a self-contained styled HTML file at `docs/proposals/<YYYY-MM-DD_nix-flake-migration.html`. Load the shared design system from [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md) and copy [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html). Include: migration type (from the table above), before/after comparison of build commands, the full `flake.nix` template with Nix syntax highlighting (`.tok-*` classes), and the post-migration checklist as badge-coded items.
+4. **Write proposal** as a self-contained styled HTML file at `docs/proposals/<YYYY-MM-DD_nix-flake-migration.html`. Load the shared design system from [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md) and copy [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html). Include: migration type (from the table above), before/after comparison of build commands, the full `flake.nix` template with Nix syntax highlighting (`.tok-*` classes), and the post-migration checklist as badge-coded items.
 5. **Write `flake.nix`** using the template below
 6. **Remove `just` from devShell** — `justfile` is deprecated in this ecosystem
 7. **Verify**: `nix flake check --no-build` must pass

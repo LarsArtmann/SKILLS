@@ -25,8 +25,8 @@ metadata:
 
 Write a **self-contained styled HTML report** — a sorted issue dashboard.
 
-1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
-2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
+2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
 3. Write to `docs/reviews/<YYYY-MM-DD_HH-MM_code-quality-scan.html`
 4. Map issues to visual components:
    - **Stat cards** for counts (total issues / critical / high / medium / low)

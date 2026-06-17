@@ -44,8 +44,8 @@ A brutal self-review is a point-in-time snapshot of honest reflection — it ben
 visual treatment so the team can quickly see what is fucked up, what to fix, and in what
 order.
 
-1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
-2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
+2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
 3. Map content to visual components:
    - **Stat cards** for counts (questions answered / ghost systems / split brains found / top actions)
    - **`.card-problem`** for things that are stupid or fucked up

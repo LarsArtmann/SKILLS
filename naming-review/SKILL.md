@@ -163,8 +163,8 @@ For each identifier, check ALL categories below. Read `references/common-naming-
 Write a **self-contained styled HTML report** — not a flat Markdown file. A naming review
 is a point-in-time audit with category-colored issue tables that benefit from visual treatment.
 
-1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
-2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
+2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
 3. Write to `docs/reviews/<YYYY-MM-DD_HH-MM_naming-review.html`
 4. Map report sections to visual components:
    - **Stat cards** for counts (identifiers reviewed / honesty / clarity / domain / consistency)

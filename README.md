@@ -16,6 +16,8 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 | ------------------- | -------------------------------------------------------------------- | -------- |
 | **html-report-kit** | Shared HTML report design system with dark-dashboard and editorial-light templates | 🟢 Solid |
 
+> **Vendored, not cross-referenced.** Consumer skills don't reach into a sibling `html-report-kit/` directory (that breaks under per-skill install via `bunx skills add <repo>@<one-skill>`). Instead, the kit is vendored into each consumer's `assets/html-report-kit/`. Edit the canonical `html-report-kit/` at the repo root, then run `./scripts/sync-html-kit.sh` to propagate (use `--check` in CI). See `AGENTS.md` §5.9.
+
 ### Architecture & Design
 
 | Skill                          | What It Does                                                        | Status           |

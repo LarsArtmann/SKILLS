@@ -50,8 +50,8 @@ A full code review produces a point-in-time audit of every file — issues,
 split brains, type-safety concerns, duplications — which benefits from
 visual treatment.
 
-1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
-2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
+2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
 3. Map findings to visual components:
    - **Stat cards** for files reviewed / issues found / split brains / TODOs added / fixed on the spot
    - **`.card-problem`** for type-safety issues, split brains, duplications

@@ -130,7 +130,7 @@ These contradict. When editing either skill, do not worsen the contradiction. Th
 
 ### 5.5 Inter-Skill References
 
-The `full-code-review` skill now delegates planning to `pareto-planning` (previously inlined the same Pareto breakdown — a split brain). The `data-model-review` skill references `html-report-kit` for its design system. Seven report-producing skills (`status-report`, `pareto-planning`, `full-code-review`, `go-modularize`, `code-quality-scan`, `naming-review`, `nix-flake-migration`) all reference the shared `html-report-kit` skill for consistent HTML output. When adding cross-references, check this graph first.
+The `full-code-review` skill now delegates planning to `pareto-planning` (previously inlined the same Pareto breakdown — a split brain). Several skills reference the shared `html-report-kit` design system for consistent HTML output — the authoritative consumer list is produced by `scripts/sync-html-kit.sh --list` (see 5.9). Do not hardcode that list in prose; it drifts. When adding cross-references, check this graph first.
 
 ### 5.6 `how-to-write-skills.md` Location
 
@@ -146,9 +146,32 @@ There is no `crush.json` in this repo, so Crush does not auto-discover these ski
 
 ### 5.9 Shared HTML Design System (`html-report-kit`)
 
-Ten skills produce point-in-time reports as self-contained HTML files instead of Markdown. They all reference the shared `html-report-kit/` skill for the design system. The kit now has two template variants: a dark-dashboard theme (status dashboards, scan results) and an editorial-light theme (adoption feedback, architecture reviews, audit briefs). Both share the same component vocabulary: stat/score cards, issue cards, severity badges, callouts, strengths lists, dep-trees, tables, before/after comparisons, and syntax highlighting. When a new skill produces a snapshot report, point it at `html-report-kit` rather than inventing a new design.
+Skills that produce point-in-time reports write self-contained HTML files instead of Markdown, using a shared design system so every report shares the same visual language. The kit has two template variants: a **dark-dashboard** theme (status dashboards, scan results, high-density metrics) and an **editorial-light** theme (adoption feedback, architecture reviews, audit briefs, long-form findings). Both share the same component vocabulary: stat/score cards, issue cards, severity badges, callouts, strengths lists, dep-trees, tables, before/after comparisons, and syntax highlighting.
 
 **The Artifact decision rule** (encoded in `how-to-write-skills.md`): Snapshot + HumanReport → HTML; Living + ToolParsed/EndUserDoc → Markdown. Never convert living docs (`FEATURES.md`, `TODO_LIST.md`) to HTML.
+
+#### Vendoring model (fixes per-skill install)
+
+The Agent Skills spec has **no dependency system** — each skill is installed as a flat, self-contained unit. `bunx skills add LarsArtmann/SKILLS@<one-skill>` copies only that one directory, so a `../html-report-kit/...` sibling path dangles and the kit appears not to exist. To make every consumer work in every install mode (per-skill add/update, clone, `skills_paths`), the kit is **vendored** into each consumer:
+
+| Role | Path | Edit? |
+| ---- | ---- | ----- |
+| Canonical source of truth | `html-report-kit/` | **Yes** — edit here |
+| Vendored copy | `<consumer>/assets/html-report-kit/` | **No** — regenerated build artifact |
+
+Consumer skills reference the kit intra-skill via `./assets/html-report-kit/references/html-output-guide.md` and `./assets/html-report-kit/assets/report-template.html`. The canonical `html-report-kit/SKILL.md` is **excluded** from vendored copies so the skills CLI never mistakes a vendored directory for a standalone skill.
+
+#### Sync workflow
+
+After editing the canonical kit, re-vendor into every consumer and verify:
+
+```bash
+./scripts/sync-html-kit.sh          # regenerate all vendored copies
+./scripts/sync-html-kit.sh --check  # CI: exit 1 if any copy drifted
+./scripts/sync-html-kit.sh --list  # show consumers (authoritative list)
+```
+
+When a new skill needs HTML reports: (1) reference `./assets/html-report-kit/...` from its `SKILL.md`, (2) run `./scripts/sync-html-kit.sh` to populate the vendored copy — the script auto-discovers any `SKILL.md` that mentions `html-report-kit`.
 
 ---
 

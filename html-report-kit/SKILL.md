@@ -18,6 +18,25 @@ A shared design system so every skill that produces a point-in-time report uses 
 visual language** — semantic colors, consistent components, responsive layout — rather than each
 reinventing its own.
 
+## Canonical Source & Vendoring
+
+This directory is the **single source of truth** for the kit. Consumer skills do NOT reference it
+via sibling paths (`../html-report-kit/`) — that breaks under per-skill install
+(`bunx skills add LarsArtmann/SKILLS@<one-skill>`, which copies only one directory). Instead, the
+kit is **vendored** into each consumer's own `assets/html-report-kit/`, and consumers reference it
+intra-skill via `./assets/html-report-kit/...`.
+
+To propagate edits to all consumers, run from the repo root:
+
+```bash
+./scripts/sync-html-kit.sh          # regenerate vendored copies in all consumers
+./scripts/sync-html-kit.sh --check  # CI: exit 1 if any vendored copy drifted
+./scripts/sync-html-kit.sh --list   # list consumer skills
+```
+
+The vendored copy excludes this `SKILL.md` so the skills CLI doesn't detect a nested skill.
+**Edit the kit here; never hand-edit `<consumer>/assets/html-report-kit/`.**
+
 ## Two Template Variants
 
 | Variant | File | Best for |

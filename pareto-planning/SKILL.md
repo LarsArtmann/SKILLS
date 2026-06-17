@@ -39,8 +39,8 @@ WRITE YOUR PLAN as a **self-contained styled HTML report** — not a flat Markdo
 A Pareto plan is a point-in-time snapshot with rich structure (tiers, tables, execution
 graphs) that benefits from visual treatment.
 
-1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
-2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
+2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
 3. Render the D2 execution graph to SVG via `d2 plan.d2 plan.svg`, then inline the SVG
    directly in the HTML `<body>` (no external file dependency).
 4. Map plan structure to components:

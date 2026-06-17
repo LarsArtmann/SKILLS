@@ -23,8 +23,8 @@ the directory if it doesn't exist.
 
 Use the shared design system from the `html-report-kit` skill:
 
-- Design spec: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
-- Template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+- Design spec: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
+- Template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
 
 Map the review to visual components:
 
