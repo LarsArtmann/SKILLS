@@ -35,6 +35,24 @@ Answer every question with full honesty:
 6. If you find a Ghost system, report back and make sure you integrate it.
 7. If there is legacy code around try to reduce it constantly and consistently. Our target for legacy code is ZERO.
 
+## Output
+
+Write the self-review and improvement plan as a **self-contained styled HTML report**
+at `docs/reviews/<YYYY-MM-DD_HH-MM_brutal-self-review.html`.
+
+A brutal self-review is a point-in-time snapshot of honest reflection — it benefits from
+visual treatment so the team can quickly see what is fucked up, what to fix, and in what
+order.
+
+1. Load the shared design system: [../html-report-kit/references/html-output-guide.md](../html-report-kit/references/html-output-guide.md)
+2. Copy the template: [../html-report-kit/assets/report-template.html](../html-report-kit/assets/report-template.html)
+3. Map content to visual components:
+   - **Stat cards** for counts (questions answered / ghost systems / split brains found / top actions)
+   - **`.card-problem`** for things that are stupid or fucked up
+   - **`.card-warning`** for scope creep / legacy / testing gaps
+   - **`.card-solution`** for quick wins and good things to preserve
+   - **Numbered-step components** for the prioritized improvement plan
+
 ## Architectural Review
 
 - Which architectural decisions we made in the past are causing problems now / could be improved?
