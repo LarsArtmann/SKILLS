@@ -8,10 +8,10 @@ The kit ships two self-contained templates. Both use the **Bauhaus** design
 language — primary colors (red, blue, yellow) on a neutral ground. Form follows
 function. Pick the variant that matches the report's tone.
 
-| Variant             | File                                                                                   | Best for                                              | Visual feel                                                            |
-| ------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------- |
-| **Bauhaus Dark**     | [`../assets/report-template.html`](../assets/report-template.html)                     | Status dashboards, scan results, high-density metrics | Graphite ground + primary accents, sharp corners, optional hero shapes |
-| **Bauhaus Light**    | [`../assets/report-template-editorial.html`](../assets/report-template-editorial.html) | Adoption feedback, architecture reviews, audit briefs | Warm paper + primary color blocks, sticky sidebar, heavy sans-serif    |
+| Variant           | File                                                                                   | Best for                                              | Visual feel                                                            |
+| ----------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------- |
+| **Bauhaus Dark**  | [`../assets/report-template.html`](../assets/report-template.html)                     | Status dashboards, scan results, high-density metrics | Graphite ground + primary accents, sharp corners, optional hero shapes |
+| **Bauhaus Light** | [`../assets/report-template-editorial.html`](../assets/report-template-editorial.html) | Adoption feedback, architecture reviews, audit briefs | Warm paper + primary color blocks, sticky sidebar, heavy sans-serif    |
 
 Both templates share the **same semantic token vocabulary** and the same
 component class names — only the primitive color values differ. A skill can
@@ -104,24 +104,24 @@ differ. This kills the prior split brain where dark used `--bg-elevated` /
 
 ```css
 :root {
-  --color-graphite:   #0e0e10;
+  --color-graphite: #0e0e10;
   --color-graphite-2: #18181d;
   --color-graphite-3: #16161a;
-  --color-bone:       #f4f4f0;
-  --color-red:        #ff6b6b;   /* lifted for dark-bg contrast */
-  --color-blue:       #6eb5ff;
-  --color-yellow:     #f4d35e;
-  --color-amber:      #ffb347;   /* warmer than yellow for accent */
+  --color-bone: #f4f4f0;
+  --color-red: #ff6b6b; /* lifted for dark-bg contrast */
+  --color-blue: #6eb5ff;
+  --color-yellow: #f4d35e;
+  --color-amber: #ffb347; /* warmer than yellow for accent */
 
   /* Map semantic → primitive */
-  --surface:        var(--color-graphite);
+  --surface: var(--color-graphite);
   --surface-raised: var(--color-graphite-2);
   --surface-sunken: var(--color-graphite-3);
-  --text:           var(--color-bone);
-  --accent:         var(--color-amber);
-  --problem:        var(--color-red);
-  --solution:       var(--color-blue);
-  --warning:        var(--color-yellow);
+  --text: var(--color-bone);
+  --accent: var(--color-amber);
+  --problem: var(--color-red);
+  --solution: var(--color-blue);
+  --warning: var(--color-yellow);
 }
 ```
 
@@ -129,23 +129,23 @@ differ. This kills the prior split brain where dark used `--bg-elevated` /
 
 ```css
 :root {
-  --color-paper:   #f4f4f0;
+  --color-paper: #f4f4f0;
   --color-paper-2: #ffffff;
   --color-paper-3: #e8e8e2;
-  --color-ink:     #111111;
-  --color-red:     #e63946;
-  --color-blue:    #1d3557;
-  --color-yellow:  #f4d35e;
+  --color-ink: #111111;
+  --color-red: #e63946;
+  --color-blue: #1d3557;
+  --color-yellow: #f4d35e;
 
   /* Map semantic → primitive */
-  --surface:        var(--color-paper);
+  --surface: var(--color-paper);
   --surface-raised: var(--color-paper-2);
   --surface-sunken: var(--color-paper-3);
-  --text:           var(--color-ink);
-  --accent:         var(--color-red);
-  --problem:        var(--color-red);
-  --solution:       var(--color-blue);
-  --warning:        var(--color-yellow);
+  --text: var(--color-ink);
+  --accent: var(--color-red);
+  --problem: var(--color-red);
+  --solution: var(--color-blue);
+  --warning: var(--color-yellow);
 }
 ```
 
@@ -173,18 +173,18 @@ The old token names still resolve via aliases so consumer skills that reference
 working unchanged:
 
 ```css
---rose:    var(--problem);
---coral:   var(--problem);
+--rose: var(--problem);
+--coral: var(--problem);
 --emerald: var(--solution);
---teal:    var(--solution);
---amber:   var(--warning);
---bg:            var(--surface);
---bg-card:       var(--surface-raised);
---bg-elevated:   var(--surface-raised);
---bg-sunken:     var(--surface-sunken);
---ink:           var(--text);
+--teal: var(--solution);
+--amber: var(--warning);
+--bg: var(--surface);
+--bg-card: var(--surface-raised);
+--bg-elevated: var(--surface-raised);
+--bg-sunken: var(--surface-sunken);
+--ink: var(--text);
 --ink-secondary: var(--text-muted);
---hairline:      var(--border);
+--hairline: var(--border);
 /* ...and the corresponding *-glow / *-light variants via color-mix() */
 ```
 
@@ -193,12 +193,12 @@ working unchanged:
 With the unified vocabulary, the same class names mean the same thing in both
 templates. The legacy aliases in parentheses still work.
 
-| Meaning         | Token (both)         | Classes (both templates)                                                                                      |
-| --------------- | -------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Problem / error | `--problem` (`--rose` / `--coral`)    | `.card-problem`, `.issue-critical`, `.stat-bad`, `.score-bad`, `.severity-critical`, `.badge-critical` |
-| Solution / good | `--solution` (`--emerald` / `--teal`) | `.card-solution`, `.issue-nice`, `.stat-good`, `.score-good`, `.severity-nice`, `.callout-teal`       |
+| Meaning         | Token (both)                          | Classes (both templates)                                                                                  |
+| --------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Problem / error | `--problem` (`--rose` / `--coral`)    | `.card-problem`, `.issue-critical`, `.stat-bad`, `.score-bad`, `.severity-critical`, `.badge-critical`    |
+| Solution / good | `--solution` (`--emerald` / `--teal`) | `.card-solution`, `.issue-nice`, `.stat-good`, `.score-good`, `.severity-nice`, `.callout-teal`           |
 | Warning / risky | `--warning` (`--amber`)               | `.card-warning`, `.issue-important`, `.stat-warn`, `.score-warn`, `.severity-important`, `.callout-amber` |
-| Highlight       | `--accent`           | `.hero-badge`, `.eyebrow`, `.tag.amber`, `h2 .num`, `.toc` left border                                        |
+| Highlight       | `--accent`                            | `.hero-badge`, `.eyebrow`, `.tag.amber`, `h2 .num`, `.toc` left border                                    |
 
 ## Component Catalog
 
