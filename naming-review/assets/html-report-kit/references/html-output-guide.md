@@ -4,17 +4,22 @@ The shared design specification for all skills that produce HTML reports.
 
 ## Two Template Variants
 
-The kit now ships two self-contained templates. Pick the one that matches the
-report's tone and audience.
+The kit ships two self-contained templates. Both use the **Bauhaus** design
+language — primary colors (red, blue, yellow) on a neutral ground. Form follows
+function. Pick the variant that matches the report's tone.
 
-| Variant             | File                                                                                   | Best for                                              | Visual feel                                                   |
-| ------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------- |
-| **Dark dashboard**  | [`../assets/report-template.html`](../assets/report-template.html)                     | Status dashboards, scan results, high-density metrics | Dark slate + indigo, glass cards, radial glow                 |
-| **Editorial light** | [`../assets/report-template-editorial.html`](../assets/report-template-editorial.html) | Adoption feedback, architecture reviews, audit briefs | Warm paper + amber/teal, sticky sidebar, editorial typography |
+| Variant             | File                                                                                   | Best for                                              | Visual feel                                                            |
+| ------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------- |
+| **Bauhaus Dark**     | [`../assets/report-template.html`](../assets/report-template.html)                     | Status dashboards, scan results, high-density metrics | Graphite ground + primary accents, sharp corners, optional hero shapes |
+| **Bauhaus Light**    | [`../assets/report-template-editorial.html`](../assets/report-template-editorial.html) | Adoption feedback, architecture reviews, audit briefs | Warm paper + primary color blocks, sticky sidebar, heavy sans-serif    |
 
-Both templates share the same component vocabulary (issue cards, callouts,
-scorecards, dep-trees, etc.) but use different palettes and layouts. A skill can
-copy either as its starting point.
+Both templates share the **same semantic token vocabulary** and the same
+component class names — only the primitive color values differ. A skill can
+copy either as its starting point and swap palettes by editing only the
+primitive values in `:root`.
+
+See [`bauhaus-tokens.md`](./bauhaus-tokens.md) for the full token architecture
+spec and the rationale behind the unified vocabulary.
 
 ## When to Use HTML vs Markdown
 
@@ -31,81 +36,169 @@ The `Artifact` decision rule (see `how-to-write-skills.md`):
 
 ## Design Requirements
 
-- **Single file**, zero external dependencies (no CDN, no JS, no build step, no external fonts)
-- **Responsive** — sidebar collapses on narrow viewports, grids collapse to single column
+- **Single file**, zero external dependencies (no CDN, no build step, no external fonts)
+- **Responsive** — sidebar collapses below 1024px, grids collapse to single column on mobile
 - **Self-contained** — anyone can open the `.html` file in a browser with no server
 - **Manual CSS syntax highlighting** via language-agnostic `.tok-*` classes
-- **Semantic color coding** — problem/solution/warning meanings are the same in both themes
+- **Semantic color coding** — problem/solution/warning meanings are identical in both themes
+- **Sharp corners** (`--radius: 0`) per Bauhaus aesthetic — override per-report if needed
+- **Progressive enhancement** — nav works via plain anchor links; optional scrollspy script
+  highlights the active section without breaking if JS is disabled
 
 ### Typography note
 
-Both templates use system font stacks so reports work offline. If you want the
-premium look of external fonts (e.g. Space Grotesk, Inter, JetBrains Mono), add
-the Google Fonts `<link>` and update `--font-heading`, `--font-body`, and
-`--font-mono` in `:root`. This is optional and trades the zero-dependency rule
-for typography.
+Both templates use system font stacks so reports work offline. The Bauhaus look
+comes from heavy weights (800/900) and tight tracking, not from a specific
+typeface. If a report wants premium typography and accepts the tradeoff, add a
+Google Fonts `<link>` and override `--font-heading`/`--font-body` in `:root`.
+This trades the zero-dependency rule for typography — never the default.
+
+### Optional scrollspy
+
+Both templates include a tiny IntersectionObserver script (~20 lines) that
+highlights the active sidebar item as the reader scrolls. It is **progressive
+enhancement** — if JS is disabled, the nav still works via `<a href="#section">`
+anchor jumps with `scroll-behavior: smooth`. The script auto-discovers any
+`[data-nav]` container and links it to sections by id. To disable, delete the
+`<script>` block.
 
 ## CSS Design Tokens
 
-### Dark dashboard theme
+### Unified semantic vocabulary (BOTH templates)
+
+Both templates share the same semantic token names. Only the primitive values
+differ. This kills the prior split brain where dark used `--bg-elevated` /
+`--rose` and light used `--bg-card` / `--coral` for the same concepts.
 
 ```css
 :root {
-  --bg: #0f172a;
-  --bg-elevated: #1e293b;
-  --bg-sunken: #020617;
-  --text: #e2e8f0;
-  --text-dim: #94a3b8;
-  --text-faint: #64748b;
-  --accent: #6366f1;
-  --accent-glow: rgba(99, 102, 241, 0.15);
-  --rose: #f43f5e;
-  --rose-glow: rgba(244, 63, 94, 0.15);
-  --emerald: #10b981;
-  --emerald-glow: rgba(16, 185, 129, 0.15);
-  --amber: #f59e0b;
-  --amber-glow: rgba(245, 158, 11, 0.15);
-  --cyan: #06b6d4;
-  --border: #334155;
-  --radius: 12px;
-  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
-  --font-sans:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Surfaces */
+  --surface;            /* page background */
+  --surface-raised;     /* cards, elevated panels */
+  --surface-sunken;     /* code blocks, inset areas */
+
+  /* Text */
+  --text;               /* primary body text */
+  --text-muted;         /* secondary text */
+  --text-faint;         /* labels, captions */
+
+  /* Lines */
+  --border;             /* hairlines */
+  --border-strong;      /* emphasized borders */
+
+  /* Semantic status — identical in both templates */
+  --accent;             /* primary brand accent (red on light, amber on dark) */
+  --problem;            /* errors, critical findings */
+  --solution;           /* good news, passing tests */
+  --warning;            /* cautions, warnings */
+
+  /* Shape + Type */
+  --radius:    0px;     /* Bauhaus default: sharp corners */
+  --font-heading;
+  --font-body;
+  --font-mono;
 }
 ```
 
-### Editorial light theme
+### Bauhaus Dark primitives
 
 ```css
 :root {
-  --bg: #faf9f7;
-  --bg-card: #ffffff;
-  --bg-code: #f6f5f3;
-  --ink: #1a1a2e;
-  --ink-secondary: #475569;
-  --ink-muted: #94a3b8;
-  --hairline: #e8e6e1;
-  --amber: #b45309;
-  --amber-light: #fef3c7;
-  --teal: #0e7490;
-  --teal-light: #ecfeff;
-  --coral: #dc2626;
-  --coral-light: #fef2f2;
-  --font-heading: ui-rounded, "SF Pro Rounded", "Segoe UI Variable Display", system-ui, sans-serif;
-  --font-body:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+  --color-graphite:   #0e0e10;
+  --color-graphite-2: #18181d;
+  --color-graphite-3: #16161a;
+  --color-bone:       #f4f4f0;
+  --color-red:        #ff6b6b;   /* lifted for dark-bg contrast */
+  --color-blue:       #6eb5ff;
+  --color-yellow:     #f4d35e;
+  --color-amber:      #ffb347;   /* warmer than yellow for accent */
+
+  /* Map semantic → primitive */
+  --surface:        var(--color-graphite);
+  --surface-raised: var(--color-graphite-2);
+  --surface-sunken: var(--color-graphite-3);
+  --text:           var(--color-bone);
+  --accent:         var(--color-amber);
+  --problem:        var(--color-red);
+  --solution:       var(--color-blue);
+  --warning:        var(--color-yellow);
 }
+```
+
+### Bauhaus Light primitives
+
+```css
+:root {
+  --color-paper:   #f4f4f0;
+  --color-paper-2: #ffffff;
+  --color-paper-3: #e8e8e2;
+  --color-ink:     #111111;
+  --color-red:     #e63946;
+  --color-blue:    #1d3557;
+  --color-yellow:  #f4d35e;
+
+  /* Map semantic → primitive */
+  --surface:        var(--color-paper);
+  --surface-raised: var(--color-paper-2);
+  --surface-sunken: var(--color-paper-3);
+  --text:           var(--color-ink);
+  --accent:         var(--color-red);
+  --problem:        var(--color-red);
+  --solution:       var(--color-blue);
+  --warning:        var(--color-yellow);
+}
+```
+
+### `color-mix()` replaces glow tokens
+
+The previous kit defined paired tokens (`--rose` + `--rose-glow`, `--amber` +
+`--amber-light`) — 8 redundant tokens hand-maintained. Modern CSS derives
+translucent variants on demand:
+
+```css
+/* Old: two tokens, drift-prone */
+background: var(--rose-glow);
+
+/* New: derived from the single solid token */
+background: color-mix(in srgb, var(--problem) 15%, transparent);
+```
+
+Browser support: Chrome 111+, Safari 16.2+, Firefox 113+ (all shipping since
+early 2023).
+
+### Backward-compatible aliases
+
+The old token names still resolve via aliases so consumer skills that reference
+`--rose`, `--coral`, `--bg-card`, `--ink`, `--emerald`, `--teal`, etc. keep
+working unchanged:
+
+```css
+--rose:    var(--problem);
+--coral:   var(--problem);
+--emerald: var(--solution);
+--teal:    var(--solution);
+--amber:   var(--warning);
+--bg:            var(--surface);
+--bg-card:       var(--surface-raised);
+--bg-elevated:   var(--surface-raised);
+--bg-sunken:     var(--surface-sunken);
+--ink:           var(--text);
+--ink-secondary: var(--text-muted);
+--hairline:      var(--border);
+/* ...and the corresponding *-glow / *-light variants via color-mix() */
 ```
 
 ## Semantic Color Coding
 
-| Meaning         | Dark token  | Dark class                                                            | Editorial token | Editorial class                                                            |
-| --------------- | ----------- | --------------------------------------------------------------------- | --------------- | -------------------------------------------------------------------------- |
-| Problem / error | `--rose`    | `.card-problem`, `.issue-critical`, `.stat-bad`, `.severity-critical` | `--coral`       | `.issue-critical`, `.score-bad`, `.severity-critical`                      |
-| Solution / good | `--emerald` | `.card-solution`, `.issue-nice`, `.stat-good`, `.severity-nice`       | `--teal`        | `.issue-nice`, `.score-good`, `.severity-nice`, `.callout-teal`            |
-| Warning / risky | `--amber`   | `.card-warning`, `.stat-warn`, `.severity-important`                  | `--amber`       | `.issue-important`, `.score-warn`, `.severity-important`, `.callout-amber` |
-| Highlight       | `--accent`  | `.stat-value`, `.toc`                                                 | `--amber`       | `.eyebrow`, `.tag.amber`, `h2 .num`                                        |
+With the unified vocabulary, the same class names mean the same thing in both
+templates. The legacy aliases in parentheses still work.
+
+| Meaning         | Token (both)         | Classes (both templates)                                                                                      |
+| --------------- | -------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Problem / error | `--problem` (`--rose` / `--coral`)    | `.card-problem`, `.issue-critical`, `.stat-bad`, `.score-bad`, `.severity-critical`, `.badge-critical` |
+| Solution / good | `--solution` (`--emerald` / `--teal`) | `.card-solution`, `.issue-nice`, `.stat-good`, `.score-good`, `.severity-nice`, `.callout-teal`       |
+| Warning / risky | `--warning` (`--amber`)               | `.card-warning`, `.issue-important`, `.stat-warn`, `.score-warn`, `.severity-important`, `.callout-amber` |
+| Highlight       | `--accent`           | `.hero-badge`, `.eyebrow`, `.tag.amber`, `h2 .num`, `.toc` left border                                        |
 
 ## Component Catalog
 
@@ -471,7 +564,18 @@ Categories: `status/`, `planning/`, `architecture-understanding/`, `brainstormin
    or an **audit brief** (editorial template).
 2. Copy the chosen template to the target path.
 3. Open [`example-editorial-report.html`](./example-editorial-report.html) to see a
-   fully rendered report using every component.
+   fully rendered report using every component in the Bauhaus editorial theme.
 4. Delete the example sections you don't need.
 5. Replace placeholder text, ids, and TOC links.
 6. Keep the CSS design tokens intact unless you are intentionally theming.
+   The semantic tokens (`--surface`, `--text`, `--problem`, `--solution`,
+   `--warning`, `--accent`) are the same in both templates — swapping palettes
+   means editing only the primitive values in `:root`.
+7. To theme for a different brand, override the **primitive** colors
+   (`--color-red`, `--color-blue`, etc.) and the semantic layer follows.
+8. The optional `.hero-shapes` cluster (circle / square / triangle / bar) is the
+   Bauhaus signature. Remove it for a quieter hero; keep it for reports that
+   benefit from a strong visual anchor.
+
+For the full token architecture rationale, see
+[`bauhaus-tokens.md`](./bauhaus-tokens.md).

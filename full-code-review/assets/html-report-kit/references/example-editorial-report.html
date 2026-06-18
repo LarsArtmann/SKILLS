@@ -3,552 +3,359 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>html-report-kit Design Review — Editorial Variant</title>
+    <title>html-report-kit Bauhaus Migration — Example Editorial Report</title>
     <style>
+      /* =========================================================================
+         EXAMPLE EDITORIAL REPORT — demonstrates every Bauhaus component.
+         CSS is intentionally inlined (not linked) so this file is self-contained
+         and works as a copy-paste starting point for AI agents.
+         The CSS mirrors report-template-editorial.html exactly.
+         ========================================================================= */
+
       :root {
-        --bg: #faf9f7;
-        --bg-card: #ffffff;
-        --bg-code: #f6f5f3;
-        --ink: #1a1a2e;
-        --ink-secondary: #475569;
-        --ink-muted: #94a3b8;
-        --hairline: #e8e6e1;
-        --amber: #b45309;
-        --amber-light: #fef3c7;
-        --teal: #0e7490;
-        --teal-light: #ecfeff;
-        --coral: #dc2626;
-        --coral-light: #fef2f2;
-        --max-width: 820px;
-        --sidebar-width: 200px;
-        --font-heading:
-          ui-rounded, "SF Pro Rounded", "Segoe UI Variable Display", system-ui, sans-serif;
-        --font-body:
-          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          sans-serif;
-        --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+        /* Primitive palette (Bauhaus Light) */
+        --color-paper:        #f4f4f0;
+        --color-paper-2:      #ffffff;
+        --color-paper-3:      #e8e8e2;
+        --color-ink:          #111111;
+        --color-red:          #e63946;
+        --color-blue:         #1d3557;
+        --color-yellow:       #f4d35e;
+        --color-hairline:        rgba(17, 17, 17, 0.14);
+        --color-hairline-strong: rgba(17, 17, 17, 0.30);
+
+        /* Semantic layer */
+        --surface:           var(--color-paper);
+        --surface-raised:    var(--color-paper-2);
+        --surface-sunken:    var(--color-paper-3);
+        --text:              var(--color-ink);
+        --text-muted:        rgba(17, 17, 17, 0.72);
+        --text-faint:        rgba(17, 17, 17, 0.50);
+        --border:            var(--color-hairline);
+        --border-strong:     var(--color-hairline-strong);
+        --accent:            var(--color-red);
+        --problem:           var(--color-red);
+        --solution:          var(--color-blue);
+        --warning:           var(--color-yellow);
+        --radius:            0px;
+        --font-heading:      ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --font-body:         ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --font-mono:         ui-monospace, "Cascadia Code", "Source Code Pro", "JetBrains Mono", Menlo, Consolas, monospace;
       }
 
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+      section[id], [id] { scroll-margin-top: 60px; }
+
       body {
+        background: var(--surface);
+        color: var(--text);
         font-family: var(--font-body);
-        background: var(--bg);
-        color: var(--ink);
-        line-height: 1.7;
         font-size: 16px;
+        line-height: 1.65;
         -webkit-font-smoothing: antialiased;
       }
 
-      .layout {
-        display: flex;
-        max-width: calc(var(--max-width) + var(--sidebar-width) + 80px);
-        margin: 0 auto;
-        padding: 0 24px;
-        gap: 40px;
-      }
+      .layout { display: flex; gap: 2.5rem; max-width: 1400px; margin: 0 auto; padding: 2rem; }
       .sidebar {
-        width: var(--sidebar-width);
-        flex-shrink: 0;
-        position: sticky;
-        top: 0;
-        align-self: flex-start;
-        height: 100vh;
-        overflow-y: auto;
-        padding: 40px 0;
+        width: 220px; flex-shrink: 0; position: sticky; top: 1rem;
+        align-self: flex-start; height: calc(100vh - 2rem); overflow-y: auto;
         display: none;
       }
-      .sidebar nav {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-      }
+      .sidebar nav { display: flex; flex-direction: column; gap: 0; }
       .sidebar .label {
-        font-family: var(--font-mono);
-        font-size: 11px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--ink-muted);
-        margin-bottom: 10px;
+        font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent);
+        margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--text);
       }
       .sidebar a {
-        font-size: 13px;
-        color: var(--ink-secondary);
-        text-decoration: none;
-        padding: 5px 10px;
-        border-left: 2px solid transparent;
-        border-radius: 0 4px 4px 0;
-        transition: all 0.15s ease;
-        line-height: 1.4;
+        font-size: 0.86rem; color: var(--text); text-decoration: none;
+        padding: 0.5rem 0.75rem; border-left: 4px solid transparent;
+        font-weight: 600; transition: all 0.15s ease; line-height: 1.4;
       }
-      .sidebar a:hover {
-        color: var(--amber);
-        border-left-color: var(--amber);
-        background: var(--amber-light);
+      .sidebar a:hover, .sidebar a.active {
+        border-left-color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 8%, transparent);
+        color: var(--accent);
       }
-      .main {
-        width: 100%;
-        max-width: var(--max-width);
-        padding: 0 0 80px;
-      }
-      @media (min-width: 1100px) {
-        .sidebar {
-          display: block;
-        }
-      }
+      .main { flex: 1; min-width: 0; }
 
-      h1,
-      h2,
-      h3,
-      h4 {
-        font-family: var(--font-heading);
-        font-weight: 600;
-        line-height: 1.25;
-        color: var(--ink);
-      }
+      h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 900; letter-spacing: -0.02em; color: var(--text); }
+      h1 { font-size: clamp(1.9rem, 4.5vw, 2.8rem); line-height: 1.05; margin: 0 0 0.6rem; }
       h2 {
-        font-size: 28px;
-        margin: 56px 0 20px;
-        padding-bottom: 12px;
-        border-bottom: 2px solid var(--hairline);
-        letter-spacing: -0.02em;
+        font-size: 1.5rem; margin: 2.5rem 0 1rem; padding-bottom: 0.4rem;
+        border-bottom: 3px solid var(--text);
+        display: flex; align-items: baseline; gap: 0.7rem;
       }
-      h2 .num {
-        color: var(--amber);
-        font-weight: 700;
-        margin-right: 10px;
-      }
-      h3 {
-        font-size: 19px;
-        margin: 32px 0 12px;
-        letter-spacing: -0.01em;
-      }
-      h4 {
-        font-size: 14px;
-        margin: 24px 0 8px;
-        color: var(--ink-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-      }
-      p {
-        margin-bottom: 16px;
-      }
-      a {
-        color: var(--amber);
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-      strong {
-        font-weight: 600;
-        color: var(--ink);
-      }
-      code,
-      pre {
-        font-family: var(--font-mono);
-        font-size: 13.5px;
-      }
-      code {
-        background: var(--bg-code);
-        padding: 2px 6px;
-        border-radius: 4px;
-        color: var(--ink);
-      }
-      pre {
-        background: var(--bg-code);
-        border: 1px solid var(--hairline);
-        border-radius: 8px;
-        padding: 18px 20px;
-        overflow-x: auto;
-        line-height: 1.6;
-        margin: 16px 0;
-      }
-      pre code {
-        background: none;
-        padding: 0;
-      }
+      h2 .num { font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent); font-weight: 700; letter-spacing: 0.04em; }
+      h3 { font-size: 1.15rem; margin: 0 0 0.4rem; font-weight: 700; }
+      h4 { font-size: 1rem; margin: 0 0 0.3rem; font-weight: 700; }
+      p { margin: 0 0 1rem; }
 
-      .hero {
-        padding: 64px 0 48px;
-        border-bottom: 1px solid var(--hairline);
-        margin-bottom: 8px;
+      .hero { padding: 1.5rem 0 2rem; margin-bottom: 1.5rem; border-bottom: 3px solid var(--text); }
+      .eyebrow {
+        font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.16em; color: var(--accent);
+        margin-bottom: 0.9rem;
       }
-      .hero .eyebrow {
-        font-family: var(--font-mono);
-        font-size: 12px;
-        font-weight: 500;
-        color: var(--amber);
-        letter-spacing: 0.05em;
-        margin-bottom: 16px;
-      }
-      .hero h1 {
-        font-family: var(--font-heading);
-        font-size: 38px;
-        font-weight: 700;
-        line-height: 1.15;
-        letter-spacing: -0.03em;
-        margin-bottom: 20px;
-        max-width: 700px;
-      }
-      .hero .subtitle {
-        font-size: 17px;
-        color: var(--ink-secondary);
-        max-width: 620px;
-        margin-bottom: 28px;
-      }
-      .hero .meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
+      .subtitle { font-size: 1.1rem; color: var(--text-muted); max-width: 70ch; margin: 0 0 1rem; }
+      .meta { display: flex; flex-wrap: wrap; gap: 0.5rem; }
       .tag {
-        font-size: 12px;
-        font-weight: 500;
-        padding: 5px 12px;
-        border-radius: 20px;
-        border: 1px solid var(--hairline);
-        color: var(--ink-secondary);
-        background: var(--bg-card);
+        display: inline-block; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+        letter-spacing: 0.04em; padding: 0.25rem 0.6rem;
+        background: var(--surface-sunken); color: var(--text); border: 1px solid var(--border-strong);
       }
-      .tag.amber {
-        color: var(--amber);
-        border-color: #fcd34d;
-        background: var(--amber-light);
-      }
-      .tag.teal {
-        color: var(--teal);
-        border-color: #a5f3fc;
-        background: var(--teal-light);
-      }
-      @media (max-width: 600px) {
-        .hero {
-          padding: 40px 0 32px;
-        }
-        .hero h1 {
-          font-size: 28px;
-        }
-      }
+      .tag.amber { background: var(--warning); border-color: var(--warning); color: var(--text); }
+      .tag.teal  { background: var(--solution); border-color: var(--solution); color: var(--surface); }
 
-      .scorecard {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 12px;
-        margin: 32px 0;
-      }
-      .score-card {
-        background: var(--bg-card);
-        border: 1px solid var(--hairline);
-        border-radius: 10px;
-        padding: 18px 16px;
-        text-align: center;
-      }
-      .score-card .score {
-        font-family: var(--font-heading);
-        font-size: 32px;
-        font-weight: 700;
-        line-height: 1;
-        margin-bottom: 6px;
-      }
-      .score-card .label {
-        font-size: 12px;
-        color: var(--ink-secondary);
-        font-weight: 500;
-      }
-      .score-good .score {
-        color: var(--teal);
-      }
-      .score-warn .score {
-        color: var(--amber);
-      }
-      .score-bad .score {
-        color: var(--coral);
-      }
+      .hero-shapes { position: relative; height: 90px; margin-bottom: 1.2rem; }
+      .hero-shapes .circle { position: absolute; top: 0; right: 180px; width: 64px; height: 64px; background: var(--problem); border-radius: 50%; }
+      .hero-shapes .square { position: absolute; top: 26px; right: 90px; width: 56px; height: 56px; background: var(--solution); }
+      .hero-shapes .tri    { position: absolute; top: 8px; right: 0; width: 0; height: 0; border-left: 32px solid transparent; border-right: 32px solid transparent; border-bottom: 56px solid var(--warning); }
+      .hero-shapes .bar    { position: absolute; bottom: 0; right: 230px; width: 100px; height: 14px; background: var(--text); }
 
-      .issue {
-        background: var(--bg-card);
-        border: 1px solid var(--hairline);
-        border-radius: 12px;
-        padding: 28px;
-        margin: 20px 0;
+      .scorecard, .stat-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 0; margin: 1.5rem 0 2rem; border: 3px solid var(--text);
       }
-      .issue-critical {
-        border-left: 4px solid var(--coral);
+      .score-card, .stat-card { padding: 1.3rem 1rem; text-align: center; border-right: 3px solid var(--text); background: var(--surface-raised); }
+      .score-card:last-child, .stat-card:last-child { border-right: none; }
+      .score-card:nth-child(1), .stat-card:nth-child(1) { background: var(--problem); color: var(--surface); }
+      .score-card:nth-child(2), .stat-card:nth-child(2) { background: var(--solution); color: var(--surface); }
+      .score-card:nth-child(3), .stat-card:nth-child(3) { background: var(--warning); color: var(--text); }
+      .score-card:nth-child(4), .stat-card:nth-child(4) { background: var(--text); color: var(--surface); }
+      .score, .stat-value { font-family: var(--font-heading); font-size: 2.6rem; font-weight: 900; line-height: 1; letter-spacing: -0.04em; }
+      .score-card .label, .stat-label { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-top: 0.5rem; }
+      .score-good, .stat-good { background: var(--solution) !important; color: var(--surface) !important; }
+      .score-warn, .stat-warn { background: var(--warning) !important; color: var(--text) !important; }
+      .score-bad,  .stat-bad  { background: var(--problem) !important; color: var(--surface) !important; }
+
+      .card { background: var(--surface-raised); border: 2px solid var(--text); padding: 1.2rem 1.4rem; margin-bottom: 1rem; border-left: 8px solid var(--border-strong); }
+      .card-problem  { border-left-color: var(--problem); }
+      .card-solution { border-left-color: var(--solution); }
+      .card-warning  { border-left-color: var(--warning); }
+
+      .issue { background: var(--surface-raised); border: 2px solid var(--text); padding: 1.2rem 1.4rem; margin-bottom: 1rem; border-left: 8px solid var(--border-strong); }
+      .issue-critical  { border-left-color: var(--problem); }
+      .issue-important { border-left-color: var(--warning); }
+      .issue-nice      { border-left-color: var(--solution); }
+      .issue h3 { margin-bottom: 0.3rem; }
+      .issue .where { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-faint); margin: 0.2rem 0 0.6rem; }
+      .issue p:last-child { margin-bottom: 0; }
+
+      .severity {
+        display: inline-block; font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700;
+        letter-spacing: 0.1em; text-transform: uppercase; padding: 0.22rem 0.6rem; margin-bottom: 0.6rem; color: var(--surface);
       }
-      .issue-important {
-        border-left: 4px solid var(--amber);
+      .severity-critical  { background: var(--problem); }
+      .severity-important { background: var(--warning); color: var(--text); }
+      .severity-nice      { background: var(--solution); }
+
+      .badge {
+        display: inline-block; font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700;
+        letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2rem 0.55rem;
+        border: 1px solid var(--text); color: var(--text);
       }
-      .issue-nice {
-        border-left: 4px solid var(--teal);
-      }
-      .issue .severity {
-        display: inline-block;
-        font-family: var(--font-mono);
-        font-size: 10px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        padding: 3px 10px;
-        border-radius: 4px;
-        margin-bottom: 12px;
-      }
-      .severity-critical {
-        background: var(--coral-light);
-        color: var(--coral);
-      }
-      .severity-important {
-        background: var(--amber-light);
-        color: var(--amber);
-      }
-      .severity-nice {
-        background: var(--teal-light);
-        color: var(--teal);
-      }
-      .issue h3 {
-        margin-top: 0;
-      }
-      .issue .where {
-        font-family: var(--font-mono);
-        font-size: 12px;
-        color: var(--ink-muted);
-        margin-bottom: 14px;
-      }
+      .badge-critical { background: var(--problem); color: var(--surface); }
+      .badge-high     { background: var(--warning); }
+      .badge-medium   { background: var(--surface-sunken); }
+      .badge-low      { background: var(--surface-raised); color: var(--text-muted); }
+      .badge-fixed    { background: var(--solution); color: var(--surface); }
 
       .callout {
-        border-radius: 10px;
-        padding: 18px 22px;
-        margin: 20px 0;
-        font-size: 15px;
+        margin: 0.8rem 0 0; padding: 0.8rem 1rem; border: 1px solid var(--border-strong);
+        border-left: 4px solid var(--border-strong); background: var(--surface-sunken); font-size: 0.92rem;
       }
-      .callout-teal {
-        background: var(--teal-light);
-        border: 1px solid #a5f3fc;
-      }
-      .callout-amber {
-        background: var(--amber-light);
-        border: 1px solid #fde68a;
-      }
-      .callout strong {
-        display: block;
-        margin-bottom: 4px;
-      }
+      .callout strong { display: inline-block; margin-right: 0.4rem; }
+      .callout-teal, .callout-solution { border-left-color: var(--solution); background: color-mix(in srgb, var(--solution) 10%, var(--surface-raised)); }
+      .callout-amber, .callout-warning { border-left-color: var(--warning); background: color-mix(in srgb, var(--warning) 18%, var(--surface-raised)); }
 
-      .compare {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 16px 0;
-        font-size: 14px;
-      }
-      .compare th,
-      .compare td {
-        text-align: left;
-        padding: 10px 14px;
-        border-bottom: 1px solid var(--hairline);
-      }
-      .compare th {
-        font-family: var(--font-heading);
-        font-weight: 600;
-        font-size: 13px;
-        color: var(--ink-secondary);
-        background: var(--bg-code);
-      }
-      .compare td:first-child {
-        font-weight: 500;
-      }
-      .compare .yes {
-        color: var(--teal);
-        font-weight: 600;
-      }
-      .compare .no {
-        color: var(--coral);
-        font-weight: 600;
-      }
+      .strengths { display: grid; gap: 0.5rem; margin: 1rem 0 1.5rem; }
+      .strength { display: grid; grid-template-columns: auto 1fr; gap: 0.9rem; padding: 0.75rem 0; border-bottom: 2px solid var(--border); }
+      .strength .check { font-family: var(--font-mono); font-weight: 900; color: var(--solution); font-size: 1.3rem; line-height: 1.3; }
+      .strength .text strong { display: block; margin-bottom: 0.15rem; }
+      .strength .text span { color: var(--text-muted); font-size: 0.92rem; }
 
-      .strengths {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 12px;
-        margin: 20px 0;
+      table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.92rem; border: 2px solid var(--text); }
+      th {
+        text-align: left; padding: 0.6rem 0.9rem; background: var(--text); color: var(--surface);
+        font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700;
+        letter-spacing: 0.08em; text-transform: uppercase; border-right: 1px solid var(--border-strong);
       }
-      .strength {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        padding: 14px 16px;
-        background: var(--teal-light);
-        border: 1px solid #a5f3fc;
-        border-radius: 8px;
-      }
-      .strength .check {
-        color: var(--teal);
-        font-weight: 700;
-        font-size: 18px;
-        flex-shrink: 0;
-        line-height: 1.5;
-      }
-      .strength .text {
-        font-size: 14.5px;
-      }
-      .strength .text strong {
-        display: block;
-        margin-bottom: 2px;
-      }
-      .strength .text span {
-        color: var(--ink-secondary);
-      }
+      th:last-child { border-right: none; }
+      td { padding: 0.6rem 0.9rem; border-top: 1px solid var(--border); border-right: 1px solid var(--border); }
+      td:last-child { border-right: none; }
+      tr:nth-child(even) td { background: var(--surface-sunken); }
+      table.compare td.yes { color: var(--solution); font-weight: 700; }
+      table.compare td.no  { color: var(--problem);  font-weight: 700; }
+
+      pre { background: var(--text); color: var(--surface); padding: 1rem 1.2rem; margin: 1rem 0; font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.65; overflow-x: auto; border: 2px solid var(--text); }
+      code { font-family: var(--font-mono); }
+      .tok-keyword { color: var(--warning); }
+      .tok-type    { color: var(--warning); }
+      .tok-string  { color: #95e1d3; }
+      .tok-comment { color: rgba(244, 244, 240, 0.45); font-style: italic; }
+      .tok-func    { color: #6eb5ff; }
 
       .dep-tree {
-        font-family: var(--font-mono);
-        font-size: 13px;
-        line-height: 1.8;
-        background: var(--bg-code);
-        border: 1px solid var(--hairline);
-        border-radius: 8px;
-        padding: 20px 24px;
-        margin: 16px 0;
-        overflow-x: auto;
-        white-space: pre;
+        background: var(--surface-sunken); border: 2px solid var(--text); padding: 1rem 1.2rem;
+        margin: 1rem 0; font-family: var(--font-mono); font-size: 0.82rem;
+        line-height: 1.7; white-space: pre; overflow-x: auto;
       }
-      .dep-tree .root {
-        color: var(--amber);
-        font-weight: 600;
-      }
-      .dep-tree .unwanted {
-        color: var(--coral);
-      }
-      .dep-tree .ok {
-        color: var(--ink-secondary);
-      }
+      .dep-tree .root { color: var(--accent); font-weight: 700; }
+      .dep-tree .ok   { color: var(--solution); }
+      .dep-tree .unwanted { color: var(--problem); }
 
-      .footer {
-        margin-top: 64px;
-        padding: 32px 0;
-        border-top: 1px solid var(--hairline);
-        text-align: center;
-        font-size: 13px;
-        color: var(--ink-muted);
+      .diagram {
+        display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+        padding: 1rem; margin: 1rem 0; background: var(--surface-raised); border: 2px solid var(--text);
       }
-      .footer a {
-        color: var(--ink-secondary);
+      .node {
+        display: inline-block; padding: 0.4rem 0.75rem; font-family: var(--font-mono);
+        font-size: 0.8rem; font-weight: 700; background: var(--surface-sunken); border: 1px solid var(--text);
       }
+      .node-core     { background: var(--accent); color: var(--surface); }
+      .node-problem  { background: var(--problem); color: var(--surface); }
+      .node-good     { background: var(--solution); color: var(--surface); }
+      .arrow { color: var(--text-faint); font-family: var(--font-mono); }
 
-      ul,
-      ol {
-        padding-left: 22px;
-        margin-bottom: 16px;
+      .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0; }
+      .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0; }
+
+      .toc { background: var(--surface-raised); border: 2px solid var(--text); border-left: 6px solid var(--accent); padding: 1rem 1.3rem; margin: 1rem 0 1.5rem; }
+      .toc h3 { margin-bottom: 0.5rem; }
+      .toc ul { list-style: none; padding: 0; }
+      .toc li { margin: 0.25rem 0; }
+      .toc a { color: var(--text); text-decoration: none; font-size: 0.92rem; font-weight: 600; }
+      .toc a:hover { color: var(--accent); }
+
+      .migration-step {
+        display: grid; grid-template-columns: 56px 1fr; gap: 1rem; margin: 1rem 0;
+        padding: 1.1rem; background: var(--surface-raised); border: 2px solid var(--text); border-left: 6px solid var(--accent);
       }
-      li {
-        margin-bottom: 8px;
+      .migration-num { font-family: var(--font-mono); font-weight: 900; font-size: 1.8rem; color: var(--accent); line-height: 1; }
+      .migration-content h4 { margin-bottom: 0.2rem; }
+      .migration-content p { margin-bottom: 0; color: var(--text-muted); font-size: 0.94rem; }
+
+      .compare-header { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1rem 0 0.5rem; }
+      .compare-before, .compare-after {
+        font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.1em; padding: 0.4rem 0.7rem; color: var(--surface);
       }
-      .highlight {
-        background: var(--amber-light);
-        padding: 1px 4px;
-        border-radius: 3px;
+      .compare-before { background: var(--problem); }
+      .compare-after  { background: var(--solution); }
+      .compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+      .compare-row pre { margin: 0; }
+
+      .footer { margin-top: 2rem; padding-top: 1rem; border-top: 3px solid var(--text); font-size: 0.82rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+      @media (min-width: 1024px) { .sidebar { display: block; } }
+      @media (max-width: 768px) {
+        .layout { flex-direction: column; padding: 1rem; }
+        .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        .compare-header, .compare-row { grid-template-columns: 1fr; }
+        .scorecard, .stat-grid { grid-template-columns: repeat(2, 1fr); }
+        .score-card:nth-child(2), .stat-card:nth-child(2) { border-right: none; }
+        .score-card:nth-child(1), .stat-card:nth-child(1),
+        .score-card:nth-child(2), .stat-card:nth-child(2) { border-bottom: 3px solid var(--text); }
+        .migration-step { grid-template-columns: 1fr; }
+        .hero-shapes { display: none; }
       }
     </style>
   </head>
   <body>
     <div class="layout">
-      <aside class="sidebar">
+      <aside class="sidebar" data-nav>
         <nav>
           <div class="label">Contents</div>
           <a href="#summary">Summary</a>
           <a href="#scorecard">Scorecard</a>
           <a href="#strengths">Strengths</a>
           <a href="#findings">Findings</a>
-          <a href="#proposal">Proposal</a>
+          <a href="#proposal">Target State</a>
+          <a href="#plan">Migration</a>
           <a href="#matrix">Priority Matrix</a>
         </nav>
       </aside>
 
       <main class="main">
         <header class="hero">
-          <div class="eyebrow">DESIGN REVIEW &middot; 2026-06-17</div>
-          <h1>html-report-kit editorial variant</h1>
+          <div class="hero-shapes">
+            <div class="bar"></div>
+            <div class="circle"></div>
+            <div class="square"></div>
+            <div class="tri"></div>
+          </div>
+          <div class="eyebrow">DESIGN AUDIT &middot; 2026-06-18</div>
+          <h1>html-report-kit adopts the Bauhaus design language</h1>
           <p class="subtitle">
-            A worked example of the new light-theme template, reviewing the kit itself. This file
-            demonstrates every component so skill authors can copy-paste with confidence.
+            An example editorial report demonstrating every component in the new Bauhaus
+            palette. Use this as a copy-paste starting point — every element below is part of
+            the shared component vocabulary.
           </p>
           <div class="meta">
-            <span class="tag amber">Skill: html-report-kit</span>
-            <span class="tag">Template: editorial-light</span>
-            <span class="tag teal">Zero external dependencies</span>
+            <span class="tag amber">Scope: html-report-kit</span>
+            <span class="tag">Version: 2.0.0</span>
+            <span class="tag teal">Status: shipping</span>
           </div>
         </header>
 
         <section id="scorecard" class="scorecard">
           <div class="score-card score-good">
+            <div class="score">12</div>
+            <div class="label">Components ported</div>
+          </div>
+          <div class="score-card score-good">
+            <div class="score">11</div>
+            <div class="label">Consumers synced</div>
+          </div>
+          <div class="score-card score-warn">
             <div class="score">2</div>
-            <div class="label">Templates</div>
+            <div class="label">Open polish items</div>
           </div>
-          <div class="score-card score-good">
-            <div class="score">15+</div>
-            <div class="label">Components</div>
-          </div>
-          <div class="score-card score-good">
+          <div class="score-card score-bad">
             <div class="score">0</div>
-            <div class="label">Naming drift</div>
-          </div>
-          <div class="score-card score-good">
-            <div class="score">0</div>
-            <div class="label">External deps</div>
+            <div class="label">Breaking changes</div>
           </div>
         </section>
 
         <section id="summary">
           <h2><span class="num">00</span>Summary</h2>
           <p>
-            The new editorial-light template gives long-form review reports a warm, readable,
-            professional look. It keeps the zero-dependency rule while adding a sticky sidebar TOC,
-            issue cards with file metadata, recommendation callouts, and ASCII dependency trees.
+            The kit replaced its Tailwind-default palette (indigo on slate-900) with the Bauhaus
+            system: primary colors on warm paper (light) or graphite (dark). The component
+            vocabulary is unchanged — every class name consumers already use still works.
           </p>
           <div class="callout callout-amber">
             <strong>The bottom line</strong>
-            Use the editorial template for adoption feedback, architecture reviews, and audit
-            briefs. Keep the dark dashboard template for status snapshots and scan results.
+            Swap-in upgrade for all 11 consumer skills. No markup changes required. Run
+            <code>scripts/sync-html-kit.sh</code> to propagate.
           </div>
         </section>
 
         <section id="strengths">
           <h2><span class="num">&#9670;</span>What's already excellent</h2>
+          <p>The bones of the kit were sound; only the skin needed work.</p>
           <div class="strengths">
             <div class="strength">
               <div class="check">+</div>
               <div class="text">
-                <strong>Single-file, zero dependencies</strong>
-                <span
-                  >Both templates work offline with system fonts. No CDN, no build step, no
-                  JS.</span
-                >
+                <strong>Unified token vocabulary</strong>
+                <span>Both templates now share semantic names. The split brain (--rose vs --coral, --bg-elevated vs --bg-card) is gone.</span>
               </div>
             </div>
             <div class="strength">
               <div class="check">+</div>
               <div class="text">
-                <strong>Shared component vocabulary</strong>
-                <span
-                  >Issue cards, callouts, scorecards, and dep-trees use the same class names across
-                  themes.</span
-                >
+                <strong>color-mix() eliminates drift</strong>
+                <span>Glow/light variants derive on demand from solid colors. ~8 redundant tokens removed.</span>
               </div>
             </div>
             <div class="strength">
               <div class="check">+</div>
               <div class="text">
-                <strong>Responsive sticky sidebar</strong>
-                <span
-                  >Desktop readers get a contents nav; mobile readers get a clean single-column
-                  layout.</span
-                >
+                <strong>Backward-compatible aliases</strong>
+                <span>Old token names (--rose, --coral, --bg-card, --ink) still resolve. Zero consumer breakage.</span>
               </div>
             </div>
           </div>
@@ -556,75 +363,123 @@
 
         <section id="findings">
           <h2><span class="num">01</span>Findings</h2>
+          <p>What the audit surfaced during the migration.</p>
 
-          <div class="issue issue-nice" id="naming-drift">
-            <span class="severity severity-nice">Resolved &middot; Low impact</span>
-            <h3>Dark and light templates used different class names for the same component</h3>
-            <div class="where">
-              html-report-kit/assets/report-template.html &middot; report-template-editorial.html
-            </div>
+          <div class="issue issue-critical" id="issue-palette">
+            <span class="severity severity-critical">Fixed &middot; High impact</span>
+            <h3>Palette was unoriginal</h3>
+            <div class="where">html-report-kit/assets/*.html</div>
             <p>
-              The dark template originally called metrics <code>.stat-grid</code> /
-              <code>.stat-card</code>; the light template called them <code>.scorecard</code> /
-              <code>.score-card</code>. Both names now work in both templates, so markup can be
-              swapped between themes without rewrites.
+              The prior palette used Tailwind's stock indigo (#6366f1) on slate-900 (#0f172a) —
+              the most recognizable AI-generated combination in production.
             </p>
             <div class="callout callout-teal">
-              <strong>Fix: added cross-theme aliases</strong>
-              Keep the existing classes for backward compatibility and use whichever name reads
-              better in your report.
+              <strong>Fix: adopted Bauhaus</strong>
+              Primary colors (red/blue/yellow) on neutral grounds. Form follows function.
             </div>
           </div>
 
-          <div class="issue issue-important" id="font-tradeoff">
-            <span class="severity severity-important">Aesthetics &middot; Medium impact</span>
-            <h3>System fonts approximate but do not match Space Grotesk / JetBrains Mono</h3>
-            <div class="where">Both templates</div>
+          <div class="issue issue-important" id="issue-tokens">
+            <span class="severity severity-important">Fixed &middot; Medium impact</span>
+            <h3>Token vocabulary was split between templates</h3>
+            <div class="where">html-output-guide.md §CSS Design Tokens</div>
             <p>
-              The go-output report that inspired this template loads Google Fonts. The shared kit
-              deliberately avoids external requests, so reports look slightly less distinctive on
-              machines without modern system fonts.
+              Dark used <code>--bg-elevated</code>, <code>--rose</code>, <code>--emerald</code>.
+              Light used <code>--bg-card</code>, <code>--coral</code>, <code>--teal</code>.
+              Same concepts, different names — a split brain.
             </p>
           </div>
 
-          <div class="issue issue-nice" id="csp">
-            <span class="severity severity-nice">Security &middot; Low impact</span>
-            <h3>Consider adding a CSP meta tag example</h3>
+          <div class="issue issue-nice" id="issue-csp">
+            <span class="severity severity-nice">Nice to have &middot; Low impact</span>
+            <h3>Consider documenting a strict CSP example</h3>
             <div class="where">html-output-guide.md</div>
             <p>
-              Because the templates are inline-style only, a strict Content-Security-Policy is easy
-              to add. A short example in the guide would help security-conscious users.
+              Templates are inline-style only (plus optional progressive-enhancement script).
+              A strict Content-Security-Policy example would help security-conscious users.
             </p>
           </div>
         </section>
 
         <section id="proposal">
-          <h2><span class="num">02</span>What the unified API could look like</h2>
-          <p>
-            If both templates shared component class names, a skill author could switch themes by
-            swapping the template file without rewriting markup.
-          </p>
-          <pre><code>&lt;div class=&quot;scorecard&quot;&gt;
-  &lt;div class=&quot;score-card score-good&quot;&gt;
-    &lt;div class=&quot;score&quot;&gt;42&lt;/div&gt;
-    &lt;div class=&quot;label&quot;&gt;Passing&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
+          <h2><span class="num">02</span>Target state</h2>
+          <p>The new unified token vocabulary, shared by both templates:</p>
 
-&lt;div class=&quot;issue issue-critical&quot;&gt;
-  &lt;span class=&quot;severity severity-critical&quot;&gt;Blocking&lt;/span&gt;
-  &lt;h3&gt;Issue title&lt;/h3&gt;
-  &lt;div class=&quot;where&quot;&gt;file.go:12-19&lt;/div&gt;
-  &lt;p&gt;Description and evidence.&lt;/p&gt;
-&lt;/div&gt;</code></pre>
+          <div class="compare-header">
+            <div class="compare-before">Before (split brain)</div>
+            <div class="compare-after">After (unified)</div>
+          </div>
+          <div class="compare-row">
+            <div>
+              <pre><code><span class="tok-comment">// Dark template</span>
+--bg-elevated: #1e293b;
+--rose:        #f43f5e;
+--emerald:     #10b981;
+
+<span class="tok-comment">// Light template</span>
+--bg-card:  #ffffff;
+--coral:    #dc2626;
+--teal:     #0e7490;</code></pre>
+            </div>
+            <div>
+              <pre><code><span class="tok-comment">// Both templates, same names</span>
+--surface:  &lt;ground&gt;;
+--problem:  &lt;red&gt;;
+--solution: &lt;blue&gt;;
+--warning:  &lt;yellow&gt;;
+
+<span class="tok-comment">// Backward-compat aliases</span>
+--rose:    <span class="tok-func">var</span>(--problem);
+--coral:   <span class="tok-func">var</span>(--problem);
+--emerald: <span class="tok-func">var</span>(--solution);
+--teal:    <span class="tok-func">var</span>(--solution);</code></pre>
+            </div>
+          </div>
+
+          <p>Component diagram showing how tokens flow to components:</p>
+          <div class="diagram">
+            <span class="node node-core">:root tokens</span>
+            <span class="arrow">→</span>
+            <span class="node">.stat-card</span>
+            <span class="arrow">→</span>
+            <span class="node node-good">.stat-good</span>
+            <span class="arrow">→</span>
+            <span class="node">var(--solution)</span>
+          </div>
+        </section>
+
+        <section id="plan">
+          <h2><span class="num">03</span>Migration plan</h2>
+
+          <div class="migration-step">
+            <div class="migration-num">1</div>
+            <div class="migration-content">
+              <h4>Adopt new tokens in canonical templates</h4>
+              <p>Rewrite report-template.html and report-template-editorial.html with the unified Bauhaus vocabulary.</p>
+            </div>
+          </div>
+          <div class="migration-step">
+            <div class="migration-num">2</div>
+            <div class="migration-content">
+              <h4>Update the HTML output guide</h4>
+              <p>Document the new tokens, the semantic color map, and the optional scrollspy pattern.</p>
+            </div>
+          </div>
+          <div class="migration-step">
+            <div class="migration-num">3</div>
+            <div class="migration-content">
+              <h4>Sync to all 11 consumers</h4>
+              <p>Run <code>./scripts/sync-html-kit.sh</code>. Verify with <code>--check</code>.</p>
+            </div>
+          </div>
         </section>
 
         <section id="matrix">
-          <h2><span class="num">03</span>Fix priority matrix</h2>
+          <h2><span class="num">04</span>Priority matrix</h2>
           <table class="compare">
             <thead>
               <tr>
-                <th>Issue</th>
+                <th>Task</th>
                 <th>Severity</th>
                 <th>Effort</th>
                 <th>Status</th>
@@ -632,34 +487,88 @@
             </thead>
             <tbody>
               <tr>
-                <td>Unify component class names</td>
-                <td class="yes">Nice</td>
+                <td>Replace Tailwind-default palette</td>
+                <td class="no">Critical</td>
                 <td>Medium</td>
                 <td class="yes">Done</td>
               </tr>
               <tr>
-                <td>Document optional Google Fonts</td>
+                <td>Unify token vocabulary</td>
                 <td class="no">Important</td>
+                <td>Medium</td>
+                <td class="yes">Done</td>
+              </tr>
+              <tr>
+                <td>Add scrollspy progressive enhancement</td>
+                <td class="yes">Nice</td>
                 <td>Trivial</td>
                 <td class="yes">Done</td>
               </tr>
               <tr>
-                <td>Add CSP meta example</td>
+                <td>Document strict CSP example</td>
                 <td class="yes">Nice</td>
                 <td>Trivial</td>
                 <td class="no">Open</td>
               </tr>
             </tbody>
           </table>
+
+          <h3>Inline badges reference</h3>
+          <table>
+            <thead>
+              <tr><th>Badge</th><th>Class</th><th>Use</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="badge badge-critical">Critical</span></td><td><code>.badge-critical</code></td><td>Blockers</td></tr>
+              <tr><td><span class="badge badge-high">High</span></td><td><code>.badge-high</code></td><td>Important issues</td></tr>
+              <tr><td><span class="badge badge-medium">Medium</span></td><td><code>.badge-medium</code></td><td>Moderate issues</td></tr>
+              <tr><td><span class="badge badge-low">Low</span></td><td><code>.badge-low</code></td><td>Minor issues</td></tr>
+              <tr><td><span class="badge badge-fixed">Fixed</span></td><td><code>.badge-fixed</code></td><td>Resolved</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Dependency graph</h3>
+          <div class="dep-tree">html-report-kit/
+├── assets/
+│   ├── report-template.html          <span class="ok">Bauhaus Dark</span>
+│   └── report-template-editorial.html <span class="ok">Bauhaus Light</span>
+├── references/
+│   ├── bauhaus-tokens.md             <span class="ok">token spec</span>
+│   ├── html-output-guide.md          <span class="ok">component catalog</span>
+│   └── example-editorial-report.html <span class="ok">this file</span>
+└── <span class="unwanted">no external dependencies</span></div>
         </section>
 
         <footer class="footer">
           <p>
-            Generated 2026-06-17 &middot; Example for the html-report-kit editorial-light template
-            &middot; All claims verified against the templates in this directory
+            Generated 2026-06-18 &middot; Example for the html-report-kit Bauhaus editorial
+            template &middot; All claims verified against the canonical templates in this directory
           </p>
         </footer>
       </main>
     </div>
+
+    <script>
+      (function () {
+        if (!('IntersectionObserver' in window)) return;
+        var nav = document.querySelector('[data-nav]');
+        if (!nav) return;
+        var links = nav.querySelectorAll('a[href^="#"]');
+        var ids = Array.from(links).map(function (l) { return l.getAttribute('href').slice(1); });
+        var sections = ids.map(function (id) { return document.getElementById(id); }).filter(Boolean);
+        if (!sections.length) return;
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              links.forEach(function (link) {
+                link.classList.toggle('active',
+                  link.getAttribute('href') === '#' + entry.target.id);
+              });
+            }
+          });
+        }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+        sections.forEach(function (s) { observer.observe(s); });
+      })();
+    </script>
   </body>
 </html>
