@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>13 — Blueprint</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --blueprint: #0d2847;
+        --blueprint-light: #1a3a5c;
+        --line: rgba(168, 200, 224, 0.25);
+        --line-bright: #a8c8e0;
+        --white: #ffffff;
+        --cyan: #5bc0eb;
+        --yellow: #ffd700;
+        --green: #7fdc7f;
+        --red: #ff6b6b;
+        --text-dim: #8aaac4;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--blueprint);
+        background-image:
+          linear-gradient(var(--line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 24px 24px;
+        color: var(--line-bright);
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 15px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 4rem;
+      }
+
+      /* Title block — like a drawing title block */
+      .title-block {
+        border: 2px solid var(--line-bright);
+        margin-bottom: 2rem;
+        display: grid;
+        grid-template-columns: 1fr auto;
+      }
+      .title-block .main {
+        padding: 1.5rem 1.8rem;
+        border-right: 2px solid var(--line-bright);
+      }
+      .title-block .meta {
+        padding: 1.5rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--text-dim);
+        min-width: 180px;
+      }
+      .title-block .meta .row {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px dotted var(--line);
+        padding-bottom: 0.3rem;
+      }
+      .title-block .meta .row .v {
+        color: var(--cyan);
+      }
+
+      .title-block .stamp {
+        position: absolute;
+      }
+      .dwg-no {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: var(--yellow);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 0.6rem;
+      }
+      h1 {
+        font-family: "Inter", sans-serif;
+        font-size: clamp(1.5rem, 4vw, 2.1rem);
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        color: var(--white);
+        margin-bottom: 0.6rem;
+      }
+      h1 .accent {
+        color: var(--cyan);
+      }
+      .lede {
+        color: var(--text-dim);
+        font-size: 0.92rem;
+        max-width: 60ch;
+      }
+
+      /* Dimensioned stats */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+        margin-bottom: 2rem;
+        border: 1px solid var(--line-bright);
+      }
+      .stat {
+        padding: 1.2rem 1rem;
+        text-align: center;
+        border-right: 1px solid var(--line-bright);
+        position: relative;
+      }
+      .stat:last-child {
+        border-right: none;
+      }
+      .stat .dim {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.58rem;
+        color: var(--text-dim);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.4rem;
+      }
+      .stat .val {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 2.2rem;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -0.02em;
+      }
+      .stat:nth-child(1) .val {
+        color: var(--cyan);
+      }
+      .stat:nth-child(2) .val {
+        color: var(--green);
+      }
+      .stat:nth-child(3) .val {
+        color: var(--yellow);
+      }
+      .stat:nth-child(4) .val {
+        color: var(--red);
+      }
+      .stat .unit {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.6rem;
+        color: var(--text-dim);
+        margin-top: 0.3rem;
+      }
+
+      /* Section with annotation lines */
+      .sh {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--cyan);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .sh::before {
+        content: "►";
+        color: var(--yellow);
+      }
+      .sh::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        border-top: 1px dashed var(--line-bright);
+      }
+
+      .issues {
+        display: grid;
+        gap: 0.8rem;
+        margin-bottom: 2rem;
+      }
+      .issue {
+        border: 1px solid var(--line-bright);
+        padding: 1.1rem 1.3rem;
+        position: relative;
+      }
+      .issue::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 20px;
+        width: 60px;
+        height: 3px;
+      }
+      .issue.crit::before {
+        background: var(--red);
+      }
+      .issue.warn::before {
+        background: var(--yellow);
+      }
+      .issue.nice::before {
+        background: var(--green);
+      }
+      .issue .tag {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        display: inline-block;
+        padding: 0.15rem 0.5rem;
+        border: 1px solid;
+      }
+      .issue.crit .tag {
+        color: var(--red);
+        border-color: var(--red);
+      }
+      .issue.warn .tag {
+        color: var(--yellow);
+        border-color: var(--yellow);
+      }
+      .issue.nice .tag {
+        color: var(--green);
+        border-color: var(--green);
+      }
+      .issue h3 {
+        font-size: 0.98rem;
+        font-weight: 600;
+        color: var(--white);
+        margin-bottom: 0.2rem;
+      }
+      .issue p {
+        font-size: 0.86rem;
+        color: var(--text-dim);
+      }
+
+      pre {
+        border: 1px solid var(--line-bright);
+        padding: 1.2rem;
+        margin-bottom: 2rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        line-height: 1.7;
+        overflow-x: auto;
+        background: rgba(13, 40, 71, 0.5);
+      }
+      .k {
+        color: var(--cyan);
+      }
+      .s {
+        color: var(--green);
+      }
+      .c {
+        color: var(--text-dim);
+        font-style: italic;
+      }
+      .n {
+        color: var(--yellow);
+      }
+      .f {
+        color: #b8a0ff;
+      }
+
+      footer {
+        border: 2px solid var(--line-bright);
+        padding: 0.8rem 1.2rem;
+        display: flex;
+        justify-content: space-between;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--text-dim);
+      }
+      footer .sig {
+        color: var(--yellow);
+        font-weight: 700;
+      }
+
+      @media (max-width: 640px) {
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .stat:nth-child(2) {
+          border-right: none;
+        }
+        .stat:nth-child(1),
+        .stat:nth-child(2) {
+          border-bottom: 1px solid var(--line-bright);
+        }
+        .title-block {
+          grid-template-columns: 1fr;
+        }
+        .title-block .main {
+          border-right: none;
+          border-bottom: 2px solid var(--line-bright);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="title-block">
+        <div class="main">
+          <div class="dwg-no">DWG-AUDIT-2026-0618 · SCALE 1:1 · SHEET 1/1</div>
+          <h1>REPOSITORY HEALTH <span class="accent">DIAGNOSTIC</span></h1>
+          <p class="lede">
+            Structural survey of 20 skills, 4 templates, 11 vendored copies. Foundation sound. Two
+            surface defects noted for remediation.
+          </p>
+        </div>
+        <div class="meta">
+          <div class="row"><span>PROJECT</span><span class="v">SKILLS</span></div>
+          <div class="row"><span>DRAWN BY</span><span class="v">CRUSH</span></div>
+          <div class="row"><span>CHECKED</span><span class="v">2026-06-18</span></div>
+          <div class="row"><span>REV</span><span class="v">A</span></div>
+          <div class="row">
+            <span>STATUS</span><span class="v" style="color: var(--green)">PASS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="dim">MODULES</div>
+          <div class="val">20</div>
+          <div class="unit">total</div>
+        </div>
+        <div class="stat">
+          <div class="dim">PASSING</div>
+          <div class="val">17</div>
+          <div class="unit">85%</div>
+        </div>
+        <div class="stat">
+          <div class="dim">FLAGGED</div>
+          <div class="val">3</div>
+          <div class="unit">15%</div>
+        </div>
+        <div class="stat">
+          <div class="dim">CRITICAL</div>
+          <div class="val">0</div>
+          <div class="unit">0%</div>
+        </div>
+      </div>
+
+      <div class="sh">Inspection Notes</div>
+      <div class="issues">
+        <div class="issue crit">
+          <span class="tag">Defect A</span>
+          <h3>Palette is Tailwind defaults</h3>
+          <p>Indigo on slate-900. Non-conforming to brand specification. AI-default detected.</p>
+        </div>
+        <div class="issue warn">
+          <span class="tag">Defect B</span>
+          <h3>No signature hue specified</h3>
+          <p>Accent color undefined in design tokens. Identity specification incomplete.</p>
+        </div>
+        <div class="issue nice">
+          <span class="tag">Conforms</span>
+          <h3>Component vocabulary verified</h3>
+          <p>Stat cards, issue cards, callouts — all structurally within tolerance.</p>
+        </div>
+      </div>
+
+      <pre><span class="c">// propagate the chosen palette to all 11 consumers</span>
+<span class="k">const</span> palette = <span class="s">"blueprint"</span>;
+<span class="f">sync</span>(<span class="n">11</span>).skills.forEach(s =&gt; s.recolor(palette));</pre>
+
+      <footer>
+        <span>CRUSH ENGINEERING · DRAWING AUDIT</span>
+        <span class="sig">13 / BLUEPRINT</span>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>01 — Midnight Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0a0f;
+        --bg-2: #11111b;
+        --bg-3: #16162a;
+        --border: #22223a;
+        --text: #ececf1;
+        --dim: #9a9ab5;
+        --faint: #5a5a78;
+        --violet: #8b5cf6;
+        --cyan: #06b7e0;
+        --green: #34d399;
+        --red: #f87171;
+        --amber: #fbbf24;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 15px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        min-height: 100vh;
+        background-image:
+          radial-gradient(ellipse 800px 400px at 80% -10%, rgba(139, 92, 246, 0.12), transparent),
+          radial-gradient(ellipse 600px 300px at 10% 50%, rgba(6, 183, 224, 0.06), transparent);
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem 4rem;
+      }
+
+      /* Top bar */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 2.5rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      .brand .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--violet);
+        box-shadow: 0 0 12px var(--violet);
+      }
+      .date {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        color: var(--faint);
+      }
+
+      /* Hero */
+      .kicker {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--cyan);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .kicker::before {
+        content: "";
+        width: 24px;
+        height: 1px;
+        background: var(--cyan);
+      }
+      h1 {
+        font-size: clamp(1.8rem, 5vw, 2.7rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.12;
+        margin-bottom: 1rem;
+      }
+      h1 .glow {
+        color: var(--violet);
+      }
+      .lede {
+        color: var(--dim);
+        font-size: 1.02rem;
+        max-width: 62ch;
+        margin-bottom: 2.5rem;
+      }
+
+      /* Stats */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.75rem;
+        margin-bottom: 2.5rem;
+      }
+      .stat {
+        background: var(--bg-2);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.2rem 1.1rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .stat::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--border);
+      }
+      .stat.s-violet::before {
+        background: var(--violet);
+      }
+      .stat.s-green::before {
+        background: var(--green);
+      }
+      .stat.s-amber::before {
+        background: var(--amber);
+      }
+      .stat.s-red::before {
+        background: var(--red);
+      }
+      .stat .label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.65rem;
+        font-weight: 500;
+        color: var(--faint);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.6rem;
+      }
+      .stat .val {
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1;
+      }
+      .stat.s-violet .val {
+        color: var(--violet);
+      }
+      .stat.s-green .val {
+        color: var(--green);
+      }
+      .stat.s-amber .val {
+        color: var(--amber);
+      }
+      .stat.s-red .val {
+        color: var(--red);
+      }
+
+      /* Section heading */
+      .sh {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--faint);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .sh::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      /* Issues */
+      .issues {
+        display: grid;
+        gap: 0.75rem;
+        margin-bottom: 2.5rem;
+      }
+      .issue {
+        background: var(--bg-2);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.1rem 1.3rem;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 1rem;
+        align-items: center;
+      }
+      .issue .badge {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.62rem;
+        font-weight: 700;
+        padding: 0.25rem 0.6rem;
+        border-radius: 999px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .badge.crit {
+        background: rgba(248, 113, 113, 0.12);
+        color: var(--red);
+      }
+      .badge.warn {
+        background: rgba(251, 191, 36, 0.12);
+        color: var(--amber);
+      }
+      .badge.nice {
+        background: rgba(52, 211, 153, 0.12);
+        color: var(--green);
+      }
+      .issue .body h3 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-bottom: 0.2rem;
+      }
+      .issue .body p {
+        font-size: 0.85rem;
+        color: var(--dim);
+      }
+      .issue .arrow {
+        color: var(--faint);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1.1rem;
+      }
+
+      /* Code */
+      pre {
+        background: var(--bg-3);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.3rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.82rem;
+        line-height: 1.7;
+        overflow-x: auto;
+        margin-bottom: 2.5rem;
+      }
+      .k {
+        color: var(--violet);
+      }
+      .s {
+        color: var(--green);
+      }
+      .c {
+        color: var(--faint);
+        font-style: italic;
+      }
+      .n {
+        color: var(--amber);
+      }
+      .f {
+        color: var(--cyan);
+      }
+
+      /* Footer */
+      footer {
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+        color: var(--faint);
+      }
+      footer .sig {
+        font-family: "JetBrains Mono", monospace;
+        color: var(--violet);
+        font-weight: 600;
+      }
+
+      @media (max-width: 640px) {
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .issue {
+          grid-template-columns: 1fr;
+        }
+        .issue .arrow {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand"><span class="dot"></span> SKILLS / audit</div>
+        <div class="date">2026-06-18</div>
+      </div>
+
+      <div class="kicker">Status Report</div>
+      <h1>
+        The repository is <span class="glow">healthy</span>, with two structural debts to retire.
+      </h1>
+      <p class="lede">
+        Audited 20 skills, 4 canonical templates, and 11 vendored copies. Coverage is strong; the
+        friction lives in cross-skill consistency and a thin tail of underdeveloped skills.
+      </p>
+
+      <div class="stats">
+        <div class="stat s-violet">
+          <div class="label">Skills</div>
+          <div class="val">20</div>
+        </div>
+        <div class="stat s-green">
+          <div class="label">Healthy</div>
+          <div class="val">17</div>
+        </div>
+        <div class="stat s-amber">
+          <div class="label">Need Work</div>
+          <div class="val">3</div>
+        </div>
+        <div class="stat s-red">
+          <div class="label">Critical</div>
+          <div class="val">0</div>
+        </div>
+      </div>
+
+      <div class="sh">Top Findings</div>
+      <div class="issues">
+        <div class="issue">
+          <span class="badge crit">Critical</span>
+          <div class="body">
+            <h3>Palette is Tailwind defaults</h3>
+            <p>
+              Indigo on slate-900 is the most recognizable AI-generated combination in production.
+            </p>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+        <div class="issue">
+          <span class="badge warn">Important</span>
+          <div class="body">
+            <h3>No signature hue</h3>
+            <p>Neutral grays read as cautious and corporate; the kit lacks a memorable accent.</p>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+        <div class="issue">
+          <span class="badge nice">Nice</span>
+          <div class="body">
+            <h3>Component vocabulary is solid</h3>
+            <p>Stat cards, issue cards, callouts, code blocks — the structure travels well.</p>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+
+      <pre><span class="c">// propagate the chosen palette to all 11 consumers</span>
+<span class="k">const</span> palette = <span class="s">"midnight-lab"</span>;
+<span class="f">sync</span>(<span class="n">11</span>).skills.<span class="f">forEach</span>(s =&gt; s.recolor(palette));</pre>
+
+      <footer>
+        <span>Generated by Crush · html-report-kit</span>
+        <span class="sig">01 / Midnight Lab</span>
+      </footer>
+    </div>
+  </body>
+</html>

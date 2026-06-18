@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>07 — Bloomberg Amber</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0a0a;
+        --bg-2: #141414;
+        --bg-3: #1c1c1c;
+        --amber: #ffa500;
+        --amber-dim: #b87600;
+        --teal: #00ced1;
+        --green: #00ff7f;
+        --red: #ff4242;
+        --border: #2a2a2a;
+        --text: #e8e8e8;
+        --dim: #888888;
+        --faint: #555555;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "IBM Plex Mono", "Courier New", monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 3rem;
+      }
+
+      /* Terminal top bar */
+      .term-bar {
+        background: var(--bg-2);
+        border: 1px solid var(--border);
+        border-bottom: 2px solid var(--amber);
+        padding: 0.5rem 0.8rem;
+        margin-bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.72rem;
+        font-weight: 600;
+      }
+      .term-bar .left {
+        color: var(--amber);
+      }
+      .term-bar .left .blink {
+        animation: blink 1s step-end infinite;
+        color: var(--green);
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+      .term-bar .right {
+        color: var(--dim);
+      }
+      .term-bar .right .up {
+        color: var(--green);
+      }
+
+      /* Ticker */
+      .ticker {
+        background: var(--bg-2);
+        border: 1px solid var(--border);
+        border-top: none;
+        padding: 0.4rem 0.8rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        gap: 1.5rem;
+        font-size: 0.7rem;
+        overflow-x: auto;
+      }
+      .ticker .item {
+        white-space: nowrap;
+      }
+      .ticker .item .sym {
+        color: var(--amber);
+        font-weight: 700;
+      }
+      .ticker .item .val {
+        color: var(--text);
+      }
+      .ticker .item .chg.up {
+        color: var(--green);
+      }
+      .ticker .item .chg.dn {
+        color: var(--red);
+      }
+
+      /* Headline area */
+      .headline-box {
+        background: var(--bg-2);
+        border: 1px solid var(--border);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .headline-box .tag {
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: var(--amber);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin-bottom: 0.6rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        color: var(--text);
+        margin-bottom: 0.6rem;
+      }
+      h1 .hot {
+        color: var(--amber);
+      }
+      .lede {
+        color: var(--dim);
+        font-size: 0.85rem;
+        max-width: 65ch;
+      }
+
+      /* Data grid */
+      .grid-title {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--amber);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 0;
+      }
+      .data-grid {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1.5rem;
+        font-size: 0.8rem;
+      }
+      .data-grid th {
+        text-align: left;
+        padding: 0.5rem 0.8rem;
+        background: var(--bg-2);
+        color: var(--dim);
+        font-weight: 600;
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border-bottom: 1px solid var(--border);
+      }
+      .data-grid th.r {
+        text-align: right;
+      }
+      .data-grid td {
+        padding: 0.6rem 0.8rem;
+        border-bottom: 1px solid var(--bg-3);
+      }
+      .data-grid td.r {
+        text-align: right;
+        font-weight: 600;
+      }
+      .data-grid td .up {
+        color: var(--green);
+      }
+      .data-grid td .dn {
+        color: var(--red);
+      }
+      .data-grid td .amber {
+        color: var(--amber);
+      }
+      .data-grid td .teal {
+        color: var(--teal);
+      }
+      .data-grid tr:hover td {
+        background: var(--bg-2);
+      }
+
+      /* Summary stats inline */
+      .stat-bar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        background: var(--bg-2);
+        border: 1px solid var(--border);
+        margin-bottom: 1.5rem;
+      }
+      .stat-bar .cell {
+        padding: 0.8rem;
+        border-right: 1px solid var(--border);
+      }
+      .stat-bar .cell:last-child {
+        border-right: none;
+      }
+      .stat-bar .cell .lbl {
+        font-size: 0.62rem;
+        color: var(--faint);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
+      }
+      .stat-bar .cell .val {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .stat-bar .cell:nth-child(1) .val {
+        color: var(--amber);
+      }
+      .stat-bar .cell:nth-child(2) .val {
+        color: var(--green);
+      }
+      .stat-bar .cell:nth-child(3) .val {
+        color: var(--amber);
+      }
+      .stat-bar .cell:nth-child(4) .val {
+        color: var(--red);
+      }
+
+      /* Findings */
+      .find-title {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--amber);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 0.8rem;
+      }
+      .find {
+        background: var(--bg-2);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--border);
+        padding: 0.8rem 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.8rem;
+      }
+      .find.crit {
+        border-left-color: var(--red);
+      }
+      .find.warn {
+        border-left-color: var(--amber);
+      }
+      .find.nice {
+        border-left-color: var(--green);
+      }
+      .find .head {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.3rem;
+      }
+      .find .head .sev {
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .find.crit .sev {
+        color: var(--red);
+      }
+      .find.warn .sev {
+        color: var(--amber);
+      }
+      .find.nice .sev {
+        color: var(--green);
+      }
+      .find .head .sym {
+        color: var(--teal);
+        font-weight: 700;
+      }
+      .find h3 {
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 0.2rem;
+        color: var(--text);
+      }
+      .find p {
+        color: var(--dim);
+      }
+
+      pre {
+        background: var(--bg-2);
+        border: 1px solid var(--border);
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        font-size: 0.78rem;
+        line-height: 1.7;
+        overflow-x: auto;
+      }
+      .k {
+        color: var(--amber);
+      }
+      .s {
+        color: var(--green);
+      }
+      .c {
+        color: var(--faint);
+        font-style: italic;
+      }
+      .n {
+        color: var(--teal);
+      }
+
+      footer {
+        border-top: 1px solid var(--border);
+        padding-top: 0.6rem;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.72rem;
+        color: var(--faint);
+      }
+      footer .sig {
+        color: var(--amber);
+        font-weight: 700;
+      }
+
+      @media (max-width: 640px) {
+        .stat-bar {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .stat-bar .cell:nth-child(2) {
+          border-right: none;
+        }
+        .stat-bar .cell:nth-child(1),
+        .stat-bar .cell:nth-child(2) {
+          border-bottom: 1px solid var(--border);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="term-bar">
+        <div class="left">SKILLS <span class="blink">●</span> LIVE</div>
+        <div class="right">SESSION 2026-06-18 · <span class="up">MARKET OPEN</span></div>
+      </div>
+      <div class="ticker">
+        <div class="item">
+          <span class="sym">SKL</span> <span class="val">20.00</span>
+          <span class="chg up">+17</span>
+        </div>
+        <div class="item">
+          <span class="sym">HLT</span> <span class="val">17.00</span>
+          <span class="chg up">+85%</span>
+        </div>
+        <div class="item">
+          <span class="sym">WRK</span> <span class="val">3.00</span>
+          <span class="chg dn">-15%</span>
+        </div>
+        <div class="item">
+          <span class="sym">CRT</span> <span class="val">0.00</span> <span class="chg up">+0</span>
+        </div>
+        <div class="item">
+          <span class="sym">TPL</span> <span class="val">4.00</span> <span class="chg up">+0</span>
+        </div>
+        <div class="item">
+          <span class="sym">VND</span> <span class="val">11.00</span> <span class="chg up">+0</span>
+        </div>
+      </div>
+
+      <div class="headline-box">
+        <div class="tag">>>> STATUS BRIEF</div>
+        <h1>Repository <span class="hot">HEALTHY</span> | Palette debt flagged for retirement</h1>
+        <p class="lede">
+          Full audit of 20 skills, 4 templates, 11 vendored copies complete. Coverage strong. Two
+          structural debts identified. No critical blockers.
+        </p>
+      </div>
+
+      <div class="stat-bar">
+        <div class="cell">
+          <div class="lbl">Skills</div>
+          <div class="val">20</div>
+        </div>
+        <div class="cell">
+          <div class="lbl">Healthy</div>
+          <div class="val">17</div>
+        </div>
+        <div class="cell">
+          <div class="lbl">Need Work</div>
+          <div class="val">3</div>
+        </div>
+        <div class="cell">
+          <div class="lbl">Critical</div>
+          <div class="val">0</div>
+        </div>
+      </div>
+
+      <div class="grid-title">>>> Module Detail</div>
+      <table class="data-grid">
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Status</th>
+            <th class="r">Lines</th>
+            <th class="r">Refs</th>
+            <th class="r">Chg</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>html-report-kit</td>
+            <td class="amber">REWORK</td>
+            <td class="r">587</td>
+            <td class="r">11</td>
+            <td class="r"><span class="up">+42</span></td>
+          </tr>
+          <tr>
+            <td>go-modularize</td>
+            <td class="up">PASS</td>
+            <td class="r">412</td>
+            <td class="r">3</td>
+            <td class="r"><span class="up">+8</span></td>
+          </tr>
+          <tr>
+            <td>nix-review</td>
+            <td class="up">PASS</td>
+            <td class="r">298</td>
+            <td class="r">2</td>
+            <td class="r"><span class="dn">-3</span></td>
+          </tr>
+          <tr>
+            <td>bdd-testing</td>
+            <td class="amber">THIN</td>
+            <td class="r">89</td>
+            <td class="r">1</td>
+            <td class="r"><span class="up">+0</span></td>
+          </tr>
+          <tr>
+            <td>full-code-review</td>
+            <td class="up">PASS</td>
+            <td class="r">521</td>
+            <td class="r">4</td>
+            <td class="r"><span class="up">+15</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="find-title">>>> Key Findings</div>
+      <div class="find crit">
+        <div class="head"><span class="sev">[CRITICAL]</span><span class="sym">PAL</span></div>
+        <h3>Palette is Tailwind defaults</h3>
+        <p>Indigo on slate-900. Most recognizable AI palette. Sell immediately.</p>
+      </div>
+      <div class="find warn">
+        <div class="head"><span class="sev">[IMPORTANT]</span><span class="sym">HUE</span></div>
+        <h3>No signature hue registered</h3>
+        <p>Kit lacks memorable accent. Identity risk: medium.</p>
+      </div>
+      <div class="find nice">
+        <div class="head"><span class="sev">[PASS]</span><span class="sym">CMP</span></div>
+        <h3>Component vocabulary stable</h3>
+        <p>Cards, callouts, code blocks structurally sound. No action needed.</p>
+      </div>
+
+      <pre><span class="c">// propagate the chosen palette to all 11 consumers</span>
+<span class="k">const</span> palette = <span class="s">"bloomberg-amber"</span>;
+sync(<span class="n">11</span>).skills.forEach(s =&gt; s.recolor(palette));</pre>
+
+      <footer>
+        <span>CRUSH TERMINAL v2.0 · DELAYED 15MIN</span>
+        <span class="sig">07 / BLOOMBERG AMBER</span>
+      </footer>
+    </div>
+  </body>
+</html>

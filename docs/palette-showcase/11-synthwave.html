@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>11 — Synthwave</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-deep: #0d0221;
+        --bg-mid: #1a0b3d;
+        --bg-glow: #2d0b69;
+        --neon-pink: #ff006e;
+        --neon-cyan: #00f5ff;
+        --neon-purple: #b5179e;
+        --neon-yellow: #fee440;
+        --neon-green: #00f5a0;
+        --text: #f0e6ff;
+        --dim: #a090c0;
+        --border: rgba(181, 23, 158, 0.3);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        min-height: 100vh;
+        background: var(--bg-deep);
+        color: var(--text);
+        font-family: "Rajdhani", system-ui, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        position: relative;
+        overflow-x: hidden;
+      }
+      /* Retro grid background */
+      body::before {
+        content: "";
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 50vh;
+        z-index: -1;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(255, 0, 110, 0.3) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 245, 255, 0.2) 1px, transparent 1px);
+        background-size: 40px 40px;
+        transform: perspective(300px) rotateX(60deg);
+        transform-origin: center top;
+        mask-image: linear-gradient(180deg, transparent, black 50%);
+      }
+      /* Sun glow */
+      body::after {
+        content: "";
+        position: fixed;
+        top: 5%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 400px;
+        height: 400px;
+        z-index: -2;
+        pointer-events: none;
+        background: radial-gradient(
+          circle,
+          rgba(255, 0, 110, 0.2),
+          rgba(181, 23, 158, 0.1),
+          transparent 70%
+        );
+        border-radius: 50%;
+      }
+      .wrap {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 4rem;
+        position: relative;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--border);
+      }
+      .brand {
+        font-family: "Orbitron", monospace;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: var(--neon-cyan);
+        text-shadow: 0 0 10px var(--neon-cyan);
+      }
+      .brand .pink {
+        color: var(--neon-pink);
+        text-shadow: 0 0 10px var(--neon-pink);
+      }
+      .date {
+        font-family: "Orbitron", monospace;
+        font-size: 0.75rem;
+        color: var(--dim);
+        letter-spacing: 0.1em;
+      }
+
+      .kicker {
+        font-family: "Orbitron", monospace;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--neon-yellow);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 8px var(--neon-yellow);
+      }
+      h1 {
+        font-family: "Orbitron", monospace;
+        font-size: clamp(1.6rem, 5vw, 2.6rem);
+        font-weight: 900;
+        line-height: 1.1;
+        letter-spacing: 0.01em;
+        margin-bottom: 1rem;
+      }
+      h1 .glow-pink {
+        color: var(--neon-pink);
+        text-shadow:
+          0 0 8px var(--neon-pink),
+          0 0 20px rgba(255, 0, 110, 0.5);
+      }
+      h1 .glow-cyan {
+        color: var(--neon-cyan);
+        text-shadow:
+          0 0 8px var(--neon-cyan),
+          0 0 20px rgba(0, 245, 255, 0.5);
+      }
+      .lede {
+        color: var(--dim);
+        font-size: 1.05rem;
+        max-width: 62ch;
+        margin-bottom: 2.5rem;
+        font-weight: 400;
+      }
+
+      /* Stats with neon borders */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+      }
+      .stat {
+        background: rgba(26, 11, 61, 0.6);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 1.2rem 1rem;
+        text-align: center;
+        backdrop-filter: blur(4px);
+      }
+      .stat:nth-child(1) {
+        border-color: var(--neon-pink);
+        box-shadow:
+          0 0 15px rgba(255, 0, 110, 0.2),
+          inset 0 0 15px rgba(255, 0, 110, 0.05);
+      }
+      .stat:nth-child(2) {
+        border-color: var(--neon-green);
+        box-shadow:
+          0 0 15px rgba(0, 245, 160, 0.2),
+          inset 0 0 15px rgba(0, 245, 160, 0.05);
+      }
+      .stat:nth-child(3) {
+        border-color: var(--neon-yellow);
+        box-shadow:
+          0 0 15px rgba(254, 228, 64, 0.2),
+          inset 0 0 15px rgba(254, 228, 64, 0.05);
+      }
+      .stat:nth-child(4) {
+        border-color: var(--neon-purple);
+        box-shadow:
+          0 0 15px rgba(181, 23, 154, 0.2),
+          inset 0 0 15px rgba(181, 23, 154, 0.05);
+      }
+      .stat .lbl {
+        font-family: "Orbitron", monospace;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-bottom: 0.5rem;
+      }
+      .stat .val {
+        font-family: "Orbitron", monospace;
+        font-size: 2.2rem;
+        font-weight: 900;
+        line-height: 1;
+      }
+      .stat:nth-child(1) .val {
+        color: var(--neon-pink);
+        text-shadow: 0 0 10px var(--neon-pink);
+      }
+      .stat:nth-child(2) .val {
+        color: var(--neon-green);
+        text-shadow: 0 0 10px var(--neon-green);
+      }
+      .stat:nth-child(3) .val {
+        color: var(--neon-yellow);
+        text-shadow: 0 0 10px var(--neon-yellow);
+      }
+      .stat:nth-child(4) .val {
+        color: var(--neon-purple);
+        text-shadow: 0 0 10px var(--neon-purple);
+      }
+
+      .sh {
+        font-family: "Orbitron", monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--neon-cyan);
+        margin-bottom: 1rem;
+        text-shadow: 0 0 6px var(--neon-cyan);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .sh::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, var(--neon-cyan), transparent);
+      }
+
+      .issues {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+      }
+      .issue {
+        background: rgba(26, 11, 61, 0.5);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 1.1rem 1.3rem;
+        backdrop-filter: blur(4px);
+        border-left: 3px solid;
+      }
+      .issue.crit {
+        border-left-color: var(--neon-pink);
+        box-shadow: -2px 0 10px rgba(255, 0, 110, 0.3);
+      }
+      .issue.warn {
+        border-left-color: var(--neon-yellow);
+        box-shadow: -2px 0 10px rgba(254, 228, 64, 0.3);
+      }
+      .issue.nice {
+        border-left-color: var(--neon-green);
+        box-shadow: -2px 0 10px rgba(0, 245, 160, 0.3);
+      }
+      .issue .badge {
+        font-family: "Orbitron", monospace;
+        font-size: 0.6rem;
+        font-weight: 700;
+        padding: 0.2rem 0.55rem;
+        border-radius: 3px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        display: inline-block;
+      }
+      .issue.crit .badge {
+        background: rgba(255, 0, 110, 0.2);
+        color: var(--neon-pink);
+      }
+      .issue.warn .badge {
+        background: rgba(254, 228, 64, 0.2);
+        color: var(--neon-yellow);
+      }
+      .issue.nice .badge {
+        background: rgba(0, 245, 160, 0.2);
+        color: var(--neon-green);
+      }
+      .issue h3 {
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+      }
+      .issue p {
+        font-size: 0.9rem;
+        color: var(--dim);
+      }
+
+      pre {
+        background: rgba(13, 2, 33, 0.8);
+        border: 1px solid var(--neon-purple);
+        border-radius: 4px;
+        padding: 1.3rem;
+        margin-bottom: 2.5rem;
+        font-family: "Orbitron", monospace;
+        font-size: 0.78rem;
+        line-height: 1.8;
+        overflow-x: auto;
+        box-shadow: 0 0 20px rgba(181, 23, 154, 0.15);
+      }
+      .k {
+        color: var(--neon-pink);
+      }
+      .s {
+        color: var(--neon-yellow);
+      }
+      .c {
+        color: var(--dim);
+        font-style: italic;
+      }
+      .n {
+        color: var(--neon-cyan);
+      }
+      .f {
+        color: var(--neon-green);
+      }
+
+      footer {
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        font-family: "Orbitron", monospace;
+        font-size: 0.72rem;
+        color: var(--dim);
+        letter-spacing: 0.08em;
+      }
+      footer .sig {
+        color: var(--neon-pink);
+        text-shadow: 0 0 6px var(--neon-pink);
+      }
+
+      @media (max-width: 640px) {
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand">SKILLS<span class="pink"> // AUDIT</span></div>
+        <div class="date">2026.06.18</div>
+      </div>
+
+      <div class="kicker">SYSTEM STATUS // REPORT</div>
+      <h1>
+        REPOSITORY <span class="glow-cyan">ONLINE</span><br />DEBT
+        <span class="glow-pink">DETECTED</span>
+      </h1>
+      <p class="lede">
+        Audited 20 skills, 4 templates, 11 vendored copies. Systems nominal. Two structural
+        anomalies require intervention. No critical threats.
+      </p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="lbl">Skills</div>
+          <div class="val">20</div>
+        </div>
+        <div class="stat">
+          <div class="lbl">Healthy</div>
+          <div class="val">17</div>
+        </div>
+        <div class="stat">
+          <div class="lbl">Need Work</div>
+          <div class="val">3</div>
+        </div>
+        <div class="stat">
+          <div class="lbl">Critical</div>
+          <div class="val">0</div>
+        </div>
+      </div>
+
+      <div class="sh">// Top Findings</div>
+      <div class="issues">
+        <div class="issue crit">
+          <span class="badge">Critical</span>
+          <h3>Palette is Tailwind defaults</h3>
+          <p>Indigo on slate-900. The most recognizable AI-generated signal on the grid.</p>
+        </div>
+        <div class="issue warn">
+          <span class="badge">Important</span>
+          <h3>No signature hue</h3>
+          <p>Neutral grays read as cautious and corporate. The kit has no neon identity.</p>
+        </div>
+        <div class="issue nice">
+          <span class="badge">Nice</span>
+          <h3>Component vocabulary is solid</h3>
+          <p>Stat cards, issue cards, callouts — the structure travels well across skills.</p>
+        </div>
+      </div>
+
+      <pre><span class="c">// propagate the chosen palette to all 11 consumers</span>
+<span class="k">const</span> palette = <span class="s">"synthwave"</span>;
+<span class="f">sync</span>(<span class="n">11</span>).skills.forEach(s =&gt; s.recolor(palette));</pre>
+
+      <footer>
+        <span>CRUSH // HTML-REPORT-KIT v2.0</span>
+        <span class="sig">11 / SYNTHWAVE</span>
+      </footer>
+    </div>
+  </body>
+</html>

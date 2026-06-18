@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>05 — Solarized</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --base03: #002b36;
+        --base02: #073642;
+        --base01: #586e75;
+        --base00: #657b83;
+        --base0: #839496;
+        --base1: #93a1a1;
+        --base2: #eee8d5;
+        --base3: #fdf6e3;
+        --yellow: #b58900;
+        --orange: #cb4b16;
+        --red: #dc322f;
+        --magenta: #d33682;
+        --violet: #6c71c4;
+        --blue: #268bd2;
+        --cyan: #2aa198;
+        --green: #859900;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--base03);
+        color: var(--base1);
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 15px;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 820px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem 4rem;
+      }
+
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid var(--base02);
+        margin-bottom: 2rem;
+      }
+      .top .brand {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--cyan);
+      }
+      .top .brand .accent {
+        color: var(--yellow);
+      }
+      .top .date {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        color: var(--base01);
+      }
+
+      .kicker {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--cyan);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin-bottom: 0.8rem;
+      }
+      h1 {
+        font-size: clamp(1.7rem, 4.5vw, 2.4rem);
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        line-height: 1.15;
+        color: var(--base2);
+        margin-bottom: 0.8rem;
+      }
+      h1 strong {
+        color: var(--yellow);
+        font-weight: 800;
+      }
+      .lede {
+        color: var(--base0);
+        font-size: 1rem;
+        max-width: 62ch;
+        margin-bottom: 2.5rem;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+        margin-bottom: 2.5rem;
+        background: var(--base02);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .stat {
+        padding: 1.3rem 1.1rem;
+        border-right: 1px solid var(--base01);
+      }
+      .stat:last-child {
+        border-right: none;
+      }
+      .stat .lbl {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.65rem;
+        font-weight: 500;
+        color: var(--base01);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+      .stat .val {
+        font-size: 2.1rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1;
+      }
+      .stat:nth-child(1) .val {
+        color: var(--yellow);
+      }
+      .stat:nth-child(2) .val {
+        color: var(--green);
+      }
+      .stat:nth-child(3) .val {
+        color: var(--orange);
+      }
+      .stat:nth-child(4) .val {
+        color: var(--red);
+      }
+
+      .sh {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--base1);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .sh::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--base01);
+      }
+
+      .issues {
+        display: grid;
+        gap: 0.75rem;
+        margin-bottom: 2.5rem;
+      }
+      .issue {
+        background: var(--base02);
+        border-left: 3px solid var(--base01);
+        border-radius: 0 8px 8px 0;
+        padding: 1.1rem 1.3rem;
+      }
+      .issue.crit {
+        border-left-color: var(--red);
+      }
+      .issue.warn {
+        border-left-color: var(--orange);
+      }
+      .issue.nice {
+        border-left-color: var(--green);
+      }
+      .issue .badge {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.62rem;
+        font-weight: 700;
+        padding: 0.2rem 0.55rem;
+        border-radius: 999px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        display: inline-block;
+      }
+      .issue.crit .badge {
+        background: rgba(220, 50, 47, 0.15);
+        color: var(--red);
+      }
+      .issue.warn .badge {
+        background: rgba(203, 75, 22, 0.15);
+        color: var(--orange);
+      }
+      .issue.nice .badge {
+        background: rgba(133, 153, 0, 0.15);
+        color: var(--green);
+      }
+      .issue h3 {
+        font-size: 0.98rem;
+        font-weight: 600;
+        color: var(--base2);
+        margin-bottom: 0.2rem;
+      }
+      .issue p {
+        font-size: 0.86rem;
+        color: var(--base0);
+      }
+
+      pre {
+        background: var(--base02);
+        border-radius: 8px;
+        padding: 1.3rem;
+        margin-bottom: 2.5rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.82rem;
+        line-height: 1.7;
+        overflow-x: auto;
+        color: var(--base1);
+      }
+      .k {
+        color: var(--violet);
+      }
+      .s {
+        color: var(--green);
+      }
+      .c {
+        color: var(--base01);
+        font-style: italic;
+      }
+      .n {
+        color: var(--orange);
+      }
+      .f {
+        color: var(--blue);
+      }
+
+      footer {
+        padding-top: 1.5rem;
+        border-top: 2px solid var(--base02);
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: var(--base01);
+      }
+      footer .sig {
+        font-family: "JetBrains Mono", monospace;
+        color: var(--yellow);
+        font-weight: 600;
+      }
+
+      @media (max-width: 640px) {
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .stat:nth-child(2) {
+          border-right: none;
+        }
+        .stat:nth-child(1),
+        .stat:nth-child(2) {
+          border-bottom: 1px solid var(--base01);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="top">
+        <div class="brand">skills <span class="accent">/ audit</span></div>
+        <div class="date">2026-06-18</div>
+      </div>
+
+      <div class="kicker">Status Report</div>
+      <h1>Repository is <strong>healthy</strong>, with two debts to retire.</h1>
+      <p class="lede">
+        Audited 20 skills, 4 canonical templates, and 11 vendored copies. Coverage is strong; the
+        friction lives in cross-skill consistency and a thin tail of underdeveloped skills.
+      </p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="lbl">Skills</div>
+          <div class="val">20</div>
+        </div>
+        <div class="stat">
+          <div class="lbl">Healthy</div>
+          <div class="val">17</div>
+        </div>
+        <div class="stat">
+          <div class="lbl">Need Work</div>
+          <div class="val">3</div>
+        </div>
+        <div class="stat">
+          <div class="lbl">Critical</div>
+          <div class="val">0</div>
+        </div>
+      </div>
+
+      <div class="sh">Top Findings</div>
+      <div class="issues">
+        <div class="issue crit">
+          <span class="badge">Critical</span>
+          <h3>Palette is Tailwind defaults</h3>
+          <p>
+            Indigo on slate-900 is the most recognizable AI-generated combination in production.
+          </p>
+        </div>
+        <div class="issue warn">
+          <span class="badge">Important</span>
+          <h3>No signature hue</h3>
+          <p>Neutral grays read as cautious and corporate; the kit lacks a memorable accent.</p>
+        </div>
+        <div class="issue nice">
+          <span class="badge">Nice</span>
+          <h3>Component vocabulary is solid</h3>
+          <p>Stat cards, issue cards, callouts, code blocks — the structure travels well.</p>
+        </div>
+      </div>
+
+      <pre><span class="c">// propagate the chosen palette to all 11 consumers</span>
+<span class="k">const</span> palette = <span class="s">"solarized"</span>;
+<span class="f">sync</span>(<span class="n">11</span>).skills.forEach(s =&gt; s.recolor(palette));</pre>
+
+      <footer>
+        <span>Generated by Crush · html-report-kit</span>
+        <span class="sig">05 / Solarized</span>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>02 — FT Salmon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700;8..60,900&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #fff1e5;
+        --paper-2: #f2dfc9;
+        --ink: #1a1a1a;
+        --ink-2: #33302e;
+        --muted: #66605c;
+        --rule: #d6c8b5;
+        --claret: #990f3d;
+        --teal: #0d7e7e;
+        --ochre: #b86b00;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--paper);
+        color: var(--ink-2);
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 15px;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 4rem;
+      }
+
+      /* Masthead */
+      .masthead {
+        text-align: center;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--ink);
+        margin-bottom: 0.4rem;
+      }
+      .masthead .pub {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 1.4rem;
+        font-weight: 900;
+        letter-spacing: 0.02em;
+        color: var(--ink);
+      }
+      .masthead .pub .ac {
+        color: var(--claret);
+      }
+      .dateline {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.72rem;
+        color: var(--muted);
+        padding-bottom: 0.6rem;
+        border-bottom: 1px solid var(--rule);
+        margin-bottom: 2rem;
+        font-family: "Inter", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      /* Section tag */
+      .section-tag {
+        font-family: "Inter", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--claret);
+        border-top: 1px solid var(--rule);
+        border-bottom: 1px solid var(--rule);
+        padding: 0.4rem 0;
+        margin-bottom: 1.5rem;
+      }
+
+      /* Headline */
+      h1 {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: clamp(1.7rem, 4.5vw, 2.5rem);
+        font-weight: 900;
+        line-height: 1.1;
+        letter-spacing: -0.015em;
+        color: var(--ink);
+        margin-bottom: 0.75rem;
+      }
+      .standfirst {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 1.1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: var(--muted);
+        margin-bottom: 1.5rem;
+        font-style: italic;
+      }
+
+      /* Body columns */
+      .columns {
+        column-count: 2;
+        column-gap: 2rem;
+        margin-bottom: 2rem;
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 0.95rem;
+        line-height: 1.65;
+      }
+      .columns p {
+        margin-bottom: 0.8rem;
+        break-inside: avoid;
+      }
+      .dropcap::first-letter {
+        font-size: 3.2rem;
+        font-weight: 900;
+        float: left;
+        line-height: 0.9;
+        padding-right: 0.4rem;
+        padding-top: 0.1rem;
+        color: var(--claret);
+      }
+
+      /* Data table */
+      .data-strip {
+        border-top: 2px solid var(--ink);
+        border-bottom: 2px solid var(--ink);
+        padding: 1.2rem 0;
+        margin-bottom: 2rem;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .data-strip .cell {
+        text-align: center;
+        border-right: 1px solid var(--rule);
+        padding: 0 0.5rem;
+      }
+      .data-strip .cell:last-child {
+        border-right: none;
+      }
+      .data-strip .val {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 2rem;
+        font-weight: 900;
+        line-height: 1;
+        color: var(--ink);
+      }
+      .data-strip .val.claret {
+        color: var(--claret);
+      }
+      .data-strip .val.teal {
+        color: var(--teal);
+      }
+      .data-strip .val.ochre {
+        color: var(--ochre);
+      }
+      .data-strip .lbl {
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        margin-top: 0.35rem;
+      }
+
+      /* Pull quote */
+      .pullquote {
+        border-top: 3px double var(--rule);
+        border-bottom: 3px double var(--rule);
+        padding: 1.3rem 0;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+      .pullquote q {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        line-height: 1.35;
+        color: var(--ink);
+        font-style: italic;
+        quotes: '"' '"';
+      }
+      .pullquote q::before {
+        color: var(--claret);
+      }
+      .pullquote q::after {
+        color: var(--claret);
+      }
+
+      /* Findings list */
+      .findings-title {
+        font-family: "Inter", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--ink);
+        margin-bottom: 0.8rem;
+      }
+      .finding {
+        display: grid;
+        grid-template-columns: 2.5rem 1fr;
+        gap: 0.8rem;
+        padding: 0.7rem 0;
+        border-bottom: 1px solid var(--rule);
+      }
+      .finding .tag {
+        font-family: "Inter", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        text-align: center;
+        padding-top: 0.15rem;
+      }
+      .finding .tag.crit {
+        color: var(--claret);
+      }
+      .finding .tag.warn {
+        color: var(--ochre);
+      }
+      .finding .tag.nice {
+        color: var(--teal);
+      }
+      .finding h3 {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.15rem;
+        color: var(--ink);
+      }
+      .finding p {
+        font-size: 0.88rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      /* Code */
+      pre {
+        background: var(--paper-2);
+        border-left: 3px solid var(--claret);
+        padding: 1rem 1.2rem;
+        font-family: "Courier New", monospace;
+        font-size: 0.82rem;
+        line-height: 1.7;
+        overflow-x: auto;
+        margin-bottom: 2rem;
+        color: var(--ink);
+      }
+      .k {
+        color: var(--claret);
+        font-weight: bold;
+      }
+      .s {
+        color: var(--teal);
+      }
+      .c {
+        color: var(--muted);
+        font-style: italic;
+      }
+      .n {
+        color: var(--ochre);
+      }
+
+      /* Footer */
+      footer {
+        border-top: 2px solid var(--ink);
+        padding-top: 0.8rem;
+        margin-top: 0.4rem;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.72rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      footer .sig {
+        color: var(--claret);
+        font-weight: 700;
+      }
+
+      @media (max-width: 640px) {
+        .columns {
+          column-count: 1;
+        }
+        .data-strip {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .data-strip .cell:nth-child(2) {
+          border-right: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="masthead">
+        <div class="pub">The Engineering <span class="ac">Tribune</span></div>
+      </div>
+      <div class="dateline">
+        <span>Vol. XXVI · No. 20</span>
+        <span>Thursday, 18 June 2026</span>
+        <span>Late Edition</span>
+      </div>
+
+      <div class="section-tag">Technology · Codebase Review</div>
+
+      <h1>Repository found healthy as palette debate rages</h1>
+      <p class="standfirst">
+        A sweeping audit of 20 skills and 11 vendored copies reveals a codebase in robust shape,
+        though two structural debts cry out for retirement before the next quarter.
+      </p>
+
+      <div class="data-strip">
+        <div class="cell">
+          <div class="val">20</div>
+          <div class="lbl">Skills</div>
+        </div>
+        <div class="cell">
+          <div class="val teal">17</div>
+          <div class="lbl">Healthy</div>
+        </div>
+        <div class="cell">
+          <div class="val ochre">3</div>
+          <div class="lbl">Need Work</div>
+        </div>
+        <div class="cell">
+          <div class="val claret">0</div>
+          <div class="lbl">Critical</div>
+        </div>
+      </div>
+
+      <div class="columns">
+        <p class="dropcap">
+          The SKILLS repository, home to a growing collection of agent skills for the Crush
+          platform, has reached a position of unusual maturity for a project of its kind. Twenty
+          skills are now under active maintenance, with seventeen passing all quality gates.
+        </p>
+        <p>
+          Yet beneath the surface, our auditors identified two structural debts that warrant
+          immediate attention. The visual design system, they note, leans heavily on recognisable
+          defaults.
+        </p>
+      </div>
+
+      <div class="pullquote">
+        <q>Indigo on slate is the most recognisable AI palette in production. It must go.</q>
+      </div>
+
+      <div class="findings-title">Key Findings</div>
+      <div class="finding">
+        <div class="tag crit">Critical</div>
+        <div>
+          <h3>Palette is unoriginal</h3>
+          <p>The current colours are Tailwind's stock defaults — indigo on slate-900.</p>
+        </div>
+      </div>
+      <div class="finding">
+        <div class="tag warn">Important</div>
+        <div>
+          <h3>No signature hue</h3>
+          <p>The kit lacks a memorable accent colour to distinguish its reports.</p>
+        </div>
+      </div>
+      <div class="finding">
+        <div class="tag nice">Nice</div>
+        <div>
+          <h3>Components travel well</h3>
+          <p>Stat cards, issue cards, and callouts are reusable across skills.</p>
+        </div>
+      </div>
+
+      <pre><span class="c">// propagate the chosen palette to all 11 consumers</span>
+<span class="k">const</span> palette = <span class="s">"ft-salmon"</span>;
+sync(<span class="n">11</span>).skills.forEach(s =&gt; s.recolor(palette));</pre>
+
+      <footer>
+        <span>Generated by Crush</span>
+        <span class="sig">02 / FT Salmon</span>
+      </footer>
+    </div>
+  </body>
+</html>

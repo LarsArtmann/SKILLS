@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>15 Design Directions — Pick Your Poison</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #08090b;
+        color: #c9ccd4;
+        font-family: "Inter", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        padding: 3rem 1.5rem 5rem;
+      }
+      .shell {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      header {
+        margin-bottom: 2.5rem;
+      }
+      .eyebrow {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #6b7080;
+        margin-bottom: 0.75rem;
+      }
+      h1 {
+        font-size: clamp(1.6rem, 4vw, 2.4rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #f3f4f8;
+        margin: 0 0 0.5rem;
+        line-height: 1.1;
+      }
+      .lede {
+        color: #9099a8;
+        font-size: 0.98rem;
+        line-height: 1.6;
+        max-width: 64ch;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      a.card {
+        text-decoration: none;
+        color: inherit;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid #1c1e24;
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease;
+        display: block;
+      }
+      a.card:hover {
+        transform: translateY(-3px);
+        border-color: #3a3f4b;
+      }
+      .card .preview {
+        height: 120px;
+        position: relative;
+        overflow: hidden;
+      }
+      .card .meta {
+        padding: 0.85rem 1rem;
+        background: #0c0e12;
+      }
+      .card .num {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        color: #6b7080;
+        font-weight: 600;
+      }
+      .card .name {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #f3f4f8;
+        margin-top: 0.15rem;
+        letter-spacing: -0.01em;
+      }
+      .card .desc {
+        font-size: 0.8rem;
+        color: #7f8694;
+        margin-top: 0.2rem;
+        line-height: 1.4;
+      }
+      .swatches {
+        display: flex;
+        height: 8px;
+      }
+      .swatches span {
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <div class="eyebrow">Design Shootout · 15 Directions</div>
+        <h1>Same report. Fifteen completely different design languages.</h1>
+        <p class="lede">
+          Each link is a full status report rendered through a distinct aesthetic — different
+          palette, typography, layout, and signature. Click around. Tell me which ones move you and
+          I'll refine from there.
+        </p>
+      </header>
+      <div class="grid">
+        <a class="card" href="01-midnight-lab.html">
+          <div class="preview" style="background: linear-gradient(135deg, #0a0a0f, #1a1130)">
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #0a0a0f"></span><span style="background: #8b5cf6"></span
+              ><span style="background: #06b7e0"></span><span style="background: #f3f4f8"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">01</div>
+            <div class="name">Midnight Lab</div>
+            <div class="desc">Electric violet on deep black. Clean dev-tool dark.</div>
+          </div>
+        </a>
+        <a class="card" href="02-ft-salmon.html">
+          <div class="preview" style="background: #fff1e5">
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #fff1e5"></span><span style="background: #33302e"></span
+              ><span style="background: #990f3d"></span><span style="background: #0d7e7e"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">02</div>
+            <div class="name">FT Salmon</div>
+            <div class="desc">Financial Times pink paper. Serif broadsheet authority.</div>
+          </div>
+        </a>
+        <a class="card" href="03-phosphor-terminal.html">
+          <div class="preview" style="background: #0c0c0c">
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #0c0c0c"></span><span style="background: #33ff66"></span
+              ><span style="background: #ffb000"></span><span style="background: #0099cc"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">03</div>
+            <div class="name">Phosphor Terminal</div>
+            <div class="desc">Green-on-black CRT. Scanlines, glow, monospace.</div>
+          </div>
+        </a>
+        <a class="card" href="04-riso-pop.html">
+          <div class="preview" style="background: #faf7f2">
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #faf7f2"></span><span style="background: #ff4ddb"></span
+              ><span style="background: #2d5bff"></span><span style="background: #ff6b35"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">04</div>
+            <div class="name">Riso Pop</div>
+            <div class="desc">Risograph 2-ink print. Fluorescent, tactile, halftone.</div>
+          </div>
+        </a>
+        <a class="card" href="05-solarized.html">
+          <div class="preview" style="background: #002b36">
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #002b36"></span><span style="background: #b58900"></span
+              ><span style="background: #2aa198"></span><span style="background: #d33682"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">05</div>
+            <div class="name">Solarized</div>
+            <div class="desc">The legendary precision-engineered palette.</div>
+          </div>
+        </a>
+        <a class="card" href="06-bauhaus.html">
+          <div class="preview" style="background: #f4f4f0">
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #f4f4f0"></span><span style="background: #e63946"></span
+              ><span style="background: #1d3557"></span><span style="background: #f4d35e"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">06</div>
+            <div class="name">Bauhaus</div>
+            <div class="desc">Primary colors, geometric shapes, thick strokes.</div>
+          </div>
+        </a>
+        <a class="card" href="07-bloomberg-amber.html">
+          <div class="preview" style="background: #1a1a1a">
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #1a1a1a"></span><span style="background: #ffa500"></span
+              ><span style="background: #00ced1"></span><span style="background: #e8e8e8"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">07</div>
+            <div class="name">Bloomberg Amber</div>
+            <div class="desc">Dense data terminal. Amber on black, high info density.</div>
+          </div>
+        </a>
+        <a class="card" href="08-glass-aurora.html">
+          <div
+            class="preview"
+            style="background: linear-gradient(135deg, #667eea, #764ba2, #f093fb)"
+          >
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #667eea"></span><span style="background: #764ba2"></span
+              ><span style="background: #f093fb"></span
+              ><span style="background: rgba(255, 255, 255, 0.7)"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">08</div>
+            <div class="name">Glass Aurora</div>
+            <div class="desc">Frosted glass cards on a mesh gradient. Modern SaaS.</div>
+          </div>
+        </a>
+        <a class="card" href="09-brutalist.html">
+          <div class="preview" style="background: #c8c8c8">
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #c8c8c8"></span><span style="background: #000000"></span
+              ><span style="background: #eeff00"></span><span style="background: #ff0066"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">09</div>
+            <div class="name">Brutalist</div>
+            <div class="desc">Raw concrete, acid yellow, thick borders, no curves.</div>
+          </div>
+        </a>
+        <a class="card" href="10-art-deco-gold.html">
+          <div class="preview" style="background: #0d0d0d">
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #0d0d0d"></span><span style="background: #d4af37"></span
+              ><span style="background: #c0392b"></span><span style="background: #f5e6c8"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">10</div>
+            <div class="name">Art Deco Gold</div>
+            <div class="desc">Black, gold leaf, luxury serif. Art book opulence.</div>
+          </div>
+        </a>
+        <a class="card" href="11-synthwave.html">
+          <div
+            class="preview"
+            style="background: linear-gradient(180deg, #2d1b69, #b5179e, #ff006e)"
+          >
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #2d1b69"></span><span style="background: #b5179e"></span
+              ><span style="background: #00f5ff"></span><span style="background: #ff006e"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">11</div>
+            <div class="name">Synthwave</div>
+            <div class="desc">Neon grid horizon. Retrofuturism, magenta+cyan glow.</div>
+          </div>
+        </a>
+        <a class="card" href="12-nyt-broadsheet.html">
+          <div class="preview" style="background: #ffffff">
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #ffffff"></span><span style="background: #121212"></span
+              ><span style="background: #cc0000"></span><span style="background: #666666"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">12</div>
+            <div class="name">NYT Broadsheet</div>
+            <div class="desc">Newspaper columns, serif, red masthead. Journalism.</div>
+          </div>
+        </a>
+        <a class="card" href="13-blueprint.html">
+          <div class="preview" style="background: #0d2847">
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #0d2847"></span><span style="background: #a8c8e0"></span
+              ><span style="background: #ffffff"></span><span style="background: #ffd700"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">13</div>
+            <div class="name">Blueprint</div>
+            <div class="desc">Cyan technical drawing on engineering grid paper.</div>
+          </div>
+        </a>
+        <a class="card" href="14-memphis.html">
+          <div class="preview" style="background: #fef6e4">
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #fef6e4"></span><span style="background: #f38181"></span
+              ><span style="background: #95e1d3"></span><span style="background: #fce38a"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">14</div>
+            <div class="name">Memphis 80s</div>
+            <div class="desc">Pastel postmodernism. Squiggles, shapes, playful.</div>
+          </div>
+        </a>
+        <a class="card" href="15-nordic-calm.html">
+          <div class="preview" style="background: #fbf9f7">
+            <div class="swatches" style="position: absolute; bottom: 0; width: 100%">
+              <span style="background: #fbf9f7"></span><span style="background: #2c3e50"></span
+              ><span style="background: #e07a5f"></span><span style="background: #81b29a"></span>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="num">15</div>
+            <div class="name">Nordic Calm</div>
+            <div class="desc">Scandinavian minimalism. Warm paper, terracotta, sage.</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

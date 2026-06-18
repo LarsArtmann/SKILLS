@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>06 — Bauhaus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #f4f4f0;
+        --ink: #111111;
+        --red: #e63946;
+        --blue: #1d3557;
+        --yellow: #f4d35e;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Archivo", system-ui, sans-serif;
+        font-size: 15px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 840px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 4rem;
+      }
+
+      /* Geometric header with shapes */
+      .header {
+        position: relative;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+      .shapes {
+        position: absolute;
+        top: -10px;
+        right: 0;
+        width: 180px;
+        height: 120px;
+      }
+      .shapes .circle {
+        position: absolute;
+        top: 0;
+        right: 40px;
+        width: 80px;
+        height: 80px;
+        background: var(--red);
+        border-radius: 50%;
+      }
+      .shapes .square {
+        position: absolute;
+        top: 30px;
+        right: 0;
+        width: 60px;
+        height: 60px;
+        background: var(--blue);
+      }
+      .shapes .tri {
+        position: absolute;
+        top: 50px;
+        right: 70px;
+        width: 0;
+        height: 0;
+        border-left: 30px solid transparent;
+        border-right: 30px solid transparent;
+        border-bottom: 52px solid var(--yellow);
+      }
+
+      .header-bar {
+        background: var(--ink);
+        color: var(--paper);
+        padding: 0.6rem 1rem;
+        font-family: "Space Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+      }
+
+      .kicker {
+        font-family: "Space Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--red);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin-bottom: 0.8rem;
+      }
+      h1 {
+        font-family: "Archivo", sans-serif;
+        font-size: clamp(1.8rem, 5.5vw, 3rem);
+        font-weight: 900;
+        line-height: 0.98;
+        letter-spacing: -0.02em;
+        margin-bottom: 1rem;
+        max-width: 85%;
+      }
+      h1 .red {
+        color: var(--red);
+      }
+      h1 .blue {
+        color: var(--blue);
+      }
+      .lede {
+        font-size: 1rem;
+        color: var(--ink);
+        opacity: 0.7;
+        max-width: 58ch;
+        margin-bottom: 2rem;
+        border-left: 4px solid var(--yellow);
+        padding-left: 1rem;
+      }
+
+      /* Stats as geometric blocks */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2px;
+        background: var(--ink);
+        margin-bottom: 2.5rem;
+        border: 3px solid var(--ink);
+      }
+      .stat {
+        padding: 1.3rem 1rem;
+        text-align: center;
+        background: var(--paper);
+      }
+      .stat:nth-child(1) {
+        background: var(--red);
+        color: var(--paper);
+      }
+      .stat:nth-child(2) {
+        background: var(--blue);
+        color: var(--paper);
+      }
+      .stat:nth-child(3) {
+        background: var(--yellow);
+        color: var(--ink);
+      }
+      .stat:nth-child(4) {
+        background: var(--paper);
+        color: var(--ink);
+      }
+      .stat .val {
+        font-family: "Archivo", sans-serif;
+        font-size: 2.8rem;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.04em;
+      }
+      .stat .lbl {
+        font-family: "Space Mono", monospace;
+        font-size: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-top: 0.5rem;
+      }
+
+      /* Section title */
+      .section-title {
+        font-family: "Archivo", sans-serif;
+        font-size: 1.2rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        margin-bottom: 1rem;
+        border-bottom: 3px solid var(--ink);
+        padding-bottom: 0.5rem;
+      }
+
+      .issues {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+      }
+      .issue {
+        border: 3px solid var(--ink);
+        padding: 1.1rem 1.3rem;
+        position: relative;
+      }
+      .issue.crit {
+        border-color: var(--red);
+        border-width: 0 0 0 6px;
+        border-right: 3px solid var(--ink);
+        border-top: 3px solid var(--ink);
+        border-bottom: 3px solid var(--ink);
+      }
+      .issue.warn {
+        border-color: var(--yellow);
+        border-width: 0 0 0 6px;
+        border-right: 3px solid var(--ink);
+        border-top: 3px solid var(--ink);
+        border-bottom: 3px solid var(--ink);
+      }
+      .issue.nice {
+        border-color: var(--blue);
+        border-width: 0 0 0 6px;
+        border-right: 3px solid var(--ink);
+        border-top: 3px solid var(--ink);
+        border-bottom: 3px solid var(--ink);
+      }
+      .issue .tag {
+        font-family: "Space Mono", monospace;
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        display: inline-block;
+      }
+      .issue.crit .tag {
+        color: var(--red);
+      }
+      .issue.warn .tag {
+        color: #b89000;
+      }
+      .issue.nice .tag {
+        color: var(--blue);
+      }
+      .issue h3 {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+      }
+      .issue p {
+        font-size: 0.86rem;
+        opacity: 0.7;
+      }
+
+      pre {
+        background: var(--ink);
+        color: var(--paper);
+        padding: 1.3rem;
+        margin-bottom: 2.5rem;
+        font-family: "Space Mono", monospace;
+        font-size: 0.82rem;
+        line-height: 1.7;
+        overflow-x: auto;
+        border: 3px solid var(--ink);
+      }
+      .k {
+        color: var(--red);
+      }
+      .s {
+        color: var(--yellow);
+      }
+      .c {
+        color: rgba(244, 244, 240, 0.4);
+        font-style: italic;
+      }
+      .n {
+        color: #4dd9ff;
+      }
+      .f {
+        color: #4dd9ff;
+      }
+
+      footer {
+        border-top: 3px solid var(--ink);
+        padding-top: 1rem;
+        display: flex;
+        justify-content: space-between;
+        font-family: "Space Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+      footer .sig {
+        color: var(--red);
+      }
+
+      @media (max-width: 640px) {
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .shapes {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="header">
+        <div class="shapes">
+          <div class="circle"></div>
+          <div class="square"></div>
+          <div class="tri"></div>
+        </div>
+      </div>
+      <div class="header-bar">
+        <span>STATUS REPORT</span>
+        <span>2026 · 06 · 18</span>
+      </div>
+
+      <div class="kicker">// Audit Complete</div>
+      <h1>FORM <span class="red">FOLLOWS</span> <span class="blue">FUNCTION</span></h1>
+      <p class="lede">
+        20 skills, 4 templates, 11 vendored copies. The repository is structurally sound — but its
+        palette lacks the clarity of purpose that good design demands.
+      </p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="val">20</div>
+          <div class="lbl">Skills</div>
+        </div>
+        <div class="stat">
+          <div class="val">17</div>
+          <div class="lbl">Healthy</div>
+        </div>
+        <div class="stat">
+          <div class="val">3</div>
+          <div class="lbl">Need Work</div>
+        </div>
+        <div class="stat">
+          <div class="val">0</div>
+          <div class="lbl">Critical</div>
+        </div>
+      </div>
+
+      <div class="section-title">Findings</div>
+      <div class="issues">
+        <div class="issue crit">
+          <div class="tag">Critical</div>
+          <h3>Palette is Tailwind defaults</h3>
+          <p>
+            Indigo on slate-900 is the most recognizable AI-generated combination in production.
+          </p>
+        </div>
+        <div class="issue warn">
+          <div class="tag">Important</div>
+          <h3>No signature hue</h3>
+          <p>Neutral grays read as cautious and corporate; the kit lacks a memorable accent.</p>
+        </div>
+        <div class="issue nice">
+          <div class="tag">Nice</div>
+          <h3>Component vocabulary is solid</h3>
+          <p>Stat cards, issue cards, callouts, code blocks — the structure travels well.</p>
+        </div>
+      </div>
+
+      <pre><span class="c">// propagate the chosen palette to all 11 consumers</span>
+<span class="k">const</span> palette = <span class="s">"bauhaus"</span>;
+<span class="f">sync</span>(<span class="n">11</span>).skills.forEach(s =&gt; s.recolor(palette));</pre>
+
+      <footer>
+        <span>CRUSH · HTML-REPORT-KIT</span>
+        <span class="sig">06 / BAUHAUS</span>
+      </footer>
+    </div>
+  </body>
+</html>

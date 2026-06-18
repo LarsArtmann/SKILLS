@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>02b — FT Salmon Desktop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700;8..60,900&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #fff1e5;
+        --paper-2: #f8e6d5;
+        --paper-3: #f2dfc9;
+        --ink: #1a1a1a;
+        --ink-2: #33302e;
+        --muted: #66605c;
+        --rule: #d6c8b5;
+        --claret: #990f3d;
+        --teal: #0d7e7e;
+        --ochre: #b86b00;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--paper);
+        color: var(--ink-2);
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 15px;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Full-width masthead */
+      .masthead {
+        border-bottom: 3px double var(--ink);
+        padding: 1rem 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .masthead .pub {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 1.6rem;
+        font-weight: 900;
+        letter-spacing: 0.01em;
+        color: var(--ink);
+      }
+      .masthead .pub .ac {
+        color: var(--claret);
+      }
+      .masthead .meta {
+        display: flex;
+        gap: 2rem;
+        font-size: 0.72rem;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      /* Main layout — sidebar + content */
+      .layout {
+        display: grid;
+        grid-template-columns: 240px 1fr 280px;
+        gap: 0;
+        min-height: calc(100vh - 70px);
+      }
+
+      /* Left sidebar — TOC */
+      .sidebar {
+        border-right: 1px solid var(--rule);
+        padding: 2rem 1.5rem;
+        position: sticky;
+        top: 0;
+        align-self: start;
+        height: calc(100vh - 70px);
+        overflow-y: auto;
+      }
+      .sidebar .label {
+        font-family: "Inter", sans-serif;
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--claret);
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--rule);
+      }
+      .sidebar nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .sidebar nav a {
+        text-decoration: none;
+        color: var(--ink-2);
+        font-size: 0.82rem;
+        font-weight: 500;
+        padding: 0.4rem 0.6rem;
+        border-radius: 4px;
+        border-left: 2px solid transparent;
+        transition: all 0.15s ease;
+        line-height: 1.4;
+      }
+      .sidebar nav a:hover {
+        background: var(--paper-2);
+        border-left-color: var(--claret);
+        color: var(--claret);
+      }
+      .sidebar nav a .num {
+        font-family: "Source Serif 4", serif;
+        font-size: 0.72rem;
+        color: var(--muted);
+        margin-right: 0.4rem;
+      }
+
+      /* Center column — main content */
+      .main {
+        padding: 2rem 2.5rem;
+        max-width: 100%;
+      }
+
+      .section-tag {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--claret);
+        border-top: 1px solid var(--rule);
+        border-bottom: 1px solid var(--rule);
+        padding: 0.4rem 0;
+        margin-bottom: 1.5rem;
+      }
+
+      h1 {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: clamp(2rem, 3vw, 3rem);
+        font-weight: 900;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        margin-bottom: 0.6rem;
+      }
+      .standfirst {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 1.2rem;
+        font-weight: 400;
+        line-height: 1.45;
+        color: var(--muted);
+        margin-bottom: 1.5rem;
+        font-style: italic;
+        max-width: 70ch;
+      }
+      .byline-row {
+        font-size: 0.72rem;
+        color: var(--muted);
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 0.6rem;
+        margin-bottom: 1.5rem;
+      }
+      .byline-row .author {
+        font-weight: 600;
+        color: var(--ink-2);
+      }
+
+      /* Data strip — full width of main column */
+      .data-strip {
+        border-top: 2px solid var(--ink);
+        border-bottom: 2px solid var(--ink);
+        padding: 1.2rem 0;
+        margin-bottom: 2rem;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+      }
+      .data-strip .cell {
+        text-align: center;
+        border-right: 1px solid var(--rule);
+      }
+      .data-strip .cell:last-child {
+        border-right: none;
+      }
+      .data-strip .val {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 2.2rem;
+        font-weight: 900;
+        line-height: 1;
+        color: var(--ink);
+      }
+      .data-strip .val.claret {
+        color: var(--claret);
+      }
+      .data-strip .val.teal {
+        color: var(--teal);
+      }
+      .data-strip .val.ochre {
+        color: var(--ochre);
+      }
+      .data-strip .lbl {
+        font-size: 0.62rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        margin-top: 0.35rem;
+      }
+
+      /* Body text in columns */
+      .body-cols {
+        column-count: 2;
+        column-gap: 2rem;
+        margin-bottom: 2rem;
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 0.95rem;
+        line-height: 1.65;
+      }
+      .body-cols p {
+        margin-bottom: 0.8rem;
+        break-inside: avoid;
+      }
+      .body-cols .drop::first-letter {
+        font-size: 3.4rem;
+        font-weight: 900;
+        float: left;
+        line-height: 0.85;
+        padding-right: 0.4rem;
+        padding-top: 0.1rem;
+        color: var(--claret);
+      }
+
+      /* Pull quote spanning full width */
+      .pullquote {
+        border-top: 3px double var(--rule);
+        border-bottom: 3px double var(--rule);
+        padding: 1.5rem 0;
+        margin: 0 0 2rem;
+        text-align: center;
+      }
+      .pullquote q {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.3;
+        color: var(--ink);
+        font-style: italic;
+      }
+
+      /* Findings — 3 columns side by side */
+      .find-head {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--ink);
+        border-top: 2px solid var(--ink);
+        padding-top: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      .findings-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      .finding {
+        border-top: 2px solid var(--rule);
+        padding-top: 0.8rem;
+      }
+      .finding.crit {
+        border-top-color: var(--claret);
+      }
+      .finding.warn {
+        border-top-color: var(--ochre);
+      }
+      .finding.nice {
+        border-top-color: var(--teal);
+      }
+      .finding .sev {
+        font-size: 0.62rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 0.5rem;
+      }
+      .finding.crit .sev {
+        color: var(--claret);
+      }
+      .finding.warn .sev {
+        color: var(--ochre);
+      }
+      .finding.nice .sev {
+        color: var(--teal);
+      }
+      .finding h3 {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+        color: var(--ink);
+      }
+      .finding p {
+        font-size: 0.88rem;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      pre {
+        background: var(--paper-3);
+        border-left: 3px solid var(--claret);
+        padding: 1.2rem 1.4rem;
+        margin-bottom: 2rem;
+        font-family: "Courier New", monospace;
+        font-size: 0.82rem;
+        line-height: 1.7;
+        overflow-x: auto;
+        color: var(--ink);
+      }
+      .k {
+        color: var(--claret);
+        font-weight: bold;
+      }
+      .s {
+        color: var(--teal);
+      }
+      .c {
+        color: var(--muted);
+        font-style: italic;
+      }
+      .n {
+        color: var(--ochre);
+      }
+
+      /* Right sidebar — supplementary data */
+      .rail {
+        border-left: 1px solid var(--rule);
+        padding: 2rem 1.5rem;
+        background: var(--paper-2);
+      }
+      .rail .rail-section {
+        margin-bottom: 2rem;
+      }
+      .rail .rail-title {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--claret);
+        margin-bottom: 0.8rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid var(--rule);
+      }
+      .rail .rail-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px dotted var(--rule);
+        font-size: 0.82rem;
+      }
+      .rail .rail-item .name {
+        color: var(--ink-2);
+        font-weight: 500;
+      }
+      .rail .rail-item .stat-tag {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        padding: 0.1rem 0.4rem;
+        border-radius: 3px;
+      }
+      .rail .rail-item .stat-tag.pass {
+        background: rgba(13, 126, 126, 0.12);
+        color: var(--teal);
+      }
+      .rail .rail-item .stat-tag.warn {
+        background: rgba(184, 107, 0, 0.12);
+        color: var(--ochre);
+      }
+      .rail .rail-item .stat-tag.fail {
+        background: rgba(153, 15, 61, 0.12);
+        color: var(--claret);
+      }
+
+      /* Footer */
+      footer {
+        border-top: 3px double var(--ink);
+        padding: 0.8rem 3rem;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.72rem;
+        color: var(--muted);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      footer .sig {
+        color: var(--claret);
+        font-weight: 700;
+      }
+
+      @media (max-width: 1200px) {
+        .layout {
+          grid-template-columns: 220px 1fr;
+        }
+        .rail {
+          display: none;
+        }
+      }
+      @media (max-width: 768px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          display: none;
+        }
+        .body-cols {
+          column-count: 1;
+        }
+        .data-strip {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .findings-grid {
+          grid-template-columns: 1fr;
+        }
+        .masthead,
+        .main,
+        footer {
+          padding-left: 1.2rem;
+          padding-right: 1.2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="masthead">
+      <div class="pub">The Engineering <span class="ac">Tribune</span></div>
+      <div class="meta">
+        <span>Vol. XXVI · No. 20</span>
+        <span>Thursday, 18 June 2026</span>
+        <span>Late Edition</span>
+      </div>
+    </div>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="label">In This Report</div>
+        <nav>
+          <a href="#headline"><span class="num">01</span>Headline</a>
+          <a href="#metrics"><span class="num">02</span>Key Metrics</a>
+          <a href="#analysis"><span class="num">03</span>Analysis</a>
+          <a href="#quote"><span class="num">04</span>Expert View</a>
+          <a href="#findings"><span class="num">05</span>Findings</a>
+          <a href="#action"><span class="num">06</span>Action Plan</a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <div id="headline" class="section-tag">Technology · Codebase Review</div>
+        <h1>Repository found healthy as palette debate rages on</h1>
+        <p class="standfirst">
+          A sweeping audit of 20 skills and 11 vendored copies reveals a codebase in robust shape,
+          though two structural debts cry out for retirement before the next quarter.
+        </p>
+        <div class="byline-row">
+          By <span class="author">Crush Auto-Auditor</span> · Crush Engineering Desk · 5 min read
+        </div>
+
+        <div id="metrics" class="data-strip">
+          <div class="cell">
+            <div class="val">20</div>
+            <div class="lbl">Skills</div>
+          </div>
+          <div class="cell">
+            <div class="val teal">17</div>
+            <div class="lbl">Healthy</div>
+          </div>
+          <div class="cell">
+            <div class="val ochre">3</div>
+            <div class="lbl">Need Work</div>
+          </div>
+          <div class="cell">
+            <div class="val claret">0</div>
+            <div class="lbl">Critical</div>
+          </div>
+          <div class="cell">
+            <div class="val">4</div>
+            <div class="lbl">Templates</div>
+          </div>
+          <div class="cell">
+            <div class="val">11</div>
+            <div class="lbl">Vendored</div>
+          </div>
+        </div>
+
+        <div id="analysis" class="body-cols">
+          <p class="drop">
+            The SKILLS repository, home to a growing collection of agent skills for the Crush
+            platform, has reached a position of unusual maturity for a project of its kind. Twenty
+            skills are now under active maintenance, with seventeen passing all quality gates.
+          </p>
+          <p>
+            Yet beneath the surface, our auditors identified two structural debts that warrant
+            immediate attention. The visual design system, they note, leans heavily on recognisable
+            defaults that undermine the project's identity.
+          </p>
+          <p>
+            The component vocabulary — stat cards, issue cards, callouts — is structurally sound and
+            travels well across skills. The bones are good. The skin needs work.
+          </p>
+        </div>
+
+        <div id="quote" class="pullquote">
+          <q
+            >Indigo on slate is the most recognisable AI palette in production today. It has to
+            go.</q
+          >
+        </div>
+
+        <div id="findings" class="find-head">Key Findings</div>
+        <div class="findings-grid">
+          <div class="finding crit">
+            <div class="sev">Critical</div>
+            <h3>Palette is unoriginal</h3>
+            <p>
+              The current colours are Tailwind's stock defaults — indigo on slate-900. The most
+              copied AI palette in production.
+            </p>
+          </div>
+          <div class="finding warn">
+            <div class="sev">Important</div>
+            <h3>No signature hue</h3>
+            <p>
+              The kit lacks a memorable accent colour. Reports are interchangeable with any
+              AI-generated export.
+            </p>
+          </div>
+          <div class="finding nice">
+            <div class="sev">Commendable</div>
+            <h3>Components travel well</h3>
+            <p>
+              Stat cards, issue cards, and callouts are reusable across all skills. The structure is
+              sound.
+            </p>
+          </div>
+        </div>
+
+        <div id="action">
+          <pre><span class="c">// propagate the chosen palette to all 11 consumers</span>
+<span class="k">const</span> palette = <span class="s">"ft-salmon"</span>;
+sync(<span class="n">11</span>).skills.forEach(s =&gt; s.recolor(palette));</pre>
+        </div>
+      </main>
+
+      <aside class="rail">
+        <div class="rail-section">
+          <div class="rail-title">Module Status</div>
+          <div class="rail-item">
+            <span class="name">html-report-kit</span><span class="stat-tag warn">Rework</span>
+          </div>
+          <div class="rail-item">
+            <span class="name">go-modularize</span><span class="stat-tag pass">Pass</span>
+          </div>
+          <div class="rail-item">
+            <span class="name">nix-review</span><span class="stat-tag pass">Pass</span>
+          </div>
+          <div class="rail-item">
+            <span class="name">how-to-golang</span><span class="stat-tag pass">Pass</span>
+          </div>
+          <div class="rail-item">
+            <span class="name">full-code-review</span><span class="stat-tag pass">Pass</span>
+          </div>
+          <div class="rail-item">
+            <span class="name">bdd-testing</span><span class="stat-tag warn">Thin</span>
+          </div>
+          <div class="rail-item">
+            <span class="name">naming-review</span><span class="stat-tag pass">Pass</span>
+          </div>
+          <div class="rail-item">
+            <span class="name">data-model-review</span><span class="stat-tag pass">Pass</span>
+          </div>
+          <div class="rail-item">
+            <span class="name">copywriting</span><span class="stat-tag warn">Thin</span>
+          </div>
+          <div class="rail-item">
+            <span class="name">deduplicate-code</span><span class="stat-tag pass">Pass</span>
+          </div>
+        </div>
+        <div class="rail-section">
+          <div class="rail-title">By the Numbers</div>
+          <div class="rail-item">
+            <span class="name">Total lines</span
+            ><span class="name" style="font-weight: 700">5,847</span>
+          </div>
+          <div class="rail-item">
+            <span class="name">References found</span
+            ><span class="name" style="font-weight: 700">42</span>
+          </div>
+          <div class="rail-item">
+            <span class="name">Consumers synced</span
+            ><span class="name" style="font-weight: 700">11/11</span>
+          </div>
+          <div class="rail-item">
+            <span class="name">Audit time</span
+            ><span class="name" style="font-weight: 700">2.3s</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <span>© 2026 Crush Engineering Desk</span>
+      <span class="sig">02b / FT Salmon Desktop</span>
+    </footer>
+  </body>
+</html>
