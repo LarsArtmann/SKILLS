@@ -1,0 +1,1526 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SKILLS Repository — Comprehensive Status · 2026-06-18</title>
+    <style>
+      :root {
+        --color-graphite: #0e0e10;
+        --color-graphite-2: #18181d;
+        --color-graphite-3: #16161a;
+        --color-bone: #f4f4f0;
+        --color-red: #ff6b6b;
+        --color-blue: #6eb5ff;
+        --color-yellow: #f4d35e;
+        --color-amber: #ffb347;
+        --color-hairline: rgba(244, 244, 240, 0.12);
+        --color-hairline-strong: rgba(244, 244, 240, 0.25);
+        --surface: var(--color-graphite);
+        --surface-raised: var(--color-graphite-2);
+        --surface-sunken: var(--color-graphite-3);
+        --text: var(--color-bone);
+        --text-muted: rgba(244, 244, 240, 0.72);
+        --text-faint: rgba(244, 244, 240, 0.45);
+        --border: var(--color-hairline);
+        --border-strong: var(--color-hairline-strong);
+        --accent: var(--color-amber);
+        --problem: var(--color-red);
+        --solution: var(--color-blue);
+        --warning: var(--color-yellow);
+        --radius: 0px;
+        --font-heading:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        --font-body:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        --font-mono:
+          ui-monospace, "Cascadia Code", "Source Code Pro", "JetBrains Mono", Menlo, Consolas,
+          monospace;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      section[id],
+      [id] {
+        scroll-margin-top: 60px;
+      }
+      body {
+        background: var(--surface);
+        color: var(--text);
+        font-family: var(--font-body);
+        font-size: 15px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      .layout {
+        display: flex;
+        gap: 2.5rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      .sidebar {
+        width: 220px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 1rem;
+        align-self: flex-start;
+        height: calc(100vh - 2rem);
+        overflow-y: auto;
+        display: none;
+      }
+      .sidebar nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .sidebar .label {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--accent);
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 2px solid var(--border-strong);
+      }
+      .sidebar a {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        padding: 0.45rem 0.75rem;
+        border-left: 2px solid transparent;
+        transition: all 0.15s ease;
+        line-height: 1.4;
+        font-weight: 500;
+      }
+      .sidebar a:hover,
+      .sidebar a.active {
+        color: var(--accent);
+        border-left-color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 8%, transparent);
+      }
+      .main {
+        flex: 1;
+        min-width: 0;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--text);
+      }
+      h1 {
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+        line-height: 1.1;
+        margin: 0 0 0.6rem;
+      }
+      h2 {
+        font-size: 1.4rem;
+        margin: 2.5rem 0 1rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 2px solid var(--border-strong);
+        display: flex;
+        align-items: baseline;
+        gap: 0.6rem;
+      }
+      h2 .num {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--accent);
+        font-weight: 700;
+      }
+      h3 {
+        font-size: 1.1rem;
+        margin: 0 0 0.4rem;
+        font-weight: 700;
+      }
+      h4 {
+        font-size: 0.98rem;
+        margin: 0 0 0.3rem;
+        font-weight: 700;
+      }
+      p {
+        margin: 0 0 1rem;
+      }
+
+      .hero {
+        padding: 1.5rem 0 1.5rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid var(--border-strong);
+      }
+      .hero-badge {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--surface);
+        background: var(--accent);
+        padding: 0.3rem 0.7rem;
+        margin-bottom: 0.9rem;
+      }
+      .hero-subtitle {
+        font-size: 1.05rem;
+        color: var(--text-muted);
+        max-width: 70ch;
+        margin: 0;
+      }
+      .hero-shapes {
+        position: relative;
+        height: 80px;
+        margin-bottom: 1rem;
+      }
+      .hero-shapes .circle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 56px;
+        height: 56px;
+        background: var(--problem);
+        border-radius: 50%;
+      }
+      .hero-shapes .square {
+        position: absolute;
+        top: 24px;
+        left: 72px;
+        width: 48px;
+        height: 48px;
+        background: var(--solution);
+      }
+      .hero-shapes .tri {
+        position: absolute;
+        top: 8px;
+        left: 140px;
+        width: 0;
+        height: 0;
+        border-left: 28px solid transparent;
+        border-right: 28px solid transparent;
+        border-bottom: 48px solid var(--warning);
+      }
+
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.75rem;
+        margin: 1rem 0 1.5rem;
+      }
+      .stat-card {
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        padding: 1.1rem 1rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--border-strong);
+      }
+      .stat-bad::before {
+        background: var(--problem);
+      }
+      .stat-good::before {
+        background: var(--solution);
+      }
+      .stat-warn::before {
+        background: var(--warning);
+      }
+      .stat-value {
+        font-family: var(--font-heading);
+        font-size: 2rem;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        color: var(--text);
+      }
+      .stat-bad .stat-value {
+        color: var(--problem);
+      }
+      .stat-good .stat-value {
+        color: var(--solution);
+      }
+      .stat-warn .stat-value {
+        color: var(--warning);
+      }
+      .stat-label {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-faint);
+        margin-top: 0.5rem;
+      }
+
+      .card {
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        padding: 1.1rem 1.3rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid var(--border-strong);
+      }
+      .card-problem {
+        border-left-color: var(--problem);
+        background: linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--problem) 12%, transparent),
+          var(--surface-raised) 50%
+        );
+      }
+      .card-solution {
+        border-left-color: var(--solution);
+        background: linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--solution) 12%, transparent),
+          var(--surface-raised) 50%
+        );
+      }
+      .card-warning {
+        border-left-color: var(--warning);
+        background: linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--warning) 12%, transparent),
+          var(--surface-raised) 50%
+        );
+      }
+
+      .issue {
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        padding: 1.1rem 1.3rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid var(--border-strong);
+      }
+      .issue-critical {
+        border-left-color: var(--problem);
+        background: linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--problem) 12%, transparent),
+          var(--surface-raised) 50%
+        );
+      }
+      .issue-important {
+        border-left-color: var(--warning);
+        background: linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--warning) 12%, transparent),
+          var(--surface-raised) 50%
+        );
+      }
+      .issue-nice {
+        border-left-color: var(--solution);
+        background: linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--solution) 12%, transparent),
+          var(--surface-raised) 50%
+        );
+      }
+      .issue h3 {
+        margin-bottom: 0.3rem;
+      }
+      .issue .where {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--text-faint);
+        margin: 0.2rem 0 0.6rem;
+      }
+      .issue p:last-child {
+        margin-bottom: 0;
+      }
+
+      .severity {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.2rem 0.55rem;
+        margin-bottom: 0.6rem;
+        color: var(--surface);
+      }
+      .severity-critical {
+        background: var(--problem);
+      }
+      .severity-important {
+        background: var(--warning);
+      }
+      .severity-nice {
+        background: var(--solution);
+      }
+
+      .badge {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 0.18rem 0.5rem;
+        border: 1px solid var(--border-strong);
+        color: var(--text-muted);
+      }
+      .badge-critical {
+        color: var(--problem);
+        border-color: var(--problem);
+      }
+      .badge-high {
+        color: var(--warning);
+        border-color: var(--warning);
+      }
+      .badge-medium {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .badge-fixed {
+        color: var(--solution);
+        border-color: var(--solution);
+      }
+
+      .callout {
+        margin: 0.8rem 0 0;
+        padding: 0.7rem 0.9rem;
+        border: 1px solid var(--border-strong);
+        border-left: 3px solid var(--border-strong);
+        background: color-mix(in srgb, var(--text) 5%, transparent);
+        font-size: 0.9rem;
+      }
+      .callout strong {
+        display: inline-block;
+        margin-right: 0.4rem;
+      }
+      .callout-solution {
+        border-left-color: var(--solution);
+        background: color-mix(in srgb, var(--solution) 10%, transparent);
+      }
+      .callout-warning {
+        border-left-color: var(--warning);
+        background: color-mix(in srgb, var(--warning) 10%, transparent);
+      }
+
+      .strengths {
+        display: grid;
+        gap: 0.5rem;
+        margin: 1rem 0 1.5rem;
+      }
+      .strength {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.8rem;
+        padding: 0.7rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .strength .check {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        color: var(--solution);
+        font-size: 1.1rem;
+        line-height: 1.4;
+      }
+      .strength .text strong {
+        display: block;
+        margin-bottom: 0.15rem;
+      }
+      .strength .text span {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0 1.5rem;
+        font-size: 0.88rem;
+      }
+      th {
+        text-align: left;
+        padding: 0.6rem 0.9rem;
+        background: var(--surface-raised);
+        color: var(--text-faint);
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border-bottom: 1px solid var(--border-strong);
+      }
+      td {
+        padding: 0.6rem 0.9rem;
+        border-bottom: 1px solid var(--border);
+      }
+      tr:hover td {
+        background: var(--surface-raised);
+      }
+      td.yes {
+        color: var(--solution);
+        font-weight: 600;
+      }
+      td.no {
+        color: var(--problem);
+        font-weight: 600;
+      }
+
+      .migration-step {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        gap: 1rem;
+        margin: 1rem 0;
+        padding: 1rem;
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--accent);
+      }
+      .migration-num {
+        font-family: var(--font-mono);
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: var(--accent);
+        line-height: 1;
+      }
+      .migration-content h4 {
+        margin-bottom: 0.2rem;
+      }
+      .migration-content p {
+        margin-bottom: 0;
+        color: var(--text-muted);
+        font-size: 0.92rem;
+      }
+
+      .footer {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+        font-size: 0.8rem;
+        color: var(--text-faint);
+        font-family: var(--font-mono);
+      }
+      .toc {
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--accent);
+        padding: 1rem 1.3rem;
+        margin: 1rem 0 1.5rem;
+      }
+      .toc h3 {
+        margin-bottom: 0.5rem;
+      }
+      .toc ul {
+        list-style: none;
+        padding: 0;
+      }
+      .toc li {
+        margin: 0.25rem 0;
+      }
+      .toc a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+      .toc a:hover {
+        color: var(--accent);
+      }
+
+      code {
+        font-family: var(--font-mono);
+        font-size: 0.88em;
+        background: var(--surface-sunken);
+        padding: 0.1rem 0.3rem;
+      }
+      pre {
+        background: var(--surface-sunken);
+        border: 1px solid var(--border);
+        padding: 1rem 1.2rem;
+        margin: 1rem 0;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        line-height: 1.65;
+        overflow-x: auto;
+      }
+
+      @media (min-width: 1024px) {
+        .sidebar {
+          display: block;
+        }
+      }
+      @media (max-width: 768px) {
+        .layout {
+          flex-direction: column;
+          padding: 1rem;
+        }
+        .stat-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar" data-nav>
+        <nav>
+          <div class="label">Contents</div>
+          <a href="#summary">Summary</a>
+          <a href="#scorecard">Scorecard</a>
+          <a href="#done">A) Fully Done</a>
+          <a href="#partial">B) Partially Done</a>
+          <a href="#not-started">C) Not Started</a>
+          <a href="#fucked">D) Totally Fucked Up</a>
+          <a href="#improve">E) What to Improve</a>
+          <a href="#next25">F) Top 25 Next</a>
+          <a href="#question">G) Top Question</a>
+          <a href="#matrix">Skill Matrix</a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <div class="hero">
+          <div class="hero-shapes">
+            <div class="circle"></div>
+            <div class="square"></div>
+            <div class="tri"></div>
+          </div>
+          <div class="hero-badge">STATUS REPORT · 2026-06-18 16:57 CEST</div>
+          <h1>SKILLS Repository — Comprehensive Status</h1>
+          <p class="hero-subtitle">
+            20 skills under management. The Bauhaus design language migration just shipped. The kit
+            is healthy, 11 consumers synced, zero drift. The thin-skill tail and missing CI
+            guardrails are the remaining structural debts.
+          </p>
+        </div>
+
+        <section id="scorecard" class="stat-grid">
+          <div class="stat-card stat-good">
+            <div class="stat-value">20</div>
+            <div class="stat-label">Skills Total</div>
+          </div>
+          <div class="stat-card stat-good">
+            <div class="stat-value">8</div>
+            <div class="stat-label">Comprehensive</div>
+          </div>
+          <div class="stat-card stat-warn">
+            <div class="stat-value">6</div>
+            <div class="stat-label">Thin / Borderline</div>
+          </div>
+          <div class="stat-card stat-good">
+            <div class="stat-value">11</div>
+            <div class="stat-label">Consumers Synced</div>
+          </div>
+          <div class="stat-card stat-good">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Drift Detected</div>
+          </div>
+          <div class="stat-card stat-bad">
+            <div class="stat-value">0</div>
+            <div class="stat-label">CI Guardrails</div>
+          </div>
+        </section>
+
+        <section id="summary">
+          <h2><span class="num">00</span>Summary</h2>
+          <p>
+            The repository is in its strongest position to date. The Bauhaus design language
+            migration — the largest single change since the comprehensive quality pass — is complete
+            and propagated to all 11 consumer skills. The unified semantic token vocabulary
+            eliminates the split-brain architecture that plagued the prior templates. The thin-skill
+            tail (6 skills under 80 lines) remains the primary content debt, and the complete
+            absence of CI guardrails means drift can silently creep back.
+          </p>
+          <div class="callout callout-solution">
+            <strong>Bottom line:</strong>
+            Ship-ready. The design system is excellent. The content and validation gaps are the next
+            Pareto front — fleshing out the 6 thin skills and wiring
+            <code>sync-html-kit.sh --check</code>
+            into CI would cover ~80% of remaining risk.
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <section id="done">
+          <h2><span class="num">A</span>Fully Done</h2>
+          <p>Work that is complete, verified, and committed.</p>
+
+          <div class="strengths">
+            <div class="strength">
+              <div class="check">+</div>
+              <div class="text">
+                <strong>Bauhaus design language migration (this session)</strong>
+                <span
+                  >Both templates rewritten, unified semantic tokens,
+                  <code>color-mix()</code> replacing 8 glow tokens, backward-compatible aliases,
+                  progressive-enhancement scrollspy, example report, guide update. Propagated to 11
+                  consumers. Verified zero drift. 5 commits.</span
+                >
+              </div>
+            </div>
+            <div class="strength">
+              <div class="check">+</div>
+              <div class="text">
+                <strong>Unified token vocabulary</strong>
+                <span
+                  >The split brain is dead. Both templates share <code>--surface</code>,
+                  <code>--text</code>, <code>--problem</code>, <code>--solution</code>,
+                  <code>--warning</code>, <code>--accent</code>. Old names aliased for backward
+                  compat.</span
+                >
+              </div>
+            </div>
+            <div class="strength">
+              <div class="check">+</div>
+              <div class="text">
+                <strong>Vendoring model (11 consumers)</strong>
+                <span
+                  >Every consumer skill has <code>assets/html-report-kit/</code> vendored. Works in
+                  all install modes. <code>sync-html-kit.sh</code> with <code>--check</code> detects
+                  drift.</span
+                >
+              </div>
+            </div>
+            <div class="strength">
+              <div class="check">+</div>
+              <div class="text">
+                <strong><code>git commit &lt;--</code> typo eliminated</strong>
+                <span
+                  >All 4 affected skills fixed. Guard in <code>check-skills.sh</code> prevents
+                  regression.</span
+                >
+              </div>
+            </div>
+            <div class="strength">
+              <div class="check">+</div>
+              <div class="text">
+                <strong>Skill quality pass (prior session)</strong>
+                <span
+                  ><code>data-model-review</code> (147 lines), <code>deduplicate-code</code> (144),
+                  <code>nix-flake-migration</code> (163), <code>naming-review</code> (266),
+                  <code>library-deep-dive</code> (146) all fleshed out from thin stubs.</span
+                >
+              </div>
+            </div>
+            <div class="strength">
+              <div class="check">+</div>
+              <div class="text">
+                <strong><code>go-modularize</code> — the gold standard</strong>
+                <span
+                  >872 lines, decision tables, failure-mode catalog, migration templates. The
+                  richest skill in the repo.</span
+                >
+              </div>
+            </div>
+            <div class="strength">
+              <div class="check">+</div>
+              <div class="text">
+                <strong>20 skills pass structural validation</strong>
+                <span
+                  ><code>check-skills.sh</code> reports 0 thin skills (&lt;35 lines), all YAML
+                  frontmatter valid, no banned patterns.</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <section id="partial">
+          <h2><span class="num">B</span>Partially Done</h2>
+          <p>Work that is in progress or has known gaps.</p>
+
+          <div class="issue issue-important">
+            <span class="severity severity-important">Important · Content gap</span>
+            <h3>6 thin / borderline skills need fleshing out</h3>
+            <div class="where">
+              code-quality-scan (43), architecture-visualization (46), bdd-testing (46),
+              todo-list-builder (46), architecture-review (51), status-report (52)
+            </div>
+            <p>
+              These pass the &lt;35-line threshold but lack reference directories, output templates,
+              or concrete examples. The prior status report flagged <code>bdd-testing</code> (needs
+              ginkgo syntax ref), <code>features-audit</code> (needs FEATURES.md template), and
+              <code>docs-freshness-check</code> (needs configurable file list) specifically.
+            </p>
+          </div>
+
+          <div class="issue issue-important">
+            <span class="severity severity-important">Important · Accuracy</span>
+            <h3><code>how-to-golang</code> code snippets unverified</h3>
+            <div class="where">how-to-golang/references/ — 9 reference files</div>
+            <p>
+              Known accuracy issues flagged in prior audits: <code>gopter</code> signature,
+              <code>encoding/json/v2</code> Go version requirement, E2E HTTP API example, Rule 002
+              guidance. These have not been re-verified against current library docs.
+            </p>
+          </div>
+
+          <div class="issue issue-nice">
+            <span class="severity severity-nice">Nice to have · Architecture</span>
+            <h3><code>how-to-write-skills.md</code> still an orphaned root file</h3>
+            <div class="where">how-to-write-skills.md (11,618 bytes at repo root)</div>
+            <p>
+              The guide itself says it should be a skill directory or under <code>docs/</code>. It
+              is not installed as a skill. This was flagged in the prior status report (#10) and
+              remains unresolved.
+            </p>
+          </div>
+
+          <div class="issue issue-nice">
+            <span class="severity severity-nice">Nice to have · Integration</span>
+            <h3>Cross-skill references incomplete</h3>
+            <div class="where">
+              full-code-review → deduplicate-code, brutal-self-review → architecture-review
+            </div>
+            <p>
+              <code>full-code-review</code> already delegates to
+              <code>pareto-planning</code> (fixed). But the intended cross-reference graph from the
+              prior audit is not fully wired.
+            </p>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <section id="not-started">
+          <h2><span class="num">C</span>Not Started</h2>
+          <p>Work identified but zero progress made.</p>
+
+          <div class="card card-warning">
+            <h4>CI / pre-commit guardrails</h4>
+            <p>
+              <code>sync-html-kit.sh --check</code> and <code>check-skills.sh</code> exist and work,
+              but neither is wired into any CI pipeline, pre-commit hook, or GitHub Action. Drift
+              and structural breakage can silently creep back. This was item #8 in the prior status
+              report's Top 25.
+            </p>
+          </div>
+
+          <div class="card card-warning">
+            <h4>Eval test suite for skills</h4>
+            <p>
+              No automated prompt-based testing exists. The <code>skill-creator</code> skill
+              describes an eval loop but it has never been run against this repo's 20 skills. No
+              trigger-description validation, no output-quality grading.
+            </p>
+          </div>
+
+          <div class="card card-warning">
+            <h4>Repo-level <code>crush.json</code> for auto-discovery</h4>
+            <p>
+              No <code>crush.json</code> in this repo. Skills are not auto-discovered when working
+              in the repo. Users must install via <code>npx skills add</code> or
+              <code>skills_paths</code>. This limits dogfooding.
+            </p>
+          </div>
+
+          <div class="card card-warning">
+            <h4>Repo skill-dependency graph (D2)</h4>
+            <p>
+              No visual map of which skills reference which. The
+              <code>sync-html-kit.sh --list</code>
+              gives the kit consumer list, but the full cross-reference graph (skills referencing
+              other skills) is not documented visually.
+            </p>
+          </div>
+
+          <div class="card card-warning">
+            <h4>CSP meta tag example in guide</h4>
+            <p>
+              Templates are inline-style only (plus optional progressive-enhancement script). A
+              strict Content-Security-Policy example in the guide would help security-conscious
+              users. Flagged as a nice-to-have.
+            </p>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <section id="fucked">
+          <h2><span class="num">D</span>Totally Fucked Up</h2>
+          <p>Honest assessment of what is broken, wrong, or regrettable.</p>
+
+          <div class="issue issue-critical">
+            <span class="severity severity-critical">Honest · Self-inflicted</span>
+            <h3>The palette WAS the Tailwind defaults — for months</h3>
+            <div class="where">Fixed this session</div>
+            <p>
+              The html-report-kit shipped with indigo (<code>#6366f1</code>) on slate-900
+              (<code>#0f172a</code>) — literally Tailwind's stock colors. This is the single most
+              recognizable "AI-generated" palette in production. It took a user revolt ("I hate the
+              colors") and a 15-design shootout to fix it. The kit is supposed to be the design
+              standard for all skills — it was setting the worst possible example.
+            </p>
+            <div class="callout callout-solution">
+              <strong>Fixed:</strong> Bauhaus adopted. But the lesson is: never ship a design system
+              with default framework colors. A design system's job is to have an opinion.
+            </div>
+          </div>
+
+          <div class="issue issue-critical">
+            <span class="severity severity-critical">Architectural · Fixed</span>
+            <h3>The token split brain that survived 3 audits</h3>
+            <div class="where">html-output-guide.md — fixed this session</div>
+            <p>
+              The dark template used <code>--bg-elevated</code>, <code>--rose</code>,
+              <code>--emerald</code>. The light template used <code>--bg-card</code>,
+              <code>--coral</code>, <code>--teal</code>. Same concepts, different names. This was
+              documented in the guide as if it were intentional ("both class vocabularies are
+              aliased"). It was not a feature — it was a split brain that made markup non-portable
+              between themes. It survived at least 3 status reports without being flagged as a
+              structural defect.
+            </p>
+          </div>
+
+          <div class="issue issue-important">
+            <span class="severity severity-important">Honest · Ongoing</span>
+            <h3>No real-world dogfooding of the Bauhaus templates</h3>
+            <div class="where">This very report is the first real-world test</div>
+            <p>
+              The templates were rebuilt, synced, and verified structurally — but no consumer skill
+              has actually generated a report with them yet. This status report is the first
+              real-world use of the Bauhaus Dark template. Issues may surface when
+              <code>status-report</code>, <code>full-code-review</code>, or
+              <code>brutal-self-review</code> actually produce output.
+            </p>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <section id="improve">
+          <h2><span class="num">E</span>What We Should Improve</h2>
+
+          <div class="card card-problem">
+            <h4>1. Wire CI guardrails — this is the #1 risk</h4>
+            <p>
+              <code>sync-html-kit.sh --check</code> and <code>check-skills.sh</code> are built and
+              working. They are not wired into anything. Any commit can silently reintroduce drift
+              or structural breakage. A GitHub Action or pre-commit hook is the highest-leverage
+              improvement available.
+            </p>
+          </div>
+
+          <div class="card card-problem">
+            <h4>2. Flesh out the 6 thin skills</h4>
+            <p>
+              <code>code-quality-scan</code>, <code>architecture-visualization</code>,
+              <code>bdd-testing</code>, <code>todo-list-builder</code>,
+              <code>architecture-review</code>, <code>status-report</code> all pass the 35-line
+              floor but lack depth. The pattern is established (<code>go-modularize</code>,
+              <code>naming-review</code>): lean SKILL.md + dense <code>references/</code>. Follow
+              it.
+            </p>
+          </div>
+
+          <div class="card card-warning">
+            <h4>3. Verify <code>how-to-golang</code> code snippets against current docs</h4>
+            <p>
+              4 known accuracy issues in the reference files. These are code examples that agents
+              copy-paste. Wrong examples are worse than no examples. Use Context7 or similar to
+              re-verify against current library versions.
+            </p>
+          </div>
+
+          <div class="card card-warning">
+            <h4>4. Give <code>how-to-write-skills.md</code> a home</h4>
+            <p>
+              It's an orphaned root file that the guide itself says should be a skill directory or
+              under <code>docs/</code>. Convert it to <code>skill-creator/</code> or move it. Eat
+              your own dog food.
+            </p>
+          </div>
+
+          <div class="card card-solution">
+            <h4>5. Dogfood the Bauhaus templates by generating real reports</h4>
+            <p>
+              This status report is the first real Bauhaus output. Run
+              <code>full-code-review</code>, <code>architecture-review</code>, or
+              <code>brutal-self-review</code> against a real project and verify the templates hold
+              up with real content density.
+            </p>
+          </div>
+
+          <div class="card card-solution">
+            <h4>6. Build an eval test suite</h4>
+            <p>
+              The <code>skill-creator</code> skill describes eval methodology. Run it against all 20
+              skills: ≥2 prompts each, automated grading, trigger-description validation. This is
+              the only way to know if skills actually activate and produce quality output.
+            </p>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <section id="next25">
+          <h2><span class="num">F</span>Top 25 Things to Do Next</h2>
+          <p>Ranked by impact × urgency. Items #1–#6 are the Pareto front.</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Task</th>
+                <th>Impact</th>
+                <th>Effort</th>
+                <th>Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>
+                  <strong
+                    >Wire <code>sync-html-kit.sh --check</code> + <code>check-skills.sh</code> into
+                    CI (GitHub Action)</strong
+                  >
+                </td>
+                <td class="yes">🔴 Critical</td>
+                <td>15min</td>
+                <td>Drift guard</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>
+                  <strong
+                    >Dogfood: generate a real report with <code>full-code-review</code> using
+                    Bauhaus templates</strong
+                  >
+                </td>
+                <td class="yes">🔴 Critical</td>
+                <td>30min</td>
+                <td>Validation</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>
+                  <strong
+                    >Verify <code>how-to-golang</code> code snippets (gopter, json/v2, E2E, Rule
+                    002)</strong
+                  >
+                </td>
+                <td class="yes">🔴 Critical</td>
+                <td>45min</td>
+                <td>Accuracy</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>
+                  <strong>Flesh out <code>bdd-testing</code></strong> — ginkgo syntax ref, test
+                  structure template
+                </td>
+                <td class="yes">🔴 High</td>
+                <td>45min</td>
+                <td>Content</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>
+                  <strong>Flesh out <code>features-audit</code></strong> — FEATURES.md template with
+                  status badges
+                </td>
+                <td class="yes">🔴 High</td>
+                <td>30min</td>
+                <td>Content</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>
+                  <strong>Convert <code>how-to-write-skills.md</code> to skill dir</strong> (eat our
+                  own dog food)
+                </td>
+                <td class="yes">🟡 Medium</td>
+                <td>20min</td>
+                <td>Architecture</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>
+                  Flesh out <code>code-quality-scan</code> — document <code>art-dupl</code> usage,
+                  output template
+                </td>
+                <td>🟡 Medium</td>
+                <td>30min</td>
+                <td>Content</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>
+                  Flesh out <code>architecture-review</code> — assessment rubric, methodology in
+                  <code>references/</code>
+                </td>
+                <td>🟡 Medium</td>
+                <td>30min</td>
+                <td>Content</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Flesh out <code>todo-list-builder</code> — output template with examples</td>
+                <td>🟡 Medium</td>
+                <td>30min</td>
+                <td>Content</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>
+                  Build eval test suite — ≥2 prompts/skill, automated grading via
+                  <code>skill-creator</code>
+                </td>
+                <td>🟡 Medium</td>
+                <td>2hr</td>
+                <td>Validation</td>
+              </tr>
+              <tr>
+                <td>11</td>
+                <td>
+                  Create repo-level <code>crush.json</code> with <code>skills_paths</code> for
+                  auto-discovery
+                </td>
+                <td>🟡 Medium</td>
+                <td>10min</td>
+                <td>Config</td>
+              </tr>
+              <tr>
+                <td>12</td>
+                <td>
+                  Wire remaining cross-refs (full-code-review→deduplicate-code,
+                  brutal-self-review→architecture-review)
+                </td>
+                <td>🟡 Medium</td>
+                <td>15min</td>
+                <td>Integration</td>
+              </tr>
+              <tr>
+                <td>13</td>
+                <td>
+                  Add <code>allowed-tools</code> frontmatter to CLI-dependent skills
+                  (<code>d2</code>, <code>art-dupl</code>)
+                </td>
+                <td>🟠 Low</td>
+                <td>15min</td>
+                <td>Config</td>
+              </tr>
+              <tr>
+                <td>14</td>
+                <td>
+                  Add error-handling guidance for missing external tools (<code>d2</code>,
+                  <code>art-dupl</code>, <code>nix</code>)
+                </td>
+                <td>🟠 Low</td>
+                <td>30min</td>
+                <td>Robustness</td>
+              </tr>
+              <tr>
+                <td>15</td>
+                <td>Test trigger descriptions with skill-creator's optimization loop</td>
+                <td>🟠 Low</td>
+                <td>60min</td>
+                <td>Validation</td>
+              </tr>
+              <tr>
+                <td>16</td>
+                <td>Add CSP meta tag example to <code>html-output-guide.md</code></td>
+                <td>🟠 Low</td>
+                <td>10min</td>
+                <td>Security</td>
+              </tr>
+              <tr>
+                <td>17</td>
+                <td>Generate repo skill-dependency graph (D2) showing the cross-reference graph</td>
+                <td>🟠 Low</td>
+                <td>20min</td>
+                <td>Docs</td>
+              </tr>
+              <tr>
+                <td>18</td>
+                <td>
+                  Audit <code>originals/</code> — confirm 17 files map 1:1 to skills, prune orphans
+                </td>
+                <td>⚪ Trivial</td>
+                <td>15min</td>
+                <td>Cleanup</td>
+              </tr>
+              <tr>
+                <td>19</td>
+                <td>Add version/timestamp frontmatter to track skill freshness</td>
+                <td>⚪ Trivial</td>
+                <td>10min</td>
+                <td>Maintenance</td>
+              </tr>
+              <tr>
+                <td>20</td>
+                <td>Document <code>html-report-kit</code> Artifact decision rule centrally</td>
+                <td>⚪ Trivial</td>
+                <td>10min</td>
+                <td>Docs</td>
+              </tr>
+              <tr>
+                <td>21</td>
+                <td>Standardize execution footer — reference a shared block</td>
+                <td>⚪ Trivial</td>
+                <td>15min</td>
+                <td>DRY</td>
+              </tr>
+              <tr>
+                <td>22</td>
+                <td>
+                  Add <code>.gitignore</code> for any build artifacts if vendoring moves to
+                  generated-only
+                </td>
+                <td>⚪ Trivial</td>
+                <td>5min</td>
+                <td>Hygiene</td>
+              </tr>
+              <tr>
+                <td>23</td>
+                <td>
+                  Flesh out <code>docs-freshness-check</code> — define "stale", configurable file
+                  list
+                </td>
+                <td>🟡 Medium</td>
+                <td>30min</td>
+                <td>Content</td>
+              </tr>
+              <tr>
+                <td>24</td>
+                <td>
+                  Flesh out <code>status-report</code> — already uses Bauhaus; add output examples
+                  to <code>references/</code>
+                </td>
+                <td>🟡 Medium</td>
+                <td>20min</td>
+                <td>Content</td>
+              </tr>
+              <tr>
+                <td>25</td>
+                <td>Review Bauhaus template WCAG AA compliance for all color combinations</td>
+                <td>🟠 Low</td>
+                <td>30min</td>
+                <td>Accessibility</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ============================================================ -->
+        <section id="question">
+          <h2><span class="num">G</span>Top #1 Question I Cannot Figure Out</h2>
+
+          <div class="issue issue-critical">
+            <span class="severity severity-critical">Blocking · Needs your input</span>
+            <h3>
+              Should the Bauhaus templates use Google Fonts when the report is for public
+              consumption?
+            </h3>
+            <div class="where">html-report-kit design requirements</div>
+            <p>
+              The Bauhaus look derives its personality from heavy font weights (800/900) and tight
+              tracking. System fonts approximate this well —
+              <strong>but they don't match the showcase designs you approved</strong>. The showcase
+              files that won your approval (<code>06c-bauhaus-desktop-v3.html</code>) used
+              <strong>Archivo</strong> and <strong>Space Mono</strong> from Google Fonts. The
+              canonical templates now ship with system font stacks only, per the kit's
+              zero-dependency rule.
+            </p>
+            <p>
+              This means every report generated from the canonical templates will look slightly less
+              distinctive than the design you actually chose. The system-font version is good — but
+              it's not the version that made you say "Bauhaus is the winner."
+            </p>
+            <div class="callout callout-warning">
+              <strong>The tradeoff:</strong>
+              System fonts = zero dependencies, works offline, instant load. Google Fonts = matches
+              the approved design, more personality, but adds an external request and breaks the
+              zero-dependency promise. I cannot determine which matters more to you: design fidelity
+              or dependency purity. The answer determines whether I add the
+              <code>&lt;link&gt;</code> to the canonical templates or leave them system-only.
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <section id="matrix">
+          <h2><span class="num">XX</span>Skill-by-Skill Status Matrix</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Skill</th>
+                <th>Lines</th>
+                <th>Quality</th>
+                <th>refs/</th>
+                <th>assets/</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>go-modularize</code></td>
+                <td>872</td>
+                <td class="yes">Comprehensive</td>
+                <td>❌</td>
+                <td>✅ 5</td>
+                <td>Gold standard. Largest skill.</td>
+              </tr>
+              <tr>
+                <td><code>naming-review</code></td>
+                <td>266</td>
+                <td class="yes">Comprehensive</td>
+                <td>✅ 2</td>
+                <td>✅ 5</td>
+                <td>Multi-step pipeline + linter integration</td>
+              </tr>
+              <tr>
+                <td><code>nix-review</code></td>
+                <td>231</td>
+                <td class="yes">Comprehensive</td>
+                <td>✅ 2</td>
+                <td>❌</td>
+                <td>Checklist-driven, severity guide</td>
+              </tr>
+              <tr>
+                <td><code>nix-flake-migration</code></td>
+                <td>163</td>
+                <td class="yes">Solid</td>
+                <td>❌</td>
+                <td>✅ 5</td>
+                <td>Was 21 lines — huge improvement</td>
+              </tr>
+              <tr>
+                <td><code>data-model-review</code></td>
+                <td>147</td>
+                <td class="yes">Comprehensive</td>
+                <td>✅ 3</td>
+                <td>✅ 5</td>
+                <td>Strong type-first methodology</td>
+              </tr>
+              <tr>
+                <td><code>library-deep-dive</code></td>
+                <td>146</td>
+                <td class="yes">Comprehensive</td>
+                <td>✅ 2</td>
+                <td>✅ 5</td>
+                <td>Newest skill</td>
+              </tr>
+              <tr>
+                <td><code>deduplicate-code</code></td>
+                <td>144</td>
+                <td class="yes">Solid</td>
+                <td>❌</td>
+                <td>❌</td>
+                <td>Was 27 lines — big improvement</td>
+              </tr>
+              <tr>
+                <td><code>how-to-golang</code></td>
+                <td>93</td>
+                <td class="yes">Comprehensive</td>
+                <td>✅ 9</td>
+                <td>❌</td>
+                <td>Code accuracy unverified ⚠️</td>
+              </tr>
+              <tr>
+                <td><code>html-report-kit</code></td>
+                <td>82</td>
+                <td class="yes">Solid</td>
+                <td>✅ 3</td>
+                <td>✅ 2</td>
+                <td>Bauhaus migrated. 11 consumers.</td>
+              </tr>
+              <tr>
+                <td><code>pareto-planning</code></td>
+                <td>79</td>
+                <td class="yes">Solid</td>
+                <td>❌</td>
+                <td>✅ 5</td>
+                <td>Uses <code>allowed-tools: d2</code></td>
+              </tr>
+              <tr>
+                <td><code>full-code-review</code></td>
+                <td>78</td>
+                <td class="yes">Comprehensive</td>
+                <td>✅ 1</td>
+                <td>✅ 5</td>
+                <td>Delegates to pareto-planning</td>
+              </tr>
+              <tr>
+                <td><code>brutal-self-review</code></td>
+                <td>75</td>
+                <td class="yes">Solid</td>
+                <td>✅ 1</td>
+                <td>✅ 5</td>
+                <td>References composition-patterns</td>
+              </tr>
+              <tr>
+                <td><code>docs-freshness-check</code></td>
+                <td>67</td>
+                <td>🟡 Borderline</td>
+                <td>❌</td>
+                <td>❌</td>
+                <td>Hardcoded file list. Needs work.</td>
+              </tr>
+              <tr>
+                <td><code>features-audit</code></td>
+                <td>59</td>
+                <td>🟡 Borderline</td>
+                <td>❌</td>
+                <td>✅ 1</td>
+                <td>No FEATURES.md template</td>
+              </tr>
+              <tr>
+                <td><code>status-report</code></td>
+                <td>52</td>
+                <td>🟡 Borderline</td>
+                <td>❌</td>
+                <td>✅ 5</td>
+                <td>Bauhaus-aware. This report uses it.</td>
+              </tr>
+              <tr>
+                <td><code>architecture-review</code></td>
+                <td>51</td>
+                <td>🟡 Borderline</td>
+                <td>❌</td>
+                <td>✅ 5</td>
+                <td>Needs rubric/methodology ref</td>
+              </tr>
+              <tr>
+                <td><code>todo-list-builder</code></td>
+                <td>46</td>
+                <td>🟡 Thin</td>
+                <td>❌</td>
+                <td>❌</td>
+                <td>Clean but no output template</td>
+              </tr>
+              <tr>
+                <td><code>bdd-testing</code></td>
+                <td>46</td>
+                <td>🟡 Thin</td>
+                <td>✅ 1</td>
+                <td>✅ 1</td>
+                <td>Zero ginkgo syntax reference</td>
+              </tr>
+              <tr>
+                <td><code>architecture-visualization</code></td>
+                <td>46</td>
+                <td>🟡 Thin</td>
+                <td>❌</td>
+                <td>❌</td>
+                <td>No error handling if <code>d2</code> missing</td>
+              </tr>
+              <tr>
+                <td><code>code-quality-scan</code></td>
+                <td>43</td>
+                <td>🟡 Thin</td>
+                <td>❌</td>
+                <td>✅ 5</td>
+                <td><code>art-dupl</code> undocumented</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Session changelog</h3>
+          <div class="migration-step">
+            <div class="migration-num">1</div>
+            <div class="migration-content">
+              <h4><code>f3a6e7f</code> — Token architecture spec</h4>
+              <p>
+                Defined the unified semantic vocabulary, <code>color-mix()</code> strategy, type
+                stacks, scrollspy pattern.
+              </p>
+            </div>
+          </div>
+          <div class="migration-step">
+            <div class="migration-num">2</div>
+            <div class="migration-content">
+              <h4><code>2e6301f</code> — Both templates rewritten in Bauhaus</h4>
+              <p>
+                Dark + Light templates. All 12 components preserved. System fonts.
+                Progressive-enhancement scrollspy.
+              </p>
+            </div>
+          </div>
+          <div class="migration-step">
+            <div class="migration-num">3</div>
+            <div class="migration-content">
+              <h4><code>6c129d5</code> — Example report + guide updated</h4>
+              <p>
+                Full component demo. Guide documents new tokens, <code>color-mix()</code>, aliases.
+              </p>
+            </div>
+          </div>
+          <div class="migration-step">
+            <div class="migration-num">4</div>
+            <div class="migration-content">
+              <h4><code>29627b6</code> — Propagated to 11 consumers</h4>
+              <p>55 files vendored. Zero drift verified.</p>
+            </div>
+          </div>
+          <div class="migration-step">
+            <div class="migration-num">5</div>
+            <div class="migration-content">
+              <h4><code>53214a9</code> — Cleanup + AGENTS.md memory</h4>
+              <p>Deleted 24 review artifacts. Recorded Bauhaus decision for future sessions.</p>
+            </div>
+          </div>
+          <div class="migration-step">
+            <div class="migration-num">6</div>
+            <div class="migration-content">
+              <h4><code>0bf55b4</code> — Lars: whitespace normalization</h4>
+              <p>
+                Formatter pass on all canonical + vendored template files. No functional changes.
+              </p>
+            </div>
+          </div>
+
+          <footer class="footer">
+            Generated 2026-06-18 16:57 CEST · Crush · Bauhaus Dark template · First real-world
+            dogfood of the new design system
+          </footer>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      (function () {
+        if (!("IntersectionObserver" in window)) return;
+        var nav = document.querySelector("[data-nav]");
+        if (!nav) return;
+        var links = nav.querySelectorAll('a[href^="#"]');
+        var ids = Array.from(links).map(function (l) {
+          return l.getAttribute("href").slice(1);
+        });
+        var sections = ids
+          .map(function (id) {
+            return document.getElementById(id);
+          })
+          .filter(Boolean);
+        if (!sections.length) return;
+        var observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                links.forEach(function (link) {
+                  link.classList.toggle(
+                    "active",
+                    link.getAttribute("href") === "#" + entry.target.id,
+                  );
+                });
+              }
+            });
+          },
+          { rootMargin: "-80px 0px -60% 0px", threshold: 0 },
+        );
+        sections.forEach(function (s) {
+          observer.observe(s);
+        });
+      })();
+    </script>
+  </body>
+</html>
