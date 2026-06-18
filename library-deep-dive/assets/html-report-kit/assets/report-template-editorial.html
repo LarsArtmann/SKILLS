@@ -98,12 +98,25 @@
         -moz-osx-font-smoothing: grayscale;
       }
 
+      /* --- Full-bleed top bar --- */
+      .top-bar {
+        background: var(--text);
+        color: var(--surface);
+        padding: 0.6rem 2rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
       /* --- Layout: optional sticky sidebar TOC --- */
       .layout {
         display: flex;
         gap: 2.5rem;
-        max-width: 1400px;
-        margin: 0 auto;
         padding: 2rem;
       }
       .sidebar {
@@ -800,6 +813,11 @@
           flex-direction: column;
           padding: 1rem;
         }
+        .top-bar {
+          padding: 0.6rem 1rem;
+          flex-wrap: wrap;
+          gap: 0.3rem;
+        }
         .grid-2,
         .grid-3 {
           grid-template-columns: 1fr;
@@ -832,6 +850,13 @@
     </style>
   </head>
   <body>
+    <!-- Full-bleed top bar (optional — remove for quieter reports) -->
+    <div class="top-bar">
+      <span>REPORT TYPE</span>
+      <span>YYYY-MM-DD</span>
+      <span>AUTHOR / TEAM</span>
+    </div>
+
     <div class="layout">
       <!-- Sidebar TOC (hidden below 1024px; use inline .toc if you prefer) -->
       <aside class="sidebar" data-nav>

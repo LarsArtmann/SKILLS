@@ -71,11 +71,23 @@
         -webkit-font-smoothing: antialiased;
       }
 
+      .top-bar {
+        background: var(--text);
+        color: var(--surface);
+        padding: 0.6rem 2rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
       .layout {
         display: flex;
         gap: 2.5rem;
-        max-width: 1400px;
-        margin: 0 auto;
         padding: 2rem;
       }
       .sidebar {
@@ -726,6 +738,11 @@
           flex-direction: column;
           padding: 1rem;
         }
+        .top-bar {
+          padding: 0.6rem 1rem;
+          flex-wrap: wrap;
+          gap: 0.3rem;
+        }
         .grid-2,
         .grid-3 {
           grid-template-columns: 1fr;
@@ -758,6 +775,12 @@
     </style>
   </head>
   <body>
+    <div class="top-bar">
+      <span>DESIGN AUDIT</span>
+      <span>2026-06-18</span>
+      <span>CRUSH ENGINEERING</span>
+    </div>
+
     <div class="layout">
       <aside class="sidebar" data-nav>
         <nav>
