@@ -321,35 +321,6 @@
       .stat-card:last-child {
         border-right: none;
       }
-      /* Bauhaus color blocks */
-      .score-card:nth-child(1),
-      .stat-card:nth-child(1) {
-        background: var(--problem);
-        color: var(--surface);
-      }
-      .score-card:nth-child(2),
-      .stat-card:nth-child(2) {
-        background: var(--solution);
-        color: var(--surface);
-      }
-      .score-card:nth-child(3),
-      .stat-card:nth-child(3) {
-        background: var(--warning);
-        color: var(--text);
-      }
-      .score-card:nth-child(4),
-      .stat-card:nth-child(4) {
-        background: var(--text);
-        color: var(--surface);
-      }
-      .score-card:nth-child(5),
-      .stat-card:nth-child(5) {
-        background: var(--surface-raised);
-      }
-      .score-card:nth-child(6),
-      .stat-card:nth-child(6) {
-        background: var(--surface-raised);
-      }
 
       .score,
       .stat-value {
@@ -368,21 +339,21 @@
         letter-spacing: 0.12em;
         margin-top: 0.5rem;
       }
-      /* State classes override the nth-child coloring */
+      /* Semantic state classes — no nth-child decoration, no !important */
       .score-good,
       .stat-good {
-        background: var(--solution) !important;
-        color: var(--surface) !important;
+        background: var(--solution);
+        color: var(--surface);
       }
       .score-warn,
       .stat-warn {
-        background: var(--warning) !important;
-        color: var(--text) !important;
+        background: var(--warning);
+        color: var(--text);
       }
       .score-bad,
       .stat-bad {
-        background: var(--problem) !important;
-        color: var(--surface) !important;
+        background: var(--problem);
+        color: var(--surface);
       }
 
       /* --- General cards --- */
