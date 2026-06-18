@@ -143,7 +143,15 @@ There is no `crush.json` in this repo, so Crush does not auto-discover these ski
 
 ### 5.9 Shared HTML Design System (`html-report-kit`)
 
-Skills that produce point-in-time reports write self-contained HTML files instead of Markdown, using a shared design system so every report shares the same visual language. The kit has two template variants: a **dark-dashboard** theme (status dashboards, scan results, high-density metrics) and an **editorial-light** theme (adoption feedback, architecture reviews, audit briefs, long-form findings). Both share the same component vocabulary: stat/score cards, issue cards, severity badges, callouts, strengths lists, dep-trees, tables, before/after comparisons, and syntax highlighting.
+Skills that produce point-in-time reports write self-contained HTML files instead of Markdown, using a shared design system so every report shares the same visual language. The kit uses the **Bauhaus** design language: primary colors (red, blue, yellow) on a neutral ground. Two variants: **Bauhaus Dark** (status dashboards, scan results, high-density metrics — graphite ground + primary accents) and **Bauhaus Light** (adoption feedback, architecture reviews, audit briefs — warm paper + primary color blocks). Both share the same component vocabulary: stat/score cards, issue cards, severity badges, callouts, strengths lists, dep-trees, tables, before/after comparisons, syntax highlighting, hero with optional geometric shape cluster (circle/square/triangle/bar).
+
+**Unified token vocabulary (post-Bauhaus migration):** both templates share the same semantic token names — `--surface`, `--surface-raised`, `--surface-sunken`, `--text`, `--text-muted`, `--text-faint`, `--border`, `--border-strong`, `--accent`, `--problem`, `--solution`, `--warning`. Only the primitive values differ between dark and light. The previous split-brain tokens (`--bg-elevated`/`--rose` in dark vs `--bg-card`/`--coral` in light) are preserved as **backward-compatible aliases** so consumer skills that reference old names keep working. See [`html-report-kit/references/bauhaus-tokens.md`](html-report-kit/references/bauhaus-tokens.md) for the full spec.
+
+**`color-mix()` replaces glow tokens:** instead of paired `--rose` + `--rose-glow` tokens (8 redundant, drift-prone values), translucent variants derive on demand via `color-mix(in srgb, var(--problem) 15%, transparent)`. Browser support: Chrome 111+, Safari 16.2+, Firefox 113+.
+
+**Optional scrollspy:** both templates ship a tiny IntersectionObserver script (~20 lines) that highlights the active sidebar item. It's progressive enhancement — plain `<a href="#section">` anchor links work without JS. Auto-discovers any `[data-nav]` container.
+
+**Sharp corners:** `--radius: 0` is the Bauhaus default. Override per-report if needed.
 
 **The Artifact decision rule** (encoded in `how-to-write-skills.md`): Snapshot + HumanReport → HTML; Living + ToolParsed/EndUserDoc → Markdown. Never convert living docs (`FEATURES.md`, `TODO_LIST.md`) to HTML.
 
