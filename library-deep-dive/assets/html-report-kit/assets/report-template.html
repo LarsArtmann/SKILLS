@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report Title</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --bg-elevated: #1e293b;
+        --bg-sunken: #020617;
+        --text: #e2e8f0;
+        --text-dim: #94a3b8;
+        --text-faint: #64748b;
+        --accent: #6366f1;
+        --accent-glow: rgba(99, 102, 241, 0.15);
+        --rose: #f43f5e;
+        --rose-glow: rgba(244, 63, 94, 0.15);
+        --emerald: #10b981;
+        --emerald-glow: rgba(16, 185, 129, 0.15);
+        --amber: #f59e0b;
+        --amber-glow: rgba(245, 158, 11, 0.15);
+        --cyan: #06b6d4;
+        --border: #334155;
+        --radius: 12px;
+        --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+        --font-sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-sans);
+        line-height: 1.6;
+      }
+
+      body {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      /* Layout with optional sidebar TOC */
+      .layout {
+        display: flex;
+        gap: 2.5rem;
+      }
+      .sidebar {
+        width: 220px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 2rem;
+        align-self: flex-start;
+        height: calc(100vh - 4rem);
+        overflow-y: auto;
+        display: none;
+      }
+      .sidebar nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .sidebar .label {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-faint);
+        margin-bottom: 0.75rem;
+      }
+      .sidebar a {
+        font-size: 0.85rem;
+        color: var(--text-dim);
+        text-decoration: none;
+        padding: 0.35rem 0.75rem;
+        border-left: 2px solid transparent;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.15s ease;
+        line-height: 1.4;
+      }
+      .sidebar a:hover {
+        color: var(--accent);
+        border-left-color: var(--accent);
+        background: var(--accent-glow);
+      }
+      .main {
+        width: 100%;
+        min-width: 0;
+      }
+      @media (min-width: 1100px) {
+        .sidebar {
+          display: block;
+        }
+      }
+
+      /* Typography */
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+      }
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      h2 {
+        font-size: 1.75rem;
+        margin: 3rem 0 1.25rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border);
+      }
+      h2 .num {
+        color: var(--accent);
+        font-weight: 700;
+        margin-right: 0.5rem;
+      }
+      h3 {
+        font-size: 1.25rem;
+        margin: 2rem 0 0.75rem;
+        color: var(--accent);
+      }
+      h4 {
+        font-size: 1rem;
+        margin: 1.5rem 0 0.5rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      p {
+        margin-bottom: 1rem;
+        color: var(--text-dim);
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      strong {
+        color: var(--text);
+      }
+
+      /* Hero */
+      .hero {
+        text-align: center;
+        padding: 4rem 2rem;
+        margin-bottom: 3rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg) 100%);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, transparent 50%);
+        pointer-events: none;
+      }
+      .hero-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        background: var(--accent-glow);
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+      }
+      .hero-subtitle {
+        font-size: 1.125rem;
+        color: var(--text-dim);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Cards */
+      .card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .card:hover {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 1px var(--accent-glow);
+      }
+      .card-problem {
+        border-left: 3px solid var(--rose);
+      }
+      .card-solution {
+        border-left: 3px solid var(--emerald);
+      }
+      .card-warning {
+        border-left: 3px solid var(--amber);
+      }
+
+      /* Code */
+      pre {
+        background: var(--bg-sunken);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.25rem;
+        overflow-x: auto;
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        line-height: 1.7;
+        margin: 1rem 0;
+      }
+      code {
+        font-family: var(--font-mono);
+        font-size: 0.875em;
+        background: var(--bg-sunken);
+        padding: 0.15rem 0.35rem;
+        border-radius: 4px;
+        color: var(--cyan);
+      }
+      pre code {
+        padding: 0;
+        background: transparent;
+      }
+
+      /* Syntax highlighting (language-agnostic) */
+      .tok-keyword {
+        color: #c678dd;
+      }
+      .tok-type {
+        color: #e5c07b;
+      }
+      .tok-string {
+        color: #98c379;
+      }
+      .tok-comment {
+        color: #5c6370;
+        font-style: italic;
+      }
+      .tok-func {
+        color: #61afef;
+      }
+      .tok-number {
+        color: #d19a66;
+      }
+      .tok-generic {
+        color: #e06c75;
+      }
+      .tok-builtin {
+        color: #56b6c2;
+      }
+      .tok-punct {
+        color: #abb2bf;
+      }
+      .tok-attr {
+        color: #d19a66;
+      }
+
+      /* Tables */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        font-size: 0.875rem;
+      }
+      th,
+      td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+      th {
+        color: var(--text-dim);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        background: var(--bg-sunken);
+      }
+      tr:hover td {
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      /* Badges */
+      .badge {
+        display: inline-block;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .badge-critical {
+        background: var(--rose-glow);
+        color: var(--rose);
+        border: 1px solid var(--rose);
+      }
+      .badge-high {
+        background: var(--amber-glow);
+        color: var(--amber);
+        border: 1px solid var(--amber);
+      }
+      .badge-medium {
+        background: rgba(245, 158, 11, 0.08);
+        color: #d97706;
+        border: 1px solid #d97706;
+      }
+      .badge-low {
+        background: rgba(148, 163, 184, 0.1);
+        color: var(--text-dim);
+        border: 1px solid var(--text-faint);
+      }
+      .badge-fixed {
+        background: var(--emerald-glow);
+        color: var(--emerald);
+        border: 1px solid var(--emerald);
+      }
+
+      /* Grid layouts */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+      }
+      @media (max-width: 768px) {
+        .grid-2,
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+        body {
+          padding: 1rem;
+        }
+        h1 {
+          font-size: 1.75rem;
+        }
+      }
+
+      /* Diagrams */
+      .diagram {
+        background: var(--bg-sunken);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 2rem;
+        margin: 1.5rem 0;
+      }
+      .node {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin: 0.25rem;
+        border: 1px solid var(--border);
+        background: var(--bg-elevated);
+      }
+      .node-core {
+        border-color: var(--accent);
+        background: var(--accent-glow);
+      }
+      .node-problem {
+        border-color: var(--rose);
+        background: var(--rose-glow);
+        color: var(--rose);
+      }
+      .node-good {
+        border-color: var(--emerald);
+        background: var(--emerald-glow);
+        color: var(--emerald);
+      }
+      .arrow {
+        display: inline-block;
+        color: var(--text-faint);
+        margin: 0 0.5rem;
+        font-size: 1.25rem;
+      }
+
+      /* Lists */
+      ul,
+      ol {
+        margin: 1rem 0 1rem 1.5rem;
+      }
+      li {
+        margin-bottom: 0.5rem;
+        color: var(--text-dim);
+      }
+      li strong {
+        color: var(--text);
+      }
+
+      /* Before/After comparison */
+      .compare-header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .compare-header div {
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius) var(--radius) 0 0;
+        font-weight: 700;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-align: center;
+      }
+      .compare-before {
+        background: var(--rose-glow);
+        color: var(--rose);
+        border: 1px solid var(--rose);
+        border-bottom: none;
+      }
+      .compare-after {
+        background: var(--emerald-glow);
+        color: var(--emerald);
+        border: 1px solid var(--emerald);
+        border-bottom: none;
+      }
+      .compare-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .compare-row > div {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 0 0 var(--radius) var(--radius);
+        padding: 1.25rem;
+      }
+
+      /* Table of contents */
+      .toc {
+        position: sticky;
+        top: 1rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      .toc h3 {
+        margin-top: 0;
+      }
+      .toc ul {
+        list-style: none;
+        margin: 0;
+      }
+      .toc li {
+        margin: 0.35rem 0;
+      }
+      .toc a {
+        color: var(--text-dim);
+        font-size: 0.875rem;
+      }
+      .toc a:hover {
+        color: var(--accent);
+      }
+
+      /* Numbered steps */
+      .migration-step {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: var(--bg-elevated);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+      }
+      .migration-num {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: var(--accent-glow);
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.875rem;
+        flex-shrink: 0;
+      }
+      .migration-content h4 {
+        margin: 0 0 0.25rem;
+      }
+      .migration-content p {
+        margin: 0;
+      }
+
+      /* Stat cards */
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+      }
+      .stat-card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        text-align: center;
+      }
+      .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--accent);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+      }
+      .stat-label {
+        font-size: 0.875rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .stat-good .stat-value {
+        color: var(--emerald);
+      }
+      .stat-warn .stat-value {
+        color: var(--amber);
+      }
+      .stat-bad .stat-value {
+        color: var(--rose);
+      }
+
+      /* Editorial-light aliases for portable markup */
+      .scorecard {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+      }
+      .score-card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        text-align: center;
+      }
+      .score-card .score {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--accent);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+      }
+      .score-card .label {
+        font-size: 0.875rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .score-good .score-card .score {
+        color: var(--emerald);
+      }
+      .score-warn .score-card .score {
+        color: var(--amber);
+      }
+      .score-bad .score-card .score {
+        color: var(--rose);
+      }
+
+      /* Issue cards */
+      .issue {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.75rem;
+        margin: 1.25rem 0;
+      }
+      .issue-critical {
+        border-left: 4px solid var(--rose);
+      }
+      .issue-important {
+        border-left: 4px solid var(--amber);
+      }
+      .issue-nice {
+        border-left: 4px solid var(--emerald);
+      }
+      .issue .severity {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        margin-bottom: 0.75rem;
+      }
+      .severity-critical {
+        background: var(--rose-glow);
+        color: var(--rose);
+      }
+      .severity-important {
+        background: var(--amber-glow);
+        color: var(--amber);
+      }
+      .severity-nice {
+        background: var(--emerald-glow);
+        color: var(--emerald);
+      }
+      .issue h3 {
+        margin-top: 0;
+      }
+      .issue .where {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--text-faint);
+        margin-bottom: 0.875rem;
+      }
+
+      /* Callouts */
+      .callout {
+        border-radius: var(--radius);
+        padding: 1.125rem 1.375rem;
+        margin: 1.25rem 0;
+        font-size: 0.9375rem;
+      }
+      .callout-solution {
+        background: rgba(16, 185, 129, 0.08);
+        border: 1px solid var(--emerald);
+      }
+      .callout-warning {
+        background: var(--amber-glow);
+        border: 1px solid var(--amber);
+      }
+      .callout strong {
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+
+      /* Strengths list */
+      .strengths {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        margin: 1.25rem 0;
+      }
+      .strength {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.875rem 1rem;
+        background: rgba(16, 185, 129, 0.08);
+        border: 1px solid var(--emerald);
+        border-radius: var(--radius);
+      }
+      .strength .check {
+        color: var(--emerald);
+        font-weight: 700;
+        font-size: 1.125rem;
+        flex-shrink: 0;
+        line-height: 1.5;
+      }
+      .strength .text {
+        font-size: 0.9rem;
+      }
+      .strength .text strong {
+        display: block;
+        margin-bottom: 0.125rem;
+      }
+      .strength .text span {
+        color: var(--text-dim);
+      }
+
+      /* Dep tree / ASCII diagram */
+      .dep-tree {
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        line-height: 1.8;
+        background: var(--bg-sunken);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.25rem 1.5rem;
+        margin: 1rem 0;
+        overflow-x: auto;
+        white-space: pre;
+      }
+      .dep-tree .root {
+        color: var(--amber);
+        font-weight: 600;
+      }
+      .dep-tree .unwanted {
+        color: var(--rose);
+      }
+      .dep-tree .ok {
+        color: var(--text-dim);
+      }
+
+      /* Footer */
+      .footer {
+        margin-top: 4rem;
+        padding: 2rem 0;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        font-size: 0.8125rem;
+        color: var(--text-faint);
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-sunken);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--text-faint);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <!-- Sidebar TOC (hidden on narrow viewports) -->
+      <aside class="sidebar">
+        <nav>
+          <div class="label">Contents</div>
+          <a href="#summary">Summary</a>
+          <a href="#findings">Findings</a>
+          <a href="#issues">Issue Cards</a>
+          <a href="#proposal">Proposal</a>
+          <a href="#plan">Plan</a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <!-- Hero -->
+        <div class="hero">
+          <div class="hero-badge">Report Type</div>
+          <h1>Report Title</h1>
+          <p class="hero-subtitle">One-sentence description of what this report covers.</p>
+        </div>
+
+        <!-- Table of Contents (alternative to sidebar; pick one) -->
+        <nav class="toc">
+          <h3>Contents</h3>
+          <ul>
+            <li><a href="#summary">Summary</a></li>
+            <li><a href="#findings">Findings</a></li>
+            <li><a href="#issues">Issue Cards</a></li>
+            <li><a href="#proposal">Proposal</a></li>
+            <li><a href="#plan">Plan</a></li>
+          </ul>
+        </nav>
+
+        <!-- Stats Dashboard -->
+        <h2 id="summary"><span class="num">00</span>Summary</h2>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-value">42</div>
+            <div class="stat-label">Total Items</div>
+          </div>
+          <div class="stat-card stat-bad">
+            <div class="stat-value">7</div>
+            <div class="stat-label">Critical</div>
+          </div>
+          <div class="stat-card stat-good">
+            <div class="stat-value">35</div>
+            <div class="stat-label">Resolved</div>
+          </div>
+        </div>
+
+        <!-- Findings as Cards -->
+        <h2 id="findings"><span class="num">01</span>Findings</h2>
+
+        <div class="card card-problem">
+          <h4>Critical Issue</h4>
+          <p>Description of the problem and its impact.</p>
+        </div>
+
+        <div class="card card-solution">
+          <h4>Recommended Fix</h4>
+          <p>Description of the solution with rationale.</p>
+        </div>
+
+        <!-- Issue Cards -->
+        <h2 id="issues"><span class="num">02</span>Issue Cards</h2>
+
+        <div class="issue issue-critical">
+          <span class="severity severity-critical">Blocking</span>
+          <h3>Critical finding title</h3>
+          <div class="where">path/to/file.go:42-58</div>
+          <p>Describe the problem and cite the code or behavior that proves it.</p>
+          <div class="callout callout-solution">
+            <strong>Fix</strong>
+            State the concrete recommended action.
+          </div>
+        </div>
+
+        <div class="issue issue-important">
+          <span class="severity severity-important">Important</span>
+          <h3>Important finding title</h3>
+          <div class="where">path/to/another.go:12-19</div>
+          <p>Explain the risk and why a careful reviewer would hesitate before shipping.</p>
+        </div>
+
+        <div class="issue issue-nice">
+          <span class="severity severity-nice">Nice to have</span>
+          <h3>Polish suggestion</h3>
+          <div class="where">docs/ or config</div>
+          <p>Minor documentation gaps or future-proofing suggestions go here.</p>
+        </div>
+
+        <!-- Strengths -->
+        <h2>Strengths</h2>
+        <div class="strengths">
+          <div class="strength">
+            <div class="check">+</div>
+            <div class="text">
+              <strong>Specific strength</strong>
+              <span>Explain why it matters and what it enables.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table with Badges -->
+        <h2>Issue Table</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Severity</th>
+              <th>Issue</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><span class="badge badge-critical">Critical</span></td>
+              <td>Missing error handling</td>
+              <td><span class="badge badge-fixed">Fixed</span></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><span class="badge badge-high">High</span></td>
+              <td>Race condition</td>
+              <td><span class="badge badge-low">Open</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Before/After Comparison -->
+        <h2 id="proposal">Before / After</h2>
+        <div class="compare-header">
+          <div class="compare-before">Before</div>
+          <div class="compare-after">After</div>
+        </div>
+        <div class="compare-row">
+          <div>
+            <pre><code><span class="tok-comment">// Old code</span>
+<span class="tok-keyword">func</span> <span class="tok-func">process</span>(data <span class="tok-type">interface</span>{}) { }</code></pre>
+          </div>
+          <div>
+            <pre><code><span class="tok-comment">// New code</span>
+<span class="tok-keyword">func</span> <span class="tok-func">process</span>[T <span class="tok-type">any</span>](data T) { }</code></pre>
+          </div>
+        </div>
+
+        <!-- ASCII Diagram -->
+        <h2>Dependency Tree</h2>
+        <div class="dep-tree">
+          <span class="root">root</span> ├── <span class="ok">wanted-dep</span> └──
+          <span class="unwanted">unwanted-dep</span>
+        </div>
+
+        <!-- Numbered Steps -->
+        <h2 id="plan"><span class="num">03</span>Migration Plan</h2>
+        <div class="migration-step">
+          <div class="migration-num">1</div>
+          <div class="migration-content">
+            <h4>Add generic type parameter</h4>
+            <p>Update the function signature to accept a type parameter.</p>
+          </div>
+        </div>
+        <div class="migration-step">
+          <div class="migration-num">2</div>
+          <div class="migration-content">
+            <h4>Update all call sites</h4>
+            <p>Pass explicit types at each call site for type safety.</p>
+          </div>
+        </div>
+
+        <footer class="footer">
+          Generated YYYY-MM-DD &middot; All claims verified against source code where noted
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

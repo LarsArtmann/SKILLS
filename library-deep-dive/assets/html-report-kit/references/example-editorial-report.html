@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>html-report-kit Design Review — Editorial Variant</title>
+    <style>
+      :root {
+        --bg: #faf9f7;
+        --bg-card: #ffffff;
+        --bg-code: #f6f5f3;
+        --ink: #1a1a2e;
+        --ink-secondary: #475569;
+        --ink-muted: #94a3b8;
+        --hairline: #e8e6e1;
+        --amber: #b45309;
+        --amber-light: #fef3c7;
+        --teal: #0e7490;
+        --teal-light: #ecfeff;
+        --coral: #dc2626;
+        --coral-light: #fef2f2;
+        --max-width: 820px;
+        --sidebar-width: 200px;
+        --font-heading:
+          ui-rounded, "SF Pro Rounded", "Segoe UI Variable Display", system-ui, sans-serif;
+        --font-body:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: var(--font-body);
+        background: var(--bg);
+        color: var(--ink);
+        line-height: 1.7;
+        font-size: 16px;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .layout {
+        display: flex;
+        max-width: calc(var(--max-width) + var(--sidebar-width) + 80px);
+        margin: 0 auto;
+        padding: 0 24px;
+        gap: 40px;
+      }
+      .sidebar {
+        width: var(--sidebar-width);
+        flex-shrink: 0;
+        position: sticky;
+        top: 0;
+        align-self: flex-start;
+        height: 100vh;
+        overflow-y: auto;
+        padding: 40px 0;
+        display: none;
+      }
+      .sidebar nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .sidebar .label {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-muted);
+        margin-bottom: 10px;
+      }
+      .sidebar a {
+        font-size: 13px;
+        color: var(--ink-secondary);
+        text-decoration: none;
+        padding: 5px 10px;
+        border-left: 2px solid transparent;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.15s ease;
+        line-height: 1.4;
+      }
+      .sidebar a:hover {
+        color: var(--amber);
+        border-left-color: var(--amber);
+        background: var(--amber-light);
+      }
+      .main {
+        width: 100%;
+        max-width: var(--max-width);
+        padding: 0 0 80px;
+      }
+      @media (min-width: 1100px) {
+        .sidebar {
+          display: block;
+        }
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        line-height: 1.25;
+        color: var(--ink);
+      }
+      h2 {
+        font-size: 28px;
+        margin: 56px 0 20px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--hairline);
+        letter-spacing: -0.02em;
+      }
+      h2 .num {
+        color: var(--amber);
+        font-weight: 700;
+        margin-right: 10px;
+      }
+      h3 {
+        font-size: 19px;
+        margin: 32px 0 12px;
+        letter-spacing: -0.01em;
+      }
+      h4 {
+        font-size: 14px;
+        margin: 24px 0 8px;
+        color: var(--ink-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      p {
+        margin-bottom: 16px;
+      }
+      a {
+        color: var(--amber);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      strong {
+        font-weight: 600;
+        color: var(--ink);
+      }
+      code,
+      pre {
+        font-family: var(--font-mono);
+        font-size: 13.5px;
+      }
+      code {
+        background: var(--bg-code);
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: var(--ink);
+      }
+      pre {
+        background: var(--bg-code);
+        border: 1px solid var(--hairline);
+        border-radius: 8px;
+        padding: 18px 20px;
+        overflow-x: auto;
+        line-height: 1.6;
+        margin: 16px 0;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+      }
+
+      .hero {
+        padding: 64px 0 48px;
+        border-bottom: 1px solid var(--hairline);
+        margin-bottom: 8px;
+      }
+      .hero .eyebrow {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--amber);
+        letter-spacing: 0.05em;
+        margin-bottom: 16px;
+      }
+      .hero h1 {
+        font-family: var(--font-heading);
+        font-size: 38px;
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: -0.03em;
+        margin-bottom: 20px;
+        max-width: 700px;
+      }
+      .hero .subtitle {
+        font-size: 17px;
+        color: var(--ink-secondary);
+        max-width: 620px;
+        margin-bottom: 28px;
+      }
+      .hero .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tag {
+        font-size: 12px;
+        font-weight: 500;
+        padding: 5px 12px;
+        border-radius: 20px;
+        border: 1px solid var(--hairline);
+        color: var(--ink-secondary);
+        background: var(--bg-card);
+      }
+      .tag.amber {
+        color: var(--amber);
+        border-color: #fcd34d;
+        background: var(--amber-light);
+      }
+      .tag.teal {
+        color: var(--teal);
+        border-color: #a5f3fc;
+        background: var(--teal-light);
+      }
+      @media (max-width: 600px) {
+        .hero {
+          padding: 40px 0 32px;
+        }
+        .hero h1 {
+          font-size: 28px;
+        }
+      }
+
+      .scorecard {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+        margin: 32px 0;
+      }
+      .score-card {
+        background: var(--bg-card);
+        border: 1px solid var(--hairline);
+        border-radius: 10px;
+        padding: 18px 16px;
+        text-align: center;
+      }
+      .score-card .score {
+        font-family: var(--font-heading);
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+      .score-card .label {
+        font-size: 12px;
+        color: var(--ink-secondary);
+        font-weight: 500;
+      }
+      .score-good .score {
+        color: var(--teal);
+      }
+      .score-warn .score {
+        color: var(--amber);
+      }
+      .score-bad .score {
+        color: var(--coral);
+      }
+
+      .issue {
+        background: var(--bg-card);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 28px;
+        margin: 20px 0;
+      }
+      .issue-critical {
+        border-left: 4px solid var(--coral);
+      }
+      .issue-important {
+        border-left: 4px solid var(--amber);
+      }
+      .issue-nice {
+        border-left: 4px solid var(--teal);
+      }
+      .issue .severity {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 3px 10px;
+        border-radius: 4px;
+        margin-bottom: 12px;
+      }
+      .severity-critical {
+        background: var(--coral-light);
+        color: var(--coral);
+      }
+      .severity-important {
+        background: var(--amber-light);
+        color: var(--amber);
+      }
+      .severity-nice {
+        background: var(--teal-light);
+        color: var(--teal);
+      }
+      .issue h3 {
+        margin-top: 0;
+      }
+      .issue .where {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--ink-muted);
+        margin-bottom: 14px;
+      }
+
+      .callout {
+        border-radius: 10px;
+        padding: 18px 22px;
+        margin: 20px 0;
+        font-size: 15px;
+      }
+      .callout-teal {
+        background: var(--teal-light);
+        border: 1px solid #a5f3fc;
+      }
+      .callout-amber {
+        background: var(--amber-light);
+        border: 1px solid #fde68a;
+      }
+      .callout strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .compare {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        font-size: 14px;
+      }
+      .compare th,
+      .compare td {
+        text-align: left;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--hairline);
+      }
+      .compare th {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--ink-secondary);
+        background: var(--bg-code);
+      }
+      .compare td:first-child {
+        font-weight: 500;
+      }
+      .compare .yes {
+        color: var(--teal);
+        font-weight: 600;
+      }
+      .compare .no {
+        color: var(--coral);
+        font-weight: 600;
+      }
+
+      .strengths {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin: 20px 0;
+      }
+      .strength {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+        background: var(--teal-light);
+        border: 1px solid #a5f3fc;
+        border-radius: 8px;
+      }
+      .strength .check {
+        color: var(--teal);
+        font-weight: 700;
+        font-size: 18px;
+        flex-shrink: 0;
+        line-height: 1.5;
+      }
+      .strength .text {
+        font-size: 14.5px;
+      }
+      .strength .text strong {
+        display: block;
+        margin-bottom: 2px;
+      }
+      .strength .text span {
+        color: var(--ink-secondary);
+      }
+
+      .dep-tree {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        line-height: 1.8;
+        background: var(--bg-code);
+        border: 1px solid var(--hairline);
+        border-radius: 8px;
+        padding: 20px 24px;
+        margin: 16px 0;
+        overflow-x: auto;
+        white-space: pre;
+      }
+      .dep-tree .root {
+        color: var(--amber);
+        font-weight: 600;
+      }
+      .dep-tree .unwanted {
+        color: var(--coral);
+      }
+      .dep-tree .ok {
+        color: var(--ink-secondary);
+      }
+
+      .footer {
+        margin-top: 64px;
+        padding: 32px 0;
+        border-top: 1px solid var(--hairline);
+        text-align: center;
+        font-size: 13px;
+        color: var(--ink-muted);
+      }
+      .footer a {
+        color: var(--ink-secondary);
+      }
+
+      ul,
+      ol {
+        padding-left: 22px;
+        margin-bottom: 16px;
+      }
+      li {
+        margin-bottom: 8px;
+      }
+      .highlight {
+        background: var(--amber-light);
+        padding: 1px 4px;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <nav>
+          <div class="label">Contents</div>
+          <a href="#summary">Summary</a>
+          <a href="#scorecard">Scorecard</a>
+          <a href="#strengths">Strengths</a>
+          <a href="#findings">Findings</a>
+          <a href="#proposal">Proposal</a>
+          <a href="#matrix">Priority Matrix</a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <header class="hero">
+          <div class="eyebrow">DESIGN REVIEW &middot; 2026-06-17</div>
+          <h1>html-report-kit editorial variant</h1>
+          <p class="subtitle">
+            A worked example of the new light-theme template, reviewing the kit itself. This file
+            demonstrates every component so skill authors can copy-paste with confidence.
+          </p>
+          <div class="meta">
+            <span class="tag amber">Skill: html-report-kit</span>
+            <span class="tag">Template: editorial-light</span>
+            <span class="tag teal">Zero external dependencies</span>
+          </div>
+        </header>
+
+        <section id="scorecard" class="scorecard">
+          <div class="score-card score-good">
+            <div class="score">2</div>
+            <div class="label">Templates</div>
+          </div>
+          <div class="score-card score-good">
+            <div class="score">15+</div>
+            <div class="label">Components</div>
+          </div>
+          <div class="score-card score-good">
+            <div class="score">0</div>
+            <div class="label">Naming drift</div>
+          </div>
+          <div class="score-card score-good">
+            <div class="score">0</div>
+            <div class="label">External deps</div>
+          </div>
+        </section>
+
+        <section id="summary">
+          <h2><span class="num">00</span>Summary</h2>
+          <p>
+            The new editorial-light template gives long-form review reports a warm, readable,
+            professional look. It keeps the zero-dependency rule while adding a sticky sidebar TOC,
+            issue cards with file metadata, recommendation callouts, and ASCII dependency trees.
+          </p>
+          <div class="callout callout-amber">
+            <strong>The bottom line</strong>
+            Use the editorial template for adoption feedback, architecture reviews, and audit
+            briefs. Keep the dark dashboard template for status snapshots and scan results.
+          </div>
+        </section>
+
+        <section id="strengths">
+          <h2><span class="num">&#9670;</span>What's already excellent</h2>
+          <div class="strengths">
+            <div class="strength">
+              <div class="check">+</div>
+              <div class="text">
+                <strong>Single-file, zero dependencies</strong>
+                <span
+                  >Both templates work offline with system fonts. No CDN, no build step, no
+                  JS.</span
+                >
+              </div>
+            </div>
+            <div class="strength">
+              <div class="check">+</div>
+              <div class="text">
+                <strong>Shared component vocabulary</strong>
+                <span
+                  >Issue cards, callouts, scorecards, and dep-trees use the same class names across
+                  themes.</span
+                >
+              </div>
+            </div>
+            <div class="strength">
+              <div class="check">+</div>
+              <div class="text">
+                <strong>Responsive sticky sidebar</strong>
+                <span
+                  >Desktop readers get a contents nav; mobile readers get a clean single-column
+                  layout.</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="findings">
+          <h2><span class="num">01</span>Findings</h2>
+
+          <div class="issue issue-nice" id="naming-drift">
+            <span class="severity severity-nice">Resolved &middot; Low impact</span>
+            <h3>Dark and light templates used different class names for the same component</h3>
+            <div class="where">
+              html-report-kit/assets/report-template.html &middot; report-template-editorial.html
+            </div>
+            <p>
+              The dark template originally called metrics <code>.stat-grid</code> /
+              <code>.stat-card</code>; the light template called them <code>.scorecard</code> /
+              <code>.score-card</code>. Both names now work in both templates, so markup can be
+              swapped between themes without rewrites.
+            </p>
+            <div class="callout callout-teal">
+              <strong>Fix: added cross-theme aliases</strong>
+              Keep the existing classes for backward compatibility and use whichever name reads
+              better in your report.
+            </div>
+          </div>
+
+          <div class="issue issue-important" id="font-tradeoff">
+            <span class="severity severity-important">Aesthetics &middot; Medium impact</span>
+            <h3>System fonts approximate but do not match Space Grotesk / JetBrains Mono</h3>
+            <div class="where">Both templates</div>
+            <p>
+              The go-output report that inspired this template loads Google Fonts. The shared kit
+              deliberately avoids external requests, so reports look slightly less distinctive on
+              machines without modern system fonts.
+            </p>
+          </div>
+
+          <div class="issue issue-nice" id="csp">
+            <span class="severity severity-nice">Security &middot; Low impact</span>
+            <h3>Consider adding a CSP meta tag example</h3>
+            <div class="where">html-output-guide.md</div>
+            <p>
+              Because the templates are inline-style only, a strict Content-Security-Policy is easy
+              to add. A short example in the guide would help security-conscious users.
+            </p>
+          </div>
+        </section>
+
+        <section id="proposal">
+          <h2><span class="num">02</span>What the unified API could look like</h2>
+          <p>
+            If both templates shared component class names, a skill author could switch themes by
+            swapping the template file without rewriting markup.
+          </p>
+          <pre><code>&lt;div class=&quot;scorecard&quot;&gt;
+  &lt;div class=&quot;score-card score-good&quot;&gt;
+    &lt;div class=&quot;score&quot;&gt;42&lt;/div&gt;
+    &lt;div class=&quot;label&quot;&gt;Passing&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;issue issue-critical&quot;&gt;
+  &lt;span class=&quot;severity severity-critical&quot;&gt;Blocking&lt;/span&gt;
+  &lt;h3&gt;Issue title&lt;/h3&gt;
+  &lt;div class=&quot;where&quot;&gt;file.go:12-19&lt;/div&gt;
+  &lt;p&gt;Description and evidence.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+        </section>
+
+        <section id="matrix">
+          <h2><span class="num">03</span>Fix priority matrix</h2>
+          <table class="compare">
+            <thead>
+              <tr>
+                <th>Issue</th>
+                <th>Severity</th>
+                <th>Effort</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Unify component class names</td>
+                <td class="yes">Nice</td>
+                <td>Medium</td>
+                <td class="yes">Done</td>
+              </tr>
+              <tr>
+                <td>Document optional Google Fonts</td>
+                <td class="no">Important</td>
+                <td>Trivial</td>
+                <td class="yes">Done</td>
+              </tr>
+              <tr>
+                <td>Add CSP meta example</td>
+                <td class="yes">Nice</td>
+                <td>Trivial</td>
+                <td class="no">Open</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <footer class="footer">
+          <p>
+            Generated 2026-06-17 &middot; Example for the html-report-kit editorial-light template
+            &middot; All claims verified against the templates in this directory
+          </p>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>
