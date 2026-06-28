@@ -22,17 +22,18 @@ addressed.
 
 ### go-modularize skill (complete overhaul)
 
-| Commit | What |
-| --- | --- |
-| `632987a` | Direction-neutral guidance + under-modularization failure mode (FM#11) |
-| `2e956dd` | Extracted 931-line SKILL.md → 249-line entrypoint + `references/phases.md` + `references/example.md` (progressive disclosure) |
-| `8f0db62` | Added description-length validation (Check 5) to `scripts/check-skills.sh` — catches the 1024-char limit that broke the skill |
+| Commit    | What                                                                                                                                                                                                                                                            |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `632987a` | Direction-neutral guidance + under-modularization failure mode (FM#11)                                                                                                                                                                                          |
+| `2e956dd` | Extracted 931-line SKILL.md → 249-line entrypoint + `references/phases.md` + `references/example.md` (progressive disclosure)                                                                                                                                   |
+| `8f0db62` | Added description-length validation (Check 5) to `scripts/check-skills.sh` — catches the 1024-char limit that broke the skill                                                                                                                                   |
 | `0621db4` | Grounded in real-world patterns from 3 production projects (46+18+26 modules). Fixed FM#4 (was wrong about go.work+replace). Added FM#12 (workspace-only testing). New `references/real-world-patterns.md` (529 lines). Updated Phase 3.3, 6.5, 6.8, example.md |
-| `d71908b` | Added critical caveats: layer exceptions are a smell (not a feature), error architecture PRO/CONTRA decision framework (Options A-D), test-dep leak: minimize don't accept (Test Module Pattern) |
-| `bbab042` | Normalized table column alignment across all reference files |
-| `5fedae0` | Fixed stale "core" → "domain" in FM#7, fixed FM#7 contradiction with error architecture, filled version drift stub, added companion test module go.mod example, improved framing |
+| `d71908b` | Added critical caveats: layer exceptions are a smell (not a feature), error architecture PRO/CONTRA decision framework (Options A-D), test-dep leak: minimize don't accept (Test Module Pattern)                                                                |
+| `bbab042` | Normalized table column alignment across all reference files                                                                                                                                                                                                    |
+| `5fedae0` | Fixed stale "core" → "domain" in FM#7, fixed FM#7 contradiction with error architecture, filled version drift stub, added companion test module go.mod example, improved framing                                                                                |
 
 **Current state:**
+
 - SKILL.md: 255 lines (under 500 limit)
 - Description: 934 chars (under 1024 limit)
 - 3 reference files: `phases.md` (641 lines), `example.md` (131 lines), `real-world-patterns.md` (629 lines)
@@ -42,13 +43,13 @@ addressed.
 
 ### check-skills.sh validation
 
-| Check | What it validates |
-| --- | --- |
-| 1 | Frontmatter delimiters (`---`) |
-| 2 | `name:` field matches directory name |
-| 3 | `description:` field present |
-| 4 | No `git commit <--` prompt artifact |
-| 5 | Description under 1024 chars (NEW this session) |
+| Check | What it validates                               |
+| ----- | ----------------------------------------------- |
+| 1     | Frontmatter delimiters (`---`)                  |
+| 2     | `name:` field matches directory name            |
+| 3     | `description:` field present                    |
+| 4     | No `git commit <--` prompt artifact             |
+| 5     | Description under 1024 chars (NEW this session) |
 
 All 20 skills pass. Thin skills (<35 lines): 0.
 
@@ -90,12 +91,12 @@ Options A–D are documented with PRO/CON/WHEN, but:
 
 4 skills are under 50 lines and may lack depth:
 
-| Skill | Lines | Missing (per 2026-05-03 audit) |
-| --- | --- | --- |
-| `code-quality-scan` | 43 | No references/, no severity guide, no tool integration details |
-| `architecture-visualization` | 46 | No references/, no D2 syntax examples beyond what's in SKILL.md |
-| `bdd-testing` | 46 | No references/, needs ginkgo syntax reference, test structure template, file naming conventions |
-| `todo-list-builder` | 46 | No references/, uses sub-agents but no guidance on context to provide them |
+| Skill                        | Lines | Missing (per 2026-05-03 audit)                                                                  |
+| ---------------------------- | ----- | ----------------------------------------------------------------------------------------------- |
+| `code-quality-scan`          | 43    | No references/, no severity guide, no tool integration details                                  |
+| `architecture-visualization` | 46    | No references/, no D2 syntax examples beyond what's in SKILL.md                                 |
+| `bdd-testing`                | 46    | No references/, needs ginkgo syntax reference, test structure template, file naming conventions |
+| `todo-list-builder`          | 46    | No references/, uses sub-agents but no guidance on context to provide them                      |
 
 ### Skills missing references/ directory
 
@@ -103,18 +104,18 @@ Options A–D are documented with PRO/CON/WHEN, but:
 Some are fine (short, focused skills), others would benefit from progressive
 disclosure:
 
-| Skill | Lines | Would benefit from references/? |
-| --- | --- | --- |
-| `code-quality-scan` | 43 | Yes — tool integration, severity guide |
-| `architecture-review` | 51 | Maybe — review checklist could be extracted |
-| `features-audit` | 59 | Maybe — feature inventory template |
-| `docs-freshness-check` | 67 | No — self-contained |
-| `status-report` | 52 | No — self-contained |
-| `pareto-planning` | 79 | Maybe — D2 graph templates |
-| `full-code-review` | 78 | Yes — review checklist, Pareto planning delegation |
-| `brutal-self-review` | 75 | Maybe — reflection questions could be extracted |
-| `deduplicate-code` | 144 | Yes — art-dupl integration, duplication patterns |
-| `nix-flake-migration` | 163 | Maybe — flake templates already large |
+| Skill                  | Lines | Would benefit from references/?                    |
+| ---------------------- | ----- | -------------------------------------------------- |
+| `code-quality-scan`    | 43    | Yes — tool integration, severity guide             |
+| `architecture-review`  | 51    | Maybe — review checklist could be extracted        |
+| `features-audit`       | 59    | Maybe — feature inventory template                 |
+| `docs-freshness-check` | 67    | No — self-contained                                |
+| `status-report`        | 52    | No — self-contained                                |
+| `pareto-planning`      | 79    | Maybe — D2 graph templates                         |
+| `full-code-review`     | 78    | Yes — review checklist, Pareto planning delegation |
+| `brutal-self-review`   | 75    | Maybe — reflection questions could be extracted    |
+| `deduplicate-code`     | 144   | Yes — art-dupl integration, duplication patterns   |
+| `nix-flake-migration`  | 163   | Maybe — flake templates already large              |
 
 ---
 
@@ -249,33 +250,33 @@ The working tree is clean (after committing this report).
 
 ## f) Top #25 Things to Get Done Next
 
-| # | Priority | Task | Impact |
-| --- | --- | --- | --- |
-| 1 | 🔴 HIGH | Validate Test Module Pattern in a real project | Theory → practice |
-| 2 | 🔴 HIGH | Flesh out `bdd-testing` skill (ginkgo syntax, test structure, file naming) | Thin skill → useful |
-| 3 | 🔴 HIGH | Flesh out `code-quality-scan` skill (tool integration, severity guide) | Thin skill → useful |
-| 4 | 🔴 HIGH | Verify and fix `how-to-golang` code snippets (gopter, json/v2, E2E) | Correctness |
-| 5 | 🔴 HIGH | Convert `how-to-write-skills.md` to proper skill directory | Structure |
-| 6 | 🟠 MED | Flesh out `architecture-visualization` skill (D2 examples, diagram types) | Thin skill → useful |
-| 7 | 🟠 MED | Flesh out `todo-list-builder` skill (sub-agent context guidance) | Thin skill → useful |
-| 8 | 🟠 MED | Wire inter-skill cross-references (audit target graph) | Discoverability |
-| 9 | 🟠 MED | Add `allowed-tools: d2` to `architecture-visualization` | Pre-approval |
-| 10 | 🟠 MED | Add `allowed-tools: art-dupl` to `deduplicate-code` and `code-quality-scan` | Pre-approval |
-| 11 | 🟠 MED | Verify `naming-review` scripts exist and work | Correctness |
-| 12 | 🟠 MED | Update README.md skills table (verify all 20 listed) | Accuracy |
-| 13 | 🟠 MED | Extract `references/` for `deduplicate-code` (art-dupl integration, patterns) | Depth |
-| 14 | 🟠 MED | Extract `references/` for `full-code-review` (review checklist) | Depth |
-| 15 | 🟡 LOW | Add "Common Mistakes" section to `how-to-write-skills.md` | Prevention |
-| 16 | 🟡 LOW | Study patterns from external Go multi-module projects (reduce single-author bias) | Validity |
-| 17 | 🟡 LOW | Add skill health dashboard script | Tooling |
-| 18 | 🟡 LOW | Add deprecation flow checklist to phases.md Phase 1.5 | Completeness |
-| 19 | 🟡 LOW | Document `replace` directive style convention (single block vs split) | Consistency |
-| 20 | 🟡 LOW | Verify `library-deep-dive` skill completeness (146 lines, no references) | Depth |
-| 21 | 🟡 LOW | Add `references/` for `nix-flake-migration` if flake templates grow | Depth |
-| 22 | 🟡 LOW | Extract review checklist from `brutal-self-review` to `references/` | Depth |
-| 23 | 🟡 LOW | Verify all `originals/*.md` files are truly frozen (no edits since conversion) | Integrity |
-| 24 | 🟡 LOW | Add a "skill lifecycle" guide (creation → improvement → deprecation) | Process |
-| 25 | 🟡 LOW | Run `nix-review` skill on own `flake.nix` (if exists) or document why none | Meta |
+| #   | Priority | Task                                                                              | Impact              |
+| --- | -------- | --------------------------------------------------------------------------------- | ------------------- |
+| 1   | 🔴 HIGH  | Validate Test Module Pattern in a real project                                    | Theory → practice   |
+| 2   | 🔴 HIGH  | Flesh out `bdd-testing` skill (ginkgo syntax, test structure, file naming)        | Thin skill → useful |
+| 3   | 🔴 HIGH  | Flesh out `code-quality-scan` skill (tool integration, severity guide)            | Thin skill → useful |
+| 4   | 🔴 HIGH  | Verify and fix `how-to-golang` code snippets (gopter, json/v2, E2E)               | Correctness         |
+| 5   | 🔴 HIGH  | Convert `how-to-write-skills.md` to proper skill directory                        | Structure           |
+| 6   | 🟠 MED   | Flesh out `architecture-visualization` skill (D2 examples, diagram types)         | Thin skill → useful |
+| 7   | 🟠 MED   | Flesh out `todo-list-builder` skill (sub-agent context guidance)                  | Thin skill → useful |
+| 8   | 🟠 MED   | Wire inter-skill cross-references (audit target graph)                            | Discoverability     |
+| 9   | 🟠 MED   | Add `allowed-tools: d2` to `architecture-visualization`                           | Pre-approval        |
+| 10  | 🟠 MED   | Add `allowed-tools: art-dupl` to `deduplicate-code` and `code-quality-scan`       | Pre-approval        |
+| 11  | 🟠 MED   | Verify `naming-review` scripts exist and work                                     | Correctness         |
+| 12  | 🟠 MED   | Update README.md skills table (verify all 20 listed)                              | Accuracy            |
+| 13  | 🟠 MED   | Extract `references/` for `deduplicate-code` (art-dupl integration, patterns)     | Depth               |
+| 14  | 🟠 MED   | Extract `references/` for `full-code-review` (review checklist)                   | Depth               |
+| 15  | 🟡 LOW   | Add "Common Mistakes" section to `how-to-write-skills.md`                         | Prevention          |
+| 16  | 🟡 LOW   | Study patterns from external Go multi-module projects (reduce single-author bias) | Validity            |
+| 17  | 🟡 LOW   | Add skill health dashboard script                                                 | Tooling             |
+| 18  | 🟡 LOW   | Add deprecation flow checklist to phases.md Phase 1.5                             | Completeness        |
+| 19  | 🟡 LOW   | Document `replace` directive style convention (single block vs split)             | Consistency         |
+| 20  | 🟡 LOW   | Verify `library-deep-dive` skill completeness (146 lines, no references)          | Depth               |
+| 21  | 🟡 LOW   | Add `references/` for `nix-flake-migration` if flake templates grow               | Depth               |
+| 22  | 🟡 LOW   | Extract review checklist from `brutal-self-review` to `references/`               | Depth               |
+| 23  | 🟡 LOW   | Verify all `originals/*.md` files are truly frozen (no edits since conversion)    | Integrity           |
+| 24  | 🟡 LOW   | Add a "skill lifecycle" guide (creation → improvement → deprecation)              | Process             |
+| 25  | 🟡 LOW   | Run `nix-review` skill on own `flake.nix` (if exists) or document why none        | Meta                |
 
 ---
 
@@ -319,37 +320,37 @@ not a validated practice.
 
 ## Repository State
 
-| Metric | Value |
-| --- | --- |
-| Total skills | 20 |
-| Total commits | 117 |
-| Skills passing validation | 20/20 |
-| Thin skills (<35 lines) | 0 |
-| Skills <50 lines | 4 |
-| Skills with `references/` | 10/20 |
-| HTML kit consumers in sync | 11/11 |
-| Description limit violations | 0 |
-| Banned git commands in skills | 0 |
-| `go-modularize` description chars | 934/1024 |
-| `go-modularize` SKILL.md lines | 255/500 |
-| `go-modularize` reference files | 3 (phases.md, example.md, real-world-patterns.md) |
-| `go-modularize` total lines (all files) | 1656 |
-| Working tree | Clean |
-| Branch | master (5 commits ahead of origin) |
+| Metric                                  | Value                                             |
+| --------------------------------------- | ------------------------------------------------- |
+| Total skills                            | 20                                                |
+| Total commits                           | 117                                               |
+| Skills passing validation               | 20/20                                             |
+| Thin skills (<35 lines)                 | 0                                                 |
+| Skills <50 lines                        | 4                                                 |
+| Skills with `references/`               | 10/20                                             |
+| HTML kit consumers in sync              | 11/11                                             |
+| Description limit violations            | 0                                                 |
+| Banned git commands in skills           | 0                                                 |
+| `go-modularize` description chars       | 934/1024                                          |
+| `go-modularize` SKILL.md lines          | 255/500                                           |
+| `go-modularize` reference files         | 3 (phases.md, example.md, real-world-patterns.md) |
+| `go-modularize` total lines (all files) | 1656                                              |
+| Working tree                            | Clean                                             |
+| Branch                                  | master (5 commits ahead of origin)                |
 
 ---
 
 ## Session Work Log
 
-| Commit | Type | Description |
-| --- | --- | --- |
-| `632987a` | feat | go-modularize: direction-neutral guidance + FM#11 |
-| `2e956dd` | feat | go-modularize: extract to references/ (progressive disclosure) |
-| `8f0db62` | feat | check-skills: description length validation (Check 5) |
-| `0621db4` | feat | go-modularize: ground in real-world patterns from 3 production projects |
-| `d71908b` | feat | go-modularize: critical caveats (layer exceptions, error architecture, test-dep leak) |
-| `bbab042` | refactor | go-modularize: normalize table column alignment |
-| `5fedae0` | fix | go-modularize: stale "core" reference, contradictions, gaps |
+| Commit    | Type     | Description                                                                           |
+| --------- | -------- | ------------------------------------------------------------------------------------- |
+| `632987a` | feat     | go-modularize: direction-neutral guidance + FM#11                                     |
+| `2e956dd` | feat     | go-modularize: extract to references/ (progressive disclosure)                        |
+| `8f0db62` | feat     | check-skills: description length validation (Check 5)                                 |
+| `0621db4` | feat     | go-modularize: ground in real-world patterns from 3 production projects               |
+| `d71908b` | feat     | go-modularize: critical caveats (layer exceptions, error architecture, test-dep leak) |
+| `bbab042` | refactor | go-modularize: normalize table column alignment                                       |
+| `5fedae0` | fix      | go-modularize: stale "core" reference, contradictions, gaps                           |
 
 ---
 
