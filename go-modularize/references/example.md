@@ -117,15 +117,15 @@ replace github.com/org/eventstore/domain/v3 => ../domain
 
 ## Key decisions in this example
 
-| Decision                                | Rationale                                                                                        |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `domain/` has zero internal deps        | Domain types must not depend on infrastructure (Unix: mechanism, not policy)                     |
-| `errors.go` in `domain/`                | `ErrNotFound` must be importable by storage consumers without importing storage                  |
-| `memory/` is separate from `storage/`   | Test adapters should not force production deps on consumers                                      |
-| `testhelpers/` depends only on domain   | Prevents transitive dep from domain → storage through test helpers                               |
-| `cmd/` stays in root                    | Leaf node — nothing imports it, shares deps with root                                            |
-| `codec.go` in domain, not separate module | JSON codec is small and tightly coupled to domain types — splitting would be over-modularization |
-| `/v3` suffix in all module paths        | Go major version convention — explicit version pinning for consumers                              |
-| `replace` + `go.work` both used         | go.work for development, replace for `GOWORK=off` CI/consumer builds (see real-world-patterns.md) |
-| `v0.0.0` for internal requires          | Eliminates pseudo-version churn — replace makes the version irrelevant for resolution             |
-| Compile-time assertions in impl modules  | `var _ domain.Store = (*Store)(nil)` catches missing methods at build time                       |
+| Decision                                  | Rationale                                                                                         |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `domain/` has zero internal deps          | Domain types must not depend on infrastructure (Unix: mechanism, not policy)                      |
+| `errors.go` in `domain/`                  | `ErrNotFound` must be importable by storage consumers without importing storage                   |
+| `memory/` is separate from `storage/`     | Test adapters should not force production deps on consumers                                       |
+| `testhelpers/` depends only on domain     | Prevents transitive dep from domain → storage through test helpers                                |
+| `cmd/` stays in root                      | Leaf node — nothing imports it, shares deps with root                                             |
+| `codec.go` in domain, not separate module | JSON codec is small and tightly coupled to domain types — splitting would be over-modularization  |
+| `/v3` suffix in all module paths          | Go major version convention — explicit version pinning for consumers                              |
+| `replace` + `go.work` both used           | go.work for development, replace for `GOWORK=off` CI/consumer builds (see real-world-patterns.md) |
+| `v0.0.0` for internal requires            | Eliminates pseudo-version churn — replace makes the version irrelevant for resolution             |
+| Compile-time assertions in impl modules   | `var _ domain.Store = (*Store)(nil)` catches missing methods at build time                        |

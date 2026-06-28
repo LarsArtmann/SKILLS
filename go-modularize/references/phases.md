@@ -272,12 +272,12 @@ Every multi-module Go repo needs a strategy for how modules reference each other
 during development. Production projects use a **dual strategy** — both `go.work`
 AND `replace` directives — not one or the other.
 
-| Strategy             | When to use                                 | How                                                  |
-| -------------------- | ------------------------------------------- | ---------------------------------------------------- |
-| `replace` directives | All modules in same repo, not yet published | `replace github.com/org/mod => ./mod` in each go.mod |
-| `go.work` file       | 3+ modules, developer convenience           | Single `go.work` at repo root listing all modules    |
-| Versioned imports    | Modules published to proxy                  | Remove all `replace`, use proper semver tags         |
-| **Dual (recommended)** | **Both replace + go.work**                | **go.work for dev, replace for `GOWORK=off` CI/consumer builds** |
+| Strategy               | When to use                                 | How                                                              |
+| ---------------------- | ------------------------------------------- | ---------------------------------------------------------------- |
+| `replace` directives   | All modules in same repo, not yet published | `replace github.com/org/mod => ./mod` in each go.mod             |
+| `go.work` file         | 3+ modules, developer convenience           | Single `go.work` at repo root listing all modules                |
+| Versioned imports      | Modules published to proxy                  | Remove all `replace`, use proper semver tags                     |
+| **Dual (recommended)** | **Both replace + go.work**                  | **go.work for dev, replace for `GOWORK=off` CI/consumer builds** |
 
 **Recommendation: use both.** `go.work` provides fast local development (shared
 build cache, no `go mod tidy` churn). `replace` directives ensure every module
@@ -556,13 +556,13 @@ Verify the build system passes after each modularization step.
 
 **Essential CI checks** (see [./real-world-patterns.md](./real-world-patterns.md) §CI Verification for scripts):
 
-| Check | What it catches | Command |
-| --- | --- | --- |
-| Per-module `GOWORK=off` build | Missing replace directives, version mismatches | `GOWORK=off go build ./...` per module |
-| Per-module `GOWORK=off` test | Same, plus test isolation failures | `GOWORK=off go test ./...` per module |
-| Workspace sync idempotency | Stale go.work entries, uncommitted sync | `go work sync && git diff --exit-code` |
-| Replace directive audit | Absolute paths that break portability | `grep -E 'replace.*=> /' */go.mod` |
-| Version drift | Siblings referenced at different versions | Script comparing all internal `require` entries |
+| Check                         | What it catches                                | Command                                         |
+| ----------------------------- | ---------------------------------------------- | ----------------------------------------------- |
+| Per-module `GOWORK=off` build | Missing replace directives, version mismatches | `GOWORK=off go build ./...` per module          |
+| Per-module `GOWORK=off` test  | Same, plus test isolation failures             | `GOWORK=off go test ./...` per module           |
+| Workspace sync idempotency    | Stale go.work entries, uncommitted sync        | `go work sync && git diff --exit-code`          |
+| Replace directive audit       | Absolute paths that break portability          | `grep -E 'replace.*=> /' */go.mod`              |
+| Version drift                 | Siblings referenced at different versions      | Script comparing all internal `require` entries |
 
 ### 6.6 Vendor directory handling
 

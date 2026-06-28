@@ -24,9 +24,9 @@ BOTH deliberately, and it's the correct approach.
 
 ### Why both?
 
-| Mode | Purpose | When |
-| --- | --- | --- |
-| `go.work` | Fast local development — shared build cache, no `go mod tidy` churn | Developer workstations |
+| Mode                 | Purpose                                                                          | When                                          |
+| -------------------- | -------------------------------------------------------------------------------- | --------------------------------------------- |
+| `go.work`            | Fast local development — shared build cache, no `go mod tidy` churn              | Developer workstations                        |
 | `replace` directives | Standalone builds — CI, `GOWORK=off`, Nix, external consumers who clone the repo | CI, releases, `go mod tidy` without workspace |
 
 Without `replace` directives, `GOWORK=off go build ./...` fails — the module can't
@@ -46,6 +46,7 @@ after every local change, and the shared build cache is lost.
 ### Anti-pattern: go.work-only
 
 A project with `go.work` but no `replace` directives works locally but breaks for:
+
 - CI builds that set `GOWORK=off` (common in Nix, Docker, release pipelines)
 - External consumers who `go get` the module (go.work is ignored by consumers)
 - `go mod tidy` run without the workspace active
@@ -67,6 +68,7 @@ GOWORK=off go vet ./...      # Must vet without workspace
 ```
 
 This catches:
+
 - Missing `replace` directives (module can't resolve siblings)
 - Version mismatches (module references an old version of a sibling)
 - Stale `go.work` entries (workspace masks a deleted module)
@@ -235,11 +237,11 @@ func (t *Tool) CanRepair() bool  { return t.Repairer != nil }
 
 Create dedicated modules for shared test utilities:
 
-| Pattern | Example | Dependencies |
-| --- | --- | --- |
-| Zero-dep test fixtures | `testutil/` or `testhelpers/` | stdlib only |
-| Domain-aware test utils | `testutils/` | domain, model, testhelpers |
-| Module-specific test helpers | `event/eventtest/` | event, id (nested submodule) |
+| Pattern                      | Example                       | Dependencies                 |
+| ---------------------------- | ----------------------------- | ---------------------------- |
+| Zero-dep test fixtures       | `testutil/` or `testhelpers/` | stdlib only                  |
+| Domain-aware test utils      | `testutils/`                  | domain, model, testhelpers   |
+| Module-specific test helpers | `event/eventtest/`            | event, id (nested submodule) |
 
 **Zero-dep test helpers** use stdlib `testing.TB` only — no ginkgo, no gomega.
 This means any module can import them without pulling test framework deps:
@@ -278,6 +280,7 @@ as direct `require` entries even when only used in `_test.go` files. This is a
 **language limitation**, not a project mistake.
 
 Mitigations:
+
 - **Script-based detection**: CI script that identifies deps only imported from
   `_test.go` files and subtracts them from the "production dependency budget"
 - **Zero-dep test helpers**: Keep at least one test helper module stdlib-only
@@ -453,10 +456,10 @@ Use `go-arch-lint` to enforce dependency rules declaratively:
 deps:
   domain:
     anyVendorDeps: true
-    mayDependOn: []          # Pure contracts — imports NOTHING internal
+    mayDependOn: [] # Pure contracts — imports NOTHING internal
   providers:
     anyVendorDeps: true
-    mayDependOn: [domain]    # Plugins implement domain contracts
+    mayDependOn: [domain] # Plugins implement domain contracts
   execution:
     mayDependOn: [domain, model, runner, tools]
 ```
