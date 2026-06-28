@@ -273,19 +273,53 @@ event/
 This keeps test helpers discoverable (they live next to the domain module) while
 maintaining a separate `go.mod` so consumers don't pull test deps transitively.
 
-### The test-dep leak reality
+### The test-dep leak: minimize, don't accept
 
-Go has no separate test-only `require` block. `ginkgo`, `gomega`, `rapid` appear
-as direct `require` entries even when only used in `_test.go` files. This is a
-**language limitation**, not a project mistake.
+Go has no separate test-only `require` block. `ginkgo`, `gomega`, `rapid` appear as
+direct `require` entries even when only used in `_test.go` files. This is a **language
+limitation** — but "accept the leak" is the wrong response. The goal is to minimize test
+framework deps in production `go.mod` to as close to zero as possible.
 
-Mitigations:
+**The Test Module Pattern** — split test code by what it accesses:
+
+| Test type | What it tests | Where it lives | Test framework deps |
+| --- | --- | --- | --- |
+| White-box (internal) | Unexported symbols, internals | `_test.go` in production module (`package foo`) | stdlib `testing` only — **zero external deps** |
+| Black-box (external) | Exported API, integration | Companion test module (`package foo_test`) | ginkgo, gomega, rapid — **in test module's go.mod, not production's** |
+
+```
+domain/                              # Production module
+├── go.mod                           # ZERO test framework deps
+├── event.go
+├── store.go
+├── event_test.go                    # White-box: package event, stdlib testing only
+└── store_test.go                    # White-box: tests unexported helpers
+
+domain_test/                         # Companion test module
+├── go.mod                           # Imports domain/v3 + ginkgo + gomega
+├── event_bdd_test.go               # Black-box: package event_test, BDD specs
+├── store_integration_test.go       # Black-box: integration tests via exported API
+└── contract_test.go                 # Black-box: interface contract tests
+```
+
+**Why this works**: Go's `package foo_test` (external test package) can access all
+exported symbols but lives in a separate module. The production module's `go.mod`
+only has deps for white-box tests — which should use stdlib `testing` and `testing/quick`
+only, not ginkgo/gomega.
+
+**When you can't avoid the leak**: If a white-box test absolutely needs ginkgo (e.g., BDD
+spec for internal behavior), that test framework dep goes in production `go.mod`. This
+should be rare — most internal logic can be tested with table-driven stdlib tests.
+
+**Acceptance criteria**: production `go.mod` has test framework deps ONLY if the module
+has white-box tests that need them. Most modules should have zero test framework deps.
+
+**Additional mitigations**:
 
 - **Script-based detection**: CI script that identifies deps only imported from
   `_test.go` files and subtracts them from the "production dependency budget"
 - **Zero-dep test helpers**: Keep at least one test helper module stdlib-only
-- **Accept the leak**: For test frameworks specifically, the leak is unavoidable.
-  Document it and move on. Don't merge modules to "hide" test deps (see FM#3).
+- **Never merge modules to "hide" test deps** (see FM#3) — that's treating the symptom, not the cause
 
 ### Mock/double placement
 
@@ -303,43 +337,72 @@ in `_test.go` files or in dedicated test helper modules.
 
 ## Error Architecture Patterns
 
-### Pattern 1: Centralized error hub
+### Choosing an error architecture
 
-Define all sentinel errors and error constructors in the domain/interface module.
-Implementation modules import the domain module to create errors:
+The key decision: **where do error types live?** There are four options, each with
+tradeoffs. The wrong choice creates either a god-module (everything depends on domain
+for errors) or broken `errors.Is` chains (consumers can't check errors across boundaries).
+
+#### Option A: Errors in the interface module (default)
+
+Contract errors live where the interface lives. Implementation-specific errors live in
+the implementation module.
 
 ```go
-// domain/errors.go — the hub
+// domain/errors.go — contract errors (part of the Store interface contract)
 var (
-    ErrNotFound      = errors.New("not found")
-    ErrAlreadyExists = errors.New("already exists")
+    ErrNotFound  = errors.New("not found")
+    ErrConflict  = errors.New("version conflict")
 )
 
-// Custom error type with classification
-type CodedError struct {
-    Code    string
-    Message string
-    Cause   error
-}
-func (e *CodedError) Error() string { return e.Message }
-func (e *CodedError) Unwrap() error  { return e.Cause }
+// storage/errors.go — implementation-specific errors (not part of the contract)
+var (
+    ErrConnectionFailed = errors.New("connection failed")  // storage-specific
+    ErrDiskFull         = errors.New("disk full")          // storage-specific
+)
 ```
 
+| | |
+| --- | --- |
+| **PRO** | No god-module. Each module owns its own errors. Natural ownership — contract errors travel with the contract, implementation errors with the implementation. |
+| **CON** | Consumers may need to import multiple error packages for `errors.Is`. Cross-module error classification requires an interface (see Option C). |
+| **When** | Default. Start here. Most modules. |
+
+#### Option B: Dedicated errors module
+
+A standalone `errors/` module that owns the error taxonomy. All other modules import it
+for error types and constructors.
+
 ```go
-// storage/store.go — implementation uses domain errors
-return domain.ErrNotFound  // not storage.ErrNotFound
+// errors/errors.go — standalone module, not part of domain
+var (
+    ErrNotFound        = errors.New("not found")
+    ErrAlreadyExists   = errors.New("already exists")
+    ErrConnectionFailed = errors.New("connection failed")
+)
+
+// errors/classification.go
+type Family string
+const (
+    Rejection      Family = "rejection"
+    Transient      Family = "transient"
+    Infrastructure Family = "infrastructure"
+)
 ```
 
-**Why**: Consumers need `errors.Is(err, domain.ErrNotFound)` to work across module
-boundaries. If the error lives in `storage/`, consumers must import `storage/`
-just to check the error — breaking the interface/implementation split.
+| | |
+| --- | --- |
+| **PRO** | Domain stays lean — it doesn't own every error. Single import for all error handling. Errors are a separate concern from domain types. |
+| **CON** | Still a hub — every module depends on `errors/`. But it's focused on one concern, not domain types + interfaces + errors + everything. |
+| **When** | domain would grow too large owning all errors. Error types are extensive and independent of domain types. |
 
-### Pattern 2: Error classification interface
+#### Option C: Error classification interface (scales best)
 
-Define an interface in the domain module; let implementations tag their errors:
+Each module owns its own errors. An `ErrorCoder` interface in domain enables cross-module
+classification **without importing the module that created the error**.
 
 ```go
-// domain/errors.go
+// domain/errors.go — minimal: just the interface + codes
 type ErrorCoder interface {
     ErrorCode() ErrorCode
 }
@@ -347,35 +410,32 @@ type ErrorCoder interface {
 type ErrorCode string
 
 const (
-    CodeValidation  ErrorCode = "validation"
-    CodeConflict    ErrorCode = "conflict"
-    CodeTransient   ErrorCode = "transient"
+    CodeValidation ErrorCode = "validation"
+    CodeConflict   ErrorCode = "conflict"
+    CodeTransient  ErrorCode = "transient"
 )
 
-func NewCodedError(code ErrorCode, msg string) *CodedError {
-    return &CodedError{Code: code, Message: msg}
-}
-```
-
-```go
-// enrichment/git/enricher.go — tags errors with codes
-var ErrGitFailed = domain.NewCodedError(domain.CodeTransient, "git operation failed")
+// enrichment/git/enricher.go — owns its errors, tags them with codes
+var ErrGitFailed = &CodedError{Code: CodeTransient, Msg: "git operation failed"}
 
 // Batch processor categorizes without importing enricher packages:
 for _, err := range errors {
     if coder, ok := err.(domain.ErrorCoder); ok {
-        category := coder.ErrorCode()  // "transient" — no import needed
+        category := coder.ErrorCode()  // "transient" — no import of enrichment/git needed
     }
 }
 ```
 
-**Why**: The batch processor can categorize errors by code without importing
-every enricher module. The interface decouples error classification from error
-construction.
+| | |
+| --- | --- |
+| **PRO** | No god-module. Each module owns its errors. Cross-module classification works via the interface. Domain stays minimal (interface + codes, not all error values). |
+| **CON** | Slightly more complex. `errors.Is(err, domain.ErrNotFound)` only works for contract errors in domain — implementation-specific errors need their own sentinels in their own modules. |
+| **When** | Many modules (10+). Error classification needed across module boundaries. Want to avoid every module depending on a shared errors hub. |
 
-### Pattern 3: Error family classification
+#### Option D: Error family library
 
-Use a structured error library (e.g., `errorfamily`) with severity categories:
+External library (e.g., `errorfamily`) with severity categories. Each module creates
+errors tagged with a family.
 
 ```go
 // domain/errors.go — re-export from error library
@@ -390,9 +450,21 @@ func NewRejection(code, msg string) *Error  { return errorfamily.NewRejection(co
 func NewConflict(code, msg string) *Error   { return errorfamily.NewConflict(code, msg) }
 ```
 
-**Why**: Retry logic, error reporting, and user-facing messages can branch on
-error family without inspecting specific error types. A `Transient` error gets
-retried; a `Rejection` doesn't. This works across all modules that use the family.
+| | |
+| --- | --- |
+| **PRO** | Classification without central ownership. Each module creates its own errors. Retry logic and error reporting branch on family without inspecting specific types. |
+| **CON** | External dependency. Still need to decide where the re-exports live (domain? dedicated errors module?). |
+| **When** | You need retry logic, error reporting, or user-facing messages that branch on error severity across all modules. |
+
+### Anti-pattern: All errors in domain (god-module risk)
+
+When domain owns errors for 20+ modules, it becomes a god-module that everything touches.
+Every new error in any module requires a change to domain, and every module depends on
+domain for its error types. This is the centralization trap.
+
+**The fix**: contract errors (part of the interface) live in the interface module.
+Implementation-specific errors live in the implementation module. Cross-module
+classification uses an interface (Option C), not a shared bag of error values.
 
 ### Anti-pattern: Plain errors.New in higher layers
 
@@ -464,19 +536,44 @@ deps:
     mayDependOn: [domain, model, runner, tools]
 ```
 
-### Documented exceptions
+### Exceptions are a smell, not a feature
 
-When a layer violation is necessary, document it explicitly in the enforcement
-script:
+When a layer violation is "necessary," the first response should be to question the
+model, not to document the exception. Exceptions are evidence the layer model doesn't
+fit reality. Either the model is wrong or the boundaries are.
 
 ```bash
-# Exception: event depends on storage/memory for test helpers
+# If you have this:
 EXCEPTIONS[event]="storage/memory"
 EXCEPTIONS[command]="storage/memory"
+EXCEPTIONS[schema]="storage/memory snapshot"
+EXCEPTIONS[snapshot]="storage/memory"
+EXCEPTIONS[decider]="storage/memory otel"
+EXCEPTIONS[query]="snapshot storage/memory"
 ```
 
-Undocumented exceptions are technical debt. Documented exceptions are
-architecture decisions.
+That's 6 exceptions. Each one is a signal: the layer assignment is wrong, the module
+boundary is in the wrong place, or a dependency that should be test-only is leaking into
+production code.
+
+**Before adding an exception, ask:**
+
+1. **Is the dependency actually production?** If `event` depends on `storage/memory` only
+   for test helpers, the fix is moving test helpers to a separate test module — not an
+   exception. The exception papers over a test-dep leak (see §Test Infrastructure).
+2. **Is the layer assignment wrong?** If `storage/memory` is used by Layer 1 modules,
+   maybe `storage/memory` IS Layer 1, not Layer 4. Reassign it.
+3. **Is the boundary in the wrong place?** If `event` genuinely needs in-memory
+   implementations, maybe the interface and the in-memory implementation belong in the
+   same module. Merge them.
+4. **Is the abstraction wrong?** If modules keep violating layers to reach a shared
+   utility, the utility is at the wrong level of abstraction. Extract it to its own
+   leaf module at Layer 0.
+
+**If after all four questions the exception is still necessary**, document it
+explicitly — but treat it as known debt with a plan to eliminate it, not as a
+permanent architecture decision. Undocumented exceptions are technical debt. Documented
+exceptions are technical debt with a name.
 
 ---
 
