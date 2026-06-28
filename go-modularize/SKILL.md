@@ -28,7 +28,10 @@ reflection ensuring the result is superb and long-lasting.
 **Load [./references/phases.md](./references/phases.md) for the detailed phase
 procedures.** This file contains the decision framework, failure modes, and tooling
 reference needed before and during execution. For a worked before/after example, see
-[./references/example.md](./references/example.md).
+[./references/example.md](./references/example.md). For patterns distilled from
+production Go multi-module projects (dual go.work+replace strategy, CI verification,
+error architecture, test infrastructure), see
+[./references/real-world-patterns.md](./references/real-world-patterns.md).
 
 ## Why This Matters
 
@@ -147,7 +150,7 @@ execution — if you hit one, the mitigation is here.
 | 1   | **Import cycles**               | Circular deps between new modules                                                              | `go build ./...` fails with "import cycle not allowed"                                              | Enforce DAG before execution (Phase 3.2). If a cycle appears, boundaries are wrong — redraw.                                                             |
 | 2   | **Transitive dep bloat**        | Module A depends on B's heavy external deps                                                    | `go mod graph` shows large dependency trees for thin modules                                        | Extract thin interface modules. Consumers depend on interfaces, not implementations.                                                                     |
 | 3   | **Test dep leaks**              | Test-only libs appear in production go.mod                                                     | `go mod why -m <dep>` shows only `_test.go` imports for a dep in `require` block                    | Move test helpers to separate modules. Audit each module's go.mod.                                                                                       |
-| 4   | **go.work / replace conflicts** | Both `go.work` and `replace` directives for the same pair                                      | `grep -r 'replace' */go.mod` finds replace while go.work exists                                     | Pick one strategy (see Phase 3.3). Never mix both.                                                                                                       |
+| 4   | **go.work / replace drift**    | `go.work` and `replace` directives disagree — go.work lists a module but replace points elsewhere, or replace is missing for a module pair that go.work resolves | `GOWORK=off go build ./...` fails in a module that builds fine with workspace | **Use both go.work AND replace directives** — go.work for development, replace for `GOWORK=off` CI and consumer builds. Keep them in sync with a CI check. See [./references/real-world-patterns.md](./references/real-world-patterns.md) §Dual Strategy. |
 | 5   | **Broken consumers**            | External import paths change without redirect                                                  | Consumer project fails to `go get` after modularization                                             | Use `go.mod` redirect tags or `// Deprecated` annotations.                                                                                               |
 | 6   | **internal/ access breakage**   | Moving a package behind `internal/` blocks cross-module access                                 | `go build` fails with "use of internal package" from another module                                 | Remember: `internal/` restricts access to the _module_ tree, not just the package tree. A sub-module's `internal/` is invisible to all other modules.    |
 | 7   | **Error type inaccessibility**  | `errors.Is`/`errors.As` fail because error types moved to a module the consumer doesn't import | Tests pass locally (workspace provides all modules) but fail in isolation or for external consumers | Keep sentinel errors and error types in the interface module (core), not in implementations.                                                             |
@@ -155,6 +158,7 @@ execution — if you hit one, the mitigation is here.
 | 9   | **Stale go.work**               | `go.work` references deleted or renamed modules                                                | `go work sync` reports errors or `go build` fails at root                                           | Run `go work sync` after every structural change. Commit `go.work` and `go.work.sum` together.                                                           |
 | 10  | **Build system breakage**       | Build system references old module paths                                                       | `nix build`, `make`, or CI fails after module moves                                                 | Update build system immediately after each module move.                                                                                                  |
 | 11  | **Under-modularization**        | God-modules bundling unrelated sub-domains at the wrong depth                                  | One go.mod with 14+ packages; importing feature X drags in feature Y's types                        | Split along sub-domain boundaries so each composes independently. The inverse of FM#8 — "too few" is as real a failure as "too many."                    |
+| 12  | **Workspace-only testing**      | Tests pass with `go.work` but fail in isolation — version mismatches, missing replace directives, or stale module references | `GOWORK=off go build ./...` fails per-module but `go build ./...` at root passes | Test every module with `GOWORK=off` in CI. See [./references/real-world-patterns.md](./references/real-world-patterns.md) §CI Verification. |
 
 ---
 
@@ -172,6 +176,7 @@ These commands are essential for dependency analysis. Run them early and often:
 | `go list ./...`             | List all packages in the module                                       |
 | `go work sync`              | Sync go.work file with module state                                   |
 | `GOWORK=off go build ./...` | Test build without workspace — verify modules resolve without go.work |
+| `GOWORK=off go test ./...`  | Per-module isolation testing — catches version mismatches and missing replace directives |
 | `go work edit -fmt`         | Format and clean up go.work file                                      |
 
 For generating a visual dependency graph of internal packages only:

@@ -268,25 +268,31 @@ but must never appear in production code. Document these clearly.
 
 ### 3.3 Define replace directive strategy
 
-Every multi-module Go repo needs a strategy for how modules reference each other during
-development. Choose based on project maturity:
+Every multi-module Go repo needs a strategy for how modules reference each other
+during development. Production projects use a **dual strategy** — both `go.work`
+AND `replace` directives — not one or the other.
 
 | Strategy             | When to use                                 | How                                                  |
 | -------------------- | ------------------------------------------- | ---------------------------------------------------- |
 | `replace` directives | All modules in same repo, not yet published | `replace github.com/org/mod => ./mod` in each go.mod |
 | `go.work` file       | 3+ modules, developer convenience           | Single `go.work` at repo root listing all modules    |
 | Versioned imports    | Modules published to proxy                  | Remove all `replace`, use proper semver tags         |
+| **Dual (recommended)** | **Both replace + go.work**                | **go.work for dev, replace for `GOWORK=off` CI/consumer builds** |
 
-**Recommendation for most projects:** Start with `go.work` at the repo root.
-It's cleaner than per-module `replace` directives and Go tooling handles it well.
-Each module's go.mod should be clean — no `replace` directives — and `go.work`
-handles local development. When publishing, `go.work` is ignored by consumers.
+**Recommendation: use both.** `go.work` provides fast local development (shared
+build cache, no `go mod tidy` churn). `replace` directives ensure every module
+builds standalone with `GOWORK=off` — essential for CI, Nix builds, Docker, and
+external consumers who clone the repo. See [./real-world-patterns.md](./real-world-patterns.md)
+§Dual Strategy for the full rationale and maintenance workflow.
 
 Rules:
 
-- Never mix `replace` directives AND `go.work` for the same module pair
+- **Every module with internal deps gets replace directives** for each sibling
+  it imports (directly or transitively)
+- **go.work lists every module** with `use ./mod` directives
+- **CI tests both modes**: `go build ./...` (workspace) AND `GOWORK=off go build ./...` per module
+- **Keep go.work and replace directives in sync** — a CI sync check verifies they agree
 - `go.work` belongs in `.gitignore` only if every consumer uses published versions
-- Verify `go mod tidy` works both with and without the workspace
 - Always commit `go.work` and `go.work.sum` together
 
 ### 3.4 Plan test dependency isolation
@@ -548,6 +554,16 @@ If the project uses a build system (flake.nix, CI scripts, etc.), update it to:
 
 Verify the build system passes after each modularization step.
 
+**Essential CI checks** (see [./real-world-patterns.md](./real-world-patterns.md) §CI Verification for scripts):
+
+| Check | What it catches | Command |
+| --- | --- | --- |
+| Per-module `GOWORK=off` build | Missing replace directives, version mismatches | `GOWORK=off go build ./...` per module |
+| Per-module `GOWORK=off` test | Same, plus test isolation failures | `GOWORK=off go test ./...` per module |
+| Workspace sync idempotency | Stale go.work entries, uncommitted sync | `go work sync && git diff --exit-code` |
+| Replace directive audit | Absolute paths that break portability | `grep -E 'replace.*=> /' */go.mod` |
+| Version drift | Siblings referenced at different versions | Script comparing all internal `require` entries |
+
 ### 6.6 Vendor directory handling
 
 If the project uses `go mod vendor`:
@@ -575,9 +591,11 @@ Only report back to the user after exhausting all five alternatives.
 
 When all steps are complete and everything passes:
 
-- Run full test suite one final time
-- Verify `go work sync` (if applicable)
+- Run full test suite one final time (with `go.work`)
+- Run per-module tests with `GOWORK=off` — every module must build and test standalone
+- Verify `go work sync` produces no changes (idempotency)
 - Run the breaking change analysis from Phase 3.7 — confirm no external consumers are broken
+- Audit replace directives for absolute paths (portability)
 
 ---
 
