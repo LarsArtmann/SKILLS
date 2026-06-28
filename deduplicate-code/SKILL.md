@@ -36,28 +36,31 @@ Before refactoring, answer these questions:
 
 ## Run the Analysis
 
-Use the threshold the user tells you. If none was mentioned, use `-t 15`.
+Threshold (`-t`) counts **duplicated statements**, not AST nodes: each Go
+statement is one token. Use the threshold the user gives you; otherwise omit
+the flag and let art-dupl use its default (1).
 
 ```bash
-art-dupl --semantic --sort total-tokens -t 15 \
-  --exclude-pattern "**/generated/**" \
-  --exclude-pattern "**/generatedconnect/**" \
-  --exclude-pattern "**/internal/generated/**" \
-  --exclude-pattern "**/internal/api/openapi*" \
-  --exclude-pattern "**/persistence/db/sqlite/**"
+art-dupl --sort total-tokens
 ```
+
+Generated code and test-file noise are handled automatically (see below) — do
+not pad the command with project-specific `--exclude-pattern` flags unless a
+path genuinely slips past the auto-detector. Add `--structural` only if you
+want shape-only matching that treats `a.String()` and `b.Error()` as the same
+(the default is identifier-aware `--semantic`).
 
 ### Threshold selection
 
-- **15 (default)**: Aggressive scan. Catches small helpers and repeated snippets,
-  but will also surface Go idioms (`if err != nil`, function signatures, error
-  returns). Use the decision checklist to filter idioms from real clones.
-- **30–40**: Catches medium-sized helpers and repeated logic. Expect fewer
-  structural matches.
-- **50+**: Only large, obvious clones. Good for a first pass on a messy codebase
-  or when time is limited.
+- **1 (default)**: Report any duplicated statement. Aggressive, but art-dupl's
+  post-hoc filters (overlap elimination, test suppression, actionability
+  patterns) remove most noise automatically. Good starting point.
+- **3–5**: Less noise — medium-sized helpers and repeated logic. Use when the
+  default surfaces too many one-liner idioms for your taste.
+- **10+**: Only large, obvious clones. Good for a first pass on a messy
+  codebase or when time is limited.
 
-If a run produces too much noise at `-t 15`, do not blindly raise the threshold.
+If a run produces too much noise at `-t 1`, do not blindly raise the threshold.
 Instead, review the results, mark idiomatic patterns as accepted, and ask the
 user whether to raise the threshold or add exclusions for noisy paths.
 
@@ -76,16 +79,31 @@ For every reported group:
 
 ## Generated Code
 
-Generated files must never be manually de-duplicated. Add exclusions:
+Generated files must never be manually de-duplicated. art-dupl **auto-detects
+and excludes** standard generators by default (sqlc, protobuf/connect-go,
+mockgen, stringer, templ `*_templ.go`). To opt a category back in, use
+`--include-generated` (repeatable or comma-separated):
+`--include-generated sqlc`, `--include-generated protobuf`, or
+`--include-generated all`. The old per-generator flags (`--include-sqlc`, etc.)
+still work as hidden deprecated aliases.
 
-- Protobuf / connect-go: `--exclude-pattern "**/generatedconnect/**"`
-- sqlc output: `--exclude-pattern "**/persistence/db/sqlite/**"`
-- Stringer / mockgen: already covered by `**/generated/**`
-- OpenAPI / Swagger: `--exclude-pattern "**/internal/api/openapi*"`
+Reserve manual `--exclude-pattern` for non-standard layouts the heuristics miss:
+
+- Custom generated dirs: `--exclude-pattern "**/generated/**"`
+- OpenAPI / Swagger clients: `--exclude-pattern "**/internal/api/openapi*"`
+- sqlc in an unusual path not matched by the auto-detector:
+  `--exclude-pattern "**/persistence/db/sqlite/**"`
 
 ## Test Code
 
-Do not blanket-exclude `*_test.go`. Evaluate each group:
+art-dupl analyzes test files but suppresses noise by default:
+`--suppress-test-low` (on by default) drops low-priority test clones, and
+`--test-threshold` applies a separate, higher bar to test files (default
+`max(30, threshold)` statements). So you usually do not need to blanket-exclude
+`*_test.go`. Override with `--ignore-tests` (exclude test files entirely) or
+`--include-tests` (analyze them at the normal threshold).
+
+Evaluate each surviving group individually:
 
 **Refactor when the duplication is a real burden:**
 
