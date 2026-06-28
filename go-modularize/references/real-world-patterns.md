@@ -18,9 +18,9 @@
 
 ## Dual Strategy: go.work + replace Together
 
-**The old wisdom was wrong.** Earlier Go modularization guides said "pick one: go.work
-OR replace directives, never mix both." Production projects do the opposite — they use
-BOTH deliberately, and it's the correct approach.
+Some guides say "pick one: go.work OR replace directives, never mix both."
+Production Go projects do the opposite — they use BOTH deliberately, and for
+good reason.
 
 ### Why both?
 
@@ -102,8 +102,18 @@ Detect when sibling modules reference different versions of the same internal
 dependency:
 
 ```bash
-# For each internal module, collect all version references across go.mod files.
-# Flag if any sibling is referenced at different versions.
+# Collect all internal module version references and flag disagreements
+internal_modules=$(find . -name go.mod -not -path './vendor/*' -exec dirname {} \; | sort -u)
+for mod in $internal_modules; do
+  mod_path=$(head -1 "$mod/go.mod" | cut -d' ' -f2)
+  # Find all go.mod files that require this module and extract their version
+  versions=$(grep -rh "$mod_path " $(find . -name go.mod -not -path './vendor/*') | \
+    awk '{print $NF}' | sort -u)
+  if [[ $(echo "$versions" | wc -l) -gt 1 ]]; then
+    echo "DRIFT: $mod_path referenced at multiple versions: $versions"
+    failed=1
+  fi
+done
 ```
 
 Version drift creates subtle bugs: module A tests with `sibling/v3 v3.1.0` while
@@ -127,7 +137,7 @@ Since `replace` makes the version irrelevant for resolution, `v0.0.0` eliminates
 pseudo-version churn (e.g., `v0.0.0-20240115120000-abcdef123456`) that pollutes
 every `go mod tidy` and PR diff.
 
-Automate with a normalization script:
+Automate with a normalization script (replace `github.com/org` with your module prefix):
 
 ```bash
 # Pin all internal requires to v0.0.0
@@ -306,6 +316,25 @@ domain_test/                         # Companion test module
 exported symbols but lives in a separate module. The production module's `go.mod`
 only has deps for white-box tests — which should use stdlib `testing` and `testing/quick`
 only, not ginkgo/gomega.
+
+**The companion module's go.mod**:
+
+```
+module github.com/org/eventstore/domain_test
+
+go 1.26.4
+
+require (
+    github.com/org/eventstore/domain/v3 v0.0.0
+    github.com/onsi/ginkgo/v2 v2.0.0
+    github.com/onsi/gomega v1.30.0
+)
+
+replace github.com/org/eventstore/domain/v3 => ../domain
+```
+
+The test module imports the production module as a dependency (via replace) and
+owns the test framework deps. The production module's `go.mod` stays clean.
 
 **When you can't avoid the leak**: If a white-box test absolutely needs ginkgo (e.g., BDD
 spec for internal behavior), that test framework dep goes in production `go.mod`. This
