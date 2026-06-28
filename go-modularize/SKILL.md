@@ -9,12 +9,15 @@ description: >
   "Go workspace", "go.work", "CQRS modularization", "break apart Go project",
   "too coupled", "Go package boundaries", "remodularize", "re-modularize",
   "merge modules", "too many modules", "wrong module boundaries",
-  "over-modularized", "consolidate modules", "fix module structure".
+  "over-modularized", "consolidate modules", "fix module structure",
+  "unix-style", "decompose deeper", "too few modules", "god-module",
+  "right level of abstraction", "composable modules".
   Also trigger when the user asks how to structure a Go project into multiple
   modules, wants to break a large Go project into smaller pieces, or wants to
   improve module boundaries in an already-partially-modularized Go project —
-  including merging over-split modules, fixing wrong boundaries, and cleaning
-  up replace directive tangles.
+  whether that means merging over-split modules, splitting god-modules deeper,
+  or cleaning up replace directive tangles. Direction-neutral: splitting and
+  merging are equally valid; the Unix-pipe composability test decides.
 metadata:
   tags: go, modularization, monorepo, multi-module, go.mod, architecture, refactoring,
     go.work, replace-directives, versioning, re-modularization, merge-modules,
@@ -59,6 +62,30 @@ These principles guide every decision in this skill. When in doubt, return here.
 | **Opaque internals**           | Every module exposes a thin surface (interfaces + types). Internals are opaque, like file descriptors hide implementation. Use `internal/` to enforce this. |
 
 **Litmus test for every proposed module:** Does it do one thing well? Can I compose it with other modules like Unix pipes? If not, redraw the boundary.
+
+### Direction Neutrality — split and merge are equally valid
+
+This skill is NOT biased toward splitting, and NOT biased toward merging. Both
+"too many modules" and "too few modules" are failures of the same kind: a
+boundary sits at the wrong place. The Unix principle "small is beautiful" is a
+statement about _focus_, not _count_. `grep`, `sed`, and `awk` ship together,
+release together, and co-change constantly — yet merging them into one binary
+would destroy their composability. **Co-change is evidence to examine, never a
+verdict to merge.**
+
+Two questions replace "should I merge or split?":
+
+1. **Decomposition depth** — Is each module at the right level of abstraction?
+   A `domain/` module bundling `battle/`, `voting/`, `media/` "does one thing"
+   (domain) at the wrong depth: each sub-domain could compose independently and
+   deserves its own module. Conversely, a `userdto/` module with one struct is
+   too deep — a boundary with no composability payoff.
+2. **Composability payoff** — Does the boundary let consumers import only what
+   they need? If every consumer imports modules A and B together, the seam earns
+   nothing. If some consume A without B, it earns its keep.
+
+When the evidence points to merging, merge. When it points to splitting, split.
+Let the evidence decide — never a default bias in either direction.
 
 ---
 
@@ -173,23 +200,51 @@ needs 5+ modules.
 
 ---
 
+## When NOT to Consolidate (and When to Split Further)
+
+The table above governs the _initial_ split decision. The converse — should an
+already-split project _merge_ modules or _split deeper_? — has its own
+anti-signals. Do NOT merge when:
+
+| Signal                                             | Weight | Why                                                                                                                               |
+| -------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| Some consumers import one module without the other | High   | The boundary has a composability payoff. Merging destroys it.                                                                     |
+| Modules share only a cross-cutting concern         | High   | Co-change is driven by a shared dependency (timestamps, `eventtest`), not real coupling. Extract the shared concern; don't merge. |
+| Duplicated `replace` directives                    | —      | A go.mod hygiene problem, NOT a boundary problem. Fix in place; merging is the wrong cure (see FM#4).                             |
+| Test-only deps leaking into production go.mod      | —      | A hygiene problem (see FM#3). Fix in place; merging to "hide" the leak treats the symptom, not the cause.                         |
+
+**The hygiene trap:** Consolidation is NEVER the right fix for duplicated
+`replace` directives or test-dep leaks. Those are go.mod hygiene issues — solve
+them where they live. Merging modules to paper over a hygiene defect removes a
+real boundary to fix an imaginary one.
+
+**When to split further:** A module "does one thing" but at the wrong depth
+when it bundles sub-domains that could each compose independently. A `domain/`
+module spanning `battle/`, `voting/`, `media/` is under-modularized if a
+consumer of battle logic is forced to import voting types. Test: could each
+sub-package stand alone as a module that composes like a Unix pipe? If yes, the
+boundary is one level too coarse — split deeper.
+
+---
+
 ## Known Failure Modes
 
 These are the top ways Go modularization goes wrong. Keep this catalog handy during
 execution — if you hit one, the mitigation is here.
 
-| #   | Failure                         | Cause                                                                                          | How to Detect                                                                                       | Mitigation                                                                                                                                            |
-| --- | ------------------------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **Import cycles**               | Circular deps between new modules                                                              | `go build ./...` fails with "import cycle not allowed"                                              | Enforce DAG before execution (Phase 3.2). If a cycle appears, boundaries are wrong — redraw.                                                          |
-| 2   | **Transitive dep bloat**        | Module A depends on B's heavy external deps                                                    | `go mod graph` shows large dependency trees for thin modules                                        | Extract thin interface modules. Consumers depend on interfaces, not implementations.                                                                  |
-| 3   | **Test dep leaks**              | Test-only libs appear in production go.mod                                                     | `go mod why -m <dep>` shows only `_test.go` imports for a dep in `require` block                    | Move test helpers to separate modules. Audit each module's go.mod.                                                                                    |
-| 4   | **go.work / replace conflicts** | Both `go.work` and `replace` directives for the same pair                                      | `grep -r 'replace' */go.mod` finds replace while go.work exists                                     | Pick one strategy (see Phase 3.3). Never mix both.                                                                                                    |
-| 5   | **Broken consumers**            | External import paths change without redirect                                                  | Consumer project fails to `go get` after modularization                                             | Use `go.mod` redirect tags or `// Deprecated` annotations.                                                                                            |
-| 6   | **internal/ access breakage**   | Moving a package behind `internal/` blocks cross-module access                                 | `go build` fails with "use of internal package" from another module                                 | Remember: `internal/` restricts access to the _module_ tree, not just the package tree. A sub-module's `internal/` is invisible to all other modules. |
-| 7   | **Error type inaccessibility**  | `errors.Is`/`errors.As` fail because error types moved to a module the consumer doesn't import | Tests pass locally (workspace provides all modules) but fail in isolation or for external consumers | Keep sentinel errors and error types in the interface module (core), not in implementations.                                                          |
-| 8   | **Over-modularization**         | 15 micro-modules that should be 4                                                              | `git log --stat` shows same files always changed together across modules                            | Merge modules that always change together. "Small is beautiful" does not mean "atomized."                                                             |
-| 9   | **Stale go.work**               | `go.work` references deleted or renamed modules                                                | `go work sync` reports errors or `go build` fails at root                                           | Run `go work sync` after every structural change. Commit `go.work` and `go.work.sum` together.                                                        |
-| 10  | **Build system breakage**       | Build system references old module paths                                                       | `nix build`, `make`, or CI fails after module moves                                                 | Update build system immediately after each module move.                                                                                               |
+| #   | Failure                         | Cause                                                                                          | How to Detect                                                                                       | Mitigation                                                                                                                                               |
+| --- | ------------------------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Import cycles**               | Circular deps between new modules                                                              | `go build ./...` fails with "import cycle not allowed"                                              | Enforce DAG before execution (Phase 3.2). If a cycle appears, boundaries are wrong — redraw.                                                             |
+| 2   | **Transitive dep bloat**        | Module A depends on B's heavy external deps                                                    | `go mod graph` shows large dependency trees for thin modules                                        | Extract thin interface modules. Consumers depend on interfaces, not implementations.                                                                     |
+| 3   | **Test dep leaks**              | Test-only libs appear in production go.mod                                                     | `go mod why -m <dep>` shows only `_test.go` imports for a dep in `require` block                    | Move test helpers to separate modules. Audit each module's go.mod.                                                                                       |
+| 4   | **go.work / replace conflicts** | Both `go.work` and `replace` directives for the same pair                                      | `grep -r 'replace' */go.mod` finds replace while go.work exists                                     | Pick one strategy (see Phase 3.3). Never mix both.                                                                                                       |
+| 5   | **Broken consumers**            | External import paths change without redirect                                                  | Consumer project fails to `go get` after modularization                                             | Use `go.mod` redirect tags or `// Deprecated` annotations.                                                                                               |
+| 6   | **internal/ access breakage**   | Moving a package behind `internal/` blocks cross-module access                                 | `go build` fails with "use of internal package" from another module                                 | Remember: `internal/` restricts access to the _module_ tree, not just the package tree. A sub-module's `internal/` is invisible to all other modules.    |
+| 7   | **Error type inaccessibility**  | `errors.Is`/`errors.As` fail because error types moved to a module the consumer doesn't import | Tests pass locally (workspace provides all modules) but fail in isolation or for external consumers | Keep sentinel errors and error types in the interface module (core), not in implementations.                                                             |
+| 8   | **Over-modularization**         | Micro-modules with no composability payoff — every consumer imports A and B together           | `git log --stat` shows same files changed together AND no consumer imports one without the other    | Examine the boundary — do NOT auto-merge. Merge only if no consumer benefits from the seam (see Direction Neutrality). Co-change alone is not a verdict. |
+| 9   | **Stale go.work**               | `go.work` references deleted or renamed modules                                                | `go work sync` reports errors or `go build` fails at root                                           | Run `go work sync` after every structural change. Commit `go.work` and `go.work.sum` together.                                                           |
+| 10  | **Build system breakage**       | Build system references old module paths                                                       | `nix build`, `make`, or CI fails after module moves                                                 | Update build system immediately after each module move.                                                                                                  |
+| 11  | **Under-modularization**        | God-modules bundling unrelated sub-domains at the wrong depth                                  | One go.mod with 14+ packages; importing feature X drags in feature Y's types                        | Split along sub-domain boundaries so each composes independently. The inverse of FM#8 — "too few" is as real a failure as "too many."                    |
 
 ---
 
@@ -249,13 +304,13 @@ This tells you immediately:
 
 ### 1.2 Classify the starting state
 
-| State            | Indicators                                                                         | Approach                         |
-| ---------------- | ---------------------------------------------------------------------------------- | -------------------------------- |
-| Monolith         | Single go.mod, all packages in one tree                                            | Full modularization from scratch |
-| Partial split    | Multiple go.mods with `replace` directives, some packages still coupled            | Refine boundaries, fix leaks     |
-| Workspace mode   | go.work file coordinating multiple modules                                         | Audit workspace structure        |
-| Over-modularized | 10+ micro-modules, high inter-module coupling, modules that always change together | Merge and reorganize             |
-| Already split    | Clean DAG, minimal replace, independent CI per module                              | Skip to Phase 7 reflection only  |
+| State            | Indicators                                                                   | Approach                                                                         |
+| ---------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Monolith         | Single go.mod, all packages in one tree                                      | Full modularization from scratch                                                 |
+| Partial split    | Multiple go.mods with `replace` directives, some packages still coupled      | Refine boundaries, fix leaks                                                     |
+| Workspace mode   | go.work file coordinating multiple modules                                   | Audit workspace structure                                                        |
+| Over-modularized | 10+ modules, high inter-module coupling, modules that always change together | Examine each boundary (see Direction Neutrality) — some merge, some split deeper |
+| Already split    | Clean DAG, minimal replace, independent CI per module                        | Skip to Phase 7 reflection only                                                  |
 
 ### 1.3 Map the existing module landscape
 
@@ -282,13 +337,16 @@ Present a summary table:
 **Only when Phase 1 detects existing modules (partial split, over-modularized, or
 workspace mode).** Skip for monoliths.
 
-If modules already exist, the problem is rarely "add more modules." It is usually
-"the existing boundaries are wrong." Before proposing anything new:
+If modules already exist, the existing boundaries may be wrong in EITHER
+direction — too coarse (god-modules, under-decomposed) or too fine (atomized,
+no composability payoff). Do not default to either merging or splitting. Before proposing anything new:
 
 1. **Score existing boundaries** — For each current module, rate:
    - **Cohesion:** Do all packages in this module belong together? (1–5)
    - **Coupling:** Does this module depend on things it should not? (1–5, lower is better)
    - **Independence:** Can this module be built, tested, and versioned alone? (yes/no)
+   - **Depth:** Right level of abstraction, or bundling sub-domains that could each stand alone? (right / too-coarse / too-fine)
+   - **Composability payoff:** Is there at least one consumer that imports this module without its siblings? (yes/no)
 
 2. **Identify wrong seams** — Common patterns:
    - **Layer-based split** (all handlers in one module, all storage in another) → should be
@@ -298,13 +356,13 @@ If modules already exist, the problem is rarely "add more modules." It is usuall
 
 3. **Classify the remodel** — For each existing module, decide:
 
-   | Action         | When                                                                                |
-   | -------------- | ----------------------------------------------------------------------------------- |
-   | **Keep**       | Cohesion high, coupling low, clear purpose                                          |
-   | **Merge**      | Always changes together with another module, or too small to justify its own go.mod |
-   | **Split**      | Contains multiple unrelated concerns (god-module)                                   |
-   | **Reorganize** | Right packages, wrong boundaries — move packages between modules                    |
-   | **Retire**     | No longer used, empty, or fully absorbed by another module                          |
+   | Action         | When                                                                                            |
+   | -------------- | ----------------------------------------------------------------------------------------------- |
+   | **Keep**       | Cohesion high, coupling low, clear purpose                                                      |
+   | **Merge**      | Always changes together with another module, or too small to justify its own go.mod             |
+   | **Split**      | Bundles sub-domains at the wrong depth; each could compose independently (under-modularization) |
+   | **Reorganize** | Right packages, wrong boundaries — move packages between modules                                |
+   | **Retire**     | No longer used, empty, or fully absorbed by another module                                      |
 
 4. **Map the transition** — Build a migration matrix:
 
@@ -810,8 +868,9 @@ answer them for the final state:
 5. **Robustness** — What would make this modularization last 3+ years without regret?
 6. **Naming** — Are module names honest, domain-aligned, and consistent with
    Go conventions?
-7. **Granularity** — Should any module be further split or merged? Any god-packages
-   that survived the split? Any micro-modules that should be combined?
+7. **Granularity & depth** — Are modules at the right depth? Should any split
+   further (god-package survived, sub-domains bundled together) or merge (no
+   composability payoff)? Apply the Unix-pipe test to each.
 8. **Error types** — Can `errors.Is`/`errors.As` work across all module boundaries
    that need it? Are sentinel errors in the right modules?
 9. **internal/ hygiene** — Are `internal/` packages truly internal? Any accidental
