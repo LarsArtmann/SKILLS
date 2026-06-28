@@ -10,6 +10,8 @@
 #     3. The `git commit <--` / bare `<--` prompt artifact never returns in a
 #        SKILL.md (see AGENTS.md §5.2). originals/ is exempt — frozen source.
 #     4. Surface "thin" skills (<35 lines) so they get attention.
+#     5. Description field stays under 1024 chars (Crush refuses to load skills
+#        that exceed this limit — the skill silently never triggers).
 #
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
@@ -76,6 +78,26 @@ for d in "${skill_dirs[@]}"; do
   # Check 4: no `git commit <--` / bare `<-- ` artifact (see AGENTS.md §5.2)
   if grep -q 'git commit <--' "$f" || grep -qE 'commit[[:space:]]+<--[[:space:]]' "$f"; then
     echo "FAIL $skill: contains the 'git commit <--' prompt artifact — rewrite as clear prose (AGENTS.md §5.2)"; failed=1
+  fi
+  # Check 5: description does not exceed 1024 characters (Crush validation limit)
+  # Handles both single-line and YAML folded (>) / literal (|) block scalars.
+  desc_len=$(awk '
+    BEGIN { block=0; done=0; desc="" }
+    /^description:[[:space:]]*[>|]/ { block=1; next }
+    /^description:/ && !block {
+      sub(/^description:[[:space:]]*/, "")
+      sub(/[[:space:]]+$/, "")
+      print length($0); done=1; exit
+    }
+    block {
+      if (/^[^[:space:]]/) { print length(desc); done=1; exit }
+      line=$0; sub(/^[[:space:]]+/, "", line)
+      if (desc != "") desc = desc " " line; else desc = line
+    }
+    END { if (block && !done) print length(desc) }
+  ' "$f")
+  if [[ -n "$desc_len" ]] && [[ "$desc_len" -gt 1024 ]]; then
+    echo "FAIL $skill: description is $desc_len chars (limit 1024) — Crush will refuse to load this skill"; failed=1
   fi
 done
 
