@@ -292,10 +292,10 @@ framework deps in production `go.mod` to as close to zero as possible.
 
 **The Test Module Pattern** — split test code by what it accesses:
 
-| Test type | What it tests | Where it lives | Test framework deps |
-| --- | --- | --- | --- |
-| White-box (internal) | Unexported symbols, internals | `_test.go` in production module (`package foo`) | stdlib `testing` only — **zero external deps** |
-| Black-box (external) | Exported API, integration | Companion test module (`package foo_test`) | ginkgo, gomega, rapid — **in test module's go.mod, not production's** |
+| Test type            | What it tests                 | Where it lives                                  | Test framework deps                                                   |
+| -------------------- | ----------------------------- | ----------------------------------------------- | --------------------------------------------------------------------- |
+| White-box (internal) | Unexported symbols, internals | `_test.go` in production module (`package foo`) | stdlib `testing` only — **zero external deps**                        |
+| Black-box (external) | Exported API, integration     | Companion test module (`package foo_test`)      | ginkgo, gomega, rapid — **in test module's go.mod, not production's** |
 
 ```
 domain/                              # Production module
@@ -391,11 +391,11 @@ var (
 )
 ```
 
-| | |
-| --- | --- |
-| **PRO** | No god-module. Each module owns its own errors. Natural ownership — contract errors travel with the contract, implementation errors with the implementation. |
-| **CON** | Consumers may need to import multiple error packages for `errors.Is`. Cross-module error classification requires an interface (see Option C). |
-| **When** | Default. Start here. Most modules. |
+|          |                                                                                                                                                              |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **PRO**  | No god-module. Each module owns its own errors. Natural ownership — contract errors travel with the contract, implementation errors with the implementation. |
+| **CON**  | Consumers may need to import multiple error packages for `errors.Is`. Cross-module error classification requires an interface (see Option C).                |
+| **When** | Default. Start here. Most modules.                                                                                                                           |
 
 #### Option B: Dedicated errors module
 
@@ -419,11 +419,11 @@ const (
 )
 ```
 
-| | |
-| --- | --- |
-| **PRO** | Domain stays lean — it doesn't own every error. Single import for all error handling. Errors are a separate concern from domain types. |
-| **CON** | Still a hub — every module depends on `errors/`. But it's focused on one concern, not domain types + interfaces + errors + everything. |
-| **When** | domain would grow too large owning all errors. Error types are extensive and independent of domain types. |
+|          |                                                                                                                                        |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **PRO**  | Domain stays lean — it doesn't own every error. Single import for all error handling. Errors are a separate concern from domain types. |
+| **CON**  | Still a hub — every module depends on `errors/`. But it's focused on one concern, not domain types + interfaces + errors + everything. |
+| **When** | domain would grow too large owning all errors. Error types are extensive and independent of domain types.                              |
 
 #### Option C: Error classification interface (scales best)
 
@@ -455,11 +455,11 @@ for _, err := range errors {
 }
 ```
 
-| | |
-| --- | --- |
-| **PRO** | No god-module. Each module owns its errors. Cross-module classification works via the interface. Domain stays minimal (interface + codes, not all error values). |
-| **CON** | Slightly more complex. `errors.Is(err, domain.ErrNotFound)` only works for contract errors in domain — implementation-specific errors need their own sentinels in their own modules. |
-| **When** | Many modules (10+). Error classification needed across module boundaries. Want to avoid every module depending on a shared errors hub. |
+|          |                                                                                                                                                                                      |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **PRO**  | No god-module. Each module owns its errors. Cross-module classification works via the interface. Domain stays minimal (interface + codes, not all error values).                     |
+| **CON**  | Slightly more complex. `errors.Is(err, domain.ErrNotFound)` only works for contract errors in domain — implementation-specific errors need their own sentinels in their own modules. |
+| **When** | Many modules (10+). Error classification needed across module boundaries. Want to avoid every module depending on a shared errors hub.                                               |
 
 #### Option D: Error family library
 
@@ -479,11 +479,11 @@ func NewRejection(code, msg string) *Error  { return errorfamily.NewRejection(co
 func NewConflict(code, msg string) *Error   { return errorfamily.NewConflict(code, msg) }
 ```
 
-| | |
-| --- | --- |
-| **PRO** | Classification without central ownership. Each module creates its own errors. Retry logic and error reporting branch on family without inspecting specific types. |
-| **CON** | External dependency. Still need to decide where the re-exports live (domain? dedicated errors module?). |
-| **When** | You need retry logic, error reporting, or user-facing messages that branch on error severity across all modules. |
+|          |                                                                                                                                                                   |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **PRO**  | Classification without central ownership. Each module creates its own errors. Retry logic and error reporting branch on family without inspecting specific types. |
+| **CON**  | External dependency. Still need to decide where the re-exports live (domain? dedicated errors module?).                                                           |
+| **When** | You need retry logic, error reporting, or user-facing messages that branch on error severity across all modules.                                                  |
 
 ### Anti-pattern: All errors in domain (god-module risk)
 
