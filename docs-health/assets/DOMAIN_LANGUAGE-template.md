@@ -10,25 +10,25 @@
 
 ## Core terms
 
-| Term           | Definition                                          | Where used in code                        |
-| -------------- | --------------------------------------------------- | ----------------------------------------- |
-| Session        | An authenticated user's active connection           | `auth/session.go`, `Session` type         |
-| Tenant         | An isolated workspace owning users and resources    | `tenant/`, `Tenant` struct                |
-| Projection     | A read-optimized view derived from events           | `projections/`, `Projection` interface    |
+| Term       | Definition                                       | Where used in code                     |
+| ---------- | ------------------------------------------------ | -------------------------------------- |
+| Session    | An authenticated user's active connection        | `auth/session.go`, `Session` type      |
+| Tenant     | An isolated workspace owning users and resources | `tenant/`, `Tenant` struct             |
+| Projection | A read-optimized view derived from events        | `projections/`, `Projection` interface |
 
 ## Bounded contexts
 
 Terms that have different meanings in different parts of the system:
 
-| Term           | Context A (meaning)     | Context B (meaning)       |
-| -------------- | ----------------------- | ------------------------- |
-| Order          | Checkout (purchase)     | Fulfillment (shipment)    |
+| Term  | Context A (meaning) | Context B (meaning)    |
+| ----- | ------------------- | ---------------------- |
+| Order | Checkout (purchase) | Fulfillment (shipment) |
 
 ## Deprecated terms
 
-| Old term       | Current term            | Why changed                               |
-| -------------- | ----------------------- | ----------------------------------------- |
-| Account        | Tenant                  | Renamed to avoid banking connotation      |
+| Old term | Current term | Why changed                          |
+| -------- | ------------ | ------------------------------------ |
+| Account  | Tenant       | Renamed to avoid banking connotation |
 
 ---
 

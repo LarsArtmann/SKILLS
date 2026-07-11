@@ -16,6 +16,7 @@ Direction and vision for this area. What we want to achieve in the next
 6 to 12 months.
 
 Raw ideas:
+
 - Concept or capability we are exploring
 - Direction we want to investigate
 - Problem space we want to enter
@@ -25,6 +26,7 @@ Raw ideas:
 Direction and vision for this area.
 
 Raw ideas:
+
 - ...
 
 ## Non-goals

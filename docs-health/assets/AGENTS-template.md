@@ -42,11 +42,11 @@ nix run .#lint     # lint
 
 ## High-Value References
 
-| File | Why it matters |
-| ---- | -------------- |
-| `docs/DOMAIN_LANGUAGE.md` | Domain vocabulary |
-| `FEATURES.md` | Feature inventory with honest status |
-| `docs/adr/` | Architecture decisions |
+| File                      | Why it matters                       |
+| ------------------------- | ------------------------------------ |
+| `docs/DOMAIN_LANGUAGE.md` | Domain vocabulary                    |
+| `FEATURES.md`             | Feature inventory with honest status |
+| `docs/adr/`               | Architecture decisions               |
 
 ---
 

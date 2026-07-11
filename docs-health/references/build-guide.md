@@ -103,12 +103,12 @@ function or endpoint).
 
 ### Status vocabulary
 
-| Status                    | When it applies                                              |
-| ------------------------- | ------------------------------------------------------------ |
-| FULLY_FUNCTIONAL          | Code present AND working (tests pass or you exercised it).   |
-| PARTIALLY_FUNCTIONAL      | Ships but has known gaps, edge-case bugs, or missing pieces. |
-| BROKEN                    | Code exists but does not work / is disabled / fails.         |
-| PLANNED                   | Designed or documented but **no code exists yet**.           |
+| Status               | When it applies                                              |
+| -------------------- | ------------------------------------------------------------ |
+| FULLY_FUNCTIONAL     | Code present AND working (tests pass or you exercised it).   |
+| PARTIALLY_FUNCTIONAL | Ships but has known gaps, edge-case bugs, or missing pieces. |
+| BROKEN               | Code exists but does not work / is disabled / fails.         |
+| PLANNED              | Designed or documented but **no code exists yet**.           |
 
 ### Quality checklist
 

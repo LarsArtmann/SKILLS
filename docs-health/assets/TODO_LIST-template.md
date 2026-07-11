@@ -14,26 +14,26 @@
 | ---------------- | ----------------------------------------------------------- |
 | 🔴 `TODO`        | Not started. Needs doing.                                   |
 | 🟡 `IN_PROGRESS` | Actively being worked on.                                   |
-| 🔵 `BLOCKED`     | Cannot proceed, external dependency or decision needed.    |
+| 🔵 `BLOCKED`     | Cannot proceed, external dependency or decision needed.     |
 | 🟢 `DONE`        | Completed. Remove from this list and log in `CHANGELOG.md`. |
 
 ## High Impact
 
-| Task                       | Status    | Impact | Effort | Evidence                                  |
-| -------------------------- | --------- | ------ | ------ | ----------------------------------------- |
+| Task                       | Status    | Impact | Effort | Evidence                                 |
+| -------------------------- | --------- | ------ | ------ | ---------------------------------------- |
 | Fix session revocation 500 | 🔴 `TODO` | High   | 30min  | `auth/revoke.go:42`, panics on nil token |
-| Add OAuth (Google) flow    | 🔴 `TODO` | High   | 2h     | Referenced in README; no code yet         |
+| Add OAuth (Google) flow    | 🔴 `TODO` | High   | 2h     | Referenced in README; no code yet        |
 
 ## Medium Impact
 
-| Task                     | Status    | Impact | Effort | Evidence                                |
-| ------------------------ | --------- | ------ | ------ | --------------------------------------- |
+| Task                     | Status    | Impact | Effort | Evidence                               |
+| ------------------------ | --------- | ------ | ------ | -------------------------------------- |
 | Add password reset retry | 🔴 `TODO` | Med    | 1h     | `auth/reset.go:42`, retry loop missing |
 
 ## Low Impact
 
-| Task                       | Status    | Impact | Effort | Evidence                                           |
-| -------------------------- | --------- | ------ | ------ | -------------------------------------------------- |
+| Task                       | Status    | Impact | Effort | Evidence                                          |
+| -------------------------- | --------- | ------ | ------ | ------------------------------------------------- |
 | Update README install step | 🔴 `TODO` | Low    | 10min  | `README.md:15`, still references old package name |
 
 ---

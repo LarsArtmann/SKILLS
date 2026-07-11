@@ -25,16 +25,16 @@ Each file has ONE job. Each fact lives in exactly ONE place. When the same
 fact appears in multiple files, they drift, and the reader cannot tell which
 is current.
 
-| File                        | Owns                                           | Lifecycle   |
-| --------------------------- | ---------------------------------------------- | ----------- |
-| `README.md`               | What this is, why it exists, how to start      | Living      |
-| `docs/DOMAIN_LANGUAGE.md` | Domain terms and definitions                   | Living      |
-| `AGENTS.md`               | Non-obvious context for AI sessions            | Living      |
-| `FEATURES.md`             | What features exist + honest status            | Living      |
-| `TODO_LIST.md`            | Short-term actionable work                     | Living      |
-| `ROADMAP.md`              | Long-term vision, raw ideas not yet actionable | Living      |
-| `CHANGELOG.md`            | What changed in each version                   | Append-only |
-| `docs/adr/`               | Architecture decisions (context, decision, why)| Optional    |
+| File                      | Owns                                            | Lifecycle   |
+| ------------------------- | ----------------------------------------------- | ----------- |
+| `README.md`               | What this is, why it exists, how to start       | Living      |
+| `docs/DOMAIN_LANGUAGE.md` | Domain terms and definitions                    | Living      |
+| `AGENTS.md`               | Non-obvious context for AI sessions             | Living      |
+| `FEATURES.md`             | What features exist + honest status             | Living      |
+| `TODO_LIST.md`            | Short-term actionable work                      | Living      |
+| `ROADMAP.md`              | Long-term vision, raw ideas not yet actionable  | Living      |
+| `CHANGELOG.md`            | What changed in each version                    | Append-only |
+| `docs/adr/`               | Architecture decisions (context, decision, why) | Optional    |
 
 For the full ownership rules, anti-patterns, information lifecycle, and a
 "where agents store what" matrix, load
@@ -44,12 +44,12 @@ For the full ownership rules, anti-patterns, information lifecycle, and a
 
 Not every project needs all docs. Detect the project type and adapt:
 
-| Project type       | Must-have docs                       | Optional docs                              |
-| ------------------ | ------------------------------------ | ------------------------------------------ |
-| Content repo       | README, AGENTS                       | FEATURES (adapted), CHANGELOG              |
-| Library / package  | README, CHANGELOG, FEATURES          | AGENTS, DOMAIN_LANGUAGE                    |
-| Web app / service  | README, FEATURES, TODO_LIST          | AGENTS, DOMAIN_LANGUAGE, ROADMAP           |
-| Monorepo           | README, AGENTS, FEATURES per package | DOMAIN_LANGUAGE per bounded context        |
+| Project type      | Must-have docs                       | Optional docs                       |
+| ----------------- | ------------------------------------ | ----------------------------------- |
+| Content repo      | README, AGENTS                       | FEATURES (adapted), CHANGELOG       |
+| Library / package | README, CHANGELOG, FEATURES          | AGENTS, DOMAIN_LANGUAGE             |
+| Web app / service | README, FEATURES, TODO_LIST          | AGENTS, DOMAIN_LANGUAGE, ROADMAP    |
+| Monorepo          | README, AGENTS, FEATURES per package | DOMAIN_LANGUAGE per bounded context |
 
 ---
 
@@ -77,24 +77,24 @@ type, load [./references/build-guide.md](./references/build-guide.md).
 
 ### Quick reference: which template to use
 
-| Doc                        | Template (copy into project, fill in)                              |
-| -------------------------- | ------------------------------------------------------------------ |
-| `README.md`              | [./assets/README-template.md](./assets/README-template.md)         |
-| `AGENTS.md`              | [./assets/AGENTS-template.md](./assets/AGENTS-template.md)         |
-| `FEATURES.md`            | [./assets/FEATURES-template.md](./assets/FEATURES-template.md)     |
-| `TODO_LIST.md`           | [./assets/TODO_LIST-template.md](./assets/TODO_LIST-template.md)   |
-| `ROADMAP.md`             | [./assets/ROADMAP-template.md](./assets/ROADMAP-template.md)       |
-| `CHANGELOG.md`           | [./assets/CHANGELOG-template.md](./assets/CHANGELOG-template.md)   |
-| `docs/DOMAIN_LANGUAGE.md`| [./assets/DOMAIN_LANGUAGE-template.md](./assets/DOMAIN_LANGUAGE-template.md) |
+| Doc                       | Template (copy into project, fill in)                                        |
+| ------------------------- | ---------------------------------------------------------------------------- |
+| `README.md`               | [./assets/README-template.md](./assets/README-template.md)                   |
+| `AGENTS.md`               | [./assets/AGENTS-template.md](./assets/AGENTS-template.md)                   |
+| `FEATURES.md`             | [./assets/FEATURES-template.md](./assets/FEATURES-template.md)               |
+| `TODO_LIST.md`            | [./assets/TODO_LIST-template.md](./assets/TODO_LIST-template.md)             |
+| `ROADMAP.md`              | [./assets/ROADMAP-template.md](./assets/ROADMAP-template.md)                 |
+| `CHANGELOG.md`            | [./assets/CHANGELOG-template.md](./assets/CHANGELOG-template.md)             |
+| `docs/DOMAIN_LANGUAGE.md` | [./assets/DOMAIN_LANGUAGE-template.md](./assets/DOMAIN_LANGUAGE-template.md) |
 
 ### Status vocabulary for FEATURES.md
 
-| Status                    | When it applies                                              |
-| ------------------------- | ------------------------------------------------------------ |
-| FULLY_FUNCTIONAL          | Code present AND working (tests pass or you exercised it).   |
-| PARTIALLY_FUNCTIONAL      | Ships but has known gaps, edge-case bugs, or missing pieces. |
-| BROKEN                    | Code exists but does not work / is disabled / fails.         |
-| PLANNED                   | Designed or documented but **no code exists yet**.           |
+| Status               | When it applies                                              |
+| -------------------- | ------------------------------------------------------------ |
+| FULLY_FUNCTIONAL     | Code present AND working (tests pass or you exercised it).   |
+| PARTIALLY_FUNCTIONAL | Ships but has known gaps, edge-case bugs, or missing pieces. |
+| BROKEN               | Code exists but does not work / is disabled / fails.         |
+| PLANNED              | Designed or documented but **no code exists yet**.           |
 
 Never round up. If you cannot confirm a feature works, it is
 `PARTIALLY_FUNCTIONAL` at best. Honesty is the entire point of this file.
@@ -120,15 +120,15 @@ For per-file verification checklists (what to check in each doc type), load
 
 ### Failure modes (ranked by severity)
 
-| Severity    | Failure mode     | Example                                                        |
-| ----------- | ---------------- | -------------------------------------------------------------- |
-| Critical    | Points at ghosts | References a deleted file, renamed symbol, or dead command     |
-| Critical    | Wrong commands   | Build/test/run instructions that fail when executed            |
-| Medium      | Contradicts code | Doc says X works; code shows X is broken, disabled, or removed |
-| Medium      | Stale status     | Claims an issue is open when it is fixed (or vice versa)       |
-| Medium      | Missing reality  | A shipped feature or new file the doc does not mention         |
-| Low         | Counted wrong    | "18 skills" when there are 19                                  |
-| Low         | Cosmetic         | Typos, broken links, stale dates                               |
+| Severity | Failure mode     | Example                                                        |
+| -------- | ---------------- | -------------------------------------------------------------- |
+| Critical | Points at ghosts | References a deleted file, renamed symbol, or dead command     |
+| Critical | Wrong commands   | Build/test/run instructions that fail when executed            |
+| Medium   | Contradicts code | Doc says X works; code shows X is broken, disabled, or removed |
+| Medium   | Stale status     | Claims an issue is open when it is fixed (or vice versa)       |
+| Medium   | Missing reality  | A shipped feature or new file the doc does not mention         |
+| Low      | Counted wrong    | "18 skills" when there are 19                                  |
+| Low      | Cosmetic         | Typos, broken links, stale dates                               |
 
 ### VERIFY process
 
@@ -221,6 +221,7 @@ Print an inline summary table to the conversation (do NOT write to a file):
 ```
 
 **Health Score formula:** Start at 10. Subtract:
+
 - 1 point per Critical finding
 - 0.5 points per Medium finding
 - 0.25 points per Low finding

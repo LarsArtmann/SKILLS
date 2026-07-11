@@ -13,32 +13,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Added
+
 - New features not yet released
 
 ### Changed
+
 - Changes in existing functionality
 
 ### Fixed
+
 - Bug fixes
 
 ## [1.0.0] - 2026-01-15
 
 ### Added
+
 - Feature A (`path/to/feature.go`)
 - Feature B
 
 ### Changed
+
 - Breaking: renamed `OldName` to `NewName`
 
 ### Fixed
+
 - Bug in `path/to/bug.go` causing crash on nil input
 
 ### Security
+
 - Patched vulnerability in dependency X
 
 ## [0.9.0] - 2025-12-01
 
 ### Added
+
 - Initial release
 
 ---
