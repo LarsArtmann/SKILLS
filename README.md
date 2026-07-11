@@ -60,12 +60,10 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Project Intelligence
 
-| Skill                    | What It Does                                           | Status        |
-| ------------------------ | ------------------------------------------------------ | ------------- |
-| **docs-freshness-check** | Verifies docs are up-to-date with the actual codebase  | 🟢 Solid      |
-| **features-audit**       | Creates/updates `FEATURES.md` by studying actual code  | 🟢 Solid      |
-| **status-report**        | Full project status updates as styled HTML dashboards  | 🟡 Functional |
-| **todo-list-builder**    | Builds `TODO_LIST.md` from docs, verified against code | 🟢 Solid      |
+| Skill             | What It Does                                                                                                | Status        |
+| ----------------- | ----------------------------------------------------------------------------------------------------------- | ------------- |
+| **docs-health**   | Creates, verifies, and maintains all core project docs — enforces file ownership and cross-file consistency | 🟢 Solid      |
+| **status-report** | Full project status updates as styled HTML dashboards                                                       | 🟡 Functional |
 
 ## Quick Start
 

@@ -119,7 +119,7 @@ Historically four skills used the phrase `git commit <-- with VERY DETAILED comm
 
 ### 5.3 Parallelism (resolved)
 
-`brutal-self-review` and `todo-list-builder` instruct "Use 1 Sub Agent per file. ONLY 1 at a time." This previously contradicted the removed `execution-mode` skill, which said "Use MULTIPLE Tasks to get multiple Todos done at the same time." With `execution-mode` deleted, the contradiction no longer exists. Do not reintroduce conflicting parallelism guidance when editing either skill.
+`brutal-self-review` instructs "Use 1 Sub Agent per file. ONLY 1 at a time." This previously contradicted the removed `execution-mode` skill, which said "Use MULTIPLE Tasks to get multiple Todos done at the same time." With `execution-mode` deleted, the contradiction no longer exists. Do not reintroduce conflicting parallelism guidance when editing either skill. The `docs-health` skill (which absorbed `todo-list-builder`) also instructs sequential sub-agent use for TODO_LIST.md builds.
 
 ### 5.4 Thin Skills
 

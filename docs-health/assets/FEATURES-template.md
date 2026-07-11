@@ -1,6 +1,6 @@
 <!-- FEATURES.md template — copy into the project root and fill in.
      This is a LIVING document (Markdown), kept up-to-date as features ship.
-     Never convert it to HTML — tools upsert and grep it. See SKILL.md. -->
+     Never convert it to HTML — tools upsert and grep it. See docs-health/SKILL.md. -->
 
 # Features
 
@@ -21,7 +21,7 @@
 > delivers it AND confirm it works. If you're unsure, it's `PARTIALLY_FUNCTIONAL`
 > at best — never round up.
 
-## <Domain area 1> <!-- e.g. Authentication -->
+## <!-- Domain area, e.g. Authentication -->
 
 | Feature              | Status                    | Notes                                                      |
 | -------------------- | ------------------------- | ---------------------------------------------------------- |
@@ -30,7 +30,7 @@
 | OAuth (Google)       | ⚪ `PLANNED`              | Referenced in README; no code yet                          |
 | Session revocation   | 🔴 `BROKEN`               | Endpoint exists (`auth/revoke.go`) but 500s on valid token |
 
-## <Domain area 2> <!-- group features by domain for readability -->
+## <!-- Next domain area — group features by domain for readability -->
 
 | Feature | Status | Notes |
 | ------- | ------ | ----- |
@@ -44,4 +44,5 @@
   - If a feature spans multiple files, name the entry point and note the spread.
   - "PLANNED" is a claim that something is missing — verify there is truly no code.
   - Keep Notes actionable: cite the file/line and the specific gap.
+  - When a feature ships, remove it from TODO_LIST.md to avoid split brains.
 -->
