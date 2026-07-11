@@ -8,6 +8,9 @@ allowed-tools: d2
 
 # Pareto Planning
 
+> **Input:** Takes an existing `TODO_LIST.md` (or task list) and ranks it.
+> To create or verify `TODO_LIST.md` first, use the `docs-health` skill.
+
 ## Process
 
 ### Step 1: Pareto Breakdown

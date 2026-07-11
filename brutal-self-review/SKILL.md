@@ -58,6 +58,7 @@ order.
 - Which architectural decisions we made in the past are causing problems now / could be improved?
 - Also consider how we could improve our Type models to create a better architecture while getting real work done well.
 - Make sure to take FULL advantage of existing libraries we are already using!
+- Are docs lying? If documentation drift or split brains are found, delegate to the `docs-health` skill for a full audit.
 
 For Go ecosystem libraries, architecture patterns, banned libraries, and required stack, use the `how-to-golang` skill. Load its SKILL.md at `/home/lars/projects/SKILLS/how-to-golang/SKILL.md` and follow its references for detailed library decisions, domain types, key patterns, and banned dependencies.
 

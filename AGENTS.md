@@ -21,13 +21,13 @@ SKILLS/
 ├── README.md                    # Project overview, skills table, installation
 ├── how-to-write-skills.md       # Authoritative guide for writing new skills (currently at root)
 ├── originals/                   # Legacy raw prompt source material. DO NOT EDIT.
-│   └── <skill-name>.md            #   17 files named after the skill they seeded.
+│   └── <skill-name>.md            #   Raw prompts named after the skill they seeded.
 │                                 #   Two legacy source prompts produced
 │                                 #   multiple files (execution-mode,
 │                                 #   pareto-planning). Skills/ directories
 │                                 #   are canonical (see docs/status/).
 │
-├── <skill-name>/                # One directory per skill (20 total)
+├── <skill-name>/                # One directory per skill (18 total)
 │   ├── SKILL.md                 # Required: YAML frontmatter + agent instructions
 │   ├── scripts/                 # Optional: executable helpers (run without loading into context)
 │   ├── references/              # Optional: detailed docs loaded on demand via `view`
@@ -103,15 +103,19 @@ Large reference files (>300 lines) should include a table of contents at the top
 
 ### 5.1 Legacy Files (`originals/<skill-name>.md`)
 
-The `originals/` directory holds the 17 raw prompt snippets that seeded
+The `originals/` directory holds the raw prompt snippets that seeded
 this repository, one per skill directory plus a few sub-variants
 (`execution-mode-reflective` / `execution-mode-aggressive`,
 `pareto-planning` / `pareto-planning-execution-plan` /
 `pareto-planning-12min-task-decomposition`). Files are named after the
 skill they originally produced, so you can read the seed prompt that
-generated any given skill. They are **source material, not canonical** —
-any edits are wasted work. The skills in `<skill-name>/SKILL.md` are
+generated any given skill. They are **source material, not canonical**: any edits are wasted work. The skills in `<skill-name>/SKILL.md` are
 the canonical versions.
+
+Three original files (`todo-list-builder.md`, `features-audit.md`,
+`docs-freshness-check.md`) now seed skills that were consolidated into
+`docs-health`. They are kept for historical reference; the canonical
+skill is `docs-health/SKILL.md`.
 
 ### 5.2 `git commit <--` Syntax Bug (resolved)
 

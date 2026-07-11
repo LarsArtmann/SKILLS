@@ -5,15 +5,16 @@
 
 ## File ownership
 
-| File                      | Purpose                                                                                                                              | NOT for                                                               |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| File                        | Purpose                                                                                                                              | NOT for                                                               |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
 | `README.md`               | **Sales page for end-users**: what this does, why it exists, how to get started                                                      | Internal architecture, developer notes, AI session context            |
 | `docs/DOMAIN_LANGUAGE.md` | Domain-driven design glossary: ubiquitous language, bounded context terms, project-specific vocabulary                               | Implementation details, API docs, architecture decisions              |
 | `AGENTS.md`               | Concise, enduring context for every AI session: important information, unexpected behaviors, things hard to discover from code alone | Change logs, task lists, feature status, future plans, marketing copy |
 | `FEATURES.md`             | Honest feature inventory by status: `FULLY_FUNCTIONAL`, `PARTIALLY_FUNCTIONAL`, `BROKEN`, `PLANNED`                                  | Implementation details, architecture notes, change history            |
-| `TODO_LIST.md`            | Interactive short- and mid-term improvement tasks — actionable, bounded, with status                                                 | Long-term vision, vague ideas, completed work, unowned requests       |
+| `TODO_LIST.md`            | Interactive short- and mid-term improvement tasks, actionable, bounded, with status                                                 | Long-term vision, vague ideas, completed work, unowned requests       |
 | `ROADMAP.md`              | Long-term direction and raw ideas not yet refined into actionable tasks                                                              | Short-term work, well-scoped features, completed milestones           |
 | `CHANGELOG.md`            | Chronological record of what changed in each version                                                                                 | Planning, feature status, internal context                            |
+| `docs/adr/`               | Architecture Decision Records: context, decision, consequences for each significant architectural choice                             | Feature status, task tracking, getting-started docs                   |
 
 ## Anti-patterns
 
@@ -23,7 +24,7 @@
 | Put feature status in `README.md`           | Marketing tone drifts from reality                     | `FEATURES.md`                                 |
 | Put architecture decisions in `FEATURES.md` | Mixes inventory with rationale                         | `AGENTS.md` (brief) + `docs/adr/` (detail)    |
 | Put domain terms in `AGENTS.md` prose       | Scattered, not greppable                               | `docs/DOMAIN_LANGUAGE.md`                     |
-| Duplicate a fact across files               | They will drift — readers cannot tell which is current | State it once, link from elsewhere            |
+| Duplicate a fact across files               | They will drift; readers cannot tell which is current  | State it once, link from elsewhere            |
 | Put completed work in `TODO_LIST.md`        | Clutters the active list                               | Remove it; log in `CHANGELOG.md`              |
 | Put raw ideas in `TODO_LIST.md`             | Dilutes actionable work                                | `ROADMAP.md` until refined into bounded tasks |
 | Put short-term tasks in `ROADMAP.md`        | Roadmap becomes a dumping ground                       | `TODO_LIST.md`                                |
@@ -35,20 +36,20 @@ stage at any given time:
 
 ```
 ROADMAP.md                TODO_LIST.md              FEATURES.md               CHANGELOG.md
-─────────────             ─────────────             ────────────              ─────────────
-raw idea            →     actionable task     →    shipped feature     →    release entry
+-------------             -------------             -----------              ------------
+raw idea            ->    actionable task    ->    shipped feature    ->    release entry
 unrefined                 verified against code      honest status             logged once
 ```
 
-**Stage 1 — Idea:** Lives in `ROADMAP.md` as a raw, unrefined concept.
+**Stage 1 (Idea):** Lives in `ROADMAP.md` as a raw, unrefined concept.
 
-**Stage 2 — Actionable:** Refined into a bounded task in `TODO_LIST.md` with
+**Stage 2 (Actionable):** Refined into a bounded task in `TODO_LIST.md` with
 clear scope and effort estimate.
 
-**Stage 3 — Shipped:** Appears in `FEATURES.md` with an honest status
+**Stage 3 (Shipped):** Appears in `FEATURES.md` with an honest status
 (`FULLY_FUNCTIONAL`, `PARTIALLY_FUNCTIONAL`, etc.). Removed from `TODO_LIST.md`.
 
-**Stage 4 — Released:** Logged in `CHANGELOG.md` under the version it shipped in.
+**Stage 4 (Released):** Logged in `CHANGELOG.md` under the version it shipped in.
 
 ### The most common rot
 

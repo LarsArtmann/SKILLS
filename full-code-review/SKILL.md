@@ -60,6 +60,8 @@ visual treatment.
    - **Badge-coded tables** with columns: #, Severity, File, Line, Issue, Fix
 4. If you identified significant duplications, reference and delegate to the
    `deduplicate-code` skill.
+5. If documentation drift is a major finding, reference and delegate to the
+   `docs-health` skill for a full documentation audit.
 
 ## Git Workflow
 
