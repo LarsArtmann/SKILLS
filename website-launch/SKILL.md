@@ -8,12 +8,11 @@ description: >-
   metadata for a library, rewrite a README for public presence, "make a
   website", "publish docs", "set up Firebase hosting", configure custom
   domains, or any task involving the sibling-project website pattern
-  (go-atomic-write, gogenfilter, go-output, go-workflow-auditlog, etc.). Also
-  triggers on "website launch", "public presence overhaul", "deploy website",
-  or "lars.software domain".
+  (go-atomic-write, gogenfilter, go-output, samber-do-auditlog,
+  go-workflow-auditlog, etc.). Also triggers on "website launch", "public
+  presence overhaul", "deploy website", or "lars.software domain".
 metadata:
   tags: website, firebase, astro, starlight, dns, deployment, documentation
-allowed-tools: bash
 ---
 
 # Website Launch
@@ -757,9 +756,12 @@ full list. The most critical:
 nixpkgs#terraform` or `opentofu`.
 3. **`npm`, `node`, `firebase` are not in PATH** — always invoke via
    `nix shell nixpkgs#{package} -c {command}`.
-4. **Vite override conflicts** — Use `astro-og-canvas@^0.12.0` (not 0.11.x)
-   with Astro 7. gogenfilter pins `vite: 7.3.2` and works. Either copy
-   gogenfilter's overrides verbatim or omit them — do not partially customize.
+4. **Vite override conflicts** — **Remove `vite` from overrides entirely.**
+   Astro 7 manages its own Vite version (Vite 8). Pinning `vite: 7.3.2`
+   (copied from gogenfilter's older lockfile) causes a build failure with
+   `rollupOptions.input should not be an html file when building for SSR`.
+   Keep only `brace-expansion`, `devalue`, and `yaml` in overrides. See
+   [dependency-versions.md](./references/dependency-versions.md).
 5. **`--legacy-peer-deps` trap** — If you must use it, create `.npmrc`
    with `legacy-peer-deps=true`. Otherwise the lockfile is non-reproducible.
 6. **MDX character escaping** — `<`, `>`, `<=`, `>=` break `.mdx` files.

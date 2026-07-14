@@ -60,21 +60,25 @@ nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c firebase deploy --only hostin
 **Symptom:** Build fails with `rollupOptions.input should not be an html
 file when building for SSR` or similar Rollup error.
 
-**Cause:** A prior session (go-output) hit this when using
-`astro-og-canvas@0.11.1` with Astro 7. The root cause was the og-canvas
-version, not Vite pinning per se — `astro-og-canvas@0.12.0` added Astro 7
-support.
+**Cause:** The `package.json` has `"vite": "7.3.2"` in overrides (copied
+from gogenfilter's older lockfile). Astro 7 resolves Vite 8 internally.
+Pinning Vite to 7.x causes a fatal Rollup version mismatch.
 
-gogenfilter pins `vite: 7.3.2` in overrides and works fine. The failure
-mode is using incompatible version combinations, not the act of pinning
-itself.
+**Fix:** **Remove `"vite"` from overrides entirely.** Keep only
+`brace-expansion`, `devalue`, and `yaml`:
 
-**Fix:** Use `astro-og-canvas@^0.12.0` (not 0.11.x) with Astro 7. Either
-copy gogenfilter's overrides verbatim or omit them entirely — do not
-partially customize.
+```json
+"overrides": {
+  "brace-expansion": "5.0.6",
+  "devalue": "5.8.1",
+  "yaml": "2.8.3"
+}
+```
 
 **Prevention:** See [dependency-versions.md](./dependency-versions.md) —
-the verified matrices have been tested in production.
+the "Vite Override — Critical Fix" section documents this in detail. If
+you copy gogenfilter's `package.json`, delete the `"vite"` line before
+running `npm install`.
 
 ### 2. npm v11 install scripts blocked
 

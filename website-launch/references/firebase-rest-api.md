@@ -160,7 +160,10 @@ ACCESS_TOKEN=$(nix shell nixpkgs#google-cloud-sdk -c gcloud auth print-access-to
 
 ## Extract ACME Challenge
 
-The list response includes two DNS records you need to stage in Terraform:
+The list response includes two DNS records you need to stage in Terraform.
+**See [dns-terraform.md](./dns-terraform.md) for the exact HCL record
+templates** — copy the CNAME and TXT record blocks from there and fill
+in the values extracted below.
 
 ### CNAME record
 

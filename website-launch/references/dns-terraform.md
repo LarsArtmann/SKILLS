@@ -30,6 +30,11 @@ record {
 
 ### ACME TXT for Firebase SSL cert verification
 
+The `{acme-token}` value comes from the Firebase Hosting REST API. **See
+[firebase-rest-api.md](./firebase-rest-api.md) "Extract ACME Challenge"
+section** for the exact API call and response field path
+(`cert.verification.dns.desired[0].records[0].rdata`).
+
 ```hcl
 # Firebase SSL cert verification for {subdomain}.lars.software
 record {

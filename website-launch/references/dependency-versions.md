@@ -1,18 +1,49 @@
 # Dependency Version Matrix — Verified Working
 
-> These versions are verified to work together, taken directly from the
-> gogenfilter `package.json` (the most complete reference baseline).
+> These versions are verified to work together.
 > Do NOT bump versions without testing — several combinations are known
 > to break.
 >
-> **Last verified:** 2026-07-13 against gogenfilter (full-feature) and
-> go-workflow-auditlog (simple, no OG/CSP) — both built successfully with
-> these versions on Node.js 24 via Nix.
+> **Last verified:** 2026-07-13 against samber-do-auditlog (simple,
+> no OG/CSP, no `astro-og-canvas`) and gogenfilter (full-feature). Both
+> built successfully with Astro 7 on Node.js 22/24 via Nix.
+>
+> **CRITICAL:** The `vite` override MUST be removed for Astro 7.
+> Astro 7 resolves Vite 8 internally. Pinning `vite: 7.3.2` (from
+> gogenfilter's older lockfile) causes a fatal Rollup error. See the
+> "Vite Override — Critical Fix" section below.
 
-## Verified Working (gogenfilter baseline — Astro 7)
+## Verified Working — Simple (samber-do-auditlog baseline — Astro 7)
 
-gogenfilter runs Astro 7 successfully with OG images, CSP, and CI/CD.
-This is the canonical version set:
+The recommended starting point for new sites. No OG images, no CSP.
+Verified 2026-07-13 with a clean `npm install` + `npm run build`:
+
+```json
+{
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/starlight": "^0.41.1",
+    "@tailwindcss/vite": "^4.3.1",
+    "astro": "^7.0.3",
+    "tailwindcss": "^4.3.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "html-validate": "^11.5.3",
+    "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "brace-expansion": "5.0.6",
+    "devalue": "5.8.1",
+    "yaml": "2.8.3"
+  }
+}
+```
+
+## Verified Working — Full-Feature (gogenfilter baseline — Astro 7)
+
+For sites with OG images, CSP, and CI/CD. Add `astro-og-canvas` and
+`jscpd` to the simple set above:
 
 ```json
 {
@@ -33,7 +64,6 @@ This is the canonical version set:
   "overrides": {
     "brace-expansion": "5.0.6",
     "devalue": "5.8.1",
-    "vite": "7.3.2",
     "yaml": "2.8.3"
   }
 }
@@ -41,58 +71,41 @@ This is the canonical version set:
 
 **Build script:** `"build": "astro build && node scripts/fix-csp.mjs"`
 
-## go-atomic-write baseline (simpler — no OG images, no CSP)
+## Vite Override — Critical Fix
 
-If you don't need OG images or CSP, this simpler set also works with
-Astro 7:
+**Problem:** gogenfilter's `package.json` has `"vite": "7.3.2"` in
+overrides. This was valid when gogenfilter ran Astro 6. When used with
+Astro 7, which resolves Vite 8 internally, the pin causes:
+
+```
+rollupOptions.input should not be an html file when building for SSR.
+```
+
+**Fix:** **REMOVE the `vite` key from overrides entirely.** Keep only:
 
 ```json
-{
-  "dependencies": {
-    "@astrojs/sitemap": "^3.7.3",
-    "@astrojs/starlight": "^0.41.1",
-    "@tailwindcss/vite": "^4.3.1",
-    "astro": "^7.0.3",
-    "tailwindcss": "^4.3.1"
-  },
-  "devDependencies": {
-    "@astrojs/check": "^0.9.9",
-    "html-validate": "^11.5.3",
-    "typescript": "^6.0.3"
-  },
-  "overrides": {
-    "brace-expansion": "5.0.6"
-  }
+"overrides": {
+  "brace-expansion": "5.0.6",
+  "devalue": "5.8.1",
+  "yaml": "2.8.3"
 }
 ```
 
+**This was the #1 build failure in the samber-do-auditlog session
+(2026-07-13).** If you copy gogenfilter's `package.json` as a starting
+point, delete the `"vite"` line from overrides before running
+`npm install`.
+
 ## The Astro 6 vs 7 History (resolved)
 
-A prior session (go-output) hit a Rollup error
-(`rollupOptions.input should not be an html file when building for SSR`)
-when using `astro-og-canvas@0.11.1` with Astro 7. That session concluded
-Astro 6 was required.
+A prior session (go-output) hit a Rollup error when using
+`astro-og-canvas@0.11.1` with Astro 7. The root cause was twofold:
 
-**This is resolved.** gogenfilter runs `astro@^7.0.3` with
-`astro-og-canvas@^0.12.0` successfully. The fix was upgrading og-canvas
-from 0.11.x to 0.12.0, which added Astro 7 support.
+1. `astro-og-canvas@0.11.x` did not support Astro 7 (fixed in 0.12.0)
+2. The `vite: 7.3.2` override conflicted with Astro 7's Vite 8
 
-**Lesson:** Use `astro-og-canvas@^0.12.0` (not 0.11.x) with Astro 7.
-If you hit the Rollup error, check the og-canvas version first.
-
-## Overrides: Copy gogenfilter's Exactly or Omit Entirely
-
-gogenfilter pins `vite: 7.3.2` in overrides and it works. go-atomic-write
-has no vite override and it also works. The failure mode is **partially
-customizing** overrides — picking a different vite version or mixing
-incompatible pins.
-
-Two safe options:
-
-1. **Copy gogenfilter's overrides verbatim** (recommended for full-feature sites)
-2. **Use only `brace-expansion`** (for simpler sites without OG/CSP)
-
-Do NOT invent your own override combinations.
+**Both issues are now resolved.** Use `astro-og-canvas@^0.12.0` with
+Astro 7, and **never pin `vite` in overrides**.
 
 ## npm v11+ Install Scripts
 
@@ -126,11 +139,14 @@ versions are compatible without `--legacy-peer-deps`.
 
 ## Package Manager Guidance
 
-| Task                 | Tool                               | Why                                                                        |
-| -------------------- | ---------------------------------- | -------------------------------------------------------------------------- |
-| Install dependencies | `npm install` or `bun install`     | Both work for install                                                      |
-| Build                | `npm run build` or `bun run build` | Both work for build                                                        |
-| Deploy to Firebase   | Real Node.js (not bun)             | `firebase deploy` uses `re2` native module — bun's node shim can't load it |
+| Task                 | Tool                   | Why                                                                        |
+| -------------------- | ---------------------- | -------------------------------------------------------------------------- |
+| Install dependencies | `npm install`          | Recommended — CI uses `npm ci` with `package-lock.json`                    |
+| Build                | `npm run build`        | Works under both npm and bun                                               |
+| Deploy to Firebase   | Real Node.js (not bun) | `firebase deploy` uses `re2` native module — bun's node shim can't load it |
+
+**Default to `npm`.** Use `bun` only for fast iteration during development,
+then switch to real Node.js (via Nix) for deploy.
 
 ### Lockfile Decision
 
@@ -143,11 +159,11 @@ add `bun.lock` to `.gitignore` (the gogenfilter `.gitignore` does this).
 bun.lock
 ```
 
-### Deploying with real Node.js under bun
+### Deploying with real Node.js
 
 ```bash
-PATH=$(nix build nixpkgs#nodejs --no-link --print-out-paths)/bin:$PATH \
-  npx firebase-tools deploy --only hosting:{siteId} --project lars-software
+nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c \
+  firebase deploy --only hosting:{siteId} --project lars-software
 ```
 
 Or use the Nix devShell (which provides real Node.js).
@@ -158,13 +174,13 @@ Or use the Nix devShell (which provides real Node.js).
 devDependencies. It comes from:
 
 1. The Nix devShell (`flake.nix`), or
-2. `bunx firebase-tools` / `npx firebase-tools` for one-off commands
+2. `nix shell nixpkgs#firebase-tools` for one-off commands
 
-If you accidentally `bun add firebase-tools` while debugging, remove it
+If you accidentally `npm install firebase-tools` while debugging, remove it
 before committing:
 
 ```bash
-npm remove firebase-tools   # or: bun remove firebase-tools
+npm remove firebase-tools
 ```
 
 Reference websites do NOT have `firebase-tools` as a dependency.

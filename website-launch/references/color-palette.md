@@ -3,6 +3,12 @@
 > Each accent color requires ~25 CSS custom properties across `global.css`
 > and `starlight.css` for both dark and light mode. This table eliminates
 > manual `rgba()` computation.
+>
+> **Note:** This reference covers accent tokens only. The base palette
+> (`--color-bg-primary`, `--color-text-primary`, `--color-border`, etc.)
+> also needs to be set in `global.css`. See the "Non-Accent CSS Tokens"
+> section in [file-manifest.md](./file-manifest.md) for base palette
+> guidance per project.
 
 ## Color Palette Table
 

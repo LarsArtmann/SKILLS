@@ -4,26 +4,24 @@
 
 These files are identical across all project websites. Copy them as-is.
 
-| File                                 | Notes                                           |
-| ------------------------------------ | ----------------------------------------------- |
-| `tsconfig.json`                      | TypeScript config                               |
-| `.node-version`                      | Node version pin                                |
-| `.gitignore`                         | Ignores node_modules, dist, .firebase           |
-| `.htmlvalidate.json`                 | HTML validation rules                           |
-| `src/content.config.ts`              | Starlight content collection config             |
-| `public/js/theme-init.js`            | Theme initialization (prevents FOUC)            |
-| `public/js/animations.js`            | Scroll animations                               |
-| `public/js/header.js`                | Header scroll behavior                          |
-| `public/js/copy-code.js`             | Copy-to-clipboard for code blocks               |
-| `src/components/Section.astro`       | Layout section wrapper                          |
-| `src/components/SectionHeader.astro` | Section heading                                 |
-| `src/components/Card.astro`          | Feature card                                    |
-| `src/components/Header.astro`        | Site header (may need GitHub URL tweak)         |
-| `src/components/Footer.astro`        | Site footer (may need link updates)             |
-| `src/components/Sections.astro`      | Section renderer                                |
-| `src/layouts/LandingLayout.astro`    | Landing page layout (may need theme-color meta) |
-| `src/pages/index.astro`              | Landing page assembly                           |
-| `flake.nix`                          | Nix flake for dev shell + deploy                |
+| File                                 | Notes                                         |
+| ------------------------------------ | --------------------------------------------- |
+| `tsconfig.json`                      | TypeScript config                             |
+| `.node-version`                      | Node version pin                              |
+| `.gitignore`                         | Ignores node_modules, dist, .firebase         |
+| `.htmlvalidate.json`                 | HTML validation rules                         |
+| `src/content.config.ts`              | Starlight content collection config           |
+| `public/js/theme-init.js`            | Theme initialization (prevents FOUC)          |
+| `public/js/animations.js`            | Scroll animations                             |
+| `public/js/header.js`                | Header scroll behavior                        |
+| `public/js/copy-code.js`             | Copy-to-clipboard for code blocks             |
+| `src/components/Section.astro`       | Layout section wrapper                        |
+| `src/components/SectionHeader.astro` | Section heading                               |
+| `src/components/Card.astro`          | Feature card                                  |
+| `src/components/Sections.astro`      | Section renderer                              |
+| `src/layouts/LandingLayout.astro`    | Landing page layout (custom theme-color meta) |
+| `src/pages/index.astro`              | Landing page assembly                         |
+| `flake.nix`                          | Nix flake for dev shell + deploy              |
 
 ## Customize Specific Fields
 
@@ -38,11 +36,11 @@ sidebar structure.
 | `firebase.json`                    | `target` name (or `public` dir for standalone)                                             |
 | `src/data/config.ts`               | `name`, `title`, `description`, `siteUrl`, `github`, `pkgGoDev`                            |
 | `src/data/types.ts`                | Icon name union type (if adding/removing icons)                                            |
-| `src/styles/global.css`            | All accent color tokens (see color-palette.md)                                             |
+| `src/components/Header.astro`      | Consumes `config.ts` but styling/markup differs per project — do NOT copy verbatim         |
+| `src/components/Footer.astro`      | Consumes `config.ts` but links/styling differ per project — do NOT copy verbatim           |
+| `src/styles/global.css`            | All accent color tokens (see color-palette.md) **AND** bg/text/border tokens (see below)   |
 | `src/styles/starlight.css`         | All `sl-color-accent-*` tokens (see color-palette.md)                                      |
 | `.npmrc`                           | Create ONLY if `--legacy-peer-deps` was needed: `legacy-peer-deps=true`                    |
-| `src/components/Header.astro`      | GitHub URL, nav links (consumes `config.ts` but styling differs per project)               |
-| `src/components/Footer.astro`      | Links, project name (consumes `config.ts` but styling differs per project)                 |
 | `src/components/HeroSection.astro` | GitHub API URL, repo name for stars badge                                                  |
 | `src/components/Logo.astro`        | Project-specific SVG monogram                                                              |
 | `public/manifest.json`             | `name`, `description`, `theme_color`                                                       |
@@ -155,3 +153,26 @@ To add secondary colors:
    accent color for its chrome. Secondary colors are landing-page-only.
 4. Do NOT add secondary colors to the color-palette.md reference — it only
    covers the primary accent system.
+
+## Non-Accent CSS Tokens (bg/text/border)
+
+The color palette reference covers accent tokens. But `global.css` also
+defines the base palette: `--color-bg-primary`, `--color-bg-card`,
+`--color-bg-card-solid`, `--color-bg-code`, `--color-border`,
+`--color-border-hover`, `--color-text-primary`, `--color-text-secondary`,
+`--color-text-muted`, and `--color-code-inline-bg`.
+
+These follow a **warm dark base** pattern. Copy them from the closest
+reference project and adjust the base darkness if needed:
+
+| Project            | bg-primary (dark) | Character                |
+| ------------------ | ----------------- | ------------------------ |
+| go-atomic-write    | `#0a0908`         | Very dark charcoal       |
+| gogenfilter        | `#0c0a09`         | Dark charcoal            |
+| samber-do-auditlog | `#14110d`         | Warm dark brown-charcoal |
+
+The light-mode counterparts are warm off-whites (`#faf8f5` to `#fafaf9`).
+
+**Rule of thumb:** Start with `#0a0908` (dark) / `#faf8f5` (light) and
+adjust only if the project has a specific aesthetic (samber-do-auditlog
+uses a warmer `#14110d` to match its "Container Telemetry" amber theme).
