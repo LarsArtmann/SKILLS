@@ -28,43 +28,43 @@ These files are identical across all project websites. Copy them as-is.
 These files need targeted edits — change project name, URLs, accent color,
 sidebar structure.
 
-| File                               | What to change                                                                             |
-| ---------------------------------- | ------------------------------------------------------------------------------------------ |
-| `package.json`                     | `name`, `description`, `keywords`, `homepage`, `repository.url`, `bugs`                    |
-| `astro.config.mjs`                 | `site` URL, Starlight `title`, sidebar structure, social `href`, head `description`, fonts |
-| `.firebaserc`                      | `target` name (or `default` project for standalone)                                        |
-| `firebase.json`                    | `target` name (or `public` dir for standalone)                                             |
-| `src/data/config.ts`               | `name`, `title`, `description`, `siteUrl`, `github`, `pkgGoDev`                            |
-| `src/data/types.ts`                | Icon name union type (if adding/removing icons)                                            |
-| `src/components/Header.astro`      | Consumes `config.ts` but styling/markup differs per project — do NOT copy verbatim         |
-| `src/components/Footer.astro`      | Consumes `config.ts` but links/styling differ per project — do NOT copy verbatim           |
-| `src/styles/global.css`            | All accent color tokens (see color-palette.md) **AND** bg/text/border tokens (see below)   |
-| `src/styles/starlight.css`         | All `sl-color-accent-*` tokens (see color-palette.md)                                      |
-| `.npmrc`                           | Create ONLY if `--legacy-peer-deps` was needed: `legacy-peer-deps=true`                    |
-| `src/components/HeroSection.astro` | GitHub API URL, repo name for stars badge                                                  |
-| `src/components/Logo.astro`        | Project-specific SVG monogram                                                              |
-| `public/manifest.json`             | `name`, `description`, `theme_color`                                                       |
-| `public/robots.txt`                | Sitemap URL                                                                                |
-| `scripts/fix-csp.mjs`              | CSP SHA-256 hash injection (if using CSP)                                                  |
+| File                               | What to change                                                                                                                                           |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `package.json`                     | `name`, `description`, `keywords`, `homepage`, `repository.url`, `bugs`                                                                                  |
+| `astro.config.mjs`                 | `site` URL, Starlight `title`, sidebar structure, social `href`, head `description`, fonts                                                               |
+| `.firebaserc`                      | `target` name (or `default` project for standalone)                                                                                                      |
+| `firebase.json`                    | `target` name (or `public` dir for standalone)                                                                                                           |
+| `src/data/config.ts`               | `name`, `title`, `description`, `siteUrl`, `github`. Include `pkgGoDev` ONLY for libraries                                                               |
+| `src/data/types.ts`                | Icon name union type (if adding/removing icons)                                                                                                          |
+| `src/components/Header.astro`      | Consumes `config.ts` but styling/markup differs per project — do NOT copy verbatim                                                                       |
+| `src/components/Footer.astro`      | Consumes `config.ts` but links/styling differ per project. **Libraries:** include pkg.go.dev link. **Applications:** omit pkg.go.dev, add Changelog link |
+| `src/styles/global.css`            | All accent color tokens (see color-palette.md) **AND** bg/text/border tokens (see below)                                                                 |
+| `src/styles/starlight.css`         | All `sl-color-accent-*` tokens (see color-palette.md)                                                                                                    |
+| `.npmrc`                           | Create ONLY if `--legacy-peer-deps` was needed: `legacy-peer-deps=true`                                                                                  |
+| `src/components/HeroSection.astro` | GitHub API URL, repo name for stars badge                                                                                                                |
+| `src/components/Logo.astro`        | Project-specific SVG monogram                                                                                                                            |
+| `public/manifest.json`             | `name`, `description`, `theme_color`                                                                                                                     |
+| `public/robots.txt`                | Sitemap URL                                                                                                                                              |
+| `scripts/fix-csp.mjs`              | CSP SHA-256 hash injection (if using CSP)                                                                                                                |
 
 ## Write Fresh (project-specific content)
 
-These files require original content based on the specific library.
+These files require original content based on the specific project.
 
-| File                                     | What to write                                                                              |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `src/data/features.ts`                   | 6 feature cards with icon, title, description                                              |
-| `src/data/hero-code.ts`                  | Go code example for hero section (verify against source!)                                  |
-| `src/data/sections.ts`                   | How-it-works steps, comparison matrix, use cases                                           |
-| `public/favicon.svg`                     | Project-specific SVG favicon                                                               |
-| `src/components/CTASection.astro`        | Call-to-action section (follow gogenfilter pattern, customize markup)                      |
-| `src/components/ComparisonSection.astro` | Comparison section (layout varies: gogenfilter uses card grid, go-atomic-write uses table) |
-| `src/components/HowItWorksSection.astro` | Steps section (optional — gogenfilter uses PhaseSection instead; choose what fits)         |
-| `src/components/UseCasesSection.astro`   | Use cases section (follow gogenfilter pattern, customize markup)                           |
-| `src/components/FeatureGrid.astro`       | Feature grid (consumes `features.ts`, but styling differs per project)                     |
-| `src/components/Icon.astro`              | Icon path map (add project-specific icons, source from Lucide/Heroicons)                   |
-| `src/pages/og/[...slug].ts`              | OG image generation (if using astro-og-canvas — customize border color to match accent)    |
-| All `.mdx` docs pages                    | installation, quick-start, guides, api-reference, changelog, contributing, related-tools   |
+| File                                     | What to write                                                                                                |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `src/data/features.ts`                   | 6 feature cards with icon, title, description                                                                |
+| `src/data/hero-code.ts`                  | **Library:** Go import + function call (verify against source!) **Application:** Shell command or Docker run |
+| `src/data/sections.ts`                   | How-it-works steps, comparison matrix, use cases                                                             |
+| `public/favicon.svg`                     | Project-specific SVG favicon                                                                                 |
+| `src/components/CTASection.astro`        | Call-to-action section (follow gogenfilter pattern, customize markup)                                        |
+| `src/components/ComparisonSection.astro` | Comparison section (layout varies: gogenfilter uses card grid, go-atomic-write uses table)                   |
+| `src/components/HowItWorksSection.astro` | Steps section (optional — gogenfilter uses PhaseSection instead; choose what fits)                           |
+| `src/components/UseCasesSection.astro`   | Use cases section (follow gogenfilter pattern, customize markup)                                             |
+| `src/components/FeatureGrid.astro`       | Feature grid (consumes `features.ts`, but styling differs per project)                                       |
+| `src/components/Icon.astro`              | Icon path map (add project-specific icons, source from Lucide/Heroicons)                                     |
+| `src/pages/og/[...slug].ts`              | OG image generation (if using astro-og-canvas — customize border color to match accent)                      |
+| All `.mdx` docs pages                    | installation, quick-start, guides, api-reference, changelog, contributing, related-tools                     |
 
 **Section components are open-ended.** The list above shows known examples
 across repos, but you can create any section that fits the project (e.g.
@@ -76,18 +76,21 @@ data-driven pattern: import data from `../data/sections.ts`, use
 
 Every project website should have these docs pages at minimum:
 
-| Page                | Content                                           |
-| ------------------- | ------------------------------------------------- |
-| `installation.mdx`  | Go install, go get, import path                   |
-| `quick-start.mdx`   | Minimal working example (verified against source) |
-| `api-reference.mdx` | Function/type reference                           |
-| `changelog.mdx`     | Link to CHANGELOG.md or inline                    |
-| `contributing.mdx`  | How to contribute, dev setup                      |
-| `related-tools.mdx` | Sibling projects, alternatives                    |
+| Page                | Library content                   | Application content                             |
+| ------------------- | --------------------------------- | ----------------------------------------------- |
+| `installation.mdx`  | Go install, `go get`, import path | Docker, binary download, Nix, build from source |
+| `quick-start.mdx`   | Minimal Go import + function call | Minimal server run command or Docker run        |
+| `api-reference.mdx` | Go function/type signatures       | HTTP endpoints, CLI flags table                 |
+| `changelog.mdx`     | Link to CHANGELOG.md or inline    | Link to CHANGELOG.md or inline                  |
+| `contributing.mdx`  | How to contribute, dev setup      | How to contribute, dev setup                    |
+| `related-tools.mdx` | Sibling projects, alternatives    | Sibling projects, alternatives                  |
+
+**Application-specific docs pages** may include: configuration, Docker,
+cloud storage, markdown features, API endpoints — depending on the project.
 
 Project-specific guides vary (e.g. `classification.mdx`, `error-types.mdx`
 for go-error-family; `detection-methods.mdx`, `pattern-matching.mdx` for
-art-dupl).
+art-dupl; `cloud-storage.mdx`, `docker.mdx` for dynamic-markdown-site).
 
 ## Icon Path Catalog
 

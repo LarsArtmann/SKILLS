@@ -458,3 +458,62 @@ and `.firebaserc` conflict with `website/firebase.json`.
 4. Update the deploy workflow to build from `website/` not `site/`
 5. Verify `firebase.json` `public` directory is `dist` (Astro output), not
    `site` (old static files)
+
+### 32. License mismatch across config files
+
+**Symptom:** `package.json` says `"license": "MIT"`, `.goreleaser.yaml`
+says `license: MIT`, but `LICENSE` file says "PROPRIETARY". Homebrew, Scoop,
+and Nix repositories receive false license metadata.
+
+**Cause:** Assuming MIT without reading the actual LICENSE file. Or a prior
+session set MIT in the README template and it propagated.
+
+**Fix:** Before writing badges or package metadata, read the LICENSE file:
+
+```bash
+head -3 LICENSE
+```
+
+Ensure ALL of these agree:
+
+- `LICENSE` file (source of truth)
+- `.goreleaser.yaml` `license:` fields
+- `flake.nix` `license = licenses.X`
+- `package.json` `"license": "X"`
+- README badge `license-{X}-blue.svg`
+
+If the project is proprietary, use `"license": "UNLICENSED"` in
+`package.json`, `license = licenses.unfree` in `flake.nix`, and either
+omit the license badge or use `license-Proprietary-lightgrey.svg`.
+
+### 33. Lockfile package-manager mismatch
+
+**Symptom:** CI fails with `npm ci` because `package-lock.json` doesn't
+exist. The dev environment used `bun install` which generated `bun.lock`
+(which is gitignored).
+
+**Cause:** Using bun locally for speed but not generating the npm lockfile
+that CI needs.
+
+**Fix:** If CI uses npm, run `npm install` once to generate
+`package-lock.json` and commit it. The `bun.lock` stays gitignored. See
+[dependency-versions.md](./dependency-versions.md) Lockfile Decision table.
+
+### 34. Application README claims wrong HTTP framework
+
+**Symptom:** README tech stack table says "Gin" but `go.mod` has no Gin
+dependency. The code uses standard `net/http` with Go 1.22+ method routing.
+
+**Cause:** Copying a README template from a project that DID use Gin, or
+assuming Go web projects need a framework.
+
+**Fix:** Always verify the HTTP framework in `go.mod`:
+
+```bash
+grep 'gin-gonic\|echo\|fiber\|gorilla\|chi' go.mod
+# If no results, the project uses net/http
+```
+
+Remove framework-specific GitHub topics (e.g. `gin`) and replace with
+`net-http` if appropriate. Update the tech stack table to say "Go standard
+library `net/http`" instead of the framework name.

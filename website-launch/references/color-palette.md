@@ -232,6 +232,8 @@ Theme color: `#f43f5e`
 
 Theme color: `#6366f1`
 
+Used by: dynamic-markdown-site
+
 ```css
 /* global.css — dark mode */
 --color-accent: #3b82f6;

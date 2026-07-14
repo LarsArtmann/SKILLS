@@ -1,15 +1,16 @@
 ---
 name: website-launch
 description: >-
-  Launches a public documentation website for a Go, Rust, or TypeScript library
-  using the LarsArtmann Astro + Starlight + Tailwind v4 + Firebase Hosting
+  Launches a public documentation website for a Go project (library OR
+  application/server) using the LarsArtmann Astro + Starlight + Tailwind v4 +
+  Firebase Hosting
   pattern. Use this skill when the user asks to create a project website, build
   a documentation site, deploy to Firebase, configure DNS, set up GitHub
-  metadata for a library, rewrite a README for public presence, "make a
+  metadata for a project, rewrite a README for public presence, "make a
   website", "publish docs", "set up Firebase hosting", configure custom
   domains, or any task involving the sibling-project website pattern
-  (go-atomic-write, gogenfilter, go-output, samber-do-auditlog,
-  go-workflow-auditlog, etc.). Also triggers on "website launch", "public
+  (go-atomic-write, gogenfilter, dynamic-markdown-site, go-output,
+  samber-do-auditlog, go-workflow-auditlog, etc.). Also triggers on "website launch", "public
   presence overhaul", "deploy website", or "lars.software domain".
 metadata:
   tags: website, firebase, astro, starlight, dns, deployment, documentation
@@ -17,9 +18,9 @@ metadata:
 
 # Website Launch
 
-Launches a public documentation website for a library using the deterministic
-Astro + Starlight + Tailwind v4 + Firebase Hosting pattern shared across all
-LarsArtmann projects.
+Launches a public documentation website for a Go project (library or
+application/server) using the deterministic Astro + Starlight + Tailwind v4 +
+Firebase Hosting pattern shared across all LarsArtmann projects.
 
 This skill encodes lessons from 6+ prior sessions that each wasted 45-90
 minutes rediscovering the same pattern, making the same mistakes, and writing
@@ -209,14 +210,45 @@ whitelisted), tell the user immediately:
 
 ## Phase 1: Research the Project
 
-Before writing any website files, understand the actual library:
+Before writing any website files, understand the actual project:
 
 1. Read the project's `README.md`, `AGENTS.md`, `go.mod`, and `CHANGELOG.md`.
-2. Read the Go source to verify API signatures — see the Code Example
-   Verification section below.
-3. Check for `GOEXPERIMENT=jsonv2` requirements in `go.mod` or `flake.nix`.
+2. Determine the project type (library vs application — see below).
+3. Read the source to verify all claims — see the Code Example Verification
+   section below.
+4. Check for `GOEXPERIMENT=jsonv2` requirements in `go.mod` or `flake.nix`.
    If the library uses `encoding/json/v2`, the README MUST document the
    build constraint. This is the #1 most commonly forgotten requirement.
+
+### Project Type: Library vs Application (CRITICAL decision branch)
+
+This decision affects the hero code, docs pages, badges, links, config.ts
+fields, and README structure. Get it wrong and the website will have broken
+links to pkg.go.dev or misleading installation instructions.
+
+**How to tell:** Check for a `main.go` or `cmd/` directory:
+
+```bash
+# Application: has a main package with func main()
+grep -rl "package main" cmd/ 2>/dev/null && echo "APPLICATION"
+# Library: no main package, consumers import it
+grep -rl "package main" cmd/ 2>/dev/null || echo "LIBRARY (probably)"
+```
+
+| Aspect             | Go Library                           | Go Application / Server         |
+| ------------------ | ------------------------------------ | ------------------------------- |
+| Consumers run      | `go get` + import                    | Download binary / `docker pull` |
+| pkg.go.dev         | Yes — include link                   | No — omit entirely              |
+| Hero code          | Go import + function call            | Shell command or Docker run     |
+| Installation docs  | `go get`, import path                | Binary, Docker, Nix             |
+| API reference docs | Go function/type signatures          | HTTP endpoints, CLI flags       |
+| `config.ts`        | Include `pkgGoDev` field             | Omit `pkgGoDev` field           |
+| Docs link bar      | Documentation, pkg.go.dev, Changelog | Documentation, Changelog        |
+| README badges      | Go Reference, Go Report Card         | Docker, GitHub Release          |
+| GitHub topics      | `go`, `golang`, library domain       | `go`, `golang`, server domain   |
+
+**Library examples:** go-atomic-write, gogenfilter, go-error-family
+**Application examples:** dynamic-markdown-site (binary + Docker + server)
 
 ### Code Example Verification (critical)
 
@@ -248,6 +280,35 @@ Checklist for every Go code example:
 instead of `500*time.Millisecond`. Always double-check time units in hero
 and quick-start examples — this is the #1 most common code typo.
 
+### Application Content Verification
+
+For Go applications/servers (not libraries), verify documentation claims
+against actual source:
+
+```bash
+# Verify CLI flags against actual flag definitions
+grep -r 'flag\.\(String\|Bool\|Int\|Duration\)' internal/ cmd/
+
+# Verify HTTP endpoints against actual route registrations
+grep -r 'mux\.Handle\|HandleFunc\|http\.Handle' internal/
+
+# Verify Docker details against the actual Dockerfile
+cat Dockerfile
+
+# Verify CI workflows exist
+ls .github/workflows/
+```
+
+Common README errors for applications:
+
+- Claiming a web framework (e.g. Gin) when code uses `net/http` — verify
+  via `grep 'gin-gonic\|gin-gonic' go.mod`
+- Describing Docker builds wrong (e.g. "multi-stage" when single-stage) —
+  read the actual Dockerfile
+- Missing storage backends that exist in code (e.g. S3/GCS via gocloud.dev)
+- Listing CLI flags that don't match `flag.StringVar` / `flag.BoolVar` calls
+- License mismatches between `.goreleaser.yaml` and `LICENSE` file
+
 ---
 
 ## Phase 2: README Rewrite
@@ -265,7 +326,7 @@ the complete structure, badge templates, and section ordering.
 ```
 1. Centered header (h1 align="center") with project name
 2. Centered tagline (strong)
-3. Centered badge row (Go Reference | CI | Go Report Card | MIT License)
+3. Centered badge row (library: Go Reference | CI | Go Report Card; application: CI | Docker)
 4. Centered documentation links (Documentation · API Reference)
 5. --- separator
 6. One-paragraph summary (what it is, what it's built on)
@@ -285,7 +346,7 @@ the complete structure, badge templates, and section ordering.
 20. ## Development — Nix commands
 21. ## Examples — table of runnable examples
 22. ## API Stability — versioning policy
-23. ## License — MIT
+23. ## License — verify actual license from LICENSE file (NOT hardcoded MIT)
 ```
 
 ### What to Remove
@@ -300,20 +361,49 @@ If the existing README has any of these, remove them:
 
 ### Badge Markdown (copy-paste template)
 
+**For Go libraries:**
+
 ```markdown
 <p align="center">
 <a href="https://pkg.go.dev/github.com/LarsArtmann/{repo}"><img src="https://pkg.go.dev/badge/github.com/LarsArtmann/{repo}.svg" alt="Go Reference"></a>
 <a href="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml"><img src="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
 <a href="https://goreportcard.com/report/github.com/LarsArtmann/{repo}"><img src="https://goreportcard.com/badge/github.com/LarsArtmann/{repo}" alt="Go Report Card"></a>
-<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-{LICENSE}-blue.svg" alt="License: {LICENSE}"></a>
 </p>
 ```
 
+**For Go applications/servers:**
+
+Replace Go Reference badge with Docker or GitHub Release badge. Omit
+pkg.go.dev (applications are not importable).
+
+```markdown
+<p align="center">
+<a href="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml"><img src="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+<a href="https://github.com/LarsArtmann/{repo}/pkgs/container/{repo}"><img src="https://img.shields.io/badge/docker-ghcr.io-blue.svg" alt="Docker"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-{LICENSE}-blue.svg" alt="License: {LICENSE}"></a>
+</p>
+```
+
+**License badge:** Replace `{LICENSE}` with the actual license declared in
+the LICENSE file. Do NOT assume MIT — verify first. Some projects are
+proprietary.
+
 ### Documentation Link Bar (below tagline)
+
+**For Go libraries:**
 
 ```markdown
 <p align="center">
 <a href="https://{subdomain}.lars.software">Documentation</a> · <a href="https://pkg.go.dev/github.com/LarsArtmann/{repo}">API Reference</a>
+</p>
+```
+
+**For Go applications/servers:**
+
+```markdown
+<p align="center">
+<a href="https://{subdomain}.lars.software">Documentation</a> · <a href="CHANGELOG.md">Changelog</a>
 </p>
 ```
 
@@ -694,24 +784,43 @@ gh repo edit LarsArtmann/{repo} \
   --add-topic go,golang,{domain-specific-topics}
 ```
 
-### Standard topic vocabulary for Go libraries
+### Standard topic vocabulary
 
-`go`, `golang`, plus domain-specific topics (e.g. `error-handling`,
-`structured-errors`, `code-duplication`, `static-analysis`).
+**For Go libraries:** `go`, `golang`, plus domain-specific topics (e.g.
+`error-handling`, `structured-errors`, `code-duplication`, `static-analysis`).
+
+**For Go applications/servers:** `go`, `golang`, plus deployment and domain
+topics (e.g. `web-server`, `markdown`, `docker`, `wiki`).
+
+Remove any topics that reference frameworks the project doesn't use (e.g.
+remove `gin` if the project uses `net/http`).
 
 ### Badge set (README)
 
-Standard order: Go Reference | Go Report Card | License: MIT | CI status.
+Standard order for **libraries**: Go Reference | Go Report Card | CI |
+License.
+
+Standard order for **applications**: CI | Docker | License (no Go Reference
+or Go Report Card — those are for importable packages only).
 
 ### Documentation link bar
 
-Below the tagline in README:
+**For Go libraries:**
 
 ```markdown
 **[Documentation](https://{subdomain}.lars.software)** ·
 **[pkg.go.dev](https://pkg.go.dev/github.com/LarsArtmann/{repo})** ·
 **[Changelog](CHANGELOG.md)**
 ```
+
+**For Go applications/servers:**
+
+```markdown
+**[Documentation](https://{subdomain}.lars.software)** ·
+**[Changelog](CHANGELOG.md)**
+```
+
+Omit pkg.go.dev — applications are not importable.
 
 ---
 
@@ -784,8 +893,10 @@ Before declaring complete, verify EVERY item:
 
 **README**
 
-- [ ] Centered header with badges (Go Reference, CI, Go Report Card, MIT)
+- [ ] Centered header with badges (library: Go Reference, CI, Go Report Card; application: CI, Docker)
 - [ ] Documentation link to `https://{subdomain}.lars.software`
+- [ ] pkg.go.dev link ONLY for libraries, NOT for applications
+- [ ] License badge matches actual LICENSE file (NOT hardcoded MIT)
 - [ ] No emojis in headers or bullets
 - [ ] All code examples verified against Go source
 - [ ] Comparison table present
@@ -887,3 +998,16 @@ nixpkgs#terraform` or `opentofu`.
 18. **Branch name in deploy workflow** — The CI workflow template uses
     `master`. If the project uses a different default branch (e.g. `fork`,
     `main`), update ALL branch references in the workflow YAML.
+19. **License mismatch** — Verify the LICENSE file, `.goreleaser.yaml`,
+    `flake.nix`, and `package.json` all declare the SAME license. Prior
+    session found `.goreleaser.yaml` claiming MIT while the LICENSE file
+    was proprietary — actively misleading Homebrew/Scoop/Nix repositories.
+20. **Lockfile package-manager mismatch** — If the dev environment uses
+    `bun install` but CI uses `npm ci`, there's no `package-lock.json`.
+    Either: (a) run `npm install` once to generate `package-lock.json`
+    for CI, or (b) update CI to use bun and commit `bun.lock` (remove
+    it from `.gitignore` first).
+21. **Application README claims wrong framework** — A README that claims
+    Gin/Echo/Fiber when the code uses `net/http` destroys credibility.
+    Always verify `go.mod` for the actual HTTP framework before writing
+    the tech stack table.
