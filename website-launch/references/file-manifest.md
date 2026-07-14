@@ -66,6 +66,12 @@ These files require original content based on the specific library.
 | `src/pages/og/[...slug].ts`              | OG image generation (if using astro-og-canvas — customize border color to match accent)    |
 | All `.mdx` docs pages                    | installation, quick-start, guides, api-reference, changelog, contributing, related-tools   |
 
+**Section components are open-ended.** The list above shows known examples
+across repos, but you can create any section that fits the project (e.g.
+`OutputFormatsSection`, `GeneratorGrid`, `PhaseSection`). Follow the
+data-driven pattern: import data from `../data/sections.ts`, use
+`SectionHeader`, map over data, use Tailwind CSS tokens.
+
 ## Standard Docs Page Set
 
 Every project website should have these docs pages at minimum:

@@ -267,7 +267,7 @@ collisions.
 
 **Fix:** Use the full repo slug as the subdomain when any collision risk
 exists. Check the user's other repos for similar names before choosing.
-See SKILL.md Phase 0.2.
+See SKILL.md Phase 0.3.
 
 ### 16. No visual QA
 
@@ -380,3 +380,81 @@ fails, query the Firebase REST API for the new ACME challenge token and
 update the Terraform TXT record. Consider automating this with a monitoring
 check. The `web.app` URL continues working during cert renewal failure —
 only the custom domain is affected.
+
+### 27. Fabricated hero code output
+
+**Symptom:** The hero section shows terminal output or code snippets that
+don't match the actual tool's real output format.
+
+**Cause:** Writing illustrative hero content from imagination rather than
+running the tool and capturing real output.
+
+**Fix:** For CLI tools, run the actual command and capture the output format
+before writing the hero section. If the hero content is illustrative (not
+real output), label it as such or make it clearly stylized. Verify that
+output field names, counts, and formats are plausible against the real tool.
+
+### 28. Auth secret mismatch on workflow upgrade
+
+**Symptom:** First deploy after upgrading the CI workflow fails with auth
+error. The old workflow used `FIREBASE_TOKEN`; the new one uses
+`FIREBASE_SERVICE_ACCOUNT`.
+
+**Cause:** The `FIREBASE_SERVICE_ACCOUNT` secret was never added to GitHub.
+The old `FIREBASE_TOKEN` still exists but the new workflow doesn't reference
+it.
+
+**Fix:** Before pushing the new workflow:
+
+1. Check which secrets exist: `gh secret list --repo LarsArtmann/{repo}`
+2. If `FIREBASE_SERVICE_ACCOUNT` is missing, create it (see SKILL.md Phase 7)
+3. Push the workflow only after the secret exists
+4. Optionally remove `FIREBASE_TOKEN` after confirming the new workflow works
+
+### 29. Stale root-level documentation files
+
+**Symptom:** Repository root has HOW_TO_USE.md, USAGE.md, SDK_DESIGN.md,
+and other documentation that duplicates or contradicts the new website docs.
+
+**Cause:** Pre-existing documentation from before the website was created.
+The README links to some but not all, creating confusion about which is
+authoritative.
+
+**Fix:** After the website is live, consolidate root-level docs:
+
+- **Keep:** README.md, CHANGELOG.md, CONTRIBUTING.md, LICENSE
+- **Archive or delete:** USAGE.md, HOW_TO_USE.md, PARTS.md, etc. that now
+  duplicate website content
+- **Link from README:** Any docs that are kept should be linked from the
+  README with clear descriptions
+
+### 30. Deploy workflow uses wrong branch name
+
+**Symptom:** Website CI never triggers on push. Workflow file references
+`master` but the repo uses `fork`, `main`, or another branch.
+
+**Cause:** The CI workflow template was copied from gogenfilter (which uses
+`master`) without updating the branch references.
+
+**Fix:** Update ALL branch references in the workflow YAML:
+
+- `on.push.branches: [master]` → `[your-branch]`
+- `on.pull_request.branches: [master]` → `[your-branch]`
+- `if: github.ref == 'refs/heads/master'` → `'refs/heads/your-branch'`
+
+### 31. Old static site files not cleaned up
+
+**Symptom:** Repository has both an old `site/` directory (hand-written
+HTML) and a new `website/` directory (Astro). Root-level `firebase.json`
+and `.firebaserc` conflict with `website/firebase.json`.
+
+**Cause:** New website was created without removing the old static site.
+
+**Fix:** When migrating from a static site to Astro:
+
+1. `trash` (never `rm`) the old `site/` directory
+2. `trash` root-level `firebase.json` and `.firebaserc` (now live in `website/`)
+3. Remove stale `.gitignore` entries referencing the old site
+4. Update the deploy workflow to build from `website/` not `site/`
+5. Verify `firebase.json` `public` directory is `dist` (Astro output), not
+   `site` (old static files)

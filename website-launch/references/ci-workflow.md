@@ -88,12 +88,27 @@ jobs:
 
 ## What to Customize
 
-| Placeholder | Replace with                                      |
-| ----------- | ------------------------------------------------- |
-| `{TARGET}`  | Firebase hosting target name (from `.firebaserc`) |
+| Placeholder     | Replace with                                      |
+| --------------- | ------------------------------------------------- |
+| `{TARGET}`      | Firebase hosting target name (from `.firebaserc`) |
+| `master`        | Default branch name (e.g. `main`, `fork`)         |
+| `lars-software` | Firebase project ID (if standalone project)       |
 
-The `paths` trigger list can be extended to include `flake.nix`,
-`lighthouse.yml`, or other files specific to the project.
+### Branch name
+
+The template uses `master` as the deploy branch. Many repos use `fork`,
+`main`, or another branch. Update ALL branch references in the workflow:
+
+- `branches: [master]` in `on.push` and `on.pull_request`
+- `github.ref == 'refs/heads/master'` in the deploy job `if` condition
+
+### Standalone Firebase project
+
+If the project uses its own Firebase project (not `lars-software`):
+
+- Change `--project lars-software` to `--project {projectId}`
+- Change `--only hosting:{TARGET}` to `--only hosting` (no target)
+- Ensure `FIREBASE_SERVICE_ACCOUNT` contains a key for the correct project
 
 ## CI Secret Setup
 

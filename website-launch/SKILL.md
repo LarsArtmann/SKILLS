@@ -74,10 +74,68 @@ ls ~/projects/{repo}/website/package.json 2>/dev/null \
 ```
 
 If a website exists, **switch to maintenance mode**: read the existing files,
-identify what needs updating, and skip Phase 2 (creation). Do NOT overwrite
+identify what needs updating, and skip Phase 3 (creation). Do NOT overwrite
 existing customization without confirming with the user.
 
-### 0.1 Credential and Infrastructure Check
+### 0.0.1 Old Static Site Migration
+
+If the project has an OLD static website (hand-written HTML/CSS/JS, not
+Astro), it must be removed cleanly before creating the new `website/`
+directory:
+
+```bash
+# Check for old static site
+ls ~/projects/{repo}/site/index.html 2>/dev/null \
+  && echo "INFO: old static site found in site/ — will need removal"
+
+# Check for root-level firebase configs (should live in website/ only)
+ls ~/projects/{repo}/firebase.json 2>/dev/null \
+  && echo "INFO: root firebase.json found — must be moved to website/"
+ls ~/projects/{repo}/.firebaserc 2>/dev/null \
+  && echo "INFO: root .firebaserc found — must be moved to website/"
+```
+
+Migration steps (when ready):
+
+1. `trash` (not `rm`) the old `site/` directory
+2. `trash` root-level `firebase.json` and `.firebaserc` (they now live in `website/`)
+3. Remove stale `.gitignore` entries referencing the old site (e.g. `!site/*.html`)
+4. Check the old deploy workflow — it likely points to `site/` as the public
+   dir and must be replaced entirely
+
+### 0.1 Firebase Project Decision: Shared vs Standalone
+
+Most LarsArtmann websites deploy to the shared `lars-software` Firebase project
+using hosting targets. Some projects (e.g. `art-dupl`) have their own
+standalone Firebase project. **Decide before writing any config files.**
+
+| Criterion                | Shared (`lars-software`)                          | Standalone                                  |
+| ------------------------ | ------------------------------------------------- | ------------------------------------------- |
+| Default for new projects | Yes                                               | Only if project needs its own infra         |
+| `.firebaserc`            | `"default": "lars-software"` + targets            | `"default": "{projectId}"`                  |
+| `firebase.json`          | `"target": "{name}"`                              | `"public": "dist"` (no target)              |
+| Deploy command           | `--only hosting:{target} --project lars-software` | `--only hosting --project {projectId}`      |
+| GitHub secret            | `FIREBASE_SERVICE_ACCOUNT` (lars-software key)    | `FIREBASE_SERVICE_ACCOUNT` (standalone key) |
+| DNS CNAME target         | `{siteId}.web.app.`                               | `{projectId}.web.app.`                      |
+
+Check which pattern the project already uses:
+
+```bash
+# Check existing firebase config
+cat ~/projects/{repo}/.firebaserc 2>/dev/null | grep -o '"default".*' \
+  && echo "INFO: existing Firebase project found"
+cat ~/projects/{repo}/firebase.json 2>/dev/null | grep -o '"target".*' \
+  && echo "INFO: uses hosting targets (shared project pattern)"
+
+# Or check for a website/-level config
+cat ~/projects/{repo}/website/.firebaserc 2>/dev/null | grep -o '"default".*'
+```
+
+Throughout this skill, `{firebaseProject}` refers to whichever project you
+chose. Replace `lars-software` in all commands with `{firebaseProject}` if
+using a standalone project.
+
+### 0.2 Credential and Infrastructure Check
 
 ```bash
 # Namecheap DNS — can Terraform actually be applied?
@@ -88,16 +146,18 @@ grep -q "REPLACE_WITH\|your_api_key\|xxx" terraform.tfvars 2>/dev/null \
   && echo "BLOCKED: Namecheap API key is a placeholder — DNS cannot be applied from this session" \
   || echo "OK: API key looks real"
 
-# Firebase project exists? (use fetch tool on the CLI output)
-nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c firebase projects:list 2>/dev/null | grep -q lars-software \
-  && echo "OK: lars-software project exists" \
-  || echo "WARN: lars-software project not found"
+# Firebase project exists?
+nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c \
+  firebase projects:list 2>/dev/null | grep -q {firebaseProject} \
+  && echo "OK: {firebaseProject} project exists" \
+  || echo "WARN: {firebaseProject} project not found"
 
 # Check for existing hosting site collisions
-nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c firebase hosting:sites:list --project lars-software 2>/dev/null
+nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c \
+  firebase hosting:sites:list --project {firebaseProject} 2>/dev/null
 ```
 
-### 0.2 Domain Naming
+### 0.3 Domain Naming
 
 Decide the subdomain and site ID **before** creating anything. These are
 immutable after creation.
@@ -118,7 +178,7 @@ grep -r "{candidate-subdomain}" ~/projects/domains/lars.software.tf 2>/dev/null 
 gh repo list LarsArtmann --limit 100 --json name 2>/dev/null | grep -i "{keyword}"
 ```
 
-### 0.3 Confirm Domain with User (BEFORE any commit)
+### 0.4 Confirm Domain with User (BEFORE any commit)
 
 **Do not commit anything until the user confirms the subdomain name.** A domain
 rename after commit creates stale git history, stale status reports, and
@@ -130,7 +190,7 @@ Present the proposed subdomain to the user and wait for confirmation:
 > as the Firebase hosting site ID. The site ID is immutable. Confirm before I
 > proceed?"
 
-### 0.4 Name Collision Check
+### 0.5 Name Collision Check
 
 ```bash
 # Check existing DNS records for the subdomain
@@ -272,12 +332,21 @@ as the baseline** — it has CSP hardening, OG images, and a CI/CD pipeline.
 go-atomic-write (`~/projects/go-atomic-write/website/`) is the older, simpler
 pattern without these features.
 
-| Feature              | go-atomic-write | gogenfilter                                |
-| -------------------- | --------------- | ------------------------------------------ |
-| CSP headers          | No              | **Yes** (`fix-csp.mjs`)                    |
-| OG images            | No              | **Yes** (`astro-og-canvas`)                |
-| Two-job CI           | No              | **Yes** (build, then deploy)               |
-| Service account auth | No              | **Yes** (`GOOGLE_APPLICATION_CREDENTIALS`) |
+| Feature              | go-atomic-write | gogenfilter                                 |
+| -------------------- | --------------- | ------------------------------------------- |
+| Security headers     | No              | **Yes** (HSTS, X-Frame-Options, CORP, COOP) |
+| CSP hash injection   | No              | **Yes** (`fix-csp.mjs`)                     |
+| OG images            | No              | **Yes** (`astro-og-canvas`)                 |
+| Two-job CI           | No              | **Yes** (build, then deploy)                |
+| Service account auth | No              | **Yes** (`GOOGLE_APPLICATION_CREDENTIALS`)  |
+
+**Security headers vs CSP:** These are different things. Security headers
+(HSTS, X-Frame-Options, Permissions-Policy, etc.) go in `firebase.json`
+`headers` config. Content-Security-Policy (CSP) is a separate header that
+restricts script/style/font sources. `fix-csp.mjs` post-processes built HTML
+to inject SHA-256 hashes for inline scripts into the CSP header. Include
+security headers in `firebase.json` always; add CSP hardening optionally
+if the project needs it (copy from gogenfilter).
 
 **Important:** Components are NOT verbatim copies between repos. They share
 the same data-driven architecture (consume data from `src/data/*.ts`) but
@@ -328,7 +397,23 @@ Characters `<`, `>`, `<=`, `>=` break Starlight `.mdx` file parsing. In `.mdx`
 files, escape them as `&lt;`, `&gt;`, or rephrase the sentence to avoid them.
 This does not affect `.md` files.
 
-### 3.7 Creation Order
+### 3.7 Section Components Are Open-Ended
+
+The file manifest lists standard section components (CTASection,
+ComparisonSection, HowItWorksSection, UseCasesSection, FeatureGrid). These
+are NOT a fixed set — create whatever sections fit the project's features.
+
+Examples of project-specific sections across repos:
+
+- `OutputFormatsSection.astro` (art-dupl — 7 output formats grid)
+- `GeneratorGrid.astro` (gogenfilter — supported generators)
+- `PhaseSection.astro` (gogenfilter — lifecycle phases)
+
+Follow the same data-driven pattern for any new section: import data from
+`../data/sections.ts`, use `SectionHeader` for the title, map over the data
+array, use Tailwind CSS tokens.
+
+### 3.8 Creation Order
 
 Create files in this order to avoid back-tracking:
 
@@ -351,7 +436,7 @@ Create files in this order to avoid back-tracking:
 8. **Layout and page** — `LandingLayout.astro`, `index.astro`
 9. **Docs content** — all `.mdx` files in `src/content/docs/`
 
-### 3.8 Section Component Patterns
+### 3.9 Section Component Patterns
 
 All section components follow the same data-driven pattern:
 
@@ -471,7 +556,7 @@ nix flake lock                                # generates flake.lock
 
 ```bash
 nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c \
-  firebase hosting:sites:create {siteId} --project lars-software
+  firebase hosting:sites:create {siteId} --project {firebaseProject}
 ```
 
 Site IDs are **immutable**. Use the full repo slug to avoid collisions.
@@ -493,16 +578,21 @@ Then deploy:
 ```bash
 cd website
 
-# Configure .firebaserc (if using shared project with targets)
+# Shared project (.firebaserc with targets):
 # {
 #   "projects": { "default": "lars-software" },
 #   "targets": {
 #     "lars-software": { "hosting": { "{target}": ["{siteId}"] } }
 #   }
 # }
+# Deploy: firebase deploy --only hosting:{target} --project lars-software
+
+# Standalone project (.firebaserc without targets):
+# { "projects": { "default": "{projectId}" } }
+# Deploy: firebase deploy --only hosting --project {projectId}
 
 nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c \
-  firebase deploy --only hosting:{target} --project lars-software
+  firebase deploy --only hosting:{targetOrBlank} --project {firebaseProject}
 ```
 
 ### Step 4: Verify web.app URL
@@ -516,12 +606,12 @@ API. The critical details are inline here; load the
 [Firebase REST API reference](./references/firebase-rest-api.md) for the full
 script templates.
 
-**Endpoint:** `POST https://firebasehosting.googleapis.com/v1beta1/projects/lars-software/sites/{siteId}/customDomains?customDomainId={subdomain}.lars.software`
+**Endpoint:** `POST https://firebasehosting.googleapis.com/v1beta1/projects/{firebaseProject}/sites/{siteId}/customDomains?customDomainId={subdomain}.lars.software`
 
 **Headers (all required):**
 
 - `Authorization: Bearer {ACCESS_TOKEN}`
-- `x-goog-user-project: lars-software` — omitting this causes `403 "quota project not set"`
+- `x-goog-user-project: {firebaseProject}` — omitting this causes `403 "quota project not set"`
 - `Content-Type: application/json`
 
 **Body:** `{}` (empty object — the domain is in the query param)
@@ -529,7 +619,8 @@ script templates.
 **Access token:**
 
 ```bash
-ACCESS_TOKEN=$(nix shell nixpkgs#google-cloud-sdk -c gcloud auth print-access-token)
+ACCESS_TOKEN=$(nix shell nixpkgs#google-cloud-sdk -c \
+  gcloud auth print-access-token --project={firebaseProject})
 ```
 
 ### Step 6: Extract ACME challenge
@@ -567,7 +658,7 @@ NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#terraform -c terraform validat
 ```bash
 cd ~/projects/domains
 
-# Verify API key is valid FIRST (see Phase 0.1)
+# Verify API key is valid FIRST (see Phase 0.2)
 NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#terraform -c \
   terraform plan -target=namecheap_domain_records.lars_software
 
@@ -633,13 +724,13 @@ Only proceed after the custom domain is live and verified.
 ```bash
 # Find the firebase-admin SDK service account
 nix shell nixpkgs#google-cloud-sdk -c \
-  gcloud iam service-accounts list --project=lars-software | grep firebase-adminsdk
+  gcloud iam service-accounts list --project={firebaseProject} | grep firebase-adminsdk
 
 # Create a key (temp file — clean up after)
 nix shell nixpkgs#google-cloud-sdk -c \
   gcloud iam service-accounts keys create /tmp/firebase-ci-key.json \
-  --iam-account=firebase-adminsdk-{hash}@lars-software.iam.gserviceaccount.com \
-  --project=lars-software
+  --iam-account=firebase-adminsdk-{hash}@{firebaseProject}.iam.gserviceaccount.com \
+  --project={firebaseProject}
 
 # Set GitHub secret
 gh secret set FIREBASE_SERVICE_ACCOUNT --repo LarsArtmann/{repo} \
@@ -671,7 +762,7 @@ for reverting a broken deploy.
 
 Commit at these checkpoints — never leave a session with uncommitted work:
 
-1. **After domain confirmed by user** — Phase 0.3 gate passed
+1. **After domain confirmed by user** — Phase 0.4 gate passed
 2. **After README rewrite** — verified correct against source code
 3. **After website builds successfully** — `astro check` = 0 errors,
    `astro build` = success
@@ -688,6 +779,8 @@ Before declaring complete, verify EVERY item:
 - [ ] `npx astro check` passes with 0 errors
 - [ ] `https://{siteId}.web.app` returns HTTP 200
 - [ ] All docs pages return HTTP 200 on web.app
+- [ ] All internal doc links resolve (no 404s in Starlight sidebar)
+- [ ] GitHub homepage URL matches `https://{subdomain}.lars.software`
 
 **README**
 
@@ -777,7 +870,20 @@ nixpkgs#terraform` or `opentofu`.
 12. **Edit tool collateral damage** — When editing Terraform files, include
     enough unique context and run `git diff` after every edit.
 13. **Committing before domain confirmation** — The subdomain name touches 8+
-    files. Never commit until the user confirms the domain (Phase 0.3).
+    files. Never commit until the user confirms the domain (Phase 0.4).
 14. **Firebase custom domain API** — Use `customDomains` endpoint (not
     `domains`), body is `{}` with domain in query param, `x-goog-user-project`
     header is required. See [firebase-rest-api.md](./references/firebase-rest-api.md).
+15. **Fabricated hero code** — Hero terminal output or code snippets that
+    don't match actual tool output. Always run the tool and capture real
+    output for the hero section, or label it as illustrative.
+16. **Auth secret mismatch** — Upgrading from `FIREBASE_TOKEN` to
+    `FIREBASE_SERVICE_ACCOUNT` without adding the new secret first. Deploy
+    fails on first push. Check which secret exists before changing the
+    workflow.
+17. **Stale root-level docs** — Old documentation files (HOW_TO_USE.md,
+    USAGE.md, etc.) that overlap with the new website create confusion.
+    Consolidate, archive, or link from README.
+18. **Branch name in deploy workflow** — The CI workflow template uses
+    `master`. If the project uses a different default branch (e.g. `fork`,
+    `main`), update ALL branch references in the workflow YAML.

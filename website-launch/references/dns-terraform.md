@@ -28,6 +28,14 @@ record {
 }
 ```
 
+**Standalone vs Shared project:** `{siteId}` is:
+
+- **Shared project:** the hosting target name (e.g. `gogenfilter`, `atomicwrite`)
+- **Standalone project:** the project ID (e.g. `art-dupl`)
+
+The CNAME target always matches the `{siteId}.web.app` or `{projectId}.web.app`
+domain shown in the Firebase Console for the hosting site.
+
 ### ACME TXT for Firebase SSL cert verification
 
 The `{acme-token}` value comes from the Firebase Hosting REST API. **See

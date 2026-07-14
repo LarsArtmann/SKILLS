@@ -243,17 +243,60 @@ the list endpoint for the new ACME token and update Terraform.
 
 ## Firebase Project Structure
 
-All LarsArtmann websites live in the `lars-software` Firebase project as
-separate hosting sites (multi-site pattern).
+All LarsArtmann websites use Firebase Hosting. Most live in the shared
+`lars-software` project as separate hosting sites (multi-site pattern).
+Some projects (e.g. `art-dupl`) have their own standalone Firebase project.
 
-| Config          | Location                                                     | Purpose                                         |
-| --------------- | ------------------------------------------------------------ | ----------------------------------------------- |
-| `.firebaserc`   | `website/`                                                   | Maps target names to site IDs                   |
-| `firebase.json` | `website/`                                                   | Hosting config (public dir, headers, redirects) |
-| Site creation   | `firebase hosting:sites:create {id} --project lars-software` | One-time per project                            |
+### Decision: Shared vs Standalone
 
-### Standalone vs Shared Project
+| Question                                          | If Yes...                         |
+| ------------------------------------------------- | --------------------------------- |
+| Does the project already have a Firebase project? | Use it — don't migrate            |
+| Does the project need its own Auth/Firestore?     | Create standalone                 |
+| First Firebase project for the repo?              | Default to `lars-software` shared |
 
-Some projects (e.g. `art-dupl`) have their own Firebase project instead of
-joining `lars-software`. Check the existing config before assuming the shared
-pattern.
+### Shared project (`lars-software`)
+
+| Config          | Value / Command                                                    |
+| --------------- | ------------------------------------------------------------------ |
+| `.firebaserc`   | `{ "projects": { "default": "lars-software" }, "targets": {...} }` |
+| `firebase.json` | `"target": "{name}"`                                               |
+| Deploy          | `firebase deploy --only hosting:{target} --project lars-software`  |
+| DNS CNAME       | `{siteId}.web.app.`                                                |
+
+### Standalone project (e.g. `art-dupl`)
+
+| Config          | Value / Command                                        |
+| --------------- | ------------------------------------------------------ |
+| `.firebaserc`   | `{ "projects": { "default": "{projectId}" } }`         |
+| `firebase.json` | `"public": "dist"` (no `target` field)                 |
+| Deploy          | `firebase deploy --only hosting --project {projectId}` |
+| DNS CNAME       | `{projectId}.web.app.`                                 |
+
+Throughout this reference, replace `lars-software` with your actual project
+ID if using a standalone project. The `x-goog-user-project` header,
+`--project` flag, and DNS CNAME target must all match.
+
+## Error Recovery
+
+### Custom domain creation fails (400/403)
+
+1. **400 "Mismatched sites"** — The `site` field is missing or wrong. See gotcha #1 above.
+2. **403 "quota project not set"** — The `x-goog-user-project` header is missing or doesn't match.
+3. **403 "permission denied"** — Access token expired. Re-auth: `gcloud auth login`.
+4. **409 "already exists"** — Domain was already added. List existing domains instead of recreating.
+
+### Deploy fails
+
+1. **`re2.node: undefined symbol`** — Running under bun. Use real Node.js from Nix.
+2. **Upload endpoint unreachable** — Check network. See common-pitfalls.md.
+3. **`FIREBASE_TOKEN` invalid** — Old auth method. CI workflow should use `FIREBASE_SERVICE_ACCOUNT`. If upgrading, add the new secret BEFORE removing the old one.
+
+### Rollback a broken deploy
+
+```bash
+nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c \
+  firebase hosting:releases:list --site {siteId} --project {firebaseProject}
+nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c \
+  firebase hosting:rollback --site {siteId} --project {firebaseProject}
+```

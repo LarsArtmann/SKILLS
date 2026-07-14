@@ -10,6 +10,26 @@
 > section in [file-manifest.md](./file-manifest.md) for base palette
 > guidance per project.
 
+## Project-to-Color Mapping
+
+Each LarsArtmann project has a distinct accent color. Do NOT reuse a color
+already in use by another project — maintain visual identity.
+
+| Project              | Accent Color | Hex       | Notes                         |
+| -------------------- | ------------ | --------- | ----------------------------- |
+| go-atomic-write      | Emerald      | `#10b981` |                               |
+| gogenfilter          | Cyan         | `#22d3ee` |                               |
+| art-dupl             | Amber        | `#e8a020` | Distinct from go-output amber |
+| go-output            | Amber        | `#e8a838` | Different amber shade         |
+| go-error-family      | Violet       | `#7c3aed` |                               |
+| go-filewatcher       | Rose         | `#f43f5e` |                               |
+| samber-do-auditlog   | Indigo       | `#6366f1` |                               |
+| go-workflow-auditlog | Blue         | `#3b82f6` |                               |
+
+When choosing a color for a new project, pick one NOT in the table above.
+If two projects share a hue (e.g. amber), use sufficiently different shades
+so they are visually distinguishable side-by-side.
+
 ## Color Palette Table
 
 ```css
@@ -95,6 +115,38 @@ Theme color: `#22d3ee`
 ```
 
 Theme color: `#7c3aed`
+
+### Amber — art-dupl (`#e8a020`)
+
+```css
+/* global.css — dark mode */
+--color-accent: #e8a020;
+--color-accent-hover: #f0b947;
+--color-accent-dim: rgba(232, 160, 32, 0.08);
+--color-accent-light: #f0c868;
+--color-border-accent: rgba(232, 160, 32, 0.3);
+
+/* global.css — light mode */
+--color-accent: #ca8a04;
+--color-accent-hover: #e8a020;
+--color-accent-dim: rgba(202, 138, 4, 0.06);
+--color-accent-light: #e8a020;
+--color-border-accent: rgba(202, 138, 4, 0.25);
+
+/* starlight.css — dark mode */
+--sl-color-accent-low: #78350f;
+--sl-color-accent: #e8a020;
+--sl-color-accent-high: #f0b947;
+
+/* starlight.css — light mode */
+--sl-color-accent-high: #ca8a04;
+--sl-color-accent: #ca8a04;
+--sl-color-accent-low: #fefce8;
+```
+
+Theme color: `#e8a020`
+
+### Amber — go-output (`#e8a838`)
 
 ```css
 /* global.css — dark mode */
