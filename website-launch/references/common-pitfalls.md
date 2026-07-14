@@ -1,8 +1,57 @@
 # Common Pitfalls — Website Launch
 
-> Every pitfall below was hit in at least one prior session. Each one
-> cost 5-30 minutes of debugging. Following the SKILL.md procedure
-> prevents all of them.
+> Every pitfall below was hit in at least one prior session. Each one cost
+> 5-30 minutes of debugging. Following the SKILL.md procedure prevents all
+> of them.
+>
+> **Last updated:** 2026-07-13
+
+## Environment Failures
+
+### 17. `curl` is BANNED in Crush
+
+**Symptom:** Commands fail with `command is not allowed for security reasons`.
+
+**Cause:** Crush bans `curl` (and `wget`, `ssh`, etc.) for security. The
+entire skill and all references previously used `curl` for HTTP requests.
+
+**Fix:** Use the `fetch` tool for one-off HTTP requests, or Node.js
+`https.request` for scripted API calls:
+
+```bash
+nix shell nixpkgs#nodejs -c node -e \
+  "require('https').get('https://example.com', r => r.on('data', d => console.log(d.toString())))"
+```
+
+### 18. Terraform is unfree (BSL license)
+
+**Symptom:** `nix shell nixpkgs#terraform` fails with "Refusing to evaluate
+package 'terraform-1.15.8' because it has an unfree license (bsl11)".
+
+**Cause:** As of Terraform 1.6+, the license changed from MPL to BSL.
+
+**Fix:** Use one of:
+
+```bash
+# Option A: Allow unfree
+NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#terraform -c terraform plan
+
+# Option B: Use opentofu (open-source fork)
+nix run nixpkgs#opentofu -- plan
+```
+
+### 19. npm/node/firebase not in PATH
+
+**Symptom:** Commands fail with `executable file not found in $PATH`.
+
+**Cause:** In Nix-based environments, these tools are not globally installed.
+
+**Fix:** Always invoke via `nix shell`:
+
+```bash
+nix shell nixpkgs#nodejs -c npm install
+nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c firebase deploy --only hosting:{target}
+```
 
 ## Build Failures
 
@@ -218,11 +267,50 @@ See SKILL.md Phase 0.2.
 
 ### 16. No visual QA
 
-**Symptom:** Website is deployed but has broken icons, misaligned layout,
-or CSS token mismatches that nobody noticed.
+**Symptom:** Website is deployed but has broken icons, misaligned layout, or
+CSS token mismatches that nobody noticed.
 
 **Cause:** Website was built and deployed without ever viewing the output.
 
-**Fix:** Run the Visual QA Gate (see SKILL.md Phase 3) before declaring
-done. At minimum, verify key pages return HTTP 200 and CSS variables
-resolved.
+**Fix:** Run the Visual QA Gate (see SKILL.md Phase 3) before declaring done.
+At minimum, verify key pages return HTTP 200 and CSS variables resolved.
+
+## Process Failures (continued)
+
+### 20. Stale commit message after domain rename
+
+**Symptom:** Git history contains a commit message referencing a domain name
+that was subsequently renamed (e.g. "auditlog.lars.software" when it should be
+"go-workflow-auditlog.lars.software").
+
+**Cause:** Website was committed before the user confirmed the domain name.
+When the domain was corrected, the commit message was not amended.
+
+**Fix:** NEVER commit before Phase 0.3 (domain confirmation). If a rename
+happens after commit, amend the commit if not pushed. If pushed, add a
+follow-up commit with the correct name. Never force-push a public repo
+without explicit user approval.
+
+### 21. Firebase `customDomains` vs `domains` API confusion
+
+**Symptom:** REST API returns `400 "Unknown name 'domainName' at 'domain':
+Cannot find field"` or `400 "Unknown name 'domain' at 'domain'"`.
+
+**Cause:** Using the legacy `domains` endpoint instead of the `customDomains`
+endpoint. These are different APIs with different request formats.
+
+**Fix:** Always use `POST .../customDomains?customDomainId={domain}` with an
+empty body `{}`. Never use `POST .../domains` with a body containing the
+domain name. See [firebase-rest-api.md](./firebase-rest-api.md).
+
+### 22. Status report hardcodes unconfirmed domain
+
+**Symptom:** Status report references a domain name that was subsequently
+renamed, creating a false historical record.
+
+**Cause:** Writing status reports with hardcoded URLs before the domain is
+confirmed live.
+
+**Fix:** In status reports, qualify unconfirmed domains: `{subdomain}.lars.software
+(pending DNS propagation)`. Only state the domain as fact after the `fetch`
+tool returns HTTP 200 from the custom domain URL.

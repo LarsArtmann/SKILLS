@@ -4,17 +4,7 @@
 > and `starlight.css` for both dark and light mode. This table eliminates
 > manual `rgba()` computation.
 
-## How to Use
-
-1. Choose the accent color for the project.
-2. Copy the corresponding token set into `global.css` (dark + light) and
-   `starlight.css` (dark + light).
-3. Update `manifest.json` `theme_color` and `favicon.svg` fill color.
-4. Update `LandingLayout.astro` `theme-color` meta tag.
-
 ## Color Palette Table
-
-### Emerald (`#10b981`)
 
 ```css
 /* global.css — dark mode */
@@ -44,8 +34,6 @@
 
 Theme color: `#10b981`
 
-### Cyan (`#22d3ee`)
-
 ```css
 /* global.css — dark mode */
 --color-accent: #22d3ee;
@@ -73,8 +61,6 @@ Theme color: `#10b981`
 ```
 
 Theme color: `#22d3ee`
-
-### Violet (`#7c3aed`)
 
 ```css
 /* global.css — dark mode */
@@ -104,8 +90,6 @@ Theme color: `#22d3ee`
 
 Theme color: `#7c3aed`
 
-### Amber (`#e8a838`)
-
 ```css
 /* global.css — dark mode */
 --color-accent: #e8a838;
@@ -133,8 +117,6 @@ Theme color: `#7c3aed`
 ```
 
 Theme color: `#e8a838`
-
-### Rose (`#f43f5e`)
 
 ```css
 /* global.css — dark mode */
@@ -164,8 +146,6 @@ Theme color: `#e8a838`
 
 Theme color: `#f43f5e`
 
-### Indigo (`#6366f1`)
-
 ```css
 /* global.css — dark mode */
 --color-accent: #6366f1;
@@ -193,8 +173,6 @@ Theme color: `#f43f5e`
 ```
 
 Theme color: `#6366f1`
-
-### Blue (`#3b82f6`)
 
 ```css
 /* global.css — dark mode */

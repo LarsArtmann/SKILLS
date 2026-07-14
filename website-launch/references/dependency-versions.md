@@ -4,6 +4,10 @@
 > gogenfilter `package.json` (the most complete reference baseline).
 > Do NOT bump versions without testing — several combinations are known
 > to break.
+>
+> **Last verified:** 2026-07-13 against gogenfilter (full-feature) and
+> go-workflow-auditlog (simple, no OG/CSP) — both built successfully with
+> these versions on Node.js 24 via Nix.
 
 ## Verified Working (gogenfilter baseline — Astro 7)
 

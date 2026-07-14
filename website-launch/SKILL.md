@@ -1,16 +1,16 @@
 ---
 name: website-launch
 description: >-
-  Launches a public documentation website for a Go library using the
-  LarsArtmann Astro + Starlight + Tailwind v4 + Firebase Hosting pattern.
-  Use this skill when the user asks to create a project website, build a
-  documentation site, deploy to Firebase, configure DNS, set up GitHub
+  Launches a public documentation website for a Go, Rust, or TypeScript library
+  using the LarsArtmann Astro + Starlight + Tailwind v4 + Firebase Hosting
+  pattern. Use this skill when the user asks to create a project website, build
+  a documentation site, deploy to Firebase, configure DNS, set up GitHub
   metadata for a library, rewrite a README for public presence, "make a
   website", "publish docs", "set up Firebase hosting", configure custom
   domains, or any task involving the sibling-project website pattern
-  (go-atomic-write, gogenfilter, go-filewatcher, etc.). Also triggers on
-  "website launch", "public presence overhaul", "deploy website", or
-  "lars.software domain".
+  (go-atomic-write, gogenfilter, go-output, go-workflow-auditlog, etc.). Also
+  triggers on "website launch", "public presence overhaul", "deploy website",
+  or "lars.software domain".
 metadata:
   tags: website, firebase, astro, starlight, dns, deployment, documentation
 allowed-tools: bash
@@ -18,38 +18,71 @@ allowed-tools: bash
 
 # Website Launch
 
-Launches a public documentation website for a Go library using the
-deterministic Astro + Starlight + Tailwind v4 + Firebase Hosting pattern
-shared across all LarsArtmann projects.
+Launches a public documentation website for a library using the deterministic
+Astro + Starlight + Tailwind v4 + Firebase Hosting pattern shared across all
+LarsArtmann projects.
 
 This skill encodes lessons from 6+ prior sessions that each wasted 45-90
-minutes rediscovering the same pattern, making the same mistakes, and
-writing the same feedback. Following this skill turns a 90-minute
-multi-agent exploration into a 25-minute scaffold-and-customize task.
+minutes rediscovering the same pattern, making the same mistakes, and writing
+the same feedback. Following this skill turns a 90-minute multi-agent
+exploration into a 25-minute scaffold-and-customize task.
+
+## Environment: Nix + Crush Constraints
+
+All commands below assume a **Nix-based environment** and **Crush CLI tool
+constraints**. These apply throughout:
+
+- **`curl` is BANNED** in Crush. Use the `fetch` tool for HTTP requests, or
+  Node.js `https.request` for scripted API calls. Every `curl` in older
+  references has been replaced.
+- **`npm` / `node` are not in PATH by default.** Use:
+  ```bash
+  nix shell nixpkgs#nodejs -c npm install
+  nix shell nixpkgs#nodejs -c npm run build
+  ```
+- **`firebase` CLI is not in PATH by default.** Use:
+  ```bash
+  nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c firebase --version
+  ```
+- **`terraform` is unfree (BSL license).** `nix shell nixpkgs#terraform` fails.
+  Use:
+  ```bash
+  NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#terraform -c terraform plan
+  ```
+  Or use `opentofu` (the open-source fork):
+  ```bash
+  nix run nixpkgs#opentofu -- plan
+  ```
+- **`gcloud` is available via:**
+  ```bash
+  nix shell nixpkgs#google-cloud-sdk -c gcloud auth print-access-token
+  ```
 
 ---
 
 ## Phase 0: Pre-flight Checks (BEFORE writing any files)
 
-Run these checks first. If any fails, surface it to the user immediately
-before investing time in website creation.
+Run these checks first. If any fails, surface it to the user immediately before
+investing time in website creation.
 
 ### 0.1 Credential and Infrastructure Check
 
 ```bash
 # Namecheap DNS — can Terraform actually be applied?
 cd ~/projects/domains 2>/dev/null || echo "WARN: domains repo not found"
+
+# Check if API key is a placeholder
 grep -q "REPLACE_WITH\|your_api_key\|xxx" terraform.tfvars 2>/dev/null \
   && echo "BLOCKED: Namecheap API key is a placeholder — DNS cannot be applied from this session" \
   || echo "OK: API key looks real"
 
-# Firebase project exists?
-firebase projects:list 2>/dev/null | grep -q lars-software \
+# Firebase project exists? (use fetch tool on the CLI output)
+nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c firebase projects:list 2>/dev/null | grep -q lars-software \
   && echo "OK: lars-software project exists" \
   || echo "WARN: lars-software project not found"
 
 # Check for existing hosting site collisions
-firebase hosting:sites:list --project lars-software 2>/dev/null
+nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c firebase hosting:sites:list --project lars-software 2>/dev/null
 ```
 
 ### 0.2 Domain Naming
@@ -57,14 +90,35 @@ firebase hosting:sites:list --project lars-software 2>/dev/null
 Decide the subdomain and site ID **before** creating anything. These are
 immutable after creation.
 
-- **Subdomain convention:** Use the full repo slug when there is any risk
-  of collision with sibling projects (e.g. `go-workflow-auditlog`, not
-  `auditlog` — because `samber-do-auditlog` also exists).
-- **Short subdomains** (e.g. `atomicwrite`, `gogenfilter`) are acceptable
-  only when no collision risk exists.
+- **Subdomain convention:** Use the full repo slug when there is any risk of
+  collision with sibling projects (e.g. `go-workflow-auditlog`, not `auditlog`
+  — because `samber-do-auditlog` also exists).
+- **Short subdomains** (e.g. `atomicwrite`, `gogenfilter`) are acceptable only
+  when no collision risk exists.
 - **Check for collisions:** Search the user's repos for similar names.
 
-### 0.3 Name Collision Check
+```bash
+# Check existing DNS records for potential subdomain collisions
+grep -r "{candidate-subdomain}" ~/projects/domains/lars.software.tf 2>/dev/null \
+  && echo "WARN: DNS record already exists for this subdomain"
+
+# Check user's GitHub repos for name collisions
+gh repo list LarsArtmann --limit 100 --json name 2>/dev/null | grep -i "{keyword}"
+```
+
+### 0.3 Confirm Domain with User (BEFORE any commit)
+
+**Do not commit anything until the user confirms the subdomain name.** A domain
+rename after commit creates stale git history, stale status reports, and
+requires touching 8+ files.
+
+Present the proposed subdomain to the user and wait for confirmation:
+
+> "I'll use `{subdomain}.lars.software` as the documentation URL, and `{siteId}`
+> as the Firebase hosting site ID. The site ID is immutable. Confirm before I
+> proceed?"
+
+### 0.4 Name Collision Check
 
 ```bash
 # Check existing DNS records for the subdomain
@@ -77,8 +131,7 @@ whitelisted), tell the user immediately:
 
 > "DNS records can be staged in Terraform but cannot be applied from this
 > session — the Namecheap API key is a placeholder / the current IP is not
-> whitelisted. I will prepare everything else and flag this as a manual
-> step."
+> whitelisted. I will prepare everything else and flag this as a manual step."
 
 ---
 
@@ -96,8 +149,8 @@ Before writing any website files, understand the actual library:
 ### Code Example Verification (critical)
 
 Every Go code example in the website must be verified against the actual
-source. The #1 mistake across sessions is writing code examples from
-memory that don't compile.
+source. The #1 mistake across sessions is writing code examples from memory
+that don't compile.
 
 Before writing any Go code into documentation:
 
@@ -123,12 +176,11 @@ Checklist for every Go code example:
 
 ## Phase 2: Create the Website
 
-Load the [file manifest](./references/file-manifest.md) to see exactly
-which files to copy verbatim, which to customize, and which to write
-fresh. The classification eliminates the need to read 60+ reference files
-via sub-agents.
+Load the [file manifest](./references/file-manifest.md) to see exactly which
+files to copy verbatim, which to customize, and which to write fresh. The
+classification eliminates the need to read 60+ reference files via sub-agents.
 
-## Decision: Which Reference Baseline?
+### 2.1 Choose the Reference Baseline
 
 Two reference repos exist. **Use gogenfilter (`~/projects/gogenfilter/website/`)
 as the baseline** — it has CSP hardening, OG images, and a CI/CD pipeline.
@@ -139,15 +191,15 @@ pattern without these features.
 | -------------------- | --------------- | ------------------------------------------ |
 | CSP headers          | No              | **Yes** (`fix-csp.mjs`)                    |
 | OG images            | No              | **Yes** (`astro-og-canvas`)                |
-| Two-job CI           | No              | **Yes** (build → deploy)                   |
+| Two-job CI           | No              | **Yes** (build, then deploy)               |
 | Service account auth | No              | **Yes** (`GOOGLE_APPLICATION_CREDENTIALS`) |
 
 **Important:** Components are NOT verbatim copies between repos. They share
 the same data-driven architecture (consume data from `src/data/*.ts`) but
-differ in markup, styling, and sometimes structure. Copy from gogenfilter
-as the starting point, then customize per-project.
+differ in markup, styling, and sometimes structure. Copy from gogenfilter as
+the starting point, then customize per-project.
 
-### Steps
+### 2.2 Build the Website
 
 1. **Copy verbatim** (~12 files) — see file manifest, "Copy verbatim" rows.
    These need zero changes.
@@ -155,28 +207,41 @@ as the starting point, then customize per-project.
 2. **Customize specific fields** (~15 files) — change project name, URLs,
    accent color, sidebar structure. See file manifest, "Customize" rows.
 
-3. **Write fresh** (~20 files) — project-specific content: features, hero
-   code, sections, all docs pages, logo, favicon, and section components
-   (CTASection, ComparisonSection, etc. — these follow the data-driven
-   pattern from gogenfilter but need per-project markup and styling).
+3. **Write fresh** (~20 files) — project-specific content: features, hero code,
+   sections, all docs pages, logo, favicon, and section components (CTASection,
+   ComparisonSection, etc. — these follow the data-driven pattern from
+   gogenfilter but need per-project markup and styling).
 
-### Accent Color
+### 2.3 Accent Color
 
 Load the [color palette reference](./references/color-palette.md) for
-pre-computed CSS token sets for each supported accent color. Do NOT
-manually compute `rgba()` values — use the table.
+pre-computed CSS token sets for each supported accent color. Do NOT manually
+compute `rgba()` values — use the table.
 
-### Dependencies
+### 2.4 Dependencies
 
 Load the [dependency version reference](./references/dependency-versions.md)
-for the verified package.json version matrix. Do NOT guess or bump
-versions — use the exact pins that are known to work together.
+for the verified package.json version matrix. Do NOT guess or bump versions —
+use the exact pins that are known to work together.
 
-### MDX Gotcha
+### 2.5 Favicon and Logo Design
 
-Characters `<`, `>`, `<=`, `>=` break Starlight `.mdx` file parsing. In
-`.mdx` files, escape them as `&lt;`, `&gt;`, or rephrase the sentence to
-avoid them. This does not affect `.md` files.
+Both use the same design constraints:
+
+- **Dimensions:** 28x28 viewBox
+- **Shape:** Rounded rectangle (`rx="6"`) filled with the accent color
+- **Foreground:** Simple monogram or icon in `bg-primary` color (`#0a0908`)
+- **favicon.svg:** Use the literal hex value of the accent color (not CSS
+  variables, since SVGs viewed as tabs don't resolve them). Use the **dark-mode
+  `--color-accent` value** from the color palette.
+- **Logo.astro:** Use CSS variables (`fill-[var(--color-accent)]`) so it adapts
+  to light/dark theme.
+
+### 2.6 MDX Gotcha
+
+Characters `<`, `>`, `<=`, `>=` break Starlight `.mdx` file parsing. In `.mdx`
+files, escape them as `&lt;`, `&gt;`, or rephrase the sentence to avoid them.
+This does not affect `.md` files.
 
 ---
 
@@ -184,43 +249,43 @@ avoid them. This does not affect `.md` files.
 
 ```bash
 cd website
-npm install
-npm run build
+nix shell nixpkgs#nodejs -c npm install
+nix shell nixpkgs#nodejs -c npm run build
 ```
 
 If using npm v11+, native binary packages need approval:
 
 ```bash
-npm approve-scripts esbuild sharp   # if blocked by allow-scripts
+nix shell nixpkgs#nodejs -c npx approve-scripts esbuild sharp   # if blocked
 ```
 
-Expected output: N pages generated, sitemap, pagefind search index, 0
-errors.
+Expected output: N pages generated, sitemap, pagefind search index, 0 errors.
 
 Run type checking and HTML validation:
 
 ```bash
-npx astro check          # 0 errors, 0 warnings
-npx html-validate "dist/**/*.html"
+nix shell nixpkgs#nodejs -c npx astro check          # 0 errors, 0 warnings
+nix shell nixpkgs#nodejs -c npx html-validate "dist/**/*.html"
 ```
 
 ### Visual QA Gate (mandatory — Phase 4 does not start until this passes)
 
-Across prior sessions, agents built 37+ files rendering to 15+ HTML pages
-and NEVER looked at any of them. Broken icons, CSS mismatches, and layout
-bugs were all latent. This gate exists because that is the single biggest
-quality risk in the entire workflow.
-
-Run the preview server and verify:
+Across prior sessions, agents built 37+ files rendering to 15+ HTML pages and
+NEVER looked at any of them. Broken icons, CSS mismatches, and layout bugs
+were all latent. This gate exists because that is the single biggest quality
+risk in the entire workflow.
 
 ```bash
-npm run preview &
+# Start preview server
+nix shell nixpkgs#nodejs -c npm run preview &
 sleep 3
-# Verify key pages return 200
-curl -s -o /dev/null -w "%{http_code}" http://localhost:4321/
-curl -s -o /dev/null -w "%{http_code}" http://localhost:4321/getting-started/installation/
-# Check that CSS variables resolved (no missing tokens)
-curl -s http://localhost:4321/ | grep -o 'color-accent' | head -1
+
+# Verify key pages return 200 (use fetch tool, not curl)
+# Check: http://localhost:4321/ — landing page
+# Check: http://localhost:4321/getting-started/installation/ — first doc page
+
+# Verify CSS variables resolved (use fetch tool to read the HTML)
+# Look for 'color-accent' in the output — if missing, tokens are broken
 ```
 
 If browser access is available, visually check:
@@ -241,14 +306,15 @@ Follow this exact sequence. Each step depends on the previous one.
 
 ```bash
 cd website
-nix flake lock           # reproducible Nix builds
-# package-lock.json is generated by npm install — commit it
+nix shell nixpkgs#nodejs -c npm install   # generates package-lock.json
+# Commit package-lock.json for reproducible CI builds
 ```
 
 ### Step 2: Create Firebase hosting site
 
 ```bash
-firebase hosting:sites:create {siteId} --project lars-software
+nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c \
+  firebase hosting:sites:create {siteId} --project lars-software
 ```
 
 Site IDs are **immutable**. Use the full repo slug to avoid collisions.
@@ -257,107 +323,104 @@ Site IDs are **immutable**. Use the full repo slug to avoid collisions.
 
 ```bash
 cd website
-firebase deploy --only hosting:{siteId} --project lars-software
+
+# Configure .firebaserc (if using shared project with targets)
+# {
+#   "projects": { "default": "lars-software" },
+#   "targets": {
+#     "lars-software": { "hosting": { "{target}": ["{siteId}"] } }
+#   }
+# }
+
+nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c \
+  firebase deploy --only hosting:{target} --project lars-software
 ```
-
-If using a shared project with targets, configure `.firebaserc`:
-
-```json
-{
-  "projects": { "default": "lars-software" },
-  "targets": {
-    "lars-software": { "hosting": { "{target}": ["{siteId}"] } }
-  }
-}
-```
-
-Then: `firebase deploy --only hosting:{target} --project lars-software`
 
 ### Step 4: Verify web.app URL
 
+Use the `fetch` tool to verify `https://{siteId}.web.app` returns HTTP 200.
+
+### Step 5: Add custom domain via REST API
+
+The Firebase CLI has **no command** for adding custom domains. Use the REST
+API. The critical details are inline here; load the
+[Firebase REST API reference](./references/firebase-rest-api.md) for the full
+script templates.
+
+**Endpoint:** `POST https://firebasehosting.googleapis.com/v1beta1/projects/lars-software/sites/{siteId}/customDomains?customDomainId={subdomain}.lars.software`
+
+**Headers (all required):**
+
+- `Authorization: Bearer {ACCESS_TOKEN}`
+- `x-goog-user-project: lars-software` — omitting this causes `403 "quota project not set"`
+- `Content-Type: application/json`
+
+**Body:** `{}` (empty object — the domain is in the query param)
+
+**Access token:**
+
 ```bash
-curl -sI https://{siteId}.web.app | head -1   # expect HTTP 200 or redirect
+ACCESS_TOKEN=$(nix shell nixpkgs#google-cloud-sdk -c gcloud auth print-access-token)
 ```
-
-### Step 5: Add custom domain
-
-The Firebase CLI has **no command** for adding custom domains. Use the
-REST API. Load the [Firebase REST API reference](./references/firebase-rest-api.md)
-for the exact request format and known gotchas.
 
 ### Step 6: Extract ACME challenge
 
-The domain creation response includes the SSL cert verification token.
-This maps to a DNS TXT record. See the REST API reference for the exact
-response field path.
+The domain creation response (or the list response) includes the SSL cert
+verification challenge under `requiredDnsUpdates.desired[0].records` (CNAME)
+and `cert.verification.dns.desired[0].records` (ACME TXT).
+
+Map to DNS:
+
+- CNAME record: hostname = `{subdomain}`, target = `{siteId}.web.app.`
+- TXT record: hostname = `_acme-challenge.{subdomain}`, value = ACME token
 
 ### Step 7: Stage DNS records in Terraform
 
-Load the [DNS Terraform reference](./references/dns-terraform.md) for the
-exact CNAME + TXT record templates.
+Load the [DNS Terraform reference](./references/dns-terraform.md) for the exact
+CNAME + TXT record templates.
 
 DNS records for `{name}.lars.software` go in `domains/lars.software.tf`.
 Records for `{name}.larsartmann.com` go in `domains/larsartmann.com.tf`.
 
 ```bash
 cd ~/projects/domains
-terraform fmt
-terraform validate
+NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#terraform -c terraform fmt
+NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#terraform -c terraform validate
 ```
 
-### Step 8: Apply Terraform (requires credentials)
+### Step 8: Apply Terraform (requires valid credentials)
 
 ```bash
-# Only if pre-flight checks passed (real API key + whitelisted IP)
-export NAMECHEAP_CLIENT_IP=$(curl -s ifconfig.me)
-terraform plan
-terraform apply
+cd ~/projects/domains
+
+# Verify API key is valid FIRST (see Phase 0.1)
+NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#terraform -c \
+  terraform plan -target=namecheap_domain_records.lars_software
+
+# If plan succeeds, apply
+NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#terraform -c \
+  terraform apply -target=namecheap_domain_records.lars_software
 ```
 
-If credentials are blocked, stage the records and flag as a manual step.
+If credentials are blocked (expired API key, IP not whitelisted), stage the
+records and flag as a manual step for the user.
 
 ### Step 9: Wait for SSL provisioning
 
-Poll the domain status until `certStatus` transitions to `CERT_ACTIVE`:
+Poll the domain status using the Firebase REST API (see reference for the GET
+script). Lifecycle: `OWNERSHIP_MISSING` -> `CERT_VALIDATING` ->
+`CERT_ACTIVE`.
 
-```bash
-# See Firebase REST API reference for the polling command
-```
+This can take 10-60 minutes after DNS propagates. Firebase auto-provisions the
+SSL certificate once it can verify the ACME TXT record.
 
-Lifecycle: `CERT_PENDING` + `DNS_MISSING` → `CERT_PENDING` + `DNS_MATCH`
-→ `CERT_ACTIVE` + `DNS_MATCH`
+### Step 10: Verify custom domain
 
-### Step 10: Set CI secret for auto-deploy
-
-```bash
-# Find the firebase-admin SDK service account
-gcloud iam service-accounts list --project=lars-software | grep firebase-adminsdk
-
-# Create a key (temp file — clean up after)
-gcloud iam service-accounts keys create /tmp/firebase-ci-key.json \
-  --iam-account=firebase-adminsdk-{HASH}@lars-software.iam.gserviceaccount.com \
-  --project=lars-software
-
-# Set GitHub secret
-gh secret set FIREBASE_SERVICE_ACCOUNT --repo LarsArtmann/{repo} \
-  --body "$(cat /tmp/firebase-ci-key.json)"
-
-# Verify
-gh secret list --repo LarsArtmann/{repo}
-
-# Clean up
-rm /tmp/firebase-ci-key.json
-```
-
-### Step 11: Verify custom domain
-
-```bash
-curl -sI https://{subdomain}.lars.software | head -1   # expect HTTP 200
-```
+Use the `fetch` tool to verify `https://{subdomain}.lars.software` returns HTTP 200.
 
 ---
 
-## Phase 5: GitHub Metadata and CI
+## Phase 5: GitHub Metadata
 
 ```bash
 gh repo edit LarsArtmann/{repo} \
@@ -365,12 +428,6 @@ gh repo edit LarsArtmann/{repo} \
   --homepage "https://{subdomain}.lars.software" \
   --add-topic go,golang,{domain-specific-topics}
 ```
-
-### CI Workflow
-
-Copy `.github/workflows/website.yml` from gogenfilter. It uses a two-job
-pattern (build → deploy) with `GOOGLE_APPLICATION_CREDENTIALS` auth.
-Customize the Firebase target name and repo URL.
 
 ### Standard topic vocabulary for Go libraries
 
@@ -393,15 +450,58 @@ Below the tagline in README:
 
 ---
 
+## Phase 6: CI/CD Setup (after manual launch is verified)
+
+Only proceed after the custom domain is live and verified.
+
+### Step 1: Create Firebase service account key
+
+```bash
+# Find the firebase-admin SDK service account
+nix shell nixpkgs#google-cloud-sdk -c \
+  gcloud iam service-accounts list --project=lars-software | grep firebase-adminsdk
+
+# Create a key (temp file — clean up after)
+nix shell nixpkgs#google-cloud-sdk -c \
+  gcloud iam service-accounts keys create /tmp/firebase-ci-key.json \
+  --iam-account=firebase-adminsdk-{hash}@lars-software.iam.gserviceaccount.com \
+  --project=lars-software
+
+# Set GitHub secret
+gh secret set FIREBASE_SERVICE_ACCOUNT --repo LarsArtmann/{repo} \
+  --body "$(cat /tmp/firebase-ci-key.json)"
+
+# Verify
+gh secret list --repo LarsArtmann/{repo}
+
+# Clean up
+rm /tmp/firebase-ci-key.json
+```
+
+### Step 2: Add CI workflow
+
+Copy `.github/workflows/website.yml` from gogenfilter. It uses a two-job
+pattern:
+
+1. **build-website** — `npm ci`, `astro check`, `astro build`, HTML validation,
+   upload artifact
+2. **deploy-website** — download artifact, deploy to Firebase via
+   `GOOGLE_APPLICATION_CREDENTIALS` secret
+
+Customize: Firebase target name, repo trigger paths.
+
+---
+
 ## Commit Discipline
 
 Commit at these checkpoints — never leave a session with uncommitted work:
 
-1. **After README rewrite** — verified correct against source code
-2. **After website builds successfully** — `astro check` = 0 errors,
+1. **After domain confirmed by user** — Phase 0.3 gate passed
+2. **After README rewrite** — verified correct against source code
+3. **After website builds successfully** — `astro check` = 0 errors,
    `astro build` = success
-3. **After Firebase deploy confirmed live** — HTTP 200 on web.app URL
-4. **After DNS records staged** — Terraform `fmt` + `validate` pass
+4. **After Firebase deploy confirmed live** — HTTP 200 on web.app URL
+5. **After DNS records staged** — Terraform `fmt` + `validate` pass
 
 ### Two repos awareness
 
@@ -415,37 +515,51 @@ Run `git status` in BOTH before declaring done.
 
 ### Pre-commit check for domains repo
 
-Before editing the domains repo, run `git status`. If there are
-pre-existing uncommitted changes from other sessions, flag them to the
-user before layering your changes on top.
+Before editing the domains repo, run `git status`. If there are pre-existing
+uncommitted changes from other sessions, flag them to the user before layering
+your changes on top.
+
+### Status report guidance
+
+When writing status reports, **never hardcode unconfirmed URLs or domain
+names**. Use `{subdomain}.lars.software (pending DNS propagation)` until the
+domain is verified live. A status report that references a domain that was
+subsequently renamed is worse than no status report — it creates a false
+historical record.
 
 ---
 
 ## Common Pitfalls
 
-Load the [common pitfalls reference](./references/common-pitfalls.md) for
-the full list. The most critical:
+Load the [common pitfalls reference](./references/common-pitfalls.md) for the
+full list. The most critical:
 
-1. **Vite override conflicts** — Use `astro-og-canvas@^0.12.0` (not 0.11.x)
+1. **`curl` is BANNED in Crush** — use the `fetch` tool or Node.js
+   `https.request` for HTTP requests. Every command sample in this skill uses
+   Nix invocations and Node.js, not curl.
+2. **Terraform is unfree** — use `NIXPKGS_ALLOW_UNFREE=1 nix shell --impure
+nixpkgs#terraform` or `opentofu`.
+3. **`npm`, `node`, `firebase` are not in PATH** — always invoke via
+   `nix shell nixpkgs#{package} -c {command}`.
+4. **Vite override conflicts** — Use `astro-og-canvas@^0.12.0` (not 0.11.x)
    with Astro 7. gogenfilter pins `vite: 7.3.2` and works. Either copy
    gogenfilter's overrides verbatim or omit them — do not partially customize.
-2. **`--legacy-peer-deps` trap** — If you must use it, create `.npmrc`
-   with `legacy-peer-deps=true`. Otherwise the lockfile is
-   non-reproducible for other contributors.
-3. **MDX character escaping** — `<`, `>`, `<=`, `>=` break `.mdx` files.
-4. **`package-lock.json`** — Must be committed for reproducible CI builds.
-5. **`GOEXPERIMENT=jsonv2`** — If the library uses `encoding/json/v2`,
+5. **`--legacy-peer-deps` trap** — If you must use it, create `.npmrc`
+   with `legacy-peer-deps=true`. Otherwise the lockfile is non-reproducible.
+6. **MDX character escaping** — `<`, `>`, `<=`, `>=` break `.mdx` files.
+7. **`package-lock.json` + `flake.lock`** — Must be generated and committed.
+8. **`GOEXPERIMENT=jsonv2`** — If the library uses `encoding/json/v2`,
    document the build constraint in README.
-6. **`flake.lock`** — Must be generated (`nix flake lock`) and committed.
-7. **Stray dependencies** — Never `npm install` / `bun add` a package as
-   a debugging step without removing it if it doesn't solve the problem.
-   Use `npx` / `bunx` for one-off commands.
-8. **Firebase upload endpoint** — `upload-firebasehosting.googleapis.com`
-   is a different host than the main API. If unreachable (firewall, DNS),
-   deploys fail. Verify reachability before attempting deploy.
-9. **bun vs Node.js for deploy** — `firebase deploy` uses the `re2`
-   native module which fails under bun's node shim. Use a real Node.js
-   from Nix: `PATH=$(nix build nixpkgs#nodejs --no-link --print-out-paths)/bin:$PATH`
-10. **Edit tool collateral damage** — When editing Terraform files with
-    find-replace tools, include enough unique context and run `git diff`
-    after every edit to verify only intended lines changed.
+9. **Stray dependencies** — Never `npm install` a package as a debugging step
+   without removing it. Use `npx` for one-off commands.
+10. **Firebase upload endpoint** — `upload-firebasehosting.googleapis.com` is a
+    different host. If unreachable, deploys fail. Verify before attempting.
+11. **bun vs Node.js for deploy** — `firebase deploy` uses the `re2` native
+    module which fails under bun. Use real Node.js from Nix.
+12. **Edit tool collateral damage** — When editing Terraform files, include
+    enough unique context and run `git diff` after every edit.
+13. **Committing before domain confirmation** — The subdomain name touches 8+
+    files. Never commit until the user confirms the domain (Phase 0.3).
+14. **Firebase custom domain API** — Use `customDomains` endpoint (not
+    `domains`), body is `{}` with domain in query param, `x-goog-user-project`
+    header is required. See [firebase-rest-api.md](./references/firebase-rest-api.md).

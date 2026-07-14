@@ -1,9 +1,5 @@
 # File Manifest — Website Template Classification
 
-> The Astro + Starlight + Tailwind v4 website structure is identical across
-> all LarsArtmann project websites. This manifest eliminates the need to
-> read 60+ reference files via sub-agents.
-
 ## Copy Verbatim (zero changes needed)
 
 These files are identical across all project websites. Copy them as-is.
@@ -101,8 +97,6 @@ Known-good icons across projects:
 For new icons, source from [Lucide](https://lucide.dev) or
 [Heroicons](https://heroicons.com) — both use 24x24 viewBox with stroke
 paths compatible with the Icon component.
-
-## CI Workflow
 
 Copy `.github/workflows/website.yml` from gogenfilter. It uses a two-job
 pattern:
