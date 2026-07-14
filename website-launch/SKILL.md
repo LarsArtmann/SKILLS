@@ -65,6 +65,19 @@ constraints**. These apply throughout:
 Run these checks first. If any fails, surface it to the user immediately before
 investing time in website creation.
 
+### 0.0 Existing Website Check
+
+Before starting any work, check if a website already exists:
+
+```bash
+ls ~/projects/{repo}/website/package.json 2>/dev/null \
+  && echo "INFO: website/ directory already exists — check if this is an update or a rebuild"
+```
+
+If a website exists, **switch to maintenance mode**: read the existing files,
+identify what needs updating, and skip Phase 2 (creation). Do NOT overwrite
+existing customization without confirming with the user.
+
 ### 0.1 Credential and Infrastructure Check
 
 ```bash
@@ -275,6 +288,8 @@ NEVER looked at any of them. Broken icons, CSS mismatches, and layout bugs
 were all latent. This gate exists because that is the single biggest quality
 risk in the entire workflow.
 
+**Step 1: Start preview server and verify HTTP responses**
+
 ```bash
 # Start preview server
 nix shell nixpkgs#nodejs -c npm run preview &
@@ -288,13 +303,32 @@ sleep 3
 # Look for 'color-accent' in the output — if missing, tokens are broken
 ```
 
-If browser access is available, visually check:
+**Step 2: Headless screenshot (if available)**
+
+If Chromium is available via Nix, take a screenshot for visual verification:
+
+```bash
+nix shell nixpkgs#chromium -c chromium --headless --no-sandbox \
+  --screenshot=/tmp/website-landing.png \
+  --window-size=1440,900 http://localhost:4321/
+```
+
+Then view the screenshot with the `view` tool to verify:
 
 - Hero section renders with code mockup
 - Feature icons are visible (not broken SVG)
-- Dark/light toggle works
-- Mobile layout: nav hamburger, grid collapse
-- Footer links resolve
+- Dark theme is applied by default
+- No layout overflow or missing CSS
+
+**Step 3: Manual visual checklist**
+
+If neither headless screenshot nor browser access is available, **flag the
+visual QA as incomplete and explicitly tell the user**:
+
+> "I verified HTTP 200 responses and CSS token presence, but could not perform
+> visual QA (no browser available). Please check the preview server at
+> http://localhost:4321/ to verify: hero code mockup, feature icons, dark/light
+> toggle, mobile layout, footer links."
 
 ---
 
@@ -320,6 +354,18 @@ nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c \
 Site IDs are **immutable**. Use the full repo slug to avoid collisions.
 
 ### Step 3: Deploy
+
+**Before deploying**, verify the Firebase upload endpoint is reachable. This
+is a different host from the main Firebase API and may be blocked by
+firewalls or network policies:
+
+```bash
+nix shell nixpkgs#nodejs -c node -e \
+  "require('https').get('https://upload-firebasehosting.googleapis.com', r => { console.log('upload endpoint:', r.statusCode); r.resume() })"
+# If this fails or hangs, deploy will fail — flag immediately
+```
+
+Then deploy:
 
 ```bash
 cd website
@@ -480,15 +526,16 @@ rm /tmp/firebase-ci-key.json
 
 ### Step 2: Add CI workflow
 
-Copy `.github/workflows/website.yml` from gogenfilter. It uses a two-job
-pattern:
+Load the [CI workflow reference](./references/ci-workflow.md) for the
+full template. It uses a two-job pattern:
 
 1. **build-website** — `npm ci`, `astro check`, `astro build`, HTML validation,
    upload artifact
 2. **deploy-website** — download artifact, deploy to Firebase via
    `GOOGLE_APPLICATION_CREDENTIALS` secret
 
-Customize: Firebase target name, repo trigger paths.
+The reference also includes rollback commands (`firebase hosting:rollback`)
+for reverting a broken deploy.
 
 ---
 

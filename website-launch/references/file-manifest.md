@@ -40,6 +40,7 @@ sidebar structure.
 | `src/data/types.ts`                | Icon name union type (if adding/removing icons)                                            |
 | `src/styles/global.css`            | All accent color tokens (see color-palette.md)                                             |
 | `src/styles/starlight.css`         | All `sl-color-accent-*` tokens (see color-palette.md)                                      |
+| `.npmrc`                           | Create ONLY if `--legacy-peer-deps` was needed: `legacy-peer-deps=true`                    |
 | `src/components/Header.astro`      | GitHub URL, nav links (consumes `config.ts` but styling differs per project)               |
 | `src/components/Footer.astro`      | Links, project name (consumes `config.ts` but styling differs per project)                 |
 | `src/components/HeroSection.astro` | GitHub API URL, repo name for stars badge                                                  |
@@ -134,3 +135,23 @@ To customize for a new project:
 2. Update the border color to match the project accent
 3. Update the `bgGradient` if desired
 4. Ensure `astro-og-canvas` is in dependencies (see dependency-versions.md)
+
+## Multi-Color Design Systems (Secondary Colors)
+
+Some projects (e.g. go-output) use secondary accent colors alongside the
+primary accent. For example, go-output uses cyan as primary with amber and
+violet as secondarys for the Build/Freeze/Render phase cards.
+
+To add secondary colors:
+
+1. Add the secondary color as a CSS custom property in `global.css`:
+   ```css
+   --color-amber: #fbbf24;
+   --color-violet: #a78bfa;
+   ```
+2. Use opacity-based utility classes in components (e.g. `bg-amber/10`,
+   `text-violet`) — Tailwind v4 generates these from the CSS variables.
+3. Do NOT add secondary colors to `starlight.css` — Starlight only uses one
+   accent color for its chrome. Secondary colors are landing-page-only.
+4. Do NOT add secondary colors to the color-palette.md reference — it only
+   covers the primary accent system.

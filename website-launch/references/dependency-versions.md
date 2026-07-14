@@ -132,6 +132,17 @@ versions are compatible without `--legacy-peer-deps`.
 | Build                | `npm run build` or `bun run build` | Both work for build                                                        |
 | Deploy to Firebase   | Real Node.js (not bun)             | `firebase deploy` uses `re2` native module — bun's node shim can't load it |
 
+### Lockfile Decision
+
+Commit `package-lock.json` (not `bun.lock`). The CI workflow uses `npm install`
+with `cache: npm`, which requires `package-lock.json`. If both lockfiles exist,
+add `bun.lock` to `.gitignore` (the gogenfilter `.gitignore` does this).
+
+```gitignore
+# .gitignore
+bun.lock
+```
+
 ### Deploying with real Node.js under bun
 
 ```bash
