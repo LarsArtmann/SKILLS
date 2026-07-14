@@ -11,6 +11,9 @@ description: >-
   (go-atomic-write, gogenfilter, go-filewatcher, etc.). Also triggers on
   "website launch", "public presence overhaul", "deploy website", or
   "lars.software domain".
+metadata:
+  tags: website, firebase, astro, starlight, dns, deployment, documentation
+allowed-tools: bash
 ---
 
 # Website Launch
@@ -125,9 +128,12 @@ which files to copy verbatim, which to customize, and which to write
 fresh. The classification eliminates the need to read 60+ reference files
 via sub-agents.
 
-### Decision: Which Reference Baseline?
+## Decision: Which Reference Baseline?
 
-Two reference repos exist. Choose the more complete one:
+Two reference repos exist. **Use gogenfilter (`~/projects/gogenfilter/website/`)
+as the baseline** — it has CSP hardening, OG images, and a CI/CD pipeline.
+go-atomic-write (`~/projects/go-atomic-write/website/`) is the older, simpler
+pattern without these features.
 
 | Feature              | go-atomic-write | gogenfilter                                |
 | -------------------- | --------------- | ------------------------------------------ |
@@ -136,8 +142,10 @@ Two reference repos exist. Choose the more complete one:
 | Two-job CI           | No              | **Yes** (build → deploy)                   |
 | Service account auth | No              | **Yes** (`GOOGLE_APPLICATION_CREDENTIALS`) |
 
-**Use gogenfilter as the baseline** — it has CSP, OG images, and the
-professional CI pipeline. go-atomic-write is the older, simpler pattern.
+**Important:** Components are NOT verbatim copies between repos. They share
+the same data-driven architecture (consume data from `src/data/*.ts`) but
+differ in markup, styling, and sometimes structure. Copy from gogenfilter
+as the starting point, then customize per-project.
 
 ### Steps
 
@@ -148,7 +156,9 @@ professional CI pipeline. go-atomic-write is the older, simpler pattern.
    accent color, sidebar structure. See file manifest, "Customize" rows.
 
 3. **Write fresh** (~20 files) — project-specific content: features, hero
-   code, sections, all docs pages, logo, favicon.
+   code, sections, all docs pages, logo, favicon, and section components
+   (CTASection, ComparisonSection, etc. — these follow the data-driven
+   pattern from gogenfilter but need per-project markup and styling).
 
 ### Accent Color
 
@@ -194,10 +204,14 @@ npx astro check          # 0 errors, 0 warnings
 npx html-validate "dist/**/*.html"
 ```
 
-### Visual QA Gate (mandatory)
+### Visual QA Gate (mandatory — Phase 4 does not start until this passes)
 
-Do NOT declare the website done without verifying visual output. At
-minimum:
+Across prior sessions, agents built 37+ files rendering to 15+ HTML pages
+and NEVER looked at any of them. Broken icons, CSS mismatches, and layout
+bugs were all latent. This gate exists because that is the single biggest
+quality risk in the entire workflow.
+
+Run the preview server and verify:
 
 ```bash
 npm run preview &
@@ -343,7 +357,7 @@ curl -sI https://{subdomain}.lars.software | head -1   # expect HTTP 200
 
 ---
 
-## Phase 5: GitHub Metadata
+## Phase 5: GitHub Metadata and CI
 
 ```bash
 gh repo edit LarsArtmann/{repo} \
@@ -351,6 +365,12 @@ gh repo edit LarsArtmann/{repo} \
   --homepage "https://{subdomain}.lars.software" \
   --add-topic go,golang,{domain-specific-topics}
 ```
+
+### CI Workflow
+
+Copy `.github/workflows/website.yml` from gogenfilter. It uses a two-job
+pattern (build → deploy) with `GOOGLE_APPLICATION_CREDENTIALS` auth.
+Customize the Firebase target name and repo URL.
 
 ### Standard topic vocabulary for Go libraries
 
@@ -406,8 +426,9 @@ user before layering your changes on top.
 Load the [common pitfalls reference](./references/common-pitfalls.md) for
 the full list. The most critical:
 
-1. **Vite override** — Do NOT pin `vite` in package.json overrides. Astro
-   manages its own Vite version. Pinning causes build failures.
+1. **Vite override conflicts** — Use `astro-og-canvas@^0.12.0` (not 0.11.x)
+   with Astro 7. gogenfilter pins `vite: 7.3.2` and works. Either copy
+   gogenfilter's overrides verbatim or omit them — do not partially customize.
 2. **`--legacy-peer-deps` trap** — If you must use it, create `.npmrc`
    with `legacy-peer-deps=true`. Otherwise the lockfile is
    non-reproducible for other contributors.

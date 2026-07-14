@@ -6,18 +6,26 @@
 
 ## Build Failures
 
-### 1. Vite override pinning
+### 1. Vite override conflicts
 
 **Symptom:** Build fails with `rollupOptions.input should not be an html
 file when building for SSR` or similar Rollup error.
 
-**Cause:** `package.json` has a `vite` pin in `overrides`. Astro 7
-manages its own Vite version internally. Pinning it breaks the build.
+**Cause:** A prior session (go-output) hit this when using
+`astro-og-canvas@0.11.1` with Astro 7. The root cause was the og-canvas
+version, not Vite pinning per se — `astro-og-canvas@0.12.0` added Astro 7
+support.
 
-**Fix:** Remove the `overrides` section entirely. Let Astro resolve Vite.
+gogenfilter pins `vite: 7.3.2` in overrides and works fine. The failure
+mode is using incompatible version combinations, not the act of pinning
+itself.
+
+**Fix:** Use `astro-og-canvas@^0.12.0` (not 0.11.x) with Astro 7. Either
+copy gogenfilter's overrides verbatim or omit them entirely — do not
+partially customize.
 
 **Prevention:** See [dependency-versions.md](./dependency-versions.md) —
-the verified matrix has no overrides.
+the verified matrices have been tested in production.
 
 ### 2. npm v11 install scripts blocked
 

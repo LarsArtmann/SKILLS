@@ -44,6 +44,8 @@ sidebar structure.
 | `src/data/types.ts`                | Icon name union type (if adding/removing icons)                                            |
 | `src/styles/global.css`            | All accent color tokens (see color-palette.md)                                             |
 | `src/styles/starlight.css`         | All `sl-color-accent-*` tokens (see color-palette.md)                                      |
+| `src/components/Header.astro`      | GitHub URL, nav links (consumes `config.ts` but styling differs per project)               |
+| `src/components/Footer.astro`      | Links, project name (consumes `config.ts` but styling differs per project)                 |
 | `src/components/HeroSection.astro` | GitHub API URL, repo name for stars badge                                                  |
 | `src/components/Logo.astro`        | Project-specific SVG monogram                                                              |
 | `public/manifest.json`             | `name`, `description`, `theme_color`                                                       |
@@ -54,19 +56,20 @@ sidebar structure.
 
 These files require original content based on the specific library.
 
-| File                                     | What to write                                                                            |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `src/data/features.ts`                   | 6 feature cards with icon, title, description                                            |
-| `src/data/hero-code.ts`                  | Go code example for hero section (verify against source!)                                |
-| `src/data/sections.ts`                   | How-it-works steps, comparison matrix, use cases                                         |
-| `public/favicon.svg`                     | Project-specific SVG favicon                                                             |
-| `src/components/CTASection.astro`        | Call-to-action section                                                                   |
-| `src/components/ComparisonSection.astro` | Comparison table                                                                         |
-| `src/components/HowItWorksSection.astro` | Steps section                                                                            |
-| `src/components/UseCasesSection.astro`   | Use cases section                                                                        |
-| `src/components/FeatureGrid.astro`       | Feature grid (may need icon set tweaks)                                                  |
-| `src/components/Icon.astro`              | Icon path map (add project-specific icons)                                               |
-| All `.mdx` docs pages                    | installation, quick-start, guides, api-reference, changelog, contributing, related-tools |
+| File                                     | What to write                                                                              |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `src/data/features.ts`                   | 6 feature cards with icon, title, description                                              |
+| `src/data/hero-code.ts`                  | Go code example for hero section (verify against source!)                                  |
+| `src/data/sections.ts`                   | How-it-works steps, comparison matrix, use cases                                           |
+| `public/favicon.svg`                     | Project-specific SVG favicon                                                               |
+| `src/components/CTASection.astro`        | Call-to-action section (follow gogenfilter pattern, customize markup)                      |
+| `src/components/ComparisonSection.astro` | Comparison section (layout varies: gogenfilter uses card grid, go-atomic-write uses table) |
+| `src/components/HowItWorksSection.astro` | Steps section (optional — gogenfilter uses PhaseSection instead; choose what fits)         |
+| `src/components/UseCasesSection.astro`   | Use cases section (follow gogenfilter pattern, customize markup)                           |
+| `src/components/FeatureGrid.astro`       | Feature grid (consumes `features.ts`, but styling differs per project)                     |
+| `src/components/Icon.astro`              | Icon path map (add project-specific icons, source from Lucide/Heroicons)                   |
+| `src/pages/og/[...slug].ts`              | OG image generation (if using astro-og-canvas — customize border color to match accent)    |
+| All `.mdx` docs pages                    | installation, quick-start, guides, api-reference, changelog, contributing, related-tools   |
 
 ## Standard Docs Page Set
 
@@ -98,3 +101,42 @@ Known-good icons across projects:
 For new icons, source from [Lucide](https://lucide.dev) or
 [Heroicons](https://heroicons.com) — both use 24x24 viewBox with stroke
 paths compatible with the Icon component.
+
+## CI Workflow
+
+Copy `.github/workflows/website.yml` from gogenfilter. It uses a two-job
+pattern:
+
+1. **build-website** — `npm ci`, `astro check`, `astro build`, HTML
+   validation, upload artifact
+2. **deploy-website** — download artifact, deploy to Firebase via
+   `GOOGLE_APPLICATION_CREDENTIALS` secret
+
+Customize: Firebase target name, repo trigger paths.
+
+## CSP Patching (fix-csp.mjs)
+
+gogenfilter's build script runs `astro build && node scripts/fix-csp.mjs`.
+The `fix-csp.mjs` script post-processes the built HTML to inject SHA-256
+hashes for inline scripts into the CSP header. This is needed because
+Astro's CSP support doesn't cover all inline scripts automatically.
+
+If you include CSP (recommended), copy `fix-csp.mjs` from gogenfilter and
+ensure the build script includes the post-build step:
+
+```json
+"build": "astro build && node scripts/fix-csp.mjs"
+```
+
+## OG Image Generation
+
+gogenfilter uses `astro-og-canvas` to generate social media preview images.
+The endpoint lives at `src/pages/og/[...slug].ts` and generates one image
+per doc page plus a home page.
+
+To customize for a new project:
+
+1. Copy `src/pages/og/[...slug].ts` from gogenfilter
+2. Update the border color to match the project accent
+3. Update the `bgGradient` if desired
+4. Ensure `astro-og-canvas` is in dependencies (see dependency-versions.md)
