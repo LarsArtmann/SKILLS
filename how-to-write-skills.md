@@ -202,13 +202,134 @@ In SKILL.md, include decision logic:
 
 ## Proven Patterns from Real Skills
 
-| Pattern                        | Example                                                            | Why It Works                                           |
-| ------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------ |
-| **Design thinking framework**  | `frontend-design` — defines aesthetic analysis steps before coding | Forces the agent to think before acting                |
-| **Glossary + domain language** | `improve-codebase-architecture` — enforces precise terms           | Consistent output across sessions                      |
-| **Multi-phase process**        | Explore → Present candidates → Iterate loop                        | Structures complex tasks                               |
-| **Rule files per topic**       | `remotion-best-practices` — 30+ `rules/*.md` files                 | Progressive disclosure; agent loads only what's needed |
-| **Bundled scripts**            | `skill-creator` — grading, benchmarking, packaging scripts         | Eliminates redundant work on every invocation          |
+| Pattern                        | Example                                                            | Why It Works                                            |
+| ------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------- |
+| **Design thinking framework**  | `frontend-design` — defines aesthetic analysis steps before coding | Forces the agent to think before acting                 |
+| **Glossary + domain language** | `improve-codebase-architecture` — enforces precise terms           | Consistent output across sessions                       |
+| **Multi-phase process**        | Explore → Present candidates → Iterate loop                        | Structures complex tasks                                |
+| **Rule files per topic**       | `remotion-best-practices` — 30+ `rules/*.md` files                 | Progressive disclosure; agent loads only what's needed  |
+| **Bundled scripts**            | `skill-creator` — grading, benchmarking, packaging scripts         | Eliminates redundant work on every invocation           |
+| **Pre-flight checks**          | `website-launch` — verifies credentials before writing any files   | Surfaces blockers early, prevents wasted work           |
+| **Common mistakes reference**  | `docs-health` — `references/common-mistakes.md`                    | Prevents the same errors from recurring across sessions |
+| **Commit checkpoints**         | `website-launch` — defines mandatory commit points per phase       | Prevents catastrophic loss of uncommitted work          |
+| **Visual QA gate**             | `website-launch` — verifies rendered output before declaring done  | Catches broken layouts, missing assets, CSS errors      |
+
+## Essential Skill Patterns (Learned from Real Sessions)
+
+These patterns were identified from analyzing 80+ session feedback files
+across the LarsArtmann project ecosystem. Each pattern prevents a class of
+recurring mistake. Include them in skills where applicable.
+
+### Pattern 1: Pre-flight Checks
+
+Skills that depend on external infrastructure (credentials, API keys,
+network access, tool availability) MUST verify those dependencies before
+investing time in work. This is the single highest-impact pattern — it
+prevents "discovered too late" blockers.
+
+```markdown
+## Phase 0: Pre-flight Checks
+
+Before writing any code, verify:
+
+1. Are the required credentials present and valid?
+2. Are the required tools installed?
+3. Are there naming collisions with existing resources?
+
+If any check fails, surface it to the user immediately.
+```
+
+Example: The `website-launch` skill checks Namecheap API keys, Firebase
+project existence, and domain collisions before creating any website
+files. Prior sessions discovered credential blockers only after writing
+50+ files.
+
+### Pattern 2: Commit Checkpoints
+
+Skills that produce significant work (file creation, multi-phase
+processes) MUST define mandatory commit points. Multiple sessions have
+ended with all work existing only on disk — one unexpected session end
+and everything is lost.
+
+```markdown
+## Commit Discipline
+
+Commit at these checkpoints:
+
+1. After Phase 1 is verified stable
+2. After Phase 2 builds successfully
+3. After deployment is confirmed live
+
+Never leave a session with uncommitted work. Even WIP commits are better
+than none.
+```
+
+### Pattern 3: Common Mistakes Reference
+
+Every skill that covers a repeatable workflow SHOULD have a
+`references/common-pitfalls.md` file documenting known failure modes.
+This prevents the same mistakes from recurring across sessions.
+
+The pattern is simple: when a session hits a problem, document it in the
+skill's common-pitfalls reference. The next session loads the skill and
+avoids the trap.
+
+Example: `docs-health/references/common-mistakes.md` documents
+README-claim inflation, TODO vs ROADMAP confusion, and verification
+shortcuts. `website-launch/references/common-pitfalls.md` documents Vite
+override breakage, MDX escaping, missing lock files, and 13 more.
+
+### Pattern 4: Visual QA Gate
+
+Skills that produce visual output (websites, HTML reports, diagrams) MUST
+include a verification step that checks the rendered output, not just the
+build success. A successful build does not mean the output is correct.
+
+```markdown
+### Visual QA (mandatory)
+
+After building, verify at minimum:
+
+- Key pages return HTTP 200
+- CSS variables resolved (grep for expected tokens)
+- No broken asset references
+
+If browser access is available, visually check layout, icons, and
+responsive behavior.
+```
+
+### Pattern 5: Verify Code Examples Against Source
+
+Skills that involve writing code examples in documentation MUST instruct
+the agent to verify function signatures against the actual source code.
+The #1 documentation mistake is writing code from memory that doesn't
+compile.
+
+```markdown
+Before writing any code example:
+
+1. grep the function signature from the source
+2. Check return type (pointer vs value)
+3. Check parameter types (struct vs \*struct)
+4. Check method receiver type (value vs pointer)
+```
+
+### Pattern 6: Feedback-Driven Skill Creation
+
+When the same workflow is performed 2+ times and produces feedback files
+documenting the same problems, that workflow MUST be encoded as a skill.
+Leaving feedback unconverted means every future session repeats the same
+mistakes.
+
+The feedback-to-skill conversion process:
+
+1. Identify the recurring workflow (appears in 2+ feedback files)
+2. Extract the deterministic parts (copy verbatim, customize fields)
+3. Extract the known gotchas (pre-flight checks, common pitfalls)
+4. Create the skill with references for detailed material
+5. Mark feedback files as processed
+
+---
 
 ## Common Mistakes
 

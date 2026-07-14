@@ -8,7 +8,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ## The Collection
 
-**20 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out).
+**19 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out).
 
 ### Shared Assets
 
@@ -60,10 +60,11 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Project Intelligence
 
-| Skill             | What It Does                                                                                                | Status        |
-| ----------------- | ----------------------------------------------------------------------------------------------------------- | ------------- |
-| **docs-health**   | Creates, verifies, and maintains all core project docs — enforces file ownership and cross-file consistency | 🟢 Solid      |
-| **status-report** | Full project status updates as styled HTML dashboards                                                       | 🟡 Functional |
+| Skill              | What It Does                                                                                                                 | Status           |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **docs-health**    | Creates, verifies, and maintains all core project docs — enforces file ownership and cross-file consistency                  | 🟢 Solid         |
+| **status-report**  | Full project status updates as styled HTML dashboards                                                                        | 🟡 Functional    |
+| **website-launch** | Launches documentation websites (Astro + Starlight + Firebase) with pre-flight checks, color palettes, and go-live checklist | 🟢 Comprehensive |
 
 ## Quick Start
 
@@ -110,7 +111,7 @@ New skills should follow the pattern of [`how-to-golang/`](how-to-golang/) (lean
 
 ## Quality & Status
 
-This repository is honest about its state. **All 20 skills are solid or comprehensive** — every skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). A handful are still **functional** (`architecture-review`, `code-quality-scan`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. Validate the repo anytime with `scripts/check-skills.sh`.
+This repository is honest about its state. **All 19 skills are solid or comprehensive** — every skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). A handful are still **functional** (`architecture-review`, `code-quality-scan`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. Validate the repo anytime with `scripts/check-skills.sh`.
 
 See [`docs/status/`](docs/status/) for detailed audit reports, including a comprehensive breakdown of every skill's strengths, gaps, and recommended next steps.
 
