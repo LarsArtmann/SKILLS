@@ -185,15 +185,88 @@ Checklist for every Go code example:
 **Common trap:** `NewGraphNode` returns `*GraphNode` but `AddNode` takes
 `GraphNode` (value) — you must dereference: `b.AddNode(*node)`.
 
+**Session-derived trap:** Hero code showed `WithDebounce(500*time.Second)`
+instead of `500*time.Millisecond`. Always double-check time units in hero
+and quick-start examples — this is the #1 most common code typo.
+
 ---
 
-## Phase 2: Create the Website
+## Phase 2: README Rewrite
+
+The README is 50% of the public presence. It must match the quality bar
+set by go-atomic-write and gogenfilter. Do this BEFORE the website — the
+README defines the value proposition, comparison, and API tables that the
+website then visualizes.
+
+Load the [README template reference](./references/readme-template.md) for
+the complete structure, badge templates, and section ordering.
+
+### Standard README Structure
+
+```
+1. Centered header (h1 align="center") with project name
+2. Centered tagline (strong)
+3. Centered badge row (Go Reference | CI | Go Report Card | MIT License)
+4. Centered documentation links (Documentation · API Reference)
+5. --- separator
+6. One-paragraph summary (what it is, what it's built on)
+7. ## Why? — the problem this solves
+8. ## Comparison — table vs alternatives
+9. ## How it works — numbered pipeline
+10. ## Install — go get command
+11. ## Usage — minimal working example (verified against source)
+12. ## Configuration Options — table of all options
+13. ## Domain-specific API tables (filters, middleware, etc.)
+14. ## Event/Type definitions — struct + rules
+15. ## Advanced features — resilience, observability, etc.
+16. ## Benchmarks — table
+17. ## Dependencies — table
+18. ## Design Decisions — bullet list
+19. ## Error Handling — sentinel errors, example
+20. ## Development — Nix commands
+21. ## Examples — table of runnable examples
+22. ## API Stability — versioning policy
+23. ## License — MIT
+```
+
+### What to Remove
+
+If the existing README has any of these, remove them:
+
+- Emoji section headers (`## Features`, `## Zero Boilerplate`)
+- Emoji bullet points
+- Table of contents (unnecessary for GitHub rendering at <500 lines)
+- "Made with heart" footer
+- Redundant sections that duplicate the website docs
+
+### Badge Markdown (copy-paste template)
+
+```markdown
+<p align="center">
+<a href="https://pkg.go.dev/github.com/LarsArtmann/{repo}"><img src="https://pkg.go.dev/badge/github.com/LarsArtmann/{repo}.svg" alt="Go Reference"></a>
+<a href="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml"><img src="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+<a href="https://goreportcard.com/report/github.com/LarsArtmann/{repo}"><img src="https://goreportcard.com/badge/github.com/LarsArtmann/{repo}" alt="Go Report Card"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+</p>
+```
+
+### Documentation Link Bar (below tagline)
+
+```markdown
+<p align="center">
+<a href="https://{subdomain}.lars.software">Documentation</a> · <a href="https://pkg.go.dev/github.com/LarsArtmann/{repo}">API Reference</a>
+</p>
+```
+
+---
+
+## Phase 3: Create the Website
 
 Load the [file manifest](./references/file-manifest.md) to see exactly which
 files to copy verbatim, which to customize, and which to write fresh. The
 classification eliminates the need to read 60+ reference files via sub-agents.
 
-### 2.1 Choose the Reference Baseline
+### 3.1 Choose the Reference Baseline
 
 Two reference repos exist. **Use gogenfilter (`~/projects/gogenfilter/website/`)
 as the baseline** — it has CSP hardening, OG images, and a CI/CD pipeline.
@@ -212,7 +285,7 @@ the same data-driven architecture (consume data from `src/data/*.ts`) but
 differ in markup, styling, and sometimes structure. Copy from gogenfilter as
 the starting point, then customize per-project.
 
-### 2.2 Build the Website
+### 3.2 Build the Website
 
 1. **Copy verbatim** (~12 files) — see file manifest, "Copy verbatim" rows.
    These need zero changes.
@@ -225,19 +298,19 @@ the starting point, then customize per-project.
    ComparisonSection, etc. — these follow the data-driven pattern from
    gogenfilter but need per-project markup and styling).
 
-### 2.3 Accent Color
+### 3.3 Accent Color
 
 Load the [color palette reference](./references/color-palette.md) for
 pre-computed CSS token sets for each supported accent color. Do NOT manually
 compute `rgba()` values — use the table.
 
-### 2.4 Dependencies
+### 3.4 Dependencies
 
 Load the [dependency version reference](./references/dependency-versions.md)
 for the verified package.json version matrix. Do NOT guess or bump versions —
 use the exact pins that are known to work together.
 
-### 2.5 Favicon and Logo Design
+### 3.5 Favicon and Logo Design
 
 Both use the same design constraints:
 
@@ -250,15 +323,64 @@ Both use the same design constraints:
 - **Logo.astro:** Use CSS variables (`fill-[var(--color-accent)]`) so it adapts
   to light/dark theme.
 
-### 2.6 MDX Gotcha
+### 3.6 MDX Gotcha
 
 Characters `<`, `>`, `<=`, `>=` break Starlight `.mdx` file parsing. In `.mdx`
 files, escape them as `&lt;`, `&gt;`, or rephrase the sentence to avoid them.
 This does not affect `.md` files.
 
+### 3.7 Creation Order
+
+Create files in this order to avoid back-tracking:
+
+1. **Config layer** — `package.json`, `astro.config.mjs`, `tsconfig.json`,
+   `.node-version`, `.gitignore`, `.htmlvalidate.json`, `content.config.ts`,
+   `flake.nix`
+2. **Firebase layer** — `firebase.json`, `.firebaserc`
+3. **Data layer** — `src/data/config.ts`, `src/data/types.ts`,
+   `src/data/features.ts`, `src/data/sections.ts`, `src/data/hero-code.ts`
+4. **Style layer** — `src/styles/global.css`, `src/styles/starlight.css`
+   (paste from color palette reference)
+5. **Public assets** — `public/js/*.js` (4 files, verbatim),
+   `public/favicon.svg`, `public/manifest.json`, `public/robots.txt`
+6. **Shared components** — `Section.astro`, `SectionHeader.astro`,
+   `Card.astro`, `Icon.astro`, `Logo.astro`, `Header.astro`, `Footer.astro`,
+   `Sections.astro`
+7. **Section components** — `HeroSection.astro` (most complex), `FeatureGrid.astro`,
+   `HowItWorksSection.astro`, `ComparisonSection.astro`, `UseCasesSection.astro`,
+   `CTASection.astro`
+8. **Layout and page** — `LandingLayout.astro`, `index.astro`
+9. **Docs content** — all `.mdx` files in `src/content/docs/`
+
+### 3.8 Section Component Patterns
+
+All section components follow the same data-driven pattern:
+
+1. Import data from `../data/*.ts`
+2. Import `SectionHeader` for the section title
+3. Map over the data array to render cards/items
+4. Use `Card.astro` or raw `<div>` with Tailwind classes
+5. Consume CSS tokens via Tailwind: `text-accent`, `bg-bg-card`,
+   `border-border`, `text-text-primary`, etc.
+
+**HeroSection** is the most complex component. It contains:
+
+- GitHub stars fetch at build time (server-side `await fetch()`)
+- A highlighted code preview (manual `<span>` wrapping with color classes)
+- A copy-to-clipboard button
+- Metrics row
+- Dual CTA buttons
+
+When writing HeroSection, always:
+
+- Set the GitHub API URL to match the actual repo
+- Set the import path to match `go.mod` (include `/v2` if applicable)
+- Verify the hero code compiles (Phase 1 verification)
+- Set the `theme-color` meta to the accent hex
+
 ---
 
-## Phase 3: Build Verification
+## Phase 4: Build Verification
 
 ```bash
 cd website
@@ -332,7 +454,7 @@ visual QA as incomplete and explicitly tell the user**:
 
 ---
 
-## Phase 4: Go-Live Sequence
+## Phase 5: Go-Live Sequence
 
 Follow this exact sequence. Each step depends on the previous one.
 
@@ -340,8 +462,10 @@ Follow this exact sequence. Each step depends on the previous one.
 
 ```bash
 cd website
+git add flake.nix   # nix flake lock requires the file to be tracked by git
 nix shell nixpkgs#nodejs -c npm install   # generates package-lock.json
-# Commit package-lock.json for reproducible CI builds
+nix flake lock                                # generates flake.lock
+# Commit package-lock.json AND flake.lock for reproducible CI builds
 ```
 
 ### Step 2: Create Firebase hosting site
@@ -428,6 +552,11 @@ CNAME + TXT record templates.
 DNS records for `{name}.lars.software` go in `domains/lars.software.tf`.
 Records for `{name}.larsartmann.com` go in `domains/larsartmann.com.tf`.
 
+**Placement:** Insert new records BEFORE the closing `}` of the
+`resource "namecheap_domain_records"` block. Place them after the last
+existing record, grouped with a comment header matching the existing
+pattern (e.g. `# {project} website (Firebase Hosting)`).
+
 ```bash
 cd ~/projects/domains
 NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#terraform -c terraform fmt
@@ -466,7 +595,7 @@ Use the `fetch` tool to verify `https://{subdomain}.lars.software` returns HTTP 
 
 ---
 
-## Phase 5: GitHub Metadata
+## Phase 6: GitHub Metadata
 
 ```bash
 gh repo edit LarsArtmann/{repo} \
@@ -496,7 +625,7 @@ Below the tagline in README:
 
 ---
 
-## Phase 6: CI/CD Setup (after manual launch is verified)
+## Phase 7: CI/CD Setup (after manual launch is verified)
 
 Only proceed after the custom domain is live and verified.
 
@@ -549,6 +678,46 @@ Commit at these checkpoints — never leave a session with uncommitted work:
    `astro build` = success
 4. **After Firebase deploy confirmed live** — HTTP 200 on web.app URL
 5. **After DNS records staged** — Terraform `fmt` + `validate` pass
+
+### Definition of Done
+
+Before declaring complete, verify EVERY item:
+
+**Build and Deploy**
+
+- [ ] `npm run build` succeeds with 0 errors (run from `website/`)
+- [ ] `npx astro check` passes with 0 errors
+- [ ] `https://{siteId}.web.app` returns HTTP 200
+- [ ] All docs pages return HTTP 200 on web.app
+
+**README**
+
+- [ ] Centered header with badges (Go Reference, CI, Go Report Card, MIT)
+- [ ] Documentation link to `https://{subdomain}.lars.software`
+- [ ] No emojis in headers or bullets
+- [ ] All code examples verified against Go source
+- [ ] Comparison table present
+
+**GitHub**
+
+- [ ] Description updated
+- [ ] Homepage URL set to `https://{subdomain}.lars.software`
+- [ ] Topics include `go`, `golang`, + domain-specific
+
+**DNS (if credentials available)**
+
+- [ ] CNAME record in `domains/lars.software.tf`
+- [ ] ACME TXT record in `domains/lars.software.tf`
+- [ ] `terraform validate` passes
+- [ ] `terraform fmt -check` passes
+
+**Files**
+
+- [ ] `package-lock.json` committed
+- [ ] `flake.lock` committed
+- [ ] No `firebase-tools` in `package.json` dependencies
+- [ ] No temp files left behind (`/tmp/*.js`)
+- [ ] `git status` clean in BOTH repos (project + domains)
 
 ### Two repos awareness
 

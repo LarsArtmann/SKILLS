@@ -314,3 +314,65 @@ confirmed live.
 **Fix:** In status reports, qualify unconfirmed domains: `{subdomain}.lars.software
 (pending DNS propagation)`. Only state the domain as fact after the `fetch`
 tool returns HTTP 200 from the custom domain URL.
+
+### 23. Hero code time unit typo
+
+**Symptom:** Hero code snippet shows `WithDebounce(500*time.Second)` instead
+of `500*time.Millisecond` — 500 seconds of debounce is obviously wrong but
+visually easy to miss.
+
+**Cause:** Writing the hero code example from memory without verifying time
+units against the actual API.
+
+**Fix:** Always verify time units in code examples. Add time unit check to
+the Phase 1 Code Example Verification checklist:
+
+```
+6. Are time units correct? (500*time.Millisecond not 500*time.Second)
+```
+
+### 24. npm run from wrong working directory
+
+**Symptom:** `npm error code ENOENT ... Could not read package.json: Error:
+ENOENT: no such file or directory, open '/home/lars/projects/{repo}/package.json'`
+
+**Cause:** Running `npm install` or `npm run build` from the project root
+instead of the `website/` subdirectory.
+
+**Fix:** Always `cd website` before npm commands. When using Nix shell
+wrappers, set the working directory explicitly:
+
+```bash
+nix shell nixpkgs#nodejs -c npm install   # run from website/ directory
+```
+
+### 25. flake.lock generation fails without git add
+
+**Symptom:** `nix flake lock` fails with "Path 'website/flake.nix' in the
+repository is not tracked by Git."
+
+**Cause:** Nix flakes only operate on files tracked by git. A newly created
+`flake.nix` must be `git add`ed before `nix flake lock` can work.
+
+**Fix:** Always run `git add website/flake.nix` before `nix flake lock`:
+
+```bash
+cd website
+git add flake.nix
+nix flake lock
+```
+
+### 26. ACME TXT record not updated for cert renewal
+
+**Symptom:** Custom domain HTTPS stops working after ~90 days. Firebase
+Console shows cert renewal failure.
+
+**Cause:** The ACME TXT challenge token in Terraform was a point-in-time
+value for initial provisioning. Firebase issues a different challenge for
+renewal, and the static TXT record doesn't match.
+
+**Fix:** Monitor the Firebase Console for cert renewal warnings. If renewal
+fails, query the Firebase REST API for the new ACME challenge token and
+update the Terraform TXT record. Consider automating this with a monitoring
+check. The `web.app` URL continues working during cert renewal failure —
+only the custom domain is affected.

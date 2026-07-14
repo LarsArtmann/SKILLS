@@ -55,6 +55,40 @@ For the apex domain (`lars.software` itself), use the `firebase-hosting`
 Terraform module. See existing records in `lars.software.tf` for the module
 usage pattern.
 
+## Record Placement in .tf Files
+
+Insert new records BEFORE the closing `}` of the
+`resource "namecheap_domain_records"` block. Place them after the last
+existing record, grouped with a comment header matching the existing
+pattern:
+
+```hcl
+  # Previous project records...
+
+  # {project} website (Firebase Hosting)
+  record {
+    address  = "{siteId}.web.app."
+    hostname = "{subdomain}"
+    mx_pref  = 0
+    ttl      = local.default_ttl
+    type     = "CNAME"
+  }
+
+  # Firebase SSL cert verification for {subdomain}.lars.software
+  record {
+    address  = "{acme-token}"
+    hostname = "_acme-challenge.{subdomain}"
+    mx_pref  = 0
+    ttl      = local.default_ttl
+    type     = "TXT"
+  }
+
+}  # <-- closing brace of resource block
+```
+
+Never insert records in the middle of existing groups — always append
+before the closing brace.
+
 ## Apply Workflow
 
 ### Prerequisites (check BEFORE writing any Terraform)

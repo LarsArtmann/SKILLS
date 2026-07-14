@@ -202,6 +202,38 @@ Theme color: `#6366f1`
 
 Theme color: `#3b82f6`
 
+### Violet (`#8b5cf6`)
+
+Used by: go-filewatcher
+
+```css
+/* global.css — dark mode */
+--color-accent: #8b5cf6;
+--color-accent-hover: #a78bfa;
+--color-accent-dim: rgba(139, 92, 246, 0.08);
+--color-accent-light: #c4b5fd;
+--color-border-accent: rgba(139, 92, 246, 0.3);
+
+/* global.css — light mode */
+--color-accent: #7c3aed;
+--color-accent-hover: #8b5cf6;
+--color-accent-dim: rgba(124, 58, 237, 0.06);
+--color-accent-light: #a78bfa;
+--color-border-accent: rgba(124, 58, 237, 0.25);
+
+/* starlight.css — dark mode */
+--sl-color-accent-low: #4c1d95;
+--sl-color-accent: #8b5cf6;
+--sl-color-accent-high: #a78bfa;
+
+/* starlight.css — light mode */
+--sl-color-accent-high: #7c3aed;
+--sl-color-accent: #6d28d9;
+--sl-color-accent-low: #f5f3ff;
+```
+
+Theme color: `#8b5cf6`
+
 ## Color Derivation Formula
 
 If you need a color not listed above, derive the full palette from the base
