@@ -226,3 +226,76 @@ The safest way to undo a batch annotation is `git restore <file>` from the last 
 ### Add to BUILD rules:
 
 > **Never batch without judgment.** When updating N files, make a per-file decision (annotate/skip) based on reading the file first. Do not write a script that applies the same transformation to all N files. Files are not identical; their annotations must not be either.
+
+---
+
+## Additional Lesson: Banner Placement — Appendices, Not Banners
+
+### User Feedback (Round 2)
+
+After removing the generic banners, the user clarified a second, deeper preference:
+
+> "Also I am not a fan of banners I like Appendixes or best proper non-destructive edits of the original content."
+
+Even the 24 "specific" banners (the ones that survived the first cleanup) were **still banners** — blockquotes injected between the H1 title and the original opening paragraph. This is destructive to the reading experience:
+
+1. **It pushes the original content down.** A reader opening the file sees the banner first, not the report they came to read.
+2. **It breaks the visual flow.** The original document was written with a structure (title → date → context → body). A banner between title and date violates that structure.
+3. **It's a separate voice.** The banner speaks as a later editor, interrupting the original author's narrative.
+
+### The Correct Approaches (in order of preference)
+
+#### 1. Non-destructive inline edits (BEST)
+
+Update the original content in place. If the report says "Nothing committed" and the work is now committed, edit that line to reflect reality:
+
+```markdown
+**Ending state:** ~~Nothing committed.~~ Committed as `a7b8159` (2026-07-17).
+```
+
+Or simply:
+
+```markdown
+**Ending state:** Committed as `a7b8159` (2026-07-17). [Originally said "nothing committed" — updated post-commit.]
+```
+
+This preserves the original narrative while correcting the record. The reader never leaves the flow of the document.
+
+#### 2. Appendix at the bottom (GOOD)
+
+Add a clearly marked section at the **end** of the file:
+
+```markdown
+---
+
+## Resolution (2026-07-17)
+
+All 19 tasks committed as `a7b8159`. Open follow-ups: embedBorderStyle nil test
+(TODO_LIST B3), reconnect log assertion (B4). CHANGELOG.md and AGENTS.md updated.
+```
+
+The reader finishes the original report, then sees the resolution. Non-destructive, non-interruptive, clearly separated.
+
+#### 3. Banner at top (BAD — do not use)
+
+```markdown
+# Original Title
+
+> **✅ Update (2026-07-17):** [banner text here]
+
+**Original opening paragraph...**
+```
+
+This is what I did. It's intrusive and breaks the original document structure. **Do not use this pattern.**
+
+### Why this matters
+
+Status reports are historical artifacts. They capture what someone knew at a point in time. Injecting a later voice at the top changes the document's character — it's no longer a pure snapshot, it's a snapshot with a sticky note slapped on the cover. An appendix or inline edit respects the original document while still providing the resolution context.
+
+### Rule for the docs-health skill
+
+> **Annotation placement:** Never inject banners, blockquotes, or notes between the title and the original opening paragraph. Use one of:
+>
+> 1. **Inline edit** — update the stale claim in place (strikethrough old, add new)
+> 2. **Appendix** — add a `## Resolution` section at the END of the file
+> 3. **Leave alone** — if neither adds enough value, don't annotate
