@@ -239,21 +239,22 @@ Floor at 0. This gives a trackable metric across audits.
 
 ---
 
-## Bulk annotation discipline (when AUDIT touches many files)
+## Keeping old/historical documents current (distinct from living docs)
 
-When the task modifies or annotates MANY files at once (e.g. "update all the
-`*2026-07-1*` status reports so it's clear what's done"), the dominant risk is
-not stale content — it is **Verschlimmbesserung**: well-intentioned edits that
-make the docs worse. Stamping the same generic banner on every file is the
-classic failure.
+docs-health maintains **living** docs by rewriting them in place. A different
+problem is keeping **old/historical** documents current — status reports,
+plans, audits, snapshots that have gone stale but whose history must be
+preserved. These cannot be rewritten; they must be **annotated**
+non-destructively (inline correction or end-of-file appendix, never a
+top-of-file banner).
 
-Before any bulk annotation, defer to the
-[`no-harm-edits`](../no-harm-edits/SKILL.md) skill. In short: read every target
-first, annotate only files where it adds value, write specific notes (commit
-hash + what's still open) that survive a "so what?" test, and prefer
-non-destructive inline edits or end-of-file appendices over top-of-file
-banners. Leaving files untouched because they are already clear is the correct
-outcome, not a failure.
+When a task asks to "update all the `*2026-07-1*` status reports", "mark these
+old reports as done", or "annotate every status file so it's clear what
+shipped", defer to the [`update-old-docs`](../update-old-docs/SKILL.md) skill.
+It enforces per-file judgment ("update all" does NOT mean every file must
+change), the "so what?" specificity test (every annotation cites a commit hash
+or TODO item ID), and non-destructive placement. Leaving old files untouched
+because they are already clear is the correct outcome, not a failure.
 
 ---
 

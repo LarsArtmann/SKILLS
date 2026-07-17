@@ -39,9 +39,9 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Editing Discipline
 
-| Skill             | What It Does                                                                                                  | Status   |
-| ----------------- | ------------------------------------------------------------------------------------------------------------- | -------- |
-| **no-harm-edits** | Prevents Verschlimmbesserung on multi-file edits — restraint, the "so what?" test, non-destructive annotation | 🟢 Solid |
+| Skill               | What It Does                                                                                                        | Status   |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------- | -------- |
+| **update-old-docs** | Keeps old/historical docs current via non-destructive annotation — restraint, "so what?" test, appendix over banner | 🟢 Solid |
 
 ### Go Ecosystem
 
