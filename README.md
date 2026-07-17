@@ -8,7 +8,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ## The Collection
 
-**19 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out).
+**20 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out).
 
 ### Shared Assets
 
@@ -36,6 +36,12 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 | **deduplicate-code**   | Find and eliminate semantic code duplication                          | 🟡 Thin          |
 | **full-code-review**   | Comprehensive review visiting every code and test file                | 🟢 Comprehensive |
 | **naming-review**      | Audits and improves naming for types, functions, and identifiers      | 🟢 Comprehensive |
+
+### Editing Discipline
+
+| Skill             | What It Does                                                                                                  | Status   |
+| ----------------- | ------------------------------------------------------------------------------------------------------------- | -------- |
+| **no-harm-edits** | Prevents Verschlimmbesserung on multi-file edits — restraint, the "so what?" test, non-destructive annotation | 🟢 Solid |
 
 ### Go Ecosystem
 
@@ -111,7 +117,7 @@ New skills should follow the pattern of [`how-to-golang/`](how-to-golang/) (lean
 
 ## Quality & Status
 
-This repository is honest about its state. **All 19 skills are solid or comprehensive** — every skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). A handful are still **functional** (`architecture-review`, `code-quality-scan`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. Validate the repo anytime with `scripts/check-skills.sh`.
+This repository is honest about its state. **All 20 skills are solid or comprehensive** — every skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). A handful are still **functional** (`architecture-review`, `code-quality-scan`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. Validate the repo anytime with `scripts/check-skills.sh`.
 
 See [`docs/status/`](docs/status/) for detailed audit reports, including a comprehensive breakdown of every skill's strengths, gaps, and recommended next steps.
 
