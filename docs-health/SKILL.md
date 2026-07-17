@@ -107,6 +107,10 @@ Never round up. If you cannot confirm a feature works, it is
   trusting a doc claim.
 - **Upsert, do not rewrite.** If the file already exists, update rows in place
   rather than rewriting from scratch.
+- **Never batch without judgment.** When a BUILD touches many files, make a
+  per-file decision (update/skip) based on reading each first. Do not script a
+  blanket transformation. For old/historical files in particular, defer to the
+  [`update-old-docs`](../update-old-docs/SKILL.md) skill — annotate, do not rewrite.
 
 ---
 
@@ -150,6 +154,12 @@ For per-file verification checklists (what to check in each doc type), load
    shipped feature still listed in `TODO_LIST.md` while `FEATURES.md` says
    `FULLY_FUNCTIONAL`. See the cross-file consistency table in
    [./references/verify-checklist.md](./references/verify-checklist.md).
+
+6. **Verify output quality, not just process quality.** After any batch fix,
+   re-read each change from a skeptical reader's perspective: "would someone who
+   finds this doc benefit from this change?" A change that could apply to any
+   file adds no value — delete it. This is the failure mode that
+   [`update-old-docs`](../update-old-docs/SKILL.md) exists to prevent.
 
 ### Rebuild vs patch
 
@@ -241,20 +251,14 @@ Floor at 0. This gives a trackable metric across audits.
 
 ## Keeping old/historical documents current (distinct from living docs)
 
-docs-health maintains **living** docs by rewriting them in place. A different
-problem is keeping **old/historical** documents current — status reports,
-plans, audits, snapshots that have gone stale but whose history must be
-preserved. These cannot be rewritten; they must be **annotated**
-non-destructively (inline correction or end-of-file appendix, never a
-top-of-file banner).
-
-When a task asks to "update all the `*2026-07-1*` status reports", "mark these
-old reports as done", or "annotate every status file so it's clear what
-shipped", defer to the [`update-old-docs`](../update-old-docs/SKILL.md) skill.
-It enforces per-file judgment ("update all" does NOT mean every file must
-change), the "so what?" specificity test (every annotation cites a commit hash
-or TODO item ID), and non-destructive placement. Leaving old files untouched
-because they are already clear is the correct outcome, not a failure.
+docs-health maintains **living** docs by rewriting them in place. Keeping
+**old/historical** documents current (status reports, plans, audits, snapshots)
+is a different problem: they cannot be rewritten without destroying history, so
+they must be **annotated** non-destructively. When a task asks to "update all
+the old status reports", "mark these reports as done", or "annotate every
+status file", defer to the [`update-old-docs`](../update-old-docs/SKILL.md)
+skill — it enforces per-file judgment, specificity ("so what?" test), and
+non-destructive placement (inline/appendix, never top-of-file banners).
 
 ---
 

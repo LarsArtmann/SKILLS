@@ -1,5 +1,12 @@
 # Status: `no-harm-edits` Skill Creation Session
 
+> **Resolution (2026-07-17 02:28):** The skill built here was **renamed to
+> `update-old-docs`** and re-scoped to its real premise (keeping old/historical
+> docs current via non-destructive annotation). Everywhere below,
+> `no-harm-edits` = `update-old-docs`. Findings D1 (AGENTS.md stale count), the
+> missing backlinks, and the 50-item backlog were carried forward and are being
+> addressed in the 02:28 follow-up. Kept as a historical snapshot — not rewritten.
+
 **Date:** 2026-07-17 02:08
 **Session goal:** Turn `docs/feedback/new/2026-07-17_docs-health-generic-banner-verschlimmbesserung.md` into a proper SUPERB dedicated skill.
 **Verdict:** Core deliverable DONE and validated. Several wiring/governance gaps remain. One ironic self-inflicted stale-count in AGENTS.md (see §d).

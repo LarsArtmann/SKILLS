@@ -49,6 +49,18 @@
 | Patching when rebuild is needed | Scar-covered docs become unreadable     | If drift exceeds 50%, rebuild from scratch |
 | Skipping cross-file checks      | Code-doc drift is only half the problem | Always check docs against each other too   |
 
+### When annotating many old files at once
+
+| Mistake                                       | Why it fails                                                                                | Instead                                                                                  |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Stamping the same generic banner on every file | Says nothing a reader can act on; noise that has to be rolled back (Verschlimmbesserung)    | Annotate only files where it adds value; cite a commit hash or TODO id per file          |
+| Treating "update all" as "every file must change" | Clutters already-clear files with duplicate info                                         | "All" means no file that NEEDS updating is missed — leaving clear files untouched is correct |
+| Injecting a banner between title and body     | Destroys the historical document's structure and pushes real content down                   | Prefer inline edits or an end-of-file `## Resolution` appendix                           |
+
+> This is the full subject of the **[`update-old-docs`](../../update-old-docs/SKILL.md)** skill.
+> Defer to it whenever the task involves bringing many OLD/historical documents
+> current (distinct from rewriting LIVING docs in place).
+
 ---
 
 ## Decision trees

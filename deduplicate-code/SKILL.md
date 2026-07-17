@@ -54,3 +54,10 @@ deliberate.
 
 **Zero harmful duplication — not zero report lines.** Every remaining clone
 is there on purpose, every change is verified by tests.
+
+## Related Skills
+
+- **update-old-docs** — Refactoring across many files (extract, rename) is a
+  multi-file edit. When the change set is large, defer to it for restraint
+  discipline: read every target first, make per-file judgment calls, and never
+  blanket-script a transformation that needs judgment.

@@ -4,6 +4,22 @@
 > understand WHY every rule in [../SKILL.md](../SKILL.md) exists — not just
 > WHAT it says. Distilled from a live session so the lesson survives even if
 > the source feedback file is archived or deleted.
+>
+> **Why this is an old-docs story:** the failed task was bringing a set of OLD
+> status reports up to date so a reader could tell what had shipped. The
+> failure was not in fixing living docs — it was in annotating historical
+> snapshots. Every lesson below is about the care required when updating old
+> documents without destroying their history.
+
+## Contents
+
+1. [The setup](#the-setup)
+2. [What went wrong](#what-went-wrong)
+3. [The user's reaction](#the-users-reaction)
+4. [The fix (round 1)](#the-fix-round-1)
+5. [The fix (round 2) — banner placement](#the-fix-round-2--banner-placement)
+6. [Root causes (the five that matter)](#root-causes-the-five-that-matter)
+7. [The one-line summary](#the-one-line-summary)
 
 ## The setup
 

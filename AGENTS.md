@@ -27,7 +27,7 @@ SKILLS/
 │                                 #   pareto-planning). Skills/ directories
 │                                 #   are canonical (see docs/status/).
 │
-├── <skill-name>/                # One directory per skill (18 total)
+├── <skill-name>/                # One directory per skill (run scripts/check-skills.sh for the current count)
 │   ├── SKILL.md                 # Required: YAML frontmatter + agent instructions
 │   ├── scripts/                 # Optional: executable helpers (run without loading into context)
 │   ├── references/              # Optional: detailed docs loaded on demand via `view`

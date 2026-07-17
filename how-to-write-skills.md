@@ -213,6 +213,7 @@ In SKILL.md, include decision logic:
 | **Common mistakes reference**  | `docs-health` — `references/common-mistakes.md`                    | Prevents the same errors from recurring across sessions |
 | **Commit checkpoints**         | `website-launch` — defines mandatory commit points per phase       | Prevents catastrophic loss of uncommitted work          |
 | **Visual QA gate**             | `website-launch` — verifies rendered output before declaring done  | Catches broken layouts, missing assets, CSS errors      |
+| **Restraint / Verschlimmbesserung prevention** | `update-old-docs` — "so what?" test, per-file judgment, non-destructive annotation | Stops well-intentioned batch edits from making things worse |
 
 ## Essential Skill Patterns (Learned from Real Sessions)
 
@@ -328,6 +329,29 @@ The feedback-to-skill conversion process:
 3. Extract the known gotchas (pre-flight checks, common pitfalls)
 4. Create the skill with references for detailed material
 5. Mark feedback files as processed
+
+### Pattern 7: Restraint & Verschlimmbesserung Prevention
+
+When a skill modifies MANY files at once, it MUST enforce restraint. The
+recurring failure mode — well-documented in the `update-old-docs` incident —
+is an agent optimizing for "touched every file" instead of "every change
+helped," shipping 58 identical generic banners that say nothing and have to be
+rolled back.
+
+Include these guardrails in any bulk-edit skill:
+
+1. **Read all targets before editing any** — understand before transforming
+2. **Per-file decision** (CHANGE / SKIP / LEAVE ALONE) recorded as a list — the
+   list IS the plan
+3. **The "so what?" test** — every change must answer "what does a reader DO
+   with this?" Generic changes that could apply to any file are noise; delete them
+4. **Verify output quality, not process quality** — re-read each change from a
+   skeptical reader's perspective
+
+Example: `update-old-docs` applies all four when bringing many old status
+reports current. `docs-health` cross-links to it whenever AUDIT mode touches
+many files. The rule "all" means "no file that NEEDS updating is missed," NOT
+"every file gets a change." Restraint is success.
 
 ---
 

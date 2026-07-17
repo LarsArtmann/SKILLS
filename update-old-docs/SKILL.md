@@ -22,6 +22,13 @@ metadata:
 
 _Keep old documents current without destroying their history._
 
+> **tl;dr (the whole skill in 5 lines):**
+> 1. Read every old file before touching any.
+> 2. Per file decide: **ANNOTATE** / **SKIP** / **LEAVE ALONE**.
+> 3. Write only specific notes (commit hash + what's still open) — never generic banners.
+> 4. Every note must survive the **"so what?"** test.
+> 5. Place notes as **inline edits** or **end-of-file appendices** — never top-of-file banners.
+
 Old documents — status reports, plans, reviews, audits, snapshots — capture
 what someone knew at a point in time. They go stale. A reader opening an old
 status report wants to know: _is this done? where is it NOW?_ Keeping that
@@ -215,7 +222,8 @@ known-good state with no chance of a new mistake.
 - [ ] No annotation sits between a title and the original opening paragraph.
 - [ ] If you scripted, the script ran only on your curated list, not a blanket glob.
 - [ ] No inline styles / handlers were added to CSP-compliant HTML.
-- [ ] Run the project's quality gate (`nix run .#quality`, `scripts/check-skills.sh`, `make test`, etc.).
+- [ ] Run the project's quality gate if one exists (`nix run .#quality`,
+      `scripts/check-skills.sh`, `make test`, `npm test`, etc.).
 
 ## Anti-patterns (do not do these)
 
