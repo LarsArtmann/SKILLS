@@ -23,6 +23,7 @@ metadata:
 _Keep old documents current without destroying their history._
 
 > **tl;dr (the whole skill in 5 lines):**
+>
 > 1. Read every old file before touching any.
 > 2. Per file decide: **ANNOTATE** / **SKIP** / **LEAVE ALONE**.
 > 3. Write only specific notes (commit hash + what's still open) — never generic banners.

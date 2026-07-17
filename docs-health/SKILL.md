@@ -25,17 +25,17 @@ Each file has ONE job. Each fact lives in exactly ONE place. When the same
 fact appears in multiple files, they drift, and the reader cannot tell which
 is current.
 
-| File                      | Owns                                            | Lifecycle   |
-| ------------------------- | ----------------------------------------------- | ----------- |
-| `README.md`               | What this is, why it exists, how to start       | Living      |
-| `docs/DOMAIN_LANGUAGE.md` | Domain terms and definitions                    | Living      |
-| `AGENTS.md`               | Non-obvious context for AI sessions             | Living      |
-| `FEATURES.md`             | What features exist + honest status             | Living      |
-| `TODO_LIST.md`            | Short-term actionable work                      | Living      |
-| `ROADMAP.md`              | Long-term vision, raw ideas not yet actionable  | Living      |
-| `CHANGELOG.md`            | What changed in each version                    | Append-only |
-| `docs/adr/`               | Architecture decisions (context, decision, why) | Optional    |
-| `docs/status/`, `docs/planning/`, `docs/reviews/` | Point-in-time snapshots (reports, plans, audits) | Historical |
+| File                                              | Owns                                             | Lifecycle   |
+| ------------------------------------------------- | ------------------------------------------------ | ----------- |
+| `README.md`                                       | What this is, why it exists, how to start        | Living      |
+| `docs/DOMAIN_LANGUAGE.md`                         | Domain terms and definitions                     | Living      |
+| `AGENTS.md`                                       | Non-obvious context for AI sessions              | Living      |
+| `FEATURES.md`                                     | What features exist + honest status              | Living      |
+| `TODO_LIST.md`                                    | Short-term actionable work                       | Living      |
+| `ROADMAP.md`                                      | Long-term vision, raw ideas not yet actionable   | Living      |
+| `CHANGELOG.md`                                    | What changed in each version                     | Append-only |
+| `docs/adr/`                                       | Architecture decisions (context, decision, why)  | Optional    |
+| `docs/status/`, `docs/planning/`, `docs/reviews/` | Point-in-time snapshots (reports, plans, audits) | Historical  |
 
 **Living vs Historical:** Living rows get rewritten in place by docs-health
 when they drift. **Historical** rows (`docs/status/`, `docs/planning/`, etc.)

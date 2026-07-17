@@ -202,17 +202,17 @@ In SKILL.md, include decision logic:
 
 ## Proven Patterns from Real Skills
 
-| Pattern                        | Example                                                            | Why It Works                                            |
-| ------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------- |
-| **Design thinking framework**  | `frontend-design` — defines aesthetic analysis steps before coding | Forces the agent to think before acting                 |
-| **Glossary + domain language** | `improve-codebase-architecture` — enforces precise terms           | Consistent output across sessions                       |
-| **Multi-phase process**        | Explore → Present candidates → Iterate loop                        | Structures complex tasks                                |
-| **Rule files per topic**       | `remotion-best-practices` — 30+ `rules/*.md` files                 | Progressive disclosure; agent loads only what's needed  |
-| **Bundled scripts**            | `skill-creator` — grading, benchmarking, packaging scripts         | Eliminates redundant work on every invocation           |
-| **Pre-flight checks**          | `website-launch` — verifies credentials before writing any files   | Surfaces blockers early, prevents wasted work           |
-| **Common mistakes reference**  | `docs-health` — `references/common-mistakes.md`                    | Prevents the same errors from recurring across sessions |
-| **Commit checkpoints**         | `website-launch` — defines mandatory commit points per phase       | Prevents catastrophic loss of uncommitted work          |
-| **Visual QA gate**             | `website-launch` — verifies rendered output before declaring done  | Catches broken layouts, missing assets, CSS errors      |
+| Pattern                                        | Example                                                                            | Why It Works                                                |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| **Design thinking framework**                  | `frontend-design` — defines aesthetic analysis steps before coding                 | Forces the agent to think before acting                     |
+| **Glossary + domain language**                 | `improve-codebase-architecture` — enforces precise terms                           | Consistent output across sessions                           |
+| **Multi-phase process**                        | Explore → Present candidates → Iterate loop                                        | Structures complex tasks                                    |
+| **Rule files per topic**                       | `remotion-best-practices` — 30+ `rules/*.md` files                                 | Progressive disclosure; agent loads only what's needed      |
+| **Bundled scripts**                            | `skill-creator` — grading, benchmarking, packaging scripts                         | Eliminates redundant work on every invocation               |
+| **Pre-flight checks**                          | `website-launch` — verifies credentials before writing any files                   | Surfaces blockers early, prevents wasted work               |
+| **Common mistakes reference**                  | `docs-health` — `references/common-mistakes.md`                                    | Prevents the same errors from recurring across sessions     |
+| **Commit checkpoints**                         | `website-launch` — defines mandatory commit points per phase                       | Prevents catastrophic loss of uncommitted work              |
+| **Visual QA gate**                             | `website-launch` — verifies rendered output before declaring done                  | Catches broken layouts, missing assets, CSS errors          |
 | **Restraint / Verschlimmbesserung prevention** | `update-old-docs` — "so what?" test, per-file judgment, non-destructive annotation | Stops well-intentioned batch edits from making things worse |
 
 ## Essential Skill Patterns (Learned from Real Sessions)
