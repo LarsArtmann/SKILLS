@@ -58,6 +58,11 @@ NOTE: Use the cli to get the current date.
 
 BE SMART! Use your Brain! Let's go!
 
+> Plans are point-in-time artifacts that go stale. When a later task asks to
+> bring old plans current, defer to the
+> [`update-old-docs`](../update-old-docs/SKILL.md) skill — annotate
+> non-destructively, never rewrite the original plan.
+
 Remember: If you VERSCHLIMMBESSER this system, I will cut off your balls! I hope we understand each other!
 
 ## Git Workflow

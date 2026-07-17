@@ -101,6 +101,44 @@ for d in "${skill_dirs[@]}"; do
   fi
 done
 
+# --- Hardcoded-count guard -----------------------------------------------------
+# Fail if README.md or AGENTS.md hardcode a skill count that disagrees with the
+# discovered count. Hardcoded counts rot; this catches the "N total" / "N skills"
+# drift automatically (see AGENTS.md docs-health lesson: never hardcode counts).
+# A bare "N skills" is allowed ONLY when it matches the real count.
+real_count="${#skill_dirs[@]}"
+count_re='([0-9]+)[[:space:]]+(skills|total)'
+while IFS= read -r line; do
+  if [[ "$line" =~ $count_re ]]; then
+    hard="${BASH_REMATCH[1]}"
+    if [[ "$hard" != "$real_count" ]]; then
+      echo "FAIL: hardcoded skill count '$hard' disagrees with real count '$real_count' — use a pointer to $0 instead (line: $line)"
+      failed=1
+    fi
+  fi
+done < <(grep -rnE '[0-9]+[[:space:]]+(skills|total)' README.md AGENTS.md 2>/dev/null)
+
+# --- Backlink integrity --------------------------------------------------------
+# Verify every markdown relative link of the form ](./path) or ](../path) inside
+# a SKILL.md resolves to a real file. Dangling sibling links silently break
+# skill discovery. Links inside fenced code blocks are skipped.
+for d in "${skill_dirs[@]}"; do
+  f="$d/SKILL.md"
+  # Use awk to strip fenced code blocks, then grep for relative markdown links
+  while IFS= read -r link; do
+    [[ -z "$link" ]] && continue
+    resolved="$(realpath -m --relative-to=. "${d}/${link}" 2>/dev/null)"
+    if [[ -n "$resolved" && ! -e "$resolved" ]]; then
+      echo "FAIL ${d#./}: dangling reference '$link' -> '$resolved'"
+      failed=1
+    fi
+  done < <(
+    awk 'BEGIN{f=0} /```/{f=!f; next} !f' "$f" \
+    | grep -oE '\]\((\.+/[^)]+)\)' \
+    | sed -E 's/^\]\(//; s/\)$//'
+  )
+done
+
 if [[ "$failed" -ne 0 ]]; then
   echo
   echo "FAIL: one or more skill checks failed." >&2

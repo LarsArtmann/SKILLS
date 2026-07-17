@@ -44,6 +44,11 @@ treatment: stat cards, severity badges, color-coded sections.
 3. Run `git status`, then commit the report with a very detailed message.
 4. WAIT FOR FURTHER INSTRUCTIONS!
 
+> Status reports are point-in-time snapshots that go stale. When a later task
+> asks to bring old status reports current, defer to the
+> [`update-old-docs`](../update-old-docs/SKILL.md) skill — annotate
+> non-destructively (inline correction or end-of-file appendix), never rewrite.
+
 ## Execution
 
 READ, UNDERSTAND, RESEARCH, REFLECT.

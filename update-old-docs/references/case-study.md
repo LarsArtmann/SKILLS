@@ -140,3 +140,32 @@ This is why [../SKILL.md](../SKILL.md) says: undo batch edits with
 > Scale rewarded batching; batching rewarded skipping judgment; skipping
 > judgment produced a Verschlimmbesserung. Every rule in this skill exists to
 > break one link in that chain.
+
+## What GOOD looks like
+
+The correct outcome on the same 89-file task: read every file, then annotate
+only ~24 where a reader would benefit, citing real evidence. Two examples of
+annotations that survived the "so what?" test:
+
+**Inline edit (BEST)** — the report's own "Ending state" line corrected in place:
+
+```markdown
+**Ending state:** ~~Nothing committed.~~ Committed as `a7b8159` (2026-07-17).
+Open: embedBorderStyle nil test (TODO_LIST B3).
+```
+
+**Appendix (GOOD)** — a resolution section added at the bottom, original report
+left fully intact:
+
+```markdown
+---
+
+## Resolution (2026-07-17)
+
+Done: embed pipeline shipped in `a7b8159`. Open: embedBorderStyle nil test
+(B3), reconnect assertion (B4).
+```
+
+The other ~65 files were left untouched — they were already clear, already
+correct, or described rejected work where a "done" note would mislead. That is
+the correct outcome, not a failure.

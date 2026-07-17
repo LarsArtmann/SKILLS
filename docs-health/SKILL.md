@@ -35,6 +35,13 @@ is current.
 | `ROADMAP.md`              | Long-term vision, raw ideas not yet actionable  | Living      |
 | `CHANGELOG.md`            | What changed in each version                    | Append-only |
 | `docs/adr/`               | Architecture decisions (context, decision, why) | Optional    |
+| `docs/status/`, `docs/planning/`, `docs/reviews/` | Point-in-time snapshots (reports, plans, audits) | Historical |
+
+**Living vs Historical:** Living rows get rewritten in place by docs-health
+when they drift. **Historical** rows (`docs/status/`, `docs/planning/`, etc.)
+cannot be rewritten without destroying their value as a record — they are
+brought current by the [`update-old-docs`](../update-old-docs/SKILL.md) skill
+via non-destructive annotation.
 
 For the full ownership rules, anti-patterns, information lifecycle, and a
 "where agents store what" matrix, load
