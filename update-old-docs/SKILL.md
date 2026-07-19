@@ -115,6 +115,25 @@ An annotation that adds value cites concrete evidence:
 - A **TODO_LIST item ID** for what's still open (`B3`, `A1`)
 - A **decision** for rejected work ("SQLViewStore dropped — see ADR 7")
 
+**Never cite line numbers** (`TODO_LIST line 67`). Line numbers rot on the next
+edit to the cited file — once you annotate the old doc, any insertion above
+your citation shifts it onto the wrong item. Cite **section names** (`TODO_LIST
+"v0.2.0 follow-ups"`) or **item text** (`TODO_LIST item "Run real cargo
++nightly fuzz"`). These survive reordering and insertion.
+
+**For multi-item resolutions (5+), prefer a table over prose bullets.** A
+table with explicit **Commit** and **Release** columns lets a reader scan
+"what shipped and when" in seconds:
+
+```markdown
+| Item | Claim in report    | Resolution                        | Commit  | Release |
+| ---- | ------------------ | --------------------------------- | ------- | ------- |
+| §d.1 | Envelope FP bug    | FIXED: reserved-bytes-zero        | fe81dd2 | v0.2.0  |
+| §b.3 | Fuzz crate not run | OPEN: TODO_LIST "fuzz follow-ups" | —       | —       |
+```
+
+Prose bullets are fine for 1–4 items; tables win at 5+.
+
 See _Annotation placement_ below for WHERE the note goes, and
 [./references/annotation-placement.md](./references/annotation-placement.md)
 for the full before/after guide.
@@ -141,6 +160,14 @@ annotation?"_ Only the second question matters. Re-read EVERY annotation from
 the perspective of a reader who has never seen the file before. Delete any
 that do not survive that read.
 
+**Fresh-open test (mandatory):** Open the file as if you've never seen it.
+Where do your eyes land first? Is your annotation visible in the first
+screenful? If the file has a TL;DR / summary / opening paragraph with stale
+claims and your annotation is only at the bottom of the file, **you have
+failed this test** — the reader has already formed a wrong impression before
+they reach your appendix. Go back and inline-correct the stale opening claims
+(see _Annotation placement_ below).
+
 ---
 
 ## Annotation placement
@@ -154,15 +181,35 @@ snapshot with a sticky note slapped on the cover, pushing the original content
 down and breaking the structure the original author wrote. Even a _specific_
 banner is still a banner.
 
+**If the file has a TL;DR, summary, or opening paragraph with stale claims,
+you MUST inline-correct those claims (option 1 below).** An appendix alone is
+insufficient: a reader forms their impression from the opening, and if the
+opening lies, the appendix is never reached. "Appendix-only" is the
+highest-rated failure mode of this skill — do not choose it when the opening
+is stale.
+
 In order of preference:
 
 1. **Non-destructive inline edit (BEST)** — correct the stale claim in place. If
    the report says "Nothing committed" and the work is now committed, edit that
    line: `~~Nothing committed.~~ Committed as a7b8159 (2026-07-17).` The reader
    never leaves the flow of the document.
+
+   For a TL;DR / summary with multiple stale claims, place a blockquote update
+   immediately AFTER the TL;DR (not inside it, not above it). This is visible
+   on open, does not rewrite the original TL;DR, and points the reader to the
+   full resolution:
+
+   ```markdown
+   > **Update 2026-07-19 (commit `fe81dd2`):** the correctness bug is FIXED,
+   > the test gap is closed, the version is bumped. The fuzz crate is still
+   > not run. Full item-by-item status in [Resolution](#resolution) below.
+   ```
+
 2. **Appendix at the end (GOOD)** — add a clearly marked `## Resolution (date)`
    section at the BOTTOM of the file. The reader finishes the original report,
-   then sees the resolution.
+   then sees the resolution. **Insufficient on its own when the file's opening
+   contains load-bearing stale claims** — pair with option 1.
 3. **Leave it alone** — if neither an inline edit nor an appendix adds enough
    value, do not annotate.
 
@@ -246,13 +293,22 @@ This is why the appendix format includes the date in the heading
 ## Verification gate (before declaring done)
 
 - [ ] For EVERY annotation: does it pass the "so what?" test? Delete any that do not.
+- [ ] **Fresh-open test:** every file with a stale TL;DR / opening has an inline correction visible in the first screenful.
 - [ ] Count the files you LEFT UNTOUCHED. That number being > 0 is correct and expected.
 - [ ] No annotation is generic — each could only apply to its own file.
+- [ ] No annotation cites line numbers in other files (cite section names or item text).
 - [ ] No annotation sits between a title and the original opening paragraph.
 - [ ] If you scripted, the script ran only on your curated list, not a blanket glob.
 - [ ] No inline styles / handlers were added to CSP-compliant HTML.
-- [ ] Run the project's quality gate if one exists (`nix run .#quality`,
-      `scripts/check-skills.sh`, `make test`, `npm test`, etc.).
+- [ ] **Run the project's quality gate. Mandatory, not optional.** Detect the
+      build system and run the canonical command (`nix flake check`,
+      `cargo test`, `npm test`, `scripts/check-skills.sh`, etc.). If the
+      project has no detectable build system, state that explicitly — do not
+      skip silently. Annotation edits can break builds (malformed markdown,
+      broken anchors, CSP violations in HTML).
+- [ ] Run `git status` and verify every claim in your closing message about
+      working-tree state ("N files staged", "no commit made") is true. Never
+      describe working-tree state without a fresh `git status`.
 
 ## Anti-patterns (do not do these)
 

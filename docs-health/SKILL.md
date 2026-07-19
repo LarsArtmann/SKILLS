@@ -161,12 +161,42 @@ For per-file verification checklists (what to check in each doc type), load
    shipped feature still listed in `TODO_LIST.md` while `FEATURES.md` says
    `FULLY_FUNCTIONAL`. See the cross-file consistency table in
    [./references/verify-checklist.md](./references/verify-checklist.md).
+   Minimum checks (state which you ran and which you skipped — never declare
+   "clean" without enumerating what was checked):
+
+   - [ ] Every internal markdown link resolves (`grep -roE '\]\([^)]+\)' *.md docs/` → verify each target exists)
+   - [ ] Every test/source count claim is verified by command, not trusted from a doc (e.g. `grep -c '#[test]' src/*.rs`, not "FEATURES.md says 32")
+   - [ ] Every file referenced from a doc exists (`examples/*.rs`, `benches/support.rs`, `fuzz/Cargo.toml`, etc.)
+   - [ ] Every command in AGENTS.md/CONTRIBUTING.md runs without error (at least `--help` or dry-run)
+   - [ ] CHANGELOG version/compare links match the repo URL pattern
+   - [ ] No feature is listed as both PLANNED (in TODO_LIST.md) and FULLY_FUNCTIONAL (in FEATURES.md)
 
 6. **Verify output quality, not just process quality.** After any batch fix,
    re-read each change from a skeptical reader's perspective: "would someone who
    finds this doc benefit from this change?" A change that could apply to any
    file adds no value — delete it. This is the failure mode that
    [`update-old-docs`](../update-old-docs/SKILL.md) exists to prevent.
+
+7. **Run the project's quality gate. Mandatory, not optional.** Detect the
+   build system and run the canonical commands:
+
+   - Rust: `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo test`, `cargo doc`
+   - Node: `npm test`, `npm run lint`, `npx tsc --noEmit`
+   - Nix: `nix flake check`
+   - Python: `pytest`, `ruff check`
+   - Other: whatever the project's README/AGENTS.md prescribes
+
+   If the project has no detectable build system, state that explicitly — do
+   not skip silently. Doc edits can break builds: a typo in a fenced code
+   block, broken rustdoc, malformed YAML frontmatter, a renamed symbol in an
+   AGENTS.md snippet. You will not catch these without running the gate.
+
+8. **Verify your own closing claims.** Before declaring done, run `git status`
+   and confirm every claim about working-tree state in your closing message.
+   "Staged files" requires staged files to exist. "No commit made" requires
+   HEAD to be unchanged. "Tests pass" requires tests to have actually run.
+   Never describe working-tree state without a fresh `git status` in the same
+   message — auto-commit hooks and concurrent sessions change state under you.
 
 ### Rebuild vs patch
 
@@ -211,7 +241,7 @@ Print an inline summary table to the conversation (do NOT write to a file):
 ```
 ## Documentation Health Report
 
-**Health Score: 7/10**
+**Health Score: 7/10** (computed: 10 − 1·1 Critical − 0.5·3 Medium − 0.25·1 Low − 0·missing must-have = 7.25, floored to 7)
 
 | Doc                  | Exists | Fresh | Critical | Medium | Low |
 |----------------------|--------|-------|----------|--------|-----|
@@ -246,6 +276,11 @@ Print an inline summary table to the conversation (do NOT write to a file):
 
 Floor at 0. This gives a trackable metric across audits.
 
+**Show the math, every time.** Print the computation alongside the score (see
+the example above). Never invent the score, and never invent a prior baseline.
+If this is the first audit, say "first audit — no baseline"; do not fabricate
+a "was X/10" number. Invented scores and invented baselines are lies.
+
 ### Report rules
 
 - State what was stale and fixed, what was already fresh, and what you could
@@ -253,6 +288,10 @@ Floor at 0. This gives a trackable metric across audits.
 - Do NOT claim "all docs verified" if you skipped any.
 - If you fixed issues during the audit, report both the original finding and
   the fix applied.
+- **Never invent a prior state.** If there was no prior audit, say "first
+  audit — no baseline." Do not write "was X/10" without a prior report to
+  cite. Do not write "improved from X" without evidence of the prior state.
+  Invented baselines are lies.
 
 ---
 
