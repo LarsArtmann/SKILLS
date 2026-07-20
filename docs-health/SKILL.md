@@ -362,7 +362,7 @@ Floor at 0.
 failure mode this skill exists to catch — a TODO_LIST that is factually
 flawless but structurally rotten. Under any composite formula, perfect
 Accuracy pulls the number up and hides the Fitness collapse. The split tells
-you *which* kind of fix is needed.
+you _which_ kind of fix is needed.
 
 **Show the math for both scores, every time.** Print the computation
 alongside each score (see the example above). Never invent either score, and

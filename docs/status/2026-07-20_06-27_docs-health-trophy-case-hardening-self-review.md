@@ -18,16 +18,16 @@ The content changes themselves are sound. The craftsmanship is not.
 
 ### A–H fixes from the feedback (all 8)
 
-| ID | Fix | Where | Lines |
-| --: | --- | --- | ---: |
-| **A** | Per-doc-type structural checks before factual verification | `docs-health/references/verify-checklist.md` TODO_LIST table (6 new rows) + Regression scenarios section (5 rows) | 53–73, 118–129 |
-| **B** | Per-doc lifecycle rules replacing blanket "Upsert, do not rewrite" | `docs-health/SKILL.md` BUILD rules; `docs-health/references/build-guide.md` TODO_LIST lifecycle section + 3 new checklist items | SKILL.md:115–127, build-guide.md:152–166 |
-| **C** | Split rebuild threshold into factual (50%) vs structural (25%) axes | `docs-health/SKILL.md` "Rebuild vs patch (two independent axes)"; `common-mistakes.md` two-axis decision tree | SKILL.md:240–254, common-mistakes.md:104–131 |
-| **D** | "Structural decay" Medium-High failure mode row | `docs-health/SKILL.md` failure-modes table | SKILL.md:172–173 |
-| **E** | Health Score structural-decay penalty: `2 × (fraction − 0.25)` | `docs-health/SKILL.md` Health Score formula + example report Med-High column | SKILL.md:294–340 |
-| **F** | 3 new cross-file checks (TODO↔CHANGELOG, TODO↔ROADMAP, forbidden sections) | `docs-health/SKILL.md` VERIFY step 5; `verify-checklist.md` cross-file table (3 new rows) | SKILL.md:209–211, verify-checklist.md:107–109 |
-| **G** | Boundary statement: living-doc cruft is NOT update-old-docs territory | `update-old-docs/SKILL.md` "Boundary" section + "Before annotating" preamble | update-old-docs/SKILL.md:79–99 |
-| **H** | "What is this doc's job?" preamble before VERIFY | `docs-health/SKILL.md` "Job fitness before factual accuracy"; `update-old-docs/SKILL.md` "Before annotating: confirm the doc is actually a snapshot" | docs-health/SKILL.md:143–164, update-old-docs/SKILL.md:94–99 |
+|    ID | Fix                                                                        | Where                                                                                                                                                |                                                        Lines |
+| ----: | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -----------------------------------------------------------: |
+| **A** | Per-doc-type structural checks before factual verification                 | `docs-health/references/verify-checklist.md` TODO_LIST table (6 new rows) + Regression scenarios section (5 rows)                                    |                                               53–73, 118–129 |
+| **B** | Per-doc lifecycle rules replacing blanket "Upsert, do not rewrite"         | `docs-health/SKILL.md` BUILD rules; `docs-health/references/build-guide.md` TODO_LIST lifecycle section + 3 new checklist items                      |                     SKILL.md:115–127, build-guide.md:152–166 |
+| **C** | Split rebuild threshold into factual (50%) vs structural (25%) axes        | `docs-health/SKILL.md` "Rebuild vs patch (two independent axes)"; `common-mistakes.md` two-axis decision tree                                        |                 SKILL.md:240–254, common-mistakes.md:104–131 |
+| **D** | "Structural decay" Medium-High failure mode row                            | `docs-health/SKILL.md` failure-modes table                                                                                                           |                                             SKILL.md:172–173 |
+| **E** | Health Score structural-decay penalty: `2 × (fraction − 0.25)`             | `docs-health/SKILL.md` Health Score formula + example report Med-High column                                                                         |                                             SKILL.md:294–340 |
+| **F** | 3 new cross-file checks (TODO↔CHANGELOG, TODO↔ROADMAP, forbidden sections) | `docs-health/SKILL.md` VERIFY step 5; `verify-checklist.md` cross-file table (3 new rows)                                                            |                SKILL.md:209–211, verify-checklist.md:107–109 |
+| **G** | Boundary statement: living-doc cruft is NOT update-old-docs territory      | `update-old-docs/SKILL.md` "Boundary" section + "Before annotating" preamble                                                                         |                               update-old-docs/SKILL.md:79–99 |
+| **H** | "What is this doc's job?" preamble before VERIFY                           | `docs-health/SKILL.md` "Job fitness before factual accuracy"; `update-old-docs/SKILL.md` "Before annotating: confirm the doc is actually a snapshot" | docs-health/SKILL.md:143–164, update-old-docs/SKILL.md:94–99 |
 
 ### Other completed work
 
@@ -51,6 +51,7 @@ The example report (`docs-health/SKILL.md:296–318`) now has a `Med-High` colum
 ### The `.agents/skills/` ↔ SKILLS repo sync is manual and undocumented
 
 I used `cp` to propagate the 5 changed files to the installed copy. This works, but:
+
 - There is no script (only `sync-html-kit.sh` exists, for the HTML kit).
 - There is no AGENTS.md guidance saying "after editing a skill in the SKILLS repo, cp it to `.agents/skills/`."
 - The two copies are a split brain waiting to happen. Today I fixed it manually; tomorrow a session edits `.agents/skills/` directly and the SKILLS repo drifts.
@@ -90,6 +91,7 @@ Flagged above. Not started.
 **This is the big one.** Commit `94846c5` contained tables where the separator-dash row width did not match the content row width — specifically, I padded cells inconsistently so that in at least one case "content [exceeded] the separator dash count, which renders as a broken table in strict CommonMark parsers" (per the `e521fee` commit message that fixed it).
 
 **How it happened:**
+
 1. I hand-aligned the new "Medium-High" severity row in the failure-modes table by eyeballing.
 2. I did not run any markdown linter or renderer to verify the tables parse.
 3. `scripts/check-skills.sh` does not check table well-formedness — it checks YAML frontmatter, name/dir match, description length, the `git commit <--` guard, hardcoded counts, and backlink resolution. **None of those catch malformed tables.**
@@ -106,6 +108,7 @@ The user's last message is the request for this report. I should have written on
 ### I trusted the feedback's penalty formula without doing the math visibly
 
 The feedback said `2 × (fraction − 0.25)`. I copied it. A senior engineer would have:
+
 1. Shown the worked example for multiple data points (25%, 50%, 80%, 100% cruft).
 2. Stated why 2 is the multiplier and not 1.5 or 3.
 3. Noted the edge case where the penalty can exceed the score floor (e.g. 100% cruft → `2 × 0.75 = 1.5`, fine, but at 200% it would dominate — absurd, but the formula doesn't bound it).
