@@ -43,13 +43,13 @@
 
 ### When verifying docs
 
-| Mistake                                  | Why it fails                                                            | Instead                                                                    |
-| ---------------------------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| Trusting docs at face value              | Stale docs lie                                                          | Treat every claim as a hypothesis to test                                  |
-| Patching when rebuild is needed          | Scar-covered docs become unreadable                                     | If factual drift exceeds 50%, rebuild from scratch                         |
-| Skipping cross-file checks               | Code-doc drift is only half the problem                                 | Always check docs against each other too                                   |
-| Checking truth but not job-fitness       | A 100% accurate doc can be 100% useless (structural decay)              | First state the doc's job; flag content that belongs elsewhere             |
-| Ignoring structural decay                | TODO_LIST passes factual checks while 80% of it is historical cruft      | If >25% of content is non-job, rebuild (see two-axis tree below)           |
+| Mistake                            | Why it fails                                                        | Instead                                                          |
+| ---------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Trusting docs at face value        | Stale docs lie                                                      | Treat every claim as a hypothesis to test                        |
+| Patching when rebuild is needed    | Scar-covered docs become unreadable                                 | If factual drift exceeds 50%, rebuild from scratch               |
+| Skipping cross-file checks         | Code-doc drift is only half the problem                             | Always check docs against each other too                         |
+| Checking truth but not job-fitness | A 100% accurate doc can be 100% useless (structural decay)          | First state the doc's job; flag content that belongs elsewhere   |
+| Ignoring structural decay          | TODO_LIST passes factual checks while 80% of it is historical cruft | If >25% of content is non-job, rebuild (see two-axis tree below) |
 
 ### When annotating many old files at once
 

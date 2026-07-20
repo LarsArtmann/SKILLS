@@ -165,17 +165,17 @@ the regression scenarios at the bottom of that file.
 
 ### Failure modes (ranked by severity)
 
-| Severity     | Failure mode     | Example                                                                  |
-| ------------ | ---------------- | ------------------------------------------------------------------------ |
-| Critical     | Points at ghosts | References a deleted file, renamed symbol, or dead command               |
-| Critical     | Wrong commands   | Build/test/run instructions that fail when executed                      |
-| Medium-High  | Structural decay | Living doc (esp. TODO_LIST) accumulated completed/resolved/rejected       |
-|              |                  | content that belongs in CHANGELOG/ADRs; doc is no longer fit for purpose |
-| Medium       | Contradicts code | Doc says X works; code shows X is broken, disabled, or removed           |
-| Medium       | Stale status     | Claims an issue is open when it is fixed (or vice versa)                 |
-| Medium       | Missing reality  | A shipped feature or new file the doc does not mention                   |
-| Low          | Counted wrong    | "18 skills" when there are 19                                            |
-| Low          | Cosmetic         | Typos, broken links, stale dates                                         |
+| Severity    | Failure mode     | Example                                                                  |
+| ----------- | ---------------- | ------------------------------------------------------------------------ |
+| Critical    | Points at ghosts | References a deleted file, renamed symbol, or dead command               |
+| Critical    | Wrong commands   | Build/test/run instructions that fail when executed                      |
+| Medium-High | Structural decay | Living doc (esp. TODO_LIST) accumulated completed/resolved/rejected      |
+|             |                  | content that belongs in CHANGELOG/ADRs; doc is no longer fit for purpose |
+| Medium      | Contradicts code | Doc says X works; code shows X is broken, disabled, or removed           |
+| Medium      | Stale status     | Claims an issue is open when it is fixed (or vice versa)                 |
+| Medium      | Missing reality  | A shipped feature or new file the doc does not mention                   |
+| Low         | Counted wrong    | "18 skills" when there are 19                                            |
+| Low         | Cosmetic         | Typos, broken links, stale dates                                         |
 
 ### VERIFY process
 
