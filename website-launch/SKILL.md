@@ -65,6 +65,11 @@ constraints**. These apply throughout:
 Run these checks first. If any fails, surface it to the user immediately before
 investing time in website creation.
 
+**First decision (§0.6):** hosting target. The default is Firebase Hosting
+(custom domains, headers, the DNS pipeline in Phases 5–7). If the project
+needs none of that, GitHub Pages is a zero-infra alternative — decide early,
+it changes which phases apply.
+
 ### 0.0 Existing Website Check
 
 Before starting any work, check if a website already exists:
@@ -77,6 +82,21 @@ ls ~/projects/{repo}/website/package.json 2>/dev/null \
 If a website exists, **switch to maintenance mode**: read the existing files,
 identify what needs updating, and skip Phase 3 (creation). Do NOT overwrite
 existing customization without confirming with the user.
+
+**In maintenance mode, always audit for the "nice docs" patterns** that
+predate this skill version — they retrofit onto any existing site without a
+rebuild:
+
+- README: add "Who is this for?" and "When NOT to use this" if missing.
+- Docs pages: add a curated "Where to go next" to each page; repeat the
+  comparison table inside the relevant docs page.
+- `astro.config.mjs`: enable `lastUpdated: true` and `editLink` (see §3.10).
+- Swap bold-text warnings for `:::caution` / `:::tip` callouts.
+
+The full retrofit checklist is in the
+[content patterns reference](./references/content-patterns.md)
+("Retrofitting existing sites"). Running this audit on every existing site
+is how all implementations inherit these improvements.
 
 ### 0.0.1 Old Static Site Migration
 
@@ -206,6 +226,26 @@ whitelisted), tell the user immediately:
 > session — the Namecheap API key is a placeholder / the current IP is not
 > whitelisted. I will prepare everything else and flag this as a manual step."
 
+### 0.6 Hosting target: Firebase Hosting (default) vs GitHub Pages (alternative)
+
+Most LarsArtmann sites use Firebase Hosting — it gives custom domains,
+security headers/CSP, and the DNS/Terraform pipeline in Phases 5–7. For a
+project that needs none of that, **GitHub Pages** is a zero-infra
+alternative (this is how the SP8D docs ship, for example).
+
+| Criterion              | Firebase Hosting (default)           | GitHub Pages (alternative)                |
+| ---------------------- | ------------------------------------ | ----------------------------------------- |
+| Custom domain + SSL    | Yes (Phases 5–6)                     | Yes (repo Settings → Pages; slower cert)  |
+| Security headers / CSP | Yes (`firebase.json`, `fix-csp.mjs`) | Limited (needs GH Actions to inject)      |
+| Cost / infra           | GCP project                          | None                                      |
+| Skill phases used      | All                                  | Skip Phase 5 (DNS/Terraform) + Phase 7 SA |
+
+**Pick Firebase unless the project explicitly asks for GitHub Pages.** If
+GitHub Pages is chosen: the build is still `astro build` (`output: 'static'`);
+deploy `dist/` via a `actions/deploy-pages` step; configure the custom domain
+in the repo's Pages settings, not Terraform. The README rewrite (Phase 2),
+website creation (Phase 3), and build verification (Phase 4) are identical.
+
 ---
 
 ## Phase 1: Research the Project
@@ -331,23 +371,34 @@ the complete structure, badge templates, and section ordering.
 5. --- separator
 6. One-paragraph summary (what it is, what it's built on)
 7. ## Why? — the problem this solves
-8. ## Comparison — table vs alternatives
-9. ## How it works — numbered pipeline
-10. ## Install — go get command
-11. ## Usage — minimal working example (verified against source)
-12. ## Configuration Options — table of all options
-13. ## Domain-specific API tables (filters, middleware, etc.)
-14. ## Event/Type definitions — struct + rules
-15. ## Advanced features — resilience, observability, etc.
-16. ## Benchmarks — table
-17. ## Dependencies — table
-18. ## Design Decisions — bullet list
-19. ## Error Handling — sentinel errors, example
-20. ## Development — Nix commands
-21. ## Examples — table of runnable examples
-22. ## API Stability — versioning policy
-23. ## License — verify actual license from LICENSE file (NOT hardcoded MIT)
+8. ## Who is this for? — named audience personas (3–5)
+9. ## Comparison — table vs alternatives
+10. ## How it works — numbered pipeline
+11. ## When NOT to use this — specific exclusions + the alternative to reach for
+12. ## Install — go get command
+13. ## Usage — minimal working example (verified against source)
+14. ## Configuration Options — table of all options
+15. ## Domain-specific API tables (filters, middleware, etc.)
+16. ## Event/Type definitions — struct + rules
+17. ## Advanced features — resilience, observability, etc.
+18. ## Benchmarks — table
+19. ## Dependencies — table
+20. ## Design Decisions — bullet list
+21. ## Error Handling — sentinel errors, example
+22. ## Development — Nix commands
+23. ## Examples — table of runnable examples
+24. ## API Stability — versioning policy
+25. ## License — verify actual license from LICENSE file (NOT hardcoded MIT)
 ```
+
+**Why "Who is this for?" and "When NOT to use this"?** They are the two
+highest-leverage trust signals in technical docs: the first tells a
+visitor whether to keep reading, the second proves the project tells the
+truth about its own limits. Both cost minutes to write. Load the
+[content patterns reference](./references/content-patterns.md) for
+copy-paste templates for every section above, plus patterns for docs
+pages (curated "Where to go next", comparison tables repeated in docs,
+callouts, feedback links).
 
 ### What to Remove
 
@@ -414,6 +465,10 @@ proprietary.
 Load the [file manifest](./references/file-manifest.md) to see exactly which
 files to copy verbatim, which to customize, and which to write fresh. The
 classification eliminates the need to read 60+ reference files via sub-agents.
+
+Before designing, load the [design inspiration reference](./references/design-inspiration.md)
+to calibrate what "nice" looks like (the Nextra-class docs aesthetic, and how
+Starlight reaches it via theme tuning — not a framework switch).
 
 ### 3.1 Choose the Reference Baseline
 
@@ -551,6 +606,36 @@ When writing HeroSection, always:
 - Set the import path to match `go.mod` (include `/v2` if applicable)
 - Verify the hero code compiles (Phase 1 verification)
 - Set the `theme-color` meta to the accent hex
+
+### 3.10 Starlight config knobs (the "nice docs" enablers)
+
+These `astro.config.mjs` Starlight options are one-line additions that
+are the difference between a site that feels polished and one that feels
+scaffolded. They are easy to forget and they are free.
+
+```js
+starlight({
+  title: "{Project}",
+  // Show git-based "last updated" on every page — zero authoring cost,
+  // always accurate, signals the page is alive.
+  lastUpdated: true,
+  // "Edit this page" link on every doc — the #1 contributor-acquisition
+  // lever. Adjust master -> main if the project's default branch differs.
+  editLink: {
+    baseUrl: "https://github.com/LarsArtmann/{repo}/edit/master/website",
+  },
+  // Pagination and breadcrumbs are on by default — do not disable them.
+});
+```
+
+Pair `editLink` with a curated feedback link on each page (issue tracker
+with a pre-filled title). See the
+[content patterns reference](./references/content-patterns.md) §5. For
+the visual/aesthetic calibration that makes a Starlight site read as
+"Nextra-class nice", see the
+[design inspiration reference](./references/design-inspiration.md) —
+the gap to best-in-class docs is theme tuning and content patterns, not
+a framework switch.
 
 ---
 

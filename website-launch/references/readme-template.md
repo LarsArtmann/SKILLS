@@ -3,6 +3,10 @@
 > Every LarsArtmann Go library README follows the same structure. This
 > reference provides the exact section order, badge templates, and patterns
 > to match the quality bar set by go-atomic-write and gogenfilter.
+>
+> For the full set of content patterns (audience targeting, "when not to use",
+> curated next-steps, callouts, feedback links), see
+> [`content-patterns.md`](./content-patterns.md).
 
 ## Standard Section Order
 
@@ -14,21 +18,23 @@
 5. --- separator
 6. One-paragraph summary
 7. ## Why?
-8. ## Comparison (table)
-9. ## How it works (numbered pipeline)
-10. ## Install
-11. ## Usage (minimal working example)
-12. ## Configuration Options / API tables
-13. ## Domain-specific sections (filters, middleware, types, etc.)
-14. ## Advanced features (resilience, observability, etc.)
-15. ## Benchmarks (table)
-16. ## Dependencies (table)
-17. ## Design Decisions (bullet list)
-18. ## Error Handling
-19. ## Development (Nix commands)
-20. ## Examples (table)
-21. ## API Stability
-22. ## License
+8. ## Who is this for? — named audience personas (3–5)
+9. ## Comparison (table)
+10. ## How it works (numbered pipeline)
+11. ## When NOT to use this — specific exclusions + the alternative to reach for
+12. ## Install
+13. ## Usage (minimal working example)
+14. ## Configuration Options / API tables
+15. ## Domain-specific sections (filters, middleware, types, etc.)
+16. ## Advanced features (resilience, observability, etc.)
+17. ## Benchmarks (table)
+18. ## Dependencies (table)
+19. ## Design Decisions (bullet list)
+20. ## Error Handling
+21. ## Development (Nix commands)
+22. ## Examples (table)
+23. ## API Stability
+24. ## License
 ```
 
 ## Badge Template
@@ -78,6 +84,22 @@ Every `os.WriteFile` call has three failure modes that silently corrupt data.
 This library eliminates all three with a minimal dependency footprint.
 ```
 
+## "Who is this for?" Pattern
+
+Name the audience as personas, not tasks. 3–5 personas, each with one
+concrete pain point. Place it directly after "Why?".
+
+```markdown
+## Who is this for?
+
+- **Backend engineers** who need structured errors without a framework.
+- **API authors** who want typed error envelopes for OpenAPI generation.
+- **Teams replacing `fmt.Errorf` chains** with something diagnosable in prod.
+```
+
+Avoid "developers" or "everyone" — useless personas signal an unfocused
+project. See [`content-patterns.md`](./content-patterns.md) §1.
+
 ## Comparison Table Pattern
 
 Compare against raw alternatives and naive approaches. Use checkmarks and
@@ -89,6 +111,26 @@ blanks (not Yes/No text) for scannability:
 | Recursive watching |              |    Partial     |       ✓        |
 | Built-in filters   |              |      Few       |      17+       |
 ```
+
+## "When NOT to use this" Pattern
+
+The strongest trust signal in technical docs. Name the specific
+environments or requirements that rule the project out, and point the
+reader at the alternative they should use instead. Place it before
+"Install".
+
+```markdown
+## When NOT to use this
+
+Skip this library if:
+
+- You need **unbounded message queues** — this is strictly bounded/backpressured.
+- You are on a **runtime without `SharedArrayBuffer`/`Atomics`** (very old browsers, locked-down CSP).
+- You have a **single producer/consumer with zero contention** — the stdlib is enough.
+```
+
+If you cannot list at least three honest exclusions, the project scope is
+not yet understood. See [`content-patterns.md`](./content-patterns.md) §2.
 
 ## Dependencies Table Pattern
 
@@ -117,6 +159,8 @@ Before declaring the README done:
 - [ ] Centered header with all 4 badges
 - [ ] Documentation link to the website
 - [ ] "Why?" section with concrete problem statement
+- [ ] "Who is this for?" with 3–5 named personas (not "developers")
+- [ ] "When NOT to use this" with at least 3 specific exclusions + alternatives
 - [ ] Comparison table with at least 3 columns
 - [ ] All code examples verified against Go source (`grep 'func FunctionName' *.go`)
 - [ ] Time units correct (`time.Millisecond` not `time.Second`)
