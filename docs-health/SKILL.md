@@ -293,52 +293,82 @@ Print an inline summary table to the conversation (do NOT write to a file):
 ```
 ## Documentation Health Report
 
-**Health Score: 7/10** (computed: 10 − 1·1 Critical − 0.5·3 Medium − 0.25·1 Low − 0·missing must-have − 0·structural decay = 7.25, floored to 7)
+**Accuracy: 7.75/10** (computed: 10 − 1·1 Critical − 0.5·2 Medium − 0.25·1 Low = 7.75)
+**Fitness: 6.5/10** (computed: 10 − 1·1 missing must-have − 0.75·2 structural-decay findings − 1.0·structural ratio [TODO_LIST 75% non-job → 2×(0.75−0.25)] = 6.5)
 
-| Doc                  | Exists | Fresh | Critical | Med-High | Medium | Low |
-|----------------------|--------|-------|----------|----------|--------|-----|
-| README.md            | Yes    | Yes   | 0        | 0        | 0      | 1   |
-| AGENTS.md            | Yes    | Yes   | 0        | 0        | 0      | 0   |
-| FEATURES.md          | Yes    | No    | 0        | 0        | 2      | 0   |
-| TODO_LIST.md         | Yes    | No    | 1        | 0        | 1      | 0   |
-| DOMAIN_LANGUAGE.md   | No     | -     | -        | -        | -      | -   |
-| ROADMAP.md           | No     | -     | -        | -        | -      | -   |
-| CHANGELOG.md         | Yes    | Yes   | 0        | 0        | 0      | 0   |
+_Accuracy measures whether claims in existing docs are true. Fitness measures whether the docs serve their jobs. They are independent — a doc can be 100% accurate and 100% useless._
+
+| Doc                  | Exists | Critical | Med-High | Medium | Low |
+|----------------------|--------|----------|----------|--------|-----|
+| README.md            | Yes    | 0        | 0        | 0      | 1   |
+| AGENTS.md            | Yes    | 0        | 0        | 0      | 0   |
+| FEATURES.md          | Yes    | 0        | 0        | 2      | 0   |
+| TODO_LIST.md         | Yes    | 1        | 2        | 0      | 0   |
+| DOMAIN_LANGUAGE.md   | No     | —        | —        | —      | —   |
+| ROADMAP.md           | No     | —        | —        | —      | —   |
+| CHANGELOG.md         | Yes    | 0        | 0        | 0      | 0   |
 
 ### Findings by severity
 
-#### Critical (1)
+#### Critical (1) — affects Accuracy
 - TODO_LIST.md:15 references deleted file `auth/old.go` (ghost)
 
-#### Medium (3)
+#### Medium-High (2) — affects Fitness
+- TODO_LIST.md:8 already done (session revocation fixed in commit abc123) — completed item belongs in CHANGELOG, not TODO_LIST
+- TODO_LIST.md has "Previously Completed" section (20 lines duplicating CHANGELOG `[Unreleased]`)
+
+#### Medium (2) — affects Accuracy
 - FEATURES.md:12 says FULLY_FUNCTIONAL but tests fail for password reset
 - FEATURES.md:18 missing OAuth feature that shipped in v1.2
-- TODO_LIST.md:8 already done (session revocation fixed in commit abc123)
 
-#### Low (1)
+#### Low (1) — affects Accuracy
 - README.md:25 typo: "instalation" should be "installation"
+
+#### Missing must-have (1) — affects Fitness
+- docs/DOMAIN_LANGUAGE.md does not exist
 ```
 
-**Health Score formula:** Start at 10. Subtract:
+**Two independent scores.** A doc set has two health dimensions that diverge:
+
+- **Accuracy** — are the claims in existing docs true? Verified against code.
+- **Fitness** — do the docs serve their jobs? Structural decay, missing
+  must-haves, forbidden sections, cross-file duplication.
+
+Report both. They are independent: a doc can be 100% accurate and 100%
+useless (the trophy-case failure mode). Combining them into one number hides
+which axis failed and what kind of fix is needed (fact-check vs rebuild).
+
+**Accuracy formula:** Start at 10. Subtract:
 
 - 1 point per Critical finding
-- 0.75 points per Medium-High (structural decay) finding
 - 0.5 points per Medium finding
 - 0.25 points per Low finding
+
+Floor at 0. Missing must-have docs do not affect Accuracy — a doc that does
+not exist makes no claims to verify. They affect Fitness instead.
+
+**Fitness formula:** Start at 10. Subtract:
+
 - 1 point per missing must-have doc
-- **Structural decay penalty:** for any living doc where the fraction of
-  non-job content exceeds 25%, subtract an additional `2 × (fraction − 0.25)`.
-  Example: a TODO_LIST that is 80% historical cruft: `2 × (0.80 − 0.25)` =
-  1.1 points, even with zero factual errors. Without this penalty, a doc that
-  is 100% accurate and 100% useless scores 10/10.
+- 0.75 points per Medium-High (structural decay) finding
+- **Structural decay ratio penalty:** for any living doc where the fraction
+  of non-job content exceeds 25%, subtract `2 × (fraction − 0.25)`. Example:
+  a TODO_LIST that is 80% historical cruft: `2 × (0.80 − 0.25)` = 1.1 points,
+  even with zero factual errors.
 
-Floor at 0. This gives a trackable metric across audits — and it reflects
-**fitness, not just accuracy.**
+Floor at 0.
 
-**Show the math, every time.** Print the computation alongside the score (see
-the example above). Never invent the score, and never invent a prior baseline.
-If this is the first audit, say "first audit — no baseline"; do not fabricate
-a "was X/10" number. Invented scores and invented baselines are lies.
+**Why two scores, not one.** A single composite score cannot represent the
+failure mode this skill exists to catch — a TODO_LIST that is factually
+flawless but structurally rotten. Under any composite formula, perfect
+Accuracy pulls the number up and hides the Fitness collapse. The split tells
+you *which* kind of fix is needed.
+
+**Show the math for both scores, every time.** Print the computation
+alongside each score (see the example above). Never invent either score, and
+never invent a prior baseline. If this is the first audit, say "first audit —
+no baseline"; do not fabricate a "was Accuracy X / Fitness Y" number.
+Invented scores and invented baselines are lies.
 
 ### Report rules
 
@@ -348,9 +378,9 @@ a "was X/10" number. Invented scores and invented baselines are lies.
 - If you fixed issues during the audit, report both the original finding and
   the fix applied.
 - **Never invent a prior state.** If there was no prior audit, say "first
-  audit — no baseline." Do not write "was X/10" without a prior report to
-  cite. Do not write "improved from X" without evidence of the prior state.
-  Invented baselines are lies.
+  audit — no baseline." Do not write "was Accuracy X / Fitness Y" without a
+  prior report to cite. Do not write "improved from X" without evidence of
+  the prior state. Invented baselines are lies.
 
 ---
 
