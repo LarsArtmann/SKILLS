@@ -154,12 +154,25 @@ When dispatching a sub-agent to read a file, tell it:
 Copy [../../assets/TODO_LIST-template.md](../../assets/TODO_LIST-template.md)
 and fill in. Rank by impact (High / Medium / Low). Estimate effort.
 
+### Lifecycle: delete done items, never annotate them
+
+TODO_LIST is **add-then-delete**, not upsert. When a TODO item is done, delete
+it from TODO_LIST — it now lives in CHANGELOG. Do NOT move it to a "Done"
+state or a "Previously Completed" section. The only exception: an item kept
+explicitly marked "retained as historical note" with a one-line rationale
+(e.g. a rejected spike with an ADR reference). A TODO_LIST that accumulates
+done items across sessions becomes a trophy case, not a TODO list — the
+dominant structural-decay failure mode for this file.
+
 ### Quality checklist
 
 - [ ] Each item verified against code (is it already done?)
 - [ ] Deduplicated by semantic intent, not by text match
 - [ ] Vague items ("improve X") either refined or relegated to `ROADMAP.md`
 - [ ] No long-term vision items (those go in `ROADMAP.md`)
+- [ ] No completed/resolved/rejected items retained (delete; they belong in CHANGELOG/ADRs)
+- [ ] No "Previously Completed" / "Done" / "Resolved" section
+- [ ] No items duplicating ROADMAP or CHANGELOG `[Unreleased]`
 - [ ] Evidence cited (`file:line`)
 - [ ] For deeper 80/20 prioritization, the `pareto-planning` skill can rank
       the resulting list. But enumeration happens here first.

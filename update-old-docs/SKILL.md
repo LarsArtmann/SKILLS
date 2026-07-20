@@ -76,6 +76,28 @@ rebuilding `FEATURES.md`, refreshing `TODO_LIST.md`), that is `docs-health`,
 not this skill. The distinction: **living docs get rewritten; old docs get
 annotated.**
 
+### Boundary: living doc with accumulated cruft is NOT this skill
+
+A living doc (especially `TODO_LIST.md`) that has slowly accumulated historical
+material across many sessions — "Previously Completed" sections,
+struck-through resolved items, rejected spikes kept "for reference," "- DONE"
+backlog items duplicating ROADMAP — is **not** a snapshot gone stale. It is a
+living doc whose _purpose_ has been diluted. That is
+[`docs-health`](../docs-health/SKILL.md) territory (it has explicit
+structural-decay handling: rebuild, do not annotate). This skill annotates
+point-in-time _snapshots_ non-destructively. Living docs get rewritten, not
+annotated.
+
+If you reach for annotation when rebuild is correct, you will produce a
+trophy case with sticky notes on it — still a trophy case.
+
+### Before annotating: confirm the doc is actually a snapshot
+
+State in one line before any work: _"This file is a point-in-time snapshot
+(report / plan / audit), so annotation adds value."_ If the file is a living
+doc that should be current at all times (`TODO_LIST`, `FEATURES`, `README`),
+stop — that is a docs-health rewrite, not an update-old-docs annotation.
+
 ---
 
 ## The workflow

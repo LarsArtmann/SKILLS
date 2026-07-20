@@ -52,13 +52,25 @@
 
 ## TODO_LIST.md
 
-| Check                         | How to verify                                     | Severity if failed |
-| ----------------------------- | ------------------------------------------------- | ------------------ |
-| Completed items removed       | Look for DONE items; they should not be here      | Medium             |
-| No items already done in code | Grep for symbols mentioned in each TODO           | Critical           |
-| No ROADMAP items leaking in   | Are there vague, unbounded items?                 | Low                |
-| Evidence cited                | Do file:line references still point at real code? | Medium             |
-| No duplicate tasks            | Semantic dedup check                              | Low                |
+**Structural decay is the dominant failure mode for this file.** Check
+job-fitness BEFORE factual accuracy — a TODO_LIST can be 100% factually
+correct and 100% useless as a TODO list. If >25% of content is non-actionable
+historical material (completed/resolved/rejected/duplicated), rebuild the
+file rather than patching (see "Rebuild vs patch" in SKILL.md).
+
+| Check                              | How to verify                                                                                         | Severity if failed |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------ |
+| Job-fitness: open vs historical    | Count lines/items describing open work vs completed/resolved/rejected                                 | Medium-High        |
+| No "Previously Completed" section  | Flag any "Done" / "Resolved" / "Previously Completed" heading — belongs in CHANGELOG                  | Medium-High        |
+| No duplication of CHANGELOG        | Cross-check completed items against CHANGELOG `[Unreleased]`                                          | Medium-High        |
+| No duplication of ROADMAP          | Cross-check deferred/backlog items against ROADMAP entries                                            | Medium             |
+| No rejected items in open lists    | A REJECTED item with rationale belongs in an ADR or ROADMAP, not TODO_LIST                            | Medium             |
+| No struck-through resolved items   | "Resolved (date)" with strikethrough belongs in CHANGELOG Fixed                                       | Medium-High        |
+| Completed items removed            | Look for DONE items; they should not be here (delete, do not annotate)                                | Medium             |
+| No items already done in code      | Grep for symbols mentioned in each TODO                                                               | Critical           |
+| No ROADMAP items leaking in        | Are there vague, unbounded items?                                                                     | Low                |
+| Evidence cited                     | Do file:line references still point at real code?                                                     | Medium             |
+| No duplicate tasks                 | Semantic dedup check                                                                                  | Low                |
 
 ## ROADMAP.md
 
@@ -89,11 +101,31 @@
 
 These checks compare docs against each other, not against code.
 
-| Check               | What to look for                                                       | Severity |
-| ------------------- | ---------------------------------------------------------------------- | -------- |
-| Status consistency  | `FEATURES.md` says BROKEN but `README.md` markets it as working        | Critical |
-| No duplication      | The same fact stated in multiple files (will drift)                    | Medium   |
-| Correct ownership   | TODOs leaking into `FEATURES.md`; features leaking into `TODO_LIST.md` | Medium   |
-| Valid cross-refs    | `README.md` links to files that exist; `AGENTS.md` paths are real      | Critical |
-| Lifecycle integrity | Shipped feature still in `TODO_LIST.md` (split brain)                  | Critical |
-| Version consistency | `CHANGELOG.md` version matches `README.md` stated version              | Low      |
+| Check               | What to look for                                                       | Severity     |
+| ------------------- | ---------------------------------------------------------------------- | ------------ |
+| Status consistency  | `FEATURES.md` says BROKEN but `README.md` markets it as working        | Critical     |
+| No duplication      | The same fact stated in multiple files (will drift)                    | Medium       |
+| Correct ownership   | TODOs leaking into `FEATURES.md`; features leaking into `TODO_LIST.md` | Medium       |
+| Valid cross-refs    | `README.md` links to files that exist; `AGENTS.md` paths are real      | Critical     |
+| Lifecycle integrity | Shipped feature still in `TODO_LIST.md` (split brain)                  | Critical     |
+| TODO↔CHANGELOG dup  | Completed item in TODO_LIST also present in CHANGELOG `[Unreleased]`   | Medium-High  |
+| TODO↔ROADMAP dup    | Deferred/backlog item in TODO_LIST duplicates a ROADMAP entry          | Medium       |
+| Forbidden sections  | TODO_LIST has a "Previously Completed" / "Done" / "Resolved" section   | Medium-High  |
+| Version consistency | `CHANGELOG.md` version matches `README.md` stated version              | Low          |
+
+---
+
+## Regression scenarios VERIFY must catch
+
+These are concrete doc shapes that factual-only verification passes but a
+job-fitness check must flag. Each was a real failure mode from a session. If
+your VERIFY pass declares any of these "healthy," the job-fitness step was
+skipped — go back.
+
+| Scenario              | Shape                                                                                        | Factual-only VERIFY                          | Job-fitness VERIFY (correct)                                                  |
+| --------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------- | ----------------------------------------------------------------------------- |
+| Trophy section        | TODO_LIST with "Previously Completed" section duplicating CHANGELOG `[Unreleased]`           | PASSES (all facts true)                      | FAIL: "structural decay — completed items belong in CHANGELOG"                |
+| Retained for reference | TODO_LIST keeps completed items under a header note "retained for reference"                | PASSES                                       | FAIL: "completed items must be deleted, not annotated"                       |
+| Split-brain backlog   | TODO_LIST backlog section and ROADMAP "Deferred Items" list the same 5 items                 | PASSES (only checks PLANNED-vs-FULLY_FUNCTIONAL) | FAIL: "deferred items duplicated across TODO and ROADMAP"                |
+| Rejected but kept     | TODO item marked REJECTED with rationale, sitting in an "open" list                          | PASSES                                       | FAIL: "rejected items don't belong in open-work lists; move to ROADMAP or ADR" |
+| Struck-through resolved | "Correctness gaps (resolved YYYY-MM-DD)" section with struck-through items                 | PASSES (items marked resolved)               | FAIL: "resolved items belong in CHANGELOG Fixed, not TODO_LIST"               |

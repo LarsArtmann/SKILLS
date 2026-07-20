@@ -43,11 +43,13 @@
 
 ### When verifying docs
 
-| Mistake                         | Why it fails                            | Instead                                    |
-| ------------------------------- | --------------------------------------- | ------------------------------------------ |
-| Trusting docs at face value     | Stale docs lie                          | Treat every claim as a hypothesis to test  |
-| Patching when rebuild is needed | Scar-covered docs become unreadable     | If drift exceeds 50%, rebuild from scratch |
-| Skipping cross-file checks      | Code-doc drift is only half the problem | Always check docs against each other too   |
+| Mistake                                  | Why it fails                                                            | Instead                                                                    |
+| ---------------------------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Trusting docs at face value              | Stale docs lie                                                          | Treat every claim as a hypothesis to test                                  |
+| Patching when rebuild is needed          | Scar-covered docs become unreadable                                     | If factual drift exceeds 50%, rebuild from scratch                         |
+| Skipping cross-file checks               | Code-doc drift is only half the problem                                 | Always check docs against each other too                                   |
+| Checking truth but not job-fitness       | A 100% accurate doc can be 100% useless (structural decay)              | First state the doc's job; flag content that belongs elsewhere             |
+| Ignoring structural decay                | TODO_LIST passes factual checks while 80% of it is historical cruft      | If >25% of content is non-job, rebuild (see two-axis tree below)           |
 
 ### When annotating many old files at once
 
@@ -101,13 +103,31 @@ Can you point to the code that implements it?
         └── NO → FULLY_FUNCTIONAL
 ```
 
-### Rebuild or patch?
+### Rebuild or patch? (two independent axes)
+
+Drift has two flavors. A doc can need a rebuild on one axis and not the
+other. Check both before deciding. The "living doc disguised as a trophy
+case" failure passes the factual axis cleanly and fails the structural axis
+catastrophically — which is why factual-only verification misses it.
+
+**Factual drift** (wrong hashes, ghost files, broken commands, stale status):
 
 ```
-How much of the doc is stale?
+How much of the doc is factually stale?
 ├── < 25% of claims → Patch in place
 ├── 25-50% of claims → Patch, but review the whole file afterward
 └── > 50% of claims → Rebuild from scratch using BUILD mode
+```
+
+**Structural decay** (content that belongs in another file — completed items
+in TODO_LIST, "Previously Completed" sections, deferred items duplicating
+ROADMAP):
+
+```
+How much of the doc is non-job content?
+├── < 10% → Patch in place (delete the stray items)
+├── 10-25% → Patch, but review the whole file afterward
+└── > 25% → Rebuild from scratch using BUILD mode
 ```
 
 ---

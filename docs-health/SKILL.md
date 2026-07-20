@@ -112,8 +112,19 @@ Never round up. If you cannot confirm a feature works, it is
 - **Cite evidence** (`path/to/file.go:NN`) so the next reader can verify.
 - **Verify each claim.** Many documented TODOs are already done. Grep before
   trusting a doc claim.
-- **Upsert, do not rewrite.** If the file already exists, update rows in place
-  rather than rewriting from scratch.
+- **Per-doc lifecycle, not blanket upsert.** The right update action depends
+  on the doc's job. Treating all living docs the same causes TODO_LIST rot:
+  done items pile up because "upsert" never deletes, until the file is a
+  trophy case rather than a TODO list. Use the per-doc rules:
+  - `FEATURES.md`: **Upsert** — rows evolve status (PLANNED →
+    FULLY_FUNCTIONAL). Update in place.
+  - `TODO_LIST.md`: **Delete done items.** A completed TODO is not "upserted
+    to done" — it is removed, because it now lives in CHANGELOG. The only
+    exception: an item kept explicitly marked "retained as historical note"
+    with a one-line rationale (e.g. a rejected spike with an ADR reference).
+  - `CHANGELOG.md`: **Append-only.** Never edit prior entries.
+  - `ROADMAP.md`: **Update in place.** Raw ideas graduate to TODO_LIST when
+    they become actionable.
 - **Never batch without judgment.** When a BUILD touches many files, make a
   per-file decision (update/skip) based on reading each first. Do not script a
   blanket transformation. For old/historical files in particular, defer to the
@@ -129,17 +140,42 @@ A doc is fresh only when you can confirm its concrete claims against the code.
 For per-file verification checklists (what to check in each doc type), load
 [./references/verify-checklist.md](./references/verify-checklist.md).
 
+### Job fitness before factual accuracy (mandatory first step)
+
+Before checking any concrete claim, state in one line what the doc's job is
+and what content does NOT belong there. This forces job-fitness into scope
+before factual verification begins. The failure mode it prevents: certifying
+a doc as "100% accurate and 100% useless." Example for TODO_LIST:
+
+> "TODO_LIST.md owns short-term actionable work. Completed/rejected/resolved
+> items do NOT belong here — they go in CHANGELOG/ADRs. Deferred items belong
+> in ROADMAP. I will flag any content outside the job scope before checking
+> factual accuracy."
+
+A doc can pass every factual check and still fail its job. The dominant
+shape: a living doc (especially `TODO_LIST.md`) that has slowly accumulated
+historical cruft across sessions — "Previously Completed" sections duplicating
+CHANGELOG, struck-through resolved items, rejected spikes kept "for reference,"
+"- DONE" backlog items duplicating ROADMAP. Every fact is true; the doc is
+still useless as a TODO list. This is **structural decay**, distinct from
+factual drift, and it has its own severity (see the table below). For the
+concrete per-doc-type structural checks, load
+[./references/verify-checklist.md](./references/verify-checklist.md) and run
+the regression scenarios at the bottom of that file.
+
 ### Failure modes (ranked by severity)
 
-| Severity | Failure mode     | Example                                                        |
-| -------- | ---------------- | -------------------------------------------------------------- |
-| Critical | Points at ghosts | References a deleted file, renamed symbol, or dead command     |
-| Critical | Wrong commands   | Build/test/run instructions that fail when executed            |
-| Medium   | Contradicts code | Doc says X works; code shows X is broken, disabled, or removed |
-| Medium   | Stale status     | Claims an issue is open when it is fixed (or vice versa)       |
-| Medium   | Missing reality  | A shipped feature or new file the doc does not mention         |
-| Low      | Counted wrong    | "18 skills" when there are 19                                  |
-| Low      | Cosmetic         | Typos, broken links, stale dates                               |
+| Severity     | Failure mode     | Example                                                                  |
+| ------------ | ---------------- | ------------------------------------------------------------------------ |
+| Critical     | Points at ghosts | References a deleted file, renamed symbol, or dead command               |
+| Critical     | Wrong commands   | Build/test/run instructions that fail when executed                      |
+| Medium-High  | Structural decay | Living doc (esp. TODO_LIST) accumulated completed/resolved/rejected       |
+|              |                  | content that belongs in CHANGELOG/ADRs; doc is no longer fit for purpose |
+| Medium       | Contradicts code | Doc says X works; code shows X is broken, disabled, or removed           |
+| Medium       | Stale status     | Claims an issue is open when it is fixed (or vice versa)                 |
+| Medium       | Missing reality  | A shipped feature or new file the doc does not mention                   |
+| Low          | Counted wrong    | "18 skills" when there are 19                                            |
+| Low          | Cosmetic         | Typos, broken links, stale dates                                         |
 
 ### VERIFY process
 
@@ -170,6 +206,9 @@ For per-file verification checklists (what to check in each doc type), load
    - [ ] Every command in AGENTS.md/CONTRIBUTING.md runs without error (at least `--help` or dry-run)
    - [ ] CHANGELOG version/compare links match the repo URL pattern
    - [ ] No feature is listed as both PLANNED (in TODO_LIST.md) and FULLY_FUNCTIONAL (in FEATURES.md)
+   - [ ] No completed item in TODO_LIST is also in CHANGELOG `[Unreleased]` (split brain: which is the source of truth?)
+   - [ ] No deferred/backlog item in TODO_LIST duplicates a ROADMAP entry
+   - [ ] TODO_LIST has no "Previously Completed" / "Resolved" / "Done" section (belongs in CHANGELOG)
 
 6. **Verify output quality, not just process quality.** After any batch fix,
    re-read each change from a skeptical reader's perspective: "would someone who
@@ -198,12 +237,23 @@ For per-file verification checklists (what to check in each doc type), load
    Never describe working-tree state without a fresh `git status` in the same
    message — auto-commit hooks and concurrent sessions change state under you.
 
-### Rebuild vs patch
+### Rebuild vs patch (two independent axes)
 
-If a single doc has drift exceeding ~50% of its claims, rebuild it from
-scratch using BUILD mode instead of patching line by line. A patch-heavy doc
-accumulates scars; a rebuild starts from truth. For the full decision tree,
-load [./references/common-mistakes.md](./references/common-mistakes.md).
+Drift comes in two flavors. A doc can need a rebuild on one axis and not the
+other. Check both before deciding:
+
+- **Factual drift density** — wrong hashes, ghost files, broken commands,
+  stale status. Threshold: **~50%** of concrete claims are wrong → rebuild.
+- **Structural decay** — content that belongs in another file (completed
+  items in TODO_LIST, "Previously Completed" sections, deferred items
+  duplicating ROADMAP). Threshold: **25%** of content is non-job → rebuild.
+  A TODO_LIST that is 25% historical content is already failing its job;
+  patching it produces a scar pile, not a TODO list.
+
+The "living doc disguised as a trophy case" failure passes the factual axis
+with a perfect score and fails the structural axis catastrophically. For the
+full decision tree, load
+[./references/common-mistakes.md](./references/common-mistakes.md).
 
 ### Fix rules
 
@@ -230,7 +280,9 @@ load [./references/common-mistakes.md](./references/common-mistakes.md).
 
 4. **Check cross-file consistency.** Run every consistency check. The most
    common rot: the same feature listed in both `TODO_LIST.md` (as done) and
-   `FEATURES.md` (as planned) because nobody removed it when it shipped.
+   `FEATURES.md` (as planned) because nobody removed it when it shipped. Also
+   check the inverse rot — completed items in TODO_LIST duplicating CHANGELOG,
+   or deferred items duplicating ROADMAP.
 
 5. **Report.** Present findings using the health report format below.
 
@@ -241,17 +293,17 @@ Print an inline summary table to the conversation (do NOT write to a file):
 ```
 ## Documentation Health Report
 
-**Health Score: 7/10** (computed: 10 − 1·1 Critical − 0.5·3 Medium − 0.25·1 Low − 0·missing must-have = 7.25, floored to 7)
+**Health Score: 7/10** (computed: 10 − 1·1 Critical − 0.5·3 Medium − 0.25·1 Low − 0·missing must-have − 0·structural decay = 7.25, floored to 7)
 
-| Doc                  | Exists | Fresh | Critical | Medium | Low |
-|----------------------|--------|-------|----------|--------|-----|
-| README.md            | Yes    | Yes   | 0        | 0      | 1   |
-| AGENTS.md            | Yes    | Yes   | 0        | 0      | 0   |
-| FEATURES.md          | Yes    | No    | 0        | 2      | 0   |
-| TODO_LIST.md         | Yes    | No    | 1        | 1      | 0   |
-| DOMAIN_LANGUAGE.md   | No     | -     | -        | -      | -   |
-| ROADMAP.md           | No     | -     | -        | -      | -   |
-| CHANGELOG.md         | Yes    | Yes   | 0        | 0      | 0   |
+| Doc                  | Exists | Fresh | Critical | Med-High | Medium | Low |
+|----------------------|--------|-------|----------|----------|--------|-----|
+| README.md            | Yes    | Yes   | 0        | 0        | 0      | 1   |
+| AGENTS.md            | Yes    | Yes   | 0        | 0        | 0      | 0   |
+| FEATURES.md          | Yes    | No    | 0        | 0        | 2      | 0   |
+| TODO_LIST.md         | Yes    | No    | 1        | 0        | 1      | 0   |
+| DOMAIN_LANGUAGE.md   | No     | -     | -        | -        | -      | -   |
+| ROADMAP.md           | No     | -     | -        | -        | -      | -   |
+| CHANGELOG.md         | Yes    | Yes   | 0        | 0        | 0      | 0   |
 
 ### Findings by severity
 
@@ -270,11 +322,18 @@ Print an inline summary table to the conversation (do NOT write to a file):
 **Health Score formula:** Start at 10. Subtract:
 
 - 1 point per Critical finding
+- 0.75 points per Medium-High (structural decay) finding
 - 0.5 points per Medium finding
 - 0.25 points per Low finding
 - 1 point per missing must-have doc
+- **Structural decay penalty:** for any living doc where the fraction of
+  non-job content exceeds 25%, subtract an additional `2 × (fraction − 0.25)`.
+  Example: a TODO_LIST that is 80% historical cruft: `2 × (0.80 − 0.25)` =
+  1.1 points, even with zero factual errors. Without this penalty, a doc that
+  is 100% accurate and 100% useless scores 10/10.
 
-Floor at 0. This gives a trackable metric across audits.
+Floor at 0. This gives a trackable metric across audits — and it reflects
+**fitness, not just accuracy.**
 
 **Show the math, every time.** Print the computation alongside the score (see
 the example above). Never invent the score, and never invent a prior baseline.
