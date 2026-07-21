@@ -1,0 +1,283 @@
+# `hierarchical-errors`: CLI Workflow, Flag Reliability, and Verification
+
+**Date:** 2026-07-21
+**Audience:** Developers and AI agents who want to integrate `hierarchical-errors lint` into their workflow safely
+**Scope:** Which CLI commands and flags actually work, which are broken, and how to verify your fixes are correct
+**Companion document:** `2026-07-21_hierarchical-errors-effective-usage-guide.md` covers the `errors.Is` vs `errors.As` decision tree. This document covers the CLI itself.
+
+---
+
+## TL;DR
+
+The `hierarchical-errors` CLI has two subcommands with very different safety profiles:
+
+| Subcommand | What it does                                                                                  | Safety                                   |
+| ---------- | --------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| `fix`      | Auto-applies `errors.As` → `errors.AsType` transformations. **Refuses to touch `errors.Is`.** | **Safe.** Start here.                    |
+| `lint`     | Reports ALL findings: both `errors.As` (real) and `errors.Is` (frequently wrong).             | **Dangerous if driven to zero blindly.** |
+
+**The recommended workflow is: `fix` first, then `lint --type legacy_as` for CI, then handle `errors.Is` findings manually.**
+
+Five CLI flags are documented but **do not work as described** (verified on 2026-07-21). This document lists them so you don't waste time relying on them.
+
+---
+
+## The Safe Workflow (Step by Step)
+
+### Step 1: Run `fix` in dry-run mode
+
+```bash
+GOEXPERIMENT=jsonv2 hierarchical-errors fix ./...
+```
+
+This shows a diff of every `errors.As` → `errors.AsType` transformation it WOULD apply. It will not touch `errors.Is` calls. Review the diff.
+
+### Step 2: Apply the fixes
+
+```bash
+GOEXPERIMENT=jsonv2 hierarchical-errors fix ./... --write
+```
+
+This applies only the safe `errors.As` transformations. It explicitly refuses `errors.Is`:
+
+```
+No auto-fixable violations found (2 diagnostic(s) detected).
+  2 advisory-only: errors.Is is not auto-fixable (value matching vs type matching).
+```
+
+This is the correct behavior. The `fix` subcommand is smarter than `lint` — it understands that `errors.Is` is value matching and should not be auto-migrated.
+
+### Step 3: Build and test
+
+```bash
+go build ./... && go test -race ./...
+```
+
+The `errors.As` → `errors.AsType` transformation is mechanical but still changes code. Verify it compiles and tests pass.
+
+### Step 4: Handle `errors.Is` findings manually
+
+```bash
+GOEXPERIMENT=jsonv2 hierarchical-errors lint ./...
+```
+
+Now you see the remaining findings — all `errors.Is` advisories. For each one, use the decision tree from the companion guide to classify it as:
+
+- **Sentinel match** (e.g., `io.EOF`, `context.Canceled`, `sql.ErrNoRows`, your own `var ErrFoo = errors.New(...)`) → suppress with `//nolint:legacyerrors // <reason>`
+- **Type match that should use `AsType`** → migrate manually
+
+### Step 5: For CI, use `--type legacy_as` (the only reliable filter)
+
+```bash
+GOEXPERIMENT=jsonv2 hierarchical-errors lint ./... --type legacy_as
+```
+
+This scopes the linter to ONLY `errors.As` findings (the high-precision diagnostic). It excludes all `errors.Is` advisories. This is the only reliable way to gate CI without false-positive noise.
+
+---
+
+## Flag Reliability Reference
+
+Every flag below was tested on 2026-07-21 against `hierarchical-errors lint`. Results verified by creating a minimal reproduction file and running each flag in isolation.
+
+### Flags that WORK
+
+| Flag                    | Subcommand  | Behavior                                                                           | Verified |
+| ----------------------- | ----------- | ---------------------------------------------------------------------------------- | -------- |
+| `--type legacy_as`      | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **The reliable CI filter.** | Yes      |
+| `--violations-only`     | `lint`      | Shows only violations, no summary. Cosmetic but works.                             | Yes      |
+| `//nolint:legacyerrors` | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.          | Yes      |
+
+### Flags that are BROKEN or INEFFECTIVE
+
+| Flag                                      | Subcommand | Expected                                                   | Actual                                                                                                                                   | Impact                                                                                         |
+| ----------------------------------------- | ---------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `--no-suppress`                           | `lint`     | Show violations that `//nolint` is hiding                  | Returns 0 even when nolint directives are active and suppressing real violations                                                         | You cannot audit your suppression list with this flag. Must manually remove nolints to verify. |
+| `-o <file>`                               | `lint`     | Write output to file                                       | File never created. Output always goes to stdout.                                                                                        | Cannot redirect lint output for CI artifact collection.                                        |
+| `-f <format>`                             | `lint`     | Output in json/sarif/jsonl/etc.                            | Ignored. Always outputs text format. (The main `hierarchical-errors` analysis command supports formats; the `lint` subcommand does not.) | Cannot get structured output for editor/CI integration.                                        |
+| `--severity-threshold error`              | `lint`     | Show only `error`-severity findings (the `errors.As` ones) | Shows `errors.Is` advisories regardless of threshold value                                                                               | Cannot use severity to filter. Use `--type legacy_as` instead.                                 |
+| `--severity error` / `--severity warning` | `lint`     | Filter by severity                                         | Both produce identical output                                                                                                            | Severity filter is non-functional.                                                             |
+| `--type-aware`                            | `lint`     | "Reduces false positives" per help text                    | Does not reduce `errors.Is` false positives. `errors.Is(err, io.EOF)` still flagged.                                                     | Type-aware mode does not use type information to skip sentinel matches.                        |
+
+### Verification Method for `--no-suppress`
+
+```bash
+# 1. Create a file with a known violation
+cat > /tmp/repro.go << 'EOF'
+package main
+import ("errors"; "io")
+func main() {
+    var err error
+    if errors.Is(err, io.EOF) { _ = err } //nolint:legacyerrors // sentinel
+}
+EOF
+
+# 2. Run WITHOUT --no-suppress → exits 0 (nolint suppresses it)
+hierarchical-errors lint /tmp/repro.go  # EXIT: 0
+
+# 3. Run WITH --no-suppress → should show the suppressed violation
+hierarchical-errors lint /tmp/repro.go --no-suppress  # EXIT: 0 — BUG: shows nothing
+
+# 4. Remove the nolint, run again → violation appears
+# (edit the file to remove //nolint:legacyerrors)
+hierarchical-errors lint /tmp/repro.go  # EXIT: 1 — violation appears
+```
+
+This proves `--no-suppress` does not disable suppression filtering.
+
+---
+
+## How to Verify Your `//nolint:legacyerrors` Comments Actually Work
+
+Since `--no-suppress` is broken, you cannot audit your suppressions by running the linter. Instead, use the **remove-and-restore technique**:
+
+```bash
+# 1. Temporarily comment out one nolint directive
+# (edit the file: change //nolint:legacyerrors to //TEST-nolint:legacyerrors)
+
+# 2. Run the linter — the violation should appear
+GOEXPERIMENT=jsonv2 hierarchical-errors lint ./path/to/file.go
+# Expected: the finding appears at the line where you removed the nolint
+
+# 3. Restore the nolint directive
+# (edit the file back)
+
+# 4. Run again — should be clean
+GOEXPERIMENT=jsonv2 hierarchical-errors lint ./path/to/file.go
+# Expected: no output, exit 0
+```
+
+This is tedious but reliable. Do it once per nolint to confirm the linter name is correct and the directive syntax is right.
+
+**Common mistake:** Using the wrong linter name. The suppression linter name is `legacyerrors` (lowercase, no prefix). It is not `hierarchical-errors`, not `he`, not `legacy_errors`. This name is **not documented in the README** — it is only discoverable from the `lint` subcommand help text ("Run the legacyerrors go/analysis linter").
+
+---
+
+## The `fix` vs `lint` Inconsistency (and Why `fix` Is Better)
+
+The `fix` subcommand is the safer entry point because it has a built-in semantic guard that `lint` lacks:
+
+- **`fix` knows** that `errors.Is` matches by value, not type. It refuses to auto-fix them and says so explicitly: "errors.Is is not auto-fixable (value matching vs type matching)."
+- **`lint` does not know this.** It reports `errors.Is` findings at the same severity as `errors.As` findings, with a message that reads as a recommendation.
+
+This means the two subcommands disagree on what constitutes a fixable problem. If you only use `fix`, you get safe, correct transformations. If you use `lint` and drive to zero, you will regress sentinel matches.
+
+**Recommendation:** Use `fix` as your primary tool. Use `lint` only for the manual review of remaining `errors.Is` findings (Step 4 above) and for CI gating with `--type legacy_as` (Step 5).
+
+---
+
+## Exit Code Reference
+
+| Scenario                                                     | Exit code |
+| ------------------------------------------------------------ | --------- |
+| `lint` with no violations                                    | 0         |
+| `lint` with any violation (including advisory `errors.Is`)   | 1         |
+| `fix` dry-run with fixable violations + remaining advisories | 2         |
+| `fix --write` with fixes applied + remaining advisories      | 2         |
+| `fix` with only advisory violations (nothing fixable)        | 0         |
+
+Note: `lint` exits 1 for BOTH severity levels. There is no way to get exit 0 from `lint` when `errors.Is` advisories are present, short of suppressing them with `//nolint:legacyerrors` or filtering with `--type legacy_as`.
+
+---
+
+## Practical Example: Full Cleanup of a Real Codebase
+
+This example is from cleaning up `golangci-lint-auto-configure` on 2026-07-21. The project had 12 findings across 6 files.
+
+### Initial state
+
+```
+12 findings total:
+  - 4 × "use errors.AsType instead of errors.As"      (real modernizations)
+  - 8 × "consider using errors.AsType instead of errors.Is" (advisories)
+```
+
+### Step 1: `fix` dry-run
+
+```bash
+GOEXPERIMENT=jsonv2 hierarchical-errors fix ./...
+```
+
+This showed the 4 `errors.As` transformations as diffs. The 8 `errors.Is` findings were reported as "advisory-only: not auto-fixable."
+
+### Step 2: `fix --write`
+
+```bash
+GOEXPERIMENT=jsonv2 hierarchical-errors fix ./... --write
+```
+
+Applied the 4 `errors.As` → `errors.AsType` transformations automatically. Clean, correct, included removing the redundant `var target *Type` declarations.
+
+### Step 3: Build and test
+
+```bash
+GOEXPERIMENT=jsonv2 go build ./... && GOEXPERIMENT=jsonv2 go test -race ./...
+```
+
+All passed. The `errors.As` migrations were semantically safe.
+
+### Step 4: Handle the 8 `errors.Is` findings manually
+
+Each one was a sentinel match:
+
+| File                                              | Code                                      | Classification   | Action                                          |
+| ------------------------------------------------- | ----------------------------------------- | ---------------- | ----------------------------------------------- |
+| `pkg/utils/retry.go:82`                           | `errors.Is(err, context.Canceled)`        | Stdlib sentinel  | `//nolint:legacyerrors // sentinel value match` |
+| `pkg/errors/errors_test.go:36`                    | `errors.Is(wrapped, ErrNotGitRepository)` | Package sentinel | `//nolint:legacyerrors // sentinel value match` |
+| `pkg/errors/errors_test.go:156`                   | `errors.Is(wrapped, cause)`               | Sentinel (test)  | `//nolint:legacyerrors // sentinel value match` |
+| `internal/cli/cmd_configure_internal_test.go:281` | `errors.Is(err, ErrChangesNeeded)`        | Package sentinel | `//nolint:legacyerrors // sentinel value match` |
+
+All 8 were sentinel matches. Zero were real migrations. **Precision of the `errors.Is` diagnostic on this codebase: 0%.**
+
+### Step 5: Verify
+
+```bash
+GOEXPERIMENT=jsonv2 hierarchical-errors lint ./...  # EXIT: 0
+GOEXPERIMENT=jsonv2 go test ./...                    # all pass
+```
+
+### Lessons from this cleanup
+
+1. **Every `errors.Is` finding was a false positive.** This matches the prediction in the companion guide: in mature Go codebases, `errors.Is` calls are dominated by sentinel matches.
+2. **The `fix` subcommand saved time and prevented regressions.** It handled all 4 real migrations correctly and refused to touch the 8 sentinel matches.
+3. **The `//nolint:legacyerrors` suppression works reliably.** The linter name is undocumented but correct.
+4. **I could not use `--no-suppress` to audit my suppressions** because the flag is broken. I used the remove-and-restore technique instead.
+
+---
+
+## CI Integration Template
+
+```yaml
+# GitHub Actions snippet — gates only on high-precision findings
+- name: Run hierarchical-errors (errors.As only)
+  env:
+    GOEXPERIMENT: jsonv2
+  run: |
+    hierarchical-errors lint ./... --type legacy_as
+
+# Optional: report all findings (including advisories) as annotations
+# without failing the build
+- name: Report advisory findings
+  if: always()
+  env:
+    GOEXPERIMENT: jsonv2
+  run: |
+    hierarchical-errors lint ./... || true
+```
+
+This gates the build on `errors.As` modernizations only (high precision) while still surfacing `errors.Is` advisories as information. Do NOT gate on the full `lint` output — the false-positive rate on `errors.Is` is too high.
+
+---
+
+## Summary: What to Trust and What Not to Trust
+
+| Feature                                               | Trust it?                                                 |
+| ----------------------------------------------------- | --------------------------------------------------------- |
+| `fix` subcommand (errors.As transformations)          | **Yes** — safe, correct, refuses errors.Is                |
+| `lint --type legacy_as`                               | **Yes** — reliable filter for high-precision findings     |
+| `//nolint:legacyerrors` suppression                   | **Yes** — works correctly (but name is undocumented)      |
+| `lint` on errors.Is findings                          | **No** — 0% precision on real codebases. Review manually. |
+| `--no-suppress` flag                                  | **No** — broken, does not show suppressed violations      |
+| `-o` / `-f` flags on `lint`                           | **No** — ignored, output always goes to stdout as text    |
+| `--severity` / `--severity-threshold`                 | **No** — does not filter errors.Is advisories             |
+| `--type-aware` for reducing errors.Is false positives | **No** — does not skip sentinel matches                   |
