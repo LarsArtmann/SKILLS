@@ -45,12 +45,12 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Go Ecosystem
 
-| Skill                   | What It Does                                                                                           | Status           |
-| ----------------------- | ------------------------------------------------------------------------------------------------------ | ---------------- |
-| **bdd-testing**         | BDD tests with `onsi/ginkgo` for Go projects                                                           | 🟢 Solid         |
-| **go-modularize**       | Splits Go monorepos into semi-independent sub-modules                                                  | 🟢 Comprehensive |
+| Skill                   | What It Does                                                                                                 | Status           |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------- |
+| **bdd-testing**         | BDD tests with `onsi/ginkgo` for Go projects                                                                 | 🟢 Solid         |
+| **go-modularize**       | Splits Go monorepos into semi-independent sub-modules                                                        | 🟢 Comprehensive |
 | **hierarchical-errors** | Safe workflow for the Go 1.26+ `hierarchical-errors` linter — prevents cargo-cult error-handling regressions | 🟢 Solid         |
-| **how-to-golang**       | Go development decision guide — what to use, not how                                                   | 🟢 Comprehensive |
+| **how-to-golang**       | Go development decision guide — what to use, not how                                                         | 🟢 Comprehensive |
 
 ### Nix & DevOps
 

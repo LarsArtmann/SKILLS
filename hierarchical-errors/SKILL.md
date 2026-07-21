@@ -15,10 +15,10 @@ metadata:
 
 ## TL;DR — two diagnostics, two safety profiles
 
-| Diagnostic                                          | Severity you should assign                                     | Default action                                                |
-| --------------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------- |
-| `use errors.AsType instead of errors.As`            | **Real modernization** — `errors.As` is genuinely legacy in 1.26+ | Apply the fix, then compile and test                          |
-| `consider using errors.AsType instead of errors.Is` | **Advisory and frequently wrong** — `errors.Is` is correct for sentinel matching | Review case-by-case; expect the majority to be correct as-is  |
+| Diagnostic                                          | Severity you should assign                                                       | Default action                                               |
+| --------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| `use errors.AsType instead of errors.As`            | **Real modernization** — `errors.As` is genuinely legacy in 1.26+                | Apply the fix, then compile and test                         |
+| `consider using errors.AsType instead of errors.Is` | **Advisory and frequently wrong** — `errors.Is` is correct for sentinel matching | Review case-by-case; expect the majority to be correct as-is |
 
 The word **if** in "consider ... **if** you are matching by type rather than by value" is load-bearing. It means: _the linter cannot tell whether you are doing type matching or value matching, so it is asking you to decide._ If you don't decide, and just apply the suggestion, you will regress value-matching code.
 
@@ -134,14 +134,14 @@ Most CLI flags were verified broken on 2026-07-21. Full verification methodology
 
 ### Flags that are BROKEN or INEFFECTIVE (do not rely on)
 
-| Flag                                       | Actual behavior                                                            | Use instead                       |
-| ------------------------------------------ | -------------------------------------------------------------------------- | --------------------------------- |
-| `--no-suppress`                            | Returns 0 even when nolint directives are suppressing real violations      | Remove-and-restore technique      |
-| `-o <file>`                                | File never created. Output always goes to stdout.                          | Shell redirection (`> file`)      |
-| `-f <format>`                              | Ignored. Always outputs text format.                                       | Parse text output, or fork the tool |
-| `--severity-threshold error`               | Shows `errors.Is` advisories regardless of threshold value                 | `--type legacy_as`                |
-| `--severity error` / `--severity warning`  | Both produce identical output                                              | `--type legacy_as`                |
-| `--type-aware`                             | Does not skip sentinel matches. `errors.Is(err, io.EOF)` still flagged.    | Manual review via decision tree   |
+| Flag                                      | Actual behavior                                                         | Use instead                         |
+| ----------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------- |
+| `--no-suppress`                           | Returns 0 even when nolint directives are suppressing real violations   | Remove-and-restore technique        |
+| `-o <file>`                               | File never created. Output always goes to stdout.                       | Shell redirection (`> file`)        |
+| `-f <format>`                             | Ignored. Always outputs text format.                                    | Parse text output, or fork the tool |
+| `--severity-threshold error`              | Shows `errors.Is` advisories regardless of threshold value              | `--type legacy_as`                  |
+| `--severity error` / `--severity warning` | Both produce identical output                                           | `--type legacy_as`                  |
+| `--type-aware`                            | Does not skip sentinel matches. `errors.Is(err, io.EOF)` still flagged. | Manual review via decision tree     |
 
 ## Exit code reference
 

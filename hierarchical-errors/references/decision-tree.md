@@ -132,7 +132,7 @@ The reason is for the next person (which may be you in three months). "sentinel 
 Real examples from cleaning up `golangci-lint-auto-configure` on 2026-07-21:
 
 | File                                              | Code                                      | Classification   | Action                                          |
-| ------------------------------------------------- | ----------------------------------------- | ---------------- | ---------------------------------------------- |
+| ------------------------------------------------- | ----------------------------------------- | ---------------- | ----------------------------------------------- |
 | `pkg/utils/retry.go:82`                           | `errors.Is(err, context.Canceled)`        | Stdlib sentinel  | `//nolint:legacyerrors // sentinel value match` |
 | `pkg/errors/errors_test.go:36`                    | `errors.Is(wrapped, ErrNotGitRepository)` | Package sentinel | `//nolint:legacyerrors // sentinel value match` |
 | `pkg/errors/errors_test.go:156`                   | `errors.Is(wrapped, cause)`               | Sentinel (test)  | `//nolint:legacyerrors // sentinel value match` |
