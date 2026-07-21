@@ -10,9 +10,10 @@ The source feedback dated 2026-07-21 reports these flags and behaviors as **"ver
 2. The `legacyerrors` analyzer name does not appear in `golang.org/x/tools/go/analysis/passes/` or any public repository.
 3. The closest public tool is Go's own `modernize` analyzer (`golang.org/x/tools/gopls/internal/analysis/modernize/cmd/modernize`), which uses a `-fix` flag rather than `lint`/`fix` subcommands and does not have a `--type legacy_as` filter.
 
-**Treat every claim in this file as a hypothesis to verify against your installed binary, not as confirmed behavior.** The verification methodology below (minimal reproduction files, flag isolation, remove-and-restore) is sound and reusable regardless of which specific tool you are testing — but the *results* listed here are unverified.
+**Treat every claim in this file as a hypothesis to verify against your installed binary, not as confirmed behavior.** The verification methodology below (minimal reproduction files, flag isolation, remove-and-restore) is sound and reusable regardless of which specific tool you are testing — but the _results_ listed here are unverified.
 
 If you have access to the real binary, please:
+
 1. Re-run the verification methodology below
 2. Update this file with confirmed behavior
 3. Remove the verification disclaimer from [../SKILL.md](../SKILL.md) and this file

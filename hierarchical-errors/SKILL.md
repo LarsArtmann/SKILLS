@@ -11,12 +11,14 @@ metadata:
 > ## Verification status (read first)
 >
 > **What is verified independent of the source feedback:**
+>
 > - `errors.AsType[E error](err error) (E, bool)` is a real Go 1.26.0 stdlib function — confirmed via [pkg.go.dev/errors](https://pkg.go.dev/errors).
 > - The Go docs explicitly say "For most uses, prefer AsType" over `errors.As`.
 > - `errors.Is` is NOT legacy. It is the stdlib-documented API for sentinel value matching (`io.EOF`, `sql.ErrNoRows`, `syscall.EXDEV`, `context.Canceled`, your own `var ErrFoo = errors.New(...)`). See the [Go blog: Working with Errors](https://go.dev/blog/go1.13-errors).
 > - The decision tree and anti-patterns below follow logically from how these three APIs actually behave.
 >
 > **What could NOT be independently verified (treat as reported-by-feedback, not confirmed):**
+>
 > - The `hierarchical-errors` CLI tool itself could not be found on GitHub, Sourcegraph, pkg.go.dev, or in `golang.org/x/tools` as of 2026-07-21. The closest public tool is Go's own `modernize` analyzer (`golang.org/x/tools/gopls/internal/analysis/modernize`), which uses a `-fix` flag rather than `lint`/`fix` subcommands.
 > - The `legacyerrors` analyzer name (used in `//nolint:legacyerrors`) does not appear in `golang.org/x/tools/go/analysis/passes/` or any public repository.
 > - Every CLI flag, exit code, error message, and the "0% precision" statistic in [./references/cli-and-flags.md](./references/cli-and-flags.md) is reproduced from the source feedback and could not be checked against a binary.
@@ -30,11 +32,11 @@ metadata:
 
 Go 1.26+ has three complementary error-matching primitives. Knowing which one you are doing is the difference between a safe modernization and a regression:
 
-| API                            | Purpose                                                | Status in Go 1.26+                                                            |
-| ------------------------------ | ------------------------------------------------------ | ----------------------------------------------------------------------------- |
-| `errors.AsType[E](err)`        | Extract structured data from a custom error **type**   | **Preferred** — Go docs say "For most uses, prefer AsType" over `errors.As`   |
-| `errors.Is(err, sentinel)`     | Compare against a known error **value**                | **Current.** Not legacy. The correct API for sentinels like `io.EOF`.         |
-| `errors.As(err, &target)`      | Custom predicate matching via pointer (rare)           | Legacy in spirit — `AsType` covers 99% of cases                               |
+| API                        | Purpose                                              | Status in Go 1.26+                                                          |
+| -------------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------- |
+| `errors.AsType[E](err)`    | Extract structured data from a custom error **type** | **Preferred** — Go docs say "For most uses, prefer AsType" over `errors.As` |
+| `errors.Is(err, sentinel)` | Compare against a known error **value**              | **Current.** Not legacy. The correct API for sentinels like `io.EOF`.       |
+| `errors.As(err, &target)`  | Custom predicate matching via pointer (rare)         | Legacy in spirit — `AsType` covers 99% of cases                             |
 
 **The cargo-cult trap:** any linter that flags both `errors.As` (real modernization) and `errors.Is` (frequently a false positive) at the same severity trains agents under "fix everything to zero" prompts to migrate `errors.Is` calls that should have stayed put. Sentinel value matching regresses. Wrapped errors stop matching. This skill exists to prevent that regression.
 
