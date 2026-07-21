@@ -1,19 +1,44 @@
 ---
 name: hierarchical-errors
-description: Use when migrating Go error-matching code on Go 1.26+, running `hierarchical-errors lint` or `hierarchical-errors fix`, reviewing findings that say "use errors.AsType instead of errors.As" or "consider using errors.AsType instead of errors.Is", or when the user says "fix all hierarchical-errors findings", "migrate errors.As", "modernize error handling", "errors.As is legacy", or asks whether `errors.Is` should become `errors.AsType`. Prevents the cargo-cult trap where agents driven to zero the linter regress sentinel-value matching (io.EOF, context.Canceled, sql.ErrNoRows, syscall errno values) by hand-rolling `interface{ Is(error) bool }` assertions or treating const errno values as types. Covers the safe fix-first workflow, broken-vs-working CLI flags (--no-suppress, -o, -f, --severity, --type-aware are broken; --type legacy_as and //nolint:legacyerrors work), the errors.Is-vs-errors.As decision tree, and CI gating strategy.
+description: Use when modernizing Go 1.26+ error handling — migrating `errors.As` to the new generic `errors.AsType[E]`, deciding whether an `errors.Is` finding should be migrated or kept, reviewing linter diagnostics that say "use errors.AsType instead of errors.As" or "consider errors.AsType instead of errors.Is", or when the user says "fix all hierarchical-errors findings", "migrate errors.As", "modernize error handling", or asks whether `errors.Is` should become `errors.AsType`. Prevents the cargo-cult trap where agents driven to zero a linter regress sentinel-value matching (io.EOF, sql.ErrNoRows, context.Canceled, syscall errno values) by hand-rolling `interface{ Is(error) bool }` assertions or treating const errno values as types.
+allowed-tools: bash go view edit grep
 metadata:
   tags: go, golang, errors, linting, hierarchical-errors, errors-astype, errors-is, errors-as, go1.26, modernization, cargo-cult, agent-safety
 ---
 
 # hierarchical-errors workflow
 
-`hierarchical-errors` is a Go 1.26+ linter that pushes code away from `errors.As` (genuinely legacy in Go 1.26+) toward the new generic `errors.AsType[E]` API. It also flags `errors.Is` calls — and **this is where well-meaning agents regress codebases.**
+> ## Verification status (read first)
+>
+> **What is verified independent of the source feedback:**
+> - `errors.AsType[E error](err error) (E, bool)` is a real Go 1.26.0 stdlib function — confirmed via [pkg.go.dev/errors](https://pkg.go.dev/errors).
+> - The Go docs explicitly say "For most uses, prefer AsType" over `errors.As`.
+> - `errors.Is` is NOT legacy. It is the stdlib-documented API for sentinel value matching (`io.EOF`, `sql.ErrNoRows`, `syscall.EXDEV`, `context.Canceled`, your own `var ErrFoo = errors.New(...)`). See the [Go blog: Working with Errors](https://go.dev/blog/go1.13-errors).
+> - The decision tree and anti-patterns below follow logically from how these three APIs actually behave.
+>
+> **What could NOT be independently verified (treat as reported-by-feedback, not confirmed):**
+> - The `hierarchical-errors` CLI tool itself could not be found on GitHub, Sourcegraph, pkg.go.dev, or in `golang.org/x/tools` as of 2026-07-21. The closest public tool is Go's own `modernize` analyzer (`golang.org/x/tools/gopls/internal/analysis/modernize`), which uses a `-fix` flag rather than `lint`/`fix` subcommands.
+> - The `legacyerrors` analyzer name (used in `//nolint:legacyerrors`) does not appear in `golang.org/x/tools/go/analysis/passes/` or any public repository.
+> - Every CLI flag, exit code, error message, and the "0% precision" statistic in [./references/cli-and-flags.md](./references/cli-and-flags.md) is reproduced from the source feedback and could not be checked against a binary.
+> - The `GOEXPERIMENT=jsonv2` prefix on every command is unconfirmed as a requirement of this linter. `GOEXPERIMENT=jsonv2` is a real Go experiment, but it gates the JSON v2 proposal — its connection to error linting is unclear. It may be a quirk of the original project (`golangci-lint-auto-configure`) rather than a hard requirement.
+>
+> **If you have access to the real binary**, please verify the claims in [./references/cli-and-flags.md](./references/cli-and-flags.md) and remove this disclaimer. **If the tool does not exist publicly**, the decision tree, anti-patterns, and fix-to-zero warning below remain valid for any linter that flags both `errors.As` and `errors.Is` — the reasoning is about Go's APIs, not about one specific tool.
 
-`errors.Is` is **not legacy.** It is the stdlib-documented API for sentinel value matching (`io.EOF`, `sql.ErrNoRows`, `context.Canceled`, `syscall.EXDEV`, your own `var ErrFoo = errors.New(...)`). The linter's `errors.Is` diagnostic is advisory and frequently wrong. On a real cleanup of `golangci-lint-auto-configure` (2026-07-21), the `errors.Is` diagnostic had **0% precision** — every one of 8 findings was a false positive.
+---
 
-**The highest-risk user of this tool is an agent under a "fix everything to zero" prompt.** This skill exists to prevent that regression.
+## TL;DR — three error-matching APIs, two safety profiles
 
-## TL;DR — two diagnostics, two safety profiles
+Go 1.26+ has three complementary error-matching primitives. Knowing which one you are doing is the difference between a safe modernization and a regression:
+
+| API                            | Purpose                                                | Status in Go 1.26+                                                            |
+| ------------------------------ | ------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| `errors.AsType[E](err)`        | Extract structured data from a custom error **type**   | **Preferred** — Go docs say "For most uses, prefer AsType" over `errors.As`   |
+| `errors.Is(err, sentinel)`     | Compare against a known error **value**                | **Current.** Not legacy. The correct API for sentinels like `io.EOF`.         |
+| `errors.As(err, &target)`      | Custom predicate matching via pointer (rare)           | Legacy in spirit — `AsType` covers 99% of cases                               |
+
+**The cargo-cult trap:** any linter that flags both `errors.As` (real modernization) and `errors.Is` (frequently a false positive) at the same severity trains agents under "fix everything to zero" prompts to migrate `errors.Is` calls that should have stayed put. Sentinel value matching regresses. Wrapped errors stop matching. This skill exists to prevent that regression.
+
+### Two diagnostics, two safety profiles
 
 | Diagnostic                                          | Severity you should assign                                                       | Default action                                               |
 | --------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------ |
@@ -24,7 +49,9 @@ The word **if** in "consider ... **if** you are matching by type rather than by 
 
 ## The safe workflow
 
-Use the `fix` subcommand as your primary tool. It has a semantic guard that `lint` lacks: `fix` understands that `errors.Is` matches by value and refuses to auto-migrate it. `lint` reports `errors.Is` at the same severity as `errors.As`, with a message that reads as a recommendation.
+Use the `fix` subcommand as your primary tool (if your linter has one). The `fix` subcommand in the reported tool has a semantic guard that `lint` lacks: `fix` understands that `errors.Is` matches by value and refuses to auto-migrate it. `lint` reports `errors.Is` at the same severity as `errors.As`, with a message that reads as a recommendation.
+
+> **Note:** The commands below are as reported in the source feedback. If your tool differs (e.g. Go's `modernize -fix`), adapt accordingly. The workflow logic is: apply safe `errors.As` migrations first, then review `errors.Is` findings manually, then gate CI on the high-precision diagnostic only.
 
 ### Step 1: `fix` dry-run
 
@@ -70,13 +97,13 @@ Now you see the remaining findings — all `errors.Is` advisories. For each one,
 
 Expect the vast majority to be sentinels.
 
-### Step 5: For CI, use `--type legacy_as` (the only reliable filter)
+### Step 5: For CI, use `--type legacy_as` (the only reliable filter reported)
 
 ```bash
 GOEXPERIMENT=jsonv2 hierarchical-errors lint ./... --type legacy_as
 ```
 
-Scopes the linter to ONLY `errors.As` findings (the high-precision diagnostic). Excludes all `errors.Is` advisories. This is the only reliable way to gate CI without false-positive noise.
+Scopes the linter to ONLY `errors.As` findings (the high-precision diagnostic). Excludes all `errors.Is` advisories. This is the only reliable way to gate CI without false-positive noise, per the source feedback.
 
 ## Decision tree for `errors.Is` findings
 
@@ -106,11 +133,11 @@ What is the second argument to errors.Is?
     └── KEEP errors.Is. Suppress: //nolint:legacyerrors // <specific reason>
 ```
 
-**The suppression linter name is `legacyerrors`** (lowercase, no prefix). It is not `hierarchical-errors`, not `he`, not `legacy_errors`. This name is undocumented in the README — only discoverable from the `lint` subcommand help text.
+**The suppression linter name `legacyerrors`** (lowercase, no prefix) is reproduced from the source feedback and could not be verified against a public binary. If your linter rejects `//nolint:legacyerrors`, check its help text for the actual analyzer name and update this skill.
 
 ## Anti-patterns to never commit
 
-These are real regressions from blindly driving `hierarchical-errors lint ./...` to zero. For full code examples and the agent-specific guidance, load [./references/anti-patterns.md](./references/anti-patterns.md).
+These are real regressions from blindly driving a linter to zero. For full code examples and the agent-specific guidance, load [./references/anti-patterns.md](./references/anti-patterns.md).
 
 1. **Hand-rolling `errors.Is` via an interface assertion** — reinvents `errors.Is`, AND doesn't work for wrapped errors. `errors.AsType[interface{ error; Is(target error) bool }](err)` returns `false` for `fmt.Errorf("%w", sentinel)` because the wrapper has no `Is` method. Keep `errors.Is`.
 
@@ -120,11 +147,11 @@ These are real regressions from blindly driving `hierarchical-errors lint ./...`
 
 4. **Suppressing without a reason** — `//nolint:legacyerrors` (no reason) works today but in six months someone may refactor `ErrFoo` into a typed error and the suppression silently hides a now-valid migration. Always state the assumption.
 
-## Flag reliability
+## Flag reliability (unverified — see verification status above)
 
-Most CLI flags were verified broken on 2026-07-21. Full verification methodology and the `--no-suppress` reproduction is in [./references/cli-and-flags.md](./references/cli-and-flags.md).
+Most CLI flags were reported broken in the source feedback dated 2026-07-21. **These claims could not be independently verified** because the `hierarchical-errors` binary is not publicly findable. Full reproduction methodology and the `--no-suppress` reproduction are in [./references/cli-and-flags.md](./references/cli-and-flags.md) — treat them as hypotheses to verify against your installed version, not as confirmed behavior.
 
-### Flags that WORK
+### Flags reported to WORK
 
 | Flag                    | Subcommand  | Behavior                                                                           |
 | ----------------------- | ----------- | ---------------------------------------------------------------------------------- |
@@ -132,18 +159,18 @@ Most CLI flags were verified broken on 2026-07-21. Full verification methodology
 | `--violations-only`     | `lint`      | Shows only violations, no summary. Cosmetic but works.                             |
 | `//nolint:legacyerrors` | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.          |
 
-### Flags that are BROKEN or INEFFECTIVE (do not rely on)
+### Flags reported BROKEN or INEFFECTIVE (verify before relying on)
 
-| Flag                                      | Actual behavior                                                         | Use instead                         |
-| ----------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------- |
-| `--no-suppress`                           | Returns 0 even when nolint directives are suppressing real violations   | Remove-and-restore technique        |
-| `-o <file>`                               | File never created. Output always goes to stdout.                       | Shell redirection (`> file`)        |
-| `-f <format>`                             | Ignored. Always outputs text format.                                    | Parse text output, or fork the tool |
-| `--severity-threshold error`              | Shows `errors.Is` advisories regardless of threshold value              | `--type legacy_as`                  |
-| `--severity error` / `--severity warning` | Both produce identical output                                           | `--type legacy_as`                  |
-| `--type-aware`                            | Does not skip sentinel matches. `errors.Is(err, io.EOF)` still flagged. | Manual review via decision tree     |
+| Flag                                      | Reported behavior                                                      | Use instead                         |
+| ----------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------- |
+| `--no-suppress`                           | Returns 0 even when nolint directives are suppressing real violations  | Remove-and-restore technique        |
+| `-o <file>`                               | File never created. Output always goes to stdout.                      | Shell redirection (`> file`)        |
+| `-f <format>`                             | Ignored. Always outputs text format.                                   | Parse text output, or fork the tool |
+| `--severity-threshold error`              | Shows `errors.Is` advisories regardless of threshold value             | `--type legacy_as`                  |
+| `--severity error` / `--severity warning` | Both produce identical output                                          | `--type legacy_as`                  |
+| `--type-aware`                            | Does not skip sentinel matches. `errors.Is(err, io.EOF)` still flagged | Manual review via decision tree     |
 
-## Exit code reference
+## Exit code reference (unverified — see verification status above)
 
 | Scenario                                                     | Exit code |
 | ------------------------------------------------------------ | --------- |
@@ -161,6 +188,7 @@ Gate the build on `errors.As` modernizations only (high precision) while still s
 
 ```yaml
 # GitHub Actions snippet — gates only on high-precision findings
+# Replace hierarchical-errors with your actual linter if it differs.
 - name: Run hierarchical-errors (errors.As only)
   env:
     GOEXPERIMENT: jsonv2
@@ -181,7 +209,7 @@ Gating on the full linter output trains developers to suppress everything reflex
 
 ## Verification checklist
 
-Before marking a `hierarchical-errors` cleanup "done":
+Before marking a cleanup "done":
 
 - [ ] Every `errors.As` finding is either fixed or suppressed with a reason
 - [ ] Every `errors.Is` finding is classified as sentinel (suppressed) or type (migrated)
@@ -189,7 +217,7 @@ Before marking a `hierarchical-errors` cleanup "done":
 - [ ] No `errors.Is(err, syscall.XXX)` was migrated to `AsType[syscall.Errno]` + `!=`
 - [ ] `go build ./...` passes
 - [ ] `go test -race ./...` passes, especially tests covering the modified error paths
-- [ ] Every `//nolint:legacyerrors` has a specific reason, not just `//nolint`
+- [ ] Every suppression directive has a specific reason, not just `//nolint`
 - [ ] The commit message distinguishes `errors.As` migrations from `errors.Is` reviews
 
 ## When the linter IS right about `errors.Is`
@@ -222,5 +250,6 @@ If you don't need the fields, `errors.Is` is still fine — the linter is then a
 Load on demand:
 
 - [./references/decision-tree.md](./references/decision-tree.md) — Background on Go's three error-matching APIs, the full decision tree with code examples, and how to suppress correctly
-- [./references/cli-and-flags.md](./references/cli-and-flags.md) — Full flag reliability table, the `--no-suppress` bug reproduction, the remove-and-restore verification technique, exit codes
+- [./references/cli-and-flags.md](./references/cli-and-flags.md) — Full flag reliability table, the `--no-suppress` bug reproduction, the remove-and-restore verification technique, exit codes. **All CLI claims unverified — see verification status at the top of this file.**
 - [./references/anti-patterns.md](./references/anti-patterns.md) — All four anti-patterns with full code, plus the agent-specific "fix-to-zero" trap guidance
+- [../how-to-golang/SKILL.md](../how-to-golang/SKILL.md) — Broader Go development decision guide (what libraries to use, what to avoid)

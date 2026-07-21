@@ -1,6 +1,12 @@
 # Anti-Patterns and Agent Guidance
 
-> Loaded on demand from [../SKILL.md](../SKILL.md). The four real regressions from blindly driving `hierarchical-errors lint ./...` to zero, plus the agent-specific "fix-to-zero" trap guidance.
+> Loaded on demand from [../SKILL.md](../SKILL.md). The four real regressions from blindly driving a linter to zero, plus the agent-specific "fix-to-zero" trap guidance.
+
+## Verification status
+
+The four anti-patterns below are **logically sound regardless of which linter triggered them** — they describe ways an agent can regress Go error-handling semantics while appearing to "fix" linter findings. The reasoning depends only on how `errors.Is`, `errors.As`, `errors.AsType`, and `fmt.Errorf("%w", ...)` actually behave, all of which are stdlib-documented.
+
+The `//nolint:legacyerrors` suppression name appears in examples below. That analyzer name could not be verified against a public binary — if your linter rejects it, check its help text for the actual name.
 
 ## Table of Contents
 
@@ -87,7 +93,7 @@ if errors.Is(err, ErrFoo) { //nolint:legacyerrors // ErrFoo is a sentinel; value
 
 ## Agent-specific guidance: the "fix-to-zero" trap
 
-Agents under "fix everything to zero" prompts are the highest-risk users of this tool. They will cargo-cult.
+Agents under "fix everything to zero" prompts are the highest-risk users of any linter that flags both real and advisory findings at the same severity. They will cargo-cult.
 
 When invoked to "fix all hierarchical-errors findings", an agent MUST:
 
@@ -111,8 +117,8 @@ When invoked to "fix all hierarchical-errors findings", an agent MUST:
 
 Do not gate CI on `errors.Is` findings — the false-positive rate is too high. Either:
 
-- Use `--severity-threshold error` to gate only on the `errors.As` findings (if your `hierarchical-errors` version supports it), or
+- Use `--severity-threshold error` to gate only on the `errors.As` findings (if your linter version supports it — the source feedback reports this flag as broken on `hierarchical-errors`; verify before relying on it), or
 - Run the linter but only fail the build on `errors.As`-category diagnostics, or
-- Run with `--type legacy_as` to scope to the high-precision diagnostic only
+- Run with `--type legacy_as` (if your linter has it) to scope to the high-precision diagnostic only
 
 Gating on the full linter output trains developers to suppress everything reflexively, which hides real modernization opportunities later.

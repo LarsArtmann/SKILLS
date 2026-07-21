@@ -8,7 +8,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ## The Collection
 
-**21 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out).
+**21 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out), **🆕 New** (structurally valid, never yet triggered against real work — ages into 🟢 after a documented successful run).
 
 ### Shared Assets
 
@@ -45,12 +45,12 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Go Ecosystem
 
-| Skill                   | What It Does                                                                                                 | Status           |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------- |
-| **bdd-testing**         | BDD tests with `onsi/ginkgo` for Go projects                                                                 | 🟢 Solid         |
-| **go-modularize**       | Splits Go monorepos into semi-independent sub-modules                                                        | 🟢 Comprehensive |
-| **hierarchical-errors** | Safe workflow for the Go 1.26+ `hierarchical-errors` linter — prevents cargo-cult error-handling regressions | 🟢 Solid         |
-| **how-to-golang**       | Go development decision guide — what to use, not how                                                         | 🟢 Comprehensive |
+| Skill                   | What It Does                                                                                                     | Status           |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------     | ---------------- |
+| **bdd-testing**         | BDD tests with `onsi/ginkgo` for Go projects                                                                     | 🟢 Solid         |
+| **go-modularize**       | Splits Go monorepos into semi-independent sub-modules                                                            | 🟢 Comprehensive |
+| **hierarchical-errors** | Go 1.26+ error-matching modernization — prevents cargo-cult `errors.As`/`errors.Is` regressions (CLI unverified) | 🆕 New            |
+| **how-to-golang**       | Go development decision guide — what to use, not how                                                             | 🟢 Comprehensive |
 
 ### Nix & DevOps
 
@@ -118,7 +118,7 @@ New skills should follow the pattern of [`how-to-golang/`](how-to-golang/) (lean
 
 ## Quality & Status
 
-This repository is honest about its state. **All 21 skills are solid or comprehensive** — every skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). A handful are still **functional** (`architecture-review`, `code-quality-scan`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. Validate the repo anytime with `scripts/check-skills.sh`.
+This repository is honest about its state. **20 of 21 skills are solid, comprehensive, or functional** — every established skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). A handful are still **functional** (`architecture-review`, `code-quality-scan`, `deduplicate-code`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. One skill is **🆕 New** (`hierarchical-errors`) — structurally valid and based on real Go 1.26+ APIs, but its CLI-specific claims could not be verified against a public binary and it has not yet been triggered against real work. Validate the repo anytime with `scripts/check-skills.sh`.
 
 See [`docs/status/`](docs/status/) for detailed audit reports, including a comprehensive breakdown of every skill's strengths, gaps, and recommended next steps.
 

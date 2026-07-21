@@ -1,6 +1,23 @@
 # CLI Workflow, Flag Reliability, and Verification
 
-> Loaded on demand from [../SKILL.md](../SKILL.md). Covers every CLI flag's actual behavior (verified 2026-07-21), the `--no-suppress` bug reproduction, the remove-and-restore verification technique, and exit codes.
+> Loaded on demand from [../SKILL.md](../SKILL.md). Covers every CLI flag's reported behavior, the `--no-suppress` bug reproduction, the remove-and-restore verification technique, and exit codes.
+
+## ⚠ Verification status — read before trusting any claim below
+
+The source feedback dated 2026-07-21 reports these flags and behaviors as **"verified"** because the original author ran them against a binary on the `golangci-lint-auto-configure` project. **No subsequent session has been able to reproduce these checks** because:
+
+1. The `hierarchical-errors` binary is not publicly findable on GitHub, Sourcegraph, pkg.go.dev, or in `golang.org/x/tools` as of 2026-07-21.
+2. The `legacyerrors` analyzer name does not appear in `golang.org/x/tools/go/analysis/passes/` or any public repository.
+3. The closest public tool is Go's own `modernize` analyzer (`golang.org/x/tools/gopls/internal/analysis/modernize/cmd/modernize`), which uses a `-fix` flag rather than `lint`/`fix` subcommands and does not have a `--type legacy_as` filter.
+
+**Treat every claim in this file as a hypothesis to verify against your installed binary, not as confirmed behavior.** The verification methodology below (minimal reproduction files, flag isolation, remove-and-restore) is sound and reusable regardless of which specific tool you are testing — but the *results* listed here are unverified.
+
+If you have access to the real binary, please:
+1. Re-run the verification methodology below
+2. Update this file with confirmed behavior
+3. Remove the verification disclaimer from [../SKILL.md](../SKILL.md) and this file
+
+If the binary does not exist publicly, the **methodology** in this file still teaches how to test any linter's flags — that part is durable.
 
 ## Table of Contents
 
@@ -71,7 +88,7 @@ This scopes the linter to ONLY `errors.As` findings (the high-precision diagnost
 
 ## Flag reliability reference
 
-Every flag below was tested on 2026-07-21 against `hierarchical-errors lint`. Results verified by creating a minimal reproduction file and running each flag in isolation.
+Every flag below was tested on 2026-07-21 against `hierarchical-errors lint` by the original feedback author. Results were obtained by creating a minimal reproduction file and running each flag in isolation. **These results have not been independently reproduced** — see the verification status at the top of this file.
 
 ### Flags that WORK
 
@@ -177,7 +194,7 @@ Note: `lint` exits 1 for BOTH severity levels. There is no way to get exit 0 fro
 
 ## Practical example: full cleanup of a real codebase
 
-This example is from cleaning up `golangci-lint-auto-configure` on 2026-07-21. The project had 12 findings across 6 files.
+This example is from cleaning up `golangci-lint-auto-configure` on 2026-07-21 (as reported in the source feedback). The project had 12 findings across 6 files. **The "0% precision" claim and the specific file paths below are reproduced from the feedback and could not be independently verified.**
 
 ### Initial state
 
@@ -265,6 +282,8 @@ This gates the build on `errors.As` modernizations only (high precision) while s
 ---
 
 ## Summary: what to trust and what not to trust
+
+> ⚠ The trust assignments below reflect the source feedback's claims. The methodology is sound; the specific results are unverified. See the verification status at the top of this file.
 
 | Feature                                               | Trust it?                                                 |
 | ----------------------------------------------------- | --------------------------------------------------------- |

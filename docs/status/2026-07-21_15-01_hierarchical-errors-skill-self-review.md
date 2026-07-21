@@ -217,3 +217,69 @@ I do not know which convention you want for this repo. The recent docs-health fe
 ## Honest one-line summary
 
 **Shipped a structurally valid skill that probably works, while violating my own skill-loading rule, overclaiming its maturity, and propagating unverified external claims — exactly the failure modes the repo's recent feedback warns against.** The work is recoverable; the process that produced it needs fixing before the next skill.
+
+---
+
+## Resolution (added 2026-07-21, second session)
+
+The user reissued the original prompt with the same instruction: "READ, UNDERSTAND, RESEARCH, REFLECT. Break this down. Execute and Verify. Repeat until done." This time the skill-creator skill was loaded first, and every external claim was verified against primary sources. Findings:
+
+### What was verified
+
+- **`errors.AsType[E error](err error) (E, bool)` is real** — confirmed via [pkg.go.dev/errors](https://pkg.go.dev/errors), added in Go 1.26.0, generic. ✅
+- **The decision tree and three-APIs mental model are logically sound** — they follow from stdlib-documented semantics, independent of any linter. ✅
+- **The fix-to-zero anti-pattern is a real risk** for any linter that flags both real and advisory findings at the same severity. ✅
+
+### What could NOT be verified (the core discovery)
+
+- **The `hierarchical-errors` binary could not be found publicly.** Searched GitHub, Sourcegraph, pkg.go.dev, and `golang.org/x/tools/go/analysis/passes/`. Zero matches. The closest public tool is Go's own `modernize` analyzer (`golang.org/x/tools/gopls/internal/analysis/modernize/cmd/modernize`), which uses `-fix` flag rather than `lint`/`fix` subcommands.
+- **The `legacyerrors` analyzer name could not be found publicly.** Not in `golang.org/x/tools/go/analysis/passes/` (full roster checked), not in gopls `analyzers.md` (4,727 lines), not in any public repository via Sourcegraph.
+- **Every CLI flag, exit code, error message, and the "0% precision" statistic is unverifiable** without access to the binary. These claims may be partially or wholly hallucinated by an earlier session — the level of specific detail is the kind an LLM can generate plausibly without ever running the tool.
+- **`GOEXPERIMENT=jsonv2` is a real Go experiment** but gates the JSON v2 proposal, not error linting. Its appearance in every command may be a quirk of the original project, not a hard requirement.
+
+### What changed in the second session
+
+1. **Added a prominent verification-status block** at the top of SKILL.md separating verified claims from unverified claims. Every reader now knows which parts to trust.
+2. **Reframed the TL;DR** around the durable three-APIs mental model (the verified value) instead of leading with the specific tool name.
+3. **Demoted every CLI-specific section** (flag table, exit codes, CI template, classification examples) with clear "unverified — see verification status" labels in both SKILL.md and the three reference files.
+4. **Trimmed the description from 940 → 734 chars** and focused triggers on the durable value (`errors.As` → `errors.AsType` migration, the decision tree, the fix-to-zero anti-pattern).
+5. **Added `allowed-tools: bash go view edit grep`** frontmatter per AGENTS.md §5.8.
+6. **Changed README status from 🟢 Solid → 🆕 New** and added the 🆕 New legend entry: "structurally valid, never yet triggered against real work — ages into 🟢 after a documented successful run."
+7. **Fixed the false "All 21 skills are solid or comprehensive" claim** in README §Quality & Status — now correctly notes 20/21 established + 1 🆕 New, and explicitly calls out `hierarchical-errors` as the new unverified skill.
+8. **Updated AGENTS.md §10** to flag the linter as unverified.
+9. **Wrote a new feedback file** at `docs/feedback/new/2026-07-21_hierarchical-errors-unverified-linter-claims-propagated.md` documenting the discovery (closes the feedback loop per AGENTS.md §11). This is the 4th instance of the "skipped verification before claiming done" pattern — it should be encoded into `skill-creator` or extracted as its own skill.
+
+### The three blocking questions (§g) — resolved
+
+- **g.1 (GOEXPERIMENT=jsonv2):** Cannot confirm as a linter requirement. The linter is unfindable. `GOEXPERIMENT=jsonv2` gates JSON v2, not error linting. The skill now marks this explicitly as unverified.
+- **g.2 (standalone vs deep-dive):** Decided to keep standalone but **reframe**. The skill's value (decision tree, anti-pattern, three-APIs mental model) is durable regardless of whether the specific linter exists. A standalone skill gives a distinct trigger surface for "errors.Is vs errors.AsType migration" questions, which are real regardless of tool. Renaming the directory would break commit history continuity without clear benefit.
+- **g.3 (status label):** Decided on **🆕 New**. Most humble truthful status. Per the docs-health feedback ("default to the most humble status that is still truthful"), 🆕 New is honest: the skill exists, is structurally valid, but has never been triggered or tested against real work. Added to README legend with aging rules.
+
+### Process-level lessons (the real output of this session)
+
+1. **Load the matching skill first.** The skill-loading rule exists; the first session broke it within the first 60 seconds. This time, `skill-creator` was loaded before any task-doing tool call. The difference is measurable: the second session caught the unverified-claims problem because it followed skill-creator's "test and iterate" framing.
+2. **Verify external claims before propagating them.** Feedback is a lead, not a source. The skill-creator skill should add a verification gate: "before encoding any external claim (CLI behavior, library version, API signature) into a skill, verify it against the primary source."
+3. **Never mark new work 🟢 Solid.** New skills start at 🆕 New and age into 🟢 only after a documented successful run. This is now encoded in the README legend.
+4. **Detailed specifics are not the same as verified specifics.** An LLM can generate plausible CLI flag tables, exit code references, and error message strings without ever running the tool. Specificity is not evidence.
+5. **The verification-gate pattern is now a 4x recurrence** (joining fabricated-score, trophy-case, Verschlimmbesserung). It should be encoded into `skill-creator` or extracted as its own skill. The new feedback file in `docs/feedback/new/` is the 4th instance.
+
+### Skill state after resolution
+
+- `hierarchical-errors/SKILL.md`: 254 lines, description 734 chars, allowed-tools present, verification-status block at top, all CLI specifics demoted with unverified labels
+- `hierarchical-errors/references/decision-tree.md`: verification-status header added; classification examples labeled as reported-by-feedback
+- `hierarchical-errors/references/cli-and-flags.md`: verification-status header added; "verified" language softened throughout; summary table labeled as reported-by-feedback
+- `hierarchical-errors/references/anti-patterns.md`: verification-status header added; "fix-to-zero trap" generalized beyond the specific tool
+- `README.md`: 🆕 New status, fixed false claim, new legend entry
+- `AGENTS.md`: §10 row notes the linter is unverified
+- `docs/feedback/new/2026-07-21_hierarchical-errors-unverified-linter-claims-propagated.md`: new feedback documenting the discovery
+
+### What remains unverified (and may never be verifiable)
+
+- Whether the `hierarchical-errors` linter actually exists as a public or private tool
+- Whether the two source feedback files are accurate reports of a real session or partially hallucinated
+- Whether the `legacyerrors` analyzer name is correct
+- Whether the 6 "broken" flags are actually broken
+- Whether the exit codes are as reported
+- Whether `GOEXPERIMENT=jsonv2` is required
+
+The skill now navigates this uncertainty by leading with verified durable value and clearly labeling everything else. A future session with access to the binary (if it exists) can verify the claims and remove the disclaimers.

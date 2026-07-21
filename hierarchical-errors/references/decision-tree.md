@@ -2,6 +2,12 @@
 
 > Loaded on demand from [../SKILL.md](../SKILL.md). Covers Go's three error-matching APIs, the full `errors.Is` decision tree with code examples, and how to suppress correctly.
 
+## Verification status
+
+The **decision tree and the three-APIs mental model are verified** — they follow from how `errors.Is`, `errors.As`, and `errors.AsType` actually behave in Go 1.26+, independent of any specific linter. The Go standard library docs and the [Go blog: Working with Errors](https://go.dev/blog/go1.13-errors) confirm the semantics.
+
+The **`//nolint:legacyerrors` suppression name** and the **specific classification examples from `golangci-lint-auto-configure`** are reproduced from the source feedback. The analyzer name `legacyerrors` could not be found in any public Go analysis pass. If your linter rejects the directive, check its help text for the actual analyzer name.
+
 ## Table of Contents
 
 1. [Background: Go 1.26+ has three error-matching APIs, not one](#background-go-126-has-three-error-matching-apis-not-one)
@@ -129,7 +135,7 @@ The reason is for the next person (which may be you in three months). "sentinel 
 
 ## Classification examples
 
-Real examples from cleaning up `golangci-lint-auto-configure` on 2026-07-21:
+Real examples from cleaning up `golangci-lint-auto-configure` on 2026-07-21 (as reported in the source feedback — the specific file paths could not be independently verified):
 
 | File                                              | Code                                      | Classification   | Action                                          |
 | ------------------------------------------------- | ----------------------------------------- | ---------------- | ----------------------------------------------- |
@@ -138,7 +144,7 @@ Real examples from cleaning up `golangci-lint-auto-configure` on 2026-07-21:
 | `pkg/errors/errors_test.go:156`                   | `errors.Is(wrapped, cause)`               | Sentinel (test)  | `//nolint:legacyerrors // sentinel value match` |
 | `internal/cli/cmd_configure_internal_test.go:281` | `errors.Is(err, ErrChangesNeeded)`        | Package sentinel | `//nolint:legacyerrors // sentinel value match` |
 
-All 8 findings in that codebase were sentinel matches. Zero were real migrations. **Precision of the `errors.Is` diagnostic on this codebase: 0%.**
+All 8 findings in that codebase were reported as sentinel matches, with zero real migrations. **"Precision of the `errors.Is` diagnostic on this codebase: 0%"** is the source feedback's claim, not independently verified.
 
 ---
 
@@ -175,4 +181,4 @@ The signal: the second argument is a **typed error with structured fields**, and
 - The Go blog: ["Working with Errors"](https://go.dev/blog/go1.13-errors) — the canonical reference for `errors.Is` and `errors.As`
 - Go 1.26 release notes — `errors.AsType[E]` generic API
 - `syscall.Errno.Is` — documented behavior; `errors.Is` is the supported way to match errno values
-- The `hierarchical-errors` project's own `docs/errors-astype-guide.md` — explicitly lists `errors.Is(err, ErrSentinel)` as Rule 2 of the "Golden Rules." The linter should match its own docs.
+- The `hierarchical-errors` project's own `docs/errors-astype-guide.md` (referenced in the source feedback as explicitly listing `errors.Is(err, ErrSentinel)` as Rule 2 of the "Golden Rules" — **this doc could not be located publicly to confirm**)
