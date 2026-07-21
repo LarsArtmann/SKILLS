@@ -244,6 +244,7 @@ These tools are referenced by skills but are **not** bundled in this repo. Agent
 | `nix` / `nix flake check`  | `code-quality-scan`, `nix-review`       | Nix build/lint                      |
 | `revive` / `golangci-lint` | `naming-review`                         | Go naming lint                      |
 | `onsi/ginkgo`              | `bdd-testing`                           | BDD testing framework               |
+| `hierarchical-errors` CLI | `hierarchical-errors`                   | Go 1.26+ `errors.As`/`errors.Is` → `errors.AsType` linter |
 | `firebase` CLI             | `website-launch`                        | Firebase Hosting site management    |
 | `terraform` / `opentofu`   | `website-launch`                        | DNS record management               |
 
