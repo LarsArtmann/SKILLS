@@ -122,6 +122,9 @@ Never round up. If you cannot confirm a feature works, it is
     to done" — it is removed, because it now lives in CHANGELOG. The only
     exception: an item kept explicitly marked "retained as historical note"
     with a one-line rationale (e.g. a rejected spike with an ADR reference).
+
+    **Done/completed TODO items belong in `CHANGELOG.md` — NEVER in `TODO_LIST.md`. When a task is finished, remove it from TODO_LIST and record it in CHANGELOG. TODO_LIST is for open work only.**
+
   - `CHANGELOG.md`: **Append-only.** Never edit prior entries.
   - `ROADMAP.md`: **Update in place.** Raw ideas graduate to TODO_LIST when
     they become actionable.

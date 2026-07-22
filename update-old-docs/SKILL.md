@@ -88,6 +88,8 @@ structural-decay handling: rebuild, do not annotate). This skill annotates
 point-in-time _snapshots_ non-destructively. Living docs get rewritten, not
 annotated.
 
+**Done/completed TODO items belong in `CHANGELOG.md` — NEVER in `TODO_LIST.md`. When a task is finished, remove it from TODO_LIST and record it in CHANGELOG. TODO_LIST is for open work only.** When annotating an old report that references now-completed TODO items, point to the CHANGELOG entry or commit — do not re-list the completed work in TODO_LIST.
+
 If you reach for annotation when rebuild is correct, you will produce a
 trophy case with sticky notes on it — still a trophy case.
 
