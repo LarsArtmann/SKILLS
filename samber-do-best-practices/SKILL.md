@@ -11,13 +11,13 @@ metadata:
 
 `samber/do` v2 is the dominant dependency-injection library in this workspace. It is powerful but has a small set of sharp edges that keep reappearing in real code. This skill applies the canonical patterns and rejects the six anti-patterns already implemented in `branching-flow/pkg/doanalyzerv2`.
 
-The single source of truth is the comprehensive report at `/home/lars/projects/samber-do-auditlog/docs/research/samber-do-best-practices-and-anti-patterns.md`. Read it on demand for deep examples, real-workspace case studies, and migration notes.
+The single source of truth is the comprehensive report in [./references/samber-do-best-practices-report.md](./references/samber-do-best-practices-report.md). Read it on demand for deep examples, real-workspace case studies, and migration notes.
 
 ## 1. Before Editing
 
 1. Load the comprehensive report when you need background or examples:
    ```
-   view /home/lars/projects/samber-do-auditlog/docs/research/samber-do-best-practices-and-anti-patterns.md
+   view ./references/samber-do-best-practices-report.md
    ```
 2. Find every file that imports `github.com/samber/do` in the target project:
    ```bash

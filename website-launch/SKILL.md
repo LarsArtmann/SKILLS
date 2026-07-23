@@ -22,6 +22,13 @@ Launches a public documentation website for a Go project (library or
 application/server) using the deterministic Astro + Starlight + Tailwind v4 +
 Firebase Hosting pattern shared across all LarsArtmann projects.
 
+> **Path conventions:** This skill assumes the LarsArtmann project layout:
+> `~/projects/{repo}` for project repos and `~/projects/domains` for the DNS
+> Terraform repo. If your layout differs, substitute your own paths for
+> `{repo-path}` and `{domains-path}` throughout. The `{repo}` placeholder in
+> commands means the target repo name, not a shell variable — replace it before
+> running.
+
 This skill encodes lessons from 6+ prior sessions that each wasted 45-90
 minutes rediscovering the same pattern, making the same mistakes, and writing
 the same feedback. Following this skill turns a 90-minute multi-agent
