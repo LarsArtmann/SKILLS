@@ -60,7 +60,7 @@ If ownership is transferred to a caller, return the injector or a cleanup functi
 
 ## DO-3: Override outside container setup
 
-`samber/do` explicitly warns: *"We strongly discourage using this helper in production. Please use service aliasing instead."* `do.Override*` is acceptable only in `_test.go` files, setup/wire/configure functions, or options-style configuration APIs.
+`samber/do` explicitly warns: _"We strongly discourage using this helper in production. Please use service aliasing instead."_ `do.Override*` is acceptable only in `_test.go` files, setup/wire/configure functions, or options-style configuration APIs.
 
 **Bad:**
 

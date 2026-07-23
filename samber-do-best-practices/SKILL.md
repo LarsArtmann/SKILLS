@@ -50,14 +50,14 @@ For quick reference, load [./references/samber-do-quick-reference.md](./referenc
 
 Use the DO-1 → DO-6 rules as a checklist. Load [./references/anti-pattern-examples.md](./references/anti-pattern-examples.md) for concrete before/after snippets.
 
-| ID | Smell | Fix |
-| --- | --- | --- |
-| DO-1 | `Must*` in request handlers, CLI actions, or other runtime paths | Inject the dependency at construction or use `do.Invoke` and handle the error |
-| DO-2 | `do.New()` without a matching `Shutdown()` | Add `defer injector.Shutdown()` or return a cleanup function |
-| DO-3 | `do.Override*` outside `_test.go` or setup functions | Use `Provide` + aliasing instead; `Override*` only in tests or options-style setup |
-| DO-4 | Package-level `do.Injector` or `*do.RootScope` variable | Pass the injector as a parameter and build a composition root |
-| DO-5 | `do.Invoke` inside loops | Hoist resolution before the loop |
-| DO-6 | `Shutdown()` accesses other services or the injector | Make shutdown self-contained; use a lifecycle manager for coordination |
+| ID   | Smell                                                            | Fix                                                                                |
+| ---- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| DO-1 | `Must*` in request handlers, CLI actions, or other runtime paths | Inject the dependency at construction or use `do.Invoke` and handle the error      |
+| DO-2 | `do.New()` without a matching `Shutdown()`                       | Add `defer injector.Shutdown()` or return a cleanup function                       |
+| DO-3 | `do.Override*` outside `_test.go` or setup functions             | Use `Provide` + aliasing instead; `Override*` only in tests or options-style setup |
+| DO-4 | Package-level `do.Injector` or `*do.RootScope` variable          | Pass the injector as a parameter and build a composition root                      |
+| DO-5 | `do.Invoke` inside loops                                         | Hoist resolution before the loop                                                   |
+| DO-6 | `Shutdown()` accesses other services or the injector             | Make shutdown self-contained; use a lifecycle manager for coordination             |
 
 Additional structural smells to reject:
 

@@ -4,54 +4,54 @@ Concrete sources to check before trusting an external claim.
 
 ## Go ecosystem
 
-| What | Where to look |
-| --- | --- |
-| Package docs, signatures, versions | `https://pkg.go.dev/\u003cimport-path\u003e` |
-| Standard library source | `https://cs.opensource.google/go/go` |
-| `golang.org/x` source | `https://github.com/golang` and `go.googlesource.com` |
-| Analysis passes roster | `golang.org/x/tools/go/analysis/passes/` |
-| gopls analyzers | `gopls/doc/analyzers.md` in the `tools` repo |
-| Code search across repos | Sourcegraph, `grep.app`, GitHub search |
+| What                               | Where to look                                         |
+| ---------------------------------- | ----------------------------------------------------- |
+| Package docs, signatures, versions | `https://pkg.go.dev/\u003cimport-path\u003e`          |
+| Standard library source            | `https://cs.opensource.google/go/go`                  |
+| `golang.org/x` source              | `https://github.com/golang` and `go.googlesource.com` |
+| Analysis passes roster             | `golang.org/x/tools/go/analysis/passes/`              |
+| gopls analyzers                    | `gopls/doc/analyzers.md` in the `tools` repo          |
+| Code search across repos           | Sourcegraph, `grep.app`, GitHub search                |
 
 ## Nix ecosystem
 
-| What | Where to look |
-| --- | --- |
-| Package options, source | `https://search.nixos.org` |
-| nixpkgs source | `https://github.com/NixOS/nixpkgs` |
-| flake-parts docs | `https://flake.parts` |
-| treefmt-nix docs | `https://github.com/numtide/treefmt-nix` |
+| What                    | Where to look                            |
+| ----------------------- | ---------------------------------------- |
+| Package options, source | `https://search.nixos.org`               |
+| nixpkgs source          | `https://github.com/NixOS/nixpkgs`       |
+| flake-parts docs        | `https://flake.parts`                    |
+| treefmt-nix docs        | `https://github.com/numtide/treefmt-nix` |
 
 ## JavaScript / TypeScript
 
-| What | Where to look |
-| --- | --- |
-| Package versions, README | `https://npmjs.com/package/\u003cname\u003e` |
-| JSR registry | `https://jsr.io` |
-| Type docs | `https://github.com/\u003cowner\u003e/\u003crepo\u003e` source |
+| What                     | Where to look                                                  |
+| ------------------------ | -------------------------------------------------------------- |
+| Package versions, README | `https://npmjs.com/package/\u003cname\u003e`                   |
+| JSR registry             | `https://jsr.io`                                               |
+| Type docs                | `https://github.com/\u003cowner\u003e/\u003crepo\u003e` source |
 
 ## Python
 
-| What | Where to look |
-| --- | --- |
-| Package versions | `https://pypi.org/project/\u003cname\u003e/` |
-| Source | `https://github.com/\u003cowner\u003e/\u003crepo\u003e` |
+| What             | Where to look                                           |
+| ---------------- | ------------------------------------------------------- |
+| Package versions | `https://pypi.org/project/\u003cname\u003e/`            |
+| Source           | `https://github.com/\u003cowner\u003e/\u003crepo\u003e` |
 
 ## Rust
 
-| What | Where to look |
-| --- | --- |
+| What                 | Where to look                                                                   |
+| -------------------- | ------------------------------------------------------------------------------- |
 | Crate versions, docs | `https://crates.io/crates/\u003cname\u003e`, `https://docs.rs/\u003cname\u003e` |
 
 ## General source code
 
-| Tool | Use when |
-| --- | --- |
-| Sourcegraph | Cross-repo search for API usage, import paths, tool names |
-| `grep.app` | Fast source search across public repos |
-| GitHub search | Specific repo, issue, or release lookup |
-| `fetch` on a URL | Raw docs or API responses |
-| `agentic_fetch` | Complex extraction, summarization, or ambiguous pages |
+| Tool             | Use when                                                  |
+| ---------------- | --------------------------------------------------------- |
+| Sourcegraph      | Cross-repo search for API usage, import paths, tool names |
+| `grep.app`       | Fast source search across public repos                    |
+| GitHub search    | Specific repo, issue, or release lookup                   |
+| `fetch` on a URL | Raw docs or API responses                                 |
+| `agentic_fetch`  | Complex extraction, summarization, or ambiguous pages     |
 
 ## How to run a minimal check
 

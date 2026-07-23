@@ -4,12 +4,12 @@ Condensed from the comprehensive report at `/home/lars/projects/samber-do-auditl
 
 ## Service lifetimes
 
-| Registration | Lifetime | Use for |
-| --- | --- | --- |
-| `do.Provide` | Lazy singleton | Most services |
-| `do.ProvideValue` | Eager singleton | Config, logger, DB connection |
-| `do.ProvideTransient` | New instance per `Invoke` | Factories, value objects |
-| `do.ProvideNamed` / `do.ProvideNamedValue` | Named singleton | Multiple impls of one type |
+| Registration                               | Lifetime                  | Use for                       |
+| ------------------------------------------ | ------------------------- | ----------------------------- |
+| `do.Provide`                               | Lazy singleton            | Most services                 |
+| `do.ProvideValue`                          | Eager singleton           | Config, logger, DB connection |
+| `do.ProvideTransient`                      | New instance per `Invoke` | Factories, value objects      |
+| `do.ProvideNamed` / `do.ProvideNamedValue` | Named singleton           | Multiple impls of one type    |
 
 ## Invocation
 
@@ -72,18 +72,18 @@ injector := do.New(Package)
 
 ## Decision checklist when adding a service
 
-| Question | If yes | Pattern |
-| --- | --- | --- |
-| Long-lived singleton? | yes | `do.Provide` |
-| Must exist before first invoke? | yes | `do.ProvideValue` |
-| Per-request / per-tenant resource? | yes | `do.ProvideTransient` in a child scope |
-| Multiple implementations? | yes | `do.ProvideNamed` + accessor helper |
-| Consumers depend on interface? | yes | Provide struct, invoke via `do.InvokeAs` |
-| Holds resources? | yes | Implement `do.Shutdowner*` |
-| Needs connectivity check? | yes | Implement `do.Healthchecker*` |
-| Invoked from request handler? | yes | Inject dependency into handler struct |
-| Shutdown order critical? | yes | Use a single lifecycle manager |
-| Code in `_test.go`? | yes | `do.Override*` is acceptable |
+| Question                           | If yes | Pattern                                  |
+| ---------------------------------- | ------ | ---------------------------------------- |
+| Long-lived singleton?              | yes    | `do.Provide`                             |
+| Must exist before first invoke?    | yes    | `do.ProvideValue`                        |
+| Per-request / per-tenant resource? | yes    | `do.ProvideTransient` in a child scope   |
+| Multiple implementations?          | yes    | `do.ProvideNamed` + accessor helper      |
+| Consumers depend on interface?     | yes    | Provide struct, invoke via `do.InvokeAs` |
+| Holds resources?                   | yes    | Implement `do.Shutdowner*`               |
+| Needs connectivity check?          | yes    | Implement `do.Healthchecker*`            |
+| Invoked from request handler?      | yes    | Inject dependency into handler struct    |
+| Shutdown order critical?           | yes    | Use a single lifecycle manager           |
+| Code in `_test.go`?                | yes    | `do.Override*` is acceptable             |
 
 ## Migration from v1 to v2
 

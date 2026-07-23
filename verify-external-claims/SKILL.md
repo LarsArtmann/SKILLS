@@ -35,15 +35,15 @@ Run this checklist on every external claim. A claim is verified only when you ca
 
 ### 2.2 Public indexes and registries
 
-| Domain | Primary source |
-| --- | --- |
-| Go packages | `pkg.go.dev` |
+| Domain          | Primary source                                      |
+| --------------- | --------------------------------------------------- |
+| Go packages     | `pkg.go.dev`                                        |
 | Go source repos | `github.com`, `golang.org/x`, `go.googlesource.com` |
-| Code search | `sourcegraph`, `grep.app`, GitHub search |
-| Nix packages | `search.nixos.org`, `github.com/NixOS/nixpkgs` |
-| npm / JS | `npmjs.com`, `jsr.io` |
-| Python | `pypi.org`, GitHub source |
-| Rust | `crates.io`, `docs.rs` |
+| Code search     | `sourcegraph`, `grep.app`, GitHub search            |
+| Nix packages    | `search.nixos.org`, `github.com/NixOS/nixpkgs`      |
+| npm / JS        | `npmjs.com`, `jsr.io`                               |
+| Python          | `pypi.org`, GitHub source                           |
+| Rust            | `crates.io`, `docs.rs`                              |
 
 ### 2.3 Run the tool or code
 
@@ -65,12 +65,12 @@ If a tool cannot be found in any public index, repository, or registry after rea
 
 ## 3. What to Do with Unverified Claims
 
-| Situation | Action |
-| --- | --- |
-| Claim is verifiable and correct | Encode it; record the primary source in the doc or a comment |
-| Claim is unverifiable but useful as a reported lead | Label it explicitly: "unverified: reported in <source>, not independently confirmed" |
-| Claim is unverifiable and not durable | Remove it |
-| Entire tool or library cannot be found publicly | Reframe the skill around durable concepts (API semantics, anti-patterns) rather than the specific tool |
+| Situation                                           | Action                                                                                                 |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Claim is verifiable and correct                     | Encode it; record the primary source in the doc or a comment                                           |
+| Claim is unverifiable but useful as a reported lead | Label it explicitly: "unverified: reported in <source>, not independently confirmed"                   |
+| Claim is unverifiable and not durable               | Remove it                                                                                              |
+| Entire tool or library cannot be found publicly     | Reframe the skill around durable concepts (API semantics, anti-patterns) rather than the specific tool |
 
 Never mark work as **🟢 Solid** when it contains unverified external claims. New skills start at **🆕 New** and age into **🟢 Solid** only after a documented successful run.
 
@@ -91,11 +91,11 @@ If a skill documents a tool whose CLI behavior cannot be verified, add this bloc
 ```markdown
 ## Verification status
 
-| Claim | Status | Source |
-| --- | --- | --- |
-| `errors.AsType[E] (E, bool)` API | ✅ Verified | pkg.go.dev/errors (Go 1.26.0) |
-| Tool binary `hierarchical-errors lint` | ❌ Unverified | Searched GitHub, Sourcegraph, pkg.go.dev; no public binary found |
-| Decision tree for `errors.As` vs `errors.Is` vs `errors.AsType` | ✅ Verified | Go `errors` package semantics |
+| Claim                                                           | Status        | Source                                                           |
+| --------------------------------------------------------------- | ------------- | ---------------------------------------------------------------- |
+| `errors.AsType[E] (E, bool)` API                                | ✅ Verified   | pkg.go.dev/errors (Go 1.26.0)                                    |
+| Tool binary `hierarchical-errors lint`                          | ❌ Unverified | Searched GitHub, Sourcegraph, pkg.go.dev; no public binary found |
+| Decision tree for `errors.As` vs `errors.Is` vs `errors.AsType` | ✅ Verified   | Go `errors` package semantics                                    |
 ```
 
 Replace the rows with the actual claims in the skill. The durable value of the skill should survive even if the specific tool does not exist.

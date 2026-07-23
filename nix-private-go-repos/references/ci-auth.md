@@ -51,12 +51,12 @@ Rewrite SSH URLs to HTTPS with token auth. No deploy keys needed.
 
 ## Which to Choose
 
-| Situation | Recommendation |
-| --- | --- |
-| Few private repos, long-lived project | Deploy keys — explicit, minimal blast radius |
-| Many private repos, no deploy-key management | `GITHUB_TOKEN` with `insteadOf` — no key rotation overhead |
-| Cross-organization private deps | `GITHUB_TOKEN` usually simpler if token access can be granted |
-| Strictest separation of concerns | Deploy keys with one key per repo |
+| Situation                                    | Recommendation                                                |
+| -------------------------------------------- | ------------------------------------------------------------- |
+| Few private repos, long-lived project        | Deploy keys — explicit, minimal blast radius                  |
+| Many private repos, no deploy-key management | `GITHUB_TOKEN` with `insteadOf` — no key rotation overhead    |
+| Cross-organization private deps              | `GITHUB_TOKEN` usually simpler if token access can be granted |
+| Strictest separation of concerns             | Deploy keys with one key per repo                             |
 
 ## Verify
 

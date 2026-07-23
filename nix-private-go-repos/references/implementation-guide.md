@@ -106,13 +106,13 @@ Full annotated example and gotcha catalog for using `mkPreparedSource` + `GOPRIV
 
 ## Key Features of `mkPreparedSource`
 
-| Feature | What it does |
-| --- | --- |
-| Auto-discovery | Recursively scans each dep for all `go.mod` files at any depth |
-| Build-time validation | Verifies every private module in `go.mod` has a `replace` directive |
+| Feature               | What it does                                                                        |
+| --------------------- | ----------------------------------------------------------------------------------- |
+| Auto-discovery        | Recursively scans each dep for all `go.mod` files at any depth                      |
+| Build-time validation | Verifies every private module in `go.mod` has a `replace` directive                 |
 | `/vN` suffix handling | Strips version suffixes from local paths while keeping them in `replace` directives |
-| Stale replace cleanup | Removes dev-machine `/home/...` and `../sibling` replaces before injecting its own |
-| `privateDepPattern` | Default `github\\.com/[Ll]ars[Aa]rtmann/`; override for other private hosts |
+| Stale replace cleanup | Removes dev-machine `/home/...` and `../sibling` replaces before injecting its own  |
+| `privateDepPattern`   | Default `github\\.com/[Ll]ars[Aa]rtmann/`; override for other private hosts         |
 
 ## Getting `vendorHash`
 
@@ -149,16 +149,16 @@ Without this, Go tries HTTPS and fails with `could not read Username`.
 
 ## Why Other Approaches Fail
 
-| Approach | Why not |
-| --- | --- |
-| Committed `vendor/` | Massive diffs, stale deps, merge conflicts, repo bloat |
-| `--impure` builds | Destroys reproducibility and caching |
-| SSH keys in derivation | World-readable in `/nix/store` |
-| `overrideModAttrs` + netrc | Requires `impureEnvVars`; token visible in process list |
-| Athens proxy | Infrastructure overhead |
-| `--sandbox-paths` netrc | Manual file management; token in `/tmp` |
-| `netrc-file` in `nix.conf` | Does not work with `buildGoModule` |
-| go-overlay | Third-party, not in nixpkgs, unproven |
+| Approach                               | Why not                                                         |
+| -------------------------------------- | --------------------------------------------------------------- |
+| Committed `vendor/`                    | Massive diffs, stale deps, merge conflicts, repo bloat          |
+| `--impure` builds                      | Destroys reproducibility and caching                            |
+| SSH keys in derivation                 | World-readable in `/nix/store`                                  |
+| `overrideModAttrs` + netrc             | Requires `impureEnvVars`; token visible in process list         |
+| Athens proxy                           | Infrastructure overhead                                         |
+| `--sandbox-paths` netrc                | Manual file management; token in `/tmp`                         |
+| `netrc-file` in `nix.conf`             | Does not work with `buildGoModule`                              |
+| go-overlay                             | Third-party, not in nixpkgs, unproven                           |
 | Raw `replace` directives in `preBuild` | Fails with "illegal path references in fixed-output derivation" |
 
 ## Gotcha Catalog

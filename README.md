@@ -45,19 +45,19 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Skill Authoring & Verification
 
-| Skill                    | What It Does                                                                              | Status   |
-| ------------------------ | ----------------------------------------------------------------------------------------- | -------- |
-| **verify-external-claims** | Verify external tool/library claims before encoding them into skills, code, or docs | 🆕 New   |
+| Skill                      | What It Does                                                                        | Status |
+| -------------------------- | ----------------------------------------------------------------------------------- | ------ |
+| **verify-external-claims** | Verify external tool/library claims before encoding them into skills, code, or docs | 🆕 New |
 
 ### Go Ecosystem
 
-| Skill                   | What It Does                                                                                                     | Status           |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------- |
-| **bdd-testing**         | BDD tests with `onsi/ginkgo` for Go projects                                                                     | 🟢 Solid         |
-| **go-modularize**       | Splits Go monorepos into semi-independent sub-modules                                                            | 🟢 Comprehensive |
-| **hierarchical-errors** | Go 1.26+ error-matching modernization — prevents cargo-cult `errors.As`/`errors.Is` regressions (CLI unverified) | 🆕 New           |
-| **how-to-golang**       | Go development decision guide — what to use, not how                                                             | 🟢 Comprehensive |
-| **samber-do-best-practices** | Correct samber/do v2 DI usage — lifecycle, scopes, anti-patterns DO-1 → DO-6                                  | 🆕 New           |
+| Skill                        | What It Does                                                                                                     | Status           |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **bdd-testing**              | BDD tests with `onsi/ginkgo` for Go projects                                                                     | 🟢 Solid         |
+| **go-modularize**            | Splits Go monorepos into semi-independent sub-modules                                                            | 🟢 Comprehensive |
+| **hierarchical-errors**      | Go 1.26+ error-matching modernization — prevents cargo-cult `errors.As`/`errors.Is` regressions (CLI unverified) | 🆕 New           |
+| **how-to-golang**            | Go development decision guide — what to use, not how                                                             | 🟢 Comprehensive |
+| **samber-do-best-practices** | Correct samber/do v2 DI usage — lifecycle, scopes, anti-patterns DO-1 → DO-6                                     | 🆕 New           |
 
 ### Nix & DevOps
 
@@ -65,7 +65,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 | ------------------------ | ------------------------------------------------------------------------------------ | ---------------- |
 | **nix-flake-migration**  | Migration proposals from justfile/shell scripts to Nix flakes → HTML                 | 🟡 Thin          |
 | **nix-private-go-repos** | Build Go projects with private GitHub deps in Nix — `mkPreparedSource` + `GOPRIVATE` | 🆕 New           |
-| **nix-review**           | Reviews and improves `.nix` files — 50+ problems, checklist-driven                 | 🟢 Comprehensive |
+| **nix-review**           | Reviews and improves `.nix` files — 50+ problems, checklist-driven                   | 🟢 Comprehensive |
 
 ### Library & Dependency Research
 

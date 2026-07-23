@@ -72,13 +72,13 @@ Load [./references/ci-auth.md](./references/ci-auth.md) for copy-paste workflows
 
 ## 5. Common Gotchas
 
-| Gotcha | Symptom | Fix |
-| --- | --- | --- |
-| Case-sensitive `GOPRIVATE` | `go mod tidy` still fails for mixed-case imports | Use `GOPRIVATE = "github.com/larsartmann/*,github.com/LarsArtmann/*";` |
-| Public LarsArtmann repo in `go.mod` | `mkPreparedSource` validation fails because repo is not in `deps` | Set `validatePrivateDeps = false;` |
-| Transitive private deps | Build fails on a private dep of a private dep | Add the transitive dep as a flake input too, or disable validation |
-| `tools/go.mod` | Secondary module lacks `replace` directives | Use `postPatchExtra` to inject replaces there too |
-| `go.work` | Workspace resolution interferes with module builds | Set `GOWORK = "off";` in devShells |
+| Gotcha                              | Symptom                                                           | Fix                                                                    |
+| ----------------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Case-sensitive `GOPRIVATE`          | `go mod tidy` still fails for mixed-case imports                  | Use `GOPRIVATE = "github.com/larsartmann/*,github.com/LarsArtmann/*";` |
+| Public LarsArtmann repo in `go.mod` | `mkPreparedSource` validation fails because repo is not in `deps` | Set `validatePrivateDeps = false;`                                     |
+| Transitive private deps             | Build fails on a private dep of a private dep                     | Add the transitive dep as a flake input too, or disable validation     |
+| `tools/go.mod`                      | Secondary module lacks `replace` directives                       | Use `postPatchExtra` to inject replaces there too                      |
+| `go.work`                           | Workspace resolution interferes with module builds                | Set `GOWORK = "off";` in devShells                                     |
 
 For the full gotcha list, load [./references/implementation-guide.md](./references/implementation-guide.md).
 
