@@ -22,15 +22,15 @@ The ecosystem standard for Go projects:
 
 ## Migration Types
 
-| From                            | To                            | Key Changes                                                |
-| ------------------------------- | ----------------------------- | ---------------------------------------------------------- |
-| `justfile` / `Makefile`         | `flake.nix`                   | Commands become `apps` or `checks`; deps become `packages` |
-| `flake-utils` / `forEachSystem` | `flake-parts`                 | Replace `eachDefaultSystem` with `flake-parts.lib.mkFlake` |
-| Raw `flake.nix`                 | `flake-parts` + `treefmt-nix` | Add modules, extract per-system logic                      |
+| From                            | To                            | Key Changes                                                  |
+| ------------------------------- | ----------------------------- | ------------------------------------------------------------ |
+| `justfile` / `Makefile`         | `flake.nix`                   | Commands become `apps` or `checks`; deps become `packages`   |
+| `flake-utils` / `forEachSystem` | `flake-parts`                 | Replace `eachDefaultSystem` with `flake-parts.lib.mkFlake`   |
+| Raw `flake.nix`                 | `flake-parts` + `treefmt-nix` | Add modules, extract per-system logic                        |
 | **Manual 5-input flake.nix**    | **`go-standard` module**      | **Replace 80+ lines with `imports + go-standard = { ... }`** |
-| No formatter                    | `treefmt-nix`                 | Add `imports`, configure `treefmt.programs`                |
-| No checks                       | Standard checks               | Add `checks.format` + `checks.build`                       |
-| `mkShell` CI                    | `mkShellNoCC` CI              | Use `mkShellNoCC` for faster CI shells                     |
+| No formatter                    | `treefmt-nix`                 | Add `imports`, configure `treefmt.programs`                  |
+| No checks                       | Standard checks               | Add `checks.format` + `checks.build`                         |
+| `mkShell` CI                    | `mkShellNoCC` CI              | Use `mkShellNoCC` for faster CI shells                       |
 
 ## Process
 
