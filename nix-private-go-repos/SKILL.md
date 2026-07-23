@@ -35,6 +35,51 @@ git ls-files | grep '^vendor/' | wc -l
 
 ## 2. Apply the Two-Part Solution
 
+### Option A: Using `flakeModules.go-standard` (recommended for LarsArtmann projects)
+
+If the project already uses (or can adopt) the `go-standard` module from `go-nix-helpers`,
+private deps are fully auto-wired. Just set `deps` in the go-standard config:
+
+```nix
+inputs = {
+  nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  flake-parts = {
+    url = "github:hercules-ci/flake-parts";
+    inputs.nixpkgs-lib.follows = "nixpkgs";
+  };
+  go-nix-helpers = {
+    url = "git+ssh://git@github.com/LarsArtmann/go-nix-helpers?ref=master";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+  # Private deps (flake = false)
+  go-cqrs-lite = {
+    url = "git+ssh://git@github.com/LarsArtmann/go-cqrs-lite?ref=master";
+    flake = false;
+  };
+};
+
+outputs = inputs@{ self, ... }:
+  flake-parts.lib.mkFlake { inherit inputs; } {
+    imports = [ inputs.go-nix-helpers.flakeModules.go-standard ];
+
+    go-standard = {
+      pname = "my-project";
+      vendorHash = "sha256-...";
+      description = "What it does";
+      deps = {
+        "github.com/larsartmann/go-cqrs-lite" = inputs.go-cqrs-lite;
+      };
+      # GOPRIVATE is auto-injected. mkPreparedSource is auto-wired.
+      # Sub-modules are auto-discovered. GOTOOLCHAIN=local is set.
+    };
+  };
+```
+
+That's it. No manual mkPreparedSource import, no GOPRIVATE boilerplate, no postPatch
+workarounds. The module handles everything when `deps` is non-empty.
+
+### Option B: Manual mkPreparedSource (for projects not using go-standard)
+
 1. Add each private dependency as a flake input with `git+ssh://` and `flake = false`.
 2. Import `mkPreparedSource` from `go-nix-helpers` and list the private deps in the `deps` map.
 3. Set `vendorHash` with `pkgs.lib.fakeHash`, run `nix build .#default`, and copy the correct hash from the error.
