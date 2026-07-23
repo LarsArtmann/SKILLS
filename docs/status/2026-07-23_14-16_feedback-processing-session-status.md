@@ -132,3 +132,32 @@
 ## Summary
 
 Three feedback files reviewed, three skills created, README updated, feedback processed, validation passes. The main failure was re-discovering already-committed work due to a stale git snapshot — a fixable process issue. The main gap is that the new skills lack verification-status blocks for their external tool references and haven't been cross-referenced from existing skills. The uncommitted README formatting change is minor but legitimate.
+
+---
+
+## Appendix — Follow-up Session (2026-07-23, later same day)
+
+A follow-up session resolved all items from sections **c) NOT STARTED** and **e) WHAT WE SHOULD IMPROVE** (items 1–7).
+
+### Resolved items
+
+| Original item | Resolution |
+| --- | --- |
+| Commit README changes | Already committed in `ac7336d` (table alignment) — working tree was clean at follow-up start |
+| Verification-status block: `nix-private-go-repos` | Added — notes `go-nix-helpers` is private (SSH-only), concepts (GOPRIVATE, vendorHash, replace) are public/durable |
+| Verification-status block: `samber-do-best-practices` | Added — notes `branching-flow/pkg/doanalyzerv2` and `samber-do-auditlog` are private; samber/do v2 API and DO-1→DO-6 anti-patterns are verified/durable |
+| Cross-reference: `how-to-golang` → `samber-do-best-practices` | Added in `key-patterns.md` DI section |
+| Cross-reference: `nix-review` → `nix-private-go-repos` | Added in `best-practices.md` Private Dependencies section, noting `mkPreparedSource` as the modern alternative to the old `overrideModAttrs` pattern |
+| AGENTS.md §10 external deps | Added 3 rows: `go-nix-helpers`, `branching-flow/pkg/doanalyzerv2`, `samber-do-auditlog` — all marked **Status: private** |
+| Verify all referenced paths exist | All verified — internal references and external project paths (`samber-do-auditlog`, `branching-flow`, `go-nix-helpers`) all exist |
+| Test `audit-do.sh` | Works — found 6 files importing samber/do in `branching-flow`, correct import counts |
+| Test `list-private-deps.sh` | Works — found 4 private deps in `branching-flow` go.mod. **Bug found and fixed:** Nix URL had semicolon inside quotes (`?ref=master;"`) — corrected to `?ref=master";` |
+| README quality paragraph | Updated to mention all three verification-status blocks (not just `hierarchical-errors`) |
+
+### Bug fixed during follow-up
+
+`list-private-deps.sh` line 26 generated invalid Nix syntax: `url = "...?ref=master;"` (semicolon inside string). Corrected to `url = "...?ref=master";` (semicolon outside string, terminates the attribute assignment). Verified the fix produces valid Nix flake input stubs.
+
+### Items from section f) still open
+
+Items 11–50 remain open. The highest-impact next steps are: flesh out functional skills (11–15), audit all skills for unverified claims using `verify-external-claims` (16), and split `website-launch` into SKILL.md + references (18).
