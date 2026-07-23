@@ -14,6 +14,7 @@ description: >-
   presence overhaul", "deploy website", or "lars.software domain".
 metadata:
   tags: website, firebase, astro, starlight, dns, deployment, documentation
+allowed-tools: bash view edit write grep fetch
 ---
 
 # Website Launch

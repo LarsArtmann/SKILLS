@@ -92,7 +92,7 @@ Key patterns:
 
 ### Step 5: Create the HTML Presentation
 
-Write a self-contained, zero-dependency HTML file at `docs/brainstorming/YYYY-MM-DD_<slug>.html`.
+Write a self-contained, zero-dependency HTML file at `docs/reviews/YYYY-MM-DD_<slug>.html`.
 
 Use the **shared design system** from the `html-report-kit` skill:
 

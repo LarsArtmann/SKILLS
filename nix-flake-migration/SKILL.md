@@ -3,6 +3,7 @@ name: nix-flake-migration
 description: Creates a migration proposal from justfile and shell scripts to nix flakes. Use when the user wants to plan or start migrating a project from justfile/makefile/shell scripts to nix flake-based build automation, or says "nix flake migration". Also use when converting from flake-utils/forEachSystem to flake-parts, adding treefmt-nix to an existing flake, or standardizing an ad-hoc flake to the ecosystem standard. Covers migration planning, standard stack adoption, and concrete flake templates.
 metadata:
   tags: nix, flakes, migration, build, justfile, flake-parts, treefmt, standardization
+allowed-tools: bash view edit write grep
 ---
 
 # Nix Flake Migration
