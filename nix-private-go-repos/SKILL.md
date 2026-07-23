@@ -16,6 +16,20 @@ You need **both** parts:
 - **`mkPreparedSource`** for hermetic `nix build` — it copies private deps into the source tree and injects `replace` directives before the build derivation.
 - **`GOPRIVATE` in devShell** for local development — it stops `go mod tidy` / `go get` from hitting the public Go proxy for private paths.
 
+> ## Verification status (read first)
+>
+> **Verified independent of private projects:**
+>
+> - `GOPRIVATE`, `vendorHash`, `buildGoModule`, `replace` directives, and `git+ssh://` flake inputs are all public, documented Nix and Go concepts. The two-part solution (hermetic build via source preparation + devShell GOPRIVATE) follows logically from how Go modules and the Nix sandbox interact.
+> - The problems with committed `vendor/` (massive diffs, stale deps, merge conflicts) are well-known and widely documented.
+>
+> **Could not be independently verified from public sources:**
+>
+> - `github.com/LarsArtmann/go-nix-helpers` is a **private** repo (`git+ssh://git@github.com/LarsArtmann/go-nix-helpers`, SSH-only). The `mkPreparedSource` function, the `flakeModules.go-standard` module, and their specific APIs (`deps` map, `validatePrivateDeps`, `postPatchExtra`) are from local access to that repo, not from a public registry or documentation.
+> - The exact `go-standard` option names (`pname`, `vendorHash`, `description`, `deps`) and the auto-injection behavior cannot be confirmed without access to the private source.
+>
+> **Bottom line:** the approach (replace directives + GOPRIVATE + vendorHash + one flake input per private repo) is the standard pattern for private Go deps in Nix. The specific helper library API may evolve; verify option names against the current `go-nix-helpers` source before relying on them.
+
 ## 1. Diagnose
 
 Confirm you are hitting this problem:

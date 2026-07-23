@@ -18,6 +18,8 @@ func NewUserService(i do.Injector) (*UserService, error) {
 
 Lifecycle: implement `do.Shutdowner` and/or `do.HealthcheckerWithContext`.
 
+For the full DI audit checklist (DO-1 → DO-6 anti-patterns, canonical provider patterns, lifecycle wiring), see the **samber-do-best-practices** skill.
+
 ## Error Handling
 
 ```go

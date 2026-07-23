@@ -246,6 +246,8 @@ inputs = {
 
 For private Go repos, use the `overrideModAttrs` + `preBuild` pattern:
 
+> **Note:** The pattern below works but is verbose. The modern approach for LarsArtmann projects is `mkPreparedSource` from `go-nix-helpers`, which auto-wires replace directives, GOPRIVATE, and sub-module discovery. See the **nix-private-go-repos** skill for the full setup.
+
 ```nix
 let
   dummyDep = pkgs.runCommand "dummy" {} "mkdir $out";

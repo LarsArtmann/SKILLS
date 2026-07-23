@@ -13,6 +13,20 @@ metadata:
 
 The single source of truth is the comprehensive report in [./references/samber-do-best-practices-report.md](./references/samber-do-best-practices-report.md). Read it on demand for deep examples, real-workspace case studies, and migration notes.
 
+> ## Verification status (read first)
+>
+> **Verified independent of private projects:**
+>
+> - `github.com/samber/do/v2` is a public library — API confirmed at [pkg.go.dev/github.com/samber/do/v2](https://pkg.go.dev/github.com/samber/do/v2). All canonical patterns (composition root, `Provide`/`ProvideValue`/`ProvideNamed`, `Invoke`/`InvokeAs`, `Shutdown`, `Package`, lifecycle interfaces) follow from the public API.
+> - The DO-1 through DO-6 anti-patterns are sound DI principles that apply to any dependency-injection container, not just `samber/do`. The reasoning (`Must*` panics on runtime paths, missing `Shutdown` leaks resources, global injectors prevent testing, etc.) is self-evident from the API contract.
+>
+> **Could not be independently verified from public sources:**
+>
+> - `branching-flow/pkg/doanalyzerv2` is a **private** LarsArtmann project (`git@github.com:LarsArtmann/branching-flow.git`, SSH-only). The claim that DO-1 → DO-6 are "already implemented" as analyzer rules is based on local access to that repo, not on a public linter. The specific rule IDs and their implementations cannot be checked without access.
+> - `samber-do-auditlog` is also a **private** LarsArtmann repo. Its API surface as referenced in §2 (audit hooks for registrations, invocations, health checks, shutdowns) is from local code, not a public package.
+>
+> **Bottom line:** the canonical patterns and anti-patterns are durable and survive independently of the private tooling. If the private linter or audit library changes or disappears, the skill's recommendations remain valid.
+
 ## 1. Before Editing
 
 1. Load the comprehensive report when you need background or examples:
