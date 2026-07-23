@@ -37,8 +37,9 @@ git ls-files | grep '^vendor/' | wc -l
 
 ### Option A: Using `flakeModules.go-standard` (recommended for LarsArtmann projects)
 
-If the project already uses (or can adopt) the `go-standard` module from `go-nix-helpers`,
-private deps are fully auto-wired. Just set `deps` in the go-standard config:
+**`github.com/LarsArtmann/go-nix-helpers`** is a shared Nix library repo that provides a flake-parts
+module called `flakeModules.go-standard`. When a project uses this module, private deps are fully
+auto-wired — just set `deps` in the go-standard config:
 
 ```nix
 inputs = {
@@ -80,8 +81,10 @@ workarounds. The module handles everything when `deps` is non-empty.
 
 ### Option B: Manual mkPreparedSource (for projects not using go-standard)
 
+For projects not using the `go-standard` module from `github.com/LarsArtmann/go-nix-helpers`:
+
 1. Add each private dependency as a flake input with `git+ssh://` and `flake = false`.
-2. Import `mkPreparedSource` from `go-nix-helpers` and list the private deps in the `deps` map.
+2. Import `mkPreparedSource` from `github.com/LarsArtmann/go-nix-helpers` and list the private deps in the `deps` map.
 3. Set `vendorHash` with `pkgs.lib.fakeHash`, run `nix build .#default`, and copy the correct hash from the error.
 4. Add `GOPRIVATE = "github.com/larsartmann/*,github.com/LarsArtmann/*";` to **every** devShell and CI shell.
 5. Configure local git to rewrite HTTPS GitHub URLs to SSH:

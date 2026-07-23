@@ -36,7 +36,7 @@ The ecosystem standard for Go projects:
 
 1. **Discovery**: Read existing build files (`justfile`, `Makefile`, `.sh` scripts, current `flake.nix`)
 2. **Decision**: If `docs/proposals/nix-flake-migration.html` or any `docs/proposals/<YYYY-MM-DD_nix-flake-migration.html` exists, STOP — do not overwrite. Otherwise proceed.
-3. **Check for go-nix-helpers**: If this is a LarsArtmann Go project, check whether it already uses `flakeModules.go-standard`. If not, recommend migrating to the 3-input pattern (see below). Only use the full manual template for non-LarsArtmann projects or those needing full control.
+3. **Check for go-nix-helpers**: If this is a LarsArtmann Go project, check whether it already uses `flakeModules.go-standard` from **`github.com/LarsArtmann/go-nix-helpers`**. If not, recommend migrating to the 3-input pattern (see below). Only use the full manual template for non-LarsArtmann projects or those needing full control.
 4. **Map commands**: Translate `just` recipes / `make` targets to Nix constructs:
    - Build → `packages.default` via `buildGoModule`
    - Test → `checks.test` (override `doCheck = true`)
@@ -53,8 +53,9 @@ The ecosystem standard for Go projects:
 
 ### LarsArtmann Go projects: use `flakeModules.go-standard` (3 inputs, ~20 lines)
 
-The `go-nix-helpers` repository provides a shared flake-parts module that bundles
-treefmt-nix and systems internally. Consumers need only **3 inputs** instead of 5.
+**`github.com/LarsArtmann/go-nix-helpers`** is a shared Nix library repo (imported as a flake input).
+It provides `flakeModules.go-standard` — a flake-parts module that bundles treefmt-nix and systems
+internally. Consumers need only **3 inputs** instead of 5.
 
 This is the **recommended** approach for all LarsArtmann Go projects. It generates:
 packages, apps (default/test/lint), devShells (default/ci), checks, treefmt,
@@ -90,7 +91,7 @@ overlay, private dep injection (mkPreparedSource), and GOPRIVATE auto-injection.
 ```
 
 That's the **entire** flake.nix. No perSystem boilerplate, no treefmt-nix input,
-no systems input. See [go-nix-helpers README](https://github.com/LarsArtmann/go-nix-helpers)
+no systems input. See [github.com/LarsArtmann/go-nix-helpers README](https://github.com/LarsArtmann/go-nix-helpers)
 for all options (enableTempl, deps, ldflags, extraBuildAttrs, etc.).
 
 ### Non-LarsArtmann or manual projects: full template

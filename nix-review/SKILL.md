@@ -61,7 +61,7 @@ For each file, check ALL categories below. Read `references/common-problems.md` 
 #### Structural
 
 - [ ] **Standard stack** — `flake-parts` + `treefmt-nix` + `systems` + `git-hooks-nix` for Go projects
-- [ ] **LarsArtmann Go projects use `go-standard`** — check for `imports = [ inputs.go-nix-helpers.flakeModules.go-standard ];`. If a LarsArtmann Go project has a manual 5-input flake.nix with 80+ lines of perSystem boilerplate, recommend migrating to `go-standard` (3 inputs, ~20 lines). See the `nix-flake-migration` skill for the migration path.
+- [ ] **LarsArtmann Go projects use `go-standard`** — check for `imports = [ inputs.go-nix-helpers.flakeModules.go-standard ];`. The `go-standard` module lives in **`github.com/LarsArtmann/go-nix-helpers`** (a shared Nix library repo). If a LarsArtmann Go project has a manual 5-input flake.nix with 80+ lines of perSystem boilerplate, recommend migrating to `go-standard` (3 inputs, ~20 lines). See the `nix-flake-migration` skill for the migration path.
 - [ ] **No unnecessary nixpkgs re-instantiation** — use `legacyPackages.${system}` instead of `import nixpkgs {}`
 - [ ] **No duplicated hashes** — extract `vendorHash` to a `let` binding
 - [ ] **Files under ~300 lines** — split monoliths into focused modules
