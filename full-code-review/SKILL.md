@@ -27,7 +27,7 @@ For the full checklist of questions to ask per file, load [./references/architec
 
 ## Planning Phase
 
-1. Before you start, make sure our repo/git is clean. Run `git status`, then commit any pending work with a very detailed message, then `git push`.
+1. Before you start, make sure our repo/git is clean. Run `git status`, then commit any pending work with a very detailed message.
 
 2. **Delegate planning to the `pareto-planning` skill.** Do not re-implement Pareto
    breakdown, task splitting, or the D2 execution graph here — that duplication is a
@@ -71,9 +71,9 @@ visual treatment.
 
 ## Git Workflow
 
-- Before starting: run `git status`, then commit any pending work with a very detailed message, then `git push`.
-- After each significant change: run `git status`, then commit with a very detailed message, then `git push`.
-- When done: `git push`
+- Before starting: run `git status`, then commit any pending work with a very detailed message.
+- After each significant change: run `git status`, then commit with a very detailed message.
+- Do not push unless the user explicitly requests it.
 - WAIT FOR FURTHER INSTRUCTIONS!
 
 NOTE: Use the cli to get the current date.

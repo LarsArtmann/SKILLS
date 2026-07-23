@@ -94,7 +94,7 @@ Use this as the starting point for all Go project migrations:
             meta = with lib; {
               description = "...";
               license = licenses.mit;
-              maintainers = [ maintainers.larsartmann ];
+              maintainers = [ maintainers.{maintainer} ];
               mainProgram = "my-project";
             };
           };
@@ -102,13 +102,13 @@ Use this as the starting point for all Go project migrations:
           devShells.default = pkgs.mkShellNoCC {
             packages = with pkgs; [ goPkg gopls golangci-lint templ ];
             GOWORK = "off";
-            GOPRIVATE = "github.com/larsartmann";
+            GOPRIVATE = "github.com/{maintainer}";
           };
 
           devShells.ci = pkgs.mkShellNoCC {
             packages = with pkgs; [ goPkg golangci-lint templ ];
             GOWORK = "off";
-            GOPRIVATE = "github.com/larsartmann";
+            GOPRIVATE = "github.com/{maintainer}";
           };
 
           treefmt = {

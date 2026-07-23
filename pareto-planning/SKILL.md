@@ -67,9 +67,9 @@ Remember: If you VERSCHLIMMBESSER this system, I will cut off your balls! I hope
 
 ## Git Workflow
 
-1. Before you start, make sure our repo/git is clean. Run `git status`, then commit any pending work with a very detailed message, then `git push`.
-2. After each significant change: run `git status`, then commit with a very detailed message, then `git push`.
-3. When done: `git push`
+1. Before you start, make sure our repo/git is clean. Run `git status`, then commit any pending work with a very detailed message.
+2. After each significant change: run `git status`, then commit with a very detailed message.
+3. Do not push unless the user explicitly requests it.
 
 ## Full Execution Mode
 

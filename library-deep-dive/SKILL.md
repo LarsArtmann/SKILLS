@@ -136,7 +136,7 @@ After the report, consider which related skills add value:
 1. Run `git status` to verify what changed.
 2. Stage the report: `git add docs/research/<file>.html`.
 3. Commit with a VERY DETAILED message describing the library reviewed, the adoption score, key findings, and missed opportunities.
-4. Push with `git push`.
+4. Do not push unless the user explicitly requests it.
 
 ## Execution
 

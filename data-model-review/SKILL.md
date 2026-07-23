@@ -137,7 +137,7 @@ Before finishing:
    - Go type system features used in the redesign
    - Files added
    - Design decisions
-4. Push with `git push`.
+4. Do not push unless the user explicitly requests it.
 
 ## Execution
 
