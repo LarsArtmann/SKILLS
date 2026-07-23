@@ -6,6 +6,7 @@ description: >
   JUDGMENT and ZERO HARMFUL duplication. It does NOT mean zero report lines.
 metadata:
   tags: deduplication, quality, cleanup, art-dupl
+allowed-tools: bash view edit grep
 ---
 
 # Deduplicate Code

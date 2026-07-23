@@ -48,10 +48,3 @@ treatment: stat cards, severity badges, color-coded sections.
 > asks to bring old status reports current, defer to the
 > [`update-old-docs`](../update-old-docs/SKILL.md) skill — annotate
 > non-destructively (inline correction or end-of-file appendix), never rewrite.
-
-## Execution
-
-READ, UNDERSTAND, RESEARCH, REFLECT.
-Break this down into multiple actionable steps. Think about them again.
-Execute and Verify them one step at the time.
-Repeat until done. Keep going until everything works and you think you did a great job!

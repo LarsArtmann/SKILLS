@@ -3,6 +3,7 @@ name: bdd-testing
 description: Implements Behavior-driven development (BDD) tests using onsi/ginkgo for Go projects. Use when the user wants to add BDD tests, user-focused tests, ginkgo tests, or says "BDD" in the context of testing Go code.
 metadata:
   tags: testing, bdd, ginkgo, go, user-focused
+allowed-tools: bash view edit go
 ---
 
 # BDD Testing
@@ -37,10 +38,3 @@ READ, UNDERSTAND, RESEARCH, REFLECT before writing any spec.
 ## When to use tables
 
 When many inputs share one behavior shape, prefer `DescribeTable` + `Entry` over copy-pasted `It` blocks — see the syntax reference's "Table-driven specs" section. Each `Entry` is its own spec, so failures point at the exact case.
-
-## Execution
-
-READ, UNDERSTAND, RESEARCH, REFLECT.
-Break this down into multiple actionable steps. Think about them again.
-Execute and Verify them one step at the time.
-Repeat until done. Keep going until everything works and you think you did a great job!

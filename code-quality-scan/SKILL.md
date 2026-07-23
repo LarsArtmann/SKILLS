@@ -3,6 +3,7 @@ name: code-quality-scan
 description: Runs build, lint, and code duplication analysis to surface all code quality issues. Use when the user asks to check code quality, run build and lint, find code duplication, or wants a sorted list of all issues.
 metadata:
   tags: quality, build, lint, duplication, issues, scan
+allowed-tools: bash view edit grep
 ---
 
 # Code Quality Scan
@@ -34,10 +35,3 @@ Write a **self-contained styled HTML report** — a sorted issue dashboard.
    - Sort by severity (critical first), then by file
    - Max 250 issues
 5. Use `date` CLI for the filename timestamp
-
-## Execution
-
-READ, UNDERSTAND, RESEARCH, REFLECT.
-Break this down into multiple actionable steps. Think about them again.
-Execute and Verify them one step at the time.
-Repeat until done. Keep going until everything works and you think you did a great job!

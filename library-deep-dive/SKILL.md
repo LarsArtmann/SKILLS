@@ -137,10 +137,3 @@ After the report, consider which related skills add value:
 2. Stage the report: `git add docs/research/<file>.html`.
 3. Commit with a VERY DETAILED message describing the library reviewed, the adoption score, key findings, and missed opportunities.
 4. Do not push unless the user explicitly requests it.
-
-## Execution
-
-READ, UNDERSTAND, RESEARCH, REFLECT.
-Break this down into multiple actionable steps. Think about them again.
-Execute and Verify them one step at a time.
-Repeat until done. Keep going until everything works and you think you did a great job!

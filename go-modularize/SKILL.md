@@ -246,10 +246,3 @@ output. Dependency graphs render as D2→inline SVG within the HTML.
 Do not push unless the user explicitly requests it.
 
 ---
-
-## Execution
-
-READ, UNDERSTAND, RESEARCH, REFLECT.
-Break this down into multiple actionable steps. Think about them again.
-Execute and verify them one step at a time.
-Repeat until done. Keep going until everything works and you did a great job!

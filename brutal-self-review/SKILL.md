@@ -67,10 +67,3 @@ For Go ecosystem libraries, architecture patterns, banned libraries, and require
 Report back and ask questions if necessary aka. have a hard time to figure something out!
 Run "git status & git commit ..." after each smallest self-contained change.
 Do not push unless the user explicitly requests it.
-
-## Execution
-
-READ, UNDERSTAND, RESEARCH, REFLECT.
-Break this down into multiple actionable steps. Think about them again.
-Execute and Verify them one step at the time.
-Repeat until done. Keep going until everything works and you think you did a great job!

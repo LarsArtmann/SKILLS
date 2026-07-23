@@ -3,6 +3,7 @@ name: how-to-golang
 description: Go development decision guide — WHAT to use, not HOW. Use this skill when writing Go code, choosing Go libraries, setting up a Go project, reviewing Go dependencies, or when the user asks about Go best practices, Go library choices, banned Go libraries, Go architecture patterns, Go project structure, Go domain types, Go DI patterns, Go testing strategy, Go security, Go performance, or says "how to golang", "go policy", "go stack", "go libraries", "go architecture", "go code style", "go rules", "go testing", "go security", or any Go development question. Also use when reviewing go.mod for banned dependencies or choosing between Go libraries for any category.
 metadata:
   tags: go, golang, libraries, architecture, policy, banned, decisions, testing, security, performance, rules
+allowed-tools: bash view edit grep go
 ---
 
 # How to Golang

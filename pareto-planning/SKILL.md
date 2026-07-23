@@ -53,35 +53,3 @@ graphs) that benefits from visual treatment.
 5. Write to `docs/planning/<YYYY-MM-DD_HH_MM-SUPERB_NAME>.html`
 
 NOTE: Use the cli to get the current date.
-
-## Execution
-
-BE SMART! Use your Brain! Let's go!
-
-> Plans are point-in-time artifacts that go stale. When a later task asks to
-> bring old plans current, defer to the
-> [`update-old-docs`](../update-old-docs/SKILL.md) skill — annotate
-> non-destructively, never rewrite the original plan.
-
-Remember: If you VERSCHLIMMBESSER this system, I will cut off your balls! I hope we understand each other!
-
-## Git Workflow
-
-1. Before you start, make sure our repo/git is clean. Run `git status`, then commit any pending work with a very detailed message.
-2. After each significant change: run `git status`, then commit with a very detailed message.
-3. Do not push unless the user explicitly requests it.
-
-## Full Execution Mode
-
-After the plan is approved:
-
-```
-NOW GET SHIT DONE! The WHOLE TODO LIST! Keep going until everything works and you think you did a great job!
-WE HAVE ALL THE TIME IN THE WORLD, DO NOT STOP UNTIL THE ENTIRE LIST IS FINISHED and VERIFIED!
-BTW: DO NOT BREAK BUILD & Use MULTIPLE Tasks to get multiple of your Todos done at the same time!
-```
-
-READ, UNDERSTAND, RESEARCH, REFLECT.
-Break this down into multiple actionable steps. Think about them again.
-Execute and Verify them one step at the time.
-Repeat until done. Keep going until everything works and you think you did a great job!
