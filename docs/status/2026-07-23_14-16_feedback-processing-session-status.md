@@ -7,47 +7,47 @@
 
 ## a) FULLY DONE
 
-| Item | Details |
-| --- | --- |
-| Reviewed all `docs/feedback/new/` files | Read three feedback files completely, understood their content and intent |
-| `samber-do-best-practices` skill | Created SKILL.md (101 lines), references/samber-do-quick-reference.md, references/anti-pattern-examples.md, scripts/audit-do.sh |
-| `nix-private-go-repos` skill | Created SKILL.md (95 lines), references/implementation-guide.md, references/migration-checklist.md, references/ci-auth.md, scripts/list-private-deps.sh |
-| `verify-external-claims` skill | Created SKILL.md (117 lines), references/verification-sources.md |
-| README.md updated | 24 skills counted, all three new skills added to appropriate sections, summary paragraph rewritten |
-| Feedback files moved to `processed/` | All three feedback files moved via `git mv` |
-| Validation passed | `scripts/check-skills.sh` reports 24 skills, 0 thin, all structural checks pass |
+| Item                                    | Details                                                                                                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Reviewed all `docs/feedback/new/` files | Read three feedback files completely, understood their content and intent                                                                               |
+| `samber-do-best-practices` skill        | Created SKILL.md (101 lines), references/samber-do-quick-reference.md, references/anti-pattern-examples.md, scripts/audit-do.sh                         |
+| `nix-private-go-repos` skill            | Created SKILL.md (95 lines), references/implementation-guide.md, references/migration-checklist.md, references/ci-auth.md, scripts/list-private-deps.sh |
+| `verify-external-claims` skill          | Created SKILL.md (117 lines), references/verification-sources.md                                                                                        |
+| README.md updated                       | 24 skills counted, all three new skills added to appropriate sections, summary paragraph rewritten                                                      |
+| Feedback files moved to `processed/`    | All three feedback files moved via `git mv`                                                                                                             |
+| Validation passed                       | `scripts/check-skills.sh` reports 24 skills, 0 thin, all structural checks pass                                                                         |
 
 ---
 
 ## b) PARTIALLY DONE
 
-| Item | Status | Remaining work |
-| --- | --- | --- |
-| README uncommitted changes | Table formatting alignment polished for Go Ecosystem and Nix & DevOps sections | Not committed — needs `git add` + commit |
-| AGENTS.md §10 update | New skills reference external tools (`samber/do`, `go-nix-helpers`, `mkPreparedSource`) | Should add these to the external dependencies table |
-| AGENTS.md §11 feedback loop | Three feedback files were converted to skills, which is exactly the pattern §11 prescribes | Should verify the feedback loop instructions are still current |
-| `how-to-write-skills.md` review | Skills were created without first consulting the authoritative skill-authoring guide | May have missed conventions or best practices documented there |
+| Item                            | Status                                                                                     | Remaining work                                                 |
+| ------------------------------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------- |
+| README uncommitted changes      | Table formatting alignment polished for Go Ecosystem and Nix & DevOps sections             | Not committed — needs `git add` + commit                       |
+| AGENTS.md §10 update            | New skills reference external tools (`samber/do`, `go-nix-helpers`, `mkPreparedSource`)    | Should add these to the external dependencies table            |
+| AGENTS.md §11 feedback loop     | Three feedback files were converted to skills, which is exactly the pattern §11 prescribes | Should verify the feedback loop instructions are still current |
+| `how-to-write-skills.md` review | Skills were created without first consulting the authoritative skill-authoring guide       | May have missed conventions or best practices documented there |
 
 ---
 
 ## c) NOT STARTED
 
-| Item | Priority | Notes |
-| --- | --- | --- |
-| Commit the README changes | High | One uncommitted formatting polish remains |
-| Add verification-status blocks | Medium | `nix-private-go-repos` references `mkPreparedSource` which is a private LarsArtmann tool — should note its provenance and verification status |
-| Cross-reference new skills from existing skills | Medium | `how-to-golang` should mention `samber-do-best-practices` in its Go DI decision tree; `nix-review` should mention `nix-private-go-repos` for private-dep patterns |
-| Test trigger descriptions | Low | Verify the new skills actually activate on realistic user prompts |
-| Integrate `verify-external-claims` gate into `skill-creator` | Low | `skill-creator` lives in Crush's built-in skills, not in this repo — may be out of scope |
+| Item                                                         | Priority | Notes                                                                                                                                                             |
+| ------------------------------------------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Commit the README changes                                    | High     | One uncommitted formatting polish remains                                                                                                                         |
+| Add verification-status blocks                               | Medium   | `nix-private-go-repos` references `mkPreparedSource` which is a private LarsArtmann tool — should note its provenance and verification status                     |
+| Cross-reference new skills from existing skills              | Medium   | `how-to-golang` should mention `samber-do-best-practices` in its Go DI decision tree; `nix-review` should mention `nix-private-go-repos` for private-dep patterns |
+| Test trigger descriptions                                    | Low      | Verify the new skills actually activate on realistic user prompts                                                                                                 |
+| Integrate `verify-external-claims` gate into `skill-creator` | Low      | `skill-creator` lives in Crush's built-in skills, not in this repo — may be out of scope                                                                          |
 
 ---
 
 ## d) TOTALLY FUCKED UP
 
-| Item | Impact | Root cause |
-| --- | --- | --- |
-| Re-created already-committed files | Wasted time writing files that matched existing HEAD commits (23b35a3, 2bc7f3a, 633616f) | The initial git-status snapshot was stale; the repo had already advanced 3 commits. Did not check `git log` early enough. |
-| git mv potentially redundant | The three feedback files may have already been moved by commit 633616f; the `git mv` operation could have been a no-op or created index confusion | Should have checked `git show 633616f --stat` before moving files |
+| Item                               | Impact                                                                                                                                            | Root cause                                                                                                                |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Re-created already-committed files | Wasted time writing files that matched existing HEAD commits (23b35a3, 2bc7f3a, 633616f)                                                          | The initial git-status snapshot was stale; the repo had already advanced 3 commits. Did not check `git log` early enough. |
+| git mv potentially redundant       | The three feedback files may have already been moved by commit 633616f; the `git mv` operation could have been a no-op or created index confusion | Should have checked `git show 633616f --stat` before moving files                                                         |
 
 ---
 
