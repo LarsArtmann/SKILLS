@@ -23,7 +23,7 @@ echo ""
 for dep in ${unique_deps}; do
   repo=$(echo "${dep}" | sed -E 's|github\.com/[Ll]ars[Aa]rtmann/||')
   echo "  ${repo} = {"
-  echo "    url = \"git+ssh://git@github.com/LarsArtmann/${repo}?ref=master;\""
+  echo "    url = \"git+ssh://git@github.com/LarsArtmann/${repo}?ref=master\";"
   echo "    flake = false;"
   echo "  };"
 done
