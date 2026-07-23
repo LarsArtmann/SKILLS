@@ -3,6 +3,7 @@
 **Date:** 2026-07-23  
 **Proposed by:** Crush session auditing samber/do usage across `/home/lars/projects`  
 **Related work:**
+
 - `/home/lars/projects/samber-do-auditlog/docs/research/samber-do-best-practices-and-anti-patterns.md` (new comprehensive report)
 - `/home/lars/projects/branching-flow/pkg/doanalyzerv2/` (existing static analyzer)
 - `/home/lars/projects/samber-do-auditlog/` (lifecycle observability plugin)
@@ -138,11 +139,11 @@ allowed-tools: bash view edit grep lsp_definition lsp_references lsp_call_hierar
 
 ## 5. Assets to Include
 
-| Asset | Purpose |
-| ----- | ------- |
-| `references/samber-do-quick-reference.md` | Copy of the core concepts cheat sheet from the report |
-| `references/anti-pattern-examples.md` | Before/after snippets for DO-1 → DO-6 |
-| `scripts/audit-do.sh` | Optional shell helper: list all files importing samber/do in a project |
+| Asset                                     | Purpose                                                                |
+| ----------------------------------------- | ---------------------------------------------------------------------- |
+| `references/samber-do-quick-reference.md` | Copy of the core concepts cheat sheet from the report                  |
+| `references/anti-pattern-examples.md`     | Before/after snippets for DO-1 → DO-6                                  |
+| `scripts/audit-do.sh`                     | Optional shell helper: list all files importing samber/do in a project |
 
 The comprehensive report should remain the single source of truth; the skill can load it with `view` on activation rather than duplicating it.
 
@@ -150,12 +151,12 @@ The comprehensive report should remain the single source of truth; the skill can
 
 ## 6. Relationship to Existing Skills
 
-| Existing skill | Overlap | Why this is distinct |
-| -------------- | ------- | -------------------- |
-| `how-to-golang` | General Go guidance | `how-to-golang` is broad; this skill is narrowly focused on samber/do v2 DI |
-| `library-deep-dive` | Library audit | `library-deep-dive` asks "are we using X to the max?"; this skill asks "is this specific DI code correct?" and fixes it |
-| `brutal-self-review` | Codebase critique | This skill is a specialized review lens for one library |
-| `code-quality-scan` | Lint/build/test | This skill adds semantic samber/do rules that generic linting cannot encode |
+| Existing skill       | Overlap             | Why this is distinct                                                                                                    |
+| -------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `how-to-golang`      | General Go guidance | `how-to-golang` is broad; this skill is narrowly focused on samber/do v2 DI                                             |
+| `library-deep-dive`  | Library audit       | `library-deep-dive` asks "are we using X to the max?"; this skill asks "is this specific DI code correct?" and fixes it |
+| `brutal-self-review` | Codebase critique   | This skill is a specialized review lens for one library                                                                 |
+| `code-quality-scan`  | Lint/build/test     | This skill adds semantic samber/do rules that generic linting cannot encode                                             |
 
 ---
 
