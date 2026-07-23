@@ -8,7 +8,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ## The Collection
 
-**21 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out), **🆕 New** (structurally valid, never yet triggered against real work — ages into 🟢 after a documented successful run).
+**24 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out), **🆕 New** (structurally valid, never yet triggered against real work — ages into 🟢 after a documented successful run).
 
 ### Shared Assets
 
@@ -43,6 +43,12 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 | ------------------- | ------------------------------------------------------------------------------------------------------------------- | -------- |
 | **update-old-docs** | Keeps old/historical docs current via non-destructive annotation — restraint, "so what?" test, appendix over banner | 🟢 Solid |
 
+### Skill Authoring & Verification
+
+| Skill                    | What It Does                                                                              | Status   |
+| ------------------------ | ----------------------------------------------------------------------------------------- | -------- |
+| **verify-external-claims** | Verify external tool/library claims before encoding them into skills, code, or docs | 🆕 New   |
+
 ### Go Ecosystem
 
 | Skill                   | What It Does                                                                                                     | Status           |
@@ -51,13 +57,15 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 | **go-modularize**       | Splits Go monorepos into semi-independent sub-modules                                                            | 🟢 Comprehensive |
 | **hierarchical-errors** | Go 1.26+ error-matching modernization — prevents cargo-cult `errors.As`/`errors.Is` regressions (CLI unverified) | 🆕 New           |
 | **how-to-golang**       | Go development decision guide — what to use, not how                                                             | 🟢 Comprehensive |
+| **samber-do-best-practices** | Correct samber/do v2 DI usage — lifecycle, scopes, anti-patterns DO-1 → DO-6                                  | 🆕 New           |
 
 ### Nix & DevOps
 
-| Skill                   | What It Does                                                         | Status           |
-| ----------------------- | -------------------------------------------------------------------- | ---------------- |
-| **nix-flake-migration** | Migration proposals from justfile/shell scripts to Nix flakes → HTML | 🟡 Thin          |
-| **nix-review**          | Reviews and improves `.nix` files — 50+ problems, checklist-driven   | 🟢 Comprehensive |
+| Skill                    | What It Does                                                                         | Status           |
+| ------------------------ | ------------------------------------------------------------------------------------ | ---------------- |
+| **nix-flake-migration**  | Migration proposals from justfile/shell scripts to Nix flakes → HTML                 | 🟡 Thin          |
+| **nix-private-go-repos** | Build Go projects with private GitHub deps in Nix — `mkPreparedSource` + `GOPRIVATE` | 🆕 New           |
+| **nix-review**           | Reviews and improves `.nix` files — 50+ problems, checklist-driven                 | 🟢 Comprehensive |
 
 ### Library & Dependency Research
 
@@ -118,7 +126,7 @@ New skills should follow the pattern of [`how-to-golang/`](how-to-golang/) (lean
 
 ## Quality & Status
 
-This repository is honest about its state. **20 of 21 skills are solid, comprehensive, or functional** — every established skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). A handful are still **functional** (`architecture-review`, `code-quality-scan`, `deduplicate-code`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. One skill is **🆕 New** (`hierarchical-errors`) — structurally valid and based on real Go 1.26+ APIs, but its CLI-specific claims could not be verified against a public binary and it has not yet been triggered against real work. Validate the repo anytime with `scripts/check-skills.sh`.
+This repository is honest about its state. **20 of 24 skills are solid, comprehensive, or functional** — every established skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). A handful are still **functional** (`architecture-review`, `code-quality-scan`, `deduplicate-code`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. **Four skills are 🆕 New** (`hierarchical-errors`, `nix-private-go-repos`, `samber-do-best-practices`, `verify-external-claims`) — structurally valid and based on real concepts, but they have not yet been triggered against real work. `hierarchical-errors` additionally carries a verification-status disclaimer because its CLI-specific claims could not be confirmed against a public binary. Validate the repo anytime with `scripts/check-skills.sh`.
 
 See [`docs/status/`](docs/status/) for detailed audit reports, including a comprehensive breakdown of every skill's strengths, gaps, and recommended next steps.
 
