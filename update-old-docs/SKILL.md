@@ -240,6 +240,52 @@ In order of preference:
 For before/after examples and the full reasoning, load
 [./references/annotation-placement.md](./references/annotation-placement.md).
 
+### Lists of actionable items (TODO lists within old reports)
+
+Old status reports and plans often contain a numbered or bulleted list of
+actionable items — "Things to Do Next", "Open issues", "Next steps". These
+lists are the most common thing a reader wants to resolve: _which of these
+are done now?_ When items in such a list are completed, annotate them
+**inline** using strike-through + a `DONE:` marker with the commit hash(es),
+keeping the original item text visible so the reader can match it to what
+they were tracking:
+
+```markdown
+1. ~~Fix warmup store pollution — use separate Bundle or document the inflation~~ DONE: a7b8159;
+2. ~~Fix estimateJSONSize — marshal-and-measure instead of template guess~~ DONE: a7b8159, fe81dd2;
+3. Add negative tests: factory returning nil Bundle, nil EventSink, closed store
+4. ~~Add test for Config.Duration actually aborting a long-running phase~~ DONE: fe81dd2;
+```
+
+**Format:** `~~<original line, unchanged>~~ DONE: <git-hash(s)>;`
+
+Rules for this pattern:
+
+- **Strike through the ENTIRE original line** — the reader must be able to
+  identify what the item was. Never replace the text; wrap it in `~~...~~`.
+- **Cite the commit hash(es)** that closed the item — same evidence standard
+  as any annotation. `DONE: a7b8159;` for one commit, `DONE: a7b8159, fe81dd2;`
+  for multiple. Separate multiple hashes with commas.
+- **Leave open items untouched** — do not mark them, do not add "OPEN" or
+  "TODO" labels. The absence of a `DONE:` marker IS the signal that the item
+  is still open. Adding labels to open items is noise (see anti-patterns).
+- **One `DONE:` per completed item** — never batch multiple items into one
+  annotation. Each line resolves independently because each ships in its own
+  commit.
+- **The trailing `;` is intentional** — it visually terminates the
+  annotation so a reader scanning the list can distinguish "done" from
+  "still open" at a glance.
+- **If an item was rejected/abandoned** (not done, but no longer pursued),
+  use `~~<original line>~~ REJECTED: <one-line reason>;` instead of `DONE:`.
+  This is distinct from done — the reader needs to know it will NOT ship.
+- **Do not renumber.** Keep the original numbering/ordering intact. The
+  numbers are how readers cross-reference items across documents.
+
+This pattern is a form of the inline edit (option 1 above) specialized for
+list items. It wins over an appendix table here because the resolution lives
+right next to the claim — a reader scanning the list sees the status without
+context-switching to a separate section.
+
 ---
 
 ## Updating many old files at once: judgment before batching
@@ -319,6 +365,7 @@ This is why the appendix format includes the date in the heading
 - [ ] For EVERY annotation: does it pass the "so what?" test? Delete any that do not.
 - [ ] **Fresh-open test:** every file with a stale TL;DR / opening has an inline correction visible in the first screenful.
 - [ ] Count the files you LEFT UNTOUCHED. That number being > 0 is correct and expected.
+- [ ] For list items marked `DONE:` — the entire original line is struck through, at least one commit hash is cited, and open items are left untouched (no noise labels).
 - [ ] No annotation is generic — each could only apply to its own file.
 - [ ] No annotation cites line numbers in other files (cite section names or item text).
 - [ ] No annotation sits between a title and the original opening paragraph.
@@ -344,6 +391,8 @@ This is why the appendix format includes the date in the heading
 - Modifying HTML with inline styles in CSP-compliant projects
 - Treating "files modified" as the success metric instead of "value per annotation"
 - Removing a batch annotation with a script instead of `git restore`
+- **Marking open list items with "OPEN"/"TODO" labels** — absence of a `DONE:` marker is the signal; adding labels to open items is noise
+- **Renumbering a list after striking items through** — destroys cross-references; keep original order
 - **Rewriting an old document from scratch** — that destroys history; use docs-health for living docs instead
 
 ---
