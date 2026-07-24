@@ -71,6 +71,46 @@ date:
 - "make the old audits reflect current reality"
 - "is this report still current?"
 
+### Scope clarification: ask when the time frame is unspecified
+
+The scope of "which files" is load-bearing. "Update the old status reports"
+is ambiguous — _which ones?_ The `docs/status/` directory may contain
+hundreds of reports spanning months. Running an annotation pass over the
+wrong set wastes work and risks touching files the user did not mean.
+
+**If the user did not specify a time frame or file set, STOP and ASK before
+reading or touching any file.** Do not guess "all of them" — that is how a
+Verschlimmbesserung starts on a scale the user cannot easily review.
+
+Examples of **explicit scope** (proceed):
+
+- "update all the `*2026-07-1*` status reports" — clear glob pattern
+- "annotate the July reports" — clear month
+- "update the reports from last week" — clear relative window
+- "mark `docs/status/2026-06-17_*.md` as done" — explicit paths
+
+Examples of **unspecified scope** (ask first):
+
+- "update all the old status reports" → ask: _which time range? (e.g. before
+  2026-07, last month, specific glob pattern)_
+- "mark the old reports as resolved" → ask: _which reports? All of
+  `docs/status/`, or a subset by date?_
+- "bring the old docs up to date" → ask: _which docs — status reports,
+  plans, reviews? And from when?_
+
+Ask once, concisely: name what you found in the directory (file count, date
+range), state the ambiguity, and propose a default the user can confirm or
+correct. A good ask:
+
+> Found 47 files in `docs/status/` spanning 2026-03 to 2026-07. You said
+> "update the old reports" — which time range? I can do all of them, or
+> narrow to (e.g.) everything before 2026-07-01. Which set?
+
+**Never proceed on an unspecified scope by picking the broadest
+interpretation.** The broadest interpretation maximizes blast radius and
+minimizes the chance the user can review every change. Narrow is safe;
+broad is not.
+
 If the task is about maintaining a **living** doc (rewriting `README.md`,
 rebuilding `FEATURES.md`, refreshing `TODO_LIST.md`), that is `docs-health`,
 not this skill. The distinction: **living docs get rewritten; old docs get
@@ -362,6 +402,7 @@ This is why the appendix format includes the date in the heading
 
 ## Verification gate (before declaring done)
 
+- [ ] **Scope was confirmed before any file was touched.** If the user did not specify a time frame or file set, you asked and waited — you did not guess the broadest interpretation.
 - [ ] For EVERY annotation: does it pass the "so what?" test? Delete any that do not.
 - [ ] **Fresh-open test:** every file with a stale TL;DR / opening has an inline correction visible in the first screenful.
 - [ ] Count the files you LEFT UNTOUCHED. That number being > 0 is correct and expected.
@@ -390,6 +431,7 @@ This is why the appendix format includes the date in the heading
 - Writing a blanket script and hoping a per-file `if` catches the edge cases
 - Modifying HTML with inline styles in CSP-compliant projects
 - Treating "files modified" as the success metric instead of "value per annotation"
+- **Proceeding on an unspecified scope** — "update the old reports" without a time range is ambiguous; guessing "all of them" maximizes blast radius. Ask first.
 - Removing a batch annotation with a script instead of `git restore`
 - **Marking open list items with "OPEN"/"TODO" labels** — absence of a `DONE:` marker is the signal; adding labels to open items is noise
 - **Renumbering a list after striking items through** — destroys cross-references; keep original order
