@@ -140,6 +140,15 @@ function or endpoint).
 2. For large projects, use sub-agents (one per file, sequentially, never
    parallel).
 3. Verify each TODO against code. Many documented TODOs are already done.
+4. **Read the most recent 1–3 `docs/status/*` reports.** Extract every
+   "next task", "improvement", and partially-done item. This is the
+   HARVEST step (see the HARVEST section in [../SKILL.md](../SKILL.md)).
+   Code tells you what exists; recent reports tell you what was recently
+   planned and is still open. **This is the single most missed source** —
+   agents skip `docs/status/` because it's classified Historical, then
+   TODO_LIST comes out stale because the "Top 50 next things" from the
+   last session never migrated. A report is Historical for rewriting
+   purposes, but it is a primary input for TODO_LIST builds.
 
 ### Sub-agent guidance
 
@@ -174,6 +183,11 @@ dominant structural-decay failure mode for this file.
 - [ ] No "Previously Completed" / "Done" / "Resolved" section
 - [ ] No items duplicating ROADMAP or CHANGELOG `[Unreleased]`
 - [ ] Evidence cited (`file:line`)
+- [ ] **Most recent status report's "next tasks" section is covered** —
+      each item either harvested into TODO_LIST/ROADMAP, verified-as-done
+      (and dropped), or explicitly declined with a reason. If the latest
+      report has 50 "next things" and TODO_LIST gained none of them, the
+      harvest step was skipped.
 - [ ] For deeper 80/20 prioritization, the `pareto-planning` skill can rank
       the resulting list. But enumeration happens here first.
 

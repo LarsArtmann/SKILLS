@@ -110,6 +110,7 @@ These checks compare docs against each other, not against code.
 | Lifecycle integrity | Shipped feature still in `TODO_LIST.md` (split brain)                  | Critical    |
 | TODO↔CHANGELOG dup  | Completed item in TODO_LIST also present in CHANGELOG `[Unreleased]`   | Medium-High |
 | TODO↔ROADMAP dup    | Deferred/backlog item in TODO_LIST duplicates a ROADMAP entry          | Medium      |
+| TODO covers recent report | TODO_LIST/ROADMAP cover the "next tasks" of the most recent `docs/status/*` report | Medium-High |
 | Forbidden sections  | TODO_LIST has a "Previously Completed" / "Done" / "Resolved" section   | Medium-High |
 | Version consistency | `CHANGELOG.md` version matches `README.md` stated version              | Low         |
 
@@ -129,3 +130,4 @@ skipped — go back.
 | Split-brain backlog     | TODO_LIST backlog section and ROADMAP "Deferred Items" list the same 5 items       | PASSES (only checks PLANNED-vs-FULLY_FUNCTIONAL) | FAIL: "deferred items duplicated across TODO and ROADMAP"                      |
 | Rejected but kept       | TODO item marked REJECTED with rationale, sitting in an "open" list                | PASSES                                           | FAIL: "rejected items don't belong in open-work lists; move to ROADMAP or ADR" |
 | Struck-through resolved | "Correctness gaps (resolved YYYY-MM-DD)" section with struck-through items         | PASSES (items marked resolved)                   | FAIL: "resolved items belong in CHANGELOG Fixed, not TODO_LIST"                |
+| Unharvested report      | Most recent `docs/status/*` has a "Next tasks" / "Top N things" section; none of its items appear in TODO_LIST or ROADMAP, and none are verified-done in code | PASSES (TODO_LIST is factually fine — the items are simply absent) | FAIL: "status report next-tasks never harvested into TODO_LIST/ROADMAP — see HARVEST mode in SKILL.md. The report is a snapshot, not a backlog." |

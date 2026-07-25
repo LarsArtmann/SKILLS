@@ -7,8 +7,11 @@ description: >
   enforces consistency between them. Use when the user wants to build a TODO
   list, audit features, check if docs are up-to-date or fresh, create or rebuild
   any project doc, detect documentation drift, split brains, or misplaced
-  information, or says "docs health", "feature audit", "build TODO list",
-  "docs up to date", "documentation audit", "fix my docs", "are my docs current".
+  information, harvest a status report into TODO_LIST, pull "next tasks" from
+  recent session reports into the backlog, or says "docs health", "feature
+  audit", "build TODO list", "docs up to date", "documentation audit", "fix my
+  docs", "are my docs current", "harvest status report", "pull next tasks into
+  TODO_LIST", "extract open items from recent reports".
 metadata:
   tags: documentation, freshness, features, todo, audit, consistency, verification
 ---
@@ -41,7 +44,13 @@ is current.
 when they drift. **Historical** rows (`docs/status/`, `docs/planning/`, etc.)
 cannot be rewritten without destroying their value as a record — they are
 brought current by the [`update-old-docs`](../update-old-docs/SKILL.md) skill
-via non-destructive annotation.
+via non-destructive annotation. **"Cannot be rewritten" does NOT mean "cannot
+be read":** HARVEST (below) reads the most recent status reports as a source
+of forward-looking items for `TODO_LIST.md` / `ROADMAP.md`. The constraint is
+on the write direction, not the read direction. Without HARVEST, every
+status report's "next tasks" section is entombed in a timestamped file that
+no subsequent session reads — the dominant cause of TODO_LIST staleness
+across long sessions.
 
 For the full ownership rules, anti-patterns, information lifecycle, and a
 "where agents store what" matrix, load
@@ -64,11 +73,12 @@ Not every project needs all docs. Detect the project type and adapt:
 
 Identify what the user needs from their request:
 
-| User says                                        | Task       | Action                                          |
-| ------------------------------------------------ | ---------- | ----------------------------------------------- |
-| "Build TODO list" / "create FEATURES.md"         | **BUILD**  | Generate a specific doc from code               |
-| "Are docs up to date?" / "check freshness"       | **VERIFY** | Check all docs against code, fix drift in place |
-| "Full doc audit" / "fix my docs" / "docs health" | **AUDIT**  | BUILD missing docs, then VERIFY everything      |
+| User says                                        | Task        | Action                                          |
+| ------------------------------------------------ | ----------- | ----------------------------------------------- |
+| "Build TODO list" / "create FEATURES.md"         | **BUILD**   | Generate a specific doc from code               |
+| "Harvest status report" / "pull next tasks"      | **HARVEST** | Pull forward-looking items from recent reports  |
+| "Are docs up to date?" / "check freshness"       | **VERIFY**  | Check all docs against code, fix drift in place |
+| "Full doc audit" / "fix my docs" / "docs health" | **AUDIT**   | BUILD + HARVEST, then VERIFY everything         |
 
 If the intent is ambiguous, default to AUDIT (it covers everything).
 
@@ -132,6 +142,93 @@ Never round up. If you cannot confirm a feature works, it is
   per-file decision (update/skip) based on reading each first. Do not script a
   blanket transformation. For old/historical files in particular, defer to the
   [`update-old-docs`](../update-old-docs/SKILL.md) skill — annotate, do not rewrite.
+
+---
+
+## HARVEST: pull forward-looking items from recent status reports
+
+Status reports (written by the `status-report` skill or by hand) capture
+what a session did AND what should happen next. The "next" part — `## f)
+Top N things to get done next`, `## TODO`, `## Improvements`, `## Partially
+Done` with open work, unresolved `## Questions` — is **forward-looking
+intent**. If it lives only in the timestamped report, it is lost: subsequent
+sessions treat `docs/status/` as historical and never read it as a backlog
+source. This is the #1 cause of `TODO_LIST.md` staleness across long
+sessions. The report is a snapshot, not a backlog.
+
+Code is the source of truth for **what exists**. Recent status reports are a
+legitimate source for **what we intend to do next**. HARVEST bridges them.
+
+### When to run HARVEST
+
+- **After every `status-report` session.** The report's "next tasks"
+  section is a TODO_LIST input, not its final resting place.
+- **As a step in AUDIT.** A full docs-health run that skips HARVEST will
+  declare TODO_LIST "fresh" while dozens of planned items rot in the most
+  recent snapshot.
+- **On explicit request:** "harvest the latest status report", "pull the
+  next tasks into TODO_LIST", "extract open items from recent reports".
+
+### HARVEST process
+
+1. **Select the reports.** Default: the most recent 1–3 files in
+   `docs/status/` (by filename date or mtime). Go further back only if those
+   are sparse, or the user asks. Reading all 100+ historical reports
+   produces duplication, not coverage — the dedup step is what matters, not
+   the read count. If `docs/status/` is empty, HARVEST is a no-op; say so.
+
+2. **Extract forward-looking items.** From each selected report, pull:
+   - "Next tasks" / "Top N things to do" sections — the primary source.
+   - "Partially done" items that still have open work.
+   - "Improvements" / "what could be better" items that are actionable.
+   - **Unresolved "Questions I cannot figure out myself" are NOT tasks** —
+     they are blockers. Route them to the user as questions, or to an
+     "Open questions" section in `ROADMAP.md`, never silently into
+     TODO_LIST. A question is not actionable until answered.
+
+3. **Verify each item against code.** Many "next tasks" are already done by
+   a later session (status reports go stale between sessions). Grep before
+   adding. An item already shipped does not go into TODO_LIST — it goes into
+   CHANGELOG (if missing there) or is dropped.
+
+4. **Route each surviving item** using the same lifecycle as BUILD:
+   - Bounded + short-term + estimable effort → **`TODO_LIST.md`**
+   - Vague / unbounded / long-term → **`ROADMAP.md`**
+   - Already in TODO_LIST (semantic match) → dedupe; keep the better-worded
+     entry, merge evidence.
+   - Already done in code → drop; flag for CHANGELOG if not logged.
+
+5. **Cite the source.** Every harvested item carries an evidence column
+   pointing at both the code (`file:line`) AND the report it came from
+   (`docs/status/<file>.md`), so the trail is auditable. Without the report
+   citation the item looks invented; without the code citation it may
+   already be done.
+
+6. **Do NOT rewrite the source report.** HARVEST reads forward; it never
+   edits the historical file. Marking a report's items as "harvested" is
+   optional and belongs in a `## Resolution` appendix added by
+   [`update-old-docs`](../update-old-docs/SKILL.md) — never as a top-of-file
+   banner.
+
+### HARVEST anti-patterns
+
+- **Dumping all 50 items verbatim into TODO_LIST.** Most "Top 50" lists are
+  brainstorms, not commitments. Route, dedupe, and verify before inserting,
+  or TODO_LIST becomes a dumping ground that nobody acts on.
+- **Treating the report as code.** A report saying "we should do X" is
+  intent, not evidence that X is undone. A later session may have already
+  shipped X. Verify against code.
+- **Harvesting open questions as tasks.** An unanswered question is not
+  actionable. Route it to the user or to ROADMAP, not TODO_LIST.
+- **Skipping HARVEST because "update-old-docs handles status reports."**
+  It does not — different direction. update-old-docs annotates the report
+  itself (backward-looking, "this later shipped"); HARVEST pulls items out
+  of the report (forward-looking, "this is now on the backlog"). Both are
+  needed; neither replaces the other. See the two-way note at the end of
+  this skill.
+- **Reading every historical report.** The 100th-oldest report's "next
+  tasks" are either done, obsolete, or already captured. Recent reports
+  carry the signal; old ones carry noise. Default to the most recent 1–3.
 
 ---
 
@@ -278,16 +375,22 @@ full decision tree, load
 2. **BUILD missing docs.** If `FEATURES.md` or `TODO_LIST.md` do not exist,
    build them using BUILD mode before proceeding.
 
-3. **VERIFY all docs.** Run the full VERIFY process on every doc in the
+3. **HARVEST recent status reports.** Run the HARVEST process on the most
+   recent `docs/status/*` files so `TODO_LIST.md` / `ROADMAP.md` reflect the
+   latest session's forward-looking items. Skip silently only if no status
+   reports exist; otherwise state which reports were harvested and how many
+   items moved vs. were dropped as already-done.
+
+4. **VERIFY all docs.** Run the full VERIFY process on every doc in the
    documentation model.
 
-4. **Check cross-file consistency.** Run every consistency check. The most
+5. **Check cross-file consistency.** Run every consistency check. The most
    common rot: the same feature listed in both `TODO_LIST.md` (as done) and
    `FEATURES.md` (as planned) because nobody removed it when it shipped. Also
    check the inverse rot — completed items in TODO_LIST duplicating CHANGELOG,
    or deferred items duplicating ROADMAP.
 
-5. **Report.** Present findings using the health report format below.
+6. **Report.** Present findings using the health report format below.
 
 ### Health report format
 
@@ -397,6 +500,20 @@ the old status reports", "mark these reports as done", or "annotate every
 status file", defer to the [`update-old-docs`](../update-old-docs/SKILL.md)
 skill — it enforces per-file judgment, specificity ("so what?" test), and
 non-destructive placement (inline/appendix, never top-of-file banners).
+
+**Status reports have a two-way relationship with docs-health:**
+
+- **Forward (HARVEST, owned by docs-health):** the report's "next tasks"
+  section is pulled OUT of the snapshot INTO `TODO_LIST.md` / `ROADMAP.md`.
+- **Backward (annotation, owned by update-old-docs):** the report itself is
+  annotated to reflect what later shipped ("this item was resolved in
+  commit X").
+
+Both directions are needed; neither replaces the other. A common failure is
+to run update-old-docs on a pile of old reports (backward) while never
+running HARVEST (forward) — the reports say "resolved" but TODO_LIST still
+doesn't contain the items that were NOT resolved, because nobody pulled them
+out in the first place.
 
 ---
 
