@@ -93,9 +93,9 @@ Or add to your project's `crush.json`:
 
 ```json
 {
-  "options": {
-    "skills_paths": ["/path/to/SKILLS"]
-  }
+	"options": {
+		"skills_paths": ["/path/to/SKILLS"]
+	}
 }
 ```
 
