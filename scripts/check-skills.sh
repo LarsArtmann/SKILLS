@@ -16,6 +16,8 @@
 #        AGENTS.md §3.2). Allowlisted skills warn instead of fail.
 #     7. Feedback-loop staleness: docs/feedback/new/ files older than 30 days
 #        fail (the feedback loop is broken again — see AGENTS.md §11).
+#     8. Cross-skill handoff guard: known handoff links (e.g. status-report →
+#        docs-health HARVEST) must exist, or the loop reopens (AGENTS.md §5.5).
 #
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
@@ -177,6 +179,25 @@ if [[ -d docs/feedback/new ]]; then
     fi
   done < <(find docs/feedback/new -type f -name '*.md' -print0 2>/dev/null)
 fi
+
+# --- Cross-skill handoff guard --------------------------------------------------
+# Assert that known cross-skill handoff links exist (regression guard). A
+# handoff is the contract that skill A's output feeds skill B. If the link is
+# removed, the loop reopens (see AGENTS.md §5.5). Entries are "file|needle".
+# If a handoff is intentionally removed/renamed, update this list — do not
+# silence the guard by deleting it.
+handoffs=(
+  "status-report/SKILL.md|docs-health"
+  "status-report/SKILL.md|HARVEST"
+  "docs-health/SKILL.md|When to run HARVEST"
+)
+for h in "${handoffs[@]}"; do
+  file="${h%%|*}"
+  needle="${h##*|}"
+  if [[ -f "$file" ]] && ! grep -qF "$needle" "$file"; then
+    echo "FAIL: cross-skill handoff guard — '$file' no longer contains '$needle' (intentional? update the guard list in $0)"; failed=1
+  fi
+done
 
 if [[ "$failed" -ne 0 ]]; then
   echo

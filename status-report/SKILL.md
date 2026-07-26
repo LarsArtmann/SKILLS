@@ -21,11 +21,23 @@ INCLUDE WORK:
 - f) Top #25 things we should get done next!
 - g) Ask your Top #1 question you can NOT figure out yourself!
 
+**"Top #25" is a default, not a ceiling.** If the user asks for more (e.g.
+"up to 50"), their instruction wins — but a larger N is a brainstorm, not a
+commitment list: most extra items are ROADMAP fuel, and `docs-health` HARVEST
+must apply extra routing rigor to them. See the HARVEST anti-patterns in
+[`docs-health`](../docs-health/SKILL.md).
+
 ## Output
 
 Write a **self-contained styled HTML dashboard** — not a flat Markdown file. A status
 report is a point-in-time snapshot meant for human consumption, so it gets the full visual
 treatment: stat cards, severity badges, color-coded sections.
+
+> **HTML is the canonical format.** If the user explicitly requests another
+> format (e.g. `.md`), honor it — the user's explicit instruction wins. Flag
+> the override in your closing message so the spec/usage divergence is
+> visible, and do **not** propagate a one-off override back into this skill
+> as a new default.
 
 1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
 2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
