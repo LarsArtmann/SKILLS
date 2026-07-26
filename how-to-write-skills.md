@@ -353,6 +353,35 @@ reports current. `docs-health` cross-links to it whenever AUDIT mode touches
 many files. The rule "all" means "no file that NEEDS updating is missed," NOT
 "every file gets a change." Restraint is success.
 
+### Pattern 8: Cross-Skill Handoff Notes
+
+When a skill produces a **point-in-time artifact** (a status report, plan,
+review, audit) whose most valuable output is **forward-looking** — "next
+tasks," recommendations, an action roadmap, "debt to ticket" — that output is
+the primary input for another skill. If the producing skill ends with "WAIT
+FOR INSTRUCTIONS" and never names the consumer, the forward items get
+**entombed** in a timestamped file no later session reads. This is the #1
+cause of `TODO_LIST.md` staleness across long sessions.
+
+Include a handoff note at the end of any report/plan/review skill:
+
+1. **Name the consumer** — "section (f) is the primary input for
+   `docs-health` HARVEST," not a vague "consider updating your TODO list."
+2. **State the rule once, canonically, in the consuming skill** — and have
+   every producer **link rather than restate**. Duplicate rationale across N
+   skills is a split brain: edit one, the rest drift. Mark the canonical
+   location (e.g. docs-health "When to run HARVEST") as the single source of
+   truth.
+3. **Pair it with the backward note** — reports also go stale; the forward
+   handoff (HARVEST pulls items OUT) and the backward handoff (`update-old-docs`
+   annotates the report itself) are different directions, both needed.
+
+Example: `status-report`, `pareto-planning`, `full-code-review`, and
+`architecture-review` each end with a short HARVEST pointer linking to
+`docs-health`. The regression guard in `scripts/check-skills.sh` (the
+"cross-skill handoff guard") fails if any of these links disappears, so the
+loop cannot silently reopen.
+
 ---
 
 ## Common Mistakes
