@@ -33,6 +33,7 @@ and then happened again in a later session because the lesson wasn't encoded int
 ---
 
 <a id="f1"></a>
+
 ## F1 — Respecting .gitignore on "ALL files" tasks
 
 **Reports:** go-mod-version-pin (504 modules), erraudit batch run (328 modules), go-error-family rollout (167 modules)
@@ -41,13 +42,14 @@ and then happened again in a later session because the lesson wasn't encoded int
 uses `rg` or `glob` to enumerate files. Both honor `.gitignore` by default, silently
 skipping 6–7 gitignored files (generated fixtures, typespec output, archived copies). The
 "all" in the task is not achieved. The missed files are only discovered if a final
-verification pass *happens* to use `--no-ignore-vcs`.
+verification pass _happens_ to use `--no-ignore-vcs`.
 
 **Root cause:** `.gitignore` is a developer convenience for keeping `git status` clean.
 It is NOT a completeness contract. For "all files" tasks, gitignore-respecting search is a
 reasoning failure — "all" means all, including ignored and hidden files.
 
 **Prevention:**
+
 - Default to `rg --no-ignore-vcs --hidden` or `fd -H -I` for "ALL" enumeration tasks
 - Run a final verification sweep with the same flags
 - When a task says "all," treat gitignore as irrelevant to completeness
@@ -55,6 +57,7 @@ reasoning failure — "all" means all, including ignored and hidden files.
 ---
 
 <a id="f2"></a>
+
 ## F2 — go.work interference: GOWORK=off doesn't isolate
 
 **Reports:** httputil v0.5.0 (github-local-sync silent failure), go-cqrs-lite v4, go-error-family rollout, go-mod pin, templ-components (overview go.work severed)
@@ -73,6 +76,7 @@ but `go.mod` still read `v0.4.0 // indirect`. Only `go.work.sum` was modified. T
 was silently left on the old version.
 
 **Prevention:**
+
 - Temporarily rename `go.work` → `go.work.bak` before `go get` + `go mod tidy`
 - **Always verify the `go.mod` version after every `go get`** — grep the file, don't
   trust the command output
@@ -84,6 +88,7 @@ was silently left on the old version.
 ---
 
 <a id="f3"></a>
+
 ## F3 — Build-only verification (no go test)
 
 **Reports:** go-output/cmdguard session 3 (5 projects with test failures), templ-components,
@@ -103,6 +108,7 @@ After user asked for self-review: 5 projects had test failures. "I would have sh
 these to production."
 
 **Prevention:**
+
 - `go test ./...` is non-negotiable after any version change
 - Run tests BEFORE committing, not after — committing broken code to master makes it
   worse
@@ -112,6 +118,7 @@ these to production."
 ---
 
 <a id="f4"></a>
+
 ## F4 — Skipping the delivering layer
 
 **Reports:** templ-components v1.2.0 (CSS/visual layer skipped), go-sse (templ generate not run)
@@ -132,6 +139,7 @@ Go compilation passed but never verified: (a) the CSS file exists in vendored co
 semantic tokens. "I have zero evidence either way."
 
 **Prevention:**
+
 - Identify the delivering layer in Phase 0 (pre-flight)
 - For UI libraries: verify CSS assets present + imported, run `templ generate`, render a
   page in a browser, review golden snapshot diffs line-by-line
@@ -141,6 +149,7 @@ semantic tokens. "I have zero evidence either way."
 ---
 
 <a id="f5"></a>
+
 ## F5 — Blind sed/regex replacement corrupts local types
 
 **Reports:** cqrs v4.1.0 (AggregateID→StreamID sed), go-output/cmdguard session 3 (v2.→cmdguard. sed), go-cqrs-lite v4 (encoding/json/v2→encoding/json sed)
@@ -160,6 +169,7 @@ files in KeyCountdown renamed local domain methods like `AggregateBoundary.Aggre
 and `ConcurrencyError.AggregateID`. KeyCountdown took 4 fix iterations to recover.
 
 **Prevention:**
+
 - Scope replacements to files that import the library (use `grep -l` on import paths first)
 - Before replacing each occurrence, check the type's origin: is it from the library or
   the local domain?
@@ -170,6 +180,7 @@ and `ConcurrencyError.AggregateID`. KeyCountdown took 4 fix iterations to recove
 ---
 
 <a id="f6"></a>
+
 ## F6 — Trusting incomplete CHANGELOGs
 
 **Reports:** cmdguard/go-output bump (MustNewCommand removal undocumented), ecosystem-wide bump (undocumented removals), go-cqrs-lite v4 (8 removed aliases undocumented)
@@ -184,9 +195,10 @@ especially for symbols that were restored and then removed again. The CHANGELOG 
 human document, not a machine-verified API diff.
 
 **Real example (cmdguard v2.8.0):** The changelog documented `MustNewCommand`'s
-*restoration* in v2.6.1 but omitted its *removal* in v2.8.0. Two consumers silently broke.
+_restoration_ in v2.6.1 but omitted its _removal_ in v2.8.0. Two consumers silently broke.
 
 **Prevention:**
+
 - Don't rely solely on the CHANGELOG — grep the library's exported symbols yourself
 - Compare the old and new version's exported API: `go doc -all` on both, diff the output
 - When a build fails on an undefined symbol, check whether it was removed (not just
@@ -195,6 +207,7 @@ human document, not a machine-verified API diff.
 ---
 
 <a id="f7"></a>
+
 ## F7 — Deleting and recreating git tags (proxy cache poisoning)
 
 **Reports:** cqrs v4.1.0 (v4.0.4 cache poisoning), go-error-family rollout (eventtest v0.1.0 re-published), templ-components (checksum mismatches), httputil v0.5.0 (eventtest checksums)
@@ -217,6 +230,7 @@ v4.1.0 (fresh version numbers). The stale v4.0.3/v4.0.4 checksums persist in the
 indefinitely.
 
 **Prevention:**
+
 - NEVER delete and recreate git tags with the same version number
 - If a tag is wrong, ALWAYS bump to a new version (v4.0.4 → v4.0.5 or v4.1.0)
 - Document this rule prominently — it has poisoned the proxy multiple times
@@ -226,6 +240,7 @@ indefinitely.
 ---
 
 <a id="f8"></a>
+
 ## F8 — Tagging from the wrong commit
 
 **Reports:** cqrs v4.1.0 (v4.0.4 tags before stream rename)
@@ -242,6 +257,7 @@ script checks for pseudo-versions but doesn't verify symbol availability in the 
 `AggregateID` but NOT `StreamID`. Consumers migrated to `StreamID()` couldn't compile.
 
 **Prevention:**
+
 - Before tagging: `git merge-base --is-ancestor <key-commit> <tag-commit>` — verify the
   commit with your breaking change is an ancestor of the tag commit
 - Or simpler: always tag from HEAD after confirming HEAD has what you need
@@ -251,6 +267,7 @@ script checks for pseudo-versions but doesn't verify symbol availability in the 
 ---
 
 <a id="f9"></a>
+
 ## F9 — Hand-editing go.sum with sed
 
 **Reports:** templ-components (cqrs-htmx/adminui go.sum sed-edited), go-cqrs-lite v4 (stale checksums)
@@ -265,6 +282,7 @@ tooling and produces a fragile, potentially inconsistent `go.sum`.
 problem. Hand-editing `go.sum` masks it.
 
 **Prevention:**
+
 - NEVER hand-edit `go.sum` with sed. If `go mod tidy` can't run, the dependency graph is
   broken upstream and that's the real problem.
 - Run `go mod verify` after any go.sum manipulation to confirm internal consistency
@@ -274,6 +292,7 @@ problem. Hand-editing `go.sum` masks it.
 ---
 
 <a id="f10"></a>
+
 ## F10 — Folding side-fixes into version bumps
 
 **Reports:** templ-components (bus.go fix, go.work bump, golden snapshot regen folded in), go-cqrs-lite v4 (encoding/json/v2 import swaps), httputil migration (CORS config changes)
@@ -294,6 +313,7 @@ selector), bumped the `go` directive 1.26.4→1.26.5, removed a module from `go.
 upgrade. Each of these deserved its own review.
 
 **Prevention:**
+
 - Separate concerns → separate commits → separate review
 - When you find an unrelated bug during a version bump, either: (a) stop and flag it, or
   (b) make the minimal unblocking change and call it out in giant letters
@@ -302,6 +322,7 @@ upgrade. Each of these deserved its own review.
 ---
 
 <a id="f11"></a>
+
 ## F11 — No baseline before migration
 
 **Reports:** go-output/cmdguard session 3, cqrs v3 migration, go-cqrs-lite v4, ecosystem-wide bump, httputil v0.5.0
@@ -315,6 +336,7 @@ that were already broken on master.
 never checked. Without a baseline, every failure looks like a regression.
 
 **Prevention:**
+
 - For every consumer: run `go build ./...` and `go test ./...` BEFORE any change
 - Record pre-existing failures in a list — this is your defense against false regression
   claims
@@ -324,6 +346,7 @@ never checked. Without a baseline, every failure looks like a regression.
 ---
 
 <a id="f12"></a>
+
 ## F12 — Not committing (everything ephemeral)
 
 **Reports:** go-sse session 3 ("Committed NOTHING — again"), ecosystem execution (zero commits across 15+ repos), go-cqrs-lite v4 (nothing committed), templ-components (nothing committed), go-error-family (nothing committed), erraudit (everything in /tmp)
@@ -344,6 +367,7 @@ Author'), which means my changes ARE landing — just not under my name, and not
 controlled way."
 
 **Prevention:**
+
 - For large bumps, ask for commit authorization upfront — don't wait until the end
 - Commit immediately after each verification pass, not at the end
 - Persist runner scripts and results in the repo, not `/tmp` — reboot = gone
@@ -353,6 +377,7 @@ controlled way."
 ---
 
 <a id="f13"></a>
+
 ## F13 — Stale vendor directories
 
 **Reports:** go-error-family rollout (3 vendor trees hundreds of files behind), templ-components (bank-sync vendor), httputil v0.5.0 (KeyCountdown vendor), vendor elimination
@@ -367,6 +392,7 @@ gitignored ones — they lie about what the build uses. `go mod vendor` syncs th
 dependency tree, not just the one library you bumped.
 
 **Prevention:**
+
 - Detect `vendor/` directories in Phase 1 (baseline)
 - Run `go mod vendor` as part of the update flow, not as a reactive fix
 - Be aware that vendor sync diffs can be large and mix unrelated changes — call this out
@@ -377,6 +403,7 @@ dependency tree, not just the one library you bumped.
 ---
 
 <a id="f14"></a>
+
 ## F14 — Dead/stale replace directives
 
 **Reports:** go-error-family rollout (docs-organizer dead replace for go-output/enum), go-cqrs-lite v4 (local replaces leaking to tags), httputil v0.5.0, templ-components
@@ -391,6 +418,7 @@ up. When the target module is moved, deleted, or published, the replace becomes 
 Worse, replaces can leak into published tags (see F18).
 
 **Prevention:**
+
 - Audit `replace` blocks before and after bumps — drop targets that don't exist
 - Run `go mod edit -dropreplace` cleanups periodically
 - Consider a lint check that flags replaces whose target path doesn't exist
@@ -399,6 +427,7 @@ Worse, replaces can leak into published tags (see F18).
 ---
 
 <a id="f15"></a>
+
 ## F15 — Treating checksum mismatches as nuisances
 
 **Reports:** templ-components (SECURITY ERROR worked around with replace), erraudit batch (5 checksum-mismatch modules), go-error-family (eventtest re-published), httputil v0.5.0
@@ -414,6 +443,7 @@ published version, (3) a genuine supply-chain concern. The agent doesn't disting
 between them.
 
 **Prevention:**
+
 - A `SECURITY ERROR` deserves root-cause analysis, not a `replace` directive
 - Run `go mod download -x` / compare `go list -m -json` to characterize the mismatch
 - Determine: re-published tag? local-ahead? supply-chain?
@@ -423,6 +453,7 @@ between them.
 ---
 
 <a id="f16"></a>
+
 ## F16 — Downgrade risk not flagged
 
 **Reports:** go-mod-version-pin (147 modules downgraded 1.26.5→1.26.4)
@@ -437,6 +468,7 @@ riskier than a version UP. Compliance over craft — the agent executes without 
 whether the task makes engineering sense.
 
 **Prevention:**
+
 - Before executing, compare the target version against what's currently declared
 - If the change is a downgrade for any modules, flag it explicitly and confirm with the
   user: "You have X installed and most files are on X+1 — pinning to X downgrades them.
@@ -447,6 +479,7 @@ whether the task makes engineering sense.
 ---
 
 <a id="f17"></a>
+
 ## F17 — No tags on consumer releases
 
 **Reports:** go-output/cmdguard session 3 (zero tags on 14 consumers), go-cqrs-lite v4
@@ -461,6 +494,7 @@ a tag, the module proxy doesn't know the new version exists. External consumers 
 on the old version.
 
 **Prevention:**
+
 - Tag releases as part of the migration — don't leave code in an unreleased state on master
 - After pushing, verify the tag resolves: `go get foo@v1.2.0` in a clean module
 - Update CHANGELOG entries for every tagged release
@@ -468,6 +502,7 @@ on the old version.
 ---
 
 <a id="f18"></a>
+
 ## F18 — Pseudo-versions in published go.mod
 
 **Reports:** go-cqrs-lite v4 (replace directives leaking to tags), go-output/cmdguard session 3 (14 Pattern B sentinels)
@@ -483,6 +518,7 @@ The Go module proxy cannot resolve `00010101000000` versions — they're sentine
 "unpublished local dependency."
 
 **Prevention:**
+
 - Strip ALL local `replace` directives before tagging
 - Use a release script that: (1) strips replaces, (2) runs `go mod tidy` to resolve real
   versions, (3) verifies no `00010101` pseudo-versions remain, (4) tags, (5) restores the

@@ -51,14 +51,14 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Go Ecosystem
 
-| Skill                        | What It Does                                                                                                     | Status           |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------- |
-| **bdd-testing**              | BDD tests with `onsi/ginkgo` for Go projects                                                                     | 🟢 Solid         |
+| Skill                        | What It Does                                                                                                                              | Status           |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **bdd-testing**              | BDD tests with `onsi/ginkgo` for Go projects                                                                                              | 🟢 Solid         |
 | **go-ecosystem-upgrade**     | Protocol for bumping/releasing/migrating Go library versions across many consumers — 18 failure modes extracted from 14 real self-reviews | 🟢 Comprehensive |
-| **go-modularize**            | Splits Go monorepos into semi-independent sub-modules                                                            | 🟢 Comprehensive |
-| **hierarchical-errors**      | Go 1.26+ error-matching modernization — prevents cargo-cult `errors.As`/`errors.Is` regressions (CLI unverified) | 🆕 New           |
-| **how-to-golang**            | Go development decision guide — what to use, not how                                                             | 🟢 Comprehensive |
-| **samber-do-best-practices** | Correct samber/do v2 DI usage — lifecycle, scopes, anti-patterns DO-1 → DO-6                                     | 🆕 New           |
+| **go-modularize**            | Splits Go monorepos into semi-independent sub-modules                                                                                     | 🟢 Comprehensive |
+| **hierarchical-errors**      | Go 1.26+ error-matching modernization — prevents cargo-cult `errors.As`/`errors.Is` regressions (CLI unverified)                          | 🆕 New           |
+| **how-to-golang**            | Go development decision guide — what to use, not how                                                                                      | 🟢 Comprehensive |
+| **samber-do-best-practices** | Correct samber/do v2 DI usage — lifecycle, scopes, anti-patterns DO-1 → DO-6                                                              | 🆕 New           |
 
 ### Nix & DevOps
 

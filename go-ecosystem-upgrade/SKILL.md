@@ -63,7 +63,7 @@ expensive mistake in the catalog.
    their defaults). **Identify the delivering layer now** — skipping it is failure mode F4.
 
 4. **Is the target version published?** Check `go list -m -versions
-   github.com/foo/bar` or the module proxy. If the tag doesn't exist yet, you're doing a
+github.com/foo/bar` or the module proxy. If the tag doesn't exist yet, you're doing a
    release, not just a bump — see Phase 6.
 
 ### Phase 1 — Baseline: establish ground truth before migration
@@ -87,7 +87,7 @@ If a consumer already has a red build or red tests **before your change**, recor
 
 ### Phase 2 — Enumerate: find ALL consumers, not just the obvious ones
 
-This phase exists because "all" means *all*. Multiple sessions missed consumers by
+This phase exists because "all" means _all_. Multiple sessions missed consumers by
 respecting `.gitignore`, capping search depth, or forgetting transitive consumers.
 
 1. **Use `--no-ignore-vcs` and `--hidden`** when searching for files. Gitignore is a dev
@@ -112,13 +112,13 @@ For each consumer, apply the version change using the right tool:
 
 1. **Use `go mod edit` / `go get`, never manual edits** to dependency files. This is a
    hard rule from the project AGENTS.md. For the `go` directive specifically: `go mod
-   edit -go=1.26` (not sed).
+edit -go=1.26` (not sed).
 
 2. **Handle `go.work` interference explicitly.** `GOWORK=off go get` does NOT fully isolate
    the workspace — it can write to `go.work.sum` instead of `go.mod`, reporting success
    while changing nothing. The reliable approach: **temporarily rename `go.work` →
    `go.work.bak`** before `go get` + `go mod tidy`, then restore. Always verify the
-   `go.mod` version *after* the command, not just trust the output.
+   `go.mod` version _after_ the command, not just trust the output.
 
 3. **Scope code migrations per-file, not per-codebase.** When migrating breaking API
    changes (e.g. `AggregateID()` → `StreamID()`), use targeted `grep` + edit only on files
@@ -132,7 +132,7 @@ For each consumer, apply the version change using the right tool:
 
 5. **Keep scope discipline.** When a build is blocked by something unrelated to the
    version task, the right move is: report it, flag it, and either stop and ask, or make
-   the *minimal* unblocking change and call it out explicitly. Do not fold side-fixes
+   the _minimal_ unblocking change and call it out explicitly. Do not fold side-fixes
    silently into a version bump — they deserve their own commit and review (failure mode
    F10).
 
@@ -214,7 +214,7 @@ If you're cutting tags (releasing a library, not just consuming one):
    verifies no pseudo-versions remain before pushing the tag.
 
 4. **Verify the tag resolves.** After pushing, run `go get
-   github.com/foo/bar@v1.2.0` in a clean module (or `GONOSUMDB=*` if the proxy hasn't
+github.com/foo/bar@v1.2.0` in a clean module (or `GONOSUMDB=*` if the proxy hasn't
    cached it yet). Don't assume the tag works — prove it.
 
 5. **Update the CHANGELOG** for every tagged release, and **re-verify CHANGELOG accuracy
@@ -227,26 +227,26 @@ These are the recurring mistakes extracted from 14 brutal self-review status rep
 Each has a code; the full story and root-cause analysis live in
 [./references/failure-mode-catalog.md](./references/failure-mode-catalog.md).
 
-| Code | Failure | One-line fix |
-|------|---------|--------------|
-| F1  | Respecting `.gitignore` on "ALL files" tasks | Use `--no-ignore-vcs --hidden` from the start |
-| F2  | `GOWORK=off` doesn't isolate — `go get` silently no-ops | Rename `go.work` → `.bak`, verify go.mod after every `go get` |
-| F3  | Build-only verification (no `go test`) | Always run `go test ./...`, not just `go build` |
-| F4  | Skipping the delivering layer (CSS, generators, browser render) | Verify the layer the library actually delivers, not just compilation |
-| F5  | Blind `sed`/regex replacement corrupts local types | Scope per-file on importing files; check each symbol's origin |
-| F6  | Trusting incomplete CHANGELOGs | Grep exported symbols yourself; changelogs omit removals |
-| F7  | Deleting and recreating git tags (proxy cache poisoning) | Never reuse version numbers; always bump |
-| F8  | Tagging from the wrong commit (missing the rename) | Verify `git merge-base --is-ancestor`; tag from HEAD |
-| F9  | Hand-editing `go.sum` with sed | Never — repair upstream and run `go mod tidy` |
-| F10 | Folding side-fixes into version bumps silently | Separate concerns → separate commits → separate review |
-| F11 | No baseline before migration | Record build+test state BEFORE touching anything |
-| F12 | Not committing (everything in `/tmp` or working tree) | Commit per-repo immediately after verification |
-| F13 | Stale vendor directories (hundreds of files behind) | Detect vendor/ in Phase 1; `go mod vendor` in Phase 3 |
-| F14 | Dead/stale `replace` directives | Audit replace blocks; drop targets that don't exist |
-| F15 | Treating checksum mismatches as nuisances | Investigate root cause; a SECURITY ERROR is not a `replace` opportunity |
-| F16 | Downgrade risk not flagged | Flag direction; confirm downgrades before executing |
-| F17 | No tags on consumer releases | Tag releases; untagged master is invisible to the proxy |
-| F18 | Pseudo-versions in published go.mod | Strip replaces before tagging; verify no `00010101` sentinels |
+| Code | Failure                                                         | One-line fix                                                            |
+| ---- | --------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| F1   | Respecting `.gitignore` on "ALL files" tasks                    | Use `--no-ignore-vcs --hidden` from the start                           |
+| F2   | `GOWORK=off` doesn't isolate — `go get` silently no-ops         | Rename `go.work` → `.bak`, verify go.mod after every `go get`           |
+| F3   | Build-only verification (no `go test`)                          | Always run `go test ./...`, not just `go build`                         |
+| F4   | Skipping the delivering layer (CSS, generators, browser render) | Verify the layer the library actually delivers, not just compilation    |
+| F5   | Blind `sed`/regex replacement corrupts local types              | Scope per-file on importing files; check each symbol's origin           |
+| F6   | Trusting incomplete CHANGELOGs                                  | Grep exported symbols yourself; changelogs omit removals                |
+| F7   | Deleting and recreating git tags (proxy cache poisoning)        | Never reuse version numbers; always bump                                |
+| F8   | Tagging from the wrong commit (missing the rename)              | Verify `git merge-base --is-ancestor`; tag from HEAD                    |
+| F9   | Hand-editing `go.sum` with sed                                  | Never — repair upstream and run `go mod tidy`                           |
+| F10  | Folding side-fixes into version bumps silently                  | Separate concerns → separate commits → separate review                  |
+| F11  | No baseline before migration                                    | Record build+test state BEFORE touching anything                        |
+| F12  | Not committing (everything in `/tmp` or working tree)           | Commit per-repo immediately after verification                          |
+| F13  | Stale vendor directories (hundreds of files behind)             | Detect vendor/ in Phase 1; `go mod vendor` in Phase 3                   |
+| F14  | Dead/stale `replace` directives                                 | Audit replace blocks; drop targets that don't exist                     |
+| F15  | Treating checksum mismatches as nuisances                       | Investigate root cause; a SECURITY ERROR is not a `replace` opportunity |
+| F16  | Downgrade risk not flagged                                      | Flag direction; confirm downgrades before executing                     |
+| F17  | No tags on consumer releases                                    | Tag releases; untagged master is invisible to the proxy                 |
+| F18  | Pseudo-versions in published go.mod                             | Strip replaces before tagging; verify no `00010101` sentinels           |
 
 When something goes wrong during execution, scan this table first — the failure you're
 experiencing is almost certainly one of these.
