@@ -57,6 +57,7 @@ For each file, check ALL categories below. Read `references/common-problems.md` 
 - [ ] **`builtins.path` for reproducible store paths** — `builtins.path { path = ./.; name = "..."; }`
 - [ ] **No IFD** — `builtins.readFile` on derivation outputs blocks evaluation
 - [ ] **No shallow `//` on nested attrs** — use `lib.recursiveUpdate` or `lib.mkMerge`
+- [ ] **No runtime impurity in `apps.*` / `shellHook` / devShell scripts** — `go run pkg@latest`, `npx pkg`, `pip install`, `cargo install` invoked at `nix run`/shell-entry time fetch from the network and break reproducibility silently. See [Hermeticity invariant for apps and devShells](#hermeticity-invariant-for-apps-and-devshells) below.
 
 #### Structural
 
@@ -143,6 +144,33 @@ For each file, check ALL categories below. Read `references/common-problems.md` 
 - [ ] **System ref** — `self.packages.${final.stdenv.system}.default`, not `prev.system`
 - [ ] **Naming matches directory** — overlay attr should match project directory name (not binary name, unless intentionally different)
 - [ ] **No empty overlays** — remove `overlays.default = final: prev: { };` blocks
+
+### Hermeticity invariant for apps and devShells
+
+The build-time purity checks above catch impurity **inside derivations**. A
+second, sneakier class hides in the `apps.*`, `shellHook`, and devShell
+scripts that run when a user invokes `nix run .#<app>` or enters a shell.
+These scripts are part of the flake's contract: if they reach for the network,
+the whole point of Nix — reproducibility — is silently defeated.
+
+**Rule:** In a project with a `flake.nix`, every tool invoked by a nix app or
+devShell MUST come from a flake input or a nixpkgs attribute. These are banned
+in app/shell scripts because each fetches an arbitrary version from the
+network at run time:
+
+| Banned (network-dependent)              | Vendor instead                                  |
+| --------------------------------------- | ----------------------------------------------- |
+| `go run golang.org/x/.../cmd/tool@latest` | A `buildGoModule` derivation or nixpkgs attr  |
+| `npx pkg` / `bunx pkg`                   | A flake input / nixpkgs attr, in `packages`    |
+| `pip install pkg`                        | A nixpkgs Python package in the devShell       |
+| `cargo install pkg`                      | `crane`/`rustPlatform` derivation or nixpkgs   |
+| `curl ... \| sh` / `wget` installers     | Vendor the binary via a flake input            |
+
+**Why it matters:** a build that passes today can fail tomorrow when the
+upstream `@latest` shifts or the network is unreachable (CI sandboxes, air-gapped
+machines, stale caches). The failure is non-deterministic and points at nothing
+inside the repo. If a tool isn't in nixpkgs, add it as a flake input or wrap it
+in a `buildGoModule` / `buildRustPackage` derivation so its hash is pinned.
 
 ### Step 4: Generate Report
 
