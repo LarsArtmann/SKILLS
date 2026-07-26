@@ -52,8 +52,7 @@ treatment: stat cards, severity badges, color-coded sections.
 > **After the report is written, the loop is not closed.** Section **(f) Top N
 > things to get done next** is the primary input for `docs-health` HARVEST — it
 > belongs in `TODO_LIST.md` / `ROADMAP.md`, not entombed in this timestamped
-> file. If the session continues after this report and `TODO_LIST.md` was not
-> updated from it, run HARVEST now: see
-> [`docs-health`](../docs-health/SKILL.md) → HARVEST. Otherwise the next session
-> treats `docs/status/` as historical and never reads this report as a backlog,
-> which is the dominant cause of a "pathetic" TODO_LIST.
+> file. If the session continues and `TODO_LIST.md` was not updated from this
+> report, run HARVEST now:
+> [`docs-health`](../docs-health/SKILL.md) → **HARVEST** (the canonical rule
+> for why and how lives there — do not restate it here).

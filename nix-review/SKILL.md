@@ -172,6 +172,15 @@ machines, stale caches). The failure is non-deterministic and points at nothing
 inside the repo. If a tool isn't in nixpkgs, add it as a flake input or wrap it
 in a `buildGoModule` / `buildRustPackage` derivation so its hash is pinned.
 
+**Scope boundary (avoid a split brain):** this invariant governs impurity in
+`apps.*` / devShell / `shellHook` **scripts** (run at `nix run`/shell-entry
+time). Two adjacent cases live in the catalogue and are NOT repeated here:
+problem **#2** covers the same anti-patterns **inside build derivations**
+(`preBuild`, deploy-time `pip install`); problem **#44** covers **heavy
+shellHook** operations. When you flag an `@latest`/`npx`/`pip install` hit,
+cite the surface it lives on (build-time → #2, shell script → this invariant,
+shellHook weight → #44) so the fix targets the right layer.
+
 ### Step 4: Generate Report
 
 Produce a structured report with these sections:
