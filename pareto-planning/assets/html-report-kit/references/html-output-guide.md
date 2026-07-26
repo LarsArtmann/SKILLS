@@ -104,24 +104,24 @@ differ. This kills the prior split brain where dark used `--bg-elevated` /
 
 ```css
 :root {
-  --color-graphite: #0e0e10;
-  --color-graphite-2: #18181d;
-  --color-graphite-3: #16161a;
-  --color-bone: #f4f4f0;
-  --color-red: #ff6b6b; /* lifted for dark-bg contrast */
-  --color-blue: #6eb5ff;
-  --color-yellow: #f4d35e;
-  --color-amber: #ffb347; /* warmer than yellow for accent */
+	--color-graphite: #0e0e10;
+	--color-graphite-2: #18181d;
+	--color-graphite-3: #16161a;
+	--color-bone: #f4f4f0;
+	--color-red: #ff6b6b; /* lifted for dark-bg contrast */
+	--color-blue: #6eb5ff;
+	--color-yellow: #f4d35e;
+	--color-amber: #ffb347; /* warmer than yellow for accent */
 
-  /* Map semantic → primitive */
-  --surface: var(--color-graphite);
-  --surface-raised: var(--color-graphite-2);
-  --surface-sunken: var(--color-graphite-3);
-  --text: var(--color-bone);
-  --accent: var(--color-amber);
-  --problem: var(--color-red);
-  --solution: var(--color-blue);
-  --warning: var(--color-yellow);
+	/* Map semantic → primitive */
+	--surface: var(--color-graphite);
+	--surface-raised: var(--color-graphite-2);
+	--surface-sunken: var(--color-graphite-3);
+	--text: var(--color-bone);
+	--accent: var(--color-amber);
+	--problem: var(--color-red);
+	--solution: var(--color-blue);
+	--warning: var(--color-yellow);
 }
 ```
 
@@ -129,23 +129,23 @@ differ. This kills the prior split brain where dark used `--bg-elevated` /
 
 ```css
 :root {
-  --color-paper: #f4f4f0;
-  --color-paper-2: #ffffff;
-  --color-paper-3: #e8e8e2;
-  --color-ink: #111111;
-  --color-red: #e63946;
-  --color-blue: #1d3557;
-  --color-yellow: #f4d35e;
+	--color-paper: #f4f4f0;
+	--color-paper-2: #ffffff;
+	--color-paper-3: #e8e8e2;
+	--color-ink: #111111;
+	--color-red: #e63946;
+	--color-blue: #1d3557;
+	--color-yellow: #f4d35e;
 
-  /* Map semantic → primitive */
-  --surface: var(--color-paper);
-  --surface-raised: var(--color-paper-2);
-  --surface-sunken: var(--color-paper-3);
-  --text: var(--color-ink);
-  --accent: var(--color-red);
-  --problem: var(--color-red);
-  --solution: var(--color-blue);
-  --warning: var(--color-yellow);
+	/* Map semantic → primitive */
+	--surface: var(--color-paper);
+	--surface-raised: var(--color-paper-2);
+	--surface-sunken: var(--color-paper-3);
+	--text: var(--color-ink);
+	--accent: var(--color-red);
+	--problem: var(--color-red);
+	--solution: var(--color-blue);
+	--warning: var(--color-yellow);
 }
 ```
 
@@ -212,16 +212,16 @@ hidden below 1100px.
 
 ```html
 <div class="layout">
-  <aside class="sidebar">
-    <nav>
-      <div class="label">Contents</div>
-      <a href="#summary">Summary</a>
-      <a href="#findings">Findings</a>
-    </nav>
-  </aside>
-  <main class="main">
-    <!-- report body -->
-  </main>
+	<aside class="sidebar">
+		<nav>
+			<div class="label">Contents</div>
+			<a href="#summary">Summary</a>
+			<a href="#findings">Findings</a>
+		</nav>
+	</aside>
+	<main class="main">
+		<!-- report body -->
+	</main>
 </div>
 ```
 
@@ -231,9 +231,9 @@ Dark dashboard:
 
 ```html
 <div class="hero">
-  <div class="hero-badge">Report Type</div>
-  <h1>Report Title</h1>
-  <p class="hero-subtitle">Short description.</p>
+	<div class="hero-badge">Report Type</div>
+	<h1>Report Title</h1>
+	<p class="hero-subtitle">Short description.</p>
 </div>
 ```
 
@@ -241,13 +241,13 @@ Editorial light:
 
 ```html
 <header class="hero">
-  <div class="eyebrow">REPORT TYPE &middot; YYYY-MM-DD</div>
-  <h1>Report Title</h1>
-  <p class="subtitle">One or two sentences that set the frame.</p>
-  <div class="meta">
-    <span class="tag amber">Scope: example</span>
-    <span class="tag">Version: 1.0.0</span>
-  </div>
+	<div class="eyebrow">REPORT TYPE &middot; YYYY-MM-DD</div>
+	<h1>Report Title</h1>
+	<p class="subtitle">One or two sentences that set the frame.</p>
+	<div class="meta">
+		<span class="tag amber">Scope: example</span>
+		<span class="tag">Version: 1.0.0</span>
+	</div>
 </header>
 ```
 
@@ -260,18 +260,18 @@ Dark dashboard uses `.stat-grid` / `.stat-card` with optional state classes:
 
 ```html
 <div class="stat-grid">
-  <div class="stat-card stat-good">
-    <div class="stat-value">35</div>
-    <div class="stat-label">Resolved</div>
-  </div>
-  <div class="stat-card stat-warn">
-    <div class="stat-value">3</div>
-    <div class="stat-label">Warnings</div>
-  </div>
-  <div class="stat-card stat-bad">
-    <div class="stat-value">1</div>
-    <div class="stat-label">Blockers</div>
-  </div>
+	<div class="stat-card stat-good">
+		<div class="stat-value">35</div>
+		<div class="stat-label">Resolved</div>
+	</div>
+	<div class="stat-card stat-warn">
+		<div class="stat-value">3</div>
+		<div class="stat-label">Warnings</div>
+	</div>
+	<div class="stat-card stat-bad">
+		<div class="stat-value">1</div>
+		<div class="stat-label">Blockers</div>
+	</div>
 </div>
 ```
 
@@ -280,18 +280,18 @@ renamed:
 
 ```html
 <div class="scorecard">
-  <div class="score-card score-good">
-    <div class="score">8</div>
-    <div class="label">Passing</div>
-  </div>
-  <div class="score-card score-warn">
-    <div class="score">3</div>
-    <div class="label">Warnings</div>
-  </div>
-  <div class="score-card score-bad">
-    <div class="score">1</div>
-    <div class="label">Blockers</div>
-  </div>
+	<div class="score-card score-good">
+		<div class="score">8</div>
+		<div class="label">Passing</div>
+	</div>
+	<div class="score-card score-warn">
+		<div class="score">3</div>
+		<div class="label">Warnings</div>
+	</div>
+	<div class="score-card score-bad">
+		<div class="score">1</div>
+		<div class="label">Blockers</div>
+	</div>
 </div>
 ```
 
@@ -312,10 +312,10 @@ Use for individual findings. Includes severity badge and file/line metadata.
 
 ```html
 <div class="issue issue-critical">
-  <span class="severity severity-critical">Blocking</span>
-  <h3>Issue title</h3>
-  <div class="where">path/to/file.go:42-58</div>
-  <p>Description of the problem.</p>
+	<span class="severity severity-critical">Blocking</span>
+	<h3>Issue title</h3>
+	<div class="where">path/to/file.go:42-58</div>
+	<p>Description of the problem.</p>
 </div>
 ```
 
@@ -340,12 +340,12 @@ Dark dashboard:
 
 ```html
 <div class="callout callout-solution">
-  <strong>Fix</strong>
-  Recommended action goes here.
+	<strong>Fix</strong>
+	Recommended action goes here.
 </div>
 <div class="callout callout-warning">
-  <strong>Watch out</strong>
-  Compounding factor or caveat.
+	<strong>Watch out</strong>
+	Compounding factor or caveat.
 </div>
 ```
 
@@ -353,12 +353,12 @@ Editorial light:
 
 ```html
 <div class="callout callout-teal">
-  <strong>Fix: recommended action</strong>
-  Concrete next step.
+	<strong>Fix: recommended action</strong>
+	Concrete next step.
 </div>
 <div class="callout callout-amber">
-  <strong>The bottom line</strong>
-  Verdict or caveat.
+	<strong>The bottom line</strong>
+	Verdict or caveat.
 </div>
 ```
 
@@ -369,16 +369,16 @@ Full-width, hover-highlighted. Use badges inside cells for severity. Add
 
 ```html
 <table>
-  <thead>
-    <tr>
-      <th>Column</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Value</td>
-    </tr>
-  </tbody>
+	<thead>
+		<tr>
+			<th>Column</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Value</td>
+		</tr>
+	</tbody>
 </table>
 ```
 
@@ -388,12 +388,12 @@ Dark dashboard uses a split grid with headers:
 
 ```html
 <div class="compare-header">
-  <div class="compare-before">Before</div>
-  <div class="compare-after">After</div>
+	<div class="compare-before">Before</div>
+	<div class="compare-after">After</div>
 </div>
 <div class="compare-row">
-  <div>Old code or state</div>
-  <div>New code or state</div>
+	<div>Old code or state</div>
+	<div>New code or state</div>
 </div>
 ```
 
@@ -401,25 +401,25 @@ Editorial light uses a single comparison table:
 
 ```html
 <table class="compare">
-  <thead>
-    <tr>
-      <th>Issue</th>
-      <th>Severity</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Issue one</td>
-      <td class="no">Critical</td>
-      <td class="no">Open</td>
-    </tr>
-    <tr>
-      <td>Issue two</td>
-      <td class="no">Important</td>
-      <td class="yes">Fixed</td>
-    </tr>
-  </tbody>
+	<thead>
+		<tr>
+			<th>Issue</th>
+			<th>Severity</th>
+			<th>Status</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Issue one</td>
+			<td class="no">Critical</td>
+			<td class="no">Open</td>
+		</tr>
+		<tr>
+			<td>Issue two</td>
+			<td class="no">Important</td>
+			<td class="yes">Fixed</td>
+		</tr>
+	</tbody>
 </table>
 ```
 
@@ -429,11 +429,11 @@ For migration roadmaps and execution plans.
 
 ```html
 <div class="migration-step">
-  <div class="migration-num">1</div>
-  <div class="migration-content">
-    <h4>Step title</h4>
-    <p>Step description.</p>
-  </div>
+	<div class="migration-num">1</div>
+	<div class="migration-content">
+		<h4>Step title</h4>
+		<p>Step description.</p>
+	</div>
 </div>
 ```
 
@@ -450,13 +450,13 @@ Use to acknowledge what already works before listing problems.
 
 ```html
 <div class="strengths">
-  <div class="strength">
-    <div class="check">+</div>
-    <div class="text">
-      <strong>Specific strength</strong>
-      <span>Explain why it matters.</span>
-    </div>
-  </div>
+	<div class="strength">
+		<div class="check">+</div>
+		<div class="text">
+			<strong>Specific strength</strong>
+			<span>Explain why it matters.</span>
+		</div>
+	</div>
 </div>
 ```
 
@@ -466,8 +466,8 @@ For module graphs, import trees, or lightweight architecture diagrams.
 
 ```html
 <div class="dep-tree">
-  <span class="root">root</span> ├── <span class="ok">wanted-dep</span> └──
-  <span class="unwanted">unwanted-dep</span>
+	<span class="root">root</span> ├── <span class="ok">wanted-dep</span> └──
+	<span class="unwanted">unwanted-dep</span>
 </div>
 ```
 
@@ -477,9 +477,9 @@ For simple node-and-arrow visuals:
 
 ```html
 <div class="diagram">
-  <span class="node node-core">Core</span>
-  <span class="arrow">→</span>
-  <span class="node">Module</span>
+	<span class="node node-core">Core</span>
+	<span class="arrow">→</span>
+	<span class="node">Module</span>
 </div>
 ```
 
@@ -502,35 +502,35 @@ Use **language-agnostic** `.tok-*` classes (not `.go-*` or `.ts-*`):
 
 ```css
 .tok-keyword {
-  color: #c678dd;
+	color: #c678dd;
 } /* func, type, struct, if, return */
 .tok-type {
-  color: #e5c07b;
+	color: #e5c07b;
 } /* int, string, bool, error */
 .tok-string {
-  color: #98c379;
+	color: #98c379;
 } /* "quoted strings" */
 .tok-comment {
-  color: #5c6370;
-  font-style: italic;
+	color: #5c6370;
+	font-style: italic;
 }
 .tok-func {
-  color: #61afef;
+	color: #61afef;
 } /* function names */
 .tok-number {
-  color: #d19a66;
+	color: #d19a66;
 } /* 42, 3.14 */
 .tok-generic {
-  color: #e06c75;
+	color: #e06c75;
 } /* T, ID in generics */
 .tok-builtin {
-  color: #56b6c2;
+	color: #56b6c2;
 } /* make, len, append, fmt.Println */
 .tok-punct {
-  color: #abb2bf;
+	color: #abb2bf;
 } /* { } ( ) ; = : */
 .tok-attr {
-  color: #d19a66;
+	color: #d19a66;
 } /* Nix attribute names, struct tags */
 ```
 

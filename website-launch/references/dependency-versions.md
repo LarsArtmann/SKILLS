@@ -20,23 +20,23 @@ Verified 2026-07-13 with a clean `npm install` + `npm run build`:
 
 ```json
 {
-  "dependencies": {
-    "@astrojs/sitemap": "^3.7.3",
-    "@astrojs/starlight": "^0.41.1",
-    "@tailwindcss/vite": "^4.3.1",
-    "astro": "^7.0.3",
-    "tailwindcss": "^4.3.1"
-  },
-  "devDependencies": {
-    "@astrojs/check": "^0.9.9",
-    "html-validate": "^11.5.3",
-    "typescript": "^6.0.3"
-  },
-  "overrides": {
-    "brace-expansion": "5.0.6",
-    "devalue": "5.8.1",
-    "yaml": "2.8.3"
-  }
+	"dependencies": {
+		"@astrojs/sitemap": "^3.7.3",
+		"@astrojs/starlight": "^0.41.1",
+		"@tailwindcss/vite": "^4.3.1",
+		"astro": "^7.0.3",
+		"tailwindcss": "^4.3.1"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.9",
+		"html-validate": "^11.5.3",
+		"typescript": "^6.0.3"
+	},
+	"overrides": {
+		"brace-expansion": "5.0.6",
+		"devalue": "5.8.1",
+		"yaml": "2.8.3"
+	}
 }
 ```
 
@@ -47,25 +47,25 @@ For sites with OG images, CSP, and CI/CD. Add `astro-og-canvas` and
 
 ```json
 {
-  "dependencies": {
-    "@astrojs/sitemap": "^3.7.3",
-    "@astrojs/starlight": "^0.41.1",
-    "@tailwindcss/vite": "^4.3.1",
-    "astro": "^7.0.3",
-    "astro-og-canvas": "^0.12.0",
-    "tailwindcss": "^4.3.1"
-  },
-  "devDependencies": {
-    "@astrojs/check": "^0.9.9",
-    "html-validate": "^11.5.3",
-    "jscpd": "^5.0.11",
-    "typescript": "^6.0.3"
-  },
-  "overrides": {
-    "brace-expansion": "5.0.6",
-    "devalue": "5.8.1",
-    "yaml": "2.8.3"
-  }
+	"dependencies": {
+		"@astrojs/sitemap": "^3.7.3",
+		"@astrojs/starlight": "^0.41.1",
+		"@tailwindcss/vite": "^4.3.1",
+		"astro": "^7.0.3",
+		"astro-og-canvas": "^0.12.0",
+		"tailwindcss": "^4.3.1"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.9",
+		"html-validate": "^11.5.3",
+		"jscpd": "^5.0.11",
+		"typescript": "^6.0.3"
+	},
+	"overrides": {
+		"brace-expansion": "5.0.6",
+		"devalue": "5.8.1",
+		"yaml": "2.8.3"
+	}
 }
 ```
 

@@ -623,16 +623,16 @@ scaffolded. They are easy to forget and they are free.
 
 ```js
 starlight({
-  title: "{Project}",
-  // Show git-based "last updated" on every page — zero authoring cost,
-  // always accurate, signals the page is alive.
-  lastUpdated: true,
-  // "Edit this page" link on every doc — the #1 contributor-acquisition
-  // lever. Adjust master -> main if the project's default branch differs.
-  editLink: {
-    baseUrl: "https://github.com/LarsArtmann/{repo}/edit/master/website",
-  },
-  // Pagination and breadcrumbs are on by default — do not disable them.
+	title: "{Project}",
+	// Show git-based "last updated" on every page — zero authoring cost,
+	// always accurate, signals the page is alive.
+	lastUpdated: true,
+	// "Edit this page" link on every doc — the #1 contributor-acquisition
+	// lever. Adjust master -> main if the project's default branch differs.
+	editLink: {
+		baseUrl: "https://github.com/LarsArtmann/{repo}/edit/master/website",
+	},
+	// Pagination and breadcrumbs are on by default — do not disable them.
 });
 ```
 

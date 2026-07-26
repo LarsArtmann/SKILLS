@@ -21,34 +21,34 @@ values differ.
 ```css
 /* Shared semantic layer — SAME NAMES in both templates */
 :root {
-  /* Surfaces */
-  --surface: <primitive>; /* page background */
-  --surface-raised: <primitive>; /* cards, elevated panels */
-  --surface-sunken: <primitive>; /* code blocks, inset areas */
+	/* Surfaces */
+	--surface: <primitive>; /* page background */
+	--surface-raised: <primitive>; /* cards, elevated panels */
+	--surface-sunken: <primitive>; /* code blocks, inset areas */
 
-  /* Text */
-  --text: <primitive>; /* primary body text */
-  --text-muted: <primitive>; /* secondary text */
-  --text-faint: <primitive>; /* labels, captions */
+	/* Text */
+	--text: <primitive>; /* primary body text */
+	--text-muted: <primitive>; /* secondary text */
+	--text-faint: <primitive>; /* labels, captions */
 
-  /* Lines */
-  --border: <primitive>; /* hairlines, dividers */
-  --border-strong: <primitive>; /* emphasized borders */
+	/* Lines */
+	--border: <primitive>; /* hairlines, dividers */
+	--border-strong: <primitive>; /* emphasized borders */
 
-  /* Semantic status — SAME in both templates */
-  --accent: <primitive>; /* primary brand accent */
-  --problem: <primitive>; /* errors, critical findings */
-  --solution: <primitive>; /* good news, passing tests */
-  --warning: <primitive>; /* cautions, warnings */
+	/* Semantic status — SAME in both templates */
+	--accent: <primitive>; /* primary brand accent */
+	--problem: <primitive>; /* errors, critical findings */
+	--solution: <primitive>; /* good news, passing tests */
+	--warning: <primitive>; /* cautions, warnings */
 
-  /* Shape */
-  --radius: 0px; /* Bauhaus = sharp corners by default */
-  --radius-sm: 0px;
+	/* Shape */
+	--radius: 0px; /* Bauhaus = sharp corners by default */
+	--radius-sm: 0px;
 
-  /* Type */
-  --font-heading: <stack>;
-  --font-body: <stack>;
-  --font-mono: <stack>;
+	/* Type */
+	--font-heading: <stack>;
+	--font-body: <stack>;
+	--font-mono: <stack>;
 }
 ```
 
@@ -84,29 +84,29 @@ sync with their solid parents. Browser support: Chrome 111+, Safari 16.2+, Firef
 
 ```css
 :root {
-  --color-paper: #f4f4f0; /* warm off-white ground */
-  --color-paper-2: #ffffff; /* raised card */
-  --color-paper-3: #e4e4e0; /* sunken code area */
-  --color-ink: #111111; /* near-black text */
-  --color-red: #e63946; /* problem + accent */
-  --color-blue: #1d3557; /* solution */
-  --color-yellow: #f4d35e; /* warning */
-  --color-hairline: rgba(17, 17, 17, 0.12);
-  --color-hairline-strong: rgba(17, 17, 17, 0.25);
+	--color-paper: #f4f4f0; /* warm off-white ground */
+	--color-paper-2: #ffffff; /* raised card */
+	--color-paper-3: #e4e4e0; /* sunken code area */
+	--color-ink: #111111; /* near-black text */
+	--color-red: #e63946; /* problem + accent */
+	--color-blue: #1d3557; /* solution */
+	--color-yellow: #f4d35e; /* warning */
+	--color-hairline: rgba(17, 17, 17, 0.12);
+	--color-hairline-strong: rgba(17, 17, 17, 0.25);
 
-  /* Map semantic → primitive */
-  --surface: var(--color-paper);
-  --surface-raised: var(--color-paper-2);
-  --surface-sunken: var(--color-paper-3);
-  --text: var(--color-ink);
-  --text-muted: rgba(17, 17, 17, 0.72);
-  --text-faint: rgba(17, 17, 17, 0.45);
-  --border: var(--color-hairline);
-  --border-strong: var(--color-hairline-strong);
-  --accent: var(--color-red);
-  --problem: var(--color-red);
-  --solution: var(--color-blue);
-  --warning: var(--color-yellow);
+	/* Map semantic → primitive */
+	--surface: var(--color-paper);
+	--surface-raised: var(--color-paper-2);
+	--surface-sunken: var(--color-paper-3);
+	--text: var(--color-ink);
+	--text-muted: rgba(17, 17, 17, 0.72);
+	--text-faint: rgba(17, 17, 17, 0.45);
+	--border: var(--color-hairline);
+	--border-strong: var(--color-hairline-strong);
+	--accent: var(--color-red);
+	--problem: var(--color-red);
+	--solution: var(--color-blue);
+	--warning: var(--color-yellow);
 }
 ```
 
@@ -114,30 +114,30 @@ sync with their solid parents. Browser support: Chrome 111+, Safari 16.2+, Firef
 
 ```css
 :root {
-  --color-graphite: #0e0e10; /* page ground */
-  --color-graphite-2: #18181d; /* raised card */
-  --color-graphite-3: #16161a; /* sunken code area */
-  --color-bone: #f4f4f0; /* primary text */
-  --color-red: #ff6b6b; /* problem (lifted for dark) */
-  --color-blue: #6eb5ff; /* solution (lifted for dark) */
-  --color-yellow: #f4d35e; /* warning */
-  --color-amber: #ffb347; /* accent (warmer than yellow for emphasis) */
-  --color-hairline: rgba(244, 244, 240, 0.12);
-  --color-hairline-strong: rgba(244, 244, 240, 0.25);
+	--color-graphite: #0e0e10; /* page ground */
+	--color-graphite-2: #18181d; /* raised card */
+	--color-graphite-3: #16161a; /* sunken code area */
+	--color-bone: #f4f4f0; /* primary text */
+	--color-red: #ff6b6b; /* problem (lifted for dark) */
+	--color-blue: #6eb5ff; /* solution (lifted for dark) */
+	--color-yellow: #f4d35e; /* warning */
+	--color-amber: #ffb347; /* accent (warmer than yellow for emphasis) */
+	--color-hairline: rgba(244, 244, 240, 0.12);
+	--color-hairline-strong: rgba(244, 244, 240, 0.25);
 
-  /* Map semantic → primitive */
-  --surface: var(--color-graphite);
-  --surface-raised: var(--color-graphite-2);
-  --surface-sunken: var(--color-graphite-3);
-  --text: var(--color-bone);
-  --text-muted: rgba(244, 244, 240, 0.72);
-  --text-faint: rgba(244, 244, 240, 0.45);
-  --border: var(--color-hairline);
-  --border-strong: var(--color-hairline-strong);
-  --accent: var(--color-amber);
-  --problem: var(--color-red);
-  --solution: var(--color-blue);
-  --warning: var(--color-yellow);
+	/* Map semantic → primitive */
+	--surface: var(--color-graphite);
+	--surface-raised: var(--color-graphite-2);
+	--surface-sunken: var(--color-graphite-3);
+	--text: var(--color-bone);
+	--text-muted: rgba(244, 244, 240, 0.72);
+	--text-faint: rgba(244, 244, 240, 0.45);
+	--border: var(--color-hairline);
+	--border-strong: var(--color-hairline-strong);
+	--accent: var(--color-amber);
+	--problem: var(--color-red);
+	--solution: var(--color-blue);
+	--warning: var(--color-yellow);
 }
 ```
 
@@ -153,11 +153,11 @@ system sans + system mono carry it fine.
 
 ```css
 --font-heading:
-  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-  sans-serif;
+	ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+	sans-serif;
 --font-body:
-  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-  sans-serif;
+	ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+	sans-serif;
 --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
 ```
 
@@ -175,29 +175,29 @@ Pattern (optional, ~20 lines, included in both templates):
 
 ```html
 <script>
-  // Highlight active nav item based on scroll position.
-  // Pure progressive enhancement — anchor links work without JS.
-  (function () {
-    var sections = document.querySelectorAll("section[id]");
-    var navLinks = document.querySelectorAll('[data-nav] a[href^="#"]');
-    if (!("IntersectionObserver" in window) || !sections.length) return;
-    new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            var id = entry.target.id;
-            navLinks.forEach(function (link) {
-              link.classList.toggle("active", link.getAttribute("href") === "#" + id);
-            });
-          }
-        });
-      },
-      { rootMargin: "-80px 0px -60% 0px", threshold: 0 },
-    ).observe &&
-      sections.forEach(function (s) {
-        /* observer */
-      });
-  })();
+	// Highlight active nav item based on scroll position.
+	// Pure progressive enhancement — anchor links work without JS.
+	(function () {
+		var sections = document.querySelectorAll("section[id]");
+		var navLinks = document.querySelectorAll('[data-nav] a[href^="#"]');
+		if (!("IntersectionObserver" in window) || !sections.length) return;
+		new IntersectionObserver(
+			function (entries) {
+				entries.forEach(function (entry) {
+					if (entry.isIntersecting) {
+						var id = entry.target.id;
+						navLinks.forEach(function (link) {
+							link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+						});
+					}
+				});
+			},
+			{ rootMargin: "-80px 0px -60% 0px", threshold: 0 },
+		).observe &&
+			sections.forEach(function (s) {
+				/* observer */
+			});
+	})();
 </script>
 ```
 

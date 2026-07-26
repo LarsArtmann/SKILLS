@@ -84,8 +84,8 @@
 
    ```javascript
    const data = JSON.stringify({
-     site: "{siteId}",
-     domainName: "{siteId}.lars.software",
+   	site: "{siteId}",
+   	domainName: "{siteId}.lars.software",
    });
    // POST to firebasehosting.googleapis.com/v1beta1/sites/{siteId}/domains
    // Authorization: Bearer {token from firebase-tools.json}

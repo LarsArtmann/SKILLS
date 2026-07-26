@@ -59,20 +59,20 @@ const domain = process.env.DOMAIN || "{subdomain}.lars.software";
 
 const data = JSON.stringify({});
 const options = {
-  hostname: "firebasehosting.googleapis.com",
-  path: `/v1beta1/projects/${projectId}/sites/${siteId}/customDomains?customDomainId=${domain}`,
-  method: "POST",
-  headers: {
-    Authorization: "Bearer " + token,
-    "Content-Type": "application/json",
-    "Content-Length": data.length,
-    "x-goog-user-project": projectId,
-  },
+	hostname: "firebasehosting.googleapis.com",
+	path: `/v1beta1/projects/${projectId}/sites/${siteId}/customDomains?customDomainId=${domain}`,
+	method: "POST",
+	headers: {
+		Authorization: "Bearer " + token,
+		"Content-Type": "application/json",
+		"Content-Length": data.length,
+		"x-goog-user-project": projectId,
+	},
 };
 const req = https.request(options, (res) => {
-  let body = "";
-  res.on("data", (chunk) => (body += chunk));
-  res.on("end", () => console.log(res.statusCode + ": " + body));
+	let body = "";
+	res.on("data", (chunk) => (body += chunk));
+	res.on("end", () => console.log(res.statusCode + ": " + body));
 });
 req.on("error", (e) => console.error("Error: " + e.message));
 req.write(data);
@@ -105,39 +105,39 @@ const token = process.env.ACCESS_TOKEN;
 const projectId = "lars-software";
 const siteId = process.env.SITE_ID || "{siteId}";
 const options = {
-  hostname: "firebasehosting.googleapis.com",
-  path: `/v1beta1/projects/${projectId}/sites/${siteId}/customDomains`,
-  method: "GET",
-  headers: {
-    Authorization: "Bearer " + token,
-    "x-goog-user-project": projectId,
-  },
+	hostname: "firebasehosting.googleapis.com",
+	path: `/v1beta1/projects/${projectId}/sites/${siteId}/customDomains`,
+	method: "GET",
+	headers: {
+		Authorization: "Bearer " + token,
+		"x-goog-user-project": projectId,
+	},
 };
 const req = https.request(options, (res) => {
-  let body = "";
-  res.on("data", (chunk) => (body += chunk));
-  res.on("end", () => {
-    try {
-      const data = JSON.parse(body);
-      if (!data.customDomains) {
-        console.log(JSON.stringify(data, null, 2));
-        return;
-      }
-      data.customDomains.forEach((cd) => {
-        const cname = cd.requiredDnsUpdates?.desired?.[0]?.records?.[0];
-        const acme = cd.cert?.verification?.dns?.desired?.[0]?.records?.[0];
-        console.log("Domain:", cd.name.split("/").pop());
-        console.log("  hostState:", cd.hostState);
-        console.log("  ownershipState:", cd.ownershipState);
-        console.log("  certState:", cd.cert?.state || "N/A");
-        if (cname) console.log("  CNAME:", cname.domainName, "->", cname.rdata);
-        if (acme) console.log("  ACME TXT:", acme.domainName, "->", acme.rdata);
-        console.log("---");
-      });
-    } catch (e) {
-      console.log("Status:", res.statusCode, body.substring(0, 300));
-    }
-  });
+	let body = "";
+	res.on("data", (chunk) => (body += chunk));
+	res.on("end", () => {
+		try {
+			const data = JSON.parse(body);
+			if (!data.customDomains) {
+				console.log(JSON.stringify(data, null, 2));
+				return;
+			}
+			data.customDomains.forEach((cd) => {
+				const cname = cd.requiredDnsUpdates?.desired?.[0]?.records?.[0];
+				const acme = cd.cert?.verification?.dns?.desired?.[0]?.records?.[0];
+				console.log("Domain:", cd.name.split("/").pop());
+				console.log("  hostState:", cd.hostState);
+				console.log("  ownershipState:", cd.ownershipState);
+				console.log("  certState:", cd.cert?.state || "N/A");
+				if (cname) console.log("  CNAME:", cname.domainName, "->", cname.rdata);
+				if (acme) console.log("  ACME TXT:", acme.domainName, "->", acme.rdata);
+				console.log("---");
+			});
+		} catch (e) {
+			console.log("Status:", res.statusCode, body.substring(0, 300));
+		}
+	});
 });
 req.on("error", (e) => console.error("Error: " + e.message));
 req.end();
@@ -171,10 +171,10 @@ Found at: `requiredDnsUpdates.desired[0].records[0]`
 
 ```json
 {
-  "domainName": "go-workflow-auditlog.lars.software",
-  "type": "CNAME",
-  "rdata": "auditlog.web.app",
-  "requiredAction": "ADD"
+	"domainName": "go-workflow-auditlog.lars.software",
+	"type": "CNAME",
+	"rdata": "auditlog.web.app",
+	"requiredAction": "ADD"
 }
 ```
 
@@ -189,10 +189,10 @@ Found at: `cert.verification.dns.desired[0].records[0]`
 
 ```json
 {
-  "domainName": "_acme-challenge.go-workflow-auditlog.lars.software",
-  "type": "TXT",
-  "rdata": "Kl50WF6Xp532l4EmJ2TigjWE2b4u9Njl_-JtkiXmPig",
-  "requiredAction": "ADD"
+	"domainName": "_acme-challenge.go-workflow-auditlog.lars.software",
+	"type": "TXT",
+	"rdata": "Kl50WF6Xp532l4EmJ2TigjWE2b4u9Njl_-JtkiXmPig",
+	"requiredAction": "ADD"
 }
 ```
 
@@ -210,18 +210,18 @@ const projectId = "lars-software";
 const siteId = "{siteId}";
 const domain = "{subdomain}.lars.software";
 const options = {
-  hostname: "firebasehosting.googleapis.com",
-  path: `/v1beta1/projects/${projectId}/sites/${siteId}/customDomains/${domain}`,
-  method: "DELETE",
-  headers: {
-    Authorization: "Bearer " + token,
-    "x-goog-user-project": projectId,
-  },
+	hostname: "firebasehosting.googleapis.com",
+	path: `/v1beta1/projects/${projectId}/sites/${siteId}/customDomains/${domain}`,
+	method: "DELETE",
+	headers: {
+		Authorization: "Bearer " + token,
+		"x-goog-user-project": projectId,
+	},
 };
 const req = https.request(options, (res) => {
-  let body = "";
-  res.on("data", (chunk) => (body += chunk));
-  res.on("end", () => console.log(res.statusCode + ": " + body));
+	let body = "";
+	res.on("data", (chunk) => (body += chunk));
+	res.on("end", () => console.log(res.statusCode + ": " + body));
 });
 req.on("error", (e) => console.error("Error: " + e.message));
 req.end();

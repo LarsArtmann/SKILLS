@@ -69,10 +69,10 @@ important takeaway. Example:
 
 ```html
 <div class="callout callout-amber">
-  <strong>The bottom line</strong>
-  The project uses Zod for input validation but misses schema composition, discriminated unions, and
-  the .transform() pipeline — all of which would eliminate ~200 lines of hand-rolled validation
-  across 12 files.
+	<strong>The bottom line</strong>
+	The project uses Zod for input validation but misses schema composition, discriminated unions, and
+	the .transform() pipeline — all of which would eliminate ~200 lines of hand-rolled validation
+	across 12 files.
 </div>
 ```
 
@@ -92,18 +92,18 @@ adoption status:
 
 ```html
 <div class="issue issue-critical" id="missed-streaming">
-  <span class="severity severity-critical">Missed Opportunity &middot; High impact</span>
-  <h3>Streaming API unused — all queries load fully into memory</h3>
-  <div class="where">src/db/queries.go:45-89 &middot; 4 call sites</div>
-  <p>
-    What the library offers, what the project does instead, and the impact of the gap. Cite the doc
-    reference and the code location.
-  </p>
-  <div class="callout callout-teal">
-    <strong>Recommendation</strong>
-    Concrete code example showing the recommended usage.
-  </div>
-  <pre><code>// Before: loads everything
+	<span class="severity severity-critical">Missed Opportunity &middot; High impact</span>
+	<h3>Streaming API unused — all queries load fully into memory</h3>
+	<div class="where">src/db/queries.go:45-89 &middot; 4 call sites</div>
+	<p>
+		What the library offers, what the project does instead, and the impact of the gap. Cite the doc
+		reference and the code location.
+	</p>
+	<div class="callout callout-teal">
+		<strong>Recommendation</strong>
+		Concrete code example showing the recommended usage.
+	</div>
+	<pre><code>// Before: loads everything
 rows := db.Find(&amp;results)
 
 // After: streams lazily
@@ -138,28 +138,28 @@ A `.compare` table showing what's changed between the installed version and the 
 
 ```html
 <table class="compare">
-  <thead>
-    <tr>
-      <th>Version</th>
-      <th>Type</th>
-      <th>Notable Change</th>
-      <th>Relevance</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>5.4.0</td>
-      <td>Feature</td>
-      <td>Added streaming query API</td>
-      <td class="yes">High — see finding above</td>
-    </tr>
-    <tr>
-      <td>5.3.0</td>
-      <td>Breaking</td>
-      <td>Renamed <code>.Chain()</code> to <code>.Pipe()</code></td>
-      <td class="no">Migration needed</td>
-    </tr>
-  </tbody>
+	<thead>
+		<tr>
+			<th>Version</th>
+			<th>Type</th>
+			<th>Notable Change</th>
+			<th>Relevance</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>5.4.0</td>
+			<td>Feature</td>
+			<td>Added streaming query API</td>
+			<td class="yes">High — see finding above</td>
+		</tr>
+		<tr>
+			<td>5.3.0</td>
+			<td>Breaking</td>
+			<td>Renamed <code>.Chain()</code> to <code>.Pipe()</code></td>
+			<td class="no">Migration needed</td>
+		</tr>
+	</tbody>
 </table>
 ```
 
@@ -171,25 +171,25 @@ The Pareto-ranked action list from Phase 4. Present as a `.compare` table:
 
 ```html
 <table class="compare">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Opportunity</th>
-      <th>Impact</th>
-      <th>Ease</th>
-      <th>Priority</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>Enable connection pooling (config change)</td>
-      <td class="yes">5</td>
-      <td class="yes">5</td>
-      <td><span class="highlight">25</span></td>
-    </tr>
-    <!-- ... -->
-  </tbody>
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Opportunity</th>
+			<th>Impact</th>
+			<th>Ease</th>
+			<th>Priority</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>1</td>
+			<td>Enable connection pooling (config change)</td>
+			<td class="yes">5</td>
+			<td class="yes">5</td>
+			<td><span class="highlight">25</span></td>
+		</tr>
+		<!-- ... -->
+	</tbody>
 </table>
 ```
 

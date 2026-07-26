@@ -35,29 +35,29 @@ not data-model-specific classes:
 
 ```css
 .tok-keyword {
-  color: #c678dd;
+	color: #c678dd;
 } /* package, func, type, struct, interface */
 .tok-type {
-  color: #e5c07b;
+	color: #e5c07b;
 } /* int, string, bool, error, time.Time */
 .tok-string {
-  color: #98c379;
+	color: #98c379;
 } /* "quoted strings" */
 .tok-comment {
-  color: #5c6370;
-  font-style: italic;
+	color: #5c6370;
+	font-style: italic;
 } /* // comments */
 .tok-func {
-  color: #61afef;
+	color: #61afef;
 } /* function names */
 .tok-number {
-  color: #d19a66;
+	color: #d19a66;
 } /* 42, 3.14 */
 .tok-generic {
-  color: #e06c75;
+	color: #e06c75;
 } /* T, ID in generics */
 .tok-builtin {
-  color: #56b6c2;
+	color: #56b6c2;
 } /* make, len, cap, append */
 ```
 

@@ -139,9 +139,9 @@ const (
 ```typescript
 // GOOD
 enum PaymentMethod {
-  CreditCard = "CREDIT_CARD",
-  BankTransfer = "BANK_TRANSFER",
-  Crypto = "CRYPTO",
+	CreditCard = "CREDIT_CARD",
+	BankTransfer = "BANK_TRANSFER",
+	Crypto = "CRYPTO",
 }
 ```
 

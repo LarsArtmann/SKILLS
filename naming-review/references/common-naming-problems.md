@@ -39,9 +39,9 @@ func touchAndGetUser(id string) User
 ```typescript
 // BAD — name says "validate" but it also sends email
 function validateRegistration(data: Registration) {
-  if (data.email) {
-    sendWelcomeEmail(data.email); // hidden side effect!
-  }
+	if (data.email) {
+		sendWelcomeEmail(data.email); // hidden side effect!
+	}
 }
 
 // GOOD — separate concerns
@@ -82,7 +82,7 @@ A name that implies broad responsibility but does something narrow.
 ```typescript
 // BAD — "ProcessAll" but only handles credit card payments
 function processAllPayments(payment: Payment) {
-  // only handles credit cards, throws for others
+	// only handles credit cards, throws for others
 }
 
 // GOOD — name matches actual scope
@@ -317,39 +317,39 @@ These names are垃圾桶 — they collect unrelated behavior because the name is
 ```typescript
 // BAD — "Manager" that does 12 unrelated things
 class UserManager {
-  createUser() {}
-  deleteUser() {}
-  sendWelcomeEmail() {}
-  validatePassword() {}
-  generateReport() {}
-  auditAccess() {}
-  syncWithLDAP() {}
-  resetPassword() {}
+	createUser() {}
+	deleteUser() {}
+	sendWelcomeEmail() {}
+	validatePassword() {}
+	generateReport() {}
+	auditAccess() {}
+	syncWithLDAP() {}
+	resetPassword() {}
 }
 
 // GOOD — split by responsibility
 class UserRepository {
-  create() {}
-  delete() {}
-  findById() {}
+	create() {}
+	delete() {}
+	findById() {}
 }
 
 class UserAuthentication {
-  validatePassword() {}
-  resetPassword() {}
+	validatePassword() {}
+	resetPassword() {}
 }
 
 class UserNotification {
-  sendWelcomeEmail() {}
+	sendWelcomeEmail() {}
 }
 
 class UserProvisioning {
-  syncWithLDAP() {}
+	syncWithLDAP() {}
 }
 
 class UserAuditLog {
-  generateReport() {}
-  auditAccess() {}
+	generateReport() {}
+	auditAccess() {}
 }
 ```
 
@@ -425,12 +425,12 @@ type User struct {
 ```typescript
 // BAD — "Exception" is already the class
 class NotFoundException extends Exception {
-  exceptionMessage: string; // redundant
+	exceptionMessage: string; // redundant
 }
 
 // GOOD
 class NotFoundException extends Exception {
-  message: string;
+	message: string;
 }
 ```
 
@@ -568,10 +568,10 @@ class UserImpl extends AbstractUser {} // double leakage!
 
 // GOOD — compose behavior, name by role
 interface Authenticatable {
-  authenticate(): boolean;
+	authenticate(): boolean;
 }
 interface Emailable {
-  getEmail(): string;
+	getEmail(): string;
 }
 class User implements Authenticatable, Emailable {}
 

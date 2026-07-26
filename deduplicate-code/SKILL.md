@@ -14,16 +14,14 @@ allowed-tools: bash view edit grep
 ## Run
 
 ```bash
-# -t is the statement threshold — use WHATEVER THE USER REQUESTED, not 5.
-# 5 below is only the default if the user gave no number.
-art-dupl --semantic --sort total-tokens -t 5 --html
+art-dupl --type-aware --sort total-tokens -t <threshold:5> --html
 ```
 
-View the HTML output directly — do not save it as a file. The threshold
-(`-t`, **default 5 — but ALWAYS override with the value the user asks for**)
-counts duplicated **statements** (not AST nodes). If the user says "threshold
-3", "-t 10", or "show me everything", pass exactly that. Only fall back to
-`-t 5` when the user specified nothing.
+View the HTML output directly — do not save it as a file. `<threshold:5>`
+means "the threshold the user asked for, defaulting to 5 when they gave
+none." `-t` counts duplicated **statements** (not AST nodes). If the user
+specifies a value — "threshold 3", "-t 10", "show me everything" — use that
+exactly. Only fall back to `5` when the user said nothing.
 Generated code (sqlc, protobuf, mockgen, stringer, templ) and test-file
 noise are auto-excluded by default — add `--exclude-pattern` only when a
 path genuinely slips past the detector.
