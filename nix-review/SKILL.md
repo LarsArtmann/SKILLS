@@ -258,7 +258,7 @@ The reason for each check matters more than the check itself. A review that expl
 
 ## References
 
-- `references/common-problems.md` — Detailed catalogue of 50 common problems with fixes, organized by category
+- `references/common-problems.md` — Detailed catalogue of common problems with fixes, organized by category (the count grows over time; open the file for the current list and its Table of Contents)
 - `references/best-practices.md` — Ideal patterns for flake structure, modules, overlays, source filtering, systemd hardening, devShells, and performance
 
 Read these files when you need specific examples or deeper guidance on a particular issue category.

@@ -131,7 +131,7 @@ Skill depth varies. The authoritative status is the line count and a quality rea
 
 ### 5.5 Inter-Skill References
 
-The `full-code-review` skill now delegates planning to `pareto-planning` (previously inlined the same Pareto breakdown — a split brain). Several skills reference the shared `html-report-kit` design system for consistent HTML output — the authoritative consumer list is produced by `scripts/sync-html-kit.sh --list` (see 5.9). Do not hardcode that list in prose; it drifts. When adding cross-references, check this graph first.
+The `full-code-review` skill now delegates planning to `pareto-planning` (previously inlined the same Pareto breakdown — a split brain). `status-report` hands its "next tasks" section (f) to `docs-health` HARVEST — the canonical "run HARVEST after a status report" rule lives **only** in `docs-health` → "When to run HARVEST"; `status-report` links rather than restates (do not duplicate the rationale in both). Several skills reference the shared `html-report-kit` design system for consistent HTML output — the authoritative consumer list is produced by `scripts/sync-html-kit.sh --list` (see 5.9). Do not hardcode that list in prose; it drifts. When adding cross-references, check this graph first.
 
 ### 5.6 `how-to-write-skills.md` Location
 

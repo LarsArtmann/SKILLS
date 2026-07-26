@@ -12,6 +12,10 @@
 #     4. Surface "thin" skills (<35 lines) so they get attention.
 #     5. Description field stays under 1024 chars (Crush refuses to load skills
 #        that exceed this limit — the skill silently never triggers).
+#     6. SKILL.md length gate at 500 lines (push detail to references/; see
+#        AGENTS.md §3.2). Allowlisted skills warn instead of fail.
+#     7. Feedback-loop staleness: docs/feedback/new/ files older than 30 days
+#        fail (the feedback loop is broken again — see AGENTS.md §11).
 #
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
@@ -118,6 +122,25 @@ while IFS= read -r line; do
   fi
 done < <(grep -rnE '[0-9]+[[:space:]]+(skills|total)' README.md AGENTS.md 2>/dev/null)
 
+# --- Line-count gate ------------------------------------------------------------
+# SKILL.md files should stay under ~500 lines (AGENTS.md §3.2): push detail to
+# references/. The allowlist holds skills where long-form is temporarily
+# justified — each entry should carry a trim plan and be revisited.
+long_allowlist=(website-launch)
+for d in "${skill_dirs[@]}"; do
+  skill="${d#./}"
+  lines=$(wc -l < "$d/SKILL.md")
+  if [[ "$lines" -gt 500 ]]; then
+    allowed=0
+    for a in "${long_allowlist[@]}"; do [[ "$skill" == "$a" ]] && allowed=1; done
+    if [[ "$allowed" -eq 0 ]]; then
+      echo "FAIL $skill: SKILL.md is $lines lines (limit 500) — push detail to references/ (AGENTS.md §3.2)"; failed=1
+    else
+      echo "WARN $skill: SKILL.md is $lines lines (allowlisted, but should be trimmed)"
+    fi
+  fi
+done
+
 # --- Backlink integrity --------------------------------------------------------
 # Verify every markdown relative link of the form ](./path) or ](../path) inside
 # a SKILL.md resolves to a real file. Dangling sibling links silently break
@@ -138,6 +161,22 @@ for d in "${skill_dirs[@]}"; do
     | sed -E 's/^\]\(//; s/\)$//'
   )
 done
+
+# --- Feedback-loop staleness ----------------------------------------------------
+# docs/feedback/new/ holds unprocessed feedback (AGENTS.md §11). It should move
+# to processed/ once converted into a skill. Stale files there mean the feedback
+# loop is broken again. Warn on any present; fail if older than 30 days.
+if [[ -d docs/feedback/new ]]; then
+  while IFS= read -r -d '' fb; do
+    [[ -z "$fb" ]] && continue
+    age=$(( ($(date +%s) - $(stat -c %Y "$fb")) / 86400 ))
+    if [[ "$age" -ge 30 ]]; then
+      echo "FAIL: unprocessed feedback older than 30 days: ${fb#./} (${age}d) — convert to a skill or move to processed/ (AGENTS.md §11)"; failed=1
+    else
+      echo "WARN: unprocessed feedback in docs/feedback/new/: ${fb#./} (${age}d)"
+    fi
+  done < <(find docs/feedback/new -type f -name '*.md' -print0 2>/dev/null)
+fi
 
 if [[ "$failed" -ne 0 ]]; then
   echo

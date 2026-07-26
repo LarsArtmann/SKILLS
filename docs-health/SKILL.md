@@ -351,11 +351,16 @@ the regression scenarios at the bottom of that file.
    **First, detect the canonical gate — do not substitute.** Read
    `AGENTS.md` or `flake.nix` for the project's prescribed commands and run
    THOSE. In a Nix-first project, `nix run .#check` / `nix flake check` and
-   bare `go test` / `cargo test` are **not equivalent**: the Nix gate
-   validates the flake fileset and sandbox integrity (e.g. whether
-   `examples/` is included in the build) that direct language commands
-   silently bypass. Running `go test` instead of `nix run .#check` is the
-   substitution this step exists to prevent.
+   bare `go test` / `cargo test` are **not equivalent**. The Nix gate builds
+   derivations in a sandbox with no network, against a filtered source and
+   pinned dependency hashes — so it catches three things bare language
+   commands silently bypass: (1) a misconfigured source filter / `lib.fileset`
+   that excludes needed files (e.g. `examples/` missing from the build);
+   (2) a drifted `vendorHash` / dependency closure; (3) any hidden network
+   fetch. Running `go test` instead of `nix run .#check` is the substitution
+   this step exists to prevent. (Exactly which of these fire depends on what
+   the flake wires into its `checks` / `packages` outputs — but only the Nix
+   gate can surface them.)
 
    Then run the canonical commands for the detected build system:
 
