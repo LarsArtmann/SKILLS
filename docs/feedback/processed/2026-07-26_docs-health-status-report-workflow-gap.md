@@ -35,7 +35,7 @@ Add a "After the report" note — parallel to the existing `update-old-docs` not
 
 ```markdown
 > The "next tasks" section (f) above is the primary input for `docs-health
-> HARVEST`. If the session continues after this report, run HARVEST to pull
+HARVEST`. If the session continues after this report, run HARVEST to pull
 > those items into `TODO_LIST.md` / `ROADMAP.md` — otherwise they are entombed
 > in this timestamped file. See [`docs-health`](../docs-health/SKILL.md) →
 > HARVEST.
@@ -64,12 +64,12 @@ The **anti-patterns** (lines 213-231) are the best part of HARVEST — "Dumping 
    ```markdown
    ## Quick start: which mode do I need?
 
-   | Situation                                         | Mode     | Key rule                                              |
-   | ------------------------------------------------- | -------- | ----------------------------------------------------- |
-   | User wrote a status report, TODO_LIST looks thin  | HARVEST  | Pull forward-looking items from recent reports        |
-   | User says "are docs current?"                     | VERIFY   | Open each doc, check claims against code              |
-   | A doc file doesn't exist                          | BUILD    | Generate from code, cite evidence                     |
-   | User says "full audit" / "fix my docs"            | AUDIT    | BUILD + HARVEST, then VERIFY everything               |
+   | Situation                                        | Mode    | Key rule                                       |
+   | ------------------------------------------------ | ------- | ---------------------------------------------- |
+   | User wrote a status report, TODO_LIST looks thin | HARVEST | Pull forward-looking items from recent reports |
+   | User says "are docs current?"                    | VERIFY  | Open each doc, check claims against code       |
+   | A doc file doesn't exist                         | BUILD   | Generate from code, cite evidence              |
+   | User says "full audit" / "fix my docs"           | AUDIT   | BUILD + HARVEST, then VERIFY everything        |
    ```
 
    This table is different from the existing "Determine the task" table (line 72-83) because it's **situation-first** (what triggered the agent) not **verb-first** (what the user said). Agents arrive at skills via context, not always via explicit commands.
@@ -127,7 +127,7 @@ docs-health VERIFY step 7 (line 319-331) says: "Run the project's quality gate. 
 
 ### The problem
 
-"Run the project's quality gate" is correct but too abstract for an agent under load. The agent reads it as "run *some* tests" rather than "run the *canonical* gate that this specific project defines." In a Nix-first project, `go test` and `nix run .#check` are **not equivalent** — the latter validates the flake fileset, which is a different axis of correctness.
+"Run the project's quality gate" is correct but too abstract for an agent under load. The agent reads it as "run _some_ tests" rather than "run the _canonical_ gate that this specific project defines." In a Nix-first project, `go test` and `nix run .#check` are **not equivalent** — the latter validates the flake fileset, which is a different axis of correctness.
 
 ### Fix
 
@@ -178,6 +178,7 @@ add it as a flake input or `buildGoModule` derivation.
 ### What happened
 
 The user's complaint was "TODO_LIST is pathetic" — not wrong content, but **insufficient content**. The existing VERIFY checklist (line 303-311) checks for:
+
 - Links resolve ✅
 - Counts verified ✅
 - No feature in both PLANNED and FULLY_FUNCTIONAL ✅
@@ -200,8 +201,8 @@ Add to the VERIFY checklist:
 And add to the failure-modes table (line 267-278):
 
 ```markdown
-| Medium-High | Under-populated   | TODO_LIST has far fewer open items than recent
-|             |                   | status reports suggest; HARVEST was skipped   |
+| Medium-High | Under-populated | TODO_LIST has far fewer open items than recent
+| | | status reports suggest; HARVEST was skipped |
 ```
 
 ---
@@ -222,11 +223,11 @@ These worked exactly as designed and should not change:
 
 ## Summary: the three changes that would have prevented this session's failure
 
-| Priority | Change | Skill | Impact |
-| -------- | ------ | ----- | ------ |
-| **1** | Add "after status-report, run HARVEST" handoff note | `status-report` | Closes the loop — the report's "next tasks" would reach TODO_LIST |
-| **2** | Add AUDIT-time check: "TODO_LIST suspiciously thin vs recent reports" | `docs-health` VERIFY | Catches the gap even if the agent forgets |
-| **3** | Add hermeticity invariant for Nix projects | `nix-review` or `how-to-golang` | Prevents `@latest` in Nix app scripts |
+| Priority | Change                                                                | Skill                           | Impact                                                            |
+| -------- | --------------------------------------------------------------------- | ------------------------------- | ----------------------------------------------------------------- |
+| **1**    | Add "after status-report, run HARVEST" handoff note                   | `status-report`                 | Closes the loop — the report's "next tasks" would reach TODO_LIST |
+| **2**    | Add AUDIT-time check: "TODO_LIST suspiciously thin vs recent reports" | `docs-health` VERIFY            | Catches the gap even if the agent forgets                         |
+| **3**    | Add hermeticity invariant for Nix projects                            | `nix-review` or `how-to-golang` | Prevents `@latest` in Nix app scripts                             |
 
 Everything else is polish. These three are structural.
 
@@ -236,13 +237,13 @@ Everything else is polish. These three are structural.
 
 All six sections acted upon. No skill was left untouched.
 
-| # | Section | Skill | Change applied |
-| - | ------- | ----- | -------------- |
-| 1 | status-report → HARVEST handoff | `status-report` | Added an "After the report is written, the loop is not closed" note pointing to `docs-health` HARVEST, parallel to the existing `update-old-docs` note. |
-| 2 | HARVEST discoverability | `docs-health` | Added a situation-first "Quick start: which mode do I need?" table above the documentation model. Strengthened the "After every `status-report` session" HARVEST trigger with the "run HARVEST now" consequence. |
-| 3 | "Top N" override mismatch | `docs-health` | Added a HARVEST anti-pattern: when the user overrides Top N to 50, expect a brainstorm and route most extras to ROADMAP. |
-| 4 | Quality-gate substitution | `docs-health` | VERIFY step 7 now says "detect the canonical gate — do not substitute" and explains that `go test` ≠ `nix run .#check` (fileset/sandbox integrity). |
-| 5 | Hermeticity invariant | `nix-review` | Added a "Hermeticity invariant for apps and devShells" subsection + a Purity checklist item banning `go run pkg@latest`, `npx`, `pip install`, `cargo install`, `curl|sh` in app/shell scripts. |
-| 6 | Structural decay (under-populated) | `docs-health` | Added an "Under-populated" Medium-High failure mode, plus two VERIFY checks: TODO_LIST thin vs recent reports, and `docs/status/` newer than the last TODO_LIST edit. |
+| #   | Section                            | Skill           | Change applied                                                                                                                                                                                                   |
+| --- | ---------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | status-report → HARVEST handoff    | `status-report` | Added an "After the report is written, the loop is not closed" note pointing to `docs-health` HARVEST, parallel to the existing `update-old-docs` note.                                                          |
+| 2   | HARVEST discoverability            | `docs-health`   | Added a situation-first "Quick start: which mode do I need?" table above the documentation model. Strengthened the "After every `status-report` session" HARVEST trigger with the "run HARVEST now" consequence. |
+| 3   | "Top N" override mismatch          | `docs-health`   | Added a HARVEST anti-pattern: when the user overrides Top N to 50, expect a brainstorm and route most extras to ROADMAP.                                                                                         |
+| 4   | Quality-gate substitution          | `docs-health`   | VERIFY step 7 now says "detect the canonical gate — do not substitute" and explains that `go test` ≠ `nix run .#check` (fileset/sandbox integrity).                                                              |
+| 5   | Hermeticity invariant              | `nix-review`    | Added a "Hermeticity invariant for apps and devShells" subsection + a Purity checklist item banning `go run pkg@latest`, `npx`, `pip install`, `cargo install`, `curl                                            | sh` in app/shell scripts. |
+| 6   | Structural decay (under-populated) | `docs-health`   | Added an "Under-populated" Medium-High failure mode, plus two VERIFY checks: TODO_LIST thin vs recent reports, and `docs/status/` newer than the last TODO_LIST edit.                                            |
 
 Verified: `scripts/check-skills.sh` passes (24 skills). Moved to `docs/feedback/processed/`.

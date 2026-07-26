@@ -28,12 +28,12 @@ Agents arrive at this skill via context, not always via an explicit command.
 Pick the mode from the **situation** that triggered you, not from the verb the
 user typed:
 
-| Situation                                              | Mode     | Key rule                                                      |
-| ------------------------------------------------------ | -------- | ------------------------------------------------------------- |
+| Situation                                                                   | Mode        | Key rule                                                                |
+| --------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------- |
 | You just wrote a `status-report`, or TODO_LIST looks thin vs recent reports | **HARVEST** | Pull forward-looking items out of recent reports into TODO_LIST/ROADMAP |
-| User says "are docs current?" / "check freshness"      | **VERIFY**  | Open each doc, check claims against code                       |
-| A doc file doesn't exist                               | **BUILD**   | Generate from code, cite evidence                              |
-| User says "full audit" / "fix my docs" / "docs health" | **AUDIT**   | BUILD + HARVEST, then VERIFY everything                        |
+| User says "are docs current?" / "check freshness"                           | **VERIFY**  | Open each doc, check claims against code                                |
+| A doc file doesn't exist                                                    | **BUILD**   | Generate from code, cite evidence                                       |
+| User says "full audit" / "fix my docs" / "docs health"                      | **AUDIT**   | BUILD + HARVEST, then VERIFY everything                                 |
 
 If the intent is ambiguous, default to AUDIT (it covers everything).
 

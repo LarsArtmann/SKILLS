@@ -17,14 +17,14 @@
 2. **Loaded `skill-creator`** (the matching skill for "modify existing skills") before editing.
 3. **Applied all 6 feedback sections across 3 skills (8 edits total):**
 
-   | Feedback § | Skill | Edit |
-   | ---------- | ----- | ---- |
-   | §1 status-report → HARVEST handoff | `status-report` | "the loop is not closed" note → `docs-health` HARVEST |
-   | §2 HARVEST discoverability | `docs-health` | situation-first **Quick start** table; bolded "run HARVEST now" trigger; mtime invariant in VERIFY checklist |
-   | §3 Top-N override mismatch | `docs-health` | "When the user overrides Top N" HARVEST anti-pattern |
-   | §4 quality-gate substitution | `docs-health` | VERIFY step 7: "detect the canonical gate — do not substitute" (`go test` ≠ `nix run .#check`) |
-   | §5 hermeticity invariant | `nix-review` | "Hermeticity invariant for apps and devShells" subsection + Purity checklist item |
-   | §6 under-populated TODO_LIST | `docs-health` | "Under-populated" Medium-High failure mode + "suspiciously thin" check |
+   | Feedback §                         | Skill           | Edit                                                                                                         |
+   | ---------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------ |
+   | §1 status-report → HARVEST handoff | `status-report` | "the loop is not closed" note → `docs-health` HARVEST                                                        |
+   | §2 HARVEST discoverability         | `docs-health`   | situation-first **Quick start** table; bolded "run HARVEST now" trigger; mtime invariant in VERIFY checklist |
+   | §3 Top-N override mismatch         | `docs-health`   | "When the user overrides Top N" HARVEST anti-pattern                                                         |
+   | §4 quality-gate substitution       | `docs-health`   | VERIFY step 7: "detect the canonical gate — do not substitute" (`go test` ≠ `nix run .#check`)               |
+   | §5 hermeticity invariant           | `nix-review`    | "Hermeticity invariant for apps and devShells" subsection + Purity checklist item                            |
+   | §6 under-populated TODO_LIST       | `docs-health`   | "Under-populated" Medium-High failure mode + "suspiciously thin" check                                       |
 
 4. **Verified** — `scripts/check-skills.sh` passes (24 skills, 0 thin). Re-grepped every added string to confirm presence at expected lines.
 5. **Closed the feedback loop** — appended a resolution table to the feedback file and `git mv`'d it `new/` → `processed/` (per AGENTS.md §11). Non-destructive annotation (end-of-file appendix, no top-of-file banner) — follows `update-old-docs` principles.
@@ -64,7 +64,7 @@
 1. **I loaded `skill-creator` and then ignored its core methodology.** The skill's entire body is an
    eval loop: "draft → test prompts → run with-skill AND baseline → grade → viewer → iterate." I
    read it, acknowledged it, then performed **zero** of those steps — I treated a skill-improvement
-   task as a prose-edit task. This is *precisely* the failure class the feedback was about: a skill
+   task as a prose-edit task. This is _precisely_ the failure class the feedback was about: a skill
    that triggers but whose instructions the agent doesn't follow. I became the example. The honest
    version of this report is "I edited 3 skills and proved nothing about whether the edits help."
 
@@ -87,7 +87,7 @@
    use it or explicitly justify skipping.
 2. **Single source of truth for the HARVEST trigger.** The "after status-report → HARVEST" rule now
    lives in 3 places. Consolidate: state it once canonically (probably `docs-health` HARVEST "When
-   to run"), and have other skills *link* rather than *restate*.
+   to run"), and have other skills _link_ rather than _restate_.
 3. **Line-count discipline.** `docs-health` crossed 500. `website-launch` is at **1106**. The repo
    has no CI gate on SKILL.md length. A 500-line gate (with allowlist) would catch drift early.
 4. **Feedback-loop automation.** Resolution notes in `processed/` files are manual and unverifiable.
@@ -144,7 +144,7 @@ _Rooted in this session's work and what I noticed — not a repo-wide audit._
 
 ## g) Questions I can NOT figure out myself
 
-1. **Eval-loop policy.** Should *every* feedback-driven skill edit go through the full skill-creator
+1. **Eval-loop policy.** Should _every_ feedback-driven skill edit go through the full skill-creator
    eval loop (test prompts, baseline runs, grading, viewer), or is "edit + structural verify +
    check-skills.sh" acceptable for prose-only fixes to trigger/handoff text? This decides whether
    this session counts as "done" or "half-done."

@@ -158,13 +158,13 @@ devShell MUST come from a flake input or a nixpkgs attribute. These are banned
 in app/shell scripts because each fetches an arbitrary version from the
 network at run time:
 
-| Banned (network-dependent)              | Vendor instead                                  |
-| --------------------------------------- | ----------------------------------------------- |
-| `go run golang.org/x/.../cmd/tool@latest` | A `buildGoModule` derivation or nixpkgs attr  |
-| `npx pkg` / `bunx pkg`                   | A flake input / nixpkgs attr, in `packages`    |
-| `pip install pkg`                        | A nixpkgs Python package in the devShell       |
-| `cargo install pkg`                      | `crane`/`rustPlatform` derivation or nixpkgs   |
-| `curl ... \| sh` / `wget` installers     | Vendor the binary via a flake input            |
+| Banned (network-dependent)                | Vendor instead                               |
+| ----------------------------------------- | -------------------------------------------- |
+| `go run golang.org/x/.../cmd/tool@latest` | A `buildGoModule` derivation or nixpkgs attr |
+| `npx pkg` / `bunx pkg`                    | A flake input / nixpkgs attr, in `packages`  |
+| `pip install pkg`                         | A nixpkgs Python package in the devShell     |
+| `cargo install pkg`                       | `crane`/`rustPlatform` derivation or nixpkgs |
+| `curl ... \| sh` / `wget` installers      | Vendor the binary via a flake input          |
 
 **Why it matters:** a build that passes today can fail tomorrow when the
 upstream `@latest` shifts or the network is unreachable (CI sandboxes, air-gapped

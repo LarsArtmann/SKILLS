@@ -130,7 +130,7 @@
    teaching example is worse than no example — it teaches the anti-pattern. Either run the
    snippet, or mark it explicitly as schematic (`# illustrative — not a runnable derivation`),
    or omit it.
-2. **A handoff guard must assert the handoff is *wired*, not that a word appears.** The
+2. **A handoff guard must assert the handoff is _wired_, not that a word appears.** The
    guard should verify the producer's output path is in the consumer's read scope
    (architecture-understanding → is it in HARVEST's read list? no → FAIL).
 3. **"Single source of truth" is a verb, not a label.** Marking a section canonical and
@@ -167,7 +167,7 @@ _Rooted in this session's defects — not a repo-wide re-audit._
 5. Load `skill-creator` and decide explicitly: run a minimal eval (one test prompt per
    changed skill) OR document why structural-verify is the bar for this content repo.
 6. Replace the `architecture-review` / `full-code-review` / `pareto-planning` handoff
-   *prose* with a one-line link, matching what `status-report` now does.
+   _prose_ with a one-line link, matching what `status-report` now does.
 7. Re-extract `docs-health` HARVEST anti-patterns to `references/harvest-guide.md` (move
    content because it belongs there, not to chase 500).
 8. Trim `website-launch` (1106 lines) — remove the allowlist hole once trimmed.
@@ -191,7 +191,7 @@ _Rooted in this session's defects — not a repo-wide re-audit._
 ### Lower impact (rigor)
 
 16. Replace `stat -c %Y` with a portable mtime lookup (or document the Linux assumption).
-17. Add an allowlist *review date* to each line in `check-skills.sh`'s `long_allowlist`
+17. Add an allowlist _review date_ to each line in `check-skills.sh`'s `long_allowlist`
     (force periodic re-justification).
 18. Make the handoff-guard list auto-discoverable (scan skills that write to
     `docs/<hist-dir>/` and assert each links HARVEST) instead of hardcoded.
