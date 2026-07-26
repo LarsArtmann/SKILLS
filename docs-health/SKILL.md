@@ -22,6 +22,21 @@ Create missing docs, verify freshness against code, and enforce consistency
 between files. Documentation that lies is worse than missing documentation: it
 actively misleads every reader (human and agent) who trusts it.
 
+## Quick start: which mode do I need?
+
+Agents arrive at this skill via context, not always via an explicit command.
+Pick the mode from the **situation** that triggered you, not from the verb the
+user typed:
+
+| Situation                                              | Mode     | Key rule                                                      |
+| ------------------------------------------------------ | -------- | ------------------------------------------------------------- |
+| You just wrote a `status-report`, or TODO_LIST looks thin vs recent reports | **HARVEST** | Pull forward-looking items out of recent reports into TODO_LIST/ROADMAP |
+| User says "are docs current?" / "check freshness"      | **VERIFY**  | Open each doc, check claims against code                       |
+| A doc file doesn't exist                               | **BUILD**   | Generate from code, cite evidence                              |
+| User says "full audit" / "fix my docs" / "docs health" | **AUDIT**   | BUILD + HARVEST, then VERIFY everything                        |
+
+If the intent is ambiguous, default to AUDIT (it covers everything).
+
 ## The documentation model
 
 Each file has ONE job. Each fact lives in exactly ONE place. When the same
@@ -162,7 +177,9 @@ legitimate source for **what we intend to do next**. HARVEST bridges them.
 ### When to run HARVEST
 
 - **After every `status-report` session.** The report's "next tasks"
-  section is a TODO_LIST input, not its final resting place.
+  section is a TODO_LIST input, not its final resting place. **If you just
+  wrote a status report and TODO_LIST was not updated, run HARVEST now** —
+  otherwise the items rot in a timestamped file no later session reads.
 - **As a step in AUDIT.** A full docs-health run that skips HARVEST will
   declare TODO_LIST "fresh" while dozens of planned items rot in the most
   recent snapshot.
@@ -215,6 +232,11 @@ legitimate source for **what we intend to do next**. HARVEST bridges them.
 - **Dumping all 50 items verbatim into TODO_LIST.** Most "Top 50" lists are
   brainstorms, not commitments. Route, dedupe, and verify before inserting,
   or TODO_LIST becomes a dumping ground that nobody acts on.
+- **When the user overrides the "Top N" count (e.g. asks for 50 instead of
+  25).** Expect a brainstorm, not a commitment list — the skill's default
+  "Top #25" is calibrated for HARVEST-ability. The user's instruction wins,
+  but apply extra routing rigor: most of the extra items belong in
+  ROADMAP, not TODO_LIST. This is expected, not a failure of the report.
 - **Treating the report as code.** A report saying "we should do X" is
   intent, not evidence that X is undone. A later session may have already
   shipped X. Verify against code.
@@ -271,6 +293,8 @@ the regression scenarios at the bottom of that file.
 | Critical    | Wrong commands   | Build/test/run instructions that fail when executed                      |
 | Medium-High | Structural decay | Living doc (esp. TODO_LIST) accumulated completed/resolved/rejected      |
 |             |                  | content that belongs in CHANGELOG/ADRs; doc is no longer fit for purpose |
+| Medium-High | Under-populated  | TODO_LIST has far fewer open items than recent status reports suggest;   |
+|             |                  | HARVEST was skipped, leaving forward-looking work trapped in the report  |
 | Medium      | Contradicts code | Doc says X works; code shows X is broken, disabled, or removed           |
 | Medium      | Stale status     | Claims an issue is open when it is fixed (or vice versa)                 |
 | Medium      | Missing reality  | A shipped feature or new file the doc does not mention                   |
@@ -309,6 +333,8 @@ the regression scenarios at the bottom of that file.
    - [ ] No completed item in TODO_LIST is also in CHANGELOG `[Unreleased]` (split brain: which is the source of truth?)
    - [ ] No deferred/backlog item in TODO_LIST duplicates a ROADMAP entry
    - [ ] TODO_LIST has no "Previously Completed" / "Resolved" / "Done" section (belongs in CHANGELOG)
+   - [ ] TODO_LIST is not suspiciously thin: compare its open-item count against the most recent status report's "next tasks" section. If that report lists 20+ forward-looking items and TODO_LIST has fewer than ~10 open items, HARVEST was likely skipped.
+   - [ ] If any file in `docs/status/` is newer than the last `TODO_LIST.md` edit, HARVEST was likely skipped — verify the report's forward-looking items aren't trapped in the snapshot.
 
 6. **Verify output quality, not just process quality.** After any batch fix,
    re-read each change from a skeptical reader's perspective: "would someone who
@@ -316,12 +342,22 @@ the regression scenarios at the bottom of that file.
    file adds no value — delete it. This is the failure mode that
    [`update-old-docs`](../update-old-docs/SKILL.md) exists to prevent.
 
-7. **Run the project's quality gate. Mandatory, not optional.** Detect the
-   build system and run the canonical commands:
+7. **Run the project's quality gate. Mandatory, not optional.**
+
+   **First, detect the canonical gate — do not substitute.** Read
+   `AGENTS.md` or `flake.nix` for the project's prescribed commands and run
+   THOSE. In a Nix-first project, `nix run .#check` / `nix flake check` and
+   bare `go test` / `cargo test` are **not equivalent**: the Nix gate
+   validates the flake fileset and sandbox integrity (e.g. whether
+   `examples/` is included in the build) that direct language commands
+   silently bypass. Running `go test` instead of `nix run .#check` is the
+   substitution this step exists to prevent.
+
+   Then run the canonical commands for the detected build system:
 
    - Rust: `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo test`, `cargo doc`
    - Node: `npm test`, `npm run lint`, `npx tsc --noEmit`
-   - Nix: `nix flake check`
+   - Nix: `nix flake check` (and `nix run .#check` / `nix run .#test` if defined)
    - Python: `pytest`, `ruff check`
    - Other: whatever the project's README/AGENTS.md prescribes
 
