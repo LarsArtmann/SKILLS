@@ -187,9 +187,11 @@ fi
 # If a handoff is intentionally removed/renamed, update this list — do not
 # silence the guard by deleting it.
 handoffs=(
-  "status-report/SKILL.md|docs-health"
   "status-report/SKILL.md|HARVEST"
   "docs-health/SKILL.md|When to run HARVEST"
+  "full-code-review/SKILL.md|HARVEST"
+  "architecture-review/SKILL.md|HARVEST"
+  "pareto-planning/SKILL.md|HARVEST"
 )
 for h in "${handoffs[@]}"; do
   file="${h%%|*}"

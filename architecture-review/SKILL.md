@@ -34,6 +34,16 @@ Map the review to visual components:
 - **Before/after comparison** for current vs. proposed architecture
 - **Numbered-step components** for the action roadmap
 
+> Architecture reviews are point-in-time snapshots. When a later task asks to
+> bring old reviews current, defer to [`update-old-docs`](../update-old-docs/SKILL.md)
+> — annotate non-destructively, never rewrite.
+>
+> **The action roadmap above is forward-looking work.** If it isn't already in
+> `TODO_LIST.md` / `ROADMAP.md`, run [`docs-health`](../docs-health/SKILL.md) →
+> **HARVEST** to pull it out — otherwise the roadmap rots in this timestamped
+> file. (The canonical "when to run HARVEST" rule lives in docs-health; do not
+> restate it here.)
+
 ## Process
 
 1. Thoroughly research the codebase structure

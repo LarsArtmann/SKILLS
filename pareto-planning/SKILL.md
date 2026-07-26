@@ -63,6 +63,11 @@ BE SMART! Use your Brain! Let's go!
 > [`update-old-docs`](../update-old-docs/SKILL.md) skill — annotate
 > non-destructively, never rewrite the original plan.
 
+> **If this plan surfaced NEW tasks** not already in `TODO_LIST.md`, add them
+> there (the plan is a snapshot; `TODO_LIST.md` is the living source). To pull
+> items out of this plan in bulk, run [`docs-health`](../docs-health/SKILL.md)
+> → **HARVEST**.
+
 Remember: If you VERSCHLIMMBESSER this system, I will cut off your balls! I hope we understand each other!
 
 ## Git Workflow

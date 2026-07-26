@@ -69,6 +69,12 @@ visual treatment.
    apply its restraint discipline: specific over generic, per-file judgment over
    blanket scripting.
 
+> **Unfixed findings are forward-looking work.** Recommendations and "debt to
+> ticket" that were not fixed on the spot or added as inline TODOs belong in
+> `TODO_LIST.md`, not entombed in `docs/reviews/`. Run
+> [`docs-health`](../docs-health/SKILL.md) → **HARVEST** to pull them out of
+> this snapshot.
+
 ## Git Workflow
 
 - Before starting: run `git status`, then commit any pending work with a very detailed message.

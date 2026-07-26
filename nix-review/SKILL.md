@@ -172,6 +172,36 @@ machines, stale caches). The failure is non-deterministic and points at nothing
 inside the repo. If a tool isn't in nixpkgs, add it as a flake input or wrap it
 in a `buildGoModule` / `buildRustPackage` derivation so its hash is pinned.
 
+**Before/after** — a `bench-diff` app that shells out to `benchstat@latest`:
+
+```nix
+# BROKEN — fetches an arbitrary benchstat version from the network on every run
+apps.bench-diff.program = pkgs.writeShellScriptBin "bench-diff" ''
+  go run golang.org/x/perf/cmd/benchstat@latest "$@"
+'';
+```
+
+```nix
+# CORRECT — benchstat is built once with a pinned hash, then reused
+let
+  benchstat = pkgs.buildGoModule {
+    pname = "benchstat";
+    version = "0.0.0";  # or the tagged release you actually want
+    src = pkgs.fetchgit { url = "https://go.googlesource.com/perf"; rev = "..."; hash = "sha256-..."; };
+    subPackages = [ "cmd/benchstat" ];
+    vendorHash = "sha256-...";  # pinned, breaks loudly if it drifts
+  };
+in {
+  apps.bench-diff.program = pkgs.writeShellScriptBin "bench-diff" ''
+    ${benchstat}/bin/benchstat "$@"
+  '';
+}
+```
+
+(If the tool already exists in nixpkgs as `pkgs.benchstat`, prefer that — no
+custom derivation needed. The point is: the binary comes from the Nix store,
+resolvable offline, not from `@latest` at run time.)
+
 **Scope boundary (avoid a split brain):** this invariant governs impurity in
 `apps.*` / devShell / `shellHook` **scripts** (run at `nix run`/shell-entry
 time). Two adjacent cases live in the catalogue and are NOT repeated here:
