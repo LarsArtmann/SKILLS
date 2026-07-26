@@ -3,16 +3,15 @@ name: go-ecosystem-upgrade
 description: >
   Use when bumping, upgrading, releasing, or migrating Go library versions across multiple
   consumer projects — single-library version bumps (go get @latest), Go toolchain version
-  pins (go.mod go directive), major-version module-path migrations (v2 → v3), ecosystem-wide
+  pins (go.mod go directive), major-version module-path migrations (v2 to v3), ecosystem-wide
   dependency sweeps, vendor directory sync, go.sum repair, or git tag/module-proxy releases.
   Trigger phrases: "bump X to vY", "upgrade all consumers", "migrate v2 to v3", "pin go to",
-  "go mod vendor", "go.work fix", "re-tag the release", "dependency sweep", "version pin",
-  "align go.mod versions", "release the library", "who uses this dependency", "checksum
-  mismatch on go-cqrs-lite", "stale vendor". Also fires for the inverse: diagnosing why a
-  version bump went wrong, a build broke after a bump, or a tag is poisoned in the proxy.
-  Covers the full lifecycle: enumerate consumers, baseline, classify direction, execute,
-  verify (build AND test AND the delivering layer), commit per-repo, tag without poisoning
-  the module proxy. Built from the hard-won lessons of 14 brutal self-review status reports.
+  "go mod vendor", "re-tag the release", "dependency sweep", "version pin", "align go.mod",
+  "release the library", "who uses this dependency", "checksum mismatch", "stale vendor".
+  Also fires for diagnosing why a version bump broke a build or a tag is poisoned in the
+  proxy. Covers the full lifecycle: enumerate consumers, baseline, classify direction,
+  execute, verify (build AND test AND the delivering layer), commit per-repo, tag without
+  poisoning the module proxy. Built from 14 brutal self-review status reports.
 metadata:
   tags: go, dependencies, upgrade, release, migration, ecosystem, version, module-proxy
 ---

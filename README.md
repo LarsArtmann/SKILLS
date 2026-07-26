@@ -8,7 +8,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ## The Collection
 
-**24 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out), **🆕 New** (structurally valid, never yet triggered against real work — ages into 🟢 after a documented successful run).
+**25 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out), **🆕 New** (structurally valid, never yet triggered against real work — ages into 🟢 after a documented successful run).
 
 ### Shared Assets
 
@@ -54,6 +54,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 | Skill                        | What It Does                                                                                                     | Status           |
 | ---------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------- |
 | **bdd-testing**              | BDD tests with `onsi/ginkgo` for Go projects                                                                     | 🟢 Solid         |
+| **go-ecosystem-upgrade**     | Protocol for bumping/releasing/migrating Go library versions across many consumers — 18 failure modes extracted from 14 real self-reviews | 🟢 Comprehensive |
 | **go-modularize**            | Splits Go monorepos into semi-independent sub-modules                                                            | 🟢 Comprehensive |
 | **hierarchical-errors**      | Go 1.26+ error-matching modernization — prevents cargo-cult `errors.As`/`errors.Is` regressions (CLI unverified) | 🆕 New           |
 | **how-to-golang**            | Go development decision guide — what to use, not how                                                             | 🟢 Comprehensive |
@@ -126,7 +127,7 @@ New skills should follow the pattern of [`how-to-golang/`](how-to-golang/) (lean
 
 ## Quality & Status
 
-This repository is honest about its state. **20 of 24 skills are solid, comprehensive, or functional** — every established skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). A handful are still **functional** (`architecture-review`, `code-quality-scan`, `deduplicate-code`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. **Four skills are 🆕 New** (`hierarchical-errors`, `nix-private-go-repos`, `samber-do-best-practices`, `verify-external-claims`) — structurally valid and based on real concepts, but they have not yet been triggered against real work. Three of these carry verification-status blocks (`hierarchical-errors` for its unverified CLI, `nix-private-go-repos` for its private `go-nix-helpers` dependency, `samber-do-best-practices` for its private `branching-flow/pkg/doanalyzerv2` reference) — the skills' value rests on durable concepts, not on the specific private tooling. Validate the repo anytime with `scripts/check-skills.sh`.
+This repository is honest about its state. **21 of 25 skills are solid, comprehensive, or functional** — every established skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). A handful are still **functional** (`architecture-review`, `code-quality-scan`, `deduplicate-code`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. **Four skills are 🆕 New** (`hierarchical-errors`, `nix-private-go-repos`, `samber-do-best-practices`, `verify-external-claims`) — structurally valid and based on real concepts, but they have not yet been triggered against real work. Three of these carry verification-status blocks (`hierarchical-errors` for its unverified CLI, `nix-private-go-repos` for its private `go-nix-helpers` dependency, `samber-do-best-practices` for its private `branching-flow/pkg/doanalyzerv2` reference) — the skills' value rests on durable concepts, not on the specific private tooling. Validate the repo anytime with `scripts/check-skills.sh`.
 
 See [`docs/status/`](docs/status/) for detailed audit reports, including a comprehensive breakdown of every skill's strengths, gaps, and recommended next steps.
 
