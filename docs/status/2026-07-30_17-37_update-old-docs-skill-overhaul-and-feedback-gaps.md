@@ -251,3 +251,55 @@ I believe the completeness gate ("every item was checked") resolves it
 conceptually. But an agent reading "you must RESOLVE every item" might interpret
 "resolve" as "mark every item." Should I add an explicit clarifying sentence, or
 is the current text clear enough?
+
+---
+
+## Resolution (2026-07-30)
+
+All three questions were resolved by action, not deferred. The feedback file
+correctly stays in `processed/` — both skills it covers are now updated.
+
+### Q1 — feedback location: STAYS in `processed/`
+
+~~Move it back to `new/` or leave with a TODO?~~ Resolved by completing the
+work. Suggestion #6 (docs-health HARVEST) — the only un-actioned item — is now
+implemented (see Q2). With all 7 suggestions either implemented (1–6) or
+covered by the unified workflow (#7 = update-old-docs Steps 1–6), the feedback
+is genuinely fully processed. `processed/` is the correct home.
+
+### Q2 — docs-health HARVEST: VALID, IMPLEMENTED
+
+Investigated `docs-health/SKILL.md`. HARVEST previously verified items against
+_code_ (Step 3) but did NOT respect resolution markers that `update-old-docs`
+had already written into the report itself. That was a real gap — HARVEST could
+re-harvest items already marked `done at` / `Won't implement` / `NOT-DO`,
+re-opening settled work into TODO_LIST.
+
+Implemented (docs-health/SKILL.md, HARVEST process Step 2 + a matching
+anti-pattern): HARVEST now drops any item already carrying a resolution marker
+before extracting; only un-marked (still-open) items are harvested. This closes
+the two-way loop: update-old-docs resolves backward, HARVEST pulls only
+still-open items forward.
+
+### Q3 — "resolve" vs "leave untouched": WAS REAL, FIXED
+
+The tension was real. An agent could read "you must RESOLVE every item" as
+"stamp every item." Fixed in the list-item section: "resolve" now explicitly
+includes the verdict "open" = leave the item untouched — but you must still
+_CHECK_ it; skipping the check is the #1 failure mode. Also added the
+annotate-vs-resolve gloss (file-level context vs per-item verdict, both in one
+pass).
+
+### Other changes this pass
+
+- **Archiving integrated as Step 6** (was a standalone section after the
+  workflow). The workflow now reads Steps 1–6 end-to-end: read → classify →
+  annotate → so-what → verify → archive.
+- **Table example fixed** — the multi-item resolution table used an `OPEN:`
+  token, which conflicted with the anti-pattern banning `OPEN:` labels. Changed
+  to "Still open", with a note that a table has an explicit status column
+  (unlike inline lists where absence of a marker IS the open signal).
+- **AGENTS.md §5.5** documents the update-old-docs↔docs-health marker loop.
+- Both skills' installed copies (`~/.config/crush/skills/`) synced; `check-skills.sh`
+  passes (update-old-docs 500 lines, docs-health 499 lines).
+
