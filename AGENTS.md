@@ -133,6 +133,8 @@ Skill depth varies. The authoritative status is the line count and a quality rea
 
 The `full-code-review` skill now delegates planning to `pareto-planning` (previously inlined the same Pareto breakdown — a split brain). `status-report` hands its "next tasks" section (f) to `docs-health` HARVEST — the canonical "run HARVEST after a status report" rule lives **only** in `docs-health` → "When to run HARVEST"; `status-report` links rather than restates (do not duplicate the rationale in both). Several skills reference the shared `html-report-kit` design system for consistent HTML output — the authoritative consumer list is produced by `scripts/sync-html-kit.sh --list` (see 5.9). Do not hardcode that list in prose; it drifts. When adding cross-references, check this graph first.
 
+`update-old-docs` and `docs-health` HARVEST form a two-way loop over the same status reports and MUST share vocabulary. `update-old-docs` resolves items **backward** (marks each `done at` / `Won't implement` / `NOT-DO`, then archives fully-resolved files to `<dir>/archived/`). `docs-health` HARVEST pulls items **forward** into TODO_LIST — and it must **skip any item already carrying a resolution marker** (those are closed; route to CHANGELOG, never re-harvest into TODO_LIST). The marker vocabulary (`done at`, `Won't implement`, `NOT-DO/DUPLICATE`) is owned by `update-old-docs`; HARVEST references it, never restates a rival format.
+
 ### 5.6 `how-to-write-skills.md` Location
 
 This file is currently at the repo root. The status report recommends either converting it to a proper skill directory (`skill-creator/` or `how-to-write-skills/`) or moving it to `docs/`. It is not currently installed as a skill.

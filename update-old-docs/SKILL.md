@@ -198,10 +198,13 @@ table with explicit **Commit** and **Release** columns lets a reader scan
 | Item | Claim in report    | Resolution                        | Commit  | Release |
 | ---- | ------------------ | --------------------------------- | ------- | ------- |
 | §d.1 | Envelope FP bug    | FIXED: reserved-bytes-zero        | fe81dd2 | v0.2.0  |
-| §b.3 | Fuzz crate not run | OPEN: TODO_LIST "fuzz follow-ups" | —       | —       |
+| §b.3 | Fuzz crate not run | Still open — TODO_LIST "fuzz follow-ups" | —      | —      |
 ```
 
-Prose bullets are fine for 1–4 items; tables win at 5+.
+Prose bullets are fine for 1–4 items; tables win at 5+. In a table an
+open item gets a "Still open" cell — a table has an explicit status column,
+so naming the open state there is correct (unlike an inline list, where the
+absence of a marker IS the open signal).
 
 See _Annotation placement_ below for WHERE the note goes, and
 [./references/annotation-placement.md](./references/annotation-placement.md)
@@ -236,6 +239,29 @@ claims and your annotation is only at the bottom of the file, **you have
 failed this test** — the reader has already formed a wrong impression before
 they reach your appendix. Go back and inline-correct the stale opening claims
 (see _Annotation placement_ below).
+
+### Step 6 — Archive fully-resolved files (after every item resolves)
+
+When EVERY actionable item in a historical file is resolved — each marked
+`done at`, `Won't implement`, or `NOT-DO/DUPLICATE` — AND every stale opening
+claim inline-corrected, the file has no live work left. **Move it into an
+`archived/` sibling:**
+
+```bash
+mkdir -p <dir>/archived
+git mv <dir>/<file>.md <dir>/archived/<file>.md
+```
+
+Examples:
+
+- `docs/status/2026-06-17_report.md` (all items done) → `docs/status/archived/2026-06-17_report.md`
+
+Rules:
+
+- **`git mv` only, never plain `mv`** — preserve history (per AGENTS.md); create `archived/` first.
+- **All actionable items must resolve first.** A file with one open item stays in place (that item is still live) — "almost all done" is not "fully done." A narrative snapshot with no items is not a candidate.
+- **Annotate BEFORE archiving** — resolve every item, confirm zero remain, then move. Don't archive on a hunch.
+- **Re-runs reach archival this way** — a file with 3 open items last pass may have 0 now; mark them done, then archive (see _Re-runs are productive_ below).
 
 ---
 
@@ -291,11 +317,12 @@ Old status reports and plans often contain numbered lists of actionable
 items — "Things to Do Next", "Open issues", "Next steps". These lists are
 the most common thing a reader wants resolved: _which of these are done
 now?_ **You must RESOLVE every numbered item** — not just the ones you
-already know about. "Resolve" means giving each item a definitive verdict.
-Skipping items silently is the #1 failure mode of this skill: a file with 50
-items where 10 are marked and 40 were silently skipped is **not annotated**
-— it is partially annotated. Mark completed items **inline** using
-strike-through + a `done at` marker, keeping the original text visible:
+already know about. (_Annotate_ = file-level context; _resolve_ = a per-item
+verdict — both in one pass.) Each item gets a verdict: `done at <hash>`,
+`Won't implement`/`NOT-DO`, or — if still open — **left untouched**, which IS
+the "open" verdict (you still CHECK it; never skip the check). Skipping is the
+#1 failure mode: 10 marked and 40 never checked is **not annotated**. Mark
+completed items **inline** with strike-through + a `done at` marker:
 
 ```markdown
 1. ~~Fix warmup store pollution — use separate Bundle or document the inflation~~ done at `a7b8159`
@@ -337,32 +364,6 @@ This pattern is a form of the inline edit (option 1 above) specialized for
 list items. It wins over an appendix table here because the resolution lives
 right next to the claim — a reader scanning the list sees the status without
 context-switching to a separate section.
-
----
-
-## Archiving fully-resolved files
-
-When EVERY actionable item in a historical file is resolved — each one marked
-`done at`, `Won't implement`, or `NOT-DO/DUPLICATE` — AND every stale opening
-claim has been inline-corrected — the file has no remaining work to track.
-It is fully done. **Move it into an `archived/` sibling:**
-
-```bash
-mkdir -p <dir>/archived
-git mv <dir>/<file>.md <dir>/archived/<file>.md
-```
-
-Examples:
-
-- `docs/status/2026-06-17_report.md` (all 12 items done) → `docs/status/archived/2026-06-17_report.md`
-
-Rules:
-
-- **Use `git mv`, never plain `mv`** — preserve history (per project AGENTS.md). Create `archived/` first if it does not exist.
-- **Archive only when ALL actionable items resolve.** A file with one open item stays in place — that open item is still being tracked, so the file is live. "Almost all done" is not "fully done."
-- **A file with no actionable items is NOT a candidate.** A pure narrative snapshot (no TODO list) has nothing to resolve — annotate it or leave it alone.
-- **Annotate BEFORE archiving.** Resolve each open item first (strike-through + commit), confirm zero remain, then move. Don't archive on a hunch — mark every item so the archival is self-evidently correct to a reviewer.
-- **Re-runs reach archival this way** — a file with 3 open items last pass may have 0 now; the re-run marks them done, then archives (see _Re-runs are productive_ below).
 
 ---
 
