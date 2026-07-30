@@ -299,7 +299,7 @@ they were tracking:
 4. ~~Add test for Config.Duration actually aborting a long-running phase~~ done at `fe81dd2`
 ```
 
-**Format:** `~~<original line, unchanged>~~ done at <commit>` (wrap each hash in backticks).
+**Format:** `~~<original line, unchanged>~~ done at <set-of-short-git-hashes>` (wrap each hash in backticks).
 **Variants** (keep wording consistent within a single file):
 
 ```text
@@ -435,7 +435,7 @@ The rule is per-item, not per-file:
 - **Already-resolved item → leave its annotation untouched.** Do not re-stamp,
   re-word, or "upgrade" a `done at` / `Won't implement` marker that is already
   correct. Re-stamping is a double-stamp even if the wording differs.
-- **Open item that is now resolved → mark it** as `done at <commit>` (or the
+- **Open item that is now resolved → mark it** as `done at <set-of-short-git-hashes>` (or the
   rejected form) exactly as you would on a first pass.
 - **Appendix dated for today already exists → don't add a second one** for the
   same date. If a new appendix is warranted, use a new date in the heading
