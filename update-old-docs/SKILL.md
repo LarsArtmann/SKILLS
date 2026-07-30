@@ -25,10 +25,11 @@ _Keep old documents current without destroying their history._
 > **tl;dr (the whole skill in 5 lines):**
 >
 > 1. Read every old file before touching any.
-> 2. Per file decide: **ANNOTATE** / **SKIP** / **LEAVE ALONE**.
+> 2. Per file decide: **ANNOTATE** / **ARCHIVE** / **SKIP** / **LEAVE ALONE**.
 > 3. Write only specific notes (commit hash + what's still open) — never generic banners.
 > 4. Every note must survive the **"so what?"** test.
 > 5. Place notes as **inline edits** or **end-of-file appendices** — never top-of-file banners.
+> 6. Re-runs are productive: items finished since the last pass get marked `done at` — never re-stamp an already-resolved item. When ALL items resolve, move the file to `archived/`.
 
 Old documents — status reports, plans, reviews, audits, snapshots — capture
 what someone knew at a point in time. They go stale. A reader opening an old
@@ -161,11 +162,12 @@ For every file, make exactly ONE of three decisions:
 | Decision        | Apply when                                                                                         |
 | --------------- | -------------------------------------------------------------------------------------------------- |
 | **ANNOTATE**    | A reader of this old file would clearly benefit, and the value is NOT already present in it        |
+| **ARCHIVE**     | EVERY actionable item is resolved (done / rejected / won't-do). Move to `archived/<file-name>`     |
 | **SKIP**        | The file is already clear — it has its own resolution section, status table, or correct content    |
 | **LEAVE ALONE** | The file describes rejected / deferred / abandoned work where a "this was done" note would mislead |
 
-Record this list. The list IS the plan. _"I will annotate 24 of the 89 files
-and skip 65"_ is a complete, correct plan.
+Record this list. The list IS the plan. _"I will annotate 24 of the 89 files,
+archive 3 that are fully resolved, and skip 62"_ is a complete, correct plan.
 
 ### Step 3 — Write specific annotations, not generic ones
 
@@ -286,38 +288,51 @@ Old status reports and plans often contain a numbered or bulleted list of
 actionable items — "Things to Do Next", "Open issues", "Next steps". These
 lists are the most common thing a reader wants to resolve: _which of these
 are done now?_ When items in such a list are completed, annotate them
-**inline** using strike-through + a `DONE:` marker with the commit hash(es),
+**inline** using strike-through + a `done at` marker with the commit hash(es),
 keeping the original item text visible so the reader can match it to what
 they were tracking:
 
 ```markdown
-1. ~~Fix warmup store pollution — use separate Bundle or document the inflation~~ DONE: a7b8159;
-2. ~~Fix estimateJSONSize — marshal-and-measure instead of template guess~~ DONE: a7b8159, fe81dd2;
+1. ~~Fix warmup store pollution — use separate Bundle or document the inflation~~ done at `a7b8159`
+2. ~~Fix estimateJSONSize — marshal-and-measure instead of template guess~~ done at `a7b8159`, `fe81dd2`
 3. Add negative tests: factory returning nil Bundle, nil EventSink, closed store
-4. ~~Add test for Config.Duration actually aborting a long-running phase~~ DONE: fe81dd2;
+4. ~~Add test for Config.Duration actually aborting a long-running phase~~ done at `fe81dd2`
 ```
 
-**Format:** `~~<original line, unchanged>~~ DONE: <git-hash(s)>;`
+**Format:** `~~<original line, unchanged>~~ done at \<commit>``
+
+Variants you will need (match this richness — keep wording consistent within a single file):
+
+- **Shipped in a commit:** `~~<line>~~ done at \<hash>``
+- **Shipped across multiple commits:** `~~<line>~~ done at \`a7b8159\`, \`fe81dd2\``
+- **Already existed (no new commit):** `~~<line>~~ done (existing rule)` or
+  `~~<line>~~ done (covered by C019)`
+- **Investigated and decided against:** `~~<line>~~ **Won't implement — <one-line reason>.**`
+- **Subsumed by / duplicates another item:** `**NOT-DO/DUPLICATE — <line>** <one-line reason>`
 
 Rules for this pattern:
 
 - **Strike through the ENTIRE original line** — the reader must be able to
   identify what the item was. Never replace the text; wrap it in `~~...~~`.
+  Keep the original formatting (bold, links) inside the strikethrough.
 - **Cite the commit hash(es)** that closed the item — same evidence standard
-  as any annotation. `DONE: a7b8159;` for one commit, `DONE: a7b8159, fe81dd2;`
-  for multiple. Separate multiple hashes with commas.
+  as any annotation. Wrap each hash in backticks; separate multiple with
+  commas. `done at \`a7b8159\`` for one, `done at \`a7b8159\`, \`fe81dd2\`` for more.
 - **Leave open items untouched** — do not mark them, do not add "OPEN" or
-  "TODO" labels. The absence of a `DONE:` marker IS the signal that the item
+  "TODO" labels. The absence of a `done at` marker IS the signal that the item
   is still open. Adding labels to open items is noise (see anti-patterns).
-- **One `DONE:` per completed item** — never batch multiple items into one
+- **One `done at` per completed item** — never batch multiple items into one
   annotation. Each line resolves independently because each ships in its own
   commit.
-- **The trailing `;` is intentional** — it visually terminates the
-  annotation so a reader scanning the list can distinguish "done" from
-  "still open" at a glance.
-- **If an item was rejected/abandoned** (not done, but no longer pursued),
-  use `~~<original line>~~ REJECTED: <one-line reason>;` instead of `DONE:`.
-  This is distinct from done — the reader needs to know it will NOT ship.
+- **If an item was rejected/abandoned** (closed without shipping), mark it so
+  the reader knows it will NOT ship. `Won't implement — <reason>` means you
+  investigated and decided against it; `NOT-DO/DUPLICATE` means it overlaps
+  another item so it was never separately actioned. Both are distinct from
+  `done` — the reader needs to know the item is **closed without shipping**,
+  not merely forgotten.
+- **Add a short "how" when the resolution is non-obvious** — `done (existing
+  rule)` or `done at \`b31eb572\` (covered by C019)` tells the reader where to
+  look. Keep it to one parenthetical clause.
 - **Do not renumber.** Keep the original numbering/ordering intact. The
   numbers are how readers cross-reference items across documents.
 
@@ -325,6 +340,43 @@ This pattern is a form of the inline edit (option 1 above) specialized for
 list items. It wins over an appendix table here because the resolution lives
 right next to the claim — a reader scanning the list sees the status without
 context-switching to a separate section.
+
+---
+
+## Archiving fully-resolved files
+
+When EVERY actionable item in a historical file is resolved — each one marked
+`done at`, `Won't implement`, or `NOT-DO/DUPLICATE` — the file has no remaining
+work to track. It is fully done. **Move it into an `archived/` sibling:**
+
+```bash
+mkdir -p <dir>/archived
+git mv <dir>/<file>.md <dir>/archived/<file>.md
+```
+
+Examples:
+
+- `docs/status/2026-06-17_report.md` (all 12 items done) → `docs/status/archived/2026-06-17_report.md`
+- `cmd/cqrs-lint/IMPROVEMENT_IDEAS.md` (if every idea were done/rejected) → `cmd/cqrs-lint/archived/IMPROVEMENT_IDEAS.md`
+
+Rules:
+
+- **Use `git mv`, never plain `mv`** — preserve history (per project AGENTS.md).
+  Create `archived/` first if it does not exist.
+- **Archive only when ALL actionable items resolve.** A file with one open item
+  stays in place — that open item is still being tracked, so the file is live.
+  "Almost all done" is not "fully done."
+- **A file with no actionable items is NOT a candidate.** A pure narrative
+  snapshot (a retrospective with no TODO list) has nothing to resolve, so
+  "fully done" does not apply — annotate it or leave it alone.
+- **Annotate BEFORE archiving.** Resolve each open item first (strike-through +
+  commit), confirm zero remain, then move. Don't archive a file that still has
+  unannotated open items just because you believe they're done — mark them
+  first so the archival is self-evidently correct to a reviewer.
+- **Re-runs reach archival this way.** A file that had 3 open items last pass
+  may have 0 now — the re-run marks the last 3 done, then archives. This is the
+  normal lifecycle: annotate across several passes, then archive on the pass
+  that closes the final item (see _Re-runs are productive_ below).
 
 ---
 
@@ -390,13 +442,31 @@ diagrams, vendored copies). These are regenerated from source; an annotation
 would be erased on the next generation. If a generated file is stale, the fix
 is to regenerate it, not to annotate it.
 
-### Idempotency
+### Re-runs are productive, not no-ops
 
-If you re-run an annotation pass over a file you already annotated, the result
-must be a no-op, not a double-stamp. Before annotating, check whether a
-`## Resolution` section or inline correction already exists for the same date.
-This is why the appendix format includes the date in the heading
-(`## Resolution (2026-07-17)`) — it makes re-runs detectable.
+A file you annotated last week is not frozen. Work has happened since: items
+that were open are now done, a spike was rejected, a rule landed as an
+"existing rule." **Re-running this skill over a previously-annotated file is
+expected and correct** — the job is to bring it current, not to skip it.
+
+The rule is per-item, not per-file:
+
+- **Already-resolved item → leave its annotation untouched.** Do not re-stamp,
+  re-word, or "upgrade" a `done at` / `Won't implement` marker that is already
+  correct. Re-stamping is a double-stamp even if the wording differs.
+- **Open item that is now resolved → mark it** with `done at \<commit>`` (or the
+  rejected form) exactly as you would on a first pass.
+- **Appendix dated for today already exists → don't add a second one** for the
+  same date. If a new appendix is warranted, use a new date in the heading
+  (`## Resolution (2026-07-30)`) so re-runs stay detectable and don't pile up.
+
+This is why the appendix format includes the date in the heading — it lets a
+re-run distinguish "I already covered 2026-07-17" from "new work landed since."
+Before annotating, check what's already marked so you resolve only what's
+genuinely new. **Every previously-open item must be re-checked against the
+current codebase / commit history** — assume it may have shipped since the last
+pass, because it often has. When a file reaches zero open items, it graduates
+to ARCHIVE (see above).
 
 ---
 
@@ -406,7 +476,9 @@ This is why the appendix format includes the date in the heading
 - [ ] For EVERY annotation: does it pass the "so what?" test? Delete any that do not.
 - [ ] **Fresh-open test:** every file with a stale TL;DR / opening has an inline correction visible in the first screenful.
 - [ ] Count the files you LEFT UNTOUCHED. That number being > 0 is correct and expected.
-- [ ] For list items marked `DONE:` — the entire original line is struck through, at least one commit hash is cited, and open items are left untouched (no noise labels).
+- [ ] For list items marked `done at` — the entire original line is struck through, at least one commit hash is cited, and open items are left untouched (no noise labels).
+- [ ] **Re-run check:** every previously-open item was re-checked against current commits; items already marked were left untouched (no double-stamping).
+- [ ] **Archive check:** every file whose actionable items are ALL resolved was moved to `<dir>/archived/<file-name>` via `git mv`; files with any open item were left in place.
 - [ ] No annotation is generic — each could only apply to its own file.
 - [ ] No annotation cites line numbers in other files (cite section names or item text).
 - [ ] No annotation sits between a title and the original opening paragraph.
@@ -433,7 +505,9 @@ This is why the appendix format includes the date in the heading
 - Treating "files modified" as the success metric instead of "value per annotation"
 - **Proceeding on an unspecified scope** — "update the old reports" without a time range is ambiguous; guessing "all of them" maximizes blast radius. Ask first.
 - Removing a batch annotation with a script instead of `git restore`
-- **Marking open list items with "OPEN"/"TODO" labels** — absence of a `DONE:` marker is the signal; adding labels to open items is noise
+- **Marking open list items with "OPEN"/"TODO" labels** — absence of a `done at` marker is the signal; adding labels to open items is noise
+- **Re-stamping an already-resolved item** — a `done at` / `Won't implement` marker that is already correct must be left untouched on re-run; re-wording it is a double-stamp
+- **Archiving a file that still has open items** — only files where ALL actionable items are resolved move to `archived/`
 - **Renumbering a list after striking items through** — destroys cross-references; keep original order
 - **Rewriting an old document from scratch** — that destroys history; use docs-health for living docs instead
 
