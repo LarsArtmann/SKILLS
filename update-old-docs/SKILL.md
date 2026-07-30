@@ -148,9 +148,12 @@ stop — that is a docs-health rewrite, not an update-old-docs annotation.
 ### Step 1 — Read everything before touching anything
 
 Before annotating a single file, read and understand EVERY target. Use
-sub-agents to parallelize the reads when there are many. Do not annotate or
-write any script until you can answer for each file: _what does it currently
-say, and what does it currently lack?_
+sub-agents to parallelize the **classification** pass (what's stale, what
+items exist) — but the **annotation itself** (writing `done at` markers,
+inline-correcting claims) must be done by the primary agent after reading
+the actual file text, not a paraphrased summary. Do not annotate or write
+any script until you can answer for each file: _what does it currently say,
+and what does it currently lack?_
 
 This is non-negotiable. The Verschlimmbesserung happens when you decide the
 annotation before understanding the targets.
@@ -284,13 +287,15 @@ For before/after examples and the full reasoning, load
 
 ### Lists of actionable items (TODO lists within old reports)
 
-Old status reports and plans often contain a numbered or bulleted list of
-actionable items — "Things to Do Next", "Open issues", "Next steps". These
-lists are the most common thing a reader wants to resolve: _which of these
-are done now?_ When items in such a list are completed, annotate them
-**inline** using strike-through + a `done at` marker with the commit hash(es),
-keeping the original item text visible so the reader can match it to what
-they were tracking:
+Old status reports and plans often contain numbered lists of actionable
+items — "Things to Do Next", "Open issues", "Next steps". These lists are
+the most common thing a reader wants resolved: _which of these are done
+now?_ **You must RESOLVE every numbered item** — not just the ones you
+already know about. "Resolve" means giving each item a definitive verdict.
+Skipping items silently is the #1 failure mode of this skill: a file with 50
+items where 10 are marked and 40 were silently skipped is **not annotated**
+— it is partially annotated. Mark completed items **inline** using
+strike-through + a `done at` marker, keeping the original text visible:
 
 ```markdown
 1. ~~Fix warmup store pollution — use separate Bundle or document the inflation~~ done at `a7b8159`
@@ -314,15 +319,11 @@ Rules for this pattern:
 - **Strike through the ENTIRE original line** — the reader must be able to
   identify what the item was. Never replace the text; wrap it in `~~...~~`.
   Keep the original formatting (bold, links) inside the strikethrough.
-- **Cite the commit hash(es)** that closed the item — same evidence standard
-  as any annotation. Wrap each hash in backticks; separate multiple with
-  commas. Use `a7b8159` for one commit, `a7b8159, fe81dd2` for several.
+- **Cite the commit hash(es)** that closed the item. Wrap each hash in backticks; separate multiple with commas (`a7b8159`, or `a7b8159, fe81dd2`).
 - **Leave open items untouched** — do not mark them, do not add "OPEN" or
   "TODO" labels. The absence of a `done at` marker IS the signal that the item
   is still open. Adding labels to open items is noise (see anti-patterns).
-- **One `done at` per completed item** — never batch multiple items into one
-  annotation. Each line resolves independently because each ships in its own
-  commit.
+- **One `done at` per completed item** — never batch multiple items into one annotation.
 - **If an item was rejected/abandoned** (closed without shipping), mark it so
   the reader knows it will NOT ship. `Won't implement — <reason>` means you
   investigated and decided against it; `NOT-DO/DUPLICATE` means it overlaps
@@ -342,8 +343,9 @@ context-switching to a separate section.
 ## Archiving fully-resolved files
 
 When EVERY actionable item in a historical file is resolved — each one marked
-`done at`, `Won't implement`, or `NOT-DO/DUPLICATE` — the file has no remaining
-work to track. It is fully done. **Move it into an `archived/` sibling:**
+`done at`, `Won't implement`, or `NOT-DO/DUPLICATE` — AND every stale opening
+claim has been inline-corrected — the file has no remaining work to track.
+It is fully done. **Move it into an `archived/` sibling:**
 
 ```bash
 mkdir -p <dir>/archived
@@ -432,16 +434,11 @@ A file you annotated last week is not frozen. Work has happened since: items tha
 
 The rule is per-item, not per-file:
 
-- **Already-resolved item → leave its annotation untouched.** Do not re-stamp,
-  re-word, or "upgrade" a `done at` / `Won't implement` marker that is already
-  correct. Re-stamping is a double-stamp even if the wording differs.
-- **Open item that is now resolved → mark it** as `done at <set-of-short-git-hashes>` (or the
-  rejected form) exactly as you would on a first pass.
-- **Appendix dated for today already exists → don't add a second one** for the
-  same date. If a new appendix is warranted, use a new date in the heading
-  (`## Resolution (2026-07-30)`) so re-runs stay detectable and don't pile up.
+- **Already-resolved item → leave untouched.** Do not re-stamp, re-word, or "upgrade" a correct `done at` / `Won't implement` marker. Re-stamping is a double-stamp.
+- **Open item now resolved → mark it** as `done at <set-of-short-git-hashes>` (or the rejected form) exactly as on a first pass.
+- **Same-date appendix already exists → don't add a second.** Use a new date (`## Resolution (2026-07-30)`) if warranted.
 
-Before annotating, check what's already marked so you resolve only what's genuinely new. **Every previously-open item must be re-checked against the current codebase / commit history** — assume it may have shipped since the last pass, because it often has. When a file reaches zero open items, it graduates to ARCHIVE (see _Archiving_ above). The dated appendix heading (`## Resolution (2026-07-30)`) is what lets a re-run tell "already covered" from "new since."
+Every previously-open item must be re-checked against current commits — assume it may have shipped since, because it often has. When a file reaches zero open items, it graduates to ARCHIVE.
 
 ---
 
@@ -452,6 +449,7 @@ Before annotating, check what's already marked so you resolve only what's genuin
 - [ ] **Fresh-open test:** every file with a stale TL;DR / opening has an inline correction visible in the first screenful.
 - [ ] Count the files you LEFT UNTOUCHED. That number being > 0 is correct and expected.
 - [ ] For list items marked `done at` — the entire original line is struck through, at least one commit hash is cited, and open items are left untouched (no noise labels).
+- [ ] **Completeness gate:** every numbered action item in the file was checked against current state. An item you didn't check is an item you silently abandoned. A file with un-checked items is not annotated.
 - [ ] **Re-run check:** every previously-open item was re-checked against current commits; items already marked were left untouched (no double-stamping).
 - [ ] **Archive check:** every file whose actionable items are ALL resolved was moved to `<dir>/archived/<file-name>` via `git mv`; files with any open item were left in place.
 - [ ] No annotation is generic — each could only apply to its own file.
@@ -480,6 +478,7 @@ Before annotating, check what's already marked so you resolve only what's genuin
 - Treating "files modified" as the success metric instead of "value per annotation"
 - **Proceeding on an unspecified scope** — "update the old reports" without a time range is ambiguous; guessing "all of them" maximizes blast radius. Ask first.
 - Removing a batch annotation with a script instead of `git restore`
+- **Silently skipping numbered items** — the #1 failure mode: marking the items you know about and declaring the file done while dozens remain un-checked. Every numbered item must be resolved (done / rejected / left-open-intentionally).
 - **Marking open list items with "OPEN"/"TODO" labels** — absence of a `done at` marker is the signal; adding labels to open items is noise
 - **Re-stamping an already-resolved item** — a `done at` / `Won't implement` marker that is already correct must be left untouched on re-run; re-wording it is a double-stamp
 - **Archiving a file that still has open items** — only files where ALL actionable items are resolved move to `archived/`
