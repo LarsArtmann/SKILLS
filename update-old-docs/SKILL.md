@@ -299,16 +299,15 @@ they were tracking:
 4. ~~Add test for Config.Duration actually aborting a long-running phase~~ done at `fe81dd2`
 ```
 
-**Format:** `~~<original line, unchanged>~~ done at \<commit>``
+**Format:** `~~<original line, unchanged>~~ done at <commit>` (wrap each hash in backticks).
+**Variants** (keep wording consistent within a single file):
 
-Variants you will need (match this richness — keep wording consistent within a single file):
-
-- **Shipped in a commit:** `~~<line>~~ done at \<hash>``
-- **Shipped across multiple commits:** `~~<line>~~ done at \`a7b8159\`, \`fe81dd2\``
-- **Already existed (no new commit):** `~~<line>~~ done (existing rule)` or
-  `~~<line>~~ done (covered by C019)`
-- **Investigated and decided against:** `~~<line>~~ **Won't implement — <one-line reason>.**`
-- **Subsumed by / duplicates another item:** `**NOT-DO/DUPLICATE — <line>** <one-line reason>`
+```text
+~~<line>~~ done at `a7b8159`                          # one commit; several: `a7b8159`, `fe81dd2`
+~~<line>~~ done (existing rule)                       # already existed; or: done (covered by C019)
+~~<line>~~ **Won't implement — <one-line reason>.**   # investigated, decided against
+**NOT-DO/DUPLICATE — <line>** <one-line reason>       # subsumed by / duplicates another item
+```
 
 Rules for this pattern:
 
@@ -317,7 +316,7 @@ Rules for this pattern:
   Keep the original formatting (bold, links) inside the strikethrough.
 - **Cite the commit hash(es)** that closed the item — same evidence standard
   as any annotation. Wrap each hash in backticks; separate multiple with
-  commas. `done at \`a7b8159\`` for one, `done at \`a7b8159\`, \`fe81dd2\`` for more.
+  commas. Use `a7b8159` for one commit, `a7b8159, fe81dd2` for several.
 - **Leave open items untouched** — do not mark them, do not add "OPEN" or
   "TODO" labels. The absence of a `done at` marker IS the signal that the item
   is still open. Adding labels to open items is noise (see anti-patterns).
@@ -330,9 +329,6 @@ Rules for this pattern:
   another item so it was never separately actioned. Both are distinct from
   `done` — the reader needs to know the item is **closed without shipping**,
   not merely forgotten.
-- **Add a short "how" when the resolution is non-obvious** — `done (existing
-  rule)` or `done at \`b31eb572\` (covered by C019)` tells the reader where to
-  look. Keep it to one parenthetical clause.
 - **Do not renumber.** Keep the original numbering/ordering intact. The
   numbers are how readers cross-reference items across documents.
 
@@ -357,26 +353,14 @@ git mv <dir>/<file>.md <dir>/archived/<file>.md
 Examples:
 
 - `docs/status/2026-06-17_report.md` (all 12 items done) → `docs/status/archived/2026-06-17_report.md`
-- `cmd/cqrs-lint/IMPROVEMENT_IDEAS.md` (if every idea were done/rejected) → `cmd/cqrs-lint/archived/IMPROVEMENT_IDEAS.md`
 
 Rules:
 
-- **Use `git mv`, never plain `mv`** — preserve history (per project AGENTS.md).
-  Create `archived/` first if it does not exist.
-- **Archive only when ALL actionable items resolve.** A file with one open item
-  stays in place — that open item is still being tracked, so the file is live.
-  "Almost all done" is not "fully done."
-- **A file with no actionable items is NOT a candidate.** A pure narrative
-  snapshot (a retrospective with no TODO list) has nothing to resolve, so
-  "fully done" does not apply — annotate it or leave it alone.
-- **Annotate BEFORE archiving.** Resolve each open item first (strike-through +
-  commit), confirm zero remain, then move. Don't archive a file that still has
-  unannotated open items just because you believe they're done — mark them
-  first so the archival is self-evidently correct to a reviewer.
-- **Re-runs reach archival this way.** A file that had 3 open items last pass
-  may have 0 now — the re-run marks the last 3 done, then archives. This is the
-  normal lifecycle: annotate across several passes, then archive on the pass
-  that closes the final item (see _Re-runs are productive_ below).
+- **Use `git mv`, never plain `mv`** — preserve history (per project AGENTS.md). Create `archived/` first if it does not exist.
+- **Archive only when ALL actionable items resolve.** A file with one open item stays in place — that open item is still being tracked, so the file is live. "Almost all done" is not "fully done."
+- **A file with no actionable items is NOT a candidate.** A pure narrative snapshot (no TODO list) has nothing to resolve — annotate it or leave it alone.
+- **Annotate BEFORE archiving.** Resolve each open item first (strike-through + commit), confirm zero remain, then move. Don't archive on a hunch — mark every item so the archival is self-evidently correct to a reviewer.
+- **Re-runs reach archival this way** — a file with 3 open items last pass may have 0 now; the re-run marks them done, then archives (see _Re-runs are productive_ below).
 
 ---
 
@@ -444,29 +428,20 @@ is to regenerate it, not to annotate it.
 
 ### Re-runs are productive, not no-ops
 
-A file you annotated last week is not frozen. Work has happened since: items
-that were open are now done, a spike was rejected, a rule landed as an
-"existing rule." **Re-running this skill over a previously-annotated file is
-expected and correct** — the job is to bring it current, not to skip it.
+A file you annotated last week is not frozen. Work has happened since: items that were open are now done, a spike was rejected. **Re-running this skill over a previously-annotated file is expected and correct** — the job is to bring it current, not to skip it.
 
 The rule is per-item, not per-file:
 
 - **Already-resolved item → leave its annotation untouched.** Do not re-stamp,
   re-word, or "upgrade" a `done at` / `Won't implement` marker that is already
   correct. Re-stamping is a double-stamp even if the wording differs.
-- **Open item that is now resolved → mark it** with `done at \<commit>`` (or the
+- **Open item that is now resolved → mark it** as `done at <commit>` (or the
   rejected form) exactly as you would on a first pass.
 - **Appendix dated for today already exists → don't add a second one** for the
   same date. If a new appendix is warranted, use a new date in the heading
   (`## Resolution (2026-07-30)`) so re-runs stay detectable and don't pile up.
 
-This is why the appendix format includes the date in the heading — it lets a
-re-run distinguish "I already covered 2026-07-17" from "new work landed since."
-Before annotating, check what's already marked so you resolve only what's
-genuinely new. **Every previously-open item must be re-checked against the
-current codebase / commit history** — assume it may have shipped since the last
-pass, because it often has. When a file reaches zero open items, it graduates
-to ARCHIVE (see above).
+Before annotating, check what's already marked so you resolve only what's genuinely new. **Every previously-open item must be re-checked against the current codebase / commit history** — assume it may have shipped since the last pass, because it often has. When a file reaches zero open items, it graduates to ARCHIVE (see _Archiving_ above). The dated appendix heading (`## Resolution (2026-07-30)`) is what lets a re-run tell "already covered" from "new since."
 
 ---
 
