@@ -199,6 +199,13 @@ the rationale — edit the rule here, not in the callers._
    the read count. If `docs/status/` is empty, HARVEST is a no-op; say so.
 
 2. **Extract forward-looking items.** From each selected report, pull:
+   - **First, drop anything already resolved.** A report that has been
+     through [`update-old-docs`](../update-old-docs/SKILL.md) carries
+     per-item markers (`done at <hash>`, `Won't implement`,
+     `NOT-DO/DUPLICATE`). Those items are closed, not forward-looking —
+     they belong in CHANGELOG (if missing), never TODO_LIST. Harvest only
+     items with NO marker. This is the loop: update-old-docs resolves
+     items backward; HARVEST pulls only what is still open forward.
    - "Next tasks" / "Top N things to do" sections — the primary source.
    - "Partially done" items that still have open work.
    - "Improvements" / "what could be better" items that are actionable.
@@ -246,6 +253,9 @@ the rationale — edit the rule here, not in the callers._
   shipped X. Verify against code.
 - **Harvesting open questions as tasks.** An unanswered question is not
   actionable. Route it to the user or to ROADMAP, not TODO_LIST.
+- **Re-harvesting items already marked resolved.** `done at` /
+  `Won't implement` / `NOT-DO` markers mean an item is closed; pulling it
+  back into TODO_LIST re-opens settled work. Respect the markers (Step 2).
 - **Skipping HARVEST because "update-old-docs handles status reports."**
   It does not — different direction. update-old-docs annotates the report
   itself (backward-looking, "this later shipped"); HARVEST pulls items out
