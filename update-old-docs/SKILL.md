@@ -195,10 +195,10 @@ table with explicit **Commit** and **Release** columns lets a reader scan
 "what shipped and when" in seconds:
 
 ```markdown
-| Item | Claim in report    | Resolution                        | Commit  | Release |
-| ---- | ------------------ | --------------------------------- | ------- | ------- |
-| §d.1 | Envelope FP bug    | FIXED: reserved-bytes-zero        | fe81dd2 | v0.2.0  |
-| §b.3 | Fuzz crate not run | Still open — TODO_LIST "fuzz follow-ups" | —      | —      |
+| Item | Claim in report    | Resolution                               | Commit  | Release |
+| ---- | ------------------ | ---------------------------------------- | ------- | ------- |
+| §d.1 | Envelope FP bug    | FIXED: reserved-bytes-zero               | fe81dd2 | v0.2.0  |
+| §b.3 | Fuzz crate not run | Still open — TODO_LIST "fuzz follow-ups" | —       | —       |
 ```
 
 Prose bullets are fine for 1–4 items; tables win at 5+. In a table an

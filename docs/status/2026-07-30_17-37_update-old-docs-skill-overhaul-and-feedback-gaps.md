@@ -302,4 +302,3 @@ pass).
 - **AGENTS.md §5.5** documents the update-old-docs↔docs-health marker loop.
 - Both skills' installed copies (`~/.config/crush/skills/`) synced; `check-skills.sh`
   passes (update-old-docs 500 lines, docs-health 499 lines).
-

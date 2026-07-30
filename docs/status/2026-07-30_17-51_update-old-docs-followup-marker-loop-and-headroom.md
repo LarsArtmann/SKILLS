@@ -34,6 +34,7 @@ That was a real, distinct gap (markers in report ≠ code verification;
 both needed).
 
 **Implemented** (`docs-health/SKILL.md`):
+
 - HARVEST process Step 2: new first bullet — drop any item already
   carrying a `done at` / `Won't implement` / `NOT-DO` marker before
   extracting. Only un-marked (still-open) items are harvested. Explains
@@ -146,7 +147,7 @@ The #1 lesson from last session's status report (§e.2): "When I changed
 for the old format." This session I edited `docs-health/SKILL.md` and
 did check `docs-health/references/` (good — they were clean). **But I
 did NOT check `docs-health/references/verify-checklist.md` for a
-_missing matching check** — a different flavor of the same blindness.
+\_missing matching check** — a different flavor of the same blindness.
 I added a new failure mode (re-harvesting resolved items) to the
 SKILL.md prose but never went to the verify-checklist reference and
 added the row that would actually _catch_ that failure. The rule and
@@ -201,14 +202,14 @@ done, leave it in `new/`.
 
 ## f) NEXT — things to get done
 
-| #   | Priority     | Task                                                                                                                                                          |
-| --- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **HIGH**     | Add a "Re-harvested resolved items" failure-mode row to `docs-health/references/verify-checklist.md` — closes the gap from §d.1                              |
-| 2   | **HIGH**     | Compress `update-old-docs/SKILL.md` to ≤495 lines to restore maintenance headroom (currently 500/500)                                                         |
-| 3   | **MEDIUM**   | Audit `status-report/SKILL.md` — does its "next tasks" output format (numbered vs prose) make future `done at` resolution easy? Adjust if marker-unfriendly    |
-| 4   | **MEDIUM**   | Verify the docs-health HARVEST Step 2/Step 3 ordering reads cleanly to a fresh reader (marker-drop in Step 2 vs code-verify in Step 3 — make the distinction explicit) |
-| 5   | **LOW**      | Consider whether `update-old-docs/references/` needs a short "annotate vs resolve" reference doc, or whether the inline gloss is sufficient                   |
-| 6   | **LOW**      | Review whether the `done at` marker format should be documented once in a shared location (not just update-old-docs) since HARVEST now depends on it          |
+| #   | Priority   | Task                                                                                                                                                                   |
+| --- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **HIGH**   | Add a "Re-harvested resolved items" failure-mode row to `docs-health/references/verify-checklist.md` — closes the gap from §d.1                                        |
+| 2   | **HIGH**   | Compress `update-old-docs/SKILL.md` to ≤495 lines to restore maintenance headroom (currently 500/500)                                                                  |
+| 3   | **MEDIUM** | Audit `status-report/SKILL.md` — does its "next tasks" output format (numbered vs prose) make future `done at` resolution easy? Adjust if marker-unfriendly            |
+| 4   | **MEDIUM** | Verify the docs-health HARVEST Step 2/Step 3 ordering reads cleanly to a fresh reader (marker-drop in Step 2 vs code-verify in Step 3 — make the distinction explicit) |
+| 5   | **LOW**    | Consider whether `update-old-docs/references/` needs a short "annotate vs resolve" reference doc, or whether the inline gloss is sufficient                            |
+| 6   | **LOW**    | Review whether the `done at` marker format should be documented once in a shared location (not just update-old-docs) since HARVEST now depends on it                   |
 
 ---
 
