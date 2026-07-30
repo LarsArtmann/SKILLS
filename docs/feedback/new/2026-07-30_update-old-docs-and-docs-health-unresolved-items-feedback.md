@@ -52,6 +52,7 @@ The user expected steps 2+3 to be **one atomic operation per file**, not two sep
 **Suggested change:** Promote it to a **hard requirement** in the main workflow. Add to Step 2 (Classify each target):
 
 > Before classifying a file as ANNOTATE or SKIP, you MUST resolve every numbered action item in its NEXT/TODO/"NOT STARTED" sections. "Resolve" means marking each item as:
+>
 > - `~~<original line>~~ DONE: <commit-hash>;` — shipped
 > - `~~<original line>~~ REJECTED: <one-line reason>;` — intentionally not pursued
 > - `~~<original line>~~ OPEN: tracked in TODO_LIST "<section>";` — still open, harvested into living docs
@@ -74,6 +75,7 @@ The user expected steps 2+3 to be **one atomic operation per file**, not two sep
 **Suggested addition** (shared concept, referenced by both skills):
 
 > **Archive-readiness:** A historical file is archive-ready when:
+>
 > 1. Every numbered action item has a `DONE:`/`REJECTED:`/`OPEN:` resolution
 > 2. Every stale opening claim has been inline-corrected
 > 3. The file has a `## Item Resolution (<date>)` section (or equivalent)
@@ -109,6 +111,7 @@ The user expected steps 2+3 to be **one atomic operation per file**, not two sep
 When the user asks to both annotate AND archive in one pass (as happened here), neither skill alone covers the full workflow. A combined checklist:
 
 > **When annotating AND archiving historical files in one pass:**
+>
 > 1. Read every file (classify: ANNOTATE / SKIP / LEAVE_ALONE)
 > 2. For each ANNOTATE file: resolve EVERY numbered item (`DONE:`/`REJECTED:`/`OPEN:`)
 > 3. For each ANNOTATE file: inline-correct stale opening claims
@@ -132,6 +135,7 @@ The skills need to make this expectation **explicit and enforced via checklist g
 ## Concrete Example of the Failure
 
 A status report has:
+
 ```
 ## f) NEXT — UP TO 50 THINGS
 1. Deploy the fix
@@ -142,10 +146,12 @@ A status report has:
 ```
 
 **What I did (WRONG):**
+
 - Appended `## Resolution (2026-07-30): All items resolved in commit abc123.`
 - Archived the file
 
 **What the user wanted (RIGHT):**
+
 ```
 ## f) NEXT — UP TO 50 THINGS
 1. ~~Deploy the fix~~ DONE: abc123;
@@ -154,7 +160,9 @@ A status report has:
 ...
 50. ~~Consider refactoring X~~ REJECTED: not worth the effort;
 ```
+
 OR a resolution table:
+
 ```
 ## Item Resolution (2026-07-30)
 
@@ -168,3 +176,14 @@ OR a resolution table:
 ```
 
 The difference: **every single item** has an explicit status. No silent abandonment.
+
+---
+
+## Addendum: Terminology — "Annotate" vs "Resolve"
+
+The skill uses "annotate" as the universal verb for touching old files. This is misleading. There are two distinct operations:
+
+1. **Annotate** — add context notes to a file (inline corrections, appendix resolutions). The file's content is enriched but its items are not closed.
+2. **Resolve** — close every numbered action item with a definitive verdict (`DONE: <hash>;`, `REJECTED: <reason>;`, `OPEN: tracked in <doc>`). The items are answered, not just noted.
+
+"Annotate" implies "add notes." A reader hearing "I annotated 24 files" assumes notes were added — not that 1,688 items were resolved. The skill should use **"resolve"** for item-level work and **"annotate"** for file-level context work. The todo items in the agent's task list should say "Resolve TODO items" not "Annotate TODO items."
