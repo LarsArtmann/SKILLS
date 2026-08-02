@@ -192,6 +192,8 @@ handoffs=(
   "full-code-review/SKILL.md|HARVEST"
   "architecture-review/SKILL.md|HARVEST"
   "pareto-planning/SKILL.md|HARVEST"
+  "verify-external-claims/SKILL.md|verify-before-filing"
+  "verify-before-filing/SKILL.md|verify-external-claims"
 )
 for h in "${handoffs[@]}"; do
   file="${h%%|*}"

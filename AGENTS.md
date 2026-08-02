@@ -135,6 +135,8 @@ The `full-code-review` skill now delegates planning to `pareto-planning` (previo
 
 `update-old-docs` and `docs-health` HARVEST form a two-way loop over the same status reports and MUST share vocabulary. `update-old-docs` resolves items **backward** (marks each `done at` / `Won't implement` / `NOT-DO`, then archives fully-resolved files to `<dir>/archived/`). `docs-health` HARVEST pulls items **forward** into TODO_LIST — and it must **skip any item already carrying a resolution marker** (those are closed; route to CHANGELOG, never re-harvest into TODO_LIST). The marker vocabulary (`done at`, `Won't implement`, `NOT-DO/DUPLICATE`) is owned by `update-old-docs`; HARVEST references it, never restates a rival format.
 
+`verify-external-claims` and `verify-before-filing` form an **epistemic-hygiene pair** covering opposite directions of the same failure mode (unverified claims). `verify-external-claims` is **inbound** — verify external tool/library claims before encoding them into your own work. `verify-before-filing` is **outbound** — verify your own diagnosis before proposing changes to an external project. Each skill names the other explicitly; do not duplicate the rationale in both (the inbound/outbound split is stated once in `verify-external-claims/SKILL.md` and once in `verify-before-filing` §8). When adding a new verification-flavored skill, check whether it overlaps this pair before introducing a third angle.
+
 ### 5.6 `how-to-write-skills.md` Location
 
 This file is currently at the repo root. The status report recommends either converting it to a proper skill directory (`skill-creator/` or `how-to-write-skills/`) or moving it to `docs/`. It is not currently installed as a skill.

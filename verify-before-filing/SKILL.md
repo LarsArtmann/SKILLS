@@ -191,3 +191,19 @@ Both share the same root discipline: specificity is not evidence, and plausibili
 > **Outcome:** Issue not filed. Override deleted. Binary caching restored. Comment added to prevent re-introduction.
 >
 > Filing would have wasted maintainer time and signaled incompetence to the nixpkgs community.
+
+## 10. Second Example: Different Domain (Go Library)
+
+> **Scenario:** A Go project uses `gorilla/mux`. The team's codebase has a vendored patch that adds a `MaxBodySize` middleware method. Builds are slow because the vendor dir is large. An engineer wants to file a PR to upstream the middleware: "mux should ship a built-in body-size limiter."
+>
+> **Red flag triage:** Nobody has confirmed the patch is actually needed — it was vendored years ago by a developer who left.
+>
+> **Gate 1 (Does the override do anything?):** Check whether `net/http` already provides this. Go 1.22+ `http.MaxBytesReader` wraps any `ResponseWriter` and works with any router — including mux. The vendored patch duplicates stdlib. **FAIL.**
+>
+> **Gate 2 (Is it already the default upstream?):** Not applicable (a feature, not a default), but the **stdlib already covers it** — which is stronger than an upstream default. The gap isn't in mux; it's that the team never checked stdlib. **FAIL.**
+>
+> **Gate 4 (Root cause?):** The root cause is an outdated vendored patch that predates `http.MaxBytesReader`. The fix is deleting the vendor patch and using stdlib, not upstreaming a redundant middleware. **FAIL.**
+>
+> **Outcome:** PR not filed. Vendor patch deleted. Stdlib function adopted. Build faster.
+>
+> This pattern — "my workaround predates a stdlib solution I never noticed" — is equally common to the Nix/ROCm case but lives in a completely different ecosystem. The gates catch both.
