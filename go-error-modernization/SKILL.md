@@ -17,14 +17,15 @@ metadata:
 > - `errors.Is` is NOT legacy. It is the stdlib-documented API for sentinel value matching (`io.EOF`, `sql.ErrNoRows`, `syscall.EXDEV`, `context.Canceled`, your own `var ErrFoo = errors.New(...)`). See the [Go blog: Working with Errors](https://go.dev/blog/go1.13-errors).
 > - The decision tree and anti-patterns below follow logically from how these three APIs actually behave.
 >
-> **What could NOT be independently verified (treat as reported-by-feedback, not confirmed):**
+> **What could NOT be independently verified (treat as reported, not confirmed):**
 >
-> - The CLI was previously called `hierarchical-errors` and could not be found publicly as of 2026-07-21. It has since been renamed to **`erraudit`** (confirmed by the user, 2026-08-02). The flag `--type-aware` is now recommended (it was previously reported as broken; the tool has been updated). The `--enforce-go-error-family` flag is available as an optional stricter mode.
+> - The `erraudit` CLI binary is **not publicly findable**. Searched GitHub, Sourcegraph, pkg.go.dev (2026-08-02). Zero matches for `erraudit`, `--enforce-go-error-family`, or the previous name `hierarchical-errors`. The tool is reported to exist by the repository owner (who also owns the `errorfamily` library — see below), so it is likely private/unreleased. All CLI flags, exit codes, and behaviors below are reported by the user and original source feedback — treat as hypotheses to verify against your installed binary.
+> - The `--enforce-go-error-family` flag is **not found in any public codebase**. It presumably relates to [`github.com/larsartmann/go-error-family`](https://github.com/larsartmann/go-error-family) (v0.10.0), a real structured error classification library with six error families (Rejection, Conflict, Transient, Corruption, Infrastructure, Orchestration). The flag's exact behavior has not been verified.
 > - The `legacyerrors` analyzer name (used in `//nolint:legacyerrors`) does not appear in `golang.org/x/tools/go/analysis/passes/` or any public repository.
 > - Exit codes, error messages, and the "0% precision" statistic in [./references/cli-and-flags.md](./references/cli-and-flags.md) are reproduced from the original source feedback (2026-07-21) and have not been re-verified against the renamed `erraudit` binary.
 > - The `GOEXPERIMENT=jsonv2` prefix on every command is unconfirmed as a requirement. It may be a quirk of the original project (`golangci-lint-auto-configure`) rather than a hard requirement.
 >
-> **If you have access to the `erraudit` binary**, please verify the claims in [./references/cli-and-flags.md](./references/cli-and-flags.md) and update this file. The decision tree, anti-patterns, and fix-to-zero warning below remain valid for any linter that flags both `errors.As` and `errors.Is` — the reasoning is about Go's APIs, not about one specific tool.
+> **The decision tree, anti-patterns, and fix-to-zero warning are verified** — they follow from how Go's three error-matching APIs actually behave, independent of any specific linter. The skill's value survives even if `erraudit` is private or changes.
 
 ---
 
@@ -129,7 +130,7 @@ done
 
 Scopes the linter to ONLY `errors.As` findings (the high-precision diagnostic). Excludes all `errors.Is` advisories.
 
-**Optional: `--enforce-go-error-family`** — if your project uses a structured error family (e.g. `errorfamily` package), add this flag to enforce that all errors belong to the family. This is stricter and may surface additional findings about error type consistency.
+**Optional: `--enforce-go-error-family`** *(unverified flag)* — reported to enforce that errors conform to a structured error family pattern. Presumably related to [`github.com/larsartmann/go-error-family`](https://github.com/larsartmann/go-error-family), which classifies errors into six families (Rejection, Conflict, Transient, Corruption, Infrastructure, Orchestration). The flag's exact behavior and diagnostics have not been verified against a binary.
 
 ## Decision tree for `errors.Is` findings
 
@@ -183,7 +184,7 @@ The flag table below combines the original source feedback (2026-07-21, when the
 | --------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------- |
 | `--type-aware`              | both        | Uses type information to reduce `errors.Is` false positives on sentinel matches. **Recommended on every invocation.**       |
 | `--type legacy_as`          | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **Reliable CI filter (fallback if `--type-aware` is insufficient).** |
-| `--enforce-go-error-family` | both        | Optional stricter mode: enforces that all errors belong to a structured error family.                                       |
+| `--enforce-go-error-family` | both        | **Unverified.** Reported to enforce errors conform to the `go-error-family` library pattern. Behavior not confirmed against a binary. |
 | `--violations-only`         | `lint`      | Shows only violations, no summary. Cosmetic but works.                                                                      |
 | `//nolint:legacyerrors`     | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.                                                   |
 

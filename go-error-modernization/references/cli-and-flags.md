@@ -222,7 +222,7 @@ Note: `lint` exits 1 for BOTH severity levels. With `--type-aware`, the false-po
 
 ## Practical example: full cleanup of a real codebase
 
-This example is from cleaning up `golangci-lint-auto-configure` on 2026-07-21 (as reported in the source feedback). The project had 12 findings across 6 files. **The "0% precision" claim and the specific file paths below are reproduced from the feedback and could not be independently verified.**
+This example is from cleaning up `golangci-lint-auto-configure` on 2026-07-21 (as reported in the source feedback). The tool was called `hierarchical-errors` at the time — it has since been renamed to `erraudit`. Commands below show the original tool name for historical accuracy. The project had 12 findings across 6 files. **The "0% precision" claim and the specific file paths below are reproduced from the feedback and could not be independently verified.**
 
 ### Initial state
 
@@ -235,7 +235,7 @@ This example is from cleaning up `golangci-lint-auto-configure` on 2026-07-21 (a
 ### Step 1: `fix` dry-run
 
 ```bash
-GOEXPERIMENT=jsonv2 erraudit fix ./...
+GOEXPERIMENT=jsonv2 hierarchical-errors fix ./...
 ```
 
 This showed the 4 `errors.As` transformations as diffs. The 8 `errors.Is` findings were reported as "advisory-only: not auto-fixable."
@@ -243,7 +243,7 @@ This showed the 4 `errors.As` transformations as diffs. The 8 `errors.Is` findin
 ### Step 2: `fix --write`
 
 ```bash
-GOEXPERIMENT=jsonv2 erraudit fix ./... --write
+GOEXPERIMENT=jsonv2 hierarchical-errors fix ./... --write
 ```
 
 Applied the 4 `errors.As` → `errors.AsType` transformations automatically. Clean, correct, included removing the redundant `var target *Type` declarations.
@@ -272,7 +272,7 @@ All 8 were sentinel matches. Zero were real migrations. **Precision of the `erro
 ### Step 5: Verify
 
 ```bash
-GOEXPERIMENT=jsonv2 erraudit lint ./...  # EXIT: 0
+GOEXPERIMENT=jsonv2 hierarchical-errors lint ./...  # EXIT: 0
 GOEXPERIMENT=jsonv2 go test ./...                    # all pass
 ```
 

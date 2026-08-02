@@ -96,7 +96,7 @@ If a skill documents a tool whose CLI behavior cannot be verified, add this bloc
 | Claim                                                           | Status        | Source                                                                                                                        |
 | --------------------------------------------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | `errors.AsType[E] (E, bool)` API                                | ✅ Verified   | pkg.go.dev/errors (Go 1.26.0)                                                                                                 |
-| Tool binary `erraudit` (formerly `hierarchical-errors`)         | ❌ Unverified | Searched GitHub, Sourcegraph, pkg.go.dev; no public binary found. Renamed 2026-08-02 per user; flag behaviors not re-verified |
+| Tool binary `erraudit` (formerly `hierarchical-errors`)         | ❌ Unverified | Searched GitHub, Sourcegraph, pkg.go.dev (2026-08-02); zero matches. Likely private. The `errorfamily` library it may reference IS verified: `github.com/larsartmann/go-error-family` v0.10.0 |
 | Decision tree for `errors.As` vs `errors.Is` vs `errors.AsType` | ✅ Verified   | Go `errors` package semantics                                                                                                 |
 ```
 
