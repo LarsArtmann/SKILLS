@@ -95,7 +95,7 @@ if errors.Is(err, ErrFoo) { //nolint:legacyerrors // ErrFoo is a sentinel; value
 
 Agents under "fix everything to zero" prompts are the highest-risk users of any linter that flags both real and advisory findings at the same severity. They will cargo-cult.
 
-When invoked to "fix all hierarchical-errors findings", an agent MUST:
+When invoked to "fix all erraudit findings", an agent MUST:
 
 1. **Classify each finding** into the `errors.As` (strong) or `errors.Is` (advisory) bucket before touching code
 2. **For `errors.Is` findings**, resolve the type of the second argument:
@@ -107,7 +107,7 @@ When invoked to "fix all hierarchical-errors findings", an agent MUST:
 
 ### For humans
 
-1. Run `GOEXPERIMENT=jsonv2 hierarchical-errors lint ./...`
+1. Run `GOEXPERIMENT=jsonv2 erraudit lint ./... --type-aware`
 2. Pipe through `grep errors.As` first — these are real modernizations, fix them all
 3. Pipe through `grep errors.Is` separately — review each one with the decision tree in [./decision-tree.md](./decision-tree.md)
 4. After every batch of fixes: `go build ./... && go test -race ./...`
@@ -115,10 +115,10 @@ When invoked to "fix all hierarchical-errors findings", an agent MUST:
 
 ### For CI
 
-Do not gate CI on `errors.Is` findings — the false-positive rate is too high. Either:
+Do not gate CI on `errors.Is` findings without `--type-aware` — the false-positive rate is too high. Either:
 
-- Use `--severity-threshold error` to gate only on the `errors.As` findings (if your linter version supports it — the source feedback reports this flag as broken on `hierarchical-errors`; verify before relying on it), or
-- Run the linter but only fail the build on `errors.As`-category diagnostics, or
-- Run with `--type legacy_as` (if your linter has it) to scope to the high-precision diagnostic only
+- Use `--type-aware` (recommended) to reduce `errors.Is` false positives on sentinel matches, or
+- Run with `--type legacy_as` (fallback) to scope to the high-precision `errors.As` diagnostic only, or
+- Run the linter but only fail the build on `errors.As`-category diagnostics
 
 Gating on the full linter output trains developers to suppress everything reflexively, which hides real modernization opportunities later.

@@ -1,9 +1,9 @@
 ---
 name: go-error-modernization
-description: Use when modernizing Go 1.26+ error handling — migrating `errors.As` to the new generic `errors.AsType[E]`, deciding whether an `errors.Is` finding should be migrated or kept, reviewing linter diagnostics that say "use errors.AsType instead of errors.As" or "consider errors.AsType instead of errors.Is", or when the user says "fix all hierarchical-errors findings", "migrate errors.As", "modernize error handling", or asks whether `errors.Is` should become `errors.AsType`. Prevents the cargo-cult trap where agents driven to zero a linter regress sentinel-value matching (io.EOF, sql.ErrNoRows, context.Canceled, syscall errno values) by hand-rolling `interface{ Is(error) bool }` assertions or treating const errno values as types.
+description: Use when modernizing Go 1.26+ error handling — migrating `errors.As` to the new generic `errors.AsType[E]`, deciding whether an `errors.Is` finding should be migrated or kept, reviewing linter diagnostics that say "use errors.AsType instead of errors.As" or "consider errors.AsType instead of errors.Is", or when the user says "fix all erraudit findings", "run erraudit", "migrate errors.As", "modernize error handling", or asks whether `errors.Is` should become `errors.AsType`. Prevents the cargo-cult trap where agents driven to zero a linter regress sentinel-value matching (io.EOF, sql.ErrNoRows, context.Canceled, syscall errno values) by hand-rolling `interface{ Is(error) bool }` assertions or treating const errno values as types.
 allowed-tools: bash go view edit grep
 metadata:
-  tags: go, golang, errors, linting, hierarchical-errors, errors-astype, errors-is, errors-as, go1.26, modernization, cargo-cult, agent-safety
+  tags: go, golang, errors, linting, erraudit, errors-astype, errors-is, errors-as, go1.26, modernization, cargo-cult, agent-safety
 ---
 
 # Go Error Modernization
@@ -19,12 +19,12 @@ metadata:
 >
 > **What could NOT be independently verified (treat as reported-by-feedback, not confirmed):**
 >
-> - The `hierarchical-errors` CLI tool itself could not be found on GitHub, Sourcegraph, pkg.go.dev, or in `golang.org/x/tools` as of 2026-07-21. The closest public tool is Go's own `modernize` analyzer (`golang.org/x/tools/gopls/internal/analysis/modernize`), which uses a `-fix` flag rather than `lint`/`fix` subcommands.
+> - The CLI was previously called `hierarchical-errors` and could not be found publicly as of 2026-07-21. It has since been renamed to **`erraudit`** (confirmed by the user, 2026-08-02). The flag `--type-aware` is now recommended (it was previously reported as broken; the tool has been updated). The `--enforce-go-error-family` flag is available as an optional stricter mode.
 > - The `legacyerrors` analyzer name (used in `//nolint:legacyerrors`) does not appear in `golang.org/x/tools/go/analysis/passes/` or any public repository.
-> - Every CLI flag, exit code, error message, and the "0% precision" statistic in [./references/cli-and-flags.md](./references/cli-and-flags.md) is reproduced from the source feedback and could not be checked against a binary.
-> - The `GOEXPERIMENT=jsonv2` prefix on every command is unconfirmed as a requirement of this linter. `GOEXPERIMENT=jsonv2` is a real Go experiment, but it gates the JSON v2 proposal — its connection to error linting is unclear. It may be a quirk of the original project (`golangci-lint-auto-configure`) rather than a hard requirement.
+> - Exit codes, error messages, and the "0% precision" statistic in [./references/cli-and-flags.md](./references/cli-and-flags.md) are reproduced from the original source feedback (2026-07-21) and have not been re-verified against the renamed `erraudit` binary.
+> - The `GOEXPERIMENT=jsonv2` prefix on every command is unconfirmed as a requirement. It may be a quirk of the original project (`golangci-lint-auto-configure`) rather than a hard requirement.
 >
-> **If you have access to the real binary**, please verify the claims in [./references/cli-and-flags.md](./references/cli-and-flags.md) and remove this disclaimer. **If the tool does not exist publicly**, the decision tree, anti-patterns, and fix-to-zero warning below remain valid for any linter that flags both `errors.As` and `errors.Is` — the reasoning is about Go's APIs, not about one specific tool.
+> **If you have access to the `erraudit` binary**, please verify the claims in [./references/cli-and-flags.md](./references/cli-and-flags.md) and update this file. The decision tree, anti-patterns, and fix-to-zero warning below remain valid for any linter that flags both `errors.As` and `errors.Is` — the reasoning is about Go's APIs, not about one specific tool.
 
 ---
 
@@ -53,20 +53,26 @@ The word **if** in "consider ... **if** you are matching by type rather than by 
 
 Use the `fix` subcommand as your primary tool (if your linter has one). The `fix` subcommand in the reported tool has a semantic guard that `lint` lacks: `fix` understands that `errors.Is` matches by value and refuses to auto-migrate it. `lint` reports `errors.Is` at the same severity as `errors.As`, with a message that reads as a recommendation.
 
-> **Note:** The commands below are as reported in the source feedback. If your tool differs (e.g. Go's `modernize -fix`), adapt accordingly. The workflow logic is: apply safe `errors.As` migrations first, then review `errors.Is` findings manually, then gate CI on the high-precision diagnostic only.
+> **Note:** The workflow below uses `erraudit` (renamed from `hierarchical-errors` in 2026-08-02). Always pass `--type-aware`. Run in every directory containing a `go.mod` — monorepos often have multiple modules. The workflow logic is: apply safe `errors.As` migrations first, then review `errors.Is` findings manually, then gate CI.
 
 ### Step 1: `fix` dry-run
 
+Run `erraudit` in **every directory containing a `go.mod`** — a monorepo may have multiple modules:
+
 ```bash
-GOEXPERIMENT=jsonv2 hierarchical-errors fix ./...
+find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit fix ./... --type-aware)
+done
 ```
 
-Shows a diff of every `errors.As` → `errors.AsType` transformation it WOULD apply. Will not touch `errors.Is` calls. Review the diff.
+Always pass `--type-aware` — it enables type information to reduce false positives on `errors.Is` sentinel matches. Shows a diff of every `errors.As` → `errors.AsType` transformation it WOULD apply. Will not touch `errors.Is` calls. Review the diff.
 
 ### Step 2: Apply the fixes
 
 ```bash
-GOEXPERIMENT=jsonv2 hierarchical-errors fix ./... --write
+find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit fix ./... --type-aware --write)
+done
 ```
 
 Applies only the safe `errors.As` transformations. It explicitly refuses `errors.Is`:
@@ -89,7 +95,9 @@ The `errors.As` → `errors.AsType` transformation is mechanical but still chang
 ### Step 4: Handle `errors.Is` findings manually
 
 ```bash
-GOEXPERIMENT=jsonv2 hierarchical-errors lint ./...
+find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit lint ./... --type-aware)
+done
 ```
 
 Now you see the remaining findings — all `errors.Is` advisories. For each one, run the [decision tree](#decision-tree-for-errorsis-findings) below to classify it as:
@@ -99,13 +107,29 @@ Now you see the remaining findings — all `errors.Is` advisories. For each one,
 
 Expect the vast majority to be sentinels.
 
-### Step 5: For CI, use `--type legacy_as` (the only reliable filter reported)
+### Step 5: For CI, use `--type legacy_as` (the only reliable filter reported) or `--type-aware`
+
+With `--type-aware`, the false-positive rate on `errors.Is` is significantly reduced. For CI gating, you have two options:
+
+**Option A (recommended): `--type-aware`** — use if `--type-aware` correctly skips your sentinel matches:
 
 ```bash
-GOEXPERIMENT=jsonv2 hierarchical-errors lint ./... --type legacy_as
+find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit lint ./... --type-aware)
+done
 ```
 
-Scopes the linter to ONLY `errors.As` findings (the high-precision diagnostic). Excludes all `errors.Is` advisories. This is the only reliable way to gate CI without false-positive noise, per the source feedback.
+**Option B (fallback): `--type legacy_as`** — if `--type-aware` still produces too many false positives, filter to only `errors.As` findings:
+
+```bash
+find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit lint ./... --type legacy_as)
+done
+```
+
+Scopes the linter to ONLY `errors.As` findings (the high-precision diagnostic). Excludes all `errors.Is` advisories.
+
+**Optional: `--enforce-go-error-family`** — if your project uses a structured error family (e.g. `errorfamily` package), add this flag to enforce that all errors belong to the family. This is stricter and may surface additional findings about error type consistency.
 
 ## Decision tree for `errors.Is` findings
 
@@ -149,15 +173,17 @@ These are real regressions from blindly driving a linter to zero. For full code 
 
 4. **Suppressing without a reason** — `//nolint:legacyerrors` (no reason) works today but in six months someone may refactor `ErrFoo` into a typed error and the suppression silently hides a now-valid migration. Always state the assumption.
 
-## Flag reliability (unverified — see verification status above)
+## Flag reliability
 
-Most CLI flags were reported broken in the source feedback dated 2026-07-21. **These claims could not be independently verified** because the `hierarchical-errors` binary is not publicly findable. Full reproduction methodology and the `--no-suppress` reproduction are in [./references/cli-and-flags.md](./references/cli-and-flags.md) — treat them as hypotheses to verify against your installed version, not as confirmed behavior.
+The flag table below combines the original source feedback (2026-07-21, when the tool was called `hierarchical-errors`) with updated information (2026-08-02, after the rename to `erraudit`). The `--type-aware` flag was previously reported broken but is now recommended — the tool has been updated. Other flags have not been re-verified against the renamed binary. Full reproduction methodology and the `--no-suppress` reproduction are in [./references/cli-and-flags.md](./references/cli-and-flags.md).
 
-### Flags reported to WORK
+### Flags that WORK
 
 | Flag                    | Subcommand  | Behavior                                                                           |
 | ----------------------- | ----------- | ---------------------------------------------------------------------------------- |
-| `--type legacy_as`      | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **The reliable CI filter.** |
+| `--type-aware`          | both        | Uses type information to reduce `errors.Is` false positives on sentinel matches. **Recommended on every invocation.** |
+| `--type legacy_as`      | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **Reliable CI filter (fallback if `--type-aware` is insufficient).** |
+| `--enforce-go-error-family` | both    | Optional stricter mode: enforces that all errors belong to a structured error family. |
 | `--violations-only`     | `lint`      | Shows only violations, no summary. Cosmetic but works.                             |
 | `//nolint:legacyerrors` | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.          |
 
@@ -168,9 +194,8 @@ Most CLI flags were reported broken in the source feedback dated 2026-07-21. **T
 | `--no-suppress`                           | Returns 0 even when nolint directives are suppressing real violations  | Remove-and-restore technique        |
 | `-o <file>`                               | File never created. Output always goes to stdout.                      | Shell redirection (`> file`)        |
 | `-f <format>`                             | Ignored. Always outputs text format.                                   | Parse text output, or fork the tool |
-| `--severity-threshold error`              | Shows `errors.Is` advisories regardless of threshold value             | `--type legacy_as`                  |
-| `--severity error` / `--severity warning` | Both produce identical output                                          | `--type legacy_as`                  |
-| `--type-aware`                            | Does not skip sentinel matches. `errors.Is(err, io.EOF)` still flagged | Manual review via decision tree     |
+| `--severity-threshold error`              | Shows `errors.Is` advisories regardless of threshold value             | `--type-aware` or `--type legacy_as`|
+| `--severity error` / `--severity warning` | Both produce identical output                                          | `--type-aware` or `--type legacy_as`|
 
 ## Exit code reference (unverified — see verification status above)
 
@@ -189,22 +214,33 @@ There is no way to get exit 0 from `lint` when `errors.Is` advisories are presen
 Gate the build on `errors.As` modernizations only (high precision) while still surfacing `errors.Is` advisories as information. Do NOT gate on the full `lint` output — the false-positive rate on `errors.Is` is too high.
 
 ```yaml
-# GitHub Actions snippet — gates only on high-precision findings
-# Replace hierarchical-errors with your actual linter if it differs.
-- name: Run hierarchical-errors (errors.As only)
+# GitHub Actions snippet — gates on erraudit with --type-aware
+# Runs in every directory containing a go.mod
+- name: Run erraudit
   env:
     GOEXPERIMENT: jsonv2
   run: |
-    hierarchical-errors lint ./... --type legacy_as
+    find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+      (cd "$(dirname "$gomod")" && erraudit lint ./... --type-aware)
+    done
 
-# Optional: report all findings (including advisories) as annotations
+# Fallback: if --type-aware still produces too many false positives,
+# gate on errors.As only:
+#   erraudit lint ./... --type legacy_as
+#
+# Optional stricter mode: add --enforce-go-error-family if your
+# project uses a structured error family.
+
+# Report all findings (including advisories) as annotations
 # without failing the build
 - name: Report advisory findings
   if: always()
   env:
     GOEXPERIMENT: jsonv2
   run: |
-    hierarchical-errors lint ./... || true
+    find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+      (cd "$(dirname "$gomod")" && erraudit lint ./... --type-aware || true)
+    done
 ```
 
 Gating on the full linter output trains developers to suppress everything reflexively, which hides real modernization opportunities later.
@@ -252,6 +288,6 @@ If you don't need the fields, `errors.Is` is still fine — the linter is then a
 Load on demand:
 
 - [./references/decision-tree.md](./references/decision-tree.md) — Background on Go's three error-matching APIs, the full decision tree with code examples, and how to suppress correctly
-- [./references/cli-and-flags.md](./references/cli-and-flags.md) — Full flag reliability table, the `--no-suppress` bug reproduction, the remove-and-restore verification technique, exit codes. **All CLI claims unverified — see verification status at the top of this file.**
+- [./references/cli-and-flags.md](./references/cli-and-flags.md) — Full flag reliability table, the `--no-suppress` bug reproduction, the remove-and-restore verification technique, exit codes. Flag behaviors reflect the original feedback (2026-07-21, when the tool was called `hierarchical-errors`) and have not all been re-verified against the renamed `erraudit` binary — see verification status at the top of this file.
 - [./references/anti-patterns.md](./references/anti-patterns.md) — All four anti-patterns with full code, plus the agent-specific "fix-to-zero" trap guidance
 - [../how-to-golang/SKILL.md](../how-to-golang/SKILL.md) — Broader Go development decision guide (what libraries to use, what to avoid)

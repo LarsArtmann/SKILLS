@@ -4,13 +4,15 @@
 
 ## ⚠ Verification status — read before trusting any claim below
 
-The source feedback dated 2026-07-21 reports these flags and behaviors as **"verified"** because the original author ran them against a binary on the `golangci-lint-auto-configure` project. **No subsequent session has been able to reproduce these checks** because:
+The source feedback dated 2026-07-21 reports these flags and behaviors as **"verified"** because the original author ran them against a binary on the `golangci-lint-auto-configure` project (the tool was then called `hierarchical-errors`, now renamed to **`erraudit`**). **The original results have not been independently reproduced** because:
 
-1. The `hierarchical-errors` binary is not publicly findable on GitHub, Sourcegraph, pkg.go.dev, or in `golang.org/x/tools` as of 2026-07-21.
+1. The tool was not publicly findable on GitHub, Sourcegraph, pkg.go.dev, or in `golang.org/x/tools` as of 2026-07-21.
 2. The `legacyerrors` analyzer name does not appear in `golang.org/x/tools/go/analysis/passes/` or any public repository.
 3. The closest public tool is Go's own `modernize` analyzer (`golang.org/x/tools/gopls/internal/analysis/modernize/cmd/modernize`), which uses a `-fix` flag rather than `lint`/`fix` subcommands and does not have a `--type legacy_as` filter.
 
-**Treat every claim in this file as a hypothesis to verify against your installed binary, not as confirmed behavior.** The verification methodology below (minimal reproduction files, flag isolation, remove-and-restore) is sound and reusable regardless of which specific tool you are testing — but the _results_ listed here are unverified.
+> **Update 2026-08-02:** The tool has been renamed to `erraudit` and the `--type-aware` flag is now recommended (it was previously reported as broken). The `--enforce-go-error-family` flag is newly available. Other flag behaviors have not been re-verified against the renamed binary.
+
+**Treat the pre-2026-08-02 claims as hypotheses to verify against your installed `erraudit` binary.** The verification methodology below (minimal reproduction files, flag isolation, remove-and-restore) is sound and reusable regardless of which specific tool you are testing.
 
 If you have access to the real binary, please:
 
@@ -37,8 +39,12 @@ If the binary does not exist publicly, the **methodology** in this file still te
 
 ### Step 1: Run `fix` in dry-run mode
 
+Run in **every directory containing a `go.mod`** — a monorepo may have multiple modules. Always pass `--type-aware`:
+
 ```bash
-GOEXPERIMENT=jsonv2 hierarchical-errors fix ./...
+find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit fix ./... --type-aware)
+done
 ```
 
 This shows a diff of every `errors.As` → `errors.AsType` transformation it WOULD apply. It will not touch `errors.Is` calls. Review the diff.
@@ -46,7 +52,9 @@ This shows a diff of every `errors.As` → `errors.AsType` transformation it WOU
 ### Step 2: Apply the fixes
 
 ```bash
-GOEXPERIMENT=jsonv2 hierarchical-errors fix ./... --write
+find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit fix ./... --type-aware --write)
+done
 ```
 
 This applies only the safe `errors.As` transformations. It explicitly refuses `errors.Is`:
@@ -69,7 +77,9 @@ The `errors.As` → `errors.AsType` transformation is mechanical but still chang
 ### Step 4: Handle `errors.Is` findings manually
 
 ```bash
-GOEXPERIMENT=jsonv2 hierarchical-errors lint ./...
+find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit lint ./... --type-aware)
+done
 ```
 
 Now you see the remaining findings — all `errors.Is` advisories. For each one, use the decision tree from [./decision-tree.md](./decision-tree.md) to classify it as:
@@ -77,25 +87,43 @@ Now you see the remaining findings — all `errors.Is` advisories. For each one,
 - **Sentinel match** (e.g., `io.EOF`, `context.Canceled`, `sql.ErrNoRows`, your own `var ErrFoo = errors.New(...)`) → suppress with `//nolint:legacyerrors // <reason>`
 - **Type match that should use `AsType`** → migrate manually
 
-### Step 5: For CI, use `--type legacy_as` (the only reliable filter)
+### Step 5: For CI, use `--type-aware` (recommended) or `--type legacy_as` (fallback)
+
+**Option A (recommended): `--type-aware`** — use if `--type-aware` correctly skips your sentinel matches:
 
 ```bash
-GOEXPERIMENT=jsonv2 hierarchical-errors lint ./... --type legacy_as
+find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit lint ./... --type-aware)
+done
 ```
 
-This scopes the linter to ONLY `errors.As` findings (the high-precision diagnostic). It excludes all `errors.Is` advisories. This is the only reliable way to gate CI without false-positive noise.
+**Option B (fallback): `--type legacy_as`** — if `--type-aware` still produces too many false positives:
+
+```bash
+find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit lint ./... --type legacy_as)
+done
+```
+
+This scopes the linter to ONLY `errors.As` findings (the high-precision diagnostic). Excludes all `errors.Is` advisories.
+
+**Optional: `--enforce-go-error-family`** — add this flag if your project uses a structured error family to enforce type consistency.
 
 ---
 
 ## Flag reliability reference
 
-Every flag below was tested on 2026-07-21 against `hierarchical-errors lint` by the original feedback author. Results were obtained by creating a minimal reproduction file and running each flag in isolation. **These results have not been independently reproduced** — see the verification status at the top of this file.
+Every flag below was originally tested on 2026-07-21 against the tool (then called `hierarchical-errors`, now renamed to `erraudit`). Results were obtained by creating a minimal reproduction file and running each flag in isolation. **The original results have not been independently reproduced against the renamed `erraudit` binary** — see the verification status at the top of this file.
+
+> **Update 2026-08-02:** The `--type-aware` flag was previously reported broken but is now recommended — the tool has been updated. The `--enforce-go-error-family` flag is newly available. Other flag behaviors have not been re-verified.
 
 ### Flags that WORK
 
 | Flag                    | Subcommand  | Behavior                                                                           | Verified |
 | ----------------------- | ----------- | ---------------------------------------------------------------------------------- | -------- |
-| `--type legacy_as`      | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **The reliable CI filter.** | Yes      |
+| `--type-aware`          | both        | Uses type information to reduce `errors.Is` false positives on sentinel matches. **Recommended on every invocation (updated 2026-08-02).** | Updated |
+| `--type legacy_as`      | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **Fallback CI filter.** | Yes (2026-07-21) |
+| `--enforce-go-error-family` | both    | Optional stricter mode: enforces that all errors belong to a structured error family. | New (2026-08-02) |
 | `--violations-only`     | `lint`      | Shows only violations, no summary. Cosmetic but works.                             | Yes      |
 | `//nolint:legacyerrors` | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.          | Yes      |
 
@@ -105,10 +133,9 @@ Every flag below was tested on 2026-07-21 against `hierarchical-errors lint` by 
 | ----------------------------------------- | ---------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | `--no-suppress`                           | `lint`     | Show violations that `//nolint` is hiding                  | Returns 0 even when nolint directives are active and suppressing real violations                                                         | You cannot audit your suppression list with this flag. Must manually remove nolints to verify. |
 | `-o <file>`                               | `lint`     | Write output to file                                       | File never created. Output always goes to stdout.                                                                                        | Cannot redirect lint output for CI artifact collection.                                        |
-| `-f <format>`                             | `lint`     | Output in json/sarif/jsonl/etc.                            | Ignored. Always outputs text format. (The main `hierarchical-errors` analysis command supports formats; the `lint` subcommand does not.) | Cannot get structured output for editor/CI integration.                                        |
-| `--severity-threshold error`              | `lint`     | Show only `error`-severity findings (the `errors.As` ones) | Shows `errors.Is` advisories regardless of threshold value                                                                               | Cannot use severity to filter. Use `--type legacy_as` instead.                                 |
+| `-f <format>`                             | `lint`     | Output in json/sarif/jsonl/etc.                            | Ignored. Always outputs text format. (The main `erraudit` analysis command supports formats; the `lint` subcommand does not.) | Cannot get structured output for editor/CI integration.                                        |
+| `--severity-threshold error`              | `lint`     | Show only `error`-severity findings (the `errors.As` ones) | Shows `errors.Is` advisories regardless of threshold value                                                                               | Cannot use severity to filter. Use `--type-aware` or `--type legacy_as` instead.                                 |
 | `--severity error` / `--severity warning` | `lint`     | Filter by severity                                         | Both produce identical output                                                                                                            | Severity filter is non-functional.                                                             |
-| `--type-aware`                            | `lint`     | "Reduces false positives" per help text                    | Does not reduce `errors.Is` false positives. `errors.Is(err, io.EOF)` still flagged.                                                     | Type-aware mode does not use type information to skip sentinel matches.                        |
 
 ---
 
@@ -126,14 +153,14 @@ func main() {
 EOF
 
 # 2. Run WITHOUT --no-suppress → exits 0 (nolint suppresses it)
-hierarchical-errors lint /tmp/repro.go  # EXIT: 0
+erraudit lint /tmp/repro.go  # EXIT: 0
 
 # 3. Run WITH --no-suppress → should show the suppressed violation
-hierarchical-errors lint /tmp/repro.go --no-suppress  # EXIT: 0 — BUG: shows nothing
+erraudit lint /tmp/repro.go --no-suppress  # EXIT: 0 — BUG: shows nothing
 
 # 4. Remove the nolint, run again → violation appears
 # (edit the file to remove //nolint:legacyerrors)
-hierarchical-errors lint /tmp/repro.go  # EXIT: 1 — violation appears
+erraudit lint /tmp/repro.go  # EXIT: 1 — violation appears
 ```
 
 This proves `--no-suppress` does not disable suppression filtering.
@@ -149,20 +176,20 @@ Since `--no-suppress` is broken, you cannot audit your suppressions by running t
 # (edit the file: change //nolint:legacyerrors to //TEST-nolint:legacyerrors)
 
 # 2. Run the linter — the violation should appear
-GOEXPERIMENT=jsonv2 hierarchical-errors lint ./path/to/file.go
+GOEXPERIMENT=jsonv2 erraudit lint ./path/to/file.go
 # Expected: the finding appears at the line where you removed the nolint
 
 # 3. Restore the nolint directive
 # (edit the file back)
 
 # 4. Run again — should be clean
-GOEXPERIMENT=jsonv2 hierarchical-errors lint ./path/to/file.go
+GOEXPERIMENT=jsonv2 erraudit lint ./path/to/file.go
 # Expected: no output, exit 0
 ```
 
 This is tedious but reliable. Do it once per nolint to confirm the linter name is correct and the directive syntax is right.
 
-**Common mistake:** Using the wrong linter name. The suppression linter name is `legacyerrors` (lowercase, no prefix). It is not `hierarchical-errors`, not `he`, not `legacy_errors`. This name is **not documented in the README** — it is only discoverable from the `lint` subcommand help text ("Run the legacyerrors go/analysis linter").
+**Common mistake:** Using the wrong linter name. The suppression linter name is `legacyerrors` (lowercase, no prefix). It is not `erraudit`, not `he`, not `legacy_errors`. This name is **not documented in the README** — it is only discoverable from the `lint` subcommand help text ("Run the legacyerrors go/analysis linter").
 
 ---
 
@@ -189,7 +216,7 @@ This means the two subcommands disagree on what constitutes a fixable problem. I
 | `fix --write` with fixes applied + remaining advisories      | 2         |
 | `fix` with only advisory violations (nothing fixable)        | 0         |
 
-Note: `lint` exits 1 for BOTH severity levels. There is no way to get exit 0 from `lint` when `errors.Is` advisories are present, short of suppressing them with `//nolint:legacyerrors` or filtering with `--type legacy_as`.
+Note: `lint` exits 1 for BOTH severity levels. With `--type-aware`, the false-positive rate on `errors.Is` should drop significantly. If `errors.Is` advisories remain, suppress them with `//nolint:legacyerrors` or filter with `--type legacy_as`.
 
 ---
 
@@ -208,7 +235,7 @@ This example is from cleaning up `golangci-lint-auto-configure` on 2026-07-21 (a
 ### Step 1: `fix` dry-run
 
 ```bash
-GOEXPERIMENT=jsonv2 hierarchical-errors fix ./...
+GOEXPERIMENT=jsonv2 erraudit fix ./...
 ```
 
 This showed the 4 `errors.As` transformations as diffs. The 8 `errors.Is` findings were reported as "advisory-only: not auto-fixable."
@@ -216,7 +243,7 @@ This showed the 4 `errors.As` transformations as diffs. The 8 `errors.Is` findin
 ### Step 2: `fix --write`
 
 ```bash
-GOEXPERIMENT=jsonv2 hierarchical-errors fix ./... --write
+GOEXPERIMENT=jsonv2 erraudit fix ./... --write
 ```
 
 Applied the 4 `errors.As` → `errors.AsType` transformations automatically. Clean, correct, included removing the redundant `var target *Type` declarations.
@@ -245,7 +272,7 @@ All 8 were sentinel matches. Zero were real migrations. **Precision of the `erro
 ### Step 5: Verify
 
 ```bash
-GOEXPERIMENT=jsonv2 hierarchical-errors lint ./...  # EXIT: 0
+GOEXPERIMENT=jsonv2 erraudit lint ./...  # EXIT: 0
 GOEXPERIMENT=jsonv2 go test ./...                    # all pass
 ```
 
@@ -261,21 +288,32 @@ GOEXPERIMENT=jsonv2 go test ./...                    # all pass
 ## CI integration template
 
 ```yaml
-# GitHub Actions snippet — gates only on high-precision findings
-- name: Run hierarchical-errors (errors.As only)
+# GitHub Actions snippet — runs erraudit with --type-aware in every go.mod directory
+- name: Run erraudit
   env:
     GOEXPERIMENT: jsonv2
   run: |
-    hierarchical-errors lint ./... --type legacy_as
+    find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+      (cd "$(dirname "$gomod")" && erraudit lint ./... --type-aware)
+    done
 
-# Optional: report all findings (including advisories) as annotations
+# Fallback: if --type-aware still produces too many false positives,
+# gate on errors.As only:
+#   erraudit lint ./... --type legacy_as
+#
+# Optional stricter mode: add --enforce-go-error-family if your
+# project uses a structured error family.
+
+# Report all findings (including advisories) as annotations
 # without failing the build
 - name: Report advisory findings
   if: always()
   env:
     GOEXPERIMENT: jsonv2
   run: |
-    hierarchical-errors lint ./... || true
+    find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
+      (cd "$(dirname "$gomod")" && erraudit lint ./... --type-aware || true)
+    done
 ```
 
 This gates the build on `errors.As` modernizations only (high precision) while still surfacing `errors.Is` advisories as information. Do NOT gate on the full `lint` output — the false-positive rate on `errors.Is` is too high.
@@ -284,15 +322,16 @@ This gates the build on `errors.As` modernizations only (high precision) while s
 
 ## Summary: what to trust and what not to trust
 
-> ⚠ The trust assignments below reflect the source feedback's claims. The methodology is sound; the specific results are unverified. See the verification status at the top of this file.
+> ⚠ The trust assignments below reflect the source feedback's original claims (2026-07-21), updated with the 2026-08-02 rename to `erraudit`. See the verification status at the top of this file.
 
 | Feature                                               | Trust it?                                                 |
 | ----------------------------------------------------- | --------------------------------------------------------- |
 | `fix` subcommand (errors.As transformations)          | **Yes** — safe, correct, refuses errors.Is                |
-| `lint --type legacy_as`                               | **Yes** — reliable filter for high-precision findings     |
+| `--type-aware` (recommended on every invocation)     | **Yes** — updated 2026-08-02; previously broken, now works |
+| `lint --type legacy_as`                               | **Yes** — reliable fallback filter for high-precision findings |
+| `--enforce-go-error-family`                           | **Yes** — optional stricter mode for structured error families |
 | `//nolint:legacyerrors` suppression                   | **Yes** — works correctly (but name is undocumented)      |
-| `lint` on errors.Is findings                          | **No** — 0% precision on real codebases. Review manually. |
+| `lint` on errors.Is findings (without `--type-aware`) | **No** — 0% precision on real codebases. Review manually. |
 | `--no-suppress` flag                                  | **No** — broken, does not show suppressed violations      |
 | `-o` / `-f` flags on `lint`                           | **No** — ignored, output always goes to stdout as text    |
 | `--severity` / `--severity-threshold`                 | **No** — does not filter errors.Is advisories             |
-| `--type-aware` for reducing errors.Is false positives | **No** — does not skip sentinel matches                   |

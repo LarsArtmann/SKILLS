@@ -1,4 +1,4 @@
-# Decision Tree for `hierarchical-errors` Findings
+# Decision Tree for `erraudit` Findings
 
 > Loaded on demand from [../SKILL.md](../SKILL.md). Covers Go's three error-matching APIs, the full `errors.Is` decision tree with code examples, and how to suppress correctly.
 
@@ -21,7 +21,7 @@ The **`//nolint:legacyerrors` suppression name** and the **specific classificati
 
 ## Background: Go 1.26+ has three error-matching APIs, not one
 
-Go's standard library provides three distinct matching primitives. Each has a specific purpose. The `hierarchical-errors` linter only understands two of them.
+Go's standard library provides three distinct matching primitives. Each has a specific purpose. The `erraudit` linter only understands two of them.
 
 ```go
 // 1. Type matching — extract structured data from a custom error type
@@ -48,7 +48,7 @@ The Go standard library and every major Go style guide treat these as **compleme
 - `fs.ErrNotExist`
 - Your own package-level `var ErrXxx = errors.New(...)`
 
-`hierarchical-errors` correctly pushes migration away from `errors.As` (which IS legacy in 1.26+). It over-reaches by also flagging `errors.Is`.
+`erraudit` correctly pushes migration away from `errors.As` (which IS legacy in 1.26+). It over-reaches by also flagging `errors.Is`.
 
 ---
 
@@ -129,7 +129,7 @@ if errors.Is(err, ErrCacheMiss) { //nolint:legacyerrors
 
 The reason is for the next person (which may be you in three months). "sentinel value match" tells them everything they need.
 
-**The suppression linter name is `legacyerrors`** (lowercase, no prefix). It is not `hierarchical-errors`, not `he`, not `legacy_errors`. This name is not documented in the README — it is only discoverable from the `lint` subcommand help text ("Run the legacyerrors go/analysis linter").
+**The suppression linter name is `legacyerrors`** (lowercase, no prefix). It is not `erraudit`, not `he`, not `legacy_errors`. This name is not documented in the README — it is only discoverable from the `lint` subcommand help text ("Run the legacyerrors go/analysis linter").
 
 ---
 
@@ -181,4 +181,4 @@ The signal: the second argument is a **typed error with structured fields**, and
 - The Go blog: ["Working with Errors"](https://go.dev/blog/go1.13-errors) — the canonical reference for `errors.Is` and `errors.As`
 - Go 1.26 release notes — `errors.AsType[E]` generic API
 - `syscall.Errno.Is` — documented behavior; `errors.Is` is the supported way to match errno values
-- The `hierarchical-errors` project's own `docs/errors-astype-guide.md` (referenced in the source feedback as explicitly listing `errors.Is(err, ErrSentinel)` as Rule 2 of the "Golden Rules" — **this doc could not be located publicly to confirm**)
+- The `erraudit` project's own `docs/errors-astype-guide.md` (referenced in the source feedback as explicitly listing `errors.Is(err, ErrSentinel)` as Rule 2 of the "Golden Rules" — **this doc could not be located publicly to confirm**)
