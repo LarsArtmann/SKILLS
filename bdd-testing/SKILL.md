@@ -1,6 +1,6 @@
 ---
 name: bdd-testing
-description: Implements Behavior-driven development (BDD) tests using onsi/ginkgo for Go projects. Use when the user wants to add BDD tests, user-focused tests, ginkgo tests, or says "BDD" in the context of testing Go code.
+description: Implements Behavior-driven development (BDD) tests using onsi/ginkgo for Go projects. Use when the user wants to add BDD tests, behavior tests, spec tests, acceptance tests, or user-focused tests in Go — or says "BDD", "Ginkgo", "Gomega", "Describe/It blocks", "behavior-driven", "spec suite", "write specs", or wants tests that describe observable behavior rather than implementation mechanics. Also triggers when migrating table-driven tests to Ginkgo DescribeTable, adding Gomega assertions, or setting up a Ginkgo test suite (bootstrap file, RegisterFailHandler).
 metadata:
   tags: testing, bdd, ginkgo, go, user-focused
 allowed-tools: bash view edit go

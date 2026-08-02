@@ -1,6 +1,6 @@
 ---
 name: status-report
-description: Generates a full comprehensive status update of the project. Use when the user asks for a status update, progress report, "STATUS UPDATE", "WHAT'S THE STATUS", or wants to know what's done, what's broken, and what's next. Writes a styled HTML dashboard to docs/status/.
+description: Generates a full comprehensive status update of the project — what's done, what's broken, what's partially complete, and what to do next. Use when the user asks for a status update, progress report, project status, "STATUS UPDATE", "WHAT'S THE STATUS", "where are we", "what's the state of the project", "project health", "progress check", "what's done", "what's left", or wants a snapshot of current project state. Also fires when the user wants to know what's fucked up or what to prioritize next.
 metadata:
   tags: status, report, progress, tracking
 ---

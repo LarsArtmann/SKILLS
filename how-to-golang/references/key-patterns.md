@@ -33,7 +33,7 @@ return nil, errors.Wrap(err, "failed to get user")
 if errors.Is(err, ErrNotFound) { ... }
 ```
 
-> **Go 1.26+ modernization:** `errors.As` is being superseded by the generic `errors.AsType[E]`. `errors.Is` is NOT legacy — it remains the correct API for sentinel matching. See the [`hierarchical-errors` skill](../../hierarchical-errors/SKILL.md) for the migration decision tree and the cargo-cult trap to avoid when an agent drives a linter to zero.
+> **Go 1.26+ modernization:** `errors.As` is being superseded by the generic `errors.AsType[E]`. `errors.Is` is NOT legacy — it remains the correct API for sentinel matching. See the [`go-error-modernization` skill](../../go-error-modernization/SKILL.md) for the migration decision tree and the cargo-cult trap to avoid when an agent drives a linter to zero.
 
 ## Config (koanf)
 

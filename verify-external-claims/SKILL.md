@@ -11,6 +11,8 @@ metadata:
 
 Before encoding any external claim into a skill, code, doc, or review, verify it against a primary source. Feedback is a lead, not a source. An LLM can generate plausible CLI flag tables, exact error messages, and version numbers without ever running the tool. Specificity is not evidence.
 
+This skill covers **inbound** verification — claims entering your work from outside. For **outbound** verification — verifying your own diagnosis before proposing changes to an external project (issues, PRs, feature requests) — use `verify-before-filing`.
+
 ## 1. What Counts as an External Claim
 
 Treat these as claims that need verification:

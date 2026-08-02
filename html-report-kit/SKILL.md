@@ -5,9 +5,7 @@ description: >
   Use when a skill needs to write a styled, self-contained HTML report, dashboard, proposal,
   audit, or review — instead of a flat Markdown file. Provides the design spec, CSS tokens,
   and copy-paste templates in two variants: a dark dashboard theme and a warm editorial-light
-  theme. Other skills reference this kit via [./references/html-output-guide.md](./references/html-output-guide.md),
-  [./assets/report-template.html](./assets/report-template.html), and
-  [./assets/report-template-editorial.html](./assets/report-template-editorial.html).
+  theme. Other skills reference this kit via its bundled references and assets directories.
 metadata:
   tags: html, report, design-system, template, dark-theme, light-theme, editorial, shared-assets
 ---

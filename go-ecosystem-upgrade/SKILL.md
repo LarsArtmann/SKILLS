@@ -11,7 +11,7 @@ description: >
   Also fires for diagnosing why a version bump broke a build or a tag is poisoned in the
   proxy. Covers the full lifecycle: enumerate consumers, baseline, classify direction,
   execute, verify (build AND test AND the delivering layer), commit per-repo, tag without
-  poisoning the module proxy. Built from 14 brutal self-review status reports.
+  poisoning the module proxy.
 metadata:
   tags: go, dependencies, upgrade, release, migration, ecosystem, version, module-proxy
 ---

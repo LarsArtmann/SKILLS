@@ -1,6 +1,6 @@
 ---
 name: full-code-review
-description: Performs a comprehensive code review visiting every single code and test file as a Senior Software Architect. Use when the user wants a full codebase review, every file reviewed, deep quality audit, or says "visit every file", "review everything", "full review". Checks type safety, architecture, split brains, duplications, and fixes or adds TODOs on the spot. Includes Pareto-based planning and prioritization.
+description: Performs a comprehensive code review visiting every single code and test file as a Senior Software Architect. Use when the user wants a full codebase review, every file reviewed, deep quality audit, or says "visit every file", "review everything", "full review", "audit my code", "code review", "review the whole codebase", "deep review", "comprehensive review", or wants every file checked for type safety, architecture issues, split brains, duplications, and code smells.
 metadata:
   tags: code-review, architecture, audit, type-safety, quality, architect, go
 ---

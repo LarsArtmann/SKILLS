@@ -1,6 +1,6 @@
 ---
 name: architecture-review
-description: Reviews the current architecture for scalability, modularity, service orientation, and composability. Use when the user asks about architecture quality, scalability, modularity, how to make the codebase more service-oriented or composable, or says "architecture review".
+description: Reviews the current architecture for scalability, modularity, service orientation, and composability. Use when the user asks about architecture quality, scalability, modularity, coupling and cohesion, how to make the codebase more service-oriented or composable, or says "architecture review", "review my architecture", "architecture audit", "architecture quality", "how modular is this", "coupling analysis", or wants to assess the structural health of a codebase.
 metadata:
   tags: architecture, scalability, modularity, service-oriented, composable
 ---

@@ -1,12 +1,12 @@
 ---
-name: hierarchical-errors
+name: go-error-modernization
 description: Use when modernizing Go 1.26+ error handling — migrating `errors.As` to the new generic `errors.AsType[E]`, deciding whether an `errors.Is` finding should be migrated or kept, reviewing linter diagnostics that say "use errors.AsType instead of errors.As" or "consider errors.AsType instead of errors.Is", or when the user says "fix all hierarchical-errors findings", "migrate errors.As", "modernize error handling", or asks whether `errors.Is` should become `errors.AsType`. Prevents the cargo-cult trap where agents driven to zero a linter regress sentinel-value matching (io.EOF, sql.ErrNoRows, context.Canceled, syscall errno values) by hand-rolling `interface{ Is(error) bool }` assertions or treating const errno values as types.
 allowed-tools: bash go view edit grep
 metadata:
   tags: go, golang, errors, linting, hierarchical-errors, errors-astype, errors-is, errors-as, go1.26, modernization, cargo-cult, agent-safety
 ---
 
-# hierarchical-errors workflow
+# Go Error Modernization
 
 > ## Verification status (read first)
 >
