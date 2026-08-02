@@ -45,9 +45,9 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Skill Authoring & Verification
 
-| Skill                     | What It Does                                                                        | Status |
-| ------------------------- | ----------------------------------------------------------------------------------- | ------ |
-| **verify-before-filing**  | Verify your diagnosis before filing issues/PRs to external projects                 | 🆕 New |
+| Skill                      | What It Does                                                                        | Status |
+| -------------------------- | ----------------------------------------------------------------------------------- | ------ |
+| **verify-before-filing**   | Verify your diagnosis before filing issues/PRs to external projects                 | 🆕 New |
 | **verify-external-claims** | Verify external tool/library claims before encoding them into skills, code, or docs | 🆕 New |
 
 ### Go Ecosystem

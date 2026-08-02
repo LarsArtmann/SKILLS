@@ -179,23 +179,23 @@ The flag table below combines the original source feedback (2026-07-21, when the
 
 ### Flags that WORK
 
-| Flag                    | Subcommand  | Behavior                                                                           |
-| ----------------------- | ----------- | ---------------------------------------------------------------------------------- |
-| `--type-aware`          | both        | Uses type information to reduce `errors.Is` false positives on sentinel matches. **Recommended on every invocation.** |
-| `--type legacy_as`      | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **Reliable CI filter (fallback if `--type-aware` is insufficient).** |
-| `--enforce-go-error-family` | both    | Optional stricter mode: enforces that all errors belong to a structured error family. |
-| `--violations-only`     | `lint`      | Shows only violations, no summary. Cosmetic but works.                             |
-| `//nolint:legacyerrors` | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.          |
+| Flag                        | Subcommand  | Behavior                                                                                                                    |
+| --------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `--type-aware`              | both        | Uses type information to reduce `errors.Is` false positives on sentinel matches. **Recommended on every invocation.**       |
+| `--type legacy_as`          | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **Reliable CI filter (fallback if `--type-aware` is insufficient).** |
+| `--enforce-go-error-family` | both        | Optional stricter mode: enforces that all errors belong to a structured error family.                                       |
+| `--violations-only`         | `lint`      | Shows only violations, no summary. Cosmetic but works.                                                                      |
+| `//nolint:legacyerrors`     | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.                                                   |
 
 ### Flags reported BROKEN or INEFFECTIVE (verify before relying on)
 
-| Flag                                      | Reported behavior                                                      | Use instead                         |
-| ----------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------- |
-| `--no-suppress`                           | Returns 0 even when nolint directives are suppressing real violations  | Remove-and-restore technique        |
-| `-o <file>`                               | File never created. Output always goes to stdout.                      | Shell redirection (`> file`)        |
-| `-f <format>`                             | Ignored. Always outputs text format.                                   | Parse text output, or fork the tool |
-| `--severity-threshold error`              | Shows `errors.Is` advisories regardless of threshold value             | `--type-aware` or `--type legacy_as`|
-| `--severity error` / `--severity warning` | Both produce identical output                                          | `--type-aware` or `--type legacy_as`|
+| Flag                                      | Reported behavior                                                     | Use instead                          |
+| ----------------------------------------- | --------------------------------------------------------------------- | ------------------------------------ |
+| `--no-suppress`                           | Returns 0 even when nolint directives are suppressing real violations | Remove-and-restore technique         |
+| `-o <file>`                               | File never created. Output always goes to stdout.                     | Shell redirection (`> file`)         |
+| `-f <format>`                             | Ignored. Always outputs text format.                                  | Parse text output, or fork the tool  |
+| `--severity-threshold error`              | Shows `errors.Is` advisories regardless of threshold value            | `--type-aware` or `--type legacy_as` |
+| `--severity error` / `--severity warning` | Both produce identical output                                         | `--type-aware` or `--type legacy_as` |
 
 ## Exit code reference (unverified — see verification status above)
 

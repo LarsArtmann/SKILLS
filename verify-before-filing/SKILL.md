@@ -46,14 +46,14 @@ Audit your own configuration first. The most common cause of "upstream doesn't s
 
 Before running the full verification gates, scan for these signals. Any one of them means you should investigate before drafting — not skip the gates, but approach them with extra skepticism about your own premise.
 
-| Signal | What it usually means |
-| -------------------------------------- | ----------------------------------------------------- |
-| You haven't read the upstream source for the feature | You're guessing about the mechanism |
-| You can't explain why the current default doesn't work for you | The default probably works; your override is the problem |
-| The flag/feature targets hardware you don't fully understand | You may be targeting the wrong architecture |
-| Your local override was recently added (especially by an agent) | It was never verified to do anything |
-| You're filing to solve a caching or performance problem | The root cause is likely in your config, not upstream |
-| The feature would benefit only your specific hardware/setup | It may not be generalizable enough for upstream |
+| Signal                                                          | What it usually means                                    |
+| --------------------------------------------------------------- | -------------------------------------------------------- |
+| You haven't read the upstream source for the feature            | You're guessing about the mechanism                      |
+| You can't explain why the current default doesn't work for you  | The default probably works; your override is the problem |
+| The flag/feature targets hardware you don't fully understand    | You may be targeting the wrong architecture              |
+| Your local override was recently added (especially by an agent) | It was never verified to do anything                     |
+| You're filing to solve a caching or performance problem         | The root cause is likely in your config, not upstream    |
+| The feature would benefit only your specific hardware/setup     | It may not be generalizable enough for upstream          |
 
 None of these are automatic rejections — but each shifts the burden of proof onto you to demonstrate the gap is real.
 

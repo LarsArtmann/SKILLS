@@ -119,23 +119,23 @@ Every flag below was originally tested on 2026-07-21 against the tool (then call
 
 ### Flags that WORK
 
-| Flag                    | Subcommand  | Behavior                                                                           | Verified |
-| ----------------------- | ----------- | ---------------------------------------------------------------------------------- | -------- |
-| `--type-aware`          | both        | Uses type information to reduce `errors.Is` false positives on sentinel matches. **Recommended on every invocation (updated 2026-08-02).** | Updated |
-| `--type legacy_as`      | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **Fallback CI filter.** | Yes (2026-07-21) |
-| `--enforce-go-error-family` | both    | Optional stricter mode: enforces that all errors belong to a structured error family. | New (2026-08-02) |
-| `--violations-only`     | `lint`      | Shows only violations, no summary. Cosmetic but works.                             | Yes      |
-| `//nolint:legacyerrors` | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.          | Yes      |
+| Flag                        | Subcommand  | Behavior                                                                                                                                   | Verified         |
+| --------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------- |
+| `--type-aware`              | both        | Uses type information to reduce `errors.Is` false positives on sentinel matches. **Recommended on every invocation (updated 2026-08-02).** | Updated          |
+| `--type legacy_as`          | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **Fallback CI filter.**                                                             | Yes (2026-07-21) |
+| `--enforce-go-error-family` | both        | Optional stricter mode: enforces that all errors belong to a structured error family.                                                      | New (2026-08-02) |
+| `--violations-only`         | `lint`      | Shows only violations, no summary. Cosmetic but works.                                                                                     | Yes              |
+| `//nolint:legacyerrors`     | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.                                                                  | Yes              |
 
 ### Flags that are BROKEN or INEFFECTIVE
 
-| Flag                                      | Subcommand | Expected                                                   | Actual                                                                                                                                   | Impact                                                                                         |
-| ----------------------------------------- | ---------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `--no-suppress`                           | `lint`     | Show violations that `//nolint` is hiding                  | Returns 0 even when nolint directives are active and suppressing real violations                                                         | You cannot audit your suppression list with this flag. Must manually remove nolints to verify. |
-| `-o <file>`                               | `lint`     | Write output to file                                       | File never created. Output always goes to stdout.                                                                                        | Cannot redirect lint output for CI artifact collection.                                        |
+| Flag                                      | Subcommand | Expected                                                   | Actual                                                                                                                        | Impact                                                                                         |
+| ----------------------------------------- | ---------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `--no-suppress`                           | `lint`     | Show violations that `//nolint` is hiding                  | Returns 0 even when nolint directives are active and suppressing real violations                                              | You cannot audit your suppression list with this flag. Must manually remove nolints to verify. |
+| `-o <file>`                               | `lint`     | Write output to file                                       | File never created. Output always goes to stdout.                                                                             | Cannot redirect lint output for CI artifact collection.                                        |
 | `-f <format>`                             | `lint`     | Output in json/sarif/jsonl/etc.                            | Ignored. Always outputs text format. (The main `erraudit` analysis command supports formats; the `lint` subcommand does not.) | Cannot get structured output for editor/CI integration.                                        |
-| `--severity-threshold error`              | `lint`     | Show only `error`-severity findings (the `errors.As` ones) | Shows `errors.Is` advisories regardless of threshold value                                                                               | Cannot use severity to filter. Use `--type-aware` or `--type legacy_as` instead.                                 |
-| `--severity error` / `--severity warning` | `lint`     | Filter by severity                                         | Both produce identical output                                                                                                            | Severity filter is non-functional.                                                             |
+| `--severity-threshold error`              | `lint`     | Show only `error`-severity findings (the `errors.As` ones) | Shows `errors.Is` advisories regardless of threshold value                                                                    | Cannot use severity to filter. Use `--type-aware` or `--type legacy_as` instead.               |
+| `--severity error` / `--severity warning` | `lint`     | Filter by severity                                         | Both produce identical output                                                                                                 | Severity filter is non-functional.                                                             |
 
 ---
 
@@ -324,14 +324,14 @@ This gates the build on `errors.As` modernizations only (high precision) while s
 
 > ⚠ The trust assignments below reflect the source feedback's original claims (2026-07-21), updated with the 2026-08-02 rename to `erraudit`. See the verification status at the top of this file.
 
-| Feature                                               | Trust it?                                                 |
-| ----------------------------------------------------- | --------------------------------------------------------- |
-| `fix` subcommand (errors.As transformations)          | **Yes** — safe, correct, refuses errors.Is                |
-| `--type-aware` (recommended on every invocation)     | **Yes** — updated 2026-08-02; previously broken, now works |
+| Feature                                               | Trust it?                                                      |
+| ----------------------------------------------------- | -------------------------------------------------------------- |
+| `fix` subcommand (errors.As transformations)          | **Yes** — safe, correct, refuses errors.Is                     |
+| `--type-aware` (recommended on every invocation)      | **Yes** — updated 2026-08-02; previously broken, now works     |
 | `lint --type legacy_as`                               | **Yes** — reliable fallback filter for high-precision findings |
 | `--enforce-go-error-family`                           | **Yes** — optional stricter mode for structured error families |
-| `//nolint:legacyerrors` suppression                   | **Yes** — works correctly (but name is undocumented)      |
-| `lint` on errors.Is findings (without `--type-aware`) | **No** — 0% precision on real codebases. Review manually. |
-| `--no-suppress` flag                                  | **No** — broken, does not show suppressed violations      |
-| `-o` / `-f` flags on `lint`                           | **No** — ignored, output always goes to stdout as text    |
-| `--severity` / `--severity-threshold`                 | **No** — does not filter errors.Is advisories             |
+| `//nolint:legacyerrors` suppression                   | **Yes** — works correctly (but name is undocumented)           |
+| `lint` on errors.Is findings (without `--type-aware`) | **No** — 0% precision on real codebases. Review manually.      |
+| `--no-suppress` flag                                  | **No** — broken, does not show suppressed violations           |
+| `-o` / `-f` flags on `lint`                           | **No** — ignored, output always goes to stdout as text         |
+| `--severity` / `--severity-threshold`                 | **No** — does not filter errors.Is advisories                  |

@@ -41,7 +41,7 @@
 3. **No trigger collision check before expanding descriptions.** I made 5 thin descriptions significantly broader (e.g., `code-quality-scan` went from 4 trigger phrases to 14). This increases the chance that two skills compete for the same user prompt. For example:
    - "review my code" could now trigger `full-code-review`, `code-quality-scan`, `naming-review`, or `brutal-self-review`.
    - "find duplicated code" could trigger both `deduplicate-code` and `code-quality-scan`.
-   I have no idea which skill would win. This is a real regression risk that I created and never tested.
+     I have no idea which skill would win. This is a real regression risk that I created and never tested.
 
 ---
 
@@ -57,28 +57,28 @@
 
 ## f) Next Tasks (up to 50, sorted by impact)
 
-| # | Task | Impact | Effort |
-|---|------|--------|--------|
-| 1 | Run trigger collision analysis across all 25 skills — map phrases, find overlaps, add disambiguation | Critical | Medium |
-| 2 | Audit `verify-before-filing/SKILL.md` body, tags, cross-references (committed without review) | Critical | Low |
-| 3 | Run skill-creator evals on the 9 rewritten descriptions (should-trigger / should-not-trigger) | High | Medium |
-| 4 | Add disambiguation between `code-quality-scan` vs `full-code-review` ("quick scan" vs "deep review") | High | Low |
-| 5 | Add disambiguation between `deduplicate-code` vs `code-quality-scan` ("find clones" vs "run all checks") | High | Low |
-| 6 | Add disambiguation between `architecture-review` vs `full-code-review` ("structure" vs "every file") | Medium | Low |
-| 7 | Add disambiguation between `status-report` vs `docs-health` ("snapshot" vs "fix living docs") | Medium | Low |
-| 8 | Update planning doc with completion markers | Low | Trivial |
-| 9 | Consider adding `go-error-modernization` to tags field (currently only `hierarchical-errors` is tagged) | Low | Trivial |
-| 10 | Evaluate whether `go-error-modernization` is the best name vs `go-errors` or `go-error-handling` | Low | Low |
-| 11 | Consider deeper description improvements for `brutal-self-review` (342 chars — thinnest now) | Low | Low |
-| 12 | Consider deeper description improvements for `architecture-visualization` (424 chars) | Low | Low |
-| 13 | Consider deeper description improvements for `nix-private-go-repos` (434 chars) | Low | Low |
-| 14 | Review whether `verify-external-claims` ↔ `verify-before-filing` split is clear in both descriptions | Medium | Low |
-| 15 | Check if `allowed-tools` fields need updating after description changes (new trigger contexts may need new tools) | Low | Low |
-| 16 | Add a "competing skills" section to `how-to-write-skills.md` documenting how to disambiguate | Medium | Medium |
-| 17 | Run the full description-optimization loop (skill-creator's `run_loop.py`) on the 5 thinnest descriptions | Medium | High |
-| 18 | Audit whether any description accidentally excludes valid use cases (false negative risk) | Medium | Medium |
-| 19 | Verify `README.md` skill count is consistent everywhere (says "25 skills" in one place, "20 of 25" in another) | Low | Trivial |
-| 20 | Create a trigger-phrase matrix (spreadsheet/table) mapping all trigger phrases → skills for visual collision detection | Medium | Medium |
+| #   | Task                                                                                                                   | Impact   | Effort  |
+| --- | ---------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
+| 1   | Run trigger collision analysis across all 25 skills — map phrases, find overlaps, add disambiguation                   | Critical | Medium  |
+| 2   | Audit `verify-before-filing/SKILL.md` body, tags, cross-references (committed without review)                          | Critical | Low     |
+| 3   | Run skill-creator evals on the 9 rewritten descriptions (should-trigger / should-not-trigger)                          | High     | Medium  |
+| 4   | Add disambiguation between `code-quality-scan` vs `full-code-review` ("quick scan" vs "deep review")                   | High     | Low     |
+| 5   | Add disambiguation between `deduplicate-code` vs `code-quality-scan` ("find clones" vs "run all checks")               | High     | Low     |
+| 6   | Add disambiguation between `architecture-review` vs `full-code-review` ("structure" vs "every file")                   | Medium   | Low     |
+| 7   | Add disambiguation between `status-report` vs `docs-health` ("snapshot" vs "fix living docs")                          | Medium   | Low     |
+| 8   | Update planning doc with completion markers                                                                            | Low      | Trivial |
+| 9   | Consider adding `go-error-modernization` to tags field (currently only `hierarchical-errors` is tagged)                | Low      | Trivial |
+| 10  | Evaluate whether `go-error-modernization` is the best name vs `go-errors` or `go-error-handling`                       | Low      | Low     |
+| 11  | Consider deeper description improvements for `brutal-self-review` (342 chars — thinnest now)                           | Low      | Low     |
+| 12  | Consider deeper description improvements for `architecture-visualization` (424 chars)                                  | Low      | Low     |
+| 13  | Consider deeper description improvements for `nix-private-go-repos` (434 chars)                                        | Low      | Low     |
+| 14  | Review whether `verify-external-claims` ↔ `verify-before-filing` split is clear in both descriptions                   | Medium   | Low     |
+| 15  | Check if `allowed-tools` fields need updating after description changes (new trigger contexts may need new tools)      | Low      | Low     |
+| 16  | Add a "competing skills" section to `how-to-write-skills.md` documenting how to disambiguate                           | Medium   | Medium  |
+| 17  | Run the full description-optimization loop (skill-creator's `run_loop.py`) on the 5 thinnest descriptions              | Medium   | High    |
+| 18  | Audit whether any description accidentally excludes valid use cases (false negative risk)                              | Medium   | Medium  |
+| 19  | Verify `README.md` skill count is consistent everywhere (says "25 skills" in one place, "20 of 25" in another)         | Low      | Trivial |
+| 20  | Create a trigger-phrase matrix (spreadsheet/table) mapping all trigger phrases → skills for visual collision detection | Medium   | Medium  |
 
 ---
 
