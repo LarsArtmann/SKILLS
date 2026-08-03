@@ -41,16 +41,24 @@ This is **different** from maintaining living docs. Living docs (`README.md`,
 rewritten without destroying their value, so the only safe tool is
 **non-destructive annotation**: inline corrections or end-of-file appendices.
 When updating many at once, the dominant failure mode is a
-**Verschlimmbesserung** — a well-intentioned batch edit that makes things worse.
+**Verschlimmbesserung** — a well-intentioned batch edit that makes things worse
+(58 identical generic banners that say nothing and have to be rolled back; see
+_Background_ below).
 
 READ, UNDERSTAND, RESEARCH, REFLECT before every action.
 
 ## Core principle: restraint is success
 
 **"Update all the old files" means "no file that NEEDS updating is missed." It
-does NOT mean "every file gets a change."** Leaving a file untouched because it
-is already clear or no annotation would add value is the CORRECT outcome.
+does NOT mean "every file gets a change."** A doctor does not operate on every
+patient in the waiting room just because the instruction said "see all
+patients."
+
+Leaving an old file untouched because it is already clear, already correct, or
+because no annotation would add value is the CORRECT outcome — not a failure.
 Measure success by **value added per annotation**, not by **files touched**.
+The number of files you left untouched is a metric of good judgment, not of
+laziness.
 
 ## When this applies
 
@@ -139,12 +147,15 @@ stop — that is a docs-health rewrite, not an update-old-docs annotation.
 
 ### Step 1 — Read everything before touching anything
 
-Read and understand EVERY target before annotating. Use sub-agents to
-parallelize the **classification** pass — but the **annotation itself** (writing
-`done at` markers, inline-correcting claims) must be done by the primary agent
-after reading the actual file text, not a paraphrased summary. Do not annotate
-until you can answer for each file: _what does it currently say, and what does
-it currently lack?_ The Verschlimmbesserung happens when you decide the
+Before annotating a single file, read and understand EVERY target. Use
+sub-agents to parallelize the **classification** pass (what's stale, what
+items exist) — but the **annotation itself** (writing `done at` markers,
+inline-correcting claims) must be done by the primary agent after reading
+the actual file text, not a paraphrased summary. Do not annotate or write
+any script until you can answer for each file: _what does it currently say,
+and what does it currently lack?_
+
+This is non-negotiable. The Verschlimmbesserung happens when you decide the
 annotation before understanding the targets.
 
 ### Step 2 — Classify each target (per-file judgment)
@@ -186,21 +197,11 @@ your citation shifts it onto the wrong item. Cite **section names** (`TODO_LIST
 "v0.2.0 follow-ups"`) or **item text** (`TODO_LIST item "Run real cargo
 +nightly fuzz"`). These survive reordering and insertion.
 
-**For multi-item resolutions (5+), prefer a table over prose bullets.** A
-table with explicit **Commit** and **Release** columns lets a reader scan
-"what shipped and when" in seconds:
-
-```markdown
-| Item | Claim in report    | Resolution                               | Commit  | Release |
-| ---- | ------------------ | ---------------------------------------- | ------- | ------- |
-| §d.1 | Envelope FP bug    | FIXED: reserved-bytes-zero               | fe81dd2 | v0.2.0  |
-| §b.3 | Fuzz crate not run | Still open — TODO_LIST "fuzz follow-ups" | —       | —       |
-```
-
-Prose bullets are fine for 1–4 items; tables win at 5+. In a table an
-open item gets a "Still open" cell — a table has an explicit status column,
-so naming the open state there is correct (unlike an inline list, where the
-absence of a marker IS the open signal).
+**For multi-item resolutions (5+), prefer a table over prose bullets** —
+explicit Commit and Release columns let a reader scan "what shipped and when"
+in seconds. Prose bullets are fine for 1–4 items. The multi-item table format
+and all worked examples are in
+[./references/resolving-items.md](./references/resolving-items.md).
 
 See _Annotation placement_ below for WHERE the note goes, and
 [./references/annotation-placement.md](./references/annotation-placement.md)
@@ -309,65 +310,30 @@ For before/after examples and the full reasoning, load
 
 ### Numbered action items (lists AND tables within old reports)
 
-Old status reports and plans often contain numbered items — either as prose
-lists (`1. 2. 3.`) or as table rows (`| 1 | | 2 |`) — under headings like
-"Things to Do Next", "Open issues", "Next steps". Both forms are the most
-common thing a reader wants resolved: _which of these are done now?_ **You must RESOLVE every numbered item** — not just the ones you
-already know about. (_Annotate_ = file-level context; _resolve_ = a per-item
-verdict — both in one pass.) Each item gets a verdict: `done at <hash>`,
-`Won't implement`/`NOT-DO`, or — if still open — **left untouched**, which IS
-the "open" verdict (you still CHECK it; never skip the check). Skipping is the
-#1 failure mode: 10 marked and 40 never checked is **not annotated**. Mark
-completed items **inline** with strike-through + a `done at` marker:
+Old reports often contain numbered items — prose lists (`1. 2. 3.`) or table
+rows (`| 1 | | 2 |`) under headings like "Next steps". Both are the most
+common thing a reader wants resolved: _which of these are done now?_
+
+**You must RESOLVE every numbered item inline.** This is the primary work, not
+an optional add-on. Each item gets a verdict: `done at <hash>`,
+`Won't implement`/`NOT-DO`, or — if still open — **left untouched** (you still
+CHECK it; never skip the check). Skipping is the #1 failure mode: 10 marked
+and 40 never checked is **not annotated**. Mark completed items **inline**:
 
 ```markdown
-1. ~~Fix warmup store pollution — use separate Bundle or document the inflation~~ done at `a7b8159`
-2. ~~Fix estimateJSONSize — marshal-and-measure instead of template guess~~ done at `a7b8159`, `fe81dd2`
-3. Add negative tests: factory returning nil Bundle, nil EventSink, closed store
-4. ~~Add test for Config.Duration actually aborting a long-running phase~~ done at `fe81dd2`
+1. ~~Fix warmup store pollution~~ done at `a7b8159`
+2. ~~Fix estimateJSONSize~~ done at `a7b8159`, `fe81dd2`
+3. Add negative tests: factory returning nil Bundle    ← untouched = still open
+4. ~~Add test for Config.Duration~~ done at `fe81dd2`
 ```
 
-**Format:** `~~<original line, unchanged>~~ done at <set-of-short-git-hashes>` (wrap each hash in backticks).
-**Variants** (keep wording consistent within a single file):
+**Format:** `~~<original line, unchanged>~~ done at <set-of-short-git-hashes>`.
 
-```text
-~~<line>~~ done at `a7b8159`                          # one commit; several: `a7b8159`, `fe81dd2`
-~~<line>~~ done (existing rule)                       # already existed; or: done (covered by C019)
-~~<line>~~ **Won't implement — <one-line reason>.**   # investigated, decided against
-**NOT-DO/DUPLICATE — <line>** <one-line reason>       # subsumed by / duplicates another item
-```
-
-Rules for this pattern:
-
-- **Strike through the ENTIRE original line** — the reader must be able to
-  identify what the item was. Never replace the text; wrap it in `~~...~~`.
-  Keep the original formatting (bold, links) inside the strikethrough.
-- **Cite the commit hash(es)** that closed the item. Wrap each hash in backticks; separate multiple with commas (`a7b8159`, or `a7b8159, fe81dd2`).
-- **Leave open items untouched** — do not mark them, do not add "OPEN" or
-  "TODO" labels. The absence of a `done at` marker IS the signal that the item
-  is still open. Adding labels to open items is noise (see anti-patterns).
-- **One `done at` per completed item** — never batch multiple items into one annotation.
-- **If an item was rejected/abandoned** (closed without shipping), mark it so
-  the reader knows it will NOT ship. `Won't implement — <reason>` means you
-  investigated and decided against it; `NOT-DO/DUPLICATE` means it overlaps
-  another item so it was never separately actioned. Both are distinct from
-  `done` — the reader needs to know the item is **closed without shipping**,
-  not merely forgotten.
-- **Do not renumber.** Keep the original numbering/ordering intact. The
-  numbers are how readers cross-reference items across documents.
-
-This pattern is a form of the inline edit (option 1 above) specialized for
-list items. It wins over an appendix table here because the resolution lives
-right next to the claim — a reader scanning the list sees the status without
-context-switching to a separate section.
-
-#### Tables with numbered rows
-
-When items are table rows, apply the same per-item resolution: strike through
-resolved cells (`~~1~~ | ~~Run verify~~ done at `f72c7b40``), or add a Status
-column (`✅ done `f72c7b40`` / `Open`) when most rows are resolved. Every
-numbered row gets a verdict. Full before/after examples in
-[annotation-placement.md](./references/annotation-placement.md) (see "Tables with numbered rows").
+For the full pattern catalog — variant forms (`Won't implement`,
+`NOT-DO/DUPLICATE`), detailed rules (strike the entire line, cite hashes, never
+renumber), multi-item table format (5+), and table-row patterns (strikethrough
+cells vs. Status column) — load
+[./references/resolving-items.md](./references/resolving-items.md).
 
 ---
 
@@ -399,18 +365,29 @@ appendices and zero inline markers.
 
 ## HTML and structured files
 
-Old reports are sometimes HTML dashboards. HTML needs extra care: structure is
-fragile (a naive `txt.find('</div>')` corrupts the file — this duplicated a body
-1400+ times in the source incident), CSP forbids inline `style=`/`on*=` handlers,
-and batch string-replace is dangerous. Always `view` structure first, use `edit`
-for surgical changes, never script HTML.
+Old reports are sometimes HTML dashboards. HTML needs extra care:
+
+- **Structure is fragile.** A naive `txt.find('</div>')` matches the wrong
+  closing tag and corrupts the file (this exact bug duplicated a file's body
+  1400+ times in the incident that created this skill).
+- **CSP matters.** Many projects forbid inline `style=` / `on*=` handlers.
+  Adding inline-styled banners violates their security architecture.
+- **Read before edit.** Always `view` the structure first. Use `edit` for
+  surgical changes, never a batch string-replace script on HTML.
+
+When in doubt, do not script HTML. Edit it by hand with the Edit tool.
 
 ## Undoing a mistake: restore, don't re-transform
 
-Remove a batch annotation with `git restore <file>`, never a removal script (a
-second transform introduces its own bugs — this corrupted the HTML in the
-source incident). Note: never `git restore` files you did not change this
-session.
+If you need to remove a batch annotation you just made, the safest path is
+`git restore <file>` — NOT a second removal script. A removal script is a
+second transformation, and it can introduce its own bugs (this is how the HTML
+got corrupted in the source incident). `git restore` returns the file to a
+known-good state with no chance of a new mistake.
+
+> Note: per project AGENTS.md, never `git restore` files you did not personally
+> change in this session. This rule is about undoing YOUR OWN batch annotation
+> only.
 
 ---
 
@@ -491,7 +468,10 @@ Every previously-open item must be re-checked against current commits — assume
 
 ## Background
 
-Distilled from a real incident: 58 identical banners stamped across old
-reports, then HTML corrupted during removal. Full case study — root-cause,
-feedback rounds, and exact prompts — in
-[./references/case-study.md](./references/case-study.md).
+This skill was distilled from a real incident: a session stamped 58 identical
+generic banners across old status reports (and inline-styled banners into 4
+HTML dashboards), then corrupted the HTML while trying to remove them. The user
+called it a Verschlimmbesserung and was right. The full case study —
+root-cause analysis, the rounds of feedback, and the exact prompts — is in
+[./references/case-study.md](./references/case-study.md). Read it when you want
+to understand WHY every rule above exists, not just WHAT it says.
