@@ -28,7 +28,7 @@ _Keep old documents current without destroying their history._
 > 2. Per file decide: **ANNOTATE** / **ARCHIVE** / **SKIP** / **LEAVE ALONE**.
 > 3. Write only specific notes (commit hash + what's still open) — never generic banners.
 > 4. Every note must survive the **"so what?"** test.
-> 5. Place notes as **inline edits** or **end-of-file appendices** — never top-of-file banners.
+> 5. **Resolve numbered items inline first** (`~~item~~ done at `hash``) — this is the primary work. Then add an end-of-file appendix for context. **Appendix-only is the #1 failure mode** — if you wrote an appendix but zero inline markers, go back.
 > 6. Re-runs are productive: items finished since the last pass get marked `done at` — never re-stamp an already-resolved item. When ALL items resolve, move the file to `archived/`.
 
 Old documents — status reports, plans, reviews, audits, snapshots — capture
@@ -172,6 +172,13 @@ For every file, make exactly ONE of three decisions:
 Record this list. The list IS the plan. _"I will annotate 24 of the 89 files,
 archive 3 that are fully resolved, and skip 62"_ is a complete, correct plan.
 
+**Per-item checkpoint (before writing any annotation):** For each file you
+classified as ANNOTATE, scan it for numbered action items (prose lists AND
+table rows). State your plan per file: _"File X has 23 numbered items: 15
+`done at` (verified against git), 3 `Won't implement`, 5 still open."_ This
+forces per-item thinking BEFORE you start writing — and makes an
+appendix-only annotation impossible to reach for.
+
 ### Step 3 — Write specific annotations, not generic ones
 
 Every annotation must be **specific enough that it could only apply to THIS
@@ -311,12 +318,12 @@ In order of preference:
 For before/after examples and the full reasoning, load
 [./references/annotation-placement.md](./references/annotation-placement.md).
 
-### Lists of actionable items (TODO lists within old reports)
+### Numbered action items (lists AND tables within old reports)
 
-Old status reports and plans often contain numbered lists of actionable
-items — "Things to Do Next", "Open issues", "Next steps". These lists are
-the most common thing a reader wants resolved: _which of these are done
-now?_ **You must RESOLVE every numbered item** — not just the ones you
+Old status reports and plans often contain numbered items — either as prose
+lists (`1. 2. 3.`) or as table rows (`| 1 | | 2 |`) — under headings like
+"Things to Do Next", "Open issues", "Next steps". Both forms are the most
+common thing a reader wants resolved: _which of these are done now?_ **You must RESOLVE every numbered item** — not just the ones you
 already know about. (_Annotate_ = file-level context; _resolve_ = a per-item
 verdict — both in one pass.) Each item gets a verdict: `done at <hash>`,
 `Won't implement`/`NOT-DO`, or — if still open — **left untouched**, which IS
@@ -365,6 +372,31 @@ list items. It wins over an appendix table here because the resolution lives
 right next to the claim — a reader scanning the list sees the status without
 context-switching to a separate section.
 
+#### Tables with numbered rows
+
+When the action items are table rows (not a prose list), apply the same
+per-item resolution inline. Two patterns:
+
+**Pattern A — strikethrough the resolved cells:**
+
+```markdown
+| ~~#~~ | ~~Task~~ | ~~Effort~~ | ~~Evidence~~ |
+| ~~1~~ | ~~Run `nix run .#verify`~~ done at `f72c7b40` | ~~5m~~ | ~~Skipped~~ |
+| 2 | Add Prometheus alert for orphan files | 15m | TODO_LIST |
+```
+
+**Pattern B — add a Status column** (cleaner when most rows are resolved):
+
+```markdown
+| # | Task | Status | Evidence |
+| 1 | Run `nix run .#verify` | ✅ done `f72c7b40` | — |
+| 2 | Add Prometheus alert | Open | TODO_LIST |
+```
+
+Use Pattern A when the table already exists and you want minimal structural
+change. Use Pattern B when most rows are resolved and a status column makes
+the table more scannable. Either way: every numbered row gets a verdict.
+
 ---
 
 ## Updating many old files at once: judgment before batching
@@ -382,6 +414,16 @@ identical; their annotations must not be either.
 If you write a script, it must operate on your curated list of files — never on
 `glob('*')` with a "skip if it doesn't apply" heuristic. The classification
 happens in your head, not in an `if`.
+
+### High-volume batches (>15 files): depth over breadth
+
+When the file count is high, resist the urge to annotate all of them
+shallowly. A reader opening one file benefits far more from complete inline
+resolution (every numbered item checked and marked) than a reader opening
+ten files benefits from a 2-sentence appendix on each. **Prioritize: fully
+resolve (inline + appendix) the files with the most actionable items first.**
+Five files fully resolved inline is a better outcome than 41 files with
+appendices and zero inline markers.
 
 ## HTML and structured files
 
@@ -450,6 +492,7 @@ Every previously-open item must be re-checked against current commits — assume
 - [ ] **Fresh-open test:** every file with a stale TL;DR / opening has an inline correction visible in the first screenful.
 - [ ] Count the files you LEFT UNTOUCHED. That number being > 0 is correct and expected.
 - [ ] For list items marked `done at` — the entire original line is struck through, at least one commit hash is cited, and open items are left untouched (no noise labels).
+- [ ] **No appendix-only annotations:** every file with numbered action items has at least one inline `done at` / `Won't implement` marker, OR a stated reason why zero items resolved ("all 30 items are still open" is valid; silently writing an appendix instead is not).
 - [ ] **Completeness gate:** every numbered action item in the file was checked against current state. An item you didn't check is an item you silently abandoned. A file with un-checked items is not annotated.
 - [ ] **Re-run check:** every previously-open item was re-checked against current commits; items already marked were left untouched (no double-stamping).
 - [ ] **Archive check:** every file whose actionable items are ALL resolved was moved to `<dir>/archived/<file-name>` via `git mv`; files with any open item were left in place.
@@ -480,6 +523,7 @@ Every previously-open item must be re-checked against current commits — assume
 - **Proceeding on an unspecified scope** — "update the old reports" without a time range is ambiguous; guessing "all of them" maximizes blast radius. Ask first.
 - Removing a batch annotation with a script instead of `git restore`
 - **Silently skipping numbered items** — the #1 failure mode: marking the items you know about and declaring the file done while dozens remain un-checked. Every numbered item must be resolved (done / rejected / left-open-intentionally).
+- **Appendix-only on a file with numbered items** — writing a `## Resolution` section at the bottom while leaving every numbered item in the body unmarked. The reader scans the list, sees no `done at` markers, and assumes everything is still open. Inline resolution is the primary work; the appendix is supplementary context.
 - **Marking open list items with "OPEN"/"TODO" labels** — absence of a `done at` marker is the signal; adding labels to open items is noise
 - **Re-stamping an already-resolved item** — a `done at` / `Won't implement` marker that is already correct must be left untouched on re-run; re-wording it is a double-stamp
 - **Archiving a file that still has open items** — only files where ALL actionable items are resolved move to `archived/`
