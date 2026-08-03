@@ -64,22 +64,64 @@ Copy [../../assets/README-template.md](../../assets/README-template.md) and fill
 
 Copy [../../assets/AGENTS-template.md](../../assets/AGENTS-template.md) and fill in:
 
-1. **Project type and purpose.** One paragraph: what kind of project, what it
-   produces, what it does NOT produce.
-2. **Directory structure.** Tree diagram with one-line annotations.
-3. **Conventions.** Naming patterns, code style, error handling approach.
-4. **Build/test/lint commands.** Exact commands. Point at flake.nix or
-   equivalent.
-5. **Gotchas.** Non-obvious behaviors, workarounds, platform quirks.
-6. **High-value references.** Links to the most important docs or files.
+1. **What This Is.** One paragraph: what kind of project, what it
+   produces, what it does NOT produce. This is the orientation section —
+   the single most important thing a fresh session reads.
+2. **Directory structure.** Tree diagram with one-line annotations. Top-level
+   directories only; do NOT annotate every file (a 95-line tree rots on
+   every rename).
+3. **Commands.** Build, test, lint — exact commands, verified to work.
+   Point at flake.nix or equivalent. These are the highest-value content.
+4. **Architecture.** Key design decisions, invariants, data flow. NOT full
+   API docs. Maximum 5 lines of inline code per example; beyond that, link
+   to the source file.
+5. **Conventions.** Naming patterns, code style, error handling approach.
+6. **Gotchas.** Non-obvious behaviors, workarounds, platform quirks. Cap at
+   15-20 entries; each must be a CURRENT constraint, not a resolved incident.
+7. **Dependencies.** Key libraries and why they were chosen. One line each.
+8. **High-value references.** Links to the most important docs or files.
+
+### Size budget
+
+| Range      | Verdict                                  |
+| ---------- | ---------------------------------------- |
+| < 1 KB     | Skeleton — too thin, add real content    |
+| 1-5 KB     | Lean — ideal for simple projects         |
+| 5-15 KB    | Sweet spot — enough for architecture     |
+| 15-30 KB   | Acceptable for complex projects          |
+| 30-50 KB   | Bloated — needs pruning                  |
+| > 50 KB    | Severely bloated — major rewrite needed  |
+
+If your AGENTS.md exceeds 15 KB, review every section for content that
+belongs elsewhere. The most common bloat source is code examples that
+duplicate the source — link instead of inlining.
+
+### The endurance test (apply to every line)
+
+> Will this statement still be true 6 months from now, regardless of what
+> changes in the codebase?
+
+Content that fails this test (version numbers, dates, commit hashes,
+coverage percentages, sprint numbers, "was X, now Y") does not belong in
+AGENTS.md. See the [anti-pattern catalog](./agents-quality-guide.md#the-anti-pattern-catalog)
+for the full list and examples.
 
 ### Quality checklist
 
 - [ ] Every referenced path exists
-- [ ] Commands actually work
+- [ ] Commands actually work (verified, not assumed)
 - [ ] No change logs, no task lists, no feature status (those have other homes)
 - [ ] Lean: only things hard to discover from code
 - [ ] Counts are computed, not hardcoded
+- [ ] **Under size budget** (target 5-15 KB; flag if > 30 KB)
+- [ ] **No temporal pollution** (no dated headings, commit hashes, sprint numbers)
+- [ ] **No code dumps** (≤5 lines per example; link to source for more)
+- [ ] **Gotchas are current constraints** (not resolved incidents or refactor history)
+- [ ] **Passes the endurance test** (every line true in 6 months)
+
+For the full anti-pattern catalog (5 tiers with real examples from 150+
+files), the pruning guide for bloated files, and the quality scoring
+rubric, load [./agents-quality-guide.md](./agents-quality-guide.md).
 
 ---
 

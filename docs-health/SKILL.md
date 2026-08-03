@@ -84,19 +84,6 @@ Not every project needs all docs. Detect the project type and adapt:
 
 ---
 
-## Determine the task
-
-Identify what the user needs from their request:
-
-| User says                                        | Task        | Action                                          |
-| ------------------------------------------------ | ----------- | ----------------------------------------------- |
-| "Build TODO list" / "create FEATURES.md"         | **BUILD**   | Generate a specific doc from code               |
-| "Harvest status report" / "pull next tasks"      | **HARVEST** | Pull forward-looking items from recent reports  |
-| "Are docs up to date?" / "check freshness"       | **VERIFY**  | Check all docs against code, fix drift in place |
-| "Full doc audit" / "fix my docs" / "docs health" | **AUDIT**   | BUILD + HARVEST, then VERIFY everything         |
-
-If the intent is ambiguous, default to AUDIT (it covers everything).
-
 ---
 
 ## BUILD: create or rebuild a doc from code
@@ -157,6 +144,20 @@ Never round up. If you cannot confirm a feature works, it is
   per-file decision (update/skip) based on reading each first. Do not script a
   blanket transformation. For old/historical files in particular, defer to the
   [`update-old-docs`](../update-old-docs/SKILL.md) skill — annotate, do not rewrite.
+
+### AGENTS.md quality (BUILD and VERIFY)
+
+AGENTS.md is the most frequently misused doc in this model. Across 150+
+real files, the dominant failure modes are: temporal pollution (dated
+headings, commit hashes, sprint numbers), content misplacement
+(changelogs/TODOs/feature status), and implementation duplication (code
+dumps, config tables). **Size budget: 5-15 KB sweet spot, fail > 100 KB.**
+
+**Endurance test:** will each line be true in 6 months? If it references a
+version, date, or commit hash, cut it.
+
+For the full anti-pattern catalog, pruning guide, and scoring rubric,
+load [./references/agents-quality-guide.md](./references/agents-quality-guide.md).
 
 ---
 

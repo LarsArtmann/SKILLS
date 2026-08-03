@@ -40,6 +40,16 @@
 | Putting TODOs here          | Nobody actions them; they rot           | TODO_LIST.md owns actionable work                        |
 | Putting feature status here | Splits the inventory                    | FEATURES.md owns feature status                          |
 | Writing a changelog         | Conflates enduring context with history | CHANGELOG.md owns release history                        |
+| Version numbers in headings | `## API Surface (v0.10.0)` rots on release | Drop the version: `## API Surface`                    |
+| Commit hashes inline        | Provide no value after the fix ships    | Delete the hash; keep the lesson (if still relevant)     |
+| Sprint/session numbers      | `(Sprint 52)` means nothing later       | State the current truth without the temporal anchor      |
+| Coverage percentages        | Change on every commit                  | Delete entirely; not enduring                            |
+| Code blocks >5 lines        | Duplicates source, wastes context budget | Link to the source file instead                         |
+| Resolved incidents          | Zero future value once fixed            | Delete; the resolution lives in git history              |
+| "Was X, now Y" narratives   | Documents history, not current state    | State only "Y" — the "was X" part is changelog           |
+| Gotchas tables >20 rows     | Become refactoring graveyards           | Keep only current constraints; delete resolved entries   |
+| Dated section headings      | `(added 2026-07-05)` rots immediately   | Remove the date; if it exists now, the date is noise     |
+| Full config/API catalogs    | Duplicate structs and routers in prose  | Link to source or example config file                    |
 
 ### When verifying docs
 
@@ -77,6 +87,22 @@ Is it a domain term (business concept, entity name)?
     └── NO → Is it a build/test command?
         ├── YES → flake.nix (AGENTS.md as pointer only)
         └── NO → Does not belong in either file
+```
+
+### Does this content pass the endurance test for AGENTS.md?
+
+```
+Will this statement be true 6 months from now?
+├── NO → Does it describe what changed?
+│   ├── YES → CHANGELOG.md (if not already logged)
+│   └── NO → Is it a future task?
+│       ├── YES → TODO_LIST.md or ROADMAP.md
+│       └── NO → Delete it (it's stale)
+└── YES → Does it duplicate what's in the source code?
+    ├── YES → Replace with a link to the source file
+    └── NO → Does it reference a specific version/date/sprint/commit?
+        ├── YES → Strip the temporal anchor; state current truth
+        └── NO → AGENTS.md ✓ (it passes)
 ```
 
 ### Is this a TODO_LIST item or a ROADMAP item?
