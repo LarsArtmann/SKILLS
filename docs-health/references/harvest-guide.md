@@ -1,14 +1,14 @@
-# HARVEST Guide — When to Run, Anti-Patterns, and the Two-Way Loop
+# HARVEST Guide — Anti-Patterns and Edge Cases
 
-> Companion to the HARVEST section in [../SKILL.md](../SKILL.md). Load this
-> for timing rules, the full anti-pattern catalog, and the forward/backward
-> loop between HARVEST and ANNOTATE.
+> Companion to the HARVEST section in [../SKILL.md](../SKILL.md). The body
+> covers the 6-step procedure and the essential rules. Load this ONLY for the
+> anti-pattern catalog, the "Top N override" edge case, and the timing rules
+> in full detail.
 
-## When to run HARVEST
+## When to run HARVEST (full detail)
 
 _This is the **single source of truth** for the "run HARVEST after a status
-report" rule. Other skills (`status-report`) link here rather than restating
-the rationale — edit the rule here, not in the callers._
+report" rule. Other skills (`status-report`) link here rather than restating._
 
 - **After every `status-report` session.** The report's "next tasks"
   section is a TODO_LIST input, not its final resting place. **If you just
@@ -20,7 +20,10 @@ the rationale — edit the rule here, not in the callers._
 - **On explicit request:** "harvest the latest status report", "pull the
   next tasks into TODO_LIST", "extract open items from recent reports".
 
-## Anti-patterns
+## Anti-patterns (not already stated in the body)
+
+The body covers: drop resolved items, questions aren't tasks, verify against
+code, don't rewrite the source. These are the additional failure modes:
 
 - **Dumping all 50 items verbatim into TODO_LIST.** Most "Top 50" lists are
   brainstorms, not commitments. Route, dedupe, and verify before inserting,
@@ -32,8 +35,6 @@ the rationale — edit the rule here, not in the callers._
 - **Treating the report as code.** A report saying "we should do X" is
   intent, not evidence that X is undone. A later session may have already
   shipped X. Verify against code.
-- **Harvesting open questions as tasks.** An unanswered question is not
-  actionable. Route it to the user or to ROADMAP, not TODO_LIST.
 - **Re-harvesting items already marked resolved.** `done at` /
   `Won't implement` / `NOT-DO` markers mean an item is closed; pulling it
   back into TODO_LIST re-opens settled work. Respect the markers.
@@ -44,28 +45,3 @@ the rationale — edit the rule here, not in the callers._
 - **Reading every historical report.** The 100th-oldest report's "next
   tasks" are either done, obsolete, or already captured. Recent reports
   carry the signal; old ones carry noise. Default to the most recent 1–3.
-
-## The two-way loop (HARVEST ↔ ANNOTATE)
-
-Status reports have a two-way relationship with docs-health:
-
-- **Forward (HARVEST):** the report's "next tasks" section is pulled OUT of
-  the snapshot INTO `TODO_LIST.md` / `ROADMAP.md`.
-- **Backward (ANNOTATE):** the report itself is annotated to reflect what
-  later shipped ("this item was resolved in commit X").
-
-Both directions are needed; neither replaces the other. A common failure is
-to run ANNOTATE on a pile of old reports (backward) while never running
-HARVEST (forward) — the reports say "resolved" but TODO_LIST still doesn't
-contain the items that were NOT resolved, because nobody pulled them out in
-the first place.
-
-### Shared marker vocabulary
-
-HARVEST and ANNOTATE MUST share vocabulary. ANNOTATE resolves items
-**backward** (marks each `done at` / `Won't implement` / `NOT-DO`, then
-archives fully-resolved files). HARVEST pulls items **forward** into
-TODO_LIST — and it must **skip any item already carrying a resolution
-marker** (those are closed; route to CHANGELOG, never re-harvest). The
-marker vocabulary is owned by ANNOTATE; HARVEST references it, never
-restates a rival format.

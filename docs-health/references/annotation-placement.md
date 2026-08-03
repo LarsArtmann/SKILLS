@@ -1,9 +1,9 @@
 # Annotation Placement — Banners, Appendices, and Inline Edits
 
-> Detailed companion to the _Annotation placement_ section in
-> [../SKILL.md](../SKILL.md). Load this when annotating historical documents
-> (status reports, reviews, plans, audits) or when a user asks you to "mark",
-> "stamp", "tag", or "add a note to" existing files.
+> Detailed companion to the ANNOTATE → "Placement: inline before appendix"
+> subsection in [../SKILL.md](../SKILL.md). Load this when annotating historical
+> documents (status reports, reviews, plans, audits) or when a user asks you to
+> "mark", "stamp", "tag", or "add a note to" existing files.
 
 ## Contents
 

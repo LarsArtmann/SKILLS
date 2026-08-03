@@ -1,6 +1,6 @@
 # Resolving Numbered Items Inline — The Primary Work
 
-> Companion to the _Numbered action items_ section in
+> Companion to the ANNOTATE → "The primary work" subsection in
 > [../SKILL.md](../SKILL.md). Load this when a file has numbered action items
 > (prose lists OR table rows) and you need the full pattern catalog, variant
 > forms, rules, and multi-item table format.

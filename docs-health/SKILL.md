@@ -115,6 +115,14 @@ For the full per-doc verification checklist and cross-file table, load [./refere
 
 ## ANNOTATE — resolve items in historical docs
 
+> ⚠️ **#1 FAILURE MODE: Appendix-only (or prependix-only) annotations.**
+> Writing a `## Resolution` section at the end (or a banner at the top) while
+> leaving every numbered item in the body unmarked is **a complete failure**.
+> The reader scans the list, sees no `done at` markers, and assumes everything
+> is still open. **Inline edits are MANDATORY.** Every numbered item must be
+> resolved in place: `~~item~~ done at `hash``. The appendix is supplementary
+> context ONLY — if you wrote an appendix but zero inline markers, go back.
+
 Old reports go stale. A reader opening one wants to know: _is this done? where is it NOW?_ You cannot rewrite history — annotate non-destructively. **If the user did not specify which files or time range, ask before touching anything.**
 
 ### The primary work: resolve every numbered item inline

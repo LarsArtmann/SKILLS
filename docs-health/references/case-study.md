@@ -1,9 +1,9 @@
 # Case Study — The Docs-Health Generic Banner Verschlimmbesserung
 
 > The real incident that created this skill. Read this when you want to
-> understand WHY every rule in [../SKILL.md](../SKILL.md) exists — not just
-> WHAT it says. Distilled from a live session so the lesson survives even if
-> the source feedback file is archived or deleted.
+> understand WHY every rule in [../SKILL.md](../SKILL.md) ANNOTATE mode exists —
+> not just WHAT it says. Distilled from a live session so the lesson survives
+> even if the source feedback file is archived or deleted.
 >
 > **Why this is an old-docs story:** the failed task was bringing a set of OLD
 > status reports up to date so a reader could tell what had shipped. The
@@ -42,7 +42,7 @@ The agent wrote a Python script that stamped an identical **generic banner** on
 > [`CHANGELOG.md`](../../CHANGELOG.md) `[Unreleased]`. The code is the source of truth.
 ```
 
-Every flaw in [../SKILL.md](../SKILL.md) is present in this one block:
+Every flaw in the ANNOTATE mode ([../SKILL.md](../SKILL.md)) is present in this one block:
 
 1. **It said nothing specific.** No commit hash, no item ID, no "what's done",
    no "what's open." It failed the "so what?" test completely — a reader still
@@ -131,8 +131,8 @@ _"does this need anything?"_ decision — made by the agent, not by a script's
 The removal script's naive `txt.find('</div>')` matched the wrong closing tag.
 The agent saw "5138 insertions" in `git diff --stat` and initially did not
 question it, because focus was on the markdown banners, not the HTML files.
-This is why [../SKILL.md](../SKILL.md) says: undo batch edits with
-`git restore`, never with a second removal script.
+This is why [../SKILL.md](../SKILL.md) ANNOTATE mode says: undo batch edits
+with `git restore`, never with a second removal script.
 
 ## The one-line summary
 
