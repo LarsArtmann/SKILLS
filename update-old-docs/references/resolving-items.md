@@ -46,7 +46,7 @@ annotated**.
 ```
 
 Wrap each hash in backticks; separate multiple with commas
-(`a7b7159`, or `a7b7159`, `fe81dd2`).
+(`a7b8159`, or `a7b8159`, `fe81dd2`).
 
 ## Worked example: prose numbered list
 

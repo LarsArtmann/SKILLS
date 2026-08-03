@@ -32,7 +32,7 @@ This report covers ONLY this session's work and what it surfaced.
    table subsection) to ~26 lines (decision logic + format grammar + compact
    4-line example + pointer to `resolving-items.md`). Step 3's multi-item table
    example replaced with a pointer. Body is now decision logic + format grammar
-   + pointers; worked examples live in references.
+   - pointers; worked examples live in references.
 4. **Restored all lost teaching weight** — The previous session's condensing
    (commit `448cf81`) traded rhetorical force for line count. This session
    restored: (a) doctor analogy in Core principle, (b) "non-negotiable" in

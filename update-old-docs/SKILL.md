@@ -323,7 +323,7 @@ and 40 never checked is **not annotated**. Mark completed items **inline**:
 ```markdown
 1. ~~Fix warmup store pollution~~ done at `a7b8159`
 2. ~~Fix estimateJSONSize~~ done at `a7b8159`, `fe81dd2`
-3. Add negative tests: factory returning nil Bundle    ← untouched = still open
+3. Add negative tests: factory returning nil Bundle ← untouched = still open
 4. ~~Add test for Config.Duration~~ done at `fe81dd2`
 ```
 

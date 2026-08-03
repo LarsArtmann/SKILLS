@@ -5,8 +5,8 @@
 set -euo pipefail
 
 if [ ! -f "go.mod" ]; then
-  echo "Error: no go.mod found. Run this script from a Go project root." >&2
-  exit 1
+	echo "Error: no go.mod found. Run this script from a Go project root." >&2
+	exit 1
 fi
 
 # Find files that import any samber/do path (v1, v2, or future versions).

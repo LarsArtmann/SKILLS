@@ -267,10 +267,10 @@ replaced by the structural fix the self-review (d)#1 called for.
    format grammar, prose-list example, variant catalog, detailed rules,
    multi-item table format, table-row Pattern A + B). Slimmed the body's
    "Numbered action items" section from ~60 lines to ~26 lines (decision logic
-   + format grammar + compact example + pointer). Moved Step 3's multi-item
-   table example to a pointer. Moved "Tables with numbered rows" from
-   `annotation-placement.md` into `resolving-items.md` for cohesion. **Body:
-   497 → 477 lines** (23-line headroom, was 3).
+   - format grammar + compact example + pointer). Moved Step 3's multi-item
+     table example to a pointer. Moved "Tables with numbered rows" from
+     `annotation-placement.md` into `resolving-items.md` for cohesion. **Body:
+     497 → 477 lines** (23-line headroom, was 3).
 2. ~~**Verify docs-health HARVEST marker vocabulary**~~ — **DONE.** Verified
    `docs-health/SKILL.md` lines 205-209 and 257-259 correctly reference
    `done at`, `Won't implement`, `NOT-DO/DUPLICATE`; routes resolved items to
@@ -334,14 +334,14 @@ replaced by the structural fix the self-review (d)#1 called for.
 **Scenario:** 41 `2026-08-*` files, markdown tables of numbered action items,
 high volume. Agent classifies 7 as ANNOTATE.
 
-| Feedback gap | Guardrail in revised skill | Location |
-|---|---|---|
-| tl;dr implies inline = appendix | tl;dr line 5: hierarchy explicit | SKILL.md:31 |
-| No table worked example | Pattern A + B | resolving-items.md §7 |
-| Section doesn't mention tables | "lists AND tables" in title + intro | SKILL.md:311-315 |
-| No high-volume guidance | "Depth over breadth" | SKILL.md:356-364 |
-| No pre-annotation checkpoint | Per-item checkpoint | SKILL.md:175-180 |
-| Verification gate vacuous pass | "No appendix-only annotations" gate | SKILL.md:429 |
+| Feedback gap                    | Guardrail in revised skill          | Location              |
+| ------------------------------- | ----------------------------------- | --------------------- |
+| tl;dr implies inline = appendix | tl;dr line 5: hierarchy explicit    | SKILL.md:31           |
+| No table worked example         | Pattern A + B                       | resolving-items.md §7 |
+| Section doesn't mention tables  | "lists AND tables" in title + intro | SKILL.md:311-315      |
+| No high-volume guidance         | "Depth over breadth"                | SKILL.md:356-364      |
+| No pre-annotation checkpoint    | Per-item checkpoint                 | SKILL.md:175-180      |
+| Verification gate vacuous pass  | "No appendix-only annotations" gate | SKILL.md:429          |
 
 **Verdict:** The revised skill has redundant guardrails at every decision point
 where the original agent went off track. The appendix-only path is now blocked

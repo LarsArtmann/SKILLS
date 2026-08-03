@@ -20,7 +20,9 @@ metadata:
 
 A protocol for bumping, migrating, and releasing Go library versions across many consumer
 projects without repeating the same expensive mistakes. Every rule below exists because a
-real session burned hours (or shipped broken code) by violating it.
+real session burned hours (or shipped broken code) by violating it. **The #1 most repeated
+failure across every report: build-only verification — running `go build` instead of
+`go test ./...` and skipping behavioral checks. Compilation proves nothing about behavior.**
 
 ## When this skill activates
 

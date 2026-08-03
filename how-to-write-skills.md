@@ -408,10 +408,9 @@ Audit checklist for any skill with a named failure mode:
 3. **Give the one-line guardrail** — the tl;dr should contain the single
    sentence that prevents the failure, not just the label.
 
-Known skills currently exhibiting this anti-pattern (as of 2026-08-04):
-`go-ecosystem-upgrade` (build-only verification buried at line 148) and
-`docs-health` (HARVEST-skipping buried at line 172). Both need the failure mode
-surfaced in their intro.
+Fixed examples (as of 2026-08-04): `update-old-docs` (appendix-only trap
+surfaced in tl;dr line 5), `go-ecosystem-upgrade` (build-only verification
+surfaced in intro), `docs-health` (HARVEST-skipping surfaced in intro).
 
 ---
 

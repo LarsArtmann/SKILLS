@@ -18,9 +18,9 @@ metadata:
 
 # Docs Health
 
-Create missing docs, verify freshness against code, and enforce consistency
-between files. Documentation that lies is worse than missing documentation: it
-actively misleads every reader (human and agent) who trusts it.
+Create missing docs, verify freshness against code, enforce file consistency.
+Documentation that lies is worse than missing documentation. **The #1 failure:
+skipping HARVEST — forward-looking items stay trapped in old status reports.**
 
 ## Quick start: which mode do I need?
 
@@ -35,7 +35,7 @@ user typed:
 | A doc file doesn't exist                                                    | **BUILD**   | Generate from code, cite evidence                                       |
 | User says "full audit" / "fix my docs" / "docs health"                      | **AUDIT**   | BUILD + HARVEST, then VERIFY everything                                 |
 
-If the intent is ambiguous, default to AUDIT (it covers everything).
+If ambiguous, default to AUDIT.
 
 ## The documentation model
 
