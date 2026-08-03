@@ -382,6 +382,37 @@ Example: `status-report`, `pareto-planning`, `full-code-review`, and
 "cross-skill handoff guard") fails if any of these links disappears, so the
 loop cannot silently reopen.
 
+### Pattern 9: Surface the Primary Failure Mode in the tl;dr
+
+When a skill has a named **#1 failure mode** — a specific mistake that recurs
+across sessions and that the skill's entire structure is designed to prevent —
+that failure mode MUST appear in the tl;dr or the first ~10 lines. Agents plan
+from the tl;dr; a failure mode buried 200 lines deep is functionally invisible
+under execution pressure.
+
+The canonical incident: `update-old-docs` had "appendix-only is the #1 failure
+mode" buried at line 278. An agent processing a 41-file batch read the tl;dr
+("inline edits or end-of-file appendices"), concluded both were equal, and
+produced zero inline markers across all 41 files. The fix was rewriting tl;dr
+line 5 to name the hierarchy explicitly: "Resolve numbered items inline first
+... Appendix-only is the #1 failure mode."
+
+Audit checklist for any skill with a named failure mode:
+
+1. **Name it in the tl;dr** — if the failure mode has a name (Verschlimmbesserung,
+   trophy-case, appendix-only, cargo-cult), use it. A named failure mode is
+   easier to remember and self-check against.
+2. **State the ranking** — "the #1 failure mode" or "the dominant mistake" tells
+   the agent where to focus vigilance. An unranked list of anti-patterns invites
+   equal attention to minor and major risks.
+3. **Give the one-line guardrail** — the tl;dr should contain the single
+   sentence that prevents the failure, not just the label.
+
+Known skills currently exhibiting this anti-pattern (as of 2026-08-04):
+`go-ecosystem-upgrade` (build-only verification buried at line 148) and
+`docs-health` (HARVEST-skipping buried at line 172). Both need the failure mode
+surfaced in their intro.
+
 ---
 
 ## Common Mistakes

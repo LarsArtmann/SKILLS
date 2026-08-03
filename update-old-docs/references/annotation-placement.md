@@ -12,7 +12,6 @@
 3. [Before / after examples](#before--after-examples)
 4. [What counts as a "banner"](#what-counts-as-a-banner)
 5. [When you genuinely have no placement option](#when-you-genuinely-have-no-placement-option)
-6. [Tables with numbered rows](#tables-with-numbered-rows)
 
 ---
 
@@ -159,35 +158,11 @@ single, minimal, clearly-marked inline edit. Do not reach for a banner just
 because inline/appendix felt awkward — the awkwardness is a signal that the
 annotation adds no value.
 
-## Tables with numbered rows
+## Resolving numbered items (including table rows)
 
-When a status report uses **markdown tables** for action items (not prose
-numbered lists), apply the same per-item resolution inline. Two patterns:
-
-### Pattern A — strikethrough the resolved cells
-
-Use when the table already exists and you want minimal structural change:
-
-```markdown
-| ~~#~~ | ~~Task~~ | ~~Effort~~ | ~~Evidence~~ |
-| ~~1~~ | ~~Run `nix run .#verify`~~ done at `f72c7b40` | ~~5m~~ | ~~Skipped~~ |
-| 2 | Add Prometheus alert for orphan files | 15m | TODO_LIST |
-```
-
-The resolved row is fully struck through with the `done at` marker appended.
-The open row is left untouched — absence of a marker IS the "open" signal.
-
-### Pattern B — add a Status column
-
-Use when most rows are resolved and a status column makes the table more
-scannable:
-
-```markdown
-| # | Task | Status | Evidence |
-| 1 | Run `nix run .#verify` | ✅ done `f72c7b40` | — |
-| 2 | Add Prometheus alert | Open | TODO_LIST |
-```
-
-Either way: **every numbered row gets a verdict** — `done`, `Won't implement`,
-or left untouched (open). A table with 30 rows and zero inline markers is the
-appendix-only trap, just in table form.
+For the full pattern catalog of per-item resolution — prose numbered lists,
+variant forms (`Won't implement`, `NOT-DO/DUPLICATE`), detailed rules,
+multi-item table format (5+), and the two table-row patterns (strikethrough
+cells vs. Status column) — see
+[./resolving-items.md](./resolving-items.md). That is the companion reference
+for _how_ to resolve items; this file covers _where_ to place annotations.

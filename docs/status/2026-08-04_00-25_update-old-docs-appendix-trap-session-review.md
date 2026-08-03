@@ -251,3 +251,99 @@ this session's work and what it surfaced. It is not a full-repo audit.
 - `docs/feedback/processed/2026-08-03_*.md` — moved (committed in 448cf81)
 
 **Waiting for instructions.**
+
+---
+
+## Resolution (2026-08-04 — structural refactor session)
+
+All 5 P0 items, the 3 questions (g), and 2 P2 items resolved in a follow-up
+session. The patch-level fix from the original session (commit `448cf81`) was
+replaced by the structural fix the self-review (d)#1 called for.
+
+### P0 — all resolved
+
+1. ~~**Move all worked examples to references/**~~ — **DONE.** Created
+   `references/resolving-items.md` (the complete numbered-item pattern catalog:
+   format grammar, prose-list example, variant catalog, detailed rules,
+   multi-item table format, table-row Pattern A + B). Slimmed the body's
+   "Numbered action items" section from ~60 lines to ~26 lines (decision logic
+   + format grammar + compact example + pointer). Moved Step 3's multi-item
+   table example to a pointer. Moved "Tables with numbered rows" from
+   `annotation-placement.md` into `resolving-items.md` for cohesion. **Body:
+   497 → 477 lines** (23-line headroom, was 3).
+2. ~~**Verify docs-health HARVEST marker vocabulary**~~ — **DONE.** Verified
+   `docs-health/SKILL.md` lines 205-209 and 257-259 correctly reference
+   `done at`, `Won't implement`, `NOT-DO/DUPLICATE`; routes resolved items to
+   CHANGELOG not TODO_LIST; names the backward/forward directional split. No
+   drift. AGENTS.md §5.5 contract intact.
+3. ~~**Restore "58 identical banners" detail**~~ — **DONE.** Restored the
+   concrete parenthetical in the intro (line 45-46: "58 identical generic
+   banners that say nothing and have to be rolled back") AND the fuller
+   Background section (4 HTML dashboards, "The user called it a
+   Verschlimmbesserung and was right," "Read it when you want to understand
+   WHY").
+4. ~~**Resolve the ✅ emoji tension**~~ — **DONE.** Removed ✅ from recommended
+   Pattern B in `resolving-items.md` (now uses text: `Done \`f72c7b40\``). Kept
+   ✅ exclusively in bad-example/banner-smell contexts (anti-patterns list,
+   "so what?" FAILS column, BAD banner example). This reinforces the
+   pedagogical association: ✅ = banner smell.
+5. ~~**Re-read full SKILL.md and restore teaching weight**~~ — **DONE.**
+   Restored: doctor analogy (Core principle), "non-negotiable" (Step 1), HTML
+   bullet structure (3 scannable bullets), Undo blockquote note (safety
+   guidance), "metric of good judgment, not laziness" (Core principle).
+
+### Questions (g) — all answered
+
+1. **Worked-example refactor?** → **YES, done.** The 477-line body with restored
+   teaching weight is the structural fix. The cycle (feedback → condense → lose
+   teaching weight → next feedback) is broken: the next feedback round adds to
+   references, not the body.
+2. **✅ emoji?** → **Resolved.** Text status words in recommended examples; ✅
+   kept only in bad examples (where it illustrates the banner smell).
+3. **Behavioral eval?** → **Desk-check done; full LLM eval deferred.** Traced
+   the skill's decision path against the 41-file/table scenario. The revised
+   skill now has 8 redundant guardrails at every decision point where the
+   original agent went off track (tl;dr hierarchy, per-item checkpoint,
+   high-volume guidance, "primary work" framing, table patterns, 2 verification
+   gates, 2 anti-patterns). All 6 feedback gaps verified addressed. A full
+   LLM-based eval is disproportionate for a content repo and would be
+   self-referential.
+
+### P2 — 2 of 4 resolved
+
+9. ~~**Audit all 25 skill tl;drs**~~ — **DONE.** Found 2 skills with buried
+   primary failure modes: `go-ecosystem-upgrade` (build-only verification at
+   line 148, not in intro) and `docs-health` (HARVEST-skipping at line 172, not
+   in intro). Documented as follow-up items.
+10. ~~**Add "primary failure mode" authoring rule**~~ — **DONE.** Added as
+    Pattern 9 in `how-to-write-skills.md` with the `update-old-docs`
+    appendix-only incident as the worked example and the 2 flagged skills
+    named.
+
+### Still open (deferred)
+
+- **P1 #6-8** (full behavioral eval with skill-creator framework) — deferred;
+  desk-check provides structural verification.
+- **P2 #11** (`docs-health` references-first refactor) — noted; docs-health is
+  at 500/500 lines, same structural pressure.
+- **P2 #12** (`check-skills.sh` marker-vocabulary guard) — new feature, deferred.
+- **P3 #13-25** — smaller improvements, not addressed this session.
+
+### Desk-check: decision-path trace against the feedback scenario
+
+**Scenario:** 41 `2026-08-*` files, markdown tables of numbered action items,
+high volume. Agent classifies 7 as ANNOTATE.
+
+| Feedback gap | Guardrail in revised skill | Location |
+|---|---|---|
+| tl;dr implies inline = appendix | tl;dr line 5: hierarchy explicit | SKILL.md:31 |
+| No table worked example | Pattern A + B | resolving-items.md §7 |
+| Section doesn't mention tables | "lists AND tables" in title + intro | SKILL.md:311-315 |
+| No high-volume guidance | "Depth over breadth" | SKILL.md:356-364 |
+| No pre-annotation checkpoint | Per-item checkpoint | SKILL.md:175-180 |
+| Verification gate vacuous pass | "No appendix-only annotations" gate | SKILL.md:429 |
+
+**Verdict:** The revised skill has redundant guardrails at every decision point
+where the original agent went off track. The appendix-only path is now blocked
+at 3 levels (tl;dr framing, per-item checkpoint forcing a plan, verification
+gate checking for inline markers). PASS.
