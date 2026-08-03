@@ -8,7 +8,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ## The Collection
 
-**25 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out), **🆕 New** (structurally valid, never yet triggered against real work — ages into 🟢 after a documented successful run).
+**24 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out), **🆕 New** (structurally valid, never yet triggered against real work — ages into 🟢 after a documented successful run).
 
 ### Shared Assets
 
@@ -36,12 +36,6 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 | **deduplicate-code**   | Find and eliminate semantic code duplication                          | 🟡 Thin          |
 | **full-code-review**   | Comprehensive review visiting every code and test file                | 🟢 Comprehensive |
 | **naming-review**      | Audits and improves naming for types, functions, and identifiers      | 🟢 Comprehensive |
-
-### Editing Discipline
-
-| Skill               | What It Does                                                                                                        | Status   |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------- | -------- |
-| **update-old-docs** | Keeps old/historical docs current via non-destructive annotation — restraint, "so what?" test, appendix over banner | 🟢 Solid |
 
 ### Skill Authoring & Verification
 
@@ -78,7 +72,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 | Skill              | What It Does                                                                                                                 | Status           |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| **docs-health**    | Creates, verifies, and maintains all core project docs — enforces file ownership and cross-file consistency                  | 🟢 Solid         |
+| **docs-health**    | Creates, verifies, and maintains all project docs (living AND historical) — BUILD, HARVEST, VERIFY, ANNOTATE modes          | 🟢 Solid         |
 | **status-report**  | Full project status updates as styled HTML dashboards                                                                        | 🟡 Functional    |
 | **website-launch** | Launches documentation websites (Astro + Starlight + Firebase) with pre-flight checks, color palettes, and go-live checklist | 🟢 Comprehensive |
 

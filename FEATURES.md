@@ -39,12 +39,6 @@
 | code-quality-scan  | 🟡 `PARTIALLY_FUNCTIONAL` | 37    | ✅ (assets) | Build + lint + duplication → HTML dashboard; thin body               |
 | deduplicate-code   | 🟡 `PARTIALLY_FUNCTIONAL` | 70    | —          | Semantic duplication detection; relies on `art-dupl` CLI             |
 
-## Skill Collection — Editing Discipline
-
-| Skill           | Status                | Lines | References | Notes                                                                                |
-| --------------- | --------------------- | ----- | ---------- | ------------------------------------------------------------------------------------ |
-| update-old-docs | 🟢 `FULLY_FUNCTIONAL` | 477   | ✅ (3 files) | Non-destructive annotation; 5 rounds of feedback distilled; resolving-items catalog |
-
 ## Skill Collection — Epistemic Hygiene
 
 | Skill                  | Status    | Lines | References | Notes                                                                          |
@@ -80,7 +74,7 @@
 
 | Skill          | Status                    | Lines | References | Notes                                                                |
 | -------------- | ------------------------- | ----- | ---------- | -------------------------------------------------------------------- |
-| docs-health    | 🟢 `FULLY_FUNCTIONAL`     | 500   | ✅ (6 files) | All core docs: BUILD + HARVEST + VERIFY + AUDIT; AGENTS.md quality   |
+| docs-health    | 🟢 `FULLY_FUNCTIONAL`     | 166   | ✅ (10 files) | All docs: BUILD + HARVEST + VERIFY + ANNOTATE + AUDIT (merged update-old-docs 2026-08-04)   |
 | website-launch | 🟢 `FULLY_FUNCTIONAL`     | 1106  | ✅         | Astro + Starlight + Firebase; allowlisted over 500-line guideline    |
 | status-report  | 🟡 `PARTIALLY_FUNCTIONAL` | 70    | ✅ (assets) | HTML dashboards; works but would benefit from deeper references      |
 

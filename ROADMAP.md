@@ -29,7 +29,7 @@ Raw ideas:
 the `<--` artifact guard, cross-skill handoff links). This catches regressions
 but not content-level problems: dead anchor links, TOC drift, stale cross-
 references, documentation-creep in descriptions, or the marker-vocabulary
-contract between `update-old-docs` and `docs-health` HARVEST.
+contract between docs-health ANNOTATE and HARVEST modes.
 
 Raw ideas:
 
@@ -54,13 +54,13 @@ Raw ideas:
 - A "feedback-to-skill" checklist that enforces: read feedback → encode into
   skill → archive feedback, with no "report and move on" escape hatch
 - Track which feedback rounds produced which skill edits, so future readers can
-  trace why a rule exists (the `update-old-docs` case-study.md model)
+  trace why a rule exists (the docs-health/references/case-study.md model)
 
 ### 4. Inter-skill architecture
 
 The skill graph is documented in AGENTS.md §5.5 but not enforced or visualized.
-Several skills form intentional pairs (`update-old-docs` ↔ `docs-health`,
-`verify-external-claims` ↔ `verify-before-filing`), but the broader dependency
+Several skills form intentional pairs
+(`verify-external-claims` ↔ `verify-before-filing`), but the broader dependency
 and delegation graph is prose, not a checked artifact.
 
 Raw ideas:
@@ -98,10 +98,12 @@ These are blockers that need a human decision before they can become tasks:
 - **Should `website-launch` stay at 1106 lines or be refactored?** It is
   allowlisted past the 500-line guideline. Refactoring is safe but low-impact
   unless the skill is actively painful to maintain.
-- **Is the 500-line limit right for feedback-sink skills?** `update-old-docs`
-  (477 lines) and `docs-health` (500 lines) both absorb the most feedback and
-  are both at capacity. Either raise the limit for these or enforce the
-  references-only-examples discipline harder.
+- **Is the 500-line limit right for feedback-sink skills?** Resolved for
+  docs-health: the 2026-08-04 nuclear rewrite cut it from 500 to 166 lines by
+  merging update-old-docs (477 lines) into it and pushing all warnings/edge
+  cases to references. The lesson: feedback-sink skills bloat because every
+  failure mode gets restated 3× (body + anti-patterns + verification gate).
+  State each rule once; push detail to references.
 
 ## Non-goals
 
@@ -112,7 +114,7 @@ Things we are deliberately NOT pursuing and why:
   nature.
 - **Tests or CI beyond `check-skills.sh`.** No runnable code exists to test. The
   structural guard is sufficient; content quality is enforced by the skills
-  themselves (docs-health, update-old-docs).
+  themselves (docs-health).
 - **Semantic versioning / git tags.** The repo evolves in session waves, not
   releases. The CHANGELOG uses date-based milestones because there is no release
   process to version against. Faking semver would be dishonest.

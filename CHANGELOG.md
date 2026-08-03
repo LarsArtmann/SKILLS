@@ -20,6 +20,18 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 - Living-docs consistency: `CONTRIBUTING.md` corrected (was pointing at Go test
   commands for a content repo with no code)
 
+### Changed
+
+- **Merged `update-old-docs` into `docs-health`** — eliminated the cross-reference
+  maintenance burden and 3× boundary restatement. docs-health now has four modes:
+  BUILD, HARVEST, VERIFY, ANNOTATE (formerly update-old-docs). Body went from
+  500→166 lines (67% cut) via the "nuclear" approach: each rule stated once, all
+  warnings/edge cases/anti-patterns pushed to references. Skill count: 25→24.
+  Moved 3 reference files (resolving-items, annotation-placement, case-study) into
+  `docs-health/references/`. Created `harvest-guide.md`. Updated all cross-refs in
+  status-report, common-mistakes, doc-ownership, how-to-write-skills, README,
+  AGENTS, FEATURES, TODO_LIST, ROADMAP.
+
 ## 2026-08-04 — update-old-docs structural refactor & AGENTS.md quality analysis
 
 **Commits:** `b01bbbc`–`c3e6371` · **Skills:** 25

@@ -36,12 +36,12 @@ These address patterns that have caused repeated problems across multiple sessio
 
 | ID  | Task                                                                     | Status    | Impact | Effort | Evidence                                                                                                |
 | --- | ------------------------------------------------------------------------ | --------- | ------ | ------ | ------------------------------------------------------------------------------------------------------- |
-| T5  | Refactor `docs-health/SKILL.md` references-first (500→~350 body)        | 🔴 `TODO` | High   | Med    | At exactly 500/500 lines — same pressure that forced `update-old-docs` refactor. Report: `docs/status/2026-08-04_01-00_*` |
+| T5  | Refactor `docs-health/SKILL.md` references-first (500→~350 body)        | ✅ `DONE` | High   | Med    | ✅ Done this session: merged update-old-docs into docs-health, body 500→166 lines |
 | T6  | Add TOC-integrity guard to `check-skills.sh`                            | 🔴 `TODO` | Med    | Low    | Count `## ` headings vs TOC entries, fail on mismatch. Hit by 2 consecutive sessions. Current guards: structural, hardcoded-count, handoff only |
-| T7  | Add marker-vocabulary guard to `check-skills.sh`                        | 🔴 `TODO` | Med    | Low    | Verify docs-health HARVEST references `update-old-docs`-owned markers (`done at`, `Won't implement`, `NOT-DO`). AGENTS.md §5.5 contract |
+| T7  | Add marker-vocabulary guard to `check-skills.sh`                        | 🔴 `TODO` | Med    | Low    | Verify docs-health HARVEST references ANNOTATE-owned markers (`done at`, `Won't implement`, `NOT-DO`). AGENTS.md §5.5 contract |
 | T8  | Reconcile scoring systems in docs-health                                | 🔴 `TODO` | Med    | Low    | `agents-quality-guide.md` has 5-dimension rubric; `health-report-format.md` has 2-score (Accuracy+Fitness). Split brain. Report: `docs/status/2026-08-04_00-35_*` |
 | T9  | Create `scripts/check-agents-md.sh` linting script                      | 🔴 `TODO` | Med    | Med    | Package temporal-pollution grep patterns into standalone scorer. Currently only in `agents-quality-guide.md` as documented commands |
-| T10 | Append appendix-only incident to `update-old-docs/references/case-study.md` | 🔴 `TODO` | Low    | Low    | 4th failure-mode round (currently covers banner Verschlimmbesserung only). Report: `docs/status/2026-08-04_01-00_*` |
+| T10 | Append appendix-only incident to `docs-health/references/case-study.md` | 🔴 `TODO` | Low    | Low    | 4th failure-mode round (currently covers banner Verschlimmbesserung only). Report: `docs/status/2026-08-04_01-00_*` |
 | T11 | Add condensing checklist to `how-to-write-skills.md`                    | 🔴 `TODO` | Low    | Low    | Rule: move examples to references FIRST, then trim prose. Prevents the condensing-erodes-teaching-weight cycle |
 
 ## P2 — Deepen Thin Skills

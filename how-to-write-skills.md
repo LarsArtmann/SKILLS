@@ -213,7 +213,7 @@ In SKILL.md, include decision logic:
 | **Common mistakes reference**                  | `docs-health` — `references/common-mistakes.md`                                    | Prevents the same errors from recurring across sessions     |
 | **Commit checkpoints**                         | `website-launch` — defines mandatory commit points per phase                       | Prevents catastrophic loss of uncommitted work              |
 | **Visual QA gate**                             | `website-launch` — verifies rendered output before declaring done                  | Catches broken layouts, missing assets, CSS errors          |
-| **Restraint / Verschlimmbesserung prevention** | `update-old-docs` — "so what?" test, per-file judgment, non-destructive annotation | Stops well-intentioned batch edits from making things worse |
+| **Restraint / Verschlimmbesserung prevention** | `docs-health` ANNOTATE — "so what?" test, per-file judgment, non-destructive annotation | Stops well-intentioned batch edits from making things worse |
 
 ## Essential Skill Patterns (Learned from Real Sessions)
 
@@ -333,7 +333,7 @@ The feedback-to-skill conversion process:
 ### Pattern 7: Restraint & Verschlimmbesserung Prevention
 
 When a skill modifies MANY files at once, it MUST enforce restraint. The
-recurring failure mode — well-documented in the `update-old-docs` incident —
+recurring failure mode — well-documented in the docs-health ANNOTATE incident —
 is an agent optimizing for "touched every file" instead of "every change
 helped," shipping 58 identical generic banners that say nothing and have to be
 rolled back.
@@ -348,9 +348,8 @@ Include these guardrails in any bulk-edit skill:
 4. **Verify output quality, not process quality** — re-read each change from a
    skeptical reader's perspective
 
-Example: `update-old-docs` applies all four when bringing many old status
-reports current. `docs-health` cross-links to it whenever AUDIT mode touches
-many files. The rule "all" means "no file that NEEDS updating is missed," NOT
+Example: `docs-health` ANNOTATE mode applies all four when bringing many old status
+reports current. The rule "all" means "no file that NEEDS updating is missed," NOT
 "every file gets a change." Restraint is success.
 
 ### Pattern 8: Cross-Skill Handoff Notes
@@ -373,8 +372,8 @@ Include a handoff note at the end of any report/plan/review skill:
    location (e.g. docs-health "When to run HARVEST") as the single source of
    truth.
 3. **Pair it with the backward note** — reports also go stale; the forward
-   handoff (HARVEST pulls items OUT) and the backward handoff (`update-old-docs`
-   annotates the report itself) are different directions, both needed.
+   handoff (HARVEST pulls items OUT) and the backward handoff (ANNOTATE
+   annotates the report itself) are different directions within docs-health, both needed.
 
 Example: `status-report`, `pareto-planning`, `full-code-review`, and
 `architecture-review` each end with a short HARVEST pointer linking to
@@ -390,7 +389,7 @@ that failure mode MUST appear in the tl;dr or the first ~10 lines. Agents plan
 from the tl;dr; a failure mode buried 200 lines deep is functionally invisible
 under execution pressure.
 
-The canonical incident: `update-old-docs` had "appendix-only is the #1 failure
+The canonical incident: docs-health ANNOTATE (formerly `update-old-docs`) had "appendix-only is the #1 failure
 mode" buried at line 278. An agent processing a 41-file batch read the tl;dr
 ("inline edits or end-of-file appendices"), concluded both were equal, and
 produced zero inline markers across all 41 files. The fix was rewriting tl;dr
@@ -408,8 +407,8 @@ Audit checklist for any skill with a named failure mode:
 3. **Give the one-line guardrail** — the tl;dr should contain the single
    sentence that prevents the failure, not just the label.
 
-Fixed examples (as of 2026-08-04): `update-old-docs` (appendix-only trap
-surfaced in tl;dr line 5), `go-ecosystem-upgrade` (build-only verification
+Fixed examples (as of 2026-08-04): `docs-health` ANNOTATE (appendix-only trap
+surfaced in body), `go-ecosystem-upgrade` (build-only verification
 surfaced in intro), `docs-health` (HARVEST-skipping surfaced in intro).
 
 ---
