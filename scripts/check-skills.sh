@@ -202,7 +202,7 @@ fi
 # silence the guard by deleting it.
 handoffs=(
 	"status-report/SKILL.md|HARVEST"
-	"docs-health/SKILL.md|When to run HARVEST"
+	"docs-health/SKILL.md|## HARVEST — pull forward"
 	"full-code-review/SKILL.md|HARVEST"
 	"architecture-review/SKILL.md|HARVEST"
 	"pareto-planning/SKILL.md|HARVEST"

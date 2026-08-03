@@ -35,8 +35,8 @@ Map the review to visual components:
 - **Numbered-step components** for the action roadmap
 
 > Architecture reviews are point-in-time snapshots. When a later task asks to
-> bring old reviews current, defer to [`update-old-docs`](../update-old-docs/SKILL.md)
-> — annotate non-destructively, never rewrite.
+> bring old reviews current, use [`docs-health`](../docs-health/SKILL.md) →
+> **ANNOTATE** mode — annotate non-destructively, never rewrite.
 >
 > **The action roadmap above is forward-looking work.** If it isn't already in
 > `TODO_LIST.md` / `ROADMAP.md`, run [`docs-health`](../docs-health/SKILL.md) →

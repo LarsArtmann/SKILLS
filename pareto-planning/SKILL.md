@@ -59,9 +59,8 @@ NOTE: Use the cli to get the current date.
 BE SMART! Use your Brain! Let's go!
 
 > Plans are point-in-time artifacts that go stale. When a later task asks to
-> bring old plans current, defer to the
-> [`update-old-docs`](../update-old-docs/SKILL.md) skill — annotate
-> non-destructively, never rewrite the original plan.
+> bring old plans current, use [`docs-health`](../docs-health/SKILL.md) →
+> **ANNOTATE** mode — annotate non-destructively, never rewrite the original plan.
 
 > **If this plan surfaced NEW tasks** not already in `TODO_LIST.md`, add them
 > there (the plan is a snapshot; `TODO_LIST.md` is the living source). To pull

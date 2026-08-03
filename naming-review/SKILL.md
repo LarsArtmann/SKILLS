@@ -257,4 +257,4 @@ Read these files when you need specific examples or deeper guidance on a particu
 - **code-quality-scan** — Runs linters that already catch some naming issues. naming-review goes deeper into semantics linters can't check
 - **deduplicate-code** — Finds code duplication which often reveals split-brain naming (same concept, different names)
 - **architecture-review** — Architecture issues often manifest as naming problems (Manager classes, Impl suffixes)
-- **update-old-docs** — When a rename touches many files or old reports, defer to it for restraint discipline: read every target first, apply per-file judgment, and annotate old docs non-destructively instead of blanket-editing
+- **docs-health** ANNOTATE — When a rename touches many files or old reports, use ANNOTATE mode for restraint discipline: read every target first, apply per-file judgment, and annotate old docs non-destructively instead of blanket-editing

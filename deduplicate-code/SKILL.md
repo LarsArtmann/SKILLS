@@ -64,7 +64,7 @@ is there on purpose, every change is verified by tests.
 
 ## Related Skills
 
-- **update-old-docs** — Refactoring across many files (extract, rename) is a
-  multi-file edit. When the change set is large, defer to it for restraint
+- **docs-health** ANNOTATE — Refactoring across many files (extract, rename) is a
+  multi-file edit. When the change set is large, use ANNOTATE mode for restraint
   discipline: read every target first, make per-file judgment calls, and never
   blanket-script a transformation that needs judgment.
