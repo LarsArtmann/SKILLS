@@ -157,3 +157,36 @@ appendix is absurd. In that case the answer is **leave it alone**, or make a
 single, minimal, clearly-marked inline edit. Do not reach for a banner just
 because inline/appendix felt awkward — the awkwardness is a signal that the
 annotation adds no value.
+
+## Tables with numbered rows
+
+When a status report uses **markdown tables** for action items (not prose
+numbered lists), apply the same per-item resolution inline. Two patterns:
+
+### Pattern A — strikethrough the resolved cells
+
+Use when the table already exists and you want minimal structural change:
+
+```markdown
+| ~~#~~ | ~~Task~~ | ~~Effort~~ | ~~Evidence~~ |
+| ~~1~~ | ~~Run `nix run .#verify`~~ done at `f72c7b40` | ~~5m~~ | ~~Skipped~~ |
+| 2 | Add Prometheus alert for orphan files | 15m | TODO_LIST |
+```
+
+The resolved row is fully struck through with the `done at` marker appended.
+The open row is left untouched — absence of a marker IS the "open" signal.
+
+### Pattern B — add a Status column
+
+Use when most rows are resolved and a status column makes the table more
+scannable:
+
+```markdown
+| # | Task | Status | Evidence |
+| 1 | Run `nix run .#verify` | ✅ done `f72c7b40` | — |
+| 2 | Add Prometheus alert | Open | TODO_LIST |
+```
+
+Either way: **every numbered row gets a verdict** — `done`, `Won't implement`,
+or left untouched (open). A table with 30 rows and zero inline markers is the
+appendix-only trap, just in table form.

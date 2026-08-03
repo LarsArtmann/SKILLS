@@ -33,32 +33,24 @@ _Keep old documents current without destroying their history._
 
 Old documents — status reports, plans, reviews, audits, snapshots — capture
 what someone knew at a point in time. They go stale. A reader opening an old
-status report wants to know: _is this done? where is it NOW?_ Keeping that
-report current is the job.
+status report wants to know: _is this done? where is it NOW?_
 
-This is a **different problem** from maintaining living docs. Living docs
-(`README.md`, `FEATURES.md`, `TODO_LIST.md`) get rewritten in place — that is
+This is **different** from maintaining living docs. Living docs (`README.md`,
+`FEATURES.md`, `TODO_LIST.md`) get rewritten in place — that is
 [`docs-health`](../docs-health/SKILL.md). Historical snapshots **cannot** be
-rewritten without destroying their value as a record, so the only safe tool is
+rewritten without destroying their value, so the only safe tool is
 **non-destructive annotation**: inline corrections or end-of-file appendices.
-And when you update many old docs at once, the dominant failure mode is a
-**Verschlimmbesserung** — a well-intentioned batch edit that makes things worse
-(58 identical generic banners that say nothing and have to be rolled back).
+When updating many at once, the dominant failure mode is a
+**Verschlimmbesserung** — a well-intentioned batch edit that makes things worse.
 
 READ, UNDERSTAND, RESEARCH, REFLECT before every action.
 
 ## Core principle: restraint is success
 
 **"Update all the old files" means "no file that NEEDS updating is missed." It
-does NOT mean "every file gets a change."** A doctor does not operate on every
-patient in the waiting room just because the instruction said "see all
-patients."
-
-Leaving an old file untouched because it is already clear, already correct, or
-because no annotation would add value is the CORRECT outcome — not a failure.
+does NOT mean "every file gets a change."** Leaving a file untouched because it
+is already clear or no annotation would add value is the CORRECT outcome.
 Measure success by **value added per annotation**, not by **files touched**.
-The number of files you left untouched is a metric of good judgment, not of
-laziness.
 
 ## When this applies
 
@@ -147,15 +139,12 @@ stop — that is a docs-health rewrite, not an update-old-docs annotation.
 
 ### Step 1 — Read everything before touching anything
 
-Before annotating a single file, read and understand EVERY target. Use
-sub-agents to parallelize the **classification** pass (what's stale, what
-items exist) — but the **annotation itself** (writing `done at` markers,
-inline-correcting claims) must be done by the primary agent after reading
-the actual file text, not a paraphrased summary. Do not annotate or write
-any script until you can answer for each file: _what does it currently say,
-and what does it currently lack?_
-
-This is non-negotiable. The Verschlimmbesserung happens when you decide the
+Read and understand EVERY target before annotating. Use sub-agents to
+parallelize the **classification** pass — but the **annotation itself** (writing
+`done at` markers, inline-correcting claims) must be done by the primary agent
+after reading the actual file text, not a paraphrased summary. Do not annotate
+until you can answer for each file: _what does it currently say, and what does
+it currently lack?_ The Verschlimmbesserung happens when you decide the
 annotation before understanding the targets.
 
 ### Step 2 — Classify each target (per-file judgment)
@@ -374,28 +363,11 @@ context-switching to a separate section.
 
 #### Tables with numbered rows
 
-When the action items are table rows (not a prose list), apply the same
-per-item resolution inline. Two patterns:
-
-**Pattern A — strikethrough the resolved cells:**
-
-```markdown
-| ~~#~~ | ~~Task~~ | ~~Effort~~ | ~~Evidence~~ |
-| ~~1~~ | ~~Run `nix run .#verify`~~ done at `f72c7b40` | ~~5m~~ | ~~Skipped~~ |
-| 2 | Add Prometheus alert for orphan files | 15m | TODO_LIST |
-```
-
-**Pattern B — add a Status column** (cleaner when most rows are resolved):
-
-```markdown
-| # | Task | Status | Evidence |
-| 1 | Run `nix run .#verify` | ✅ done `f72c7b40` | — |
-| 2 | Add Prometheus alert | Open | TODO_LIST |
-```
-
-Use Pattern A when the table already exists and you want minimal structural
-change. Use Pattern B when most rows are resolved and a status column makes
-the table more scannable. Either way: every numbered row gets a verdict.
+When items are table rows, apply the same per-item resolution: strike through
+resolved cells (`~~1~~ | ~~Run verify~~ done at `f72c7b40``), or add a Status
+column (`✅ done `f72c7b40`` / `Open`) when most rows are resolved. Every
+numbered row gets a verdict. Full before/after examples in
+[annotation-placement.md](./references/annotation-placement.md) (see "Tables with numbered rows").
 
 ---
 
@@ -427,29 +399,18 @@ appendices and zero inline markers.
 
 ## HTML and structured files
 
-Old reports are sometimes HTML dashboards. HTML needs extra care:
-
-- **Structure is fragile.** A naive `txt.find('</div>')` matches the wrong
-  closing tag and corrupts the file (this exact bug duplicated a file's body
-  1400+ times in the incident that created this skill).
-- **CSP matters.** Many projects forbid inline `style=` / `on*=` handlers.
-  Adding inline-styled banners violates their security architecture.
-- **Read before edit.** Always `view` the structure first. Use `edit` for
-  surgical changes, never a batch string-replace script on HTML.
-
-When in doubt, do not script HTML. Edit it by hand with the Edit tool.
+Old reports are sometimes HTML dashboards. HTML needs extra care: structure is
+fragile (a naive `txt.find('</div>')` corrupts the file — this duplicated a body
+1400+ times in the source incident), CSP forbids inline `style=`/`on*=` handlers,
+and batch string-replace is dangerous. Always `view` structure first, use `edit`
+for surgical changes, never script HTML.
 
 ## Undoing a mistake: restore, don't re-transform
 
-If you need to remove a batch annotation you just made, the safest path is
-`git restore <file>` — NOT a second removal script. A removal script is a
-second transformation, and it can introduce its own bugs (this is how the HTML
-got corrupted in the source incident). `git restore` returns the file to a
-known-good state with no chance of a new mistake.
-
-> Note: per project AGENTS.md, never `git restore` files you did not personally
-> change in this session. This rule is about undoing YOUR OWN batch annotation
-> only.
+Remove a batch annotation with `git restore <file>`, never a removal script (a
+second transform introduces its own bugs — this corrupted the HTML in the
+source incident). Note: never `git restore` files you did not change this
+session.
 
 ---
 
@@ -457,19 +418,15 @@ known-good state with no chance of a new mistake.
 
 ### The exception: when a uniform stamp IS correct
 
-This skill is about annotating OLD documents with RESOLUTION information, where
-each file's resolution differs. A different task is adding a truly uniform
-preamble to every file (license headers, confidentiality notices, "generated by
-X" markers). There, the content genuinely IS identical across files, and a
-scripted stamp is correct. The distinction: if every file should receive the
-same text, batch away — but that is not what this skill covers.
+Adding a truly uniform preamble to every file (license headers, "generated by"
+markers) is a different task — the content IS identical, so a scripted stamp is
+correct. This skill covers per-file resolution annotations, not uniform stamps.
 
 ### Generated and locked files
 
 Never annotate machine-generated output (`*.gen.go`, `*_stringer.go`, rendered
-diagrams, vendored copies). These are regenerated from source; an annotation
-would be erased on the next generation. If a generated file is stale, the fix
-is to regenerate it, not to annotate it.
+diagrams, vendored copies) — it's erased on regeneration. Regenerate stale
+generated files; don't annotate them.
 
 ### Re-runs are productive, not no-ops
 
@@ -534,11 +491,7 @@ Every previously-open item must be re-checked against current commits — assume
 
 ## Background
 
-This skill was distilled from a real incident: a session stamped 58 identical
-generic banners across old status reports (and inline-styled banners into 4
-HTML dashboards), then corrupted the HTML while trying to remove them. The user
-called it a Verschlimmbesserung and was right. The full case study — root-cause
-analysis, the two rounds of feedback (generic banners, then the banner-vs-appendix
-preference), and the exact prompts — is in
-[./references/case-study.md](./references/case-study.md). Read it when you want
-to understand WHY every rule above exists, not just WHAT it says.
+Distilled from a real incident: 58 identical banners stamped across old
+reports, then HTML corrupted during removal. Full case study — root-cause,
+feedback rounds, and exact prompts — in
+[./references/case-study.md](./references/case-study.md).
