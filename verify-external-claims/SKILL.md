@@ -93,11 +93,11 @@ If a skill documents a tool whose CLI behavior cannot be verified, add this bloc
 ```markdown
 ## Verification status
 
-| Claim                                                           | Status        | Source                                                                                                                        |
-| --------------------------------------------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `errors.AsType[E] (E, bool)` API                                | ✅ Verified   | pkg.go.dev/errors (Go 1.26.0)                                                                                                 |
+| Claim                                                           | Status        | Source                                                                                                                                                                                        |
+| --------------------------------------------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `errors.AsType[E] (E, bool)` API                                | ✅ Verified   | pkg.go.dev/errors (Go 1.26.0)                                                                                                                                                                 |
 | Tool binary `erraudit` (formerly `hierarchical-errors`)         | ❌ Unverified | Searched GitHub, Sourcegraph, pkg.go.dev (2026-08-02); zero matches. Likely private. The `errorfamily` library it may reference IS verified: `github.com/larsartmann/go-error-family` v0.10.0 |
-| Decision tree for `errors.As` vs `errors.Is` vs `errors.AsType` | ✅ Verified   | Go `errors` package semantics                                                                                                 |
+| Decision tree for `errors.As` vs `errors.Is` vs `errors.AsType` | ✅ Verified   | Go `errors` package semantics                                                                                                                                                                 |
 ```
 
 Replace the rows with the actual claims in the skill. The durable value of the skill should survive even if the specific tool does not exist.

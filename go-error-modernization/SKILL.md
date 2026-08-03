@@ -130,7 +130,7 @@ done
 
 Scopes the linter to ONLY `errors.As` findings (the high-precision diagnostic). Excludes all `errors.Is` advisories.
 
-**Optional: `--enforce-go-error-family`** *(unverified flag)* — reported to enforce that errors conform to a structured error family pattern. Presumably related to [`github.com/larsartmann/go-error-family`](https://github.com/larsartmann/go-error-family), which classifies errors into six families (Rejection, Conflict, Transient, Corruption, Infrastructure, Orchestration). The flag's exact behavior and diagnostics have not been verified against a binary.
+**Optional: `--enforce-go-error-family`** _(unverified flag)_ — reported to enforce that errors conform to a structured error family pattern. Presumably related to [`github.com/larsartmann/go-error-family`](https://github.com/larsartmann/go-error-family), which classifies errors into six families (Rejection, Conflict, Transient, Corruption, Infrastructure, Orchestration). The flag's exact behavior and diagnostics have not been verified against a binary.
 
 ## Decision tree for `errors.Is` findings
 
@@ -180,13 +180,13 @@ The flag table below combines the original source feedback (2026-07-21, when the
 
 ### Flags that WORK
 
-| Flag                        | Subcommand  | Behavior                                                                                                                    |
-| --------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `--type-aware`              | both        | Uses type information to reduce `errors.Is` false positives on sentinel matches. **Recommended on every invocation.**       |
-| `--type legacy_as`          | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **Reliable CI filter (fallback if `--type-aware` is insufficient).** |
+| Flag                        | Subcommand  | Behavior                                                                                                                              |
+| --------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `--type-aware`              | both        | Uses type information to reduce `errors.Is` false positives on sentinel matches. **Recommended on every invocation.**                 |
+| `--type legacy_as`          | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **Reliable CI filter (fallback if `--type-aware` is insufficient).**           |
 | `--enforce-go-error-family` | both        | **Unverified.** Reported to enforce errors conform to the `go-error-family` library pattern. Behavior not confirmed against a binary. |
-| `--violations-only`         | `lint`      | Shows only violations, no summary. Cosmetic but works.                                                                      |
-| `//nolint:legacyerrors`     | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.                                                   |
+| `--violations-only`         | `lint`      | Shows only violations, no summary. Cosmetic but works.                                                                                |
+| `//nolint:legacyerrors`     | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.                                                             |
 
 ### Flags reported BROKEN or INEFFECTIVE (verify before relying on)
 

@@ -26,7 +26,7 @@
 The 5-line tl;dr at the top says:
 
 > 3. Write only specific notes (commit hash + what's still open) — never generic banners.
-> 5. Place notes as **inline edits** or **end-of-file appendices** — never top-of-file banners.
+> 4. Place notes as **inline edits** or **end-of-file appendices** — never top-of-file banners.
 
 This lists inline and appendix as two equally-valid placement options. I read this and thought "appendix is fine." I did NOT internalize that **inline is the primary tool and appendix-only is the #1 failure mode** — that critical ranking is buried 200 lines deeper in the "Annotation placement" section:
 
@@ -107,6 +107,7 @@ For 41 files, each with 30-50 numbered items, the classification step alone is e
 ### 5. No pre-annotation checkpoint that forces inline resolution
 
 The skill's workflow is:
+
 1. Read everything
 2. Classify
 3. Write specific annotations

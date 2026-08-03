@@ -41,7 +41,7 @@
 
 ## d) TOTALLY FUCKED UP!
 
-1. **Wrote fabricated documentation for `--enforce-go-error-family`.** In the first erraudit commit (`005f511`), I wrote: "enforces that all errors belong to a structured error family. This is stricter and may surface additional findings about error type consistency." That was entirely invented from the flag name. I had zero knowledge of what the flag does. I did this *inside the skill that exists to prevent fabricated CLI flags* — the `go-error-modernization` skill references the `verify-external-claims` skill, and the original feedback that created this skill was about an agent that fabricated CLI flag tables. I repeated the exact pattern the skill warns against. (Fixed in commit `992917a` after research, but the fabrication was live for one commit.)
+1. **Wrote fabricated documentation for `--enforce-go-error-family`.** In the first erraudit commit (`005f511`), I wrote: "enforces that all errors belong to a structured error family. This is stricter and may surface additional findings about error type consistency." That was entirely invented from the flag name. I had zero knowledge of what the flag does. I did this _inside the skill that exists to prevent fabricated CLI flags_ — the `go-error-modernization` skill references the `verify-external-claims` skill, and the original feedback that created this skill was about an agent that fabricated CLI flag tables. I repeated the exact pattern the skill warns against. (Fixed in commit `992917a` after research, but the fabrication was live for one commit.)
 
 2. **Committed another session's work three times without understanding it.** In commit `3a7cc56` I `git add -A`'d `verify-before-filing/SKILL.md`, feedback file moves, and the `verify-external-claims/SKILL.md` cross-reference addition. I didn't author or review these changes. They looked reasonable, but I vouched for changes I didn't make. The auto-git daemon likely created some of these, and a parallel session created the rest.
 
@@ -66,32 +66,32 @@
 
 ## f) Next Tasks (up to 50, sorted by impact)
 
-| # | Task | Impact | Effort |
-|---|------|--------|--------|
-| 1 | Run trigger collision analysis across all 25 skills | Critical | Medium |
-| 2 | Add disambiguation between `code-quality-scan` vs `full-code-review` | High | Low |
-| 3 | Add disambiguation between `deduplicate-code` vs `code-quality-scan` | High | Low |
-| 4 | Audit `verify-before-filing/SKILL.md` body and claims | High | Low |
-| 5 | Read `go-error-family` README and improve `--enforce-go-error-family` docs | High | Low |
-| 6 | Run skill-creator evals on the 9 rewritten descriptions | High | Medium |
-| 7 | Add disambiguation between `architecture-review` vs `full-code-review` | Medium | Low |
-| 8 | Add disambiguation between `status-report` vs `docs-health` | Medium | Low |
-| 9 | Add "competing skills" section to `how-to-write-skills.md` | Medium | Medium |
-| 10 | Update phase 1 planning doc with completion markers | Low | Trivial |
-| 11 | Create retroactive planning docs for phases 2 and 3 | Low | Low |
-| 12 | Investigate whether `//nolint:legacyerrors` changed after rename | Medium | Low |
-| 13 | Consider moving flag tables from SKILL.md to references/cli-and-flags.md | Low | Low |
-| 14 | Verify `errorfamily.NewConflict(...)` example in decision-tree.md matches actual API | Medium | Low |
-| 15 | Run description-optimization loop (`run_loop.py`) on 5 thinnest descriptions | Medium | High |
-| 16 | Consider whether `--type-aware` makes the decision tree simpler | Low | Medium |
-| 17 | Audit whether any description accidentally excludes valid use cases | Low | Medium |
-| 17 | Consider whether `brutal-self-review` (342 chars) needs more triggers | Low | Low |
-| 18 | Consider whether `architecture-visualization` (424 chars) needs more triggers | Low | Low |
-| 19 | Consider whether `nix-private-go-repos` (434 chars) needs more triggers | Low | Low |
-| 20 | Add `erraudit` to `code-quality-scan` as an optional check for Go projects | Low | Medium |
-| 21 | Verify exit code table against `erraudit` binary if it becomes available | Low | Low |
-| 22 | Consider adding `go-error-family` to AGENTS.md external deps table | Low | Trivial |
-| 23 | Review whether the verification-status block is too long now | Low | Low |
+| #   | Task                                                                                 | Impact   | Effort  |
+| --- | ------------------------------------------------------------------------------------ | -------- | ------- |
+| 1   | Run trigger collision analysis across all 25 skills                                  | Critical | Medium  |
+| 2   | Add disambiguation between `code-quality-scan` vs `full-code-review`                 | High     | Low     |
+| 3   | Add disambiguation between `deduplicate-code` vs `code-quality-scan`                 | High     | Low     |
+| 4   | Audit `verify-before-filing/SKILL.md` body and claims                                | High     | Low     |
+| 5   | Read `go-error-family` README and improve `--enforce-go-error-family` docs           | High     | Low     |
+| 6   | Run skill-creator evals on the 9 rewritten descriptions                              | High     | Medium  |
+| 7   | Add disambiguation between `architecture-review` vs `full-code-review`               | Medium   | Low     |
+| 8   | Add disambiguation between `status-report` vs `docs-health`                          | Medium   | Low     |
+| 9   | Add "competing skills" section to `how-to-write-skills.md`                           | Medium   | Medium  |
+| 10  | Update phase 1 planning doc with completion markers                                  | Low      | Trivial |
+| 11  | Create retroactive planning docs for phases 2 and 3                                  | Low      | Low     |
+| 12  | Investigate whether `//nolint:legacyerrors` changed after rename                     | Medium   | Low     |
+| 13  | Consider moving flag tables from SKILL.md to references/cli-and-flags.md             | Low      | Low     |
+| 14  | Verify `errorfamily.NewConflict(...)` example in decision-tree.md matches actual API | Medium   | Low     |
+| 15  | Run description-optimization loop (`run_loop.py`) on 5 thinnest descriptions         | Medium   | High    |
+| 16  | Consider whether `--type-aware` makes the decision tree simpler                      | Low      | Medium  |
+| 17  | Audit whether any description accidentally excludes valid use cases                  | Low      | Medium  |
+| 17  | Consider whether `brutal-self-review` (342 chars) needs more triggers                | Low      | Low     |
+| 18  | Consider whether `architecture-visualization` (424 chars) needs more triggers        | Low      | Low     |
+| 19  | Consider whether `nix-private-go-repos` (434 chars) needs more triggers              | Low      | Low     |
+| 20  | Add `erraudit` to `code-quality-scan` as an optional check for Go projects           | Low      | Medium  |
+| 21  | Verify exit code table against `erraudit` binary if it becomes available             | Low      | Low     |
+| 22  | Consider adding `go-error-family` to AGENTS.md external deps table                   | Low      | Trivial |
+| 23  | Review whether the verification-status block is too long now                         | Low      | Low     |
 
 ---
 

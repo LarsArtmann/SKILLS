@@ -1,4 +1,5 @@
 //go:build ignore
+
 // Template for a Ginkgo BDD spec file. Copy, rename after the subject under test,
 // and replace the placeholders. Run with: go test ./...
 //
@@ -19,7 +20,7 @@ var _ = Describe("Subject", func() {
 	var subject *Subject
 
 	BeforeEach(func() {
-		subject = NewSubject(/* minimal valid construction */)
+		subject = NewSubject( /* minimal valid construction */ )
 	})
 
 	// Nest scenarios as Context/When under the Describe. Read top-down as a

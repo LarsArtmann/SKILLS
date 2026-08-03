@@ -54,7 +54,7 @@ this session's work and what it surfaced. It is not a full-repo audit.
    structurally fragile at 497/500.
 2. **Table examples split across body + reference** — the body has a compact
    pointer; the reference has full code blocks. This is the right
-   progressive-disclosure pattern, but the split was a *reaction* to the line
+   progressive-disclosure pattern, but the split was a _reaction_ to the line
    limit, not a deliberate design choice made up front.
 3. **Validation** — `check-skills.sh` passes, but no behavioral test was run
    (see (d) #3).
@@ -83,14 +83,14 @@ this session's work and what it surfaced. It is not a full-repo audit.
    anti-patterns. The 500-line budget cannot hold them all. I traded teaching
    weight (the doctor analogy, the "58 identical banners" concrete detail,
    the scannable HTML bullet structure, the "non-negotiable" emphasis on
-   Step 1) for line count. The condensed prose is *correct* but flatter —
+   Step 1) for line count. The condensed prose is _correct_ but flatter —
    it lost the rhetorical force that makes a rule stick in an agent's memory.
    **The honest fix is to move ALL worked examples to references/ and keep
    SKILL.md as decision logic + pointers only.** I did not do that.
 
 2. **I removed the "58 identical generic banners that say nothing and have to
    be rolled back" detail from the intro.** That concrete number was the
-   *origin story* of the skill — it's why "Verschlimmbesserung" is the named
+   _origin story_ of the skill — it's why "Verschlimmbesserung" is the named
    failure mode. Stripping it makes the word "Verschlimmbesserung" in the next
    sentence less grounded. A reader who never saw the case study now meets the
    term without its anchor. This was a small but real loss.
@@ -98,8 +98,8 @@ this session's work and what it surfaced. It is not a full-repo audit.
 3. **I never tested that the new guidance actually changes agent behavior.**
    This is the trophy-case-marking anti-pattern from `verify-external-claims`,
    applied to my own work: I marked the 7 edits "done" because they were
-   *written* and *validated structurally*, not because they were *verified to
-   prevent the appendix-only trap on a real 41-file batch*. The
+   _written_ and _validated structurally_, not because they were _verified to
+   prevent the appendix-only trap on a real 41-file batch_. The
    `skill-creator` eval framework exists for exactly this. I skipped it. The
    feedback file even described the exact test case (41 `2026-08-*` files,
    table-based action items) — I could have run the revised skill against that
@@ -107,8 +107,8 @@ this session's work and what it surfaced. It is not a full-repo audit.
 
 4. **The ✅ emoji in Pattern B (Status column example) is arguably inconsistent
    with project AGENTS.md ("No emojis ever").** The original skill already used
-   ✅ in a *bad-banner* example (illustrating what NOT to do), so reusing it in
-   a *recommended* format muddies that signal. I should have used a non-emoji
+   ✅ in a _bad-banner_ example (illustrating what NOT to do), so reusing it in
+   a _recommended_ format muddies that signal. I should have used a non-emoji
    status word ("Done `f72c7b40`" / "Open") or flagged the tension explicitly.
 
 5. **TOC update was an afterthought.** I added the "Tables with numbered rows"
@@ -149,6 +149,7 @@ this session's work and what it surfaced. It is not a full-repo audit.
 ## f) Next tasks (session-scoped, sorted by impact)
 
 ### P0 — finish this session's work properly
+
 1. **Move all worked examples from `update-old-docs/SKILL.md` body to
    `references/`**; target body ≤380 lines. This is the structural fix for (d)#1.
 2. **Verify `docs-health/SKILL.md` HARVEST still references the
@@ -164,6 +165,7 @@ this session's work and what it surfaced. It is not a full-repo audit.
    bullet structure).
 
 ### P1 — verify the fix actually works
+
 6. **Write 2-3 behavioral test prompts** for `update-old-docs` using the
    skill-creator eval framework; include a table-based-items case.
 7. **Run the revised skill against a synthetic 41-file batch** and assert
@@ -172,6 +174,7 @@ this session's work and what it surfaced. It is not a full-repo audit.
    appendix-only annotation" (the new verification gate, tested in code).
 
 ### P2 — generalize the lesson
+
 9. **Audit all 25 skill tl;drs**: does each name its primary failure mode in
    the first ~6 lines? Flag skills where the failure mode is buried.
 10. **Add a "primary failure mode" authoring rule to
@@ -184,6 +187,7 @@ this session's work and what it surfaced. It is not a full-repo audit.
     (cross-skill consistency, per (e)#5).
 
 ### P3 — smaller improvements surfaced this session
+
 13. **Reintroduce a one-line "why" to the condensed HTML section** — the
     run-on sentence lost the scannability that made the three risks
     distinct.
@@ -227,10 +231,10 @@ this session's work and what it surfaced. It is not a full-repo audit.
    current 497-line patched state acceptable for this session?** The
    refactor is the "right" fix but it's a larger change than the feedback
    strictly required, and you said "DO NOT RESEARCH OTHER STUFF UNRELATED
-   TO WHAT YOU DID" — the refactor is *related* but bigger than the ask.
+   TO WHAT YOU DID" — the refactor is _related_ but bigger than the ask.
 2. **Is the ✅ emoji in table Pattern B acceptable, or does the global
    "No emojis ever" rule apply to code examples too?** The skill already
-   uses ✅ in a *bad* example; I need your call on whether *recommended*
+   uses ✅ in a _bad_ example; I need your call on whether _recommended_
    examples may use it.
 3. **Should I run the behavioral eval (P1 #6-8) now, or is structural
    validation + your human review sufficient?** The eval framework is
@@ -240,6 +244,7 @@ this session's work and what it surfaced. It is not a full-repo audit.
 ---
 
 **Git state at report time:**
+
 - `update-old-docs/SKILL.md` — committed (448cf81), 497 lines
 - `update-old-docs/references/annotation-placement.md` — 1 uncommitted edit
   (TOC update)
