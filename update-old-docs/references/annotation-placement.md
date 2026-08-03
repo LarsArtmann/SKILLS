@@ -12,6 +12,7 @@
 3. [Before / after examples](#before--after-examples)
 4. [What counts as a "banner"](#what-counts-as-a-banner)
 5. [When you genuinely have no placement option](#when-you-genuinely-have-no-placement-option)
+6. [Resolving numbered items (including table rows)](#resolving-numbered-items-including-table-rows)
 
 ---
 
