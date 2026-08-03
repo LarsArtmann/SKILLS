@@ -103,12 +103,12 @@ Forward-looking items harvested into `TODO_LIST.md`, `ROADMAP.md`, and `CHANGELO
 
 ### Still open (harvested into TODO_LIST)
 
-| Report item                          | TODO_LIST ID | Notes                                          |
-| ------------------------------------ | ------------ | ---------------------------------------------- |
-| Trigger collision analysis (f #1)    | T1           | Critical — never run across any session        |
-| Disambiguation between competing pairs (f #4–7) | T2  | code-quality-scan vs full-code-review, etc.    |
-| Audit verify-before-filing (f #2, #13) | T3         | Committed blind, never properly reviewed       |
-| "Competing skills" section in how-to-write-skills.md (f #16) | T18 | Pattern documentation |
+| Report item                                                  | TODO_LIST ID | Notes                                       |
+| ------------------------------------------------------------ | ------------ | ------------------------------------------- |
+| Trigger collision analysis (f #1)                            | T1           | Critical — never run across any session     |
+| Disambiguation between competing pairs (f #4–7)              | T2           | code-quality-scan vs full-code-review, etc. |
+| Audit verify-before-filing (f #2, #13)                       | T3           | Committed blind, never properly reviewed    |
+| "Competing skills" section in how-to-write-skills.md (f #16) | T18          | Pattern documentation                       |
 
 ### Routed to ROADMAP (vague / long-term)
 

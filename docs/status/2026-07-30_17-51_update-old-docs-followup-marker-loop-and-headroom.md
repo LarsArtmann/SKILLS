@@ -254,11 +254,11 @@ serving the verify step or hiding it.
 
 ### Still open (harvested into TODO_LIST)
 
-| Report item                          | TODO_LIST ID | Notes                                          |
-| ------------------------------------ | ------------ | ---------------------------------------------- |
-| check-skills.sh content-level lint (TOC, anchors) | T6  | Still structural-only                          |
-| Marker-vocabulary contract guard     | T7           | AGENTS.md §5.5 contract not script-enforced    |
-| docs-health references-first refactor | T5          | docs-health still at 500/500 lines             |
+| Report item                                       | TODO_LIST ID | Notes                                       |
+| ------------------------------------------------- | ------------ | ------------------------------------------- |
+| check-skills.sh content-level lint (TOC, anchors) | T6           | Still structural-only                       |
+| Marker-vocabulary contract guard                  | T7           | AGENTS.md §5.5 contract not script-enforced |
+| docs-health references-first refactor             | T5           | docs-health still at 500/500 lines          |
 
 ### Questions — status
 

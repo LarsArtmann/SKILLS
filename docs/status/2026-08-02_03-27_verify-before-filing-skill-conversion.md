@@ -143,10 +143,10 @@ Forward-looking items harvested into `TODO_LIST.md` and `ROADMAP.md`.
 
 ### Still open (harvested into TODO_LIST)
 
-| Report item                          | TODO_LIST ID | Notes                                          |
-| ------------------------------------ | ------------ | ---------------------------------------------- |
-| Audit verify-before-filing body, tags, cross-refs (e #5, f #5–8) | T3 | Committed blind; never properly reviewed |
-| check-skills.sh guard for new cross-skill links (f #3) | T7  | Related to marker-vocabulary / handoff guard   |
+| Report item                                                      | TODO_LIST ID | Notes                                        |
+| ---------------------------------------------------------------- | ------------ | -------------------------------------------- |
+| Audit verify-before-filing body, tags, cross-refs (e #5, f #5–8) | T3           | Committed blind; never properly reviewed     |
+| check-skills.sh guard for new cross-skill links (f #3)           | T7           | Related to marker-vocabulary / handoff guard |
 
 ### Routed to ROADMAP
 

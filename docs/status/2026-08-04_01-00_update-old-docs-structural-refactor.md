@@ -350,14 +350,14 @@ milestone.
 
 ### Still open (harvested into TODO_LIST)
 
-| Report item                          | TODO_LIST ID | Notes                                          |
-| ------------------------------------ | ------------ | ---------------------------------------------- |
-| Full behavioral eval (P0 #5)         | ROADMAP §1   | Deferred — desk-check deemed sufficient for content repo |
-| docs-health references-first refactor (P1 #6) | T5   | docs-health still at 500/500 lines             |
-| check-skills.sh TOC-integrity guard (P0 #4) | T6   | Hit by 2 consecutive sessions                  |
-| check-skills.sh marker-vocabulary guard (P1 #9) | T7 | AGENTS.md §5.5 contract not script-enforced |
-| case-study.md appendix-only incident (P1 #7) | T10  | 4th failure-mode round, not yet appended       |
-| Condensing checklist (P1 #8)         | T11          | Move examples→references FIRST, then trim      |
+| Report item                                     | TODO_LIST ID | Notes                                                    |
+| ----------------------------------------------- | ------------ | -------------------------------------------------------- |
+| Full behavioral eval (P0 #5)                    | ROADMAP §1   | Deferred — desk-check deemed sufficient for content repo |
+| docs-health references-first refactor (P1 #6)   | T5           | docs-health still at 500/500 lines                       |
+| check-skills.sh TOC-integrity guard (P0 #4)     | T6           | Hit by 2 consecutive sessions                            |
+| check-skills.sh marker-vocabulary guard (P1 #9) | T7           | AGENTS.md §5.5 contract not script-enforced              |
+| case-study.md appendix-only incident (P1 #7)    | T10          | 4th failure-mode round, not yet appended                 |
+| Condensing checklist (P1 #8)                    | T11          | Move examples→references FIRST, then trim                |
 
 ### Resolved as non-actionable
 

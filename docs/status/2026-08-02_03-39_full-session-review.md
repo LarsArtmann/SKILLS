@@ -121,12 +121,12 @@ See CHANGELOG "2026-08-02" milestone for what shipped from this session.
 
 ### Still open (harvested into TODO_LIST)
 
-| Report item                          | TODO_LIST ID | Notes                                          |
-| ------------------------------------ | ------------ | ---------------------------------------------- |
-| Trigger collision analysis (f #1)    | T1           | Critical — never run                           |
-| Disambiguate code-quality-scan vs full-code-review (f #2) | T2   |                                              |
-| Disambiguate deduplicate-code vs code-quality-scan (f #3) | T2   |                                              |
-| Audit verify-before-filing/SKILL.md (f #4) | T3      | Committed blind, never reviewed                |
+| Report item                                               | TODO_LIST ID | Notes                           |
+| --------------------------------------------------------- | ------------ | ------------------------------- |
+| Trigger collision analysis (f #1)                         | T1           | Critical — never run            |
+| Disambiguate code-quality-scan vs full-code-review (f #2) | T2           |                                 |
+| Disambiguate deduplicate-code vs code-quality-scan (f #3) | T2           |                                 |
+| Audit verify-before-filing/SKILL.md (f #4)                | T3           | Committed blind, never reviewed |
 
 ### Routed to ROADMAP (vague / long-term / blockers)
 

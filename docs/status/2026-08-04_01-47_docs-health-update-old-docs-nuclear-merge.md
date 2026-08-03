@@ -118,6 +118,7 @@
 ### Q1: Should the moved reference files be updated to match the new body, or should the body's section names be changed to match the reference files?
 
 The moved files (`resolving-items.md`, `annotation-placement.md`, `case-study.md`) reference section names from the old body ("_Numbered action items_ section", "_Annotation placement_ section") that don't exist in the new nuclear body. Two options:
+
 - **A)** Update the reference files' companion descriptions to reference the new section names (e.g., "The primary work subsection under ANNOTATE").
 - **B)** Rename the body's sections to match what the reference files already say (e.g., add a "Numbered action items" heading).
 
@@ -126,6 +127,7 @@ Option A is less churn. Option B keeps the reference files stable. Which do you 
 ### Q2: Should `harvest-guide.md` exist as a separate file, or should its content be folded back into the body?
 
 I created `harvest-guide.md` to house HARVEST anti-patterns and the two-way loop. But the body already covers the essential rules (drop resolved items, questions aren't tasks, don't rewrite the source). The guide may be duplicating the body — the same 3× repetition trap we just eliminated. Options:
+
 - **A)** Keep it — the anti-patterns are valuable detail that would bloat the body if inline.
 - **B)** Fold the 2-3 essential anti-patterns into the body as a compact list, delete the guide.
 - **C)** Keep it but trim to only the content NOT already in the body (just the anti-patterns, drop the two-way loop which is already implied by the ANNOTATE/HARVEST cross-references).
@@ -133,6 +135,7 @@ I created `harvest-guide.md` to house HARVEST anti-patterns and the two-way loop
 ### Q3: Is the 166-line body actually better at producing the hard work (inline item resolution) than the old 977-line duo?
 
 I've asserted that the nuclear cut makes the AI "focus on the important stuff" but I have zero evidence. The old skills were bloated but their repetition was also a defense-in-depth — the verification gate and anti-patterns list caught agents that skimmed the body. The nuclear cut has exactly one statement of each rule. If an agent skims past the inline resolution format, there's no backup. Should we:
+
 - **A)** Trust the nuclear cut and test it against real work (run ANNOTATE on the 8 un-annotated status reports from the prior session).
 - **B)** Add back a minimal verification gate (3-4 checkboxes, not 15) specifically for the inline-resolution completeness check.
 - **C)** Add back the #1 failure mode ("appendix-only") as a standalone callout at the top of ANNOTATE, keeping the rest nuclear.

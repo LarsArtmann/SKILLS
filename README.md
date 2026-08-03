@@ -72,7 +72,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 | Skill              | What It Does                                                                                                                 | Status           |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| **docs-health**    | Creates, verifies, and maintains all project docs (living AND historical) — BUILD, HARVEST, VERIFY, ANNOTATE modes          | 🟢 Solid         |
+| **docs-health**    | Creates, verifies, and maintains all project docs (living AND historical) — BUILD, HARVEST, VERIFY, ANNOTATE modes           | 🟢 Solid         |
 | **status-report**  | Full project status updates as styled HTML dashboards                                                                        | 🟡 Functional    |
 | **website-launch** | Launches documentation websites (Astro + Starlight + Firebase) with pre-flight checks, color palettes, and go-live checklist | 🟢 Comprehensive |
 

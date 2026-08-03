@@ -294,10 +294,10 @@ Forward-looking items harvested into `TODO_LIST.md` and `ROADMAP.md`.
 
 ### Still open (harvested into TODO_LIST)
 
-| Report item                          | TODO_LIST ID | Notes                                          |
-| ------------------------------------ | ------------ | ---------------------------------------------- |
-| Reconcile 5-dimension rubric with 2-score system (e #1) | T8   | `agents-quality-guide.md` vs `health-report-format.md` split brain |
-| Create `scripts/check-agents-md.sh` (e #2)             | T9   | Temporal-pollution grep patterns not yet packaged as a script |
+| Report item                                             | TODO_LIST ID | Notes                                                              |
+| ------------------------------------------------------- | ------------ | ------------------------------------------------------------------ |
+| Reconcile 5-dimension rubric with 2-score system (e #1) | T8           | `agents-quality-guide.md` vs `health-report-format.md` split brain |
+| Create `scripts/check-agents-md.sh` (e #2)              | T9           | Temporal-pollution grep patterns not yet packaged as a script      |
 
 ### Out of scope for this repo
 

@@ -42,13 +42,13 @@ Each file has ONE job. Each fact lives in exactly ONE place. When the same fact 
 
 ## Which mode?
 
-| Situation                                                       | Mode      | Does                                    |
-| --------------------------------------------------------------- | --------- | --------------------------------------- |
-| Doc doesn't exist                                               | BUILD     | Generate from code, cite evidence       |
-| Just wrote a status report / TODO_LIST looks thin               | HARVEST   | Pull forward items from recent reports  |
-| "Are docs current?" / "check freshness"                        | VERIFY    | Check claims against code               |
-| "Update old reports" / "mark these done" / "is this current?"   | ANNOTATE  | Resolve numbered items inline           |
-| "Full audit" / "fix my docs" / "docs health"                   | AUDIT     | BUILD + HARVEST + VERIFY                |
+| Situation                                                     | Mode     | Does                                   |
+| ------------------------------------------------------------- | -------- | -------------------------------------- |
+| Doc doesn't exist                                             | BUILD    | Generate from code, cite evidence      |
+| Just wrote a status report / TODO_LIST looks thin             | HARVEST  | Pull forward items from recent reports |
+| "Are docs current?" / "check freshness"                       | VERIFY   | Check claims against code              |
+| "Update old reports" / "mark these done" / "is this current?" | ANNOTATE | Resolve numbered items inline          |
+| "Full audit" / "fix my docs" / "docs health"                  | AUDIT    | BUILD + HARVEST + VERIFY               |
 
 If ambiguous, default to AUDIT.
 
@@ -76,6 +76,7 @@ For anti-patterns and detail, load [./references/harvest-guide.md](./references/
 Code is the source of truth. Docs are leads, not evidence.
 
 **Per-doc lifecycle (different update actions — not blanket upsert):**
+
 - `FEATURES.md` — **Upsert**: rows evolve status (PLANNED → FULLY_FUNCTIONAL). Update in place.
 - `TODO_LIST.md` — **Delete done items.** A completed TODO is removed; it now lives in CHANGELOG. Done items NEVER stay in TODO_LIST. No "Previously Completed" / "Resolved" sections.
 - `CHANGELOG.md` — **Append-only.** Never edit prior entries.
@@ -141,12 +142,12 @@ Old reports contain numbered items (lists `1. 2. 3.` or table rows). **You must 
 
 ### Classify each file before annotating
 
-| Decision     | Apply when                                                 |
-| ------------ | ---------------------------------------------------------- |
-| ANNOTATE     | A reader would benefit; value not already present          |
-| ARCHIVE      | EVERY item resolved → `git mv` to `<dir>/archived/<file>`  |
-| SKIP         | Already clear — has its own resolution or correct content  |
-| LEAVE ALONE  | Describes rejected / deferred work where a note misleads   |
+| Decision    | Apply when                                                |
+| ----------- | --------------------------------------------------------- |
+| ANNOTATE    | A reader would benefit; value not already present         |
+| ARCHIVE     | EVERY item resolved → `git mv` to `<dir>/archived/<file>` |
+| SKIP        | Already clear — has its own resolution or correct content |
+| LEAVE ALONE | Describes rejected / deferred work where a note misleads  |
 
 ### Placement: inline before appendix
 

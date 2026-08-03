@@ -319,6 +319,6 @@ pass).
 
 ### Still open (harvested into TODO_LIST)
 
-| Report item                          | TODO_LIST ID | Notes                                          |
-| ------------------------------------ | ------------ | ---------------------------------------------- |
-| check-skills.sh content-level lint   | T6, T7       | TOC-integrity guard + marker-vocabulary guard  |
+| Report item                        | TODO_LIST ID | Notes                                         |
+| ---------------------------------- | ------------ | --------------------------------------------- |
+| check-skills.sh content-level lint | T6, T7       | TOC-integrity guard + marker-vocabulary guard |

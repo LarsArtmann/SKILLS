@@ -123,10 +123,10 @@ Forward-looking items harvested into `TODO_LIST.md`, `ROADMAP.md`, and `CHANGELO
 
 ### Still open (harvested into TODO_LIST)
 
-| Report item                          | TODO_LIST ID | Notes                                          |
-| ------------------------------------ | ------------ | ---------------------------------------------- |
-| Trigger collision analysis (f #8)    | T1           | Critical — never run                           |
-| Audit verify-before-filing (f #13)   | T3           | Committed blind, never reviewed                |
+| Report item                        | TODO_LIST ID | Notes                           |
+| ---------------------------------- | ------------ | ------------------------------- |
+| Trigger collision analysis (f #8)  | T1           | Critical — never run            |
+| Audit verify-before-filing (f #13) | T3           | Committed blind, never reviewed |
 
 ### Routed to ROADMAP (questions / blockers)
 
