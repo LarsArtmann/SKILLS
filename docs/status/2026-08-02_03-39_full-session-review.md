@@ -102,3 +102,35 @@
 2. **What exactly does `--enforce-go-error-family` do?** I found and verified that `github.com/larsartmann/go-error-family` is a real library with six error families (Rejection, Conflict, Transient, Corruption, Infrastructure, Orchestration). But I cannot determine from public information whether the flag enforces that errors wrap this library's types, checks that errors are classified into a family, or something else entirely. The flag exists in zero public codebases. Only you (as the owner of both `erraudit` and `go-error-family`) can tell me what it actually does.
 
 3. **Does `//nolint:legacyerrors` still work with `erraudit`, or did the analyzer name change?** The suppression name `legacyerrors` was "only discoverable from the `lint` subcommand help text." A tool rename could change internal analyzer names. Every suppression example in the skill depends on this name being correct. Since `erraudit` is not public, I cannot run `erraudit lint --help` to check.
+
+---
+
+## Resolution (2026-08-04 — docs-health HARVEST + living-docs build)
+
+Forward-looking items harvested into `TODO_LIST.md`, `ROADMAP.md`, and `CHANGELOG.md`.
+See CHANGELOG "2026-08-02" milestone for what shipped from this session.
+
+### Done (confirmed shipped in later sessions)
+
+- ~~f #5: Read go-error-family README~~ — Partially done. `github.com/larsartmann/go-error-family`
+  v0.10.0 verified real (searched GitHub, Sourcegraph, pkg.go.dev on 2026-08-02).
+  Six error families confirmed. The `--enforce-go-error-family` flag's exact
+  behavior remains unconfirmed (see ROADMAP "Open Questions").
+- ~~f #10: Update phase 1 planning doc with completion markers~~ — planning doc
+  fully resolved (all 21 tasks completed).
+
+### Still open (harvested into TODO_LIST)
+
+| Report item                          | TODO_LIST ID | Notes                                          |
+| ------------------------------------ | ------------ | ---------------------------------------------- |
+| Trigger collision analysis (f #1)    | T1           | Critical — never run                           |
+| Disambiguate code-quality-scan vs full-code-review (f #2) | T2   |                                              |
+| Disambiguate deduplicate-code vs code-quality-scan (f #3) | T2   |                                              |
+| Audit verify-before-filing/SKILL.md (f #4) | T3      | Committed blind, never reviewed                |
+
+### Routed to ROADMAP (vague / long-term / blockers)
+
+- Eval testing on rewritten descriptions (f #6) → ROADMAP §1
+- GOEXPERIMENT=jsonv2 question (g #1) → ROADMAP "Open Questions"
+- `--enforce-go-error-family` behavior (g #2) → ROADMAP "Open Questions"
+- `//nolint:legacyerrors` analyzer name (g #3) → ROADMAP "Open Questions"

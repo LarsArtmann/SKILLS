@@ -107,3 +107,33 @@
 2. **What does `--enforce-go-error-family` actually do?** I documented it as "enforces that all errors belong to a structured error family" but that's a guess from the flag name. What is a "go error family"? Is it related to the `errorfamily` package that appears in the decision-tree classification examples (`errorfamily.NewConflict(...)`)? What happens when the flag fires — does it add new diagnostics, change severity, or fail the build? I wrote authoritative documentation about a flag I don't understand, which is exactly the anti-pattern this skill is supposed to prevent.
 
 3. **Does `//nolint:legacyerrors` still work with `erraudit`, or did the analyzer name change when the tool was renamed?** The suppression name `legacyerrors` was already "not documented in the README — only discoverable from the `lint` subcommand help text." A tool rename could change internal analyzer names too. If the name changed, every suppression example in the skill is wrong. I can't verify this without the binary.
+
+---
+
+## Resolution (2026-08-04 — docs-health HARVEST + living-docs build)
+
+Forward-looking items harvested into `TODO_LIST.md`, `ROADMAP.md`, and `CHANGELOG.md`.
+
+### Done (confirmed shipped in later sessions)
+
+- ~~f #1: Fix README.md~~ — DONE (commit `992917a`; README now says "erraudit CLI
+  not publicly findable" instead of "CLI unverified").
+- ~~f #2: Fix practical example historical accuracy~~ — DONE (commit `992917a`;
+  historical example restored after sed corruption).
+
+### Still open (harvested into TODO_LIST)
+
+| Report item                          | TODO_LIST ID | Notes                                          |
+| ------------------------------------ | ------------ | ---------------------------------------------- |
+| Trigger collision analysis (f #8)    | T1           | Critical — never run                           |
+| Audit verify-before-filing (f #13)   | T3           | Committed blind, never reviewed                |
+
+### Routed to ROADMAP (questions / blockers)
+
+- **GOEXPERIMENT=jsonv2 requirement** (g #1) — cannot verify without the `erraudit`
+  binary. Routed to ROADMAP "Open Questions."
+- **`--enforce-go-error-family` behavior** (g #2) — `go-error-family` library
+  verified real (v0.10.0), but the flag's behavior is still unconfirmed. The
+  fabricated documentation was removed in commit `992917a`.
+- **`//nolint:legacyerrors` analyzer name** (g #3) — cannot verify without the
+  binary. Routed to ROADMAP "Open Questions."

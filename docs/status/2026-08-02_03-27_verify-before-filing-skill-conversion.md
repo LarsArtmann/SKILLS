@@ -126,3 +126,29 @@ Converted two feedback files describing the **same failure pattern** (filing pre
 ---
 
 _Generated 2026-08-02 03:27. Reflects this session only._
+
+---
+
+## Resolution (2026-08-04 — docs-health HARVEST + living-docs build)
+
+Forward-looking items harvested into `TODO_LIST.md` and `ROADMAP.md`.
+
+### Done (confirmed shipped in later sessions)
+
+- ~~f #1: Update AGENTS.md §5.5~~ — DONE. AGENTS.md §5.5 now documents the
+  `verify-external-claims` ↔ `verify-before-filing` epistemic-hygiene pair
+  (inbound/outbound split).
+- ~~f #2: Commit~~ — DONE (committed `3a7cc56`, `e8b20bb`).
+- ~~f #15: Run docs-health HARVEST~~ — DONE (this session, 2026-08-04).
+
+### Still open (harvested into TODO_LIST)
+
+| Report item                          | TODO_LIST ID | Notes                                          |
+| ------------------------------------ | ------------ | ---------------------------------------------- |
+| Audit verify-before-filing body, tags, cross-refs (e #5, f #5–8) | T3 | Committed blind; never properly reviewed |
+| check-skills.sh guard for new cross-skill links (f #3) | T7  | Related to marker-vocabulary / handoff guard   |
+
+### Routed to ROADMAP
+
+- Age skill from 🆕 → 🟢 (f #7) → ROADMAP §1 (graduation criterion)
+- Skill-creator eval loop (f #6) → ROADMAP §1

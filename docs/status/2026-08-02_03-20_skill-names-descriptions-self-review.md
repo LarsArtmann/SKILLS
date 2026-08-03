@@ -89,3 +89,36 @@
 2. **Is `go-error-modernization` the right name, or should it be shorter?** The sibling naming pattern is inconsistent: `go-modularize` (verb), `go-ecosystem-upgrade` (noun phrase), `how-to-golang` (question). `go-error-modernization` follows the `go-ecosystem-upgrade` pattern (noun phrase). But `go-errors` would be shorter and punchier. I can't tell if the specificity of "modernization" (which signals "migration from old to new") is worth the extra characters, or if it unnecessarily narrows the perceived scope.
 
 3. **Should the `verify-before-filing` and feedback-file changes from the parallel session be in a separate commit?** I committed them together with my work. They're logically unrelated (one is about outbound issue-filing verification, the other is about skill name/description quality). I can't undo this without rewriting history (which I must never do). Should I note this somewhere, or is it fine as-is since the commit message documents it?
+
+---
+
+## Resolution (2026-08-04 — docs-health HARVEST + living-docs build)
+
+Forward-looking items harvested into `TODO_LIST.md`, `ROADMAP.md`, and `CHANGELOG.md`.
+
+### Done (confirmed shipped in later sessions)
+
+- ~~f #8: Update planning doc with completion markers~~ — the planning doc is now
+  fully resolved (all tasks completed); see CHANGELOG "2026-08-02" milestone.
+
+### Still open (harvested into TODO_LIST)
+
+| Report item                          | TODO_LIST ID | Notes                                          |
+| ------------------------------------ | ------------ | ---------------------------------------------- |
+| Trigger collision analysis (f #1)    | T1           | Critical — never run across any session        |
+| Disambiguation between competing pairs (f #4–7) | T2  | code-quality-scan vs full-code-review, etc.    |
+| Audit verify-before-filing (f #2, #13) | T3         | Committed blind, never properly reviewed       |
+| "Competing skills" section in how-to-write-skills.md (f #16) | T18 | Pattern documentation |
+
+### Routed to ROADMAP (vague / long-term)
+
+- Eval testing on rewritten descriptions (f #3, #17) → ROADMAP §1 (empirical skill validation)
+- Description-depth improvements for thin descriptions (f #11–13) → TODO_LIST T12–T15
+
+### Questions (g) — status
+
+- **Q1 (Crush skill-selection mechanism):** Unresolved — routed to ROADMAP "Open
+  Questions." Determines whether trigger collision (T1) is a real problem.
+- **Q2 (go-error-modernization naming):** Resolved — name kept; `go-error-family`
+  library verified real (v0.10.0).
+- **Q3 (parallel session commit):** Moot — commit is in history; documented.

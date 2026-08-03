@@ -332,3 +332,35 @@ This report covers ONLY this session's work and what it surfaced.
 - Working tree: clean (auto-git daemon committed all changes)
 
 **Waiting for instructions.**
+
+---
+
+## Resolution (2026-08-04 — docs-health HARVEST + living-docs build)
+
+Forward-looking items from this report were harvested into `TODO_LIST.md` and
+`ROADMAP.md`. Completed work is recorded in `CHANGELOG.md` under the "2026-08-04"
+milestone.
+
+### Done (post-report passes, confirmed shipped)
+
+- P0 #1–3 and #5: `resolving-items.md` created, `go-ecosystem-upgrade` and
+  `docs-health` failure modes surfaced in intros, `resolving-items.md` re-read
+  end-to-end — all marked DONE in the report body above.
+- P2 #9–10: Pattern 9 added to `how-to-write-skills.md`; both flagged skills fixed.
+
+### Still open (harvested into TODO_LIST)
+
+| Report item                          | TODO_LIST ID | Notes                                          |
+| ------------------------------------ | ------------ | ---------------------------------------------- |
+| Full behavioral eval (P0 #5)         | ROADMAP §1   | Deferred — desk-check deemed sufficient for content repo |
+| docs-health references-first refactor (P1 #6) | T5   | docs-health still at 500/500 lines             |
+| check-skills.sh TOC-integrity guard (P0 #4) | T6   | Hit by 2 consecutive sessions                  |
+| check-skills.sh marker-vocabulary guard (P1 #9) | T7 | AGENTS.md §5.5 contract not script-enforced |
+| case-study.md appendix-only incident (P1 #7) | T10  | 4th failure-mode round, not yet appended       |
+| Condensing checklist (P1 #8)         | T11          | Move examples→references FIRST, then trim      |
+
+### Resolved as non-actionable
+
+- P2 #14–25: audit of commit messages, survey of feedback patterns, date stamps
+  on anti-patterns, per-skill CHANGELOGs — either too vague to be bounded tasks
+  or superseded by the living-docs system now in place.

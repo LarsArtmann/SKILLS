@@ -285,3 +285,31 @@ I cannot determine which without context about these projects' history.
 ## Summary
 
 The core task — rate all AGENTS.md files and improve docs-health to produce better ones — is **done**. The 5-tier anti-pattern catalog, the endurance test, the size budget, the pruning guide, and the expanded checklists are all in place and validated. The main gap is that the worst offenders remain unfixed and the two scoring systems need reconciliation.
+
+---
+
+## Resolution (2026-08-04 — docs-health HARVEST + living-docs build)
+
+Forward-looking items harvested into `TODO_LIST.md` and `ROADMAP.md`.
+
+### Still open (harvested into TODO_LIST)
+
+| Report item                          | TODO_LIST ID | Notes                                          |
+| ------------------------------------ | ------------ | ---------------------------------------------- |
+| Reconcile 5-dimension rubric with 2-score system (e #1) | T8   | `agents-quality-guide.md` vs `health-report-format.md` split brain |
+| Create `scripts/check-agents-md.sh` (e #2)             | T9   | Temporal-pollution grep patterns not yet packaged as a script |
+
+### Out of scope for this repo
+
+Items 1–16 in section f (pruning SystemNix, DiscordSync, go-cqrs-lite, etc.)
+target **other projects'** AGENTS.md files, not this repository. They are not
+tracked here — they belong in those projects' own TODO lists, guided by the
+`docs-health` skill and the `agents-quality-guide.md` reference this session
+produced.
+
+### Questions (g) — status
+
+- **Q1 (scoring unification):** Unresolved — routed to TODO_LIST T8.
+- **Q2 (retroactive fixes):** Out of scope for this repo (see above).
+- **Q3 (discordsync duplicate):** Unresolved — requires project history context
+  not available in this repo.
