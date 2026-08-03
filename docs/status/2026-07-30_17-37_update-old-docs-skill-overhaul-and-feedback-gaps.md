@@ -302,3 +302,23 @@ pass).
 - **AGENTS.md §5.5** documents the update-old-docs↔docs-health marker loop.
 - Both skills' installed copies (`~/.config/crush/skills/`) synced; `check-skills.sh`
   passes (update-old-docs 500 lines, docs-health 499 lines).
+
+---
+
+## Resolution (2026-08-04 — docs-health HARVEST + living-docs build)
+
+### Done (confirmed shipped in later sessions)
+
+- ~~The docs-health HARVEST portion of the feedback (suggestion #6)~~ — DONE.
+  Implemented in the 17:51 followup session (this report's companion). HARVEST
+  now respects resolution markers from `update-old-docs`.
+- ~~Archiving integrated as Step 6~~ — DONE.
+- ~~AGENTS.md §5.5 marker loop documented~~ — DONE.
+- ~~update-old-docs at 500 lines~~ — RESOLVED: the 2026-08-04 structural refactor
+  slimmed the body to 477 lines by moving worked examples to `references/resolving-items.md`.
+
+### Still open (harvested into TODO_LIST)
+
+| Report item                          | TODO_LIST ID | Notes                                          |
+| ------------------------------------ | ------------ | ---------------------------------------------- |
+| check-skills.sh content-level lint   | T6, T7       | TOC-integrity guard + marker-vocabulary guard  |

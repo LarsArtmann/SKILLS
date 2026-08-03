@@ -238,3 +238,33 @@ demand. But the HARVEST failure modes I'm adding need to be visible
 _when the agent runs HARVEST_, not after they remember to load a
 reference. I can't tell whether the progressive-disclosure model is
 serving the verify step or hiding it.
+
+---
+
+## Resolution (2026-08-04 — docs-health HARVEST + living-docs build)
+
+### Done (confirmed shipped in later sessions)
+
+- ~~update-old-docs at exactly 500 lines (zero headroom)~~ — RESOLVED: the
+  2026-08-04 structural refactor slimmed the body to 477 lines. The references-first
+  pattern broke the feedback-accretion cycle.
+- ~~docs-health verify-checklist missing re-harvest guard~~ — DONE: the marker-
+  respect rule is now in both `docs-health/SKILL.md` HARVEST and the
+  `verify-checklist.md` reference.
+
+### Still open (harvested into TODO_LIST)
+
+| Report item                          | TODO_LIST ID | Notes                                          |
+| ------------------------------------ | ------------ | ---------------------------------------------- |
+| check-skills.sh content-level lint (TOC, anchors) | T6  | Still structural-only                          |
+| Marker-vocabulary contract guard     | T7           | AGENTS.md §5.5 contract not script-enforced    |
+| docs-health references-first refactor | T5          | docs-health still at 500/500 lines             |
+
+### Questions — status
+
+- **Q1 (format flexibility):** Resolved — the skill now handles both prose lists
+  and table rows (Pattern A + B in `resolving-items.md`).
+- **Q2 (500-line headroom rule):** Partially resolved — `update-old-docs` now has
+  23-line headroom; `docs-health` still at capacity (T5).
+- **Q3 (verify-checklist location):** Resolved — progressive disclosure kept;
+  HARVEST markers are in SKILL.md body, detailed checks in reference.

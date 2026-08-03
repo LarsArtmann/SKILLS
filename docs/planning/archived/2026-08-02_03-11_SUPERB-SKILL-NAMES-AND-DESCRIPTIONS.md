@@ -174,3 +174,14 @@ graph TD
 5. **Each description rewrite is additive** — never remove existing trigger phrases, only add missing ones and strip non-trigger content
 6. **All rewrites stay under 1024 chars** — verified programmatically after each change
 7. **No description describes skill contents** — every sentence is a trigger condition, not documentation
+
+---
+
+## Resolution (2026-08-04)
+
+All 21 tasks (T1–T21) completed in the 2026-08-02 session. The rename
+(`hierarchical-errors` → `go-error-modernization`), all 9 description rewrites,
+and all cross-reference updates shipped in commits `3a7cc56` and `005f511`. See
+`CHANGELOG.md` "2026-08-02" milestone. Forward-looking follow-up items (trigger
+collision analysis, verify-before-filing audit) are tracked in `TODO_LIST.md`
+(T1–T3).
