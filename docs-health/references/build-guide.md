@@ -83,14 +83,14 @@ Copy [../../assets/AGENTS-template.md](../../assets/AGENTS-template.md) and fill
 
 ### Size budget
 
-| Range      | Verdict                                  |
-| ---------- | ---------------------------------------- |
-| < 1 KB     | Skeleton — too thin, add real content    |
-| 1-5 KB     | Lean — ideal for simple projects         |
-| 5-15 KB    | Sweet spot — enough for architecture     |
-| 15-30 KB   | Acceptable for complex projects          |
-| 30-50 KB   | Bloated — needs pruning                  |
-| > 50 KB    | Severely bloated — major rewrite needed  |
+| Range    | Verdict                                 |
+| -------- | --------------------------------------- |
+| < 1 KB   | Skeleton — too thin, add real content   |
+| 1-5 KB   | Lean — ideal for simple projects        |
+| 5-15 KB  | Sweet spot — enough for architecture    |
+| 15-30 KB | Acceptable for complex projects         |
+| 30-50 KB | Bloated — needs pruning                 |
+| > 50 KB  | Severely bloated — major rewrite needed |
 
 If your AGENTS.md exceeds 15 KB, review every section for content that
 belongs elsewhere. The most common bloat source is code examples that

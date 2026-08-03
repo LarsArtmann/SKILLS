@@ -35,22 +35,22 @@ this file.** Check size, endurance, and content ownership before factual
 accuracy — an AGENTS.md can have every fact right and still be useless
 because it's 80 KB of stale changelog entries and code dumps.
 
-| Check                             | How to verify                                                                  | Severity if failed |
-| --------------------------------- | ------------------------------------------------------------------------------ | ------------------ |
-| **Size within budget**            | `wc -c AGENTS.md` — target 5-15 KB; flag > 30 KB; fail > 100 KB                | Critical (>50 KB)  |
-| Referenced paths exist            | Open each path mentioned in the file                                           | Critical           |
-| Build/test/lint commands work     | Would the documented commands actually succeed?                                | Critical           |
-| **No temporal pollution**         | `grep -nE 'RESOLVED\|FIXED 20\|sprint [0-9]\|session [0-9]\|added 20\|audited 20\|as of v[0-9]' AGENTS.md` — each match is stale | Medium-High |
-| **No commit hashes**              | `grep -cE '[0-9a-f]{7,40}' AGENTS.md` — hashes belong in git, not AGENTS.md    | Medium-High        |
-| **No code dumps**                 | Count lines in fenced code blocks; any single block >5 lines should link to source instead | Medium-High |
-| **No content misplacement**       | No CHANGELOG entries, feature status, TODO references, domain-term definitions | Medium-High        |
-| **Gotchas are current**           | Each gotcha is a CURRENT constraint, not a resolved incident or refactor note  | Medium-High        |
-| Architecture claims current       | Walk the code; does it match what AGENTS.md says?                              | Medium             |
-| Gotchas still valid               | Check if the workaround or quirk is still relevant                             | Medium             |
-| Counts computed not hardcoded     | Check any number against actual repo state                                     | Low                |
-| No stale references to old skills | Check for deleted/renamed modules                                              | Medium             |
-| **Endurance test**                | Would each line be true in 6 months?                                           | Medium             |
-| **Gotchas table ≤20 rows**        | Count rows in any table; >20 rows likely contains refactoring graveyard       | Low                |
+| Check                             | How to verify                                                                                                                    | Severity if failed |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| **Size within budget**            | `wc -c AGENTS.md` — target 5-15 KB; flag > 30 KB; fail > 100 KB                                                                  | Critical (>50 KB)  |
+| Referenced paths exist            | Open each path mentioned in the file                                                                                             | Critical           |
+| Build/test/lint commands work     | Would the documented commands actually succeed?                                                                                  | Critical           |
+| **No temporal pollution**         | `grep -nE 'RESOLVED\|FIXED 20\|sprint [0-9]\|session [0-9]\|added 20\|audited 20\|as of v[0-9]' AGENTS.md` — each match is stale | Medium-High        |
+| **No commit hashes**              | `grep -cE '[0-9a-f]{7,40}' AGENTS.md` — hashes belong in git, not AGENTS.md                                                      | Medium-High        |
+| **No code dumps**                 | Count lines in fenced code blocks; any single block >5 lines should link to source instead                                       | Medium-High        |
+| **No content misplacement**       | No CHANGELOG entries, feature status, TODO references, domain-term definitions                                                   | Medium-High        |
+| **Gotchas are current**           | Each gotcha is a CURRENT constraint, not a resolved incident or refactor note                                                    | Medium-High        |
+| Architecture claims current       | Walk the code; does it match what AGENTS.md says?                                                                                | Medium             |
+| Gotchas still valid               | Check if the workaround or quirk is still relevant                                                                               | Medium             |
+| Counts computed not hardcoded     | Check any number against actual repo state                                                                                       | Low                |
+| No stale references to old skills | Check for deleted/renamed modules                                                                                                | Medium             |
+| **Endurance test**                | Would each line be true in 6 months?                                                                                             | Medium             |
+| **Gotchas table ≤20 rows**        | Count rows in any table; >20 rows likely contains refactoring graveyard                                                          | Low                |
 
 ## FEATURES.md
 

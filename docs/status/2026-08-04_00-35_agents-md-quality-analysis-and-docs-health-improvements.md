@@ -20,23 +20,23 @@ Every `AGENTS.md` file across 153 projects was analyzed via automated metrics (s
 
 **Distribution:**
 
-| Grade | Count | Profile |
-|-------|-------|---------|
-| A | 80 | Clean, lean (5–14 KB), minimal anti-patterns |
-| B | 42 | Good, minor issues or slightly large |
-| C | 15 | Significant anti-patterns or bloated |
-| D | 10 | Heavy temporal pollution or severe bloat (42–93 KB) |
-| F | 6 | Skeleton (<1 KB) or absurdly bloated (>100 KB) |
+| Grade | Count | Profile                                             |
+| ----- | ----- | --------------------------------------------------- |
+| A     | 80    | Clean, lean (5–14 KB), minimal anti-patterns        |
+| B     | 42    | Good, minor issues or slightly large                |
+| C     | 15    | Significant anti-patterns or bloated                |
+| D     | 10    | Heavy temporal pollution or severe bloat (42–93 KB) |
+| F     | 6     | Skeleton (<1 KB) or absurdly bloated (>100 KB)      |
 
 **Top 5 worst offenders:**
 
-| Project | Size | Anti-patterns | Primary issue |
-|---------|------|---------------|---------------|
-| SystemNix | 430 KB | 97 | 62 changelog refs, 27 commit hashes, incident graveyard |
-| DiscordSync | 148 KB | 56 | Feature docs as gotchas, version-bump histories |
-| go-cqrs-lite | 107 KB | 16 | 891-line code cookbook (76% of file) |
-| projects-management-automation | 73 KB | 62 | 56 sprint-dated changelog entries |
-| branching-flow | 42 KB | 53 | 50 sprint-dated refactoring entries in gotchas |
+| Project                        | Size   | Anti-patterns | Primary issue                                           |
+| ------------------------------ | ------ | ------------- | ------------------------------------------------------- |
+| SystemNix                      | 430 KB | 97            | 62 changelog refs, 27 commit hashes, incident graveyard |
+| DiscordSync                    | 148 KB | 56            | Feature docs as gotchas, version-bump histories         |
+| go-cqrs-lite                   | 107 KB | 16            | 891-line code cookbook (76% of file)                    |
+| projects-management-automation | 73 KB  | 62            | 56 sprint-dated changelog entries                       |
+| branching-flow                 | 42 KB  | 53            | 50 sprint-dated refactoring entries in gotchas          |
 
 ### 2. Five-tier anti-pattern catalog discovered
 
@@ -61,13 +61,13 @@ The centerpiece deliverable. Agents load this when building or verifying AGENTS.
 
 ### 4. Enhanced existing docs-health files (5 files)
 
-| File | What changed |
-|------|--------------|
-| `SKILL.md` | Added "AGENTS.md quality" section under BUILD rules; removed duplicate "Determine the task" table (was redundant with Quick start table); held at exactly 500 lines |
-| `assets/AGENTS-template.md` | Added inline size budget, endurance test warnings, anti-pattern guardrails; added Architecture + Dependencies sections to template; expanded builder comments from 5 to 8 "do NOT" items |
-| `references/build-guide.md` | Expanded AGENTS.md section: added size budget, endurance test, expanded quality checklist from 5 to 10 items, cross-ref to new guide |
-| `references/verify-checklist.md` | Expanded AGENTS.md checks from 6 to 14: added size, temporal pollution grep, commit hash check, code dump check, endurance test, gotchas table cap |
-| `references/common-mistakes.md` | Expanded AGENTS.md mistakes table from 4 to 15 entries; added endurance test decision tree |
+| File                             | What changed                                                                                                                                                                             |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SKILL.md`                       | Added "AGENTS.md quality" section under BUILD rules; removed duplicate "Determine the task" table (was redundant with Quick start table); held at exactly 500 lines                      |
+| `assets/AGENTS-template.md`      | Added inline size budget, endurance test warnings, anti-pattern guardrails; added Architecture + Dependencies sections to template; expanded builder comments from 5 to 8 "do NOT" items |
+| `references/build-guide.md`      | Expanded AGENTS.md section: added size budget, endurance test, expanded quality checklist from 5 to 10 items, cross-ref to new guide                                                     |
+| `references/verify-checklist.md` | Expanded AGENTS.md checks from 6 to 14: added size, temporal pollution grep, commit hash check, code dump check, endurance test, gotchas table cap                                       |
+| `references/common-mistakes.md`  | Expanded AGENTS.md mistakes table from 4 to 15 entries; added endurance test decision tree                                                                                               |
 
 ### 5. Synced to both copies
 
@@ -85,6 +85,7 @@ The centerpiece deliverable. Agents load this when building or verifying AGENTS.
 ### 1. The rating is automated-metric-based, not fully manual-verified
 
 The 153-file rating used automated grep-based heuristics (size + anti-pattern counts). This is good enough for a distribution picture and identifying worst offenders, but individual file grades may be off:
+
 - A file with many commit hashes that are all in legitimate code examples would score worse than it should.
 - A file with zero anti-pattern markers but no commands section and no gotchas would score "A" despite being thin.
 - **~25 files were manually deep-read** for the qualitative analysis. The rest are heuristic-graded.
@@ -272,6 +273,7 @@ SystemNix (430 KB), DiscordSync (148 KB), and go-cqrs-lite (107 KB) are actively
 ### Question 3: The discordsync vs DiscordSync duplicate — is this intentional?
 
 There are two directories: `~/projects/discordsync/` (147 KB AGENTS.md) and `~/projects/DiscordSync/` (151 KB AGENTS.md). Their AGENTS.md files are near-identical but not byte-identical (different sizes, slightly different anti-pattern counts). This is either:
+
 - A case-sensitivity issue (the same project checked out twice)
 - A fork that diverged
 - An intentional rename that didn't clean up the old directory
