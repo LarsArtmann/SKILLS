@@ -79,21 +79,20 @@ This report covers ONLY this session's work and what it surfaced.
    exhibits, but those 2 skills (`go-ecosystem-upgrade`, `docs-health`) were
    NOT fixed. I documented the problem and moved on — the "report and move on"
    anti-pattern.
-3. **Reference file coherence** — `resolving-items.md` was written in one shot
-   and never re-read end-to-end after creation. The TOC-to-heading consistency
-   was checked via grep (7 entries, 7 headings — match), but no human-read
-   pass was done for flow, redundancy with the SKILL.md compact example, or
-   clarity for an agent loading it cold.
+3. **Reference file coherence** — ~~`resolving-items.md` was written in one shot
+   and never re-read end-to-end after creation.~~ **FIXED in post-report pass:**
+   re-read the full file; found and fixed a typo (`a7b7159` → `a7b8159` in the
+   format grammar section). File reads coherently — logical flow, no
+   redundancy with the SKILL.md compact example, clear for cold-load.
 
 ## c) NOT STARTED
 
-1. **Fix `go-ecosystem-upgrade` buried failure mode** — Pattern 9 names it;
-   the fix (surface "build-only verification is the #1 failure" in the intro)
-   was not applied.
-2. **Fix `docs-health` buried failure mode** — Pattern 9 names it; the fix
-   (surface "HARVEST-skipping is the #1 cause of TODO_LIST staleness" in the
-   intro) was not applied. Note: `docs-health` is at 500/500 lines — adding
-   to the intro requires trimming elsewhere.
+1. ~~**Fix `go-ecosystem-upgrade` buried failure mode**~~ — **DONE (post-report
+   pass):** surfaced "build-only verification is the #1 failure" in the intro
+   (line 22). File at 306/500 lines.
+2. ~~**Fix `docs-health` buried failure mode**~~ — **DONE (post-report pass):**
+   surfaced "skipping HARVEST" as the #1 failure in the intro (line 23).
+   Trimmed existing intro prose to stay at 500/500 lines.
 3. **Full behavioral eval** — The `skill-creator` eval framework (test prompts,
    baseline comparison, viewer) was never used. The desk-check was substituted.
 4. **`docs-health` references-first refactor** — Same structural pressure as
@@ -136,13 +135,14 @@ This report covers ONLY this session's work and what it surfaced.
    I don't know. I worked around it without learning from it. The next time
    I face the same pattern, I'll fail the same way.
 
-4. **I wrote `resolving-items.md` in one shot and never re-read it.** The
-   `write` tool succeeded, so I moved on. I never viewed the file to check
-   for coherence, flow, redundancy with the SKILL.md compact example, or
-   clarity for an agent loading it cold. I checked TOC-vs-heading consistency
-   via grep (which is structural, not semantic), but I have no idea if the
-   prose actually reads well. The file might have duplicate explanations,
-   unclear transitions, or examples that contradict the SKILL.md body.
+4. ~~**I wrote `resolving-items.md` in one shot and never re-read it.**~~
+   **FIXED in post-report pass:** re-read the full file end-to-end. Found and
+   fixed a typo (`a7b7159` → `a7b8159` in line 48 of the format grammar
+   section). The file reads coherently — logical progression (what → format →
+   example → variants → rules → multi-item → tables), no redundancy with the
+   SKILL.md compact example (the compact version uses shortened item text +
+   an annotation arrow; the reference uses the full original text —
+   intentional recognition value, not duplication), clear transitions.
 
 5. **I introduced a TOC bug and caught it during self-review, not at edit
    time.** When I moved "Tables with numbered rows" out of
@@ -155,13 +155,11 @@ This report covers ONLY this session's work and what it surfaced.
    This is the same mistake the previous session made with the same file
    (d)#5 in the prior self-review).
 
-6. **Pattern 9 names 2 skills as having the anti-pattern but I didn't fix
-   them.** I documented the problem in the authoring guide and moved on. This
-   is literally the "report and move on" anti-pattern — the feedback loop's
-   known failure mode (AGENTS.md §11: "feedback was written but never acted
-   upon"). I turned a discoverable problem into a documented-but-unfixed
-   problem. The marginal cost of fixing `go-ecosystem-upgrade`'s intro was
-   ~3 lines of editing; I didn't do it.
+6. ~~**Pattern 9 names 2 skills as having the anti-pattern but I didn't fix
+   them.**~~ **FIXED in post-report pass:** surfaced the #1 failure in both
+   `go-ecosystem-upgrade` intro (build-only verification, line 22) and
+   `docs-health` intro (HARVEST-skipping, line 23). Updated Pattern 9 to
+   list them as fixed examples.
 
 ## e) WHAT WE SHOULD IMPROVE
 
