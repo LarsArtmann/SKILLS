@@ -57,8 +57,8 @@ treatment: stat cards, severity badges, color-coded sections.
 4. WAIT FOR FURTHER INSTRUCTIONS!
 
 > Status reports are point-in-time snapshots that go stale. When a later task
-> asks to bring old status reports current, defer to the
-> [`update-old-docs`](../update-old-docs/SKILL.md) skill — annotate
+> asks to bring old status reports current, use
+> [`docs-health`](../docs-health/SKILL.md) → **ANNOTATE** mode — annotate
 > non-destructively (inline correction or end-of-file appendix), never rewrite.
 
 > **After the report is written, the loop is not closed.** Section **(f) Top N

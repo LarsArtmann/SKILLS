@@ -69,9 +69,10 @@
 | Treating "update all" as "every file must change" | Clutters already-clear files with duplicate info                                         | "All" means no file that NEEDS updating is missed — leaving clear files untouched is correct |
 | Injecting a banner between title and body         | Destroys the historical document's structure and pushes real content down                | Prefer inline edits or an end-of-file `## Resolution` appendix                               |
 
-> This is the full subject of the **[`update-old-docs`](../../update-old-docs/SKILL.md)** skill.
-> Defer to it whenever the task involves bringing many OLD/historical documents
-> current (distinct from rewriting LIVING docs in place).
+> This is the full subject of the **ANNOTATE** mode in
+> [docs-health](../SKILL.md). Defer to it whenever the task involves bringing
+> many OLD/historical documents current (distinct from rewriting LIVING docs
+> in place).
 
 ---
 

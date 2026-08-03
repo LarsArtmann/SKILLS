@@ -1,500 +1,166 @@
 ---
 name: docs-health
 description: >
-  Creates, verifies, and maintains ALL core project documentation: FEATURES.md,
-  TODO_LIST.md, README.md, AGENTS.md, ROADMAP.md, CHANGELOG.md,
-  docs/DOMAIN_LANGUAGE.md. Understands which file owns which information and
-  enforces consistency between them. Use when the user wants to build a TODO
-  list, audit features, check if docs are up-to-date or fresh, create or rebuild
-  any project doc, detect documentation drift, split brains, or misplaced
-  information, harvest a status report into TODO_LIST, pull "next tasks" from
-  recent session reports into the backlog, or says "docs health", "feature
-  audit", "build TODO list", "docs up to date", "documentation audit", "fix my
-  docs", "are my docs current", "harvest status report", "pull next tasks into
-  TODO_LIST", "extract open items from recent reports".
+  Creates, verifies, and maintains ALL project documentation — living docs
+  (README, FEATURES, TODO_LIST, ROADMAP, CHANGELOG, AGENTS) AND historical
+  snapshots (status reports, plans, audits). Four modes: BUILD (create from
+  code), HARVEST (pull forward items from status reports into TODO_LIST),
+  VERIFY (check claims against code), ANNOTATE (resolve numbered items in old
+  reports inline — not appendix-only). Use when the user wants to build a TODO
+  list, audit features, check if docs are up-to-date or fresh, create or
+  rebuild any project doc, detect documentation drift, split brains, harvest a
+  status report, pull next tasks into TODO_LIST, update or annotate old status
+  reports, mark old reports as done, bring old audits up to date, or says
+  "docs health", "feature audit", "build TODO list", "docs up to date",
+  "documentation audit", "fix my docs", "are my docs current", "harvest
+  status report", "update old docs", "annotate status reports", "mark these
+  reports as done".
 metadata:
-  tags: documentation, freshness, features, todo, audit, consistency, verification
+  tags: documentation, freshness, features, todo, audit, consistency, verification, annotation, historical, harvest
 ---
 
 # Docs Health
 
-Create missing docs, verify freshness against code, enforce file consistency.
-Documentation that lies is worse than missing documentation. **The #1 failure:
-skipping HARVEST — forward-looking items stay trapped in old status reports.**
-
-## Quick start: which mode do I need?
-
-Agents arrive at this skill via context, not always via an explicit command.
-Pick the mode from the **situation** that triggered you, not from the verb the
-user typed:
-
-| Situation                                                                   | Mode        | Key rule                                                                |
-| --------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------- |
-| You just wrote a `status-report`, or TODO_LIST looks thin vs recent reports | **HARVEST** | Pull forward-looking items out of recent reports into TODO_LIST/ROADMAP |
-| User says "are docs current?" / "check freshness"                           | **VERIFY**  | Open each doc, check claims against code                                |
-| A doc file doesn't exist                                                    | **BUILD**   | Generate from code, cite evidence                                       |
-| User says "full audit" / "fix my docs" / "docs health"                      | **AUDIT**   | BUILD + HARVEST, then VERIFY everything                                 |
-
-If ambiguous, default to AUDIT.
+Create, verify, and maintain ALL project documentation — living docs AND historical snapshots. Documentation that lies is worse than missing documentation.
 
 ## The documentation model
 
-Each file has ONE job. Each fact lives in exactly ONE place. When the same
-fact appears in multiple files, they drift, and the reader cannot tell which
-is current.
+Each file has ONE job. Each fact lives in exactly ONE place. When the same fact appears in multiple files, they drift.
 
-| File                                              | Owns                                             | Lifecycle   |
-| ------------------------------------------------- | ------------------------------------------------ | ----------- |
-| `README.md`                                       | What this is, why it exists, how to start        | Living      |
-| `docs/DOMAIN_LANGUAGE.md`                         | Domain terms and definitions                     | Living      |
-| `AGENTS.md`                                       | Non-obvious context for AI sessions              | Living      |
-| `FEATURES.md`                                     | What features exist + honest status              | Living      |
-| `TODO_LIST.md`                                    | Short-term actionable work                       | Living      |
-| `ROADMAP.md`                                      | Long-term vision, raw ideas not yet actionable   | Living      |
-| `CHANGELOG.md`                                    | What changed in each version                     | Append-only |
-| `docs/adr/`                                       | Architecture decisions (context, decision, why)  | Optional    |
-| `docs/status/`, `docs/planning/`, `docs/reviews/` | Point-in-time snapshots (reports, plans, audits) | Historical  |
+| File                                              | Owns                                   | Lifecycle   |
+| ------------------------------------------------- | -------------------------------------- | ----------- |
+| `README.md`                                       | What this is, why, how to start        | Living      |
+| `AGENTS.md`                                       | Non-obvious context for AI sessions    | Living      |
+| `FEATURES.md`                                     | What features exist + honest status    | Living      |
+| `TODO_LIST.md`                                    | Short-term actionable work (open only) | Living      |
+| `ROADMAP.md`                                      | Long-term vision, raw ideas            | Living      |
+| `CHANGELOG.md`                                    | What changed in each version           | Append-only |
+| `docs/DOMAIN_LANGUAGE.md`                         | Domain terms and definitions           | Living      |
+| `docs/status/`, `docs/planning/`, `docs/reviews/` | Point-in-time snapshots                | Historical  |
 
-**Living vs Historical:** Living rows get rewritten in place by docs-health
-when they drift. **Historical** rows (`docs/status/`, `docs/planning/`, etc.)
-cannot be rewritten without destroying their value as a record — they are
-brought current by the [`update-old-docs`](../update-old-docs/SKILL.md) skill
-via non-destructive annotation. **"Cannot be rewritten" does NOT mean "cannot
-be read":** HARVEST (below) reads the most recent status reports as a source
-of forward-looking items for `TODO_LIST.md` / `ROADMAP.md`. The constraint is
-on the write direction, not the read direction. Without HARVEST, every
-status report's "next tasks" section is entombed in a timestamped file that
-no subsequent session reads — the dominant cause of TODO_LIST staleness
-across long sessions.
+**Living docs** get rewritten in place when they drift. **Historical docs** cannot be rewritten without destroying their value — they get annotated non-destructively (see ANNOTATE). For the full ownership matrix, load [./references/doc-ownership.md](./references/doc-ownership.md).
 
-For the full ownership rules, anti-patterns, information lifecycle, and a
-"where agents store what" matrix, load
-[./references/doc-ownership.md](./references/doc-ownership.md).
+## Which mode?
 
-### Adapt to project type
+| Situation                                                       | Mode      | Does                                    |
+| --------------------------------------------------------------- | --------- | --------------------------------------- |
+| Doc doesn't exist                                               | BUILD     | Generate from code, cite evidence       |
+| Just wrote a status report / TODO_LIST looks thin               | HARVEST   | Pull forward items from recent reports  |
+| "Are docs current?" / "check freshness"                        | VERIFY    | Check claims against code               |
+| "Update old reports" / "mark these done" / "is this current?"   | ANNOTATE  | Resolve numbered items inline           |
+| "Full audit" / "fix my docs" / "docs health"                   | AUDIT     | BUILD + HARVEST + VERIFY                |
 
-Not every project needs all docs. Detect the project type and adapt:
-
-| Project type      | Must-have docs                       | Optional docs                       |
-| ----------------- | ------------------------------------ | ----------------------------------- |
-| Content repo      | README, AGENTS                       | FEATURES (adapted), CHANGELOG       |
-| Library / package | README, CHANGELOG, FEATURES          | AGENTS, DOMAIN_LANGUAGE             |
-| Web app / service | README, FEATURES, TODO_LIST          | AGENTS, DOMAIN_LANGUAGE, ROADMAP    |
-| Monorepo          | README, AGENTS, FEATURES per package | DOMAIN_LANGUAGE per bounded context |
+If ambiguous, default to AUDIT.
 
 ---
 
+## HARVEST — pull forward items from status reports
+
+_The primary mode for most runs._ Status reports capture what a session did AND what should happen next. The "next" part is forward-looking intent. If it lives only in the timestamped report, it is lost — subsequent sessions never read old reports as a backlog source.
+
+1. **Select reports.** Most recent 1–3 in `docs/status/`. Go further back only if sparse. Reading all 100+ historical reports produces duplication, not coverage.
+2. **Extract forward-looking items.** "Next tasks" / "Top N", "partially done" with open work, actionable "improvements."
+   - **Drop resolved items.** If a report carries `done at` / `Won't implement` markers (from ANNOTATE), those are closed — route to CHANGELOG (if missing), never TODO_LIST. Harvest only items with NO marker.
+   - **Questions are not tasks.** Unresolved questions route to the user or ROADMAP "Open questions", never TODO_LIST.
+3. **Verify against code.** Many "next tasks" are already done by a later session. Grep before adding — an item already shipped goes to CHANGELOG (if missing) or is dropped.
+4. **Route each surviving item:** bounded + short-term → `TODO_LIST.md`; vague / long-term → `ROADMAP.md`; already in TODO_LIST (semantic match) → dedupe, keep the better entry.
+5. **Cite the source.** Every item carries evidence: code path (`file:line`) AND report (`docs/status/<file>.md`).
+6. **Do NOT rewrite the source report.** HARVEST reads forward; it never edits the historical file.
+
+For anti-patterns and detail, load [./references/harvest-guide.md](./references/harvest-guide.md).
+
 ---
 
-## BUILD: create or rebuild a doc from code
+## BUILD — create or rebuild a doc from code
 
-Code is the source of truth. Docs, commit messages, and roadmaps are leads,
-not evidence. Open the files and confirm.
+Code is the source of truth. Docs are leads, not evidence.
 
-For detailed BUILD procedures, examples, and quality checklists for each doc
-type, load [./references/build-guide.md](./references/build-guide.md).
+**Per-doc lifecycle (different update actions — not blanket upsert):**
+- `FEATURES.md` — **Upsert**: rows evolve status (PLANNED → FULLY_FUNCTIONAL). Update in place.
+- `TODO_LIST.md` — **Delete done items.** A completed TODO is removed; it now lives in CHANGELOG. Done items NEVER stay in TODO_LIST. No "Previously Completed" / "Resolved" sections.
+- `CHANGELOG.md` — **Append-only.** Never edit prior entries.
+- `ROADMAP.md` — **Update in place.** Raw ideas graduate to TODO_LIST when actionable.
 
-### Quick reference: which template to use
-
-| Doc                       | Template (copy into project, fill in)                                        |
-| ------------------------- | ---------------------------------------------------------------------------- |
-| `README.md`               | [./assets/README-template.md](./assets/README-template.md)                   |
-| `AGENTS.md`               | [./assets/AGENTS-template.md](./assets/AGENTS-template.md)                   |
-| `FEATURES.md`             | [./assets/FEATURES-template.md](./assets/FEATURES-template.md)               |
-| `TODO_LIST.md`            | [./assets/TODO_LIST-template.md](./assets/TODO_LIST-template.md)             |
-| `ROADMAP.md`              | [./assets/ROADMAP-template.md](./assets/ROADMAP-template.md)                 |
-| `CHANGELOG.md`            | [./assets/CHANGELOG-template.md](./assets/CHANGELOG-template.md)             |
-| `docs/DOMAIN_LANGUAGE.md` | [./assets/DOMAIN_LANGUAGE-template.md](./assets/DOMAIN_LANGUAGE-template.md) |
-
-### Status vocabulary for FEATURES.md
+**Status vocabulary (FEATURES.md):**
 
 | Status               | When it applies                                              |
 | -------------------- | ------------------------------------------------------------ |
 | FULLY_FUNCTIONAL     | Code present AND working (tests pass or you exercised it).   |
 | PARTIALLY_FUNCTIONAL | Ships but has known gaps, edge-case bugs, or missing pieces. |
 | BROKEN               | Code exists but does not work / is disabled / fails.         |
-| PLANNED              | Designed or documented but **no code exists yet**.           |
+| PLANNED              | Documented but no code exists yet.                           |
 
-Never round up. If you cannot confirm a feature works, it is
-`PARTIALLY_FUNCTIONAL` at best. Honesty is the entire point of this file.
+Never round up. If you cannot confirm a feature works, it is PARTIALLY_FUNCTIONAL at best.
 
-### BUILD rules
+**Rules:** Code wins when doc and code disagree. Cite evidence (`path/to/file:NN`). Verify each claim — many documented TODOs are already done. Detect project type and adapt which docs are needed.
 
-- **Code wins.** When doc and code disagree, fix the doc.
-- **Cite evidence** (`path/to/file.go:NN`) so the next reader can verify.
-- **Verify each claim.** Many documented TODOs are already done. Grep before
-  trusting a doc claim.
-- **Per-doc lifecycle, not blanket upsert.** The right update action depends
-  on the doc's job. Treating all living docs the same causes TODO_LIST rot:
-  done items pile up because "upsert" never deletes, until the file is a
-  trophy case rather than a TODO list. Use the per-doc rules:
-  - `FEATURES.md`: **Upsert** — rows evolve status (PLANNED →
-    FULLY_FUNCTIONAL). Update in place.
-  - `TODO_LIST.md`: **Delete done items.** A completed TODO is not "upserted
-    to done" — it is removed, because it now lives in CHANGELOG. The only
-    exception: an item kept explicitly marked "retained as historical note"
-    with a one-line rationale (e.g. a rejected spike with an ADR reference).
-
-    **Done/completed TODO items belong in `CHANGELOG.md` — NEVER in `TODO_LIST.md`. When a task is finished, remove it from TODO_LIST and record it in CHANGELOG. TODO_LIST is for open work only.**
-
-  - `CHANGELOG.md`: **Append-only.** Never edit prior entries.
-  - `ROADMAP.md`: **Update in place.** Raw ideas graduate to TODO_LIST when
-    they become actionable.
-- **Never batch without judgment.** When a BUILD touches many files, make a
-  per-file decision (update/skip) based on reading each first. Do not script a
-  blanket transformation. For old/historical files in particular, defer to the
-  [`update-old-docs`](../update-old-docs/SKILL.md) skill — annotate, do not rewrite.
-
-### AGENTS.md quality (BUILD and VERIFY)
-
-AGENTS.md is the most frequently misused doc in this model. Across 150+
-real files, the dominant failure modes are: temporal pollution (dated
-headings, commit hashes, sprint numbers), content misplacement
-(changelogs/TODOs/feature status), and implementation duplication (code
-dumps, config tables). **Size budget: 5-15 KB sweet spot, fail > 100 KB.**
-
-**Endurance test:** will each line be true in 6 months? If it references a
-version, date, or commit hash, cut it.
-
-For the full anti-pattern catalog, pruning guide, and scoring rubric,
-load [./references/agents-quality-guide.md](./references/agents-quality-guide.md).
+For BUILD procedures, examples, quality checklists, and AGENTS.md scoring, load [./references/build-guide.md](./references/build-guide.md) and [./references/agents-quality-guide.md](./references/agents-quality-guide.md). Templates: [./assets/](./assets/) — one per doc type.
 
 ---
 
-## HARVEST: pull forward-looking items from recent status reports
+## VERIFY — check freshness and consistency
 
-Status reports (written by the `status-report` skill or by hand) capture
-what a session did AND what should happen next. The "next" part — `## f)
-Top N things to get done next`, `## TODO`, `## Improvements`, `## Partially
-Done` with open work, unresolved `## Questions` — is **forward-looking
-intent**. If it lives only in the timestamped report, it is lost: subsequent
-sessions treat `docs/status/` as historical and never read it as a backlog
-source. This is the #1 cause of `TODO_LIST.md` staleness across long
-sessions. The report is a snapshot, not a backlog.
+A doc is fresh only when you confirm its concrete claims against code. "Looks fine" is not a check.
 
-Code is the source of truth for **what exists**. Recent status reports are a
-legitimate source for **what we intend to do next**. HARVEST bridges them.
+1. **Inventory** the docs. Note any missing.
+2. **Read each doc, verify against code.** For every concrete claim (count, path, command, status, feature), open the referenced code and confirm.
+3. **Classify findings:** Critical (ghosts, wrong commands), Medium-High (structural decay — completed items in TODO_LIST, "Previously Completed" sections), Medium (contradicts code, stale status), Low (cosmetic).
+4. **Fix drift in place.** Prefer computing counts from the repo over hardcoding.
+5. **Cross-file consistency:** no feature PLANNED in TODO_LIST and FULLY_FUNCTIONAL in FEATURES; no completed item in both TODO_LIST and CHANGELOG; every internal markdown link resolves; TODO_LIST not suspiciously thin vs recent reports.
+6. **Run the project's quality gate.** Detect the build system (`nix flake check`, `cargo test`, `npm test`, `scripts/check-skills.sh`) and run the canonical command — do not substitute. If no build system, state that explicitly.
 
-### When to run HARVEST
-
-_This is the **single source of truth** for the "run HARVEST after a status
-report" rule. Other skills (`status-report`) link here rather than restating
-the rationale — edit the rule here, not in the callers._
-
-- **After every `status-report` session.** The report's "next tasks"
-  section is a TODO_LIST input, not its final resting place. **If you just
-  wrote a status report and TODO_LIST was not updated, run HARVEST now** —
-  otherwise the items rot in a timestamped file no later session reads.
-- **As a step in AUDIT.** A full docs-health run that skips HARVEST will
-  declare TODO_LIST "fresh" while dozens of planned items rot in the most
-  recent snapshot.
-- **On explicit request:** "harvest the latest status report", "pull the
-  next tasks into TODO_LIST", "extract open items from recent reports".
-
-### HARVEST process
-
-1. **Select the reports.** Default: the most recent 1–3 files in
-   `docs/status/` (by filename date or mtime). Go further back only if those
-   are sparse, or the user asks. Reading all 100+ historical reports
-   produces duplication, not coverage — the dedup step is what matters, not
-   the read count. If `docs/status/` is empty, HARVEST is a no-op; say so.
-
-2. **Extract forward-looking items.** From each selected report, pull:
-   - **First, drop anything already resolved.** A report that has been
-     through [`update-old-docs`](../update-old-docs/SKILL.md) carries
-     per-item markers (`done at <hash>`, `Won't implement`,
-     `NOT-DO/DUPLICATE`). Those items are closed, not forward-looking —
-     they belong in CHANGELOG (if missing), never TODO_LIST. Harvest only
-     items with NO marker. This is the loop: update-old-docs resolves
-     items backward; HARVEST pulls only what is still open forward.
-   - "Next tasks" / "Top N things to do" sections — the primary source.
-   - "Partially done" items that still have open work.
-   - "Improvements" / "what could be better" items that are actionable.
-   - **Unresolved "Questions I cannot figure out myself" are NOT tasks** —
-     they are blockers. Route them to the user as questions, or to an
-     "Open questions" section in `ROADMAP.md`, never silently into
-     TODO_LIST. A question is not actionable until answered.
-
-3. **Verify each item against code.** Many "next tasks" are already done by
-   a later session (status reports go stale between sessions). Grep before
-   adding. An item already shipped does not go into TODO_LIST — it goes into
-   CHANGELOG (if missing there) or is dropped.
-
-4. **Route each surviving item** using the same lifecycle as BUILD:
-   - Bounded + short-term + estimable effort → **`TODO_LIST.md`**
-   - Vague / unbounded / long-term → **`ROADMAP.md`**
-   - Already in TODO_LIST (semantic match) → dedupe; keep the better-worded
-     entry, merge evidence.
-   - Already done in code → drop; flag for CHANGELOG if not logged.
-
-5. **Cite the source.** Every harvested item carries an evidence column
-   pointing at both the code (`file:line`) AND the report it came from
-   (`docs/status/<file>.md`), so the trail is auditable. Without the report
-   citation the item looks invented; without the code citation it may
-   already be done.
-
-6. **Do NOT rewrite the source report.** HARVEST reads forward; it never
-   edits the historical file. Marking a report's items as "harvested" is
-   optional and belongs in a `## Resolution` appendix added by
-   [`update-old-docs`](../update-old-docs/SKILL.md) — never as a top-of-file
-   banner.
-
-### HARVEST anti-patterns
-
-- **Dumping all 50 items verbatim into TODO_LIST.** Most "Top 50" lists are
-  brainstorms, not commitments. Route, dedupe, and verify before inserting,
-  or TODO_LIST becomes a dumping ground that nobody acts on.
-- **When the user overrides the "Top N" count (e.g. asks for 50 instead of
-  25).** Expect a brainstorm, not a commitment list — the skill's default
-  "Top #25" is calibrated for HARVEST-ability. The user's instruction wins,
-  but apply extra routing rigor: most of the extra items belong in
-  ROADMAP, not TODO_LIST. This is expected, not a failure of the report.
-- **Treating the report as code.** A report saying "we should do X" is
-  intent, not evidence that X is undone. A later session may have already
-  shipped X. Verify against code.
-- **Harvesting open questions as tasks.** An unanswered question is not
-  actionable. Route it to the user or to ROADMAP, not TODO_LIST.
-- **Re-harvesting items already marked resolved.** `done at` /
-  `Won't implement` / `NOT-DO` markers mean an item is closed; pulling it
-  back into TODO_LIST re-opens settled work. Respect the markers (Step 2).
-- **Skipping HARVEST because "update-old-docs handles status reports."**
-  It does not — different direction. update-old-docs annotates the report
-  itself (backward-looking, "this later shipped"); HARVEST pulls items out
-  of the report (forward-looking, "this is now on the backlog"). Both are
-  needed; neither replaces the other. See the two-way note at the end of
-  this skill.
-- **Reading every historical report.** The 100th-oldest report's "next
-  tasks" are either done, obsolete, or already captured. Recent reports
-  carry the signal; old ones carry noise. Default to the most recent 1–3.
+For the full per-doc verification checklist and cross-file table, load [./references/verify-checklist.md](./references/verify-checklist.md).
 
 ---
 
-## VERIFY: check freshness and consistency
+## ANNOTATE — resolve items in historical docs
 
-A doc is fresh only when you can confirm its concrete claims against the code.
-"Looks fine" is not a freshness check. Open the files it names and verify.
+Old reports go stale. A reader opening one wants to know: _is this done? where is it NOW?_ You cannot rewrite history — annotate non-destructively. **If the user did not specify which files or time range, ask before touching anything.**
 
-For per-file verification checklists (what to check in each doc type), load
-[./references/verify-checklist.md](./references/verify-checklist.md).
+### The primary work: resolve every numbered item inline
 
-### Job fitness before factual accuracy (mandatory first step)
+Old reports contain numbered items (lists `1. 2. 3.` or table rows). **You must resolve every one — not just the ones you know about.** Each item gets a verdict:
 
-Before checking any concrete claim, state in one line what the doc's job is
-and what content does NOT belong there. This forces job-fitness into scope
-before factual verification begins. The failure mode it prevents: certifying
-a doc as "100% accurate and 100% useless." Example for TODO_LIST:
+```markdown
+1. ~~Fix warmup store pollution~~ done at `a7b8159`
+2. ~~Fix estimateJSONSize~~ done at `a7b8159`, `fe81dd2`
+3. Add negative tests: factory returning nil Bundle ← untouched = still open
+```
 
-> "TODO_LIST.md owns short-term actionable work. Completed/rejected/resolved
-> items do NOT belong here — they go in CHANGELOG/ADRs. Deferred items belong
-> in ROADMAP. I will flag any content outside the job scope before checking
-> factual accuracy."
+**Format:** `~~<original line, unchanged>~~ done at <short-git-hashes>`. Variants: `Won't implement — <reason>`, `NOT-DO/DUPLICATE — <reason>`. Leave open items untouched — absence of a marker IS the "open" signal. Strike the ENTIRE original line; cite hashes; never renumber.
 
-A doc can pass every factual check and still fail its job. The dominant
-shape: a living doc (especially `TODO_LIST.md`) that has slowly accumulated
-historical cruft across sessions — "Previously Completed" sections duplicating
-CHANGELOG, struck-through resolved items, rejected spikes kept "for reference,"
-"- DONE" backlog items duplicating ROADMAP. Every fact is true; the doc is
-still useless as a TODO list. This is **structural decay**, distinct from
-factual drift, and it has its own severity (see the table below). For the
-concrete per-doc-type structural checks, load
-[./references/verify-checklist.md](./references/verify-checklist.md) and run
-the regression scenarios at the bottom of that file.
+**Skipping items you didn't check is the #1 failure mode.** For the full format catalog (variants, table-row patterns, multi-item tables 5+), load [./references/resolving-items.md](./references/resolving-items.md).
 
-### Failure modes (ranked by severity)
+### Classify each file before annotating
 
-| Severity    | Failure mode     | Example                                                                  |
-| ----------- | ---------------- | ------------------------------------------------------------------------ |
-| Critical    | Points at ghosts | References a deleted file, renamed symbol, or dead command               |
-| Critical    | Wrong commands   | Build/test/run instructions that fail when executed                      |
-| Medium-High | Structural decay | Living doc (esp. TODO_LIST) accumulated completed/resolved/rejected      |
-|             |                  | content that belongs in CHANGELOG/ADRs; doc is no longer fit for purpose |
-| Medium-High | Under-populated  | TODO_LIST has far fewer open items than recent status reports suggest;   |
-|             |                  | HARVEST was skipped, leaving forward-looking work trapped in the report  |
-| Medium      | Contradicts code | Doc says X works; code shows X is broken, disabled, or removed           |
-| Medium      | Stale status     | Claims an issue is open when it is fixed (or vice versa)                 |
-| Medium      | Missing reality  | A shipped feature or new file the doc does not mention                   |
-| Low         | Counted wrong    | "18 skills" when there are 19                                            |
-| Low         | Cosmetic         | Typos, broken links, stale dates                                         |
+| Decision     | Apply when                                                 |
+| ------------ | ---------------------------------------------------------- |
+| ANNOTATE     | A reader would benefit; value not already present          |
+| ARCHIVE      | EVERY item resolved → `git mv` to `<dir>/archived/<file>`  |
+| SKIP         | Already clear — has its own resolution or correct content  |
+| LEAVE ALONE  | Describes rejected / deferred work where a note misleads   |
 
-### VERIFY process
+### Placement: inline before appendix
 
-1. **Inventory the docs.** List the files from the documentation model that
-   exist. Note any that are missing but should exist.
+Correct stale claims **in place**: `~~Nothing committed.~~ Committed as a7b8159.` If the opening/TL;DR has stale claims, inline-correct them — a reader forms their impression from the opening. An end-of-file `## Resolution (date)` appendix is supplementary context, **never the only annotation. Appendix-only on a file with numbered items = the #1 failure mode.**
 
-2. **Read each doc, then verify against code.** For every concrete claim (a
-   count, a file path, a command, a status, a feature), open the referenced
-   code and confirm. Treat doc claims as hypotheses to test, not facts.
+For placement examples, scope-asking, HTML edge cases, and undo procedures, load [./references/annotation-placement.md](./references/annotation-placement.md). For the Verschlimmbesserung origin incident, load [./references/case-study.md](./references/case-study.md).
 
-3. **Classify each finding.** Record: the file, the line, what it says, what
-   reality is, the severity, and the fix. This makes the work auditable.
+### "So what?" test
 
-4. **Fix drift in place.** Update the doc to match the code. Prefer computing
-   counts and paths from the actual repo over hardcoding numbers: hardcoded
-   counts rot the fastest.
-
-5. **Check cross-file consistency** (docs vs docs). The most common rot: a
-   shipped feature still listed in `TODO_LIST.md` while `FEATURES.md` says
-   `FULLY_FUNCTIONAL`. See the cross-file consistency table in
-   [./references/verify-checklist.md](./references/verify-checklist.md).
-   Minimum checks (state which you ran and which you skipped — never declare
-   "clean" without enumerating what was checked):
-
-   - [ ] Every internal markdown link resolves (`grep -roE '\]\([^)]+\)' *.md docs/` → verify each target exists)
-   - [ ] Every test/source count claim is verified by command, not trusted from a doc (e.g. `grep -c '#[test]' src/*.rs`, not "FEATURES.md says 32")
-   - [ ] Every file referenced from a doc exists (`examples/*.rs`, `benches/support.rs`, `fuzz/Cargo.toml`, etc.)
-   - [ ] Every command in AGENTS.md/CONTRIBUTING.md runs without error (at least `--help` or dry-run)
-   - [ ] CHANGELOG version/compare links match the repo URL pattern
-   - [ ] No feature is listed as both PLANNED (in TODO_LIST.md) and FULLY_FUNCTIONAL (in FEATURES.md)
-   - [ ] No completed item in TODO_LIST is also in CHANGELOG `[Unreleased]` (split brain: which is the source of truth?)
-   - [ ] No deferred/backlog item in TODO_LIST duplicates a ROADMAP entry
-   - [ ] TODO_LIST has no "Previously Completed" / "Resolved" / "Done" section (belongs in CHANGELOG)
-   - [ ] TODO_LIST is not suspiciously thin: compare its open-item count against the most recent status report's "next tasks" section. If that report lists 20+ forward-looking items and TODO_LIST has fewer than ~10 open items, HARVEST was likely skipped.
-   - [ ] If any file in `docs/status/` is newer than the last `TODO_LIST.md` edit, HARVEST was likely skipped — verify the report's forward-looking items aren't trapped in the snapshot.
-
-6. **Verify output quality, not just process quality.** After any batch fix,
-   re-read each change from a skeptical reader's perspective: "would someone who
-   finds this doc benefit from this change?" A change that could apply to any
-   file adds no value — delete it. This is the failure mode that
-   [`update-old-docs`](../update-old-docs/SKILL.md) exists to prevent.
-
-7. **Run the project's quality gate. Mandatory, not optional.**
-
-   **First, detect the canonical gate — do not substitute.** Read
-   `AGENTS.md` or `flake.nix` for the project's prescribed commands and run
-   THOSE. In a Nix-first project, `nix run .#check` / `nix flake check` and
-   bare `go test` / `cargo test` are **not equivalent**. The Nix gate builds
-   derivations in a sandbox with no network, against a filtered source and
-   pinned dependency hashes — so it catches three things bare language
-   commands silently bypass: (1) a misconfigured source filter / `lib.fileset`
-   that excludes needed files (e.g. `examples/` missing from the build);
-   (2) a drifted `vendorHash` / dependency closure; (3) any hidden network
-   fetch. Running `go test` instead of `nix run .#check` is the substitution
-   this step exists to prevent. (Exactly which of these fire depends on what
-   the flake wires into its `checks` / `packages` outputs — but only the Nix
-   gate can surface them.)
-
-   Then run the canonical commands for the detected build system:
-
-   - Rust: `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo test`, `cargo doc`
-   - Node: `npm test`, `npm run lint`, `npx tsc --noEmit`
-   - Nix: `nix flake check` (and `nix run .#check` / `nix run .#test` if defined)
-   - Python: `pytest`, `ruff check`
-   - Other: whatever the project's README/AGENTS.md prescribes
-
-   If the project has no detectable build system, state that explicitly — do
-   not skip silently. Doc edits can break builds: a typo in a fenced code
-   block, broken rustdoc, malformed YAML frontmatter, a renamed symbol in an
-   AGENTS.md snippet. You will not catch these without running the gate.
-
-8. **Verify your own closing claims.** Before declaring done, run `git status`
-   and confirm every claim about working-tree state in your closing message.
-   "Staged files" requires staged files to exist. "No commit made" requires
-   HEAD to be unchanged. "Tests pass" requires tests to have actually run.
-   Never describe working-tree state without a fresh `git status` in the same
-   message — auto-commit hooks and concurrent sessions change state under you.
-
-### Rebuild vs patch (two independent axes)
-
-Drift comes in two flavors. A doc can need a rebuild on one axis and not the
-other. Check both before deciding:
-
-- **Factual drift density** — wrong hashes, ghost files, broken commands,
-  stale status. Threshold: **~50%** of concrete claims are wrong → rebuild.
-- **Structural decay** — content that belongs in another file (completed
-  items in TODO_LIST, "Previously Completed" sections, deferred items
-  duplicating ROADMAP). Threshold: **25%** of content is non-job → rebuild.
-  A TODO_LIST that is 25% historical content is already failing its job;
-  patching it produces a scar pile, not a TODO list.
-
-The "living doc disguised as a trophy case" failure passes the factual axis
-with a perfect score and fails the structural axis catastrophically. For the
-full decision tree, load
-[./references/common-mistakes.md](./references/common-mistakes.md).
-
-### Fix rules
-
-- **Code wins.** When doc and code disagree, fix the doc.
-- **Never hardcode counts** that the repo can compute (`wc -l`, `ls`,
-  `scripts/check-skills.sh`). Point at a command that recomputes the number.
-- **Fix ghosts immediately.** A reference to a deleted file misleads every
-  reader. It is a 10-second fix with outsized value.
+Every annotation must cite concrete evidence (commit hash, TODO_LIST ID, decision). If it could apply to ANY file, delete it — unannotated is better than noise. Measure success by value added per annotation, not files touched.
 
 ---
 
-## AUDIT: full documentation health check
+## AUDIT — full documentation health check
 
-### Process
-
-1. **Inventory.** List which docs exist, which are missing. Note any that
-   should exist but do not.
-
-2. **BUILD missing docs.** If `FEATURES.md` or `TODO_LIST.md` do not exist,
-   build them using BUILD mode before proceeding.
-
-3. **HARVEST recent status reports.** Run the HARVEST process on the most
-   recent `docs/status/*` files so `TODO_LIST.md` / `ROADMAP.md` reflect the
-   latest session's forward-looking items. Skip silently only if no status
-   reports exist; otherwise state which reports were harvested and how many
-   items moved vs. were dropped as already-done.
-
-4. **VERIFY all docs.** Run the full VERIFY process on every doc in the
-   documentation model.
-
-5. **Check cross-file consistency.** Run every consistency check. The most
-   common rot: the same feature listed in both `TODO_LIST.md` (as done) and
-   `FEATURES.md` (as planned) because nobody removed it when it shipped. Also
-   check the inverse rot — completed items in TODO_LIST duplicating CHANGELOG,
-   or deferred items duplicating ROADMAP.
-
-6. **Report.** Present findings using the [health report format](./references/health-report-format.md)
-   — two independent scores (**Accuracy** + **Fitness**), a per-doc findings table,
-   the scoring formulas, and the report rules. Print it **inline** to the
-   conversation; do not write it to a file (an audit is a living diagnosis, not a
-   snapshot). Show the math for both scores every time; never invent a score or a
-   prior baseline.
-
----
-
-## Keeping old/historical documents current (distinct from living docs)
-
-docs-health maintains **living** docs by rewriting them in place. Keeping
-**old/historical** documents current (status reports, plans, audits, snapshots)
-is a different problem: they cannot be rewritten without destroying history, so
-they must be **annotated** non-destructively. When a task asks to "update all
-the old status reports", "mark these reports as done", or "annotate every
-status file", defer to the [`update-old-docs`](../update-old-docs/SKILL.md)
-skill — it enforces per-file judgment, specificity ("so what?" test), and
-non-destructive placement (inline/appendix, never top-of-file banners).
-
-**Status reports have a two-way relationship with docs-health:**
-
-- **Forward (HARVEST, owned by docs-health):** the report's "next tasks"
-  section is pulled OUT of the snapshot INTO `TODO_LIST.md` / `ROADMAP.md`.
-- **Backward (annotation, owned by update-old-docs):** the report itself is
-  annotated to reflect what later shipped ("this item was resolved in
-  commit X").
-
-Both directions are needed; neither replaces the other. A common failure is
-to run update-old-docs on a pile of old reports (backward) while never
-running HARVEST (forward) — the reports say "resolved" but TODO_LIST still
-doesn't contain the items that were NOT resolved, because nobody pulled them
-out in the first place.
-
----
-
-## Common mistakes and decision trees
-
-For detailed examples (good vs bad doc entries), decision trees (TODO vs
-ROADMAP, AGENTS.md vs DOMAIN_LANGUAGE.md, rebuild vs patch), and common
-mistakes per doc type, load
-[./references/common-mistakes.md](./references/common-mistakes.md).
+1. BUILD missing docs.
+2. HARVEST recent status reports.
+3. VERIFY all docs + cross-file consistency.
+4. Report using the health report format — two independent scores (**Accuracy** + **Fitness**), per-doc findings table, visible math. Print **inline** to the conversation; do not write to a file. Load [./references/health-report-format.md](./references/health-report-format.md).
 
 ---
 
 ## Process
 
-READ, UNDERSTAND, RESEARCH, REFLECT. Never trust a doc at face value.
-
-Break the work into actionable steps. Think about them again. Execute and
-verify one step at a time. Repeat until done. Keep going until everything
-works and you think you did a great job!
+Read before writing. Verify, don't trust. Fix on sight.
