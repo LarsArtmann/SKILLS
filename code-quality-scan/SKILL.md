@@ -1,6 +1,6 @@
 ---
 name: code-quality-scan
-description: Runs build, lint, and code duplication analysis to surface all code quality issues in one pass. Use when the user asks to check code quality, scan for issues, run build and lint, find code duplication, or wants a sorted list of all problems. Also triggers on "code quality", "lint my project", "static analysis", "code smells", "technical debt", "what's wrong with my code", "how healthy is this codebase", "quality check", or any request to audit overall codebase health.
+description: Runs build, lint, and code duplication analysis to surface all code quality issues in one pass using automated tools. Use when the user asks to check code quality, scan for issues, run build and lint, find code duplication, or wants a sorted list of all problems. Also triggers on "code quality", "lint my project", "static analysis", "code smells", "technical debt", "what's wrong with my code", "how healthy is this codebase", "quality check", or any request to audit overall codebase health. Distinct from full-code-review (human-style manual file-by-file review including architecture and type safety) and deduplicate-code (deep duplication analysis with harmful-vs-intentional judgment).
 metadata:
   tags: quality, build, lint, duplication, issues, scan
 allowed-tools: bash view edit grep

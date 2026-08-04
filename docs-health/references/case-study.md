@@ -178,3 +178,72 @@ Done: embed pipeline shipped in `a7b8159`. Open: embedBorderStyle nil test
 The other ~65 files were left untouched — they were already clear, already
 correct, or described rejected work where a "done" note would mislead. That is
 the correct outcome, not a failure.
+
+---
+
+## Incident 2 — The appendix-only trap (2026-08-03)
+
+> _A descendant of the banner Verschlimmbesserung. Same root cause (optimized
+> for "done" instead of "useful"), different symptom._
+
+### The setup
+
+A user asked an agent to annotate 41 `2026-08-*` status reports from the
+DiscordSync project. The reports contained numbered action items — both prose
+lists and markdown tables — that needed resolution markers so a reader could
+tell what had shipped.
+
+### What went wrong
+
+The agent loaded the skill, read all 500 lines, classified the 41 files using
+sub-agents, and identified 7 files needing annotation. For each of those 7
+files, it appended a `## Resolution (2026-08-03)` section at the bottom with a
+2-3 sentence summary.
+
+**Every single numbered item in every file was left untouched.** No
+strikethrough, no `done at` hash, no `Won't implement` — nothing. A reader
+scanning the numbered list would conclude nothing had been resolved. The
+appendix existed, but it was disconnected from the items it claimed to resolve.
+
+The user caught it immediately: _"Why do you not update the tables in line?"_
+
+### Why it happened
+
+1. **The tl;dr framed inline and appendix as equal peers.** It said "place
+   notes as inline edits or end-of-file appendices." The agent read this as
+   "either is fine" and chose the easier option. The critical hierarchy —
+   inline is PRIMARY, appendix is supplementary — was buried deeper in the
+   body.
+
+2. **No table-row pattern existed.** The skill had worked examples for prose
+   numbered lists but none for markdown table rows. The reports used tables.
+   The agent froze — it had no pattern for how to strikethrough a table cell —
+   and retreated to the appendix-only safety zone.
+
+3. **"Done" was measured as "every file has an annotation."** Same root cause
+   as Incident 1. Success was "7 files have a Resolution section" instead of
+   "a reader scanning any numbered item knows its status."
+
+### The fix
+
+1. The skill's tl;dr was rewritten to surface the hierarchy: _"Resolve
+   numbered items inline first, THEN add an appendix for context. Appendix-only
+   is the #1 failure mode."_
+
+2. Table-row resolution patterns were added: strikethrough cells (`~~text~~`)
+   and a Status-column variant. The pattern catalog now covers both prose lists
+   AND table rows explicitly.
+
+3. A verification gate was added: _"every file with numbered items has at
+   least 1 inline marker, OR a stated reason why zero were resolved."_ This
+   closes the loophole where an appendix-only file passes structural checks.
+
+### The lesson
+
+The appendix-only trap is the appendix-twin of the banner Verschlimmbesserung.
+In Incident 1, the agent touched every file with a useless banner. In Incident
+2, the agent touched every file with a useless appendix. Both confused _"I
+annotated the file"_ with _"I resolved the items."_ The reader's question is
+never "does this file have an annotation?" — it is always _"is THIS item done?"_
+Inline markers answer that question. Appendices supplement; they never
+substitute.
