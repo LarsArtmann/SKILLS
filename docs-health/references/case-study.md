@@ -1,9 +1,16 @@
-# Case Study — The Docs-Health Generic Banner Verschlimmbesserung
+# Case Study — Two Incidents That Created This Skill's Rules
 
-> The real incident that created this skill. Read this when you want to
-> understand WHY every rule in [../SKILL.md](../SKILL.md) ANNOTATE mode exists —
-> not just WHAT it says. Distilled from a live session so the lesson survives
-> even if the source feedback file is archived or deleted.
+> The real incidents that shaped [../SKILL.md](../SKILL.md) ANNOTATE mode. Read
+> this when you want to understand WHY every rule exists — not just WHAT it says.
+> Distilled from live sessions so the lessons survive even if the source feedback
+> files are archived or deleted.
+>
+> **Incident 1 (2026-07-17):** The banner Verschlimmbesserung — 58 generic
+> banners stamped without judgment.
+>
+> **Incident 2 (2026-08-03):** The appendix-only trap — 7 status reports
+> annotated with end-of-file `## Resolution` sections and ZERO inline `done at`
+> markers on any numbered item.
 >
 > **Why this is an old-docs story:** the failed task was bringing a set of OLD
 > status reports up to date so a reader could tell what had shipped. The
@@ -20,6 +27,7 @@
 5. [The fix (round 2) — banner placement](#the-fix-round-2--banner-placement)
 6. [Root causes (the five that matter)](#root-causes-the-five-that-matter)
 7. [The one-line summary](#the-one-line-summary)
+8. [Incident 2 — The appendix-only trap (2026-08-03)](#incident-2--the-appendix-only-trap-2026-08-03)
 
 ## The setup
 
@@ -131,8 +139,9 @@ _"does this need anything?"_ decision — made by the agent, not by a script's
 The removal script's naive `txt.find('</div>')` matched the wrong closing tag.
 The agent saw "5138 insertions" in `git diff --stat` and initially did not
 question it, because focus was on the markdown banners, not the HTML files.
-This is why [../SKILL.md](../SKILL.md) ANNOTATE mode says: undo batch edits
-with `git restore`, never with a second removal script.
+**Lesson:** undo batch edits with `git restore` (or `git switch`), never with a
+second removal script — the second script is just another unreviewed batch edit
+waiting to corrupt something new.
 
 ## The one-line summary
 
