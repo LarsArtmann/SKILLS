@@ -104,12 +104,11 @@ dependencies table.
 
 ## Known Gaps (honest assessment)
 
-- **No skill has been empirically trigger-tested.** All 25 descriptions are
+- **No skill has been empirically trigger-tested.** All descriptions are
   reasoned improvements, not tested against Crush's actual selection mechanism.
-- **Trigger collision analysis never run.** Expanded descriptions (9 rewritten
-  2026-08-02) may cause skills to compete for the same prompt (e.g.
-  `code-quality-scan` vs `full-code-review` vs `deduplicate-code`).
-- **how-to-golang code snippets have known accuracy issues** (gopter signature,
-  `encoding/json/v2` Go version, E2E HTTP API). Validate before relying on them.
-- **website-launch is 1106 lines** (allowlisted past the 500-line guideline).
-  Should be refactored to move content into references.
+- **Trigger collision analysis completed 2026-08-04.** Zero real collisions
+  found; all high-overlap pairs disambiguated with "Distinct from" text.
+- ~~how-to-golang code snippets have known accuracy issues~~ **Fixed 2026-08-04**
+  — gopter, json/v2, E2E HTTP, Rule 002 all corrected.
+- **website-launch is 799 lines** (allowlisted; down from 1106 after extracting
+  go-live runbook, creation details, and definition of done to references).
