@@ -21,6 +21,9 @@ INCLUDE WORK:
 - f) Top #25 things we should get done next!
 - g) Ask your Top #1 question you can NOT figure out yourself!
 
+For what each section should contain and common pitfalls, see
+[./references/section-quality-guide.md](./references/section-quality-guide.md).
+
 **"Top #25" is a default, not a ceiling.** If the user asks for more (e.g.
 "up to 50"), their instruction wins — but a larger N is a brainstorm, not a
 commitment list: most extra items are ROADMAP fuel, and `docs-health` HARVEST
