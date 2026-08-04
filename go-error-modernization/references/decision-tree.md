@@ -10,12 +10,13 @@ The **`//nolint:legacyerrors` suppression name** and the **specific classificati
 
 ## Table of Contents
 
-1. [Background: Go 1.26+ has three error-matching APIs, not one](#background-go-126-has-three-error-matching-apis-not-one)
-2. [The decision tree](#the-decision-tree)
-3. [How to suppress correctly](#how-to-suppress-correctly)
-4. [Classification examples](#classification-examples)
-5. [When the linter IS right about `errors.Is`](#when-the-linter-is-right-about-errorsis)
-6. [Related reading](#related-reading)
+1. [Verification status](#verification-status)
+2. [Background: Go 1.26+ has three error-matching APIs, not one](#background-go-126-has-three-error-matching-apis-not-one)
+3. [The decision tree](#the-decision-tree)
+4. [How to suppress correctly](#how-to-suppress-correctly)
+5. [Classification examples](#classification-examples)
+6. [When the linter IS right about `errors.Is`](#when-the-linter-is-right-about-errorsis)
+7. [Related reading](#related-reading)
 
 ---
 

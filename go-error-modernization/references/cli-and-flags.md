@@ -24,14 +24,16 @@ If the binary does not exist publicly, the **methodology** in this file still te
 
 ## Table of Contents
 
-1. [The safe workflow (step by step)](#the-safe-workflow-step-by-step)
-2. [Flag reliability reference](#flag-reliability-reference)
-3. [Verification method for `--no-suppress`](#verification-method-for---no-suppress)
-4. [How to verify `//nolint:legacyerrors` actually works](#how-to-verify-nolintlegacyerrors-actually-works)
-5. [The `fix` vs `lint` inconsistency](#the-fix-vs-lint-inconsistency-and-why-fix-is-better)
-6. [Exit code reference](#exit-code-reference)
-7. [Practical example: full cleanup of a real codebase](#practical-example-full-cleanup-of-a-real-codebase)
-8. [CI integration template](#ci-integration-template)
+1. [Verification status](#-verification-status--read-before-trusting-any-claim-below)
+2. [The safe workflow (step by step)](#the-safe-workflow-step-by-step)
+3. [Flag reliability reference](#flag-reliability-reference)
+4. [Verification method for `--no-suppress`](#verification-method-for---no-suppress)
+5. [How to verify `//nolint:legacyerrors` actually works](#how-to-verify-nolintlegacyerrors-actually-works)
+6. [The `fix` vs `lint` inconsistency](#the-fix-vs-lint-inconsistency-and-why-fix-is-better)
+7. [Exit code reference](#exit-code-reference)
+8. [Practical example: full cleanup of a real codebase](#practical-example-full-cleanup-of-a-real-codebase)
+9. [CI integration template](#ci-integration-template)
+10. [Summary: what to trust and what not to trust](#summary-what-to-trust-and-what-not-to-trust)
 
 ---
 

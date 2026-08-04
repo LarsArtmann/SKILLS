@@ -18,6 +18,10 @@
 #        fail (the feedback loop is broken again — see AGENTS.md §11).
 #     8. Cross-skill handoff guard: known handoff links (e.g. status-report →
 #        docs-health HARVEST) must exist, or the loop reopens (AGENTS.md §5.5).
+#     9. TOC-integrity guard: any .md with a Contents section must have every
+#        ## heading accounted for in the TOC (AGENTS.md §5.4 thin-skills).
+#    10. Marker-vocabulary guard: docs-health ANNOTATE/HARVEST must share the
+#        resolution-marker vocabulary (done at, Won't implement, NOT-DO).
 #
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
@@ -217,6 +221,47 @@ for h in "${handoffs[@]}"; do
 		failed=1
 	fi
 done
+
+# --- TOC-integrity guard --------------------------------------------------------
+# For any .md file (SKILL.md or references/*.md) that has a "## Contents" or
+# "## Table of Contents" section, verify every ## heading outside code blocks
+# is accounted for in the TOC. The failure mode: an agent adds a ## heading but
+# forgets to update the TOC, silently breaking navigation. This guard catches
+# that drift. It checks: headings <= toc_entries (extra TOC entries for ###
+# subsections are fine; missing headings from the TOC is a FAIL).
+for f in \
+	$(find "${skill_dirs[@]}" -name '*.md' -type f \
+		-exec grep -liE '^## (Contents|Table of [Cc]ontents)' {} \;); do
+	heading_count=$(awk '
+		BEGIN { in_code = 0 }
+		/^```/ { in_code = !in_code; next }
+		!in_code && /^## / {
+			line = tolower($0)
+			if (line !~ /^## (contents|table of contents)/) c++
+		}
+		END { print c + 0 }
+	' "$f")
+	toc_count=$(grep -cE '^\s*[-0-9].*\[.+\]\(#[^)]+\)' "$f" 2>/dev/null || echo 0)
+	if [[ "$heading_count" -gt "$toc_count" ]]; then
+		echo "FAIL ${f#./}: TOC drift — $heading_count ## headings but only $toc_count TOC entries. Add missing headings to the TOC."
+		failed=1
+	fi
+done
+
+# --- Marker-vocabulary guard ----------------------------------------------------
+# docs-health ANNOTATE owns the marker vocabulary (done at, Won't implement,
+# NOT-DO/DUPLICATE). HARVEST must reference these markers, not invent rival
+# formats (AGENTS.md §5.5 contract). This guard catches silent drift if either
+# mode is rewritten.
+dh="docs-health/SKILL.md"
+if [[ -f "$dh" ]]; then
+	for marker in "done at" "Won't implement" "NOT-DO"; do
+		if ! grep -qF "$marker" "$dh"; then
+			echo "FAIL docs-health: marker '$marker' missing from SKILL.md — ANNOTATE and HARVEST modes MUST share the resolution-marker vocabulary (AGENTS.md §5.5)"
+			failed=1
+		fi
+	done
+fi
 
 if [[ "$failed" -ne 0 ]]; then
 	echo
