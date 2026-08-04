@@ -115,12 +115,12 @@ Every recommendation must be concrete, prioritized, and traceable to evidence.
 
 ### Priority levels
 
-| Priority | Criteria | Example |
-|----------|----------|---------|
+| Priority      | Criteria                                                                   | Example                                            |
+| ------------- | -------------------------------------------------------------------------- | -------------------------------------------------- |
 | P0 — Critical | Architecture actively blocking development or causing production incidents | Circular dependency causing deploy ordering issues |
-| P1 — High | Architecture debt accumulating rapidly; will block within 1-3 months | God module growing with every feature |
-| P2 — Medium | Structural friction; slows development but not blocking | Missing interface abstraction in a stable module |
-| P3 — Low | Improvement opportunity; nice-to-have but no urgency | Rename misleadingly named package |
+| P1 — High     | Architecture debt accumulating rapidly; will block within 1-3 months       | God module growing with every feature              |
+| P2 — Medium   | Structural friction; slows development but not blocking                    | Missing interface abstraction in a stable module   |
+| P3 — Low      | Improvement opportunity; nice-to-have but no urgency                       | Rename misleadingly named package                  |
 
 ### Recommendation format
 

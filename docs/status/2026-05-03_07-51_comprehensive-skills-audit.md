@@ -127,33 +127,33 @@ The SKILLS repo has **15 skills** (14 original + 1 new `how-to-golang`), all wit
 
 Ranked by impact × urgency. Pareto-optimal ordering — doing #1–#8 covers ~80% of the value.
 
-| #   | Task                                                                                                                      | Impact | Effort | Category     |
-| --- | ------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | ------------ |
-| ~~1~~   | ~~**Delete legacy `1.md`–`17.md` + `how-to-write-skills.md`**~~ done at `c822b9d` (moved to `originals/`)                          | 🔴     | 5min   | Cleanup      |
-| ~~2~~   | ~~**Create `library-guide` skill** from `LIBRARY_GUIDE.md`~~ Won't implement — `how-to-golang` absorbed the role; see ROADMAP §5                 | 🔴     | 30min  | New skill    |
-| 3   | **Fix `how-to-golang` code inaccuracies** (gopter, json/v2, E2E HTTP, Rule 002)                                           | 🔴     | 30min  | Quality      |
-| 4   | **Flesh out `architecture-review`** — add assessment rubric, criteria, methodology, reference file                        | 🔴     | 45min  | Content      |
-| 5   | **Flesh out `bdd-testing`** — add ginkgo syntax reference, test structure template, file naming                           | 🔴     | 45min  | Content      |
-| ~~6~~   | ~~**Flesh out `nix-flake-migration`**~~ Won't implement — consolidated into `html-report-kit` ecosystem              | 🔴     | 30min  | Content      |
-| ~~7~~   | ~~**Flesh out `features-audit`**~~ done at `0eb74a8` (merged into `docs-health` BUILD mode)                         | 🔴     | 20min  | Content      |
-| ~~8~~   | ~~**Fix `git commit <--` syntax** in 4 skills~~ done at — all occurrences replaced with prose; guard in `check-skills.sh`                    | 🟡     | 5min   | Quality      |
-| ~~9~~   | ~~**Remove duplicated execution boilerplate**~~ done — `execution-mode` deleted; boilerplate cleaned across skills                               | 🟡     | 15min  | DRY          |
-| ~~10~~  | ~~**Add cross-references between skills**~~ done — inter-skill graph documented in AGENTS.md §5.5; handoff guard in `check-skills.sh`           | 🟡     | 20min  | Integration  |
-| ~~11~~  | ~~**Merge `go-ecosystem.md` content into `how-to-golang`**~~ done — `go-ecosystem-upgrade` skill created separately; `how-to-golang` references its own libs                          | 🟡     | 15min  | Integration  |
-| ~~12~~  | ~~**Flesh out `docs-freshness-check`**~~ done at `0eb74a8` (merged into `docs-health` VERIFY mode)                  | 🟡     | 20min  | Content      |
-| 13  | **Flesh out `code-quality-scan`** — document `art-dupl`, remove "RESEARCH" instruction, add tool list                     | 🟡     | 20min  | Content      |
-| ~~14~~  | ~~**Flesh out `deduplicate-code`**~~ done — synced to art-dupl, 70 lines with judgment framework (`bd9de94`)                     | 🟡     | 15min  | Content      |
-| ~~15~~  | ~~**Add output templates** to `status-report`, etc.~~ done at — `docs-health` has templates; `status-report` has HTML dashboard format; `pareto-planning` has D2 graphs                | 🟡     | 30min  | Quality      |
-| 16  | **Add `domain-types.md` code examples** for DataPoint, ActorChain, Bitemporal, Cents, Money, etc.                         | 🟡     | 30min  | Content      |
-| ~~17~~  | ~~**Resolve `brutal-self-review` ↔ `execution-mode` contradiction**~~ done — `execution-mode` deleted at `afb6181`                        | 🟡     | 10min  | Consistency  |
-| 18  | **Test trigger descriptions** with skill-creator's optimization loop                                                      | 🟠     | 60min  | Validation   |
-| 19  | ~~**Create `crush.json`** for the repo~~ NOT-DO — intentional: skills installed via `skills_paths` or `npx skills add` (AGENTS.md §5.7)                                              | 🟠     | 10min  | Config       |
-| ~~20~~  | ~~**Add `allowed-tools`** to skill frontmatter~~ done — `code-quality-scan`, `deduplicate-code`, `pareto-planning` have it; others added as needed (AGENTS.md §5.8)              | 🟠     | 15min  | Config       |
-| ~~21~~  | ~~**Verify `architecture-visualization` D2 change**~~ done — D2 is the canonical choice; `allowed-tools: d2` added                             | 🟠     | 5min   | Verification |
-| 22  | **Add error handling guidance** to skills (what if `d2` CLI isn't installed? `art-dupl` missing?)                         | 🟠     | 30min  | Robustness   |
-| 23  | ~~**Add version/timestamp** to each SKILL.md frontmatter~~ NOT-DO — versionless content repo; CHANGELOG uses date-based milestones (ROADMAP non-goals)                                                    | ⚪     | 10min  | Maintenance  |
-| ~~24~~  | ~~**Remove `how-to-write-skills.md`** or convert to skill~~ partially done — still at repo root; updated with 11 patterns (AGENTS.md §5.6)                                     | ⚪     | 15min  | Cleanup      |
-| 25  | **Build eval test suite** — at least 2 test prompts per skill, automated grading                                          | ⚪     | 2hr    | Validation   |
+| #      | Task                                                                                                                                                                    | Impact | Effort | Category     |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | ------------ |
+| ~~1~~  | ~~**Delete legacy `1.md`–`17.md` + `how-to-write-skills.md`**~~ done at `c822b9d` (moved to `originals/`)                                                               | 🔴     | 5min   | Cleanup      |
+| ~~2~~  | ~~**Create `library-guide` skill** from `LIBRARY_GUIDE.md`~~ Won't implement — `how-to-golang` absorbed the role; see ROADMAP §5                                        | 🔴     | 30min  | New skill    |
+| 3      | **Fix `how-to-golang` code inaccuracies** (gopter, json/v2, E2E HTTP, Rule 002)                                                                                         | 🔴     | 30min  | Quality      |
+| 4      | **Flesh out `architecture-review`** — add assessment rubric, criteria, methodology, reference file                                                                      | 🔴     | 45min  | Content      |
+| 5      | **Flesh out `bdd-testing`** — add ginkgo syntax reference, test structure template, file naming                                                                         | 🔴     | 45min  | Content      |
+| ~~6~~  | ~~**Flesh out `nix-flake-migration`**~~ Won't implement — consolidated into `html-report-kit` ecosystem                                                                 | 🔴     | 30min  | Content      |
+| ~~7~~  | ~~**Flesh out `features-audit`**~~ done at `0eb74a8` (merged into `docs-health` BUILD mode)                                                                             | 🔴     | 20min  | Content      |
+| ~~8~~  | ~~**Fix `git commit <--` syntax** in 4 skills~~ done at — all occurrences replaced with prose; guard in `check-skills.sh`                                               | 🟡     | 5min   | Quality      |
+| ~~9~~  | ~~**Remove duplicated execution boilerplate**~~ done — `execution-mode` deleted; boilerplate cleaned across skills                                                      | 🟡     | 15min  | DRY          |
+| ~~10~~ | ~~**Add cross-references between skills**~~ done — inter-skill graph documented in AGENTS.md §5.5; handoff guard in `check-skills.sh`                                   | 🟡     | 20min  | Integration  |
+| ~~11~~ | ~~**Merge `go-ecosystem.md` content into `how-to-golang`**~~ done — `go-ecosystem-upgrade` skill created separately; `how-to-golang` references its own libs            | 🟡     | 15min  | Integration  |
+| ~~12~~ | ~~**Flesh out `docs-freshness-check`**~~ done at `0eb74a8` (merged into `docs-health` VERIFY mode)                                                                      | 🟡     | 20min  | Content      |
+| 13     | **Flesh out `code-quality-scan`** — document `art-dupl`, remove "RESEARCH" instruction, add tool list                                                                   | 🟡     | 20min  | Content      |
+| ~~14~~ | ~~**Flesh out `deduplicate-code`**~~ done — synced to art-dupl, 70 lines with judgment framework (`bd9de94`)                                                            | 🟡     | 15min  | Content      |
+| ~~15~~ | ~~**Add output templates** to `status-report`, etc.~~ done at — `docs-health` has templates; `status-report` has HTML dashboard format; `pareto-planning` has D2 graphs | 🟡     | 30min  | Quality      |
+| 16     | **Add `domain-types.md` code examples** for DataPoint, ActorChain, Bitemporal, Cents, Money, etc.                                                                       | 🟡     | 30min  | Content      |
+| ~~17~~ | ~~**Resolve `brutal-self-review` ↔ `execution-mode` contradiction**~~ done — `execution-mode` deleted at `afb6181`                                                      | 🟡     | 10min  | Consistency  |
+| 18     | **Test trigger descriptions** with skill-creator's optimization loop                                                                                                    | 🟠     | 60min  | Validation   |
+| 19     | ~~**Create `crush.json`** for the repo~~ NOT-DO — intentional: skills installed via `skills_paths` or `npx skills add` (AGENTS.md §5.7)                                 | 🟠     | 10min  | Config       |
+| ~~20~~ | ~~**Add `allowed-tools`** to skill frontmatter~~ done — `code-quality-scan`, `deduplicate-code`, `pareto-planning` have it; others added as needed (AGENTS.md §5.8)     | 🟠     | 15min  | Config       |
+| ~~21~~ | ~~**Verify `architecture-visualization` D2 change**~~ done — D2 is the canonical choice; `allowed-tools: d2` added                                                      | 🟠     | 5min   | Verification |
+| 22     | **Add error handling guidance** to skills (what if `d2` CLI isn't installed? `art-dupl` missing?)                                                                       | 🟠     | 30min  | Robustness   |
+| 23     | ~~**Add version/timestamp** to each SKILL.md frontmatter~~ NOT-DO — versionless content repo; CHANGELOG uses date-based milestones (ROADMAP non-goals)                  | ⚪     | 10min  | Maintenance  |
+| ~~24~~ | ~~**Remove `how-to-write-skills.md`** or convert to skill~~ partially done — still at repo root; updated with 11 patterns (AGENTS.md §5.6)                              | ⚪     | 15min  | Cleanup      |
+| 25     | **Build eval test suite** — at least 2 test prompts per skill, automated grading                                                                                        | ⚪     | 2hr    | Validation   |
 
 ---
 

@@ -37,11 +37,11 @@ READ, UNDERSTAND, RESEARCH, REFLECT before writing any spec.
 
 ## File naming conventions
 
-| File | Purpose | Example |
-|------|---------|---------|
+| File                  | Purpose                                                               | Example              |
+| --------------------- | --------------------------------------------------------------------- | -------------------- |
 | `<pkg>_suite_test.go` | Bootstrap file — `RegisterFailHandler` + `RunSpecs`. One per package. | `user_suite_test.go` |
-| `<subject>_test.go` | Spec file — one per subject under test. Named after what it tests. | `user_repo_test.go` |
-| `helpers_test.go` | Shared test helpers (builders, fixtures). Not specs. | `helpers_test.go` |
+| `<subject>_test.go`   | Spec file — one per subject under test. Named after what it tests.    | `user_repo_test.go`  |
+| `helpers_test.go`     | Shared test helpers (builders, fixtures). Not specs.                  | `helpers_test.go`    |
 
 All spec files use `package <pkg>_test` (black-box) and import `onsi/ginkgo` + `onsi/gomega`.
 

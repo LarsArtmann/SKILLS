@@ -21,7 +21,7 @@ Decision guide for WHAT to use. For HOW, read the library docs.
 | Errors        | uniflow + cockroachdb/errors | `github.com/larsartmann/uniflow` + `github.com/cockroachdb/errors`                                                    |
 | Resilience    | failsafe-go                  | `github.com/failsafe-go/failsafe-go`                                                                                  |
 | YAML          | go-faster/yaml               | `github.com/go-faster/yaml`                                                                                           |
-| JSON          | stdlib v2                    | `encoding/json/v2` (Go 1.25+, experimental: `GOEXPERIMENT=jsonv2`)                                                   |
+| JSON          | stdlib v2                    | `encoding/json/v2` (Go 1.25+, experimental: `GOEXPERIMENT=jsonv2`)                                                    |
 | UUID          | google/uuid                  | `github.com/google/uuid` (only when external systems mandate UUID format)                                             |
 | ULID          | oklog/ulid                   | `github.com/oklog/ulid` (prefer for DB primary keys)                                                                  |
 | NanoID        | sixafter/nanoid              | `github.com/sixafter/nanoid`                                                                                          |

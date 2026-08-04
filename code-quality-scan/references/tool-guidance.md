@@ -21,14 +21,14 @@
 
 Detect the build system and use its native commands:
 
-| Build system | Detection | Build | Lint | Test |
-|-------------|-----------|-------|------|------|
-| Nix flakes | `flake.nix` exists | `nix build` | `nix flake check` | `nix run .#test` |
-| Make | `Makefile` exists | `make build` | `make lint` | `make test` |
-| Go | `go.mod` exists | `go build ./...` | `go vet ./...` + linter | `go test ./...` |
-| npm/pnpm | `package.json` exists | `npm run build` | `npm run lint` | `npm test` |
-| Cargo | `Cargo.toml` exists | `cargo build` | `cargo clippy` | `cargo test` |
-| Python | `pyproject.toml` exists | `python -m build` | `ruff check .` | `pytest` |
+| Build system | Detection               | Build             | Lint                    | Test             |
+| ------------ | ----------------------- | ----------------- | ----------------------- | ---------------- |
+| Nix flakes   | `flake.nix` exists      | `nix build`       | `nix flake check`       | `nix run .#test` |
+| Make         | `Makefile` exists       | `make build`      | `make lint`             | `make test`      |
+| Go           | `go.mod` exists         | `go build ./...`  | `go vet ./...` + linter | `go test ./...`  |
+| npm/pnpm     | `package.json` exists   | `npm run build`   | `npm run lint`          | `npm test`       |
+| Cargo        | `Cargo.toml` exists     | `cargo build`     | `cargo clippy`          | `cargo test`     |
+| Python       | `pyproject.toml` exists | `python -m build` | `ruff check .`          | `pytest`         |
 
 **Precedence:** If `flake.nix` exists, prefer Nix commands (they provide the most hermetic, reproducible environment). In LarsArtmann projects, `flake.nix` is always the canonical build system — never use Makefiles or justfiles.
 
@@ -36,11 +36,11 @@ Detect the build system and use its native commands:
 
 ## Go linting
 
-| Tool | What it catches | Command |
-|------|----------------|---------|
-| `go vet` | Common mistakes (printf format, struct tags, unreachable code) | `go vet ./...` |
+| Tool            | What it catches                                                            | Command                   |
+| --------------- | -------------------------------------------------------------------------- | ------------------------- |
+| `go vet`        | Common mistakes (printf format, struct tags, unreachable code)             | `go vet ./...`            |
 | `golangci-lint` | Meta-linter: aggregates staticcheck, gosec, revive, unused, errcheck, etc. | `golangci-lint run ./...` |
-| `staticcheck` | Advanced static analysis (unused code, simplification, deprecated APIs) | `staticcheck ./...` |
+| `staticcheck`   | Advanced static analysis (unused code, simplification, deprecated APIs)    | `staticcheck ./...`       |
 
 **Recommended:** Run `golangci-lint` with a project-specific `.golangci.yml`. If none exists, the default linters (`errcheck`, `gosimple`, `govet`, `ineffassign`, `staticcheck`, `unused`) are a solid baseline.
 
@@ -69,42 +69,42 @@ npx jscpd src/ --format "go" --reporters html
 
 ## TypeScript/JavaScript
 
-| Tool | What it catches | Command |
-|------|----------------|---------|
-| `tsc` | Type errors | `tsc --noEmit` |
-| `eslint` | Code quality, style, best practices | `eslint . --ext .ts,.tsx` |
-| `biome` | Fast linter + formatter (replaces eslint + prettier) | `biome check .` |
-| `jscpd` | Copy-paste detection | `npx jscpd src/` |
+| Tool     | What it catches                                      | Command                   |
+| -------- | ---------------------------------------------------- | ------------------------- |
+| `tsc`    | Type errors                                          | `tsc --noEmit`            |
+| `eslint` | Code quality, style, best practices                  | `eslint . --ext .ts,.tsx` |
+| `biome`  | Fast linter + formatter (replaces eslint + prettier) | `biome check .`           |
+| `jscpd`  | Copy-paste detection                                 | `npx jscpd src/`          |
 
 ---
 
 ## Rust
 
-| Tool | What it catches | Command |
-|------|----------------|---------|
-| `cargo build` | Compilation errors | `cargo build` |
+| Tool           | What it catches              | Command                                     |
+| -------------- | ---------------------------- | ------------------------------------------- |
+| `cargo build`  | Compilation errors           | `cargo build`                               |
 | `cargo clippy` | Idiom lints, common mistakes | `cargo clippy --all-targets -- -D warnings` |
-| `cargo test` | Test failures | `cargo test` |
+| `cargo test`   | Test failures                | `cargo test`                                |
 
 ---
 
 ## Python
 
-| Tool | What it catches | Command |
-|------|----------------|---------|
-| `ruff` | Fast linter (replaces flake8, isort, pyupgrade) | `ruff check .` |
-| `mypy` | Static type checking | `mypy .` |
-| `pytest` | Test runner | `pytest` |
+| Tool     | What it catches                                 | Command        |
+| -------- | ----------------------------------------------- | -------------- |
+| `ruff`   | Fast linter (replaces flake8, isort, pyupgrade) | `ruff check .` |
+| `mypy`   | Static type checking                            | `mypy .`       |
+| `pytest` | Test runner                                     | `pytest`       |
 
 ---
 
 ## Nix
 
-| Tool | What it catches | Command |
-|------|----------------|---------|
+| Tool              | What it catches                      | Command           |
+| ----------------- | ------------------------------------ | ----------------- |
 | `nix flake check` | Build correctness, evaluation errors | `nix flake check` |
-| `statix` | Nix anti-patterns and best practices | `statix check` |
-| `deadnix` | Dead code (unused let bindings) | `deadnix` |
+| `statix`          | Nix anti-patterns and best practices | `statix check`    |
+| `deadnix`         | Dead code (unused let bindings)      | `deadnix`         |
 
 ---
 
@@ -112,9 +112,9 @@ npx jscpd src/ --format "go" --reporters html
 
 Map tool output to report severity:
 
-| Severity | Criteria | Examples |
-|----------|----------|---------|
-| Critical | Build fails, security vulnerability, data loss risk | `go build` exits non-zero, `gosec` CRITICAL |
-| High | Will cause bugs in production, broken tests | Unused error return, race condition detected |
-| Medium | Code smell, maintainability issue, style violation | Inconsistent naming, missing error context |
-| Low | Minor improvement, formatting, documentation gap | Missing comment on exported function, typo |
+| Severity | Criteria                                            | Examples                                     |
+| -------- | --------------------------------------------------- | -------------------------------------------- |
+| Critical | Build fails, security vulnerability, data loss risk | `go build` exits non-zero, `gosec` CRITICAL  |
+| High     | Will cause bugs in production, broken tests         | Unused error return, race condition detected |
+| Medium   | Code smell, maintainability issue, style violation  | Inconsistent naming, missing error context   |
+| Low      | Minor improvement, formatting, documentation gap    | Missing comment on exported function, typo   |

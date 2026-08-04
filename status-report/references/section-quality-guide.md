@@ -21,6 +21,7 @@
 List work that is **verifiably complete** — committed, tested, working.
 
 **Each item should include:**
+
 - What was done (1 sentence, concrete)
 - Evidence: commit hash, test status, or "deployed at URL"
 - Scope: what files/modules were affected
@@ -35,6 +36,7 @@ fail or the build is broken, it goes in (b) or (d), not here.
 Work that is in progress with known gaps.
 
 **Each item should include:**
+
 - What works now (with evidence)
 - What remains open (specific, not vague)
 - Blocker: what is preventing completion (if any)
@@ -49,6 +51,7 @@ Work that is in progress with known gaps.
 Work that is planned but no code written.
 
 **Each item should include:**
+
 - What is planned
 - Why it hasn't started (blocked? deprioritized? waiting on decision?)
 - Priority: is this still wanted?
@@ -65,6 +68,7 @@ Things that are broken, wrong, or actively harmful.
 **This is the most valuable section.** It requires radical honesty.
 
 **Each item should include:**
+
 - What is broken (be specific — which test, which endpoint, which module)
 - Severity: does this block development? block users? lose data?
 - Root cause (if known) or "unknown — needs investigation"
@@ -80,6 +84,7 @@ Name the exact failing scenario.
 Process and design improvements — not bugs (those go in (d)).
 
 **Each item should include:**
+
 - What pattern/practice is suboptimal
 - Impact: how much time/pain it causes
 - Suggested fix (concrete, not "improve the architecture")
@@ -98,6 +103,7 @@ Forward-looking work items, ranked by impact.
 HARVEST pulls these into TODO_LIST.md and ROADMAP.md.
 
 **Each item should include:**
+
 - Task (1 sentence, actionable)
 - Impact: Critical / High / Medium / Low
 - Effort: S (<30min) / M (30min-2hr) / L (>2hr)
@@ -114,6 +120,7 @@ and HARVEST will route them to ROADMAP, not TODO_LIST. Make them specific:
 The single most important question you cannot answer yourself.
 
 **Criteria for a good question:**
+
 - You tried to answer it and could not (state what you tried)
 - The answer unblocks significant work
 - The user (or domain expert) is the only one who can answer it
