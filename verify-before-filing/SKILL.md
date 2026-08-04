@@ -1,7 +1,7 @@
 ---
 name: verify-before-filing
 description: |
-  Use before filing any issue, PR, or feature request to an external project you don't own. Triggers on "file an issue", "open a PR upstream", "report this to", "suggest this to the project", "is there an existing PR for", or any time you're about to propose a change to someone else's repository. Enforces source-code-level verification of the diagnosis before drafting. Prevents the most common failure: filing a professional-looking issue whose core premise is wrong because the local workaround that motivated it was never verified to do anything.
+  Use before filing any issue, PR, or feature request to an external project you don't own. Triggers on "file an issue", "open a PR upstream", "report this to", "suggest this to the project", "is there an existing PR for", or any time you're about to propose a change to someone else's repository. Enforces source-code-level verification of the diagnosis before drafting. Prevents the most common failure: filing a professional-looking issue whose core premise is wrong because the local workaround that motivated it was never verified to do anything. Distinct from verify-external-claims (inbound — verify external claims before encoding into YOUR work; this skill is outbound — verify YOUR claims before proposing changes to EXTERNAL projects).
 allowed-tools: bash view fetch agentic_fetch sourcegraph grep glob agent
 metadata:
   tags: verification, github, issues, pull-requests, upstream, open-source, epistemic-hygiene

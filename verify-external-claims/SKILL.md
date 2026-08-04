@@ -1,7 +1,7 @@
 ---
 name: verify-external-claims
 description: |
-  Use before encoding any external claim into a skill, documentation, code, or review. Triggers on phrases like "verify external claims", "check the tool exists", "unverified claims", "confirm the binary", "validate the API signature", "is this library real", or when a skill references a CLI, library, URL, version, exit code, error message, or statistic that came from another session or from feedback. Prevents fabricated metrics, hallucinated CLI flags, and trophy-case marking of unverified work.
+  Use before encoding any external claim into a skill, documentation, code, or review. Triggers on phrases like "verify external claims", "check the tool exists", "unverified claims", "confirm the binary", "validate the API signature", "is this library real", or when a skill references a CLI, library, URL, version, exit code, error message, or statistic that came from another session or from feedback. Prevents fabricated metrics, hallucinated CLI flags, and trophy-case marking of unverified work. Distinct from verify-before-filing (outbound — verify YOUR claims before filing to EXTERNAL projects; this skill is inbound — verify EXTERNAL claims before encoding into YOUR work).
 allowed-tools: bash view edit grep fetch sourcegraph agentic_fetch
 metadata:
   tags: verification, external-claims, skills, documentation, cli, libraries, fact-checking, quality-gate
