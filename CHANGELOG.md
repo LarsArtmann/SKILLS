@@ -13,14 +13,85 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
-### Added
+### Added (2026-08-04 full TODO_LIST execution)
 
+- `scripts/check-agents-md.sh` — standalone AGENTS.md quality scorer packaging
+  the temporal-pollution and content-misplacement grep patterns from
+  agents-quality-guide.md (5-tier anti-pattern catalog, size budget, structural
+  decay checks)
+- `architecture-review/references/assessment-rubric.md` — 7-dimension rubric
+  (Coupling, Cohesion, Modularity, Composability, Scalability, Service
+  Orientation, Dependency Direction) with 1-5 scoring and evidence checkpoints
+- `architecture-review/references/review-methodology.md` — step-by-step
+  methodology: structural mapping, dependency analysis, domain alignment check,
+  pain point identification, recommendation framework with priority levels
+- `code-quality-scan/references/tool-guidance.md` — per-language tool matrix
+  (Go, TS/JS, Rust, Python, Nix) with specific lint/duplication commands
+- `status-report/references/section-quality-guide.md` — per-section quality
+  guide for all 7 status report sections with common pitfalls
+- `website-launch/references/go-live-runbook.md` — extracted 10-step deployment
+  sequence from SKILL.md body (lock files → Firebase deploy → custom domain →
+  DNS → SSL → verification)
+- `website-launch/references/website-creation-details.md` — extracted favicon/logo
+  design, MDX escaping, section components, creation order, Starlight config
+- `website-launch/references/definition-of-done.md` — extracted complete launch
+  checklist (build, README, GitHub, DNS, files)
+- `docs-health/references/case-study.md` Incident 2 — the appendix-only trap
+  (2026-08-03): 7 status reports annotated with appendix-only `## Resolution`
+  sections and ZERO inline `done at` markers. Added as a second case study with
+  root cause analysis and fix description
+- Two new patterns in `how-to-write-skills.md`:
+  - Pattern 10: "Condense Without Eroding Teaching Weight" — move examples to
+    references FIRST, then trim prose. Prevents the condensing-erodes-teaching
+    cycle
+  - Pattern 11: "Disambiguate Competing Skills in the Description" — add
+    "Distinct from X" clause when skills have overlapping trigger phrases
+- Scoring system reconciliation cross-references between
+  `agents-quality-guide.md` (5-dimension per-file rubric) and
+  `health-report-format.md` (2-score per-set Accuracy+Fitness)
 - `TODO_LIST.md`, `FEATURES.md`, `ROADMAP.md` — the three missing living docs from
   the docs-health documentation model, built from code and harvested status reports
 - Living-docs consistency: `CONTRIBUTING.md` corrected (was pointing at Go test
   commands for a content repo with no code)
 
-### Changed
+### Changed (2026-08-04 full TODO_LIST execution)
+
+- **Trigger collision analysis completed** — systematic analysis of all 24
+  skill descriptions: zero real collisions found. All high-overlap pairs (4+
+  shared keywords) disambiguated with "Distinct from" text in descriptions
+  (code-quality-scan ↔ full-code-review ↔ deduplicate-code, architecture-review
+  ↔ full-code-review, status-report ↔ docs-health, verify-external-claims ↔
+  verify-before-filing)
+- **how-to-golang code snippets fixed** — all 4 known accuracy issues corrected:
+  gopter API (NewGopter→NewProperties + prop.ForAll + generators), encoding/json/v2
+  (Go 1.26+→1.25+ experimental GOEXPERIMENT=jsonv2), E2E HTTP API (fabricated
+  client→real net/http), Rule 002 CI command (nonsensical pipe→working go list)
+- **how-to-golang status upgraded** — 🟡 PARTIALLY_FUNCTIONAL → 🟢 FULLY_FUNCTIONAL
+  after all code-accuracy issues fixed. README and FEATURES aligned.
+- **website-launch refactored** — 1106→799 lines (28% reduction) by extracting
+  Phase 3 details, Phase 5 go-live runbook, and Definition of Done to references
+- **8 TOC drifts fixed** — nix-review/best-practices, naming-review/common-naming-problems,
+  docs-health/verify-checklist, docs-health/case-study, go-error-modernization
+  (3 files) all had missing TOC entries for existing ## headings
+- **TOC-integrity guard added** to `check-skills.sh` — counts ## headings vs TOC
+  entries for any .md with a Contents section, fails on mismatch
+- **Marker-vocabulary guard added** to `check-skills.sh` — verifies docs-health
+  ANNOTATE/HARVEST share the resolution-marker vocabulary (done at, Won't
+  implement, NOT-DO)
+- `code-quality-scan` deepened — removed "RESEARCH the best golang code
+  duplication finder" instruction, replaced with explicit art-dupl guidance,
+  removed deprecated justfile reference
+- `architecture-review` deepened — process steps now reference specific
+  methodology phases instead of generic "analyze and assess"
+- `bdd-testing` deepened — added file naming conventions table
+- `status-report` deepened — added pointer to section quality guide
+- `docs-health/references/case-study.md` stale reference fixed — "This is why
+  ../SKILL.md says: undo batch edits with git restore" guidance was cut in
+  nuclear merge; now owned by the case study itself
+- **2026-05-03 comprehensive audit annotated** — all 25 Top-Tasks resolved
+  inline with `done at`/`Won't implement`/`NOT-DO` markers
+
+### Changed (earlier this session)
 
 - **Merged `update-old-docs` into `docs-health`** — eliminated the cross-reference
   maintenance burden and 3× boundary restatement. docs-health now has four modes:
