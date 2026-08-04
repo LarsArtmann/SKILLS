@@ -51,7 +51,7 @@
 | Skill                    | Status                    | Lines | References   | Notes                                                                                   |
 | ------------------------ | ------------------------- | ----- | ------------ | --------------------------------------------------------------------------------------- |
 | go-modularize            | 🟢 `FULLY_FUNCTIONAL`     | 248   | ✅           | Direction-neutral module split/merge; failure modes from 3 production projects          |
-| how-to-golang            | 🟡 `PARTIALLY_FUNCTIONAL` | 94    | ✅ (9 files) | Go decision guide; known code-accuracy issues in references (gopter, json/v2, E2E HTTP) |
+| how-to-golang            | 🟢 `FULLY_FUNCTIONAL`     | 94    | ✅ (9 files) | Go decision guide; code snippets verified and corrected 2026-08-04 (gopter, json/v2, E2E HTTP, Rule 002) |
 | go-ecosystem-upgrade     | 🟢 `FULLY_FUNCTIONAL`     | 306   | ✅           | 18 failure modes from 14 self-reviews; version bump/migration protocol                  |
 | bdd-testing              | 🟡 `PARTIALLY_FUNCTIONAL` | 40    | ✅ (assets)  | Ginkgo BDD tests; works but thin                                                        |
 | go-error-modernization   | 🆕 `NEW`                  | 294   | ✅ (3 files) | errors.As→AsType modernization; `erraudit` CLI not publicly findable                    |

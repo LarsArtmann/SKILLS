@@ -19,7 +19,7 @@ Rules already covered in other reference files are linked, not duplicated.
 
 ## Rule 001: Latest Language Version
 
-Always use the latest stable Go version. Security patches, performance, and language features (like `encoding/json/v2` in Go 1.26+) require it.
+Always use the latest stable Go version. Security patches, performance, and language features (like `encoding/json/v2`, experimental in Go 1.25+ behind `GOEXPERIMENT=jsonv2`) require it.
 
 Check in CI:
 
@@ -39,7 +39,7 @@ Check in CI:
 Run `go mod tidy` and update dependencies regularly. Use Dependabot or Renovate for automation.
 
 ```bash
-go list -u -m -json all | go run golang.org/x/tools/gopls/internal/.../goimports
+go list -m -u all 2>/dev/null | grep '\[' || echo "All dependencies up to date"
 ```
 
 ## Rule 007: No Binary Files in Git

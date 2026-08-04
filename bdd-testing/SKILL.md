@@ -35,6 +35,16 @@ READ, UNDERSTAND, RESEARCH, REFLECT before writing any spec.
 - **No committed focus.** `FIt`/`FDescribe` silently skip the rest of the suite. Run `ginkgo unfocus` (or grep for `^F`) before committing.
 - **Async without sleeps.** Use `Eventually(...).Should(...)` instead of `time.Sleep` + `Expect`.
 
+## File naming conventions
+
+| File | Purpose | Example |
+|------|---------|---------|
+| `<pkg>_suite_test.go` | Bootstrap file — `RegisterFailHandler` + `RunSpecs`. One per package. | `user_suite_test.go` |
+| `<subject>_test.go` | Spec file — one per subject under test. Named after what it tests. | `user_repo_test.go` |
+| `helpers_test.go` | Shared test helpers (builders, fixtures). Not specs. | `helpers_test.go` |
+
+All spec files use `package <pkg>_test` (black-box) and import `onsi/ginkgo` + `onsi/gomega`.
+
 ## When to use tables
 
 When many inputs share one behavior shape, prefer `DescribeTable` + `Entry` over copy-pasted `It` blocks — see the syntax reference's "Table-driven specs" section. Each `Entry` is its own spec, so failures point at the exact case.

@@ -117,27 +117,36 @@ Automate critical user journeys. Run against staging before every release.
 ```go
 var _ = Describe("User Registration E2E", Ordered, func() {
     It("registers, confirms email, and logs in", func() {
+        baseURL := "http://localhost:8080"
+
         // 1. Register
-        resp, err := client.Post("/api/users", CreateUserRequest{
+        regBody, _ := json.Marshal(CreateUserRequest{
             Email: "e2e@example.com",
             Name:  "E2E User",
         })
+        resp, err := http.Post(baseURL+"/api/users", "application/json", bytes.NewReader(regBody))
         Expect(err).NotTo(HaveOccurred())
         Expect(resp.StatusCode).To(Equal(http.StatusCreated))
 
         // 2. Confirm email (simulated)
-        resp, err = client.Get(resp.Headers.Get("X-Confirmation-URL"))
+        confirmURL := resp.Header.Get("X-Confirmation-URL")
+        resp, err = http.Get(baseURL + confirmURL)
         Expect(err).NotTo(HaveOccurred())
         Expect(resp.StatusCode).To(Equal(http.StatusOK))
 
         // 3. Login
-        resp, err = client.Post("/api/auth/login", LoginRequest{
+        loginBody, _ := json.Marshal(LoginRequest{
             Email:    "e2e@example.com",
             Password: "test-password",
         })
+        resp, err = http.Post(baseURL+"/api/auth/login", "application/json", bytes.NewReader(loginBody))
         Expect(err).NotTo(HaveOccurred())
         Expect(resp.StatusCode).To(Equal(http.StatusOK))
-        Expect(resp.Body.Token).NotTo(BeEmpty())
+
+        var loginResp struct{ Token string }
+        err = json.NewDecoder(resp.Body).Decode(&loginResp)
+        Expect(err).NotTo(HaveOccurred())
+        Expect(loginResp.Token).NotTo(BeEmpty())
     })
 })
 ```
@@ -158,20 +167,26 @@ func TestEmailNormalization(t *testing.T) {
     if err != nil { t.Error(err) }
 }
 
-// With Ginkgo + gopter for advanced property testing:
-var _ = Describe("ID Generation", func() {
-    It("generates sortable ULIDs", func() {
-        g := gopter.NewGopter(nil)
-        g.Property("ULIDs are lexicographically sortable",
-            func(a, b int) bool {
-                id1 := generateULID(time.Unix(int64(a), 0))
-                id2 := generateULID(time.Unix(int64(b), 0))
-                if a < b { return id1 < id2 }
-                return id1 >= id2
-            },
-        )
-    })
-})
+// With gopter for advanced property testing (generators, shrinking):
+import (
+    "github.com/leanovate/gopter"
+    "github.com/leanovate/gopter/gen"
+    "github.com/leanovate/gopter/prop"
+)
+
+func TestULIDSortability(t *testing.T) {
+    properties := gopter.NewProperties(nil)
+    properties.Property("ULIDs are lexicographically sortable", prop.ForAll(
+        func(a, b int) bool {
+            id1 := generateULID(time.Unix(int64(a), 0))
+            id2 := generateULID(time.Unix(int64(b), 0))
+            if a < b { return id1 < id2 }
+            return id1 >= id2
+        },
+        gen.Int(), gen.Int(), // one generator per parameter
+    ))
+    properties.TestingRun(t)
+}
 ```
 
 ## Rule 038: Load Testing

@@ -10,17 +10,21 @@ allowed-tools: bash view edit grep
 
 ## Process
 
-0. Check available build systems:
+0. **Detect build system and tools.** See [./references/tool-guidance.md](./references/tool-guidance.md) for the full tool matrix per language.
    - If `flake.nix` exists: use `nix build`, `nix flake check`, `nix run .#test`, `nix run .#lint`
-   - Else if `justfile` exists: use `just build`, `just lint`
-   - Else: use whatever build system the project has
+   - Else if `go.mod` exists: use `go build ./...`, `go vet ./...`, `go test ./...`
+   - Else: detect from the table in tool-guidance.md
 
-1. Run the build command
-2. Run the lint command
-3. Run the duplicate code finder:
-   - If "just fd" does not exist yet: Add "just find-duplicates" with "fd" as a native justfile alias
-   - RESEARCH the best golang code duplication finder before you implement it!
-   - Do NOT reinvent the wheel!! ALWAYS consider how we can use & leverage already well established libs!
+1. **Run the build command.** If it fails, every build error is a Critical finding.
+
+2. **Run the lint command.** For Go: `golangci-lint run ./...` (or `go vet ./...` as fallback). Map each finding to a severity using the classification in tool-guidance.md.
+
+3. **Run the duplicate code finder.**
+   - Use `art-dupl --type-aware --sort total-tokens -t 5 --html` for Go
+   - If `art-dupl` is not installed, fall back to `jscpd`
+   - See [./references/tool-guidance.md](./references/tool-guidance.md) → Go duplication
+
+4. **Collect and classify all findings** by severity (Critical / High / Medium / Low).
 
 ## Output
 

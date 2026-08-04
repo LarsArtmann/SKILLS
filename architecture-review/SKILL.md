@@ -46,9 +46,9 @@ Map the review to visual components:
 
 ## Process
 
-1. Thoroughly research the codebase structure
-2. Analyze module boundaries, dependencies, coupling
-3. Assess scalability of current patterns
-4. Evaluate composability and service orientation
-5. Provide concrete, actionable recommendations
-6. Write findings to the output file
+1. **Map the structure** — generate the dependency graph, identify layers, catalog public API surfaces, measure module sizes. See [./references/review-methodology.md](./references/review-methodology.md) → Structural mapping.
+2. **Analyze dependencies** — detect cycles, measure coupling metrics (afferent/efferent), check dependency direction (domain should NOT import infrastructure). See [./references/review-methodology.md](./references/review-methodology.md) → Dependency analysis.
+3. **Check domain alignment** — map domain concepts to code modules, look for split-brain patterns, evaluate naming against domain language. See [./references/review-methodology.md](./references/review-methodology.md) → Domain alignment.
+4. **Identify pain points** — change ripple analysis, god modules, dead code, testing pain. See [./references/review-methodology.md](./references/review-methodology.md) → Pain point identification.
+5. **Score each dimension** — Coupling, Cohesion, Modularity, Composability, Scalability, Service Orientation, Dependency Direction. See [./references/assessment-rubric.md](./references/assessment-rubric.md) for the 1-5 rubric.
+6. **Write the action roadmap** — concrete recommendations with priority levels (P0-P3), impact, effort, and ordering constraints. See [./references/review-methodology.md](./references/review-methodology.md) → Recommendation framework.
