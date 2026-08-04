@@ -14,6 +14,7 @@
 6. [CHANGELOG.md](#changelogmd)
 7. [docs/DOMAIN_LANGUAGE.md](#docsdomain_languagemd)
 8. [Cross-file consistency](#cross-file-consistency)
+9. [Regression scenarios VERIFY must catch](#regression-scenarios-verify-must-catch)
 
 ---
 

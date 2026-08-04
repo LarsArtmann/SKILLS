@@ -5,6 +5,9 @@ Read this section when you need specific guidance on how to write excellent Nix 
 ## Table of Contents
 
 - [Flake Structure](#flake-structure)
+- [CI DevShell Pattern](#ci-devshell-pattern)
+- [treefmt-nix Configuration](#treefmt-nix-configuration)
+- [`nixosModules` Placement](#nixosmodules-placement)
 - [Input Management](#input-management)
 - [NixOS Module Structure](#nixos-module-structure)
 - [Systemd Service Hardening](#systemd-service-hardening)

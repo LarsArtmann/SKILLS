@@ -27,7 +27,8 @@
 5. [The fix (round 2) — banner placement](#the-fix-round-2--banner-placement)
 6. [Root causes (the five that matter)](#root-causes-the-five-that-matter)
 7. [The one-line summary](#the-one-line-summary)
-8. [Incident 2 — The appendix-only trap (2026-08-03)](#incident-2--the-appendix-only-trap-2026-08-03)
+8. [What GOOD looks like](#what-good-looks-like)
+9. [Incident 2 — The appendix-only trap (2026-08-03)](#incident-2--the-appendix-only-trap-2026-08-03)
 
 ## The setup
 

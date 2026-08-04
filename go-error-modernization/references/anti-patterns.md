@@ -10,11 +10,12 @@ The `//nolint:legacyerrors` suppression name appears in examples below. That ana
 
 ## Table of Contents
 
-1. [Anti-Pattern 1: Hand-rolling `errors.Is` via an interface assertion](#anti-pattern-1-hand-rolling-errorsis-via-an-interface-assertion)
-2. [Anti-Pattern 2: Treating a const value as a type](#anti-pattern-2-treating-a-const-value-as-a-type)
-3. [Anti-Pattern 3: Trusting the linter's conditional without reading the IF](#anti-pattern-3-trusting-the-linters-conditional-without-reading-the-if)
-4. [Anti-Pattern 4: Suppressing without a reason](#anti-pattern-4-suppressing-without-a-reason)
-5. [Agent-specific guidance: the "fix-to-zero" trap](#agent-specific-guidance-the-fix-to-zero-trap)
+1. [Verification status](#verification-status)
+2. [Anti-Pattern 1: Hand-rolling `errors.Is` via an interface assertion](#anti-pattern-1-hand-rolling-errorsis-via-an-interface-assertion)
+3. [Anti-Pattern 2: Treating a const value as a type](#anti-pattern-2-treating-a-const-value-as-a-type)
+4. [Anti-Pattern 3: Trusting the linter's conditional without reading the IF](#anti-pattern-3-trusting-the-linters-conditional-without-reading-the-if)
+5. [Anti-Pattern 4: Suppressing without a reason](#anti-pattern-4-suppressing-without-a-reason)
+6. [Agent-specific guidance: the "fix-to-zero" trap](#agent-specific-guidance-the-fix-to-zero-trap)
 
 ---
 

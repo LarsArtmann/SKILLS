@@ -12,6 +12,7 @@ This reference documents naming anti-patterns found across production codebases,
 - [Boolean Naming Issues](#boolean-naming-issues)
 - [Function Naming Issues](#function-naming-issues)
 - [Consistency Issues](#consistency-issues)
+- [Worked Example: Full Mini-Review](#worked-example-full-mini-review)
 
 ---
 
