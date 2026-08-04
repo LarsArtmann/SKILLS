@@ -411,6 +411,75 @@ Fixed examples (as of 2026-08-04): `docs-health` ANNOTATE (appendix-only trap
 surfaced in body), `go-ecosystem-upgrade` (build-only verification
 surfaced in intro), `docs-health` (HARVEST-skipping surfaced in intro).
 
+### Pattern 10: Condense Without Eroding Teaching Weight
+
+When a SKILL.md exceeds the 500-line budget, the instinct is to start cutting
+prose until the line count drops. This is the #1 condensing mistake: agents cut
+the _teaching weight_ (analogies, concrete numbers, named examples) that makes
+rules stick, leaving behind correct-but-flat instructions that an agent can skim
+past under execution pressure.
+
+The condensing checklist (do these IN ORDER):
+
+1. **Move all worked examples to `references/`** — before touching a single line
+   of body prose, identify every code block, before/after example, and worked
+   scenario. Relocate them to reference files. Leave a one-line pointer in the
+   body: `See [./references/examples.md](./references/examples.md)`.
+2. **Move anti-pattern catalogs to `references/`** — anti-pattern lists grow
+   with every feedback round. They are lookup material, not planning material.
+   Keep the top 1–2 in the body (the named failure modes); push the rest to a
+   reference file.
+3. **THEN trim prose** — only after examples and anti-patterns are extracted,
+   review the remaining body for redundancy. Now you are cutting duplication,
+   not teaching weight.
+4. **Verify nothing was lost** — re-read the condensed body end-to-end. Does it
+   still give enough guidance for an agent to execute? Are the named failure
+   modes still visible? If the condensing removed the _reason_ behind a rule,
+   restore it — rules without reasons are ignored.
+
+The root cause of the condensing-erodes-teaching cycle: every feedback round
+adds ~40-60 lines of worked examples and anti-patterns to the body. The 500-line
+budget cannot hold them all. The structural fix is _references-first_, not
+_trimming harder_.
+
+Example: `docs-health` ANNOTATE went from 500→166 lines by moving all worked
+examples, anti-pattern catalogs, and format-variant guides to `references/`.
+The body kept only: decision logic, the format grammar, the #1 failure mode, and
+pointers. Each rule is stated exactly once.
+
+### Pattern 11: Disambiguate Competing Skills in the Description
+
+When two skills have overlapping trigger phrases, the agent may activate the
+wrong one or get paralyzed. This is especially common among review/audit skills
+(`full-code-review` vs `code-quality-scan` vs `architecture-review`) and
+reporting skills (`status-report` vs `docs-health`).
+
+Add a "Distinct from" clause at the end of the `description` field:
+
+```yaml
+description: >
+  [what it does + trigger phrases]. Distinct from [competing-skill]
+  ([one-sentence difference — what makes THIS skill the right pick]).
+```
+
+Rules:
+
+1. **Name the competitor explicitly** — "Distinct from full-code-review" is
+   clearer than "Distinct from broader review skills."
+2. **State the axis of difference** — "automated tool scan, no manual reading"
+   vs "human-style file-by-file review." The user needs to know _which_ skill
+   for _which_ job.
+3. **Both sides should disambiguate** — if skill A names skill B, skill B
+   should name skill A. One-sided disambiguation is half a solution.
+4. **Keep it under 1024 chars** — the description limit still applies. The
+   disambiguation clause should be 1–2 sentences, not a paragraph.
+
+Example pairs (as of 2026-08-04):
+
+- `code-quality-scan` vs `full-code-review` vs `deduplicate-code` (three-way)
+- `architecture-review` vs `full-code-review`
+- `status-report` vs `docs-health`
+
 ---
 
 ## Common Mistakes

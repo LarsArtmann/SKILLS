@@ -204,6 +204,13 @@ what's next, docs/status/ for snapshots) or delete it.
 
 ## Quality scoring rubric
 
+> **Relationship to the AUDIT health report:** The [health-report-format.md](./health-report-format.md)
+> scores the ENTIRE doc SET with two independent numbers: **Accuracy** (are claims
+> true?) and **Fitness** (do docs serve their jobs?). The rubric below is a
+> DRILL-DOWN that scores a SINGLE AGENTS.md file. During an AUDIT, Accuracy+Fitness
+> covers the set; when AGENTS.md has issues, this rubric explains the detail behind
+> the per-file findings. They do not compete — they operate at different scopes.
+
 When VERIFY-ing AGENTS.md, score on these dimensions:
 
 | Dimension         | Weight | What to check                                               |

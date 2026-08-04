@@ -48,6 +48,12 @@ _Accuracy measures whether claims in existing docs are true. Fitness measures wh
 
 ## Two independent scores
 
+> **Relationship to the AGENTS.md quality rubric:** When AGENTS.md specifically has
+> issues, the [agents-quality-guide.md](./agents-quality-guide.md) provides a
+> 5-dimension drill-down (Content ownership, Endurance, Leanness, Completeness,
+> Structure). That rubric operates on a SINGLE file; Accuracy+Fitness below scores
+> the WHOLE doc set. They are complementary, not competing.
+
 A doc set has two health dimensions that diverge:
 
 - **Accuracy** — are the claims in existing docs true? Verified against code.
