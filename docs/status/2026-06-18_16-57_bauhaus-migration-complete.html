@@ -30,14 +30,14 @@
         --warning: var(--color-yellow);
         --radius: 0px;
         --font-heading:
-          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Helvetica, Arial, sans-serif;
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         --font-body:
-          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Helvetica, Arial, sans-serif;
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         --font-mono:
-          ui-monospace, "Cascadia Code", "Source Code Pro", "JetBrains Mono", Menlo, Consolas,
-          monospace;
+          ui-monospace, "Cascadia Code", "Source Code Pro", "JetBrains Mono",
+          Menlo, Consolas, monospace;
       }
       * {
         box-sizing: border-box;
@@ -289,15 +289,27 @@
       }
       .card-problem {
         border-left-color: var(--problem);
-        background: color-mix(in srgb, var(--problem) 8%, var(--surface-raised));
+        background: color-mix(
+          in srgb,
+          var(--problem) 8%,
+          var(--surface-raised)
+        );
       }
       .card-solution {
         border-left-color: var(--solution);
-        background: color-mix(in srgb, var(--solution) 8%, var(--surface-raised));
+        background: color-mix(
+          in srgb,
+          var(--solution) 8%,
+          var(--surface-raised)
+        );
       }
       .card-warning {
         border-left-color: var(--warning);
-        background: color-mix(in srgb, var(--warning) 8%, var(--surface-raised));
+        background: color-mix(
+          in srgb,
+          var(--warning) 8%,
+          var(--surface-raised)
+        );
       }
 
       .issue {
@@ -309,15 +321,27 @@
       }
       .issue-critical {
         border-left-color: var(--problem);
-        background: color-mix(in srgb, var(--problem) 8%, var(--surface-raised));
+        background: color-mix(
+          in srgb,
+          var(--problem) 8%,
+          var(--surface-raised)
+        );
       }
       .issue-important {
         border-left-color: var(--warning);
-        background: color-mix(in srgb, var(--warning) 8%, var(--surface-raised));
+        background: color-mix(
+          in srgb,
+          var(--warning) 8%,
+          var(--surface-raised)
+        );
       }
       .issue-nice {
         border-left-color: var(--solution);
-        background: color-mix(in srgb, var(--solution) 8%, var(--surface-raised));
+        background: color-mix(
+          in srgb,
+          var(--solution) 8%,
+          var(--surface-raised)
+        );
       }
       .issue h3 {
         margin-bottom: 0.3rem;
@@ -596,9 +620,10 @@
           <div class="hero-badge">STATUS REPORT · 2026-06-18 16:57 CEST</div>
           <h1>SKILLS Repository — Comprehensive Status</h1>
           <p class="hero-subtitle">
-            20 skills under management. The Bauhaus design language migration just shipped. The kit
-            is healthy, 11 consumers synced, zero drift. The thin-skill tail and missing CI
-            guardrails are the remaining structural debts.
+            20 skills under management. The Bauhaus design language migration
+            just shipped. The kit is healthy, 11 consumers synced, zero drift.
+            The thin-skill tail and missing CI guardrails are the remaining
+            structural debts.
           </p>
         </div>
 
@@ -632,17 +657,20 @@
         <section id="summary">
           <h2><span class="num">00</span>Summary</h2>
           <p>
-            The repository is in its strongest position to date. The Bauhaus design language
-            migration — the largest single change since the comprehensive quality pass — is complete
-            and propagated to all 11 consumer skills. The unified semantic token vocabulary
-            eliminates the split-brain architecture that plagued the prior templates. The thin-skill
-            tail (6 skills under 80 lines) remains the primary content debt, and the complete
-            absence of CI guardrails means drift can silently creep back.
+            The repository is in its strongest position to date. The Bauhaus
+            design language migration — the largest single change since the
+            comprehensive quality pass — is complete and propagated to all 11
+            consumer skills. The unified semantic token vocabulary eliminates
+            the split-brain architecture that plagued the prior templates. The
+            thin-skill tail (6 skills under 80 lines) remains the primary
+            content debt, and the complete absence of CI guardrails means drift
+            can silently creep back.
           </p>
           <div class="callout callout-solution">
             <strong>Bottom line:</strong>
-            Ship-ready. The design system is excellent. The content and validation gaps are the next
-            Pareto front — fleshing out the 6 thin skills and wiring
+            Ship-ready. The design system is excellent. The content and
+            validation gaps are the next Pareto front — fleshing out the 6 thin
+            skills and wiring
             <code>sync-html-kit.sh --check</code>
             into CI would cover ~80% of remaining risk.
           </div>
@@ -657,11 +685,14 @@
             <div class="strength">
               <div class="check">+</div>
               <div class="text">
-                <strong>Bauhaus design language migration (this session)</strong>
+                <strong
+                  >Bauhaus design language migration (this session)</strong
+                >
                 <span
                   >Both templates rewritten, unified semantic tokens,
-                  <code>color-mix()</code> replacing 8 glow tokens, backward-compatible aliases,
-                  progressive-enhancement scrollspy, example report, guide update. Propagated to 11
+                  <code>color-mix()</code> replacing 8 glow tokens,
+                  backward-compatible aliases, progressive-enhancement
+                  scrollspy, example report, guide update. Propagated to 11
                   consumers. Verified zero drift. 5 commits.</span
                 >
               </div>
@@ -671,10 +702,11 @@
               <div class="text">
                 <strong>Unified token vocabulary</strong>
                 <span
-                  >The split brain is dead. Both templates share <code>--surface</code>,
-                  <code>--text</code>, <code>--problem</code>, <code>--solution</code>,
-                  <code>--warning</code>, <code>--accent</code>. Old names aliased for backward
-                  compat.</span
+                  >The split brain is dead. Both templates share
+                  <code>--surface</code>, <code>--text</code>,
+                  <code>--problem</code>, <code>--solution</code>,
+                  <code>--warning</code>, <code>--accent</code>. Old names
+                  aliased for backward compat.</span
                 >
               </div>
             </div>
@@ -683,9 +715,10 @@
               <div class="text">
                 <strong>Vendoring model (11 consumers)</strong>
                 <span
-                  >Every consumer skill has <code>assets/html-report-kit/</code> vendored. Works in
-                  all install modes. <code>sync-html-kit.sh</code> with <code>--check</code> detects
-                  drift.</span
+                  >Every consumer skill has
+                  <code>assets/html-report-kit/</code> vendored. Works in all
+                  install modes. <code>sync-html-kit.sh</code> with
+                  <code>--check</code> detects drift.</span
                 >
               </div>
             </div>
@@ -694,8 +727,8 @@
               <div class="text">
                 <strong><code>git commit &lt;--</code> typo eliminated</strong>
                 <span
-                  >All 4 affected skills fixed. Guard in <code>check-skills.sh</code> prevents
-                  regression.</span
+                  >All 4 affected skills fixed. Guard in
+                  <code>check-skills.sh</code> prevents regression.</span
                 >
               </div>
             </div>
@@ -704,9 +737,12 @@
               <div class="text">
                 <strong>Skill quality pass (prior session)</strong>
                 <span
-                  ><code>data-model-review</code> (147 lines), <code>deduplicate-code</code> (144),
-                  <code>nix-flake-migration</code> (163), <code>naming-review</code> (266),
-                  <code>library-deep-dive</code> (146) all fleshed out from thin stubs.</span
+                  ><code>data-model-review</code> (147 lines),
+                  <code>deduplicate-code</code> (144),
+                  <code>nix-flake-migration</code> (163),
+                  <code>naming-review</code> (266),
+                  <code>library-deep-dive</code> (146) all fleshed out from thin
+                  stubs.</span
                 >
               </div>
             </div>
@@ -715,8 +751,8 @@
               <div class="text">
                 <strong><code>go-modularize</code> — the gold standard</strong>
                 <span
-                  >872 lines, decision tables, failure-mode catalog, migration templates. The
-                  richest skill in the repo.</span
+                  >872 lines, decision tables, failure-mode catalog, migration
+                  templates. The richest skill in the repo.</span
                 >
               </div>
             </div>
@@ -725,8 +761,8 @@
               <div class="text">
                 <strong>20 skills pass structural validation</strong>
                 <span
-                  ><code>check-skills.sh</code> reports 0 thin skills (&lt;35 lines), all YAML
-                  frontmatter valid, no banned patterns.</span
+                  ><code>check-skills.sh</code> reports 0 thin skills (&lt;35
+                  lines), all YAML frontmatter valid, no banned patterns.</span
                 >
               </div>
             </div>
@@ -739,52 +775,71 @@
           <p>Work that is in progress or has known gaps.</p>
 
           <div class="issue issue-important">
-            <span class="severity severity-important">Important · Content gap</span>
+            <span class="severity severity-important"
+              >Important · Content gap</span
+            >
             <h3>6 thin / borderline skills need fleshing out</h3>
             <div class="where">
-              code-quality-scan (43), architecture-visualization (46), bdd-testing (46),
-              todo-list-builder (46), architecture-review (51), status-report (52)
+              code-quality-scan (43), architecture-visualization (46),
+              bdd-testing (46), todo-list-builder (46), architecture-review
+              (51), status-report (52)
             </div>
             <p>
-              These pass the &lt;35-line threshold but lack reference directories, output templates,
-              or concrete examples. The prior status report flagged <code>bdd-testing</code> (needs
-              ginkgo syntax ref), <code>features-audit</code> (needs FEATURES.md template), and
-              <code>docs-freshness-check</code> (needs configurable file list) specifically.
+              These pass the &lt;35-line threshold but lack reference
+              directories, output templates, or concrete examples. The prior
+              status report flagged <code>bdd-testing</code> (needs ginkgo
+              syntax ref), <code>features-audit</code> (needs FEATURES.md
+              template), and <code>docs-freshness-check</code> (needs
+              configurable file list) specifically.
             </p>
           </div>
 
           <div class="issue issue-important">
-            <span class="severity severity-important">Important · Accuracy</span>
+            <span class="severity severity-important"
+              >Important · Accuracy</span
+            >
             <h3><code>how-to-golang</code> code snippets unverified</h3>
-            <div class="where">how-to-golang/references/ — 9 reference files</div>
+            <div class="where">
+              how-to-golang/references/ — 9 reference files
+            </div>
             <p>
-              Known accuracy issues flagged in prior audits: <code>gopter</code> signature,
-              <code>encoding/json/v2</code> Go version requirement, E2E HTTP API example, Rule 002
-              guidance. These have not been re-verified against current library docs.
+              Known accuracy issues flagged in prior audits:
+              <code>gopter</code> signature, <code>encoding/json/v2</code> Go
+              version requirement, E2E HTTP API example, Rule 002 guidance.
+              These have not been re-verified against current library docs.
             </p>
           </div>
 
           <div class="issue issue-nice">
-            <span class="severity severity-nice">Nice to have · Architecture</span>
-            <h3><code>how-to-write-skills.md</code> still an orphaned root file</h3>
-            <div class="where">how-to-write-skills.md (11,618 bytes at repo root)</div>
+            <span class="severity severity-nice"
+              >Nice to have · Architecture</span
+            >
+            <h3>
+              <code>how-to-write-skills.md</code> still an orphaned root file
+            </h3>
+            <div class="where">
+              how-to-write-skills.md (11,618 bytes at repo root)
+            </div>
             <p>
-              The guide itself says it should be a skill directory or under <code>docs/</code>. It
-              is not installed as a skill. This was flagged in the prior status report (#10) and
-              remains unresolved.
+              The guide itself says it should be a skill directory or under
+              <code>docs/</code>. It is not installed as a skill. This was
+              flagged in the prior status report (#10) and remains unresolved.
             </p>
           </div>
 
           <div class="issue issue-nice">
-            <span class="severity severity-nice">Nice to have · Integration</span>
+            <span class="severity severity-nice"
+              >Nice to have · Integration</span
+            >
             <h3>Cross-skill references incomplete</h3>
             <div class="where">
-              full-code-review → deduplicate-code, brutal-self-review → architecture-review
+              full-code-review → deduplicate-code, brutal-self-review →
+              architecture-review
             </div>
             <p>
               <code>full-code-review</code> already delegates to
-              <code>pareto-planning</code> (fixed). But the intended cross-reference graph from the
-              prior audit is not fully wired.
+              <code>pareto-planning</code> (fixed). But the intended
+              cross-reference graph from the prior audit is not fully wired.
             </p>
           </div>
         </section>
@@ -797,18 +852,20 @@
           <div class="card card-warning">
             <h4>CI / pre-commit guardrails</h4>
             <p>
-              <code>sync-html-kit.sh --check</code> and <code>check-skills.sh</code> exist and work,
-              but neither is wired into any CI pipeline, pre-commit hook, or GitHub Action. Drift
-              and structural breakage can silently creep back. This was item #8 in the prior status
-              report's Top 25.
+              <code>sync-html-kit.sh --check</code> and
+              <code>check-skills.sh</code> exist and work, but neither is wired
+              into any CI pipeline, pre-commit hook, or GitHub Action. Drift and
+              structural breakage can silently creep back. This was item #8 in
+              the prior status report's Top 25.
             </p>
           </div>
 
           <div class="card card-warning">
             <h4>Eval test suite for skills</h4>
             <p>
-              No automated prompt-based testing exists. The <code>skill-creator</code> skill
-              describes an eval loop but it has never been run against this repo's 20 skills. No
+              No automated prompt-based testing exists. The
+              <code>skill-creator</code> skill describes an eval loop but it has
+              never been run against this repo's 20 skills. No
               trigger-description validation, no output-quality grading.
             </p>
           </div>
@@ -816,9 +873,10 @@
           <div class="card card-warning">
             <h4>Repo-level <code>crush.json</code> for auto-discovery</h4>
             <p>
-              No <code>crush.json</code> in this repo. Skills are not auto-discovered when working
-              in the repo. Users must install via <code>npx skills add</code> or
-              <code>skills_paths</code>. This limits dogfooding.
+              No <code>crush.json</code> in this repo. Skills are not
+              auto-discovered when working in the repo. Users must install via
+              <code>npx skills add</code> or <code>skills_paths</code>. This
+              limits dogfooding.
             </p>
           </div>
 
@@ -827,17 +885,18 @@
             <p>
               No visual map of which skills reference which. The
               <code>sync-html-kit.sh --list</code>
-              gives the kit consumer list, but the full cross-reference graph (skills referencing
-              other skills) is not documented visually.
+              gives the kit consumer list, but the full cross-reference graph
+              (skills referencing other skills) is not documented visually.
             </p>
           </div>
 
           <div class="card card-warning">
             <h4>CSP meta tag example in guide</h4>
             <p>
-              Templates are inline-style only (plus optional progressive-enhancement script). A
-              strict Content-Security-Policy example in the guide would help security-conscious
-              users. Flagged as a nice-to-have.
+              Templates are inline-style only (plus optional
+              progressive-enhancement script). A strict Content-Security-Policy
+              example in the guide would help security-conscious users. Flagged
+              as a nice-to-have.
             </p>
           </div>
         </section>
@@ -848,45 +907,57 @@
           <p>Honest assessment of what is broken, wrong, or regrettable.</p>
 
           <div class="issue issue-critical">
-            <span class="severity severity-critical">Honest · Self-inflicted</span>
+            <span class="severity severity-critical"
+              >Honest · Self-inflicted</span
+            >
             <h3>The palette WAS the Tailwind defaults — for months</h3>
             <div class="where">Fixed this session</div>
             <p>
-              The html-report-kit shipped with indigo (<code>#6366f1</code>) on slate-900
-              (<code>#0f172a</code>) — literally Tailwind's stock colors. This is the single most
-              recognizable "AI-generated" palette in production. It took a user revolt ("I hate the
-              colors") and a 15-design shootout to fix it. The kit is supposed to be the design
-              standard for all skills — it was setting the worst possible example.
+              The html-report-kit shipped with indigo (<code>#6366f1</code>) on
+              slate-900 (<code>#0f172a</code>) — literally Tailwind's stock
+              colors. This is the single most recognizable "AI-generated"
+              palette in production. It took a user revolt ("I hate the colors")
+              and a 15-design shootout to fix it. The kit is supposed to be the
+              design standard for all skills — it was setting the worst possible
+              example.
             </p>
             <div class="callout callout-solution">
-              <strong>Fixed:</strong> Bauhaus adopted. But the lesson is: never ship a design system
-              with default framework colors. A design system's job is to have an opinion.
+              <strong>Fixed:</strong> Bauhaus adopted. But the lesson is: never
+              ship a design system with default framework colors. A design
+              system's job is to have an opinion.
             </div>
           </div>
 
           <div class="issue issue-critical">
-            <span class="severity severity-critical">Architectural · Fixed</span>
+            <span class="severity severity-critical"
+              >Architectural · Fixed</span
+            >
             <h3>The token split brain that survived 3 audits</h3>
             <div class="where">html-output-guide.md — fixed this session</div>
             <p>
-              The dark template used <code>--bg-elevated</code>, <code>--rose</code>,
-              <code>--emerald</code>. The light template used <code>--bg-card</code>,
-              <code>--coral</code>, <code>--teal</code>. Same concepts, different names. This was
-              documented in the guide as if it were intentional ("both class vocabularies are
-              aliased"). It was not a feature — it was a split brain that made markup non-portable
-              between themes. It survived at least 3 status reports without being flagged as a
-              structural defect.
+              The dark template used <code>--bg-elevated</code>,
+              <code>--rose</code>, <code>--emerald</code>. The light template
+              used <code>--bg-card</code>, <code>--coral</code>,
+              <code>--teal</code>. Same concepts, different names. This was
+              documented in the guide as if it were intentional ("both class
+              vocabularies are aliased"). It was not a feature — it was a split
+              brain that made markup non-portable between themes. It survived at
+              least 3 status reports without being flagged as a structural
+              defect.
             </p>
           </div>
 
           <div class="issue issue-important">
             <span class="severity severity-important">Honest · Ongoing</span>
             <h3>No real-world dogfooding of the Bauhaus templates</h3>
-            <div class="where">This very report is the first real-world test</div>
+            <div class="where">
+              This very report is the first real-world test
+            </div>
             <p>
-              The templates were rebuilt, synced, and verified structurally — but no consumer skill
-              has actually generated a report with them yet. This status report is the first
-              real-world use of the Bauhaus Dark template. Issues may surface when
+              The templates were rebuilt, synced, and verified structurally —
+              but no consumer skill has actually generated a report with them
+              yet. This status report is the first real-world use of the Bauhaus
+              Dark template. Issues may surface when
               <code>status-report</code>, <code>full-code-review</code>, or
               <code>brutal-self-review</code> actually produce output.
             </p>
@@ -900,40 +971,46 @@
           <div class="card card-problem">
             <h4>1. Wire CI guardrails — this is the #1 risk</h4>
             <p>
-              <code>sync-html-kit.sh --check</code> and <code>check-skills.sh</code> are built and
-              working. They are not wired into anything. Any commit can silently reintroduce drift
-              or structural breakage. A GitHub Action or pre-commit hook is the highest-leverage
-              improvement available.
+              <code>sync-html-kit.sh --check</code> and
+              <code>check-skills.sh</code> are built and working. They are not
+              wired into anything. Any commit can silently reintroduce drift or
+              structural breakage. A GitHub Action or pre-commit hook is the
+              highest-leverage improvement available.
             </p>
           </div>
 
           <div class="card card-problem">
             <h4>2. Flesh out the 6 thin skills</h4>
             <p>
-              <code>code-quality-scan</code>, <code>architecture-visualization</code>,
-              <code>bdd-testing</code>, <code>todo-list-builder</code>,
-              <code>architecture-review</code>, <code>status-report</code> all pass the 35-line
-              floor but lack depth. The pattern is established (<code>go-modularize</code>,
-              <code>naming-review</code>): lean SKILL.md + dense <code>references/</code>. Follow
-              it.
+              <code>code-quality-scan</code>,
+              <code>architecture-visualization</code>, <code>bdd-testing</code>,
+              <code>todo-list-builder</code>, <code>architecture-review</code>,
+              <code>status-report</code> all pass the 35-line floor but lack
+              depth. The pattern is established (<code>go-modularize</code>,
+              <code>naming-review</code>): lean SKILL.md + dense
+              <code>references/</code>. Follow it.
             </p>
           </div>
 
           <div class="card card-warning">
-            <h4>3. Verify <code>how-to-golang</code> code snippets against current docs</h4>
+            <h4>
+              3. Verify <code>how-to-golang</code> code snippets against current
+              docs
+            </h4>
             <p>
-              4 known accuracy issues in the reference files. These are code examples that agents
-              copy-paste. Wrong examples are worse than no examples. Use Context7 or similar to
-              re-verify against current library versions.
+              4 known accuracy issues in the reference files. These are code
+              examples that agents copy-paste. Wrong examples are worse than no
+              examples. Use Context7 or similar to re-verify against current
+              library versions.
             </p>
           </div>
 
           <div class="card card-warning">
             <h4>4. Give <code>how-to-write-skills.md</code> a home</h4>
             <p>
-              It's an orphaned root file that the guide itself says should be a skill directory or
-              under <code>docs/</code>. Convert it to <code>skill-creator/</code> or move it. Eat
-              your own dog food.
+              It's an orphaned root file that the guide itself says should be a
+              skill directory or under <code>docs/</code>. Convert it to
+              <code>skill-creator/</code> or move it. Eat your own dog food.
             </p>
           </div>
 
@@ -941,18 +1018,19 @@
             <h4>5. Dogfood the Bauhaus templates by generating real reports</h4>
             <p>
               This status report is the first real Bauhaus output. Run
-              <code>full-code-review</code>, <code>architecture-review</code>, or
-              <code>brutal-self-review</code> against a real project and verify the templates hold
-              up with real content density.
+              <code>full-code-review</code>, <code>architecture-review</code>,
+              or <code>brutal-self-review</code> against a real project and
+              verify the templates hold up with real content density.
             </p>
           </div>
 
           <div class="card card-solution">
             <h4>6. Build an eval test suite</h4>
             <p>
-              The <code>skill-creator</code> skill describes eval methodology. Run it against all 20
-              skills: ≥2 prompts each, automated grading, trigger-description validation. This is
-              the only way to know if skills actually activate and produce quality output.
+              The <code>skill-creator</code> skill describes eval methodology.
+              Run it against all 20 skills: ≥2 prompts each, automated grading,
+              trigger-description validation. This is the only way to know if
+              skills actually activate and produce quality output.
             </p>
           </div>
         </section>
@@ -977,8 +1055,8 @@
                 <td>1</td>
                 <td>
                   <strong
-                    >Wire <code>sync-html-kit.sh --check</code> + <code>check-skills.sh</code> into
-                    CI (GitHub Action)</strong
+                    >Wire <code>sync-html-kit.sh --check</code> +
+                    <code>check-skills.sh</code> into CI (GitHub Action)</strong
                   >
                 </td>
                 <td class="yes">🔴 Critical</td>
@@ -989,8 +1067,9 @@
                 <td>2</td>
                 <td>
                   <strong
-                    >Dogfood: generate a real report with <code>full-code-review</code> using
-                    Bauhaus templates</strong
+                    >Dogfood: generate a real report with
+                    <code>full-code-review</code> using Bauhaus
+                    templates</strong
                   >
                 </td>
                 <td class="yes">🔴 Critical</td>
@@ -1001,8 +1080,8 @@
                 <td>3</td>
                 <td>
                   <strong
-                    >Verify <code>how-to-golang</code> code snippets (gopter, json/v2, E2E, Rule
-                    002)</strong
+                    >Verify <code>how-to-golang</code> code snippets (gopter,
+                    json/v2, E2E, Rule 002)</strong
                   >
                 </td>
                 <td class="yes">🔴 Critical</td>
@@ -1012,8 +1091,8 @@
               <tr>
                 <td>4</td>
                 <td>
-                  <strong>Flesh out <code>bdd-testing</code></strong> — ginkgo syntax ref, test
-                  structure template
+                  <strong>Flesh out <code>bdd-testing</code></strong> — ginkgo
+                  syntax ref, test structure template
                 </td>
                 <td class="yes">🔴 High</td>
                 <td>45min</td>
@@ -1022,8 +1101,8 @@
               <tr>
                 <td>5</td>
                 <td>
-                  <strong>Flesh out <code>features-audit</code></strong> — FEATURES.md template with
-                  status badges
+                  <strong>Flesh out <code>features-audit</code></strong> —
+                  FEATURES.md template with status badges
                 </td>
                 <td class="yes">🔴 High</td>
                 <td>30min</td>
@@ -1032,8 +1111,11 @@
               <tr>
                 <td>6</td>
                 <td>
-                  <strong>Convert <code>how-to-write-skills.md</code> to skill dir</strong> (eat our
-                  own dog food)
+                  <strong
+                    >Convert <code>how-to-write-skills.md</code> to skill
+                    dir</strong
+                  >
+                  (eat our own dog food)
                 </td>
                 <td class="yes">🟡 Medium</td>
                 <td>20min</td>
@@ -1042,8 +1124,8 @@
               <tr>
                 <td>7</td>
                 <td>
-                  Flesh out <code>code-quality-scan</code> — document <code>art-dupl</code> usage,
-                  output template
+                  Flesh out <code>code-quality-scan</code> — document
+                  <code>art-dupl</code> usage, output template
                 </td>
                 <td>🟡 Medium</td>
                 <td>30min</td>
@@ -1052,7 +1134,8 @@
               <tr>
                 <td>8</td>
                 <td>
-                  Flesh out <code>architecture-review</code> — assessment rubric, methodology in
+                  Flesh out <code>architecture-review</code> — assessment
+                  rubric, methodology in
                   <code>references/</code>
                 </td>
                 <td>🟡 Medium</td>
@@ -1061,7 +1144,10 @@
               </tr>
               <tr>
                 <td>9</td>
-                <td>Flesh out <code>todo-list-builder</code> — output template with examples</td>
+                <td>
+                  Flesh out <code>todo-list-builder</code> — output template
+                  with examples
+                </td>
                 <td>🟡 Medium</td>
                 <td>30min</td>
                 <td>Content</td>
@@ -1069,7 +1155,8 @@
               <tr>
                 <td>10</td>
                 <td>
-                  Build eval test suite — ≥2 prompts/skill, automated grading via
+                  Build eval test suite — ≥2 prompts/skill, automated grading
+                  via
                   <code>skill-creator</code>
                 </td>
                 <td>🟡 Medium</td>
@@ -1079,8 +1166,8 @@
               <tr>
                 <td>11</td>
                 <td>
-                  Create repo-level <code>crush.json</code> with <code>skills_paths</code> for
-                  auto-discovery
+                  Create repo-level <code>crush.json</code> with
+                  <code>skills_paths</code> for auto-discovery
                 </td>
                 <td>🟡 Medium</td>
                 <td>10min</td>
@@ -1099,8 +1186,8 @@
               <tr>
                 <td>13</td>
                 <td>
-                  Add <code>allowed-tools</code> frontmatter to CLI-dependent skills
-                  (<code>d2</code>, <code>art-dupl</code>)
+                  Add <code>allowed-tools</code> frontmatter to CLI-dependent
+                  skills (<code>d2</code>, <code>art-dupl</code>)
                 </td>
                 <td>🟠 Low</td>
                 <td>15min</td>
@@ -1109,7 +1196,8 @@
               <tr>
                 <td>14</td>
                 <td>
-                  Add error-handling guidance for missing external tools (<code>d2</code>,
+                  Add error-handling guidance for missing external tools
+                  (<code>d2</code>,
                   <code>art-dupl</code>, <code>nix</code>)
                 </td>
                 <td>🟠 Low</td>
@@ -1118,21 +1206,29 @@
               </tr>
               <tr>
                 <td>15</td>
-                <td>Test trigger descriptions with skill-creator's optimization loop</td>
+                <td>
+                  Test trigger descriptions with skill-creator's optimization
+                  loop
+                </td>
                 <td>🟠 Low</td>
                 <td>60min</td>
                 <td>Validation</td>
               </tr>
               <tr>
                 <td>16</td>
-                <td>Add CSP meta tag example to <code>html-output-guide.md</code></td>
+                <td>
+                  Add CSP meta tag example to <code>html-output-guide.md</code>
+                </td>
                 <td>🟠 Low</td>
                 <td>10min</td>
                 <td>Security</td>
               </tr>
               <tr>
                 <td>17</td>
-                <td>Generate repo skill-dependency graph (D2) showing the cross-reference graph</td>
+                <td>
+                  Generate repo skill-dependency graph (D2) showing the
+                  cross-reference graph
+                </td>
                 <td>🟠 Low</td>
                 <td>20min</td>
                 <td>Docs</td>
@@ -1140,7 +1236,8 @@
               <tr>
                 <td>18</td>
                 <td>
-                  Audit <code>originals/</code> — confirm 17 files map 1:1 to skills, prune orphans
+                  Audit <code>originals/</code> — confirm 17 files map 1:1 to
+                  skills, prune orphans
                 </td>
                 <td>⚪ Trivial</td>
                 <td>15min</td>
@@ -1148,14 +1245,19 @@
               </tr>
               <tr>
                 <td>19</td>
-                <td>Add version/timestamp frontmatter to track skill freshness</td>
+                <td>
+                  Add version/timestamp frontmatter to track skill freshness
+                </td>
                 <td>⚪ Trivial</td>
                 <td>10min</td>
                 <td>Maintenance</td>
               </tr>
               <tr>
                 <td>20</td>
-                <td>Document <code>html-report-kit</code> Artifact decision rule centrally</td>
+                <td>
+                  Document <code>html-report-kit</code> Artifact decision rule
+                  centrally
+                </td>
                 <td>⚪ Trivial</td>
                 <td>10min</td>
                 <td>Docs</td>
@@ -1170,8 +1272,8 @@
               <tr>
                 <td>22</td>
                 <td>
-                  Add <code>.gitignore</code> for any build artifacts if vendoring moves to
-                  generated-only
+                  Add <code>.gitignore</code> for any build artifacts if
+                  vendoring moves to generated-only
                 </td>
                 <td>⚪ Trivial</td>
                 <td>5min</td>
@@ -1180,8 +1282,8 @@
               <tr>
                 <td>23</td>
                 <td>
-                  Flesh out <code>docs-freshness-check</code> — define "stale", configurable file
-                  list
+                  Flesh out <code>docs-freshness-check</code> — define "stale",
+                  configurable file list
                 </td>
                 <td>🟡 Medium</td>
                 <td>30min</td>
@@ -1190,8 +1292,8 @@
               <tr>
                 <td>24</td>
                 <td>
-                  Flesh out <code>status-report</code> — already uses Bauhaus; add output examples
-                  to <code>references/</code>
+                  Flesh out <code>status-report</code> — already uses Bauhaus;
+                  add output examples to <code>references/</code>
                 </td>
                 <td>🟡 Medium</td>
                 <td>20min</td>
@@ -1199,7 +1301,10 @@
               </tr>
               <tr>
                 <td>25</td>
-                <td>Review Bauhaus template WCAG AA compliance for all color combinations</td>
+                <td>
+                  Review Bauhaus template WCAG AA compliance for all color
+                  combinations
+                </td>
                 <td>🟠 Low</td>
                 <td>30min</td>
                 <td>Accessibility</td>
@@ -1213,33 +1318,40 @@
           <h2><span class="num">G</span>Top #1 Question I Cannot Figure Out</h2>
 
           <div class="issue issue-critical">
-            <span class="severity severity-critical">Blocking · Needs your input</span>
+            <span class="severity severity-critical"
+              >Blocking · Needs your input</span
+            >
             <h3>
-              Should the Bauhaus templates use Google Fonts when the report is for public
-              consumption?
+              Should the Bauhaus templates use Google Fonts when the report is
+              for public consumption?
             </h3>
             <div class="where">html-report-kit design requirements</div>
             <p>
-              The Bauhaus look derives its personality from heavy font weights (800/900) and tight
-              tracking. System fonts approximate this well —
-              <strong>but they don't match the showcase designs you approved</strong>. The showcase
-              files that won your approval (<code>06c-bauhaus-desktop-v3.html</code>) used
-              <strong>Archivo</strong> and <strong>Space Mono</strong> from Google Fonts. The
-              canonical templates now ship with system font stacks only, per the kit's
-              zero-dependency rule.
+              The Bauhaus look derives its personality from heavy font weights
+              (800/900) and tight tracking. System fonts approximate this well —
+              <strong
+                >but they don't match the showcase designs you approved</strong
+              >. The showcase files that won your approval
+              (<code>06c-bauhaus-desktop-v3.html</code>) used
+              <strong>Archivo</strong> and <strong>Space Mono</strong> from
+              Google Fonts. The canonical templates now ship with system font
+              stacks only, per the kit's zero-dependency rule.
             </p>
             <p>
-              This means every report generated from the canonical templates will look slightly less
-              distinctive than the design you actually chose. The system-font version is good — but
-              it's not the version that made you say "Bauhaus is the winner."
+              This means every report generated from the canonical templates
+              will look slightly less distinctive than the design you actually
+              chose. The system-font version is good — but it's not the version
+              that made you say "Bauhaus is the winner."
             </p>
             <div class="callout callout-warning">
               <strong>The tradeoff:</strong>
-              System fonts = zero dependencies, works offline, instant load. Google Fonts = matches
-              the approved design, more personality, but adds an external request and breaks the
-              zero-dependency promise. I cannot determine which matters more to you: design fidelity
-              or dependency purity. The answer determines whether I add the
-              <code>&lt;link&gt;</code> to the canonical templates or leave them system-only.
+              System fonts = zero dependencies, works offline, instant load.
+              Google Fonts = matches the approved design, more personality, but
+              adds an external request and breaks the zero-dependency promise. I
+              cannot determine which matters more to you: design fidelity or
+              dependency purity. The answer determines whether I add the
+              <code>&lt;link&gt;</code> to the canonical templates or leave them
+              system-only.
             </div>
           </div>
         </section>
@@ -1428,18 +1540,21 @@
             <div class="migration-content">
               <h4><code>f3a6e7f</code> — Token architecture spec</h4>
               <p>
-                Defined the unified semantic vocabulary, <code>color-mix()</code> strategy, type
-                stacks, scrollspy pattern.
+                Defined the unified semantic vocabulary,
+                <code>color-mix()</code> strategy, type stacks, scrollspy
+                pattern.
               </p>
             </div>
           </div>
           <div class="migration-step">
             <div class="migration-num">2</div>
             <div class="migration-content">
-              <h4><code>2e6301f</code> — Both templates rewritten in Bauhaus</h4>
+              <h4>
+                <code>2e6301f</code> — Both templates rewritten in Bauhaus
+              </h4>
               <p>
-                Dark + Light templates. All 12 components preserved. System fonts.
-                Progressive-enhancement scrollspy.
+                Dark + Light templates. All 12 components preserved. System
+                fonts. Progressive-enhancement scrollspy.
               </p>
             </div>
           </div>
@@ -1448,7 +1563,8 @@
             <div class="migration-content">
               <h4><code>6c129d5</code> — Example report + guide updated</h4>
               <p>
-                Full component demo. Guide documents new tokens, <code>color-mix()</code>, aliases.
+                Full component demo. Guide documents new tokens,
+                <code>color-mix()</code>, aliases.
               </p>
             </div>
           </div>
@@ -1463,7 +1579,10 @@
             <div class="migration-num">5</div>
             <div class="migration-content">
               <h4><code>53214a9</code> — Cleanup + AGENTS.md memory</h4>
-              <p>Deleted 24 review artifacts. Recorded Bauhaus decision for future sessions.</p>
+              <p>
+                Deleted 24 review artifacts. Recorded Bauhaus decision for
+                future sessions.
+              </p>
             </div>
           </div>
           <div class="migration-step">
@@ -1471,14 +1590,15 @@
             <div class="migration-content">
               <h4><code>0bf55b4</code> — Lars: whitespace normalization</h4>
               <p>
-                Formatter pass on all canonical + vendored template files. No functional changes.
+                Formatter pass on all canonical + vendored template files. No
+                functional changes.
               </p>
             </div>
           </div>
 
           <footer class="footer">
-            Generated 2026-06-18 16:57 CEST · Crush · Bauhaus Dark template · First real-world
-            dogfood of the new design system
+            Generated 2026-06-18 16:57 CEST · Crush · Bauhaus Dark template ·
+            First real-world dogfood of the new design system
           </footer>
         </section>
       </main>

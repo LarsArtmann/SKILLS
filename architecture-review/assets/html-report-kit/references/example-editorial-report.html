@@ -39,14 +39,14 @@
         --warning: var(--color-yellow);
         --radius: 0px;
         --font-heading:
-          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Helvetica, Arial, sans-serif;
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         --font-body:
-          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Helvetica, Arial, sans-serif;
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         --font-mono:
-          ui-monospace, "Cascadia Code", "Source Code Pro", "JetBrains Mono", Menlo, Consolas,
-          monospace;
+          ui-monospace, "Cascadia Code", "Source Code Pro", "JetBrains Mono",
+          Menlo, Consolas, monospace;
       }
 
       * {
@@ -444,12 +444,20 @@
       .callout-teal,
       .callout-solution {
         border-left-color: var(--solution);
-        background: color-mix(in srgb, var(--solution) 10%, var(--surface-raised));
+        background: color-mix(
+          in srgb,
+          var(--solution) 10%,
+          var(--surface-raised)
+        );
       }
       .callout-amber,
       .callout-warning {
         border-left-color: var(--warning);
-        background: color-mix(in srgb, var(--warning) 18%, var(--surface-raised));
+        background: color-mix(
+          in srgb,
+          var(--warning) 18%,
+          var(--surface-raised)
+        );
       }
 
       .strengths {
@@ -803,9 +811,9 @@
           <div class="eyebrow">DESIGN AUDIT &middot; 2026-06-18</div>
           <h1>html-report-kit adopts the Bauhaus design language</h1>
           <p class="subtitle">
-            An example editorial report demonstrating every component in the new Bauhaus palette.
-            Use this as a copy-paste starting point — every element below is part of the shared
-            component vocabulary.
+            An example editorial report demonstrating every component in the new
+            Bauhaus palette. Use this as a copy-paste starting point — every
+            element below is part of the shared component vocabulary.
           </p>
           <div class="meta">
             <span class="tag amber">Scope: html-report-kit</span>
@@ -836,13 +844,15 @@
         <section id="summary">
           <h2><span class="num">00</span>Summary</h2>
           <p>
-            The kit replaced its Tailwind-default palette (indigo on slate-900) with the Bauhaus
-            system: primary colors on warm paper (light) or graphite (dark). The component
-            vocabulary is unchanged — every class name consumers already use still works.
+            The kit replaced its Tailwind-default palette (indigo on slate-900)
+            with the Bauhaus system: primary colors on warm paper (light) or
+            graphite (dark). The component vocabulary is unchanged — every class
+            name consumers already use still works.
           </p>
           <div class="callout callout-amber">
             <strong>The bottom line</strong>
-            Swap-in upgrade for all 11 consumer skills. No markup changes required. Run
+            Swap-in upgrade for all 11 consumer skills. No markup changes
+            required. Run
             <code>scripts/sync-html-kit.sh</code> to propagate.
           </div>
         </section>
@@ -856,8 +866,8 @@
               <div class="text">
                 <strong>Unified token vocabulary</strong>
                 <span
-                  >Both templates now share semantic names. The split brain (--rose vs --coral,
-                  --bg-elevated vs --bg-card) is gone.</span
+                  >Both templates now share semantic names. The split brain
+                  (--rose vs --coral, --bg-elevated vs --bg-card) is gone.</span
                 >
               </div>
             </div>
@@ -866,8 +876,8 @@
               <div class="text">
                 <strong>color-mix() eliminates drift</strong>
                 <span
-                  >Glow/light variants derive on demand from solid colors. ~8 redundant tokens
-                  removed.</span
+                  >Glow/light variants derive on demand from solid colors. ~8
+                  redundant tokens removed.</span
                 >
               </div>
             </div>
@@ -876,8 +886,8 @@
               <div class="text">
                 <strong>Backward-compatible aliases</strong>
                 <span
-                  >Old token names (--rose, --coral, --bg-card, --ink) still resolve. Zero consumer
-                  breakage.</span
+                  >Old token names (--rose, --coral, --bg-card, --ink) still
+                  resolve. Zero consumer breakage.</span
                 >
               </div>
             </div>
@@ -889,37 +899,47 @@
           <p>What the audit surfaced during the migration.</p>
 
           <div class="issue issue-critical" id="issue-palette">
-            <span class="severity severity-critical">Fixed &middot; High impact</span>
+            <span class="severity severity-critical"
+              >Fixed &middot; High impact</span
+            >
             <h3>Palette was unoriginal</h3>
             <div class="where">html-report-kit/assets/*.html</div>
             <p>
-              The prior palette used Tailwind's stock indigo (#6366f1) on slate-900 (#0f172a) — the
-              most recognizable AI-generated combination in production.
+              The prior palette used Tailwind's stock indigo (#6366f1) on
+              slate-900 (#0f172a) — the most recognizable AI-generated
+              combination in production.
             </p>
             <div class="callout callout-teal">
               <strong>Fix: adopted Bauhaus</strong>
-              Primary colors (red/blue/yellow) on neutral grounds. Form follows function.
+              Primary colors (red/blue/yellow) on neutral grounds. Form follows
+              function.
             </div>
           </div>
 
           <div class="issue issue-important" id="issue-tokens">
-            <span class="severity severity-important">Fixed &middot; Medium impact</span>
+            <span class="severity severity-important"
+              >Fixed &middot; Medium impact</span
+            >
             <h3>Token vocabulary was split between templates</h3>
             <div class="where">html-output-guide.md §CSS Design Tokens</div>
             <p>
-              Dark used <code>--bg-elevated</code>, <code>--rose</code>, <code>--emerald</code>.
-              Light used <code>--bg-card</code>, <code>--coral</code>, <code>--teal</code>. Same
-              concepts, different names — a split brain.
+              Dark used <code>--bg-elevated</code>, <code>--rose</code>,
+              <code>--emerald</code>. Light used <code>--bg-card</code>,
+              <code>--coral</code>, <code>--teal</code>. Same concepts,
+              different names — a split brain.
             </p>
           </div>
 
           <div class="issue issue-nice" id="issue-csp">
-            <span class="severity severity-nice">Nice to have &middot; Low impact</span>
+            <span class="severity severity-nice"
+              >Nice to have &middot; Low impact</span
+            >
             <h3>Consider documenting a strict CSP example</h3>
             <div class="where">html-output-guide.md</div>
             <p>
-              Templates are inline-style only (plus optional progressive-enhancement script). A
-              strict Content-Security-Policy example would help security-conscious users.
+              Templates are inline-style only (plus optional
+              progressive-enhancement script). A strict Content-Security-Policy
+              example would help security-conscious users.
             </p>
           </div>
         </section>
@@ -979,8 +999,8 @@
             <div class="migration-content">
               <h4>Adopt new tokens in canonical templates</h4>
               <p>
-                Rewrite report-template.html and report-template-editorial.html with the unified
-                Bauhaus vocabulary.
+                Rewrite report-template.html and report-template-editorial.html
+                with the unified Bauhaus vocabulary.
               </p>
             </div>
           </div>
@@ -989,7 +1009,8 @@
             <div class="migration-content">
               <h4>Update the HTML output guide</h4>
               <p>
-                Document the new tokens, the semantic color map, and the optional scrollspy pattern.
+                Document the new tokens, the semantic color map, and the
+                optional scrollspy pattern.
               </p>
             </div>
           </div>
@@ -997,7 +1018,10 @@
             <div class="migration-num">3</div>
             <div class="migration-content">
               <h4>Sync to all 11 consumers</h4>
-              <p>Run <code>./scripts/sync-html-kit.sh</code>. Verify with <code>--check</code>.</p>
+              <p>
+                Run <code>./scripts/sync-html-kit.sh</code>. Verify with
+                <code>--check</code>.
+              </p>
             </div>
           </div>
         </section>
@@ -1082,19 +1106,21 @@
           <h3>Dependency graph</h3>
           <div class="dep-tree">
             html-report-kit/ ├── assets/ │ ├── report-template.html
-            <span class="ok">Bauhaus Dark</span> │ └── report-template-editorial.html
-            <span class="ok">Bauhaus Light</span> ├── references/ │ ├── bauhaus-tokens.md
-            <span class="ok">token spec</span> │ ├── html-output-guide.md
-            <span class="ok">component catalog</span> │ └── example-editorial-report.html
-            <span class="ok">this file</span> └──
+            <span class="ok">Bauhaus Dark</span> │ └──
+            report-template-editorial.html
+            <span class="ok">Bauhaus Light</span> ├── references/ │ ├──
+            bauhaus-tokens.md <span class="ok">token spec</span> │ ├──
+            html-output-guide.md <span class="ok">component catalog</span> │ └──
+            example-editorial-report.html <span class="ok">this file</span> └──
             <span class="unwanted">no external dependencies</span>
           </div>
         </section>
 
         <footer class="footer">
           <p>
-            Generated 2026-06-18 &middot; Example for the html-report-kit Bauhaus editorial template
-            &middot; All claims verified against the canonical templates in this directory
+            Generated 2026-06-18 &middot; Example for the html-report-kit
+            Bauhaus editorial template &middot; All claims verified against the
+            canonical templates in this directory
           </p>
         </footer>
       </main>

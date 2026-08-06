@@ -23,9 +23,12 @@
         --cyan: #06b6d4;
         --border: #334155;
         --radius: 12px;
-        --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+        --font-mono:
+          ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
+          monospace;
         --font-sans:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
       }
 
       * {
@@ -110,7 +113,11 @@
         margin-bottom: 3rem;
         border: 1px solid var(--border);
         border-radius: var(--radius);
-        background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg) 100%);
+        background: linear-gradient(
+          180deg,
+          var(--bg-elevated) 0%,
+          var(--bg) 100%
+        );
         position: relative;
         overflow: hidden;
       }
@@ -121,7 +128,11 @@
         left: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, transparent 50%);
+        background: radial-gradient(
+          circle at 50% 50%,
+          var(--accent-glow) 0%,
+          transparent 50%
+        );
         pointer-events: none;
       }
       .hero-badge {
@@ -311,7 +322,8 @@
       <div class="hero-badge">Status Report</div>
       <h1>MD→HTML Conversion Initiative</h1>
       <p class="hero-subtitle">
-        Point-in-time snapshot of the SKILLS repo after the second self-review pass.
+        Point-in-time snapshot of the SKILLS repo after the second self-review
+        pass.
       </p>
     </div>
 
@@ -340,9 +352,11 @@
     <div class="card card-solution">
       <h4>Foundation</h4>
       <p>
-        <strong>html-report-kit</strong> skill created with shared CSS design system, component
-        catalog, language-agnostic <code>.tok-*</code> syntax classes, and copy-paste template.
-        Lives at <code>html-report-kit/</code> and is referenced by 10 report-producing skills.
+        <strong>html-report-kit</strong> skill created with shared CSS design
+        system, component catalog, language-agnostic <code>.tok-*</code> syntax
+        classes, and copy-paste template. Lives at
+        <code>html-report-kit/</code> and is referenced by 10 report-producing
+        skills.
       </p>
     </div>
 
@@ -350,22 +364,22 @@
       <h4>HTML Conversions</h4>
       <p>
         10 skills now produce self-contained HTML reports instead of Markdown:
-        <code>status-report</code>, <code>pareto-planning</code>, <code>go-modularize</code>,
-        <code>code-quality-scan</code>, <code>naming-review</code>,
-        <code>nix-flake-migration</code>, <code>data-model-review</code>,
-        <code>brutal-self-review</code>, <code>architecture-review</code>,
-        <code>full-code-review</code>.
+        <code>status-report</code>, <code>pareto-planning</code>,
+        <code>go-modularize</code>, <code>code-quality-scan</code>,
+        <code>naming-review</code>, <code>nix-flake-migration</code>,
+        <code>data-model-review</code>, <code>brutal-self-review</code>,
+        <code>architecture-review</code>, <code>full-code-review</code>.
       </p>
     </div>
 
     <div class="card card-solution">
       <h4>Split Brains Eliminated</h4>
       <p>
-        - <code>full-code-review</code> no longer inlines Pareto planning; it delegates to
-        <code>pareto-planning</code>.<br />
-        - <code>data-model-review/references/output-guide.md</code> now uses shared
-        <code>.tok-*</code> classes instead of conflicting <code>.go-*</code> /
-        <code>.ts-*</code> tokens.
+        - <code>full-code-review</code> no longer inlines Pareto planning; it
+        delegates to <code>pareto-planning</code>.<br />
+        - <code>data-model-review/references/output-guide.md</code> now uses
+        shared <code>.tok-*</code> classes instead of conflicting
+        <code>.go-*</code> / <code>.ts-*</code> tokens.
       </p>
     </div>
 
@@ -373,9 +387,10 @@
       <h4>Tooling & Decision Rule</h4>
       <p>
         - <code>allowed-tools: d2</code> added to <code>pareto-planning</code>,
-        <code>architecture-visualization</code>, <code>go-modularize</code>.<br />
-        - Artifact decision rule encoded in <code>how-to-write-skills.md</code>: Snapshot → HTML,
-        Living → Markdown.<br />
+        <code>architecture-visualization</code>,
+        <code>go-modularize</code>.<br />
+        - Artifact decision rule encoded in <code>how-to-write-skills.md</code>:
+        Snapshot → HTML, Living → Markdown.<br />
         - All relative cross-references verified to resolve.<br />
         - <code>AGENTS.md</code> §5.9 documents the shared HTML design system.
       </p>
@@ -386,17 +401,19 @@
     <div class="card card-warning">
       <h4>Per-Skill Concrete Templates</h4>
       <p>
-        Every converted skill has instructions and maps sections to shared components, but only the
-        generic <code>html-report-kit/assets/report-template.html</code> exists. Per-skill tailored
-        examples would reduce adaptation work.
+        Every converted skill has instructions and maps sections to shared
+        components, but only the generic
+        <code>html-report-kit/assets/report-template.html</code> exists.
+        Per-skill tailored examples would reduce adaptation work.
       </p>
     </div>
 
     <div class="card card-warning">
       <h4>architecture-visualization</h4>
       <p>
-        Still emits separate <code>.d2</code> + <code>.svg</code> files. It could wrap them into a
-        single HTML report using <code>html-report-kit</code>. I left it as-is because it already
+        Still emits separate <code>.d2</code> + <code>.svg</code> files. It
+        could wrap them into a single HTML report using
+        <code>html-report-kit</code>. I left it as-is because it already
         produces visual output, but consolidation is a natural next step.
       </p>
     </div>
@@ -406,8 +423,10 @@
     <div class="card">
       <p>
         - Automated render test for generated HTML reports.<br />
-        - Minimal report template variant for thin skills with fewer sections.<br />
-        - Converting past <code>docs/status/*.md</code> reports to HTML retroactively.
+        - Minimal report template variant for thin skills with fewer
+        sections.<br />
+        - Converting past <code>docs/status/*.md</code> reports to HTML
+        retroactively.
       </p>
     </div>
 
@@ -416,18 +435,20 @@
     <div class="card card-problem">
       <h4>Pre-commit formatter side effects</h4>
       <p>
-        The repo's pre-commit hook reformats Markdown files after my edits, which means the
-        committed file sometimes differs from what I intended. So far it has only standardized table
-        alignment and whitespace, but it creates uncertainty — I have to re-verify after each
-        commit. This is a process smell, not a code smell.
+        The repo's pre-commit hook reformats Markdown files after my edits,
+        which means the committed file sometimes differs from what I intended.
+        So far it has only standardized table alignment and whitespace, but it
+        creates uncertainty — I have to re-verify after each commit. This is a
+        process smell, not a code smell.
       </p>
     </div>
 
     <div class="card card-problem">
       <h4>README count mismatch</h4>
       <p>
-        My first pass claimed 19 skills; the actual count is 20. I fixed it in the second pass, but
-        the fact that I had to fix it means my mental model of the directory tree was wrong.
+        My first pass claimed 19 skills; the actual count is 20. I fixed it in
+        the second pass, but the fact that I had to fix it means my mental model
+        of the directory tree was wrong.
       </p>
     </div>
 
@@ -435,24 +456,29 @@
 
     <ol>
       <li>
-        <strong>Add a minimal report template</strong> — the current template is ~550 lines. A slim
-        variant for skills with 3-4 sections would cut context cost.
+        <strong>Add a minimal report template</strong> — the current template is
+        ~550 lines. A slim variant for skills with 3-4 sections would cut
+        context cost.
       </li>
       <li>
-        <strong>Add per-skill example HTML files</strong> in each skill's <code>assets/</code> or
-        <code>references/</code> so agents can copy a structure tuned to that skill.
+        <strong>Add per-skill example HTML files</strong> in each skill's
+        <code>assets/</code> or <code>references/</code> so agents can copy a
+        structure tuned to that skill.
       </li>
       <li>
-        <strong>Wrap <code>architecture-visualization</code> output in HTML</strong> — inline SVG
-        inside a styled report instead of separate files.
+        <strong
+          >Wrap <code>architecture-visualization</code> output in HTML</strong
+        >
+        — inline SVG inside a styled report instead of separate files.
       </li>
       <li>
-        <strong>Automated cross-reference verification</strong> — the bash loop I ran should be a
-        <code>scripts/</code> tool.
+        <strong>Automated cross-reference verification</strong> — the bash loop
+        I ran should be a <code>scripts/</code> tool.
       </li>
       <li>
-        <strong>Document the pre-commit formatter</strong> in <code>AGENTS.md</code> so future
-        agents know to re-verify after committing.
+        <strong>Document the pre-commit formatter</strong> in
+        <code>AGENTS.md</code> so future agents know to re-verify after
+        committing.
       </li>
     </ol>
 
@@ -624,22 +650,29 @@
     <h2>g) Top #1 Question I Cannot Figure Out Myself</h2>
 
     <div class="card card-problem">
-      <h4>Should the pre-commit formatter be allowed to reformat files I touched?</h4>
+      <h4>
+        Should the pre-commit formatter be allowed to reformat files I touched?
+      </h4>
       <p>
         On this run, the pre-commit hook modified <code>README.md</code>,
-        <code>architecture-review/SKILL.md</code>, and <code>go-modularize/SKILL.md</code> after my
-        commits, leaving the working tree dirty. I did not author those formatting changes, and the
-        global safety rules say not to revert changes I didn't make. But the hook also makes it hard
-        to trust that my edits land exactly as written. Should I:
+        <code>architecture-review/SKILL.md</code>, and
+        <code>go-modularize/SKILL.md</code> after my commits, leaving the
+        working tree dirty. I did not author those formatting changes, and the
+        global safety rules say not to revert changes I didn't make. But the
+        hook also makes it hard to trust that my edits land exactly as written.
+        Should I:
       </p>
       <ol>
-        <li>Commit the formatter's changes as a separate "style" commit and move on?</li>
+        <li>
+          Commit the formatter's changes as a separate "style" commit and move
+          on?
+        </li>
         <li>Configure the formatter so it runs before my commit, not after?</li>
         <li>Document the behavior and live with occasional dirty trees?</li>
       </ol>
       <p>
-        I am currently leaving the dirty files untouched because they are formatting-only and I did
-        not ask for them.
+        I am currently leaving the dirty files untouched because they are
+        formatting-only and I did not ask for them.
       </p>
     </div>
 
