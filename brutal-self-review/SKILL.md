@@ -1,6 +1,6 @@
 ---
 name: brutal-self-review
-description: Triggers a brutally honest self-review of recent work and the current codebase state (Go projects). Use when the user asks for self-reflection, self-critique, wants to know what was forgotten, what's stupid, what could be better, find ghost systems, split brains, or wants a comprehensive improvement plan with Go ecosystem library awareness.
+description: Use when the user asks for self-reflection, self-critique, wants to know what was forgotten, what's stupid, what could be better, wants to find ghost systems, split brains, or wants a comprehensive improvement plan. Triggers a brutally honest self-review of recent work and the current codebase state (Go projects) with Go ecosystem library awareness.
 metadata:
   tags: review, self-critique, honesty, go, architecture, improvement
 ---

@@ -1,14 +1,14 @@
 ---
 name: deduplicate-code
 description: >
-  Finds and removes code duplication using semantic clone detection (art-dupl).
   Use when the user wants to find and remove code duplication, says "deduplicate",
   "DRY", "art-dupl", "find duplicates", "copy-paste code", "repeated code", "clones",
   "reduce duplication", or wants to clean up similar code blocks. This skill is about
   JUDGMENT — eliminating harmful duplication while accepting intentional similarity
   (table-driven tests, generated code, idiomatic patterns). Iterates to zero harmful
-  clones, not zero report lines. Distinct from code-quality-scan (broad build/lint/dup
-  scan — use this skill when duplication is the sole focus).
+  clones, not zero report lines. Uses semantic clone detection (art-dupl). Distinct
+  from code-quality-scan (broad build/lint/dup scan — use this skill when duplication
+  is the sole focus).
 metadata:
   tags: deduplication, quality, cleanup, art-dupl
 allowed-tools: bash view edit grep

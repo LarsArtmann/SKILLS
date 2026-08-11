@@ -1,6 +1,6 @@
 ---
 name: status-report
-description: Generates a full comprehensive status update of the project — what's done, what's broken, what's partially complete, and what to do next. Use when the user asks for a status update, progress report, project status, "STATUS UPDATE", "WHAT'S THE STATUS", "where are we", "what's the state of the project", "project health", "progress check", "what's done", "what's left", or wants a snapshot of current project state. Also fires when the user wants to know what's fucked up or what to prioritize next. Distinct from docs-health (maintains TODO_LIST/FEATURES/CHANGELOG/ROADMAP — use status-report for a point-in-time snapshot, docs-health for ongoing doc maintenance).
+description: Use when the user asks for a status update, progress report, project status, "STATUS UPDATE", "WHAT'S THE STATUS", "where are we", "what's the state of the project", "project health", "progress check", "what's done", "what's left", or wants a snapshot of current project state. Also fires when the user wants to know what's fucked up or what to prioritize next. Generates a full comprehensive status update of the project — what's done, what's broken, what's partially complete, and what to do next. Distinct from docs-health (maintains TODO_LIST/FEATURES/CHANGELOG/ROADMAP — use status-report for a point-in-time snapshot, docs-health for ongoing doc maintenance).
 metadata:
   tags: status, report, progress, tracking
 ---

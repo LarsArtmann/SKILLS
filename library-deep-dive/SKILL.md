@@ -1,16 +1,17 @@
 ---
 name: library-deep-dive
 description: >
-  Performs a deep-dive research audit on a single library to determine whether the project
-  uses it to its FULL potential. Use this skill when the user asks "are we using X to the max",
-  "are we fully leveraging <library>", "deep dive into <library>", "library utilization audit",
+  Use this skill when the user asks "are we using X to the max", "are we fully
+  leveraging <library>", "deep dive into <library>", "library utilization audit",
   "library adoption review", "library maximization", "are we using <library> correctly",
-  "what features of <library> are we missing", "library capabilities audit", "library usage review",
-  "do we use <library> to its full potential", or any question about whether a specific dependency
-  is underutilized, misused, or behind on features. Also triggers when the user names a library
-  (e.g. Prisma, Zod, GORM, sqlc, Effect, RxJS, gorilla/mux, cobra, viper, react-query, zod, drizzle,
-  typeorm, ent, elm, dayjs, lodash, immer, zustand, effector) and wants to know if they're getting
-  the most out of it. Fires for ANY language and ANY library — JS/TS, Go, Rust, Python, Ruby, etc.
+  "what features of <library> are we missing", "library capabilities audit", "library
+  usage review", "do we use <library> to its full potential", or any question about
+  whether a specific dependency is underutilized, misused, or behind on features. Also
+  triggers when the user names a library (e.g. Prisma, Zod, GORM, sqlc, Effect, RxJS,
+  gorilla/mux, cobra, viper, react-query, zod, drizzle, typeorm, ent, elm, dayjs,
+  lodash, immer, zustand, effector) and wants to know if they're getting the most out
+  of it. Performs a deep-dive research audit on a single library. Fires for ANY language
+  and ANY library — JS/TS, Go, Rust, Python, Ruby, etc.
 metadata:
   tags: library, dependency, utilization, adoption, audit, deep-dive, research, maximization, coverage, gap-analysis
 allowed-tools: bash view edit write ls grep agent agentic_fetch mcp_context7_resolve-library-id mcp_context7_query-docs

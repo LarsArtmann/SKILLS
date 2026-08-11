@@ -1,20 +1,18 @@
 ---
 name: docs-health
 description: >
-  Creates, verifies, and maintains ALL project documentation — living docs
-  (README, FEATURES, TODO_LIST, ROADMAP, CHANGELOG, AGENTS) AND historical
-  snapshots (status reports, plans, audits). Four modes: BUILD (create from
-  code), HARVEST (pull forward items from status reports into TODO_LIST),
-  VERIFY (check claims against code), ANNOTATE (resolve numbered items in old
-  reports inline — not appendix-only). Use when the user wants to build a TODO
-  list, audit features, check if docs are up-to-date or fresh, create or
-  rebuild any project doc, detect documentation drift, split brains, harvest a
-  status report, pull next tasks into TODO_LIST, update or annotate old status
-  reports, mark old reports as done, bring old audits up to date, or says
-  "docs health", "feature audit", "build TODO list", "docs up to date",
-  "documentation audit", "fix my docs", "are my docs current", "harvest
-  status report", "update old docs", "annotate status reports", "mark these
-  reports as done".
+  Use when the user wants to build a TODO list, audit features, check if docs are
+  up-to-date or fresh, create or rebuild any project doc, detect documentation drift,
+  split brains, harvest a status report, pull next tasks into TODO_LIST, update or
+  annotate old status reports, mark old reports as done, bring old audits up to date,
+  or says "docs health", "feature audit", "build TODO list", "docs up to date",
+  "documentation audit", "fix my docs", "are my docs current", "harvest status report",
+  "update old docs", "annotate status reports", "mark these reports as done". Creates,
+  verifies, and maintains ALL project documentation — living docs (README, FEATURES,
+  TODO_LIST, ROADMAP, CHANGELOG, AGENTS) AND historical snapshots (status reports,
+  plans, audits). Four modes: BUILD (create from code), HARVEST (pull forward items
+  from status reports into TODO_LIST), VERIFY (check claims against code), ANNOTATE
+  (resolve numbered items in old reports inline — not appendix-only).
 metadata:
   tags: documentation, freshness, features, todo, audit, consistency, verification, annotation, historical, harvest
 ---

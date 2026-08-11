@@ -1,6 +1,6 @@
 ---
 name: nix-review
-description: Reviews and improves .nix files to make them truly superb. Use when the user wants to review, audit, improve, or fix Nix files — including flake.nix, NixOS modules, overlays, devShells, packages, or any .nix file. Also trigger when the user asks about nix quality, nix anti-patterns, nix best practices, wants to make their flakes excellent, or says "nix review", "review nix", "review .nix", "improve flake". Covers build correctness, security hardening, reproducibility, module design, source filtering, overlay architecture, performance, systemd hardening, and common pitfalls.
+description: Use when the user wants to review, audit, improve, or fix Nix files — including flake.nix, NixOS modules, overlays, devShells, packages, or any .nix file. Also triggers when the user asks about nix quality, nix anti-patterns, nix best practices, wants to make their flakes excellent, or says "nix review", "review nix", "review .nix", "improve flake". Reviews and improves .nix files covering build correctness, security hardening, reproducibility, module design, source filtering, overlay architecture, performance, systemd hardening, and common pitfalls.
 metadata:
   tags: nix, flakes, review, quality, best-practices, nixos, modules, overlays, systemd, performance
 allowed-tools: bash view edit grep

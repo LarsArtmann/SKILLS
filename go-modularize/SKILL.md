@@ -1,14 +1,15 @@
 ---
 name: go-modularize
 description: >
-  Splits or merges Go modules, refining go.mod boundaries. Direction-neutral. Use when
-  the user wants to modularize a Go project, create independently versioned Go packages,
-  restructure a Go project, or says "modularize", "split modules", "sub-modules",
-  "go.mod per package", "multi-module", "module boundaries", "dependency isolation",
-  "Go workspace", "go.work", "CQRS modularization", "break apart Go project",
-  "too coupled", "Go package boundaries", "remodularize", "re-modularize",
-  "merge modules", "too many modules", "over-modularized", "consolidate modules",
-  "unix-style", "decompose deeper", "too few modules", "god-module", "composable modules".
+  Use when the user wants to modularize a Go project, create independently versioned
+  Go packages, restructure a Go project, or says "modularize", "split modules",
+  "sub-modules", "go.mod per package", "multi-module", "module boundaries",
+  "dependency isolation", "Go workspace", "go.work", "CQRS modularization", "break
+  apart Go project", "too coupled", "Go package boundaries", "remodularize",
+  "re-modularize", "merge modules", "too many modules", "over-modularized",
+  "consolidate modules", "unix-style", "decompose deeper", "too few modules",
+  "god-module", "composable modules". Splits or merges Go modules, refining go.mod
+  boundaries. Direction-neutral.
 metadata:
   tags: go, modularization, monorepo, multi-module, go.mod, architecture, refactoring,
     go.work, replace-directives, versioning, re-modularization, merge-modules,

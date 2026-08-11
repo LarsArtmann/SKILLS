@@ -1,17 +1,15 @@
 ---
 name: website-launch
 description: >-
-  Launches a public documentation website for a Go project (library OR
-  application/server) using the LarsArtmann Astro + Starlight + Tailwind v4 +
-  Firebase Hosting
-  pattern. Use this skill when the user asks to create a project website, build
-  a documentation site, deploy to Firebase, configure DNS, set up GitHub
-  metadata for a project, rewrite a README for public presence, "make a
-  website", "publish docs", "set up Firebase hosting", configure custom
-  domains, or any task involving the sibling-project website pattern
-  (go-atomic-write, gogenfilter, dynamic-markdown-site, go-output,
-  samber-do-auditlog, go-workflow-auditlog, etc.). Also triggers on "website launch", "public
-  presence overhaul", "deploy website", or "lars.software domain".
+  Use this skill when the user asks to create a project website, build a documentation
+  site, deploy to Firebase, configure DNS, set up GitHub metadata for a project, rewrite
+  a README for public presence, "make a website", "publish docs", "set up Firebase
+  hosting", configure custom domains, or any task involving the sibling-project website
+  pattern (go-atomic-write, gogenfilter, dynamic-markdown-site, go-output,
+  samber-do-auditlog, go-workflow-auditlog, etc.). Also triggers on "website launch",
+  "public presence overhaul", "deploy website", or "lars.software domain". Launches a
+  public documentation website for a Go project (library OR application/server) using
+  the LarsArtmann Astro + Starlight + Tailwind v4 + Firebase Hosting pattern.
 metadata:
   tags: website, firebase, astro, starlight, dns, deployment, documentation
 allowed-tools: bash view edit write grep fetch

@@ -27,7 +27,7 @@ my-skill/
 ```yaml
 ---
 name: my-skill # REQUIRED: lowercase, hyphens, matches folder name
-description: ... # REQUIRED: what it does AND when to use it (max 1024 chars)
+description: ... # REQUIRED: WHEN to activate — trigger context, not a skill description (max 1024 chars)
 license: ... # Optional
 metadata: # Optional
   tags: foo, bar
@@ -48,9 +48,9 @@ allowed-tools: ... # Optional: space-separated pre-approved tools
 
 ## Key Principles
 
-### 1. The `description` is a trigger, not documentation.
+### 1. The `description` is trigger context — it tells the agent _when_ to use the skill.
 
-It tells the agent _when_ to activate the skill. Agents tend to under-trigger — they skip skills even when they'd be useful. Combat this by being explicit and slightly pushy:
+It is **not** a description of the skill itself, its contents, or its purpose. If you read only the `description`, you should know exactly what user task makes this skill load. Agents tend to under-trigger — they skip skills even when they'd be useful — so be explicit and slightly pushy:
 
 ```yaml
 # Bad — too vague
@@ -59,15 +59,31 @@ description: Helps with React
 # Bad — describes what the skill contains
 description: A collection of React patterns and best practices.
 
+# Bad — describes the skill itself instead of the trigger
+description: A self-contained HTML report design system for skill-generated dashboards.
+
 # Good — specific trigger conditions with pushy language
 description: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beautifying any web UI.
+
+# Good — trigger-first, then what the agent will do
+description: Use when the user asks to write, review, audit, improve, or fix naming in their codebase. Covers data-model names (types, structs, classes, interfaces, enums, fields, properties) and function names (methods, procedures). Triggers on "naming review", "bad names", "rename identifiers", "naming conventions", "naming smells", or any identifier-naming question.
 ```
 
 Include:
 
-- **What the skill does** (so the agent can match the task)
+- **When to activate** — the user task, phrase, or context that should load this skill
 - **Specific trigger phrases** (exact words users might say)
 - **Adjacent contexts** (related tasks where the skill should still fire)
+- **What the agent will do** (just enough to confirm it is the right tool)
+
+Use this quick test before finalizing a description:
+
+| Question | Pass |
+| --- | --- |
+| Does it start with the user’s task or a trigger phrase? | Yes |
+| Could it be mistaken for a README sentence or feature list? | No |
+| Does it mention concrete words a user would actually say? | Yes |
+| Does it say what the agent will do, not what the skill _is_? | Yes |
 
 ### 2. The SKILL.md body is the procedure.
 
@@ -485,7 +501,7 @@ Example pairs (as of 2026-08-04):
 ## Common Mistakes
 
 - **Vague descriptions** — the agent never activates the skill because it doesn't know when to
-- **Description as documentation** — describing what the skill _contains_ instead of when to _use_ it
+- **Description as documentation** — describing what the skill _is_ or _contains_ instead of _when the agent should use it_
 - **Too long SKILL.md** — wastes context tokens on every activation; split into `references/`
 - **Narrative/prose instructions** — write imperative steps, not essays
 - **Missing trigger keywords** — if users say "refactor" but your description only says "architecture", the agent won't match
@@ -511,7 +527,7 @@ Use the `skill-creator` skill for a full eval/benchmarking workflow with automat
 ```yaml
 ---
 name: my-skill
-description: Use this skill when the user asks to [specific trigger]. Provides [what it provides].
+description: Use this skill when the user asks to [specific trigger]. Then [what the agent does].
 ---
 
 # My Skill

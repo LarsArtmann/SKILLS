@@ -1,6 +1,6 @@
 ---
 name: pareto-planning
-description: Creates a comprehensive execution plan using the Pareto principle (80/20 breakdown). Use when the user wants to plan work, break down a TODO list, identify high-impact tasks, prioritize work, or says "MAKE A PLAN", "PARETO", "comprehensive plan", "prioritize", "what should I work on first", "impact analysis", "task prioritization", "what's the 80/20", "break this down", or wants tasks sorted by impact and effort.
+description: Use when the user wants to plan work, break down a TODO list, identify high-impact tasks, prioritize work, or says "MAKE A PLAN", "PARETO", "comprehensive plan", "prioritize", "what should I work on first", "impact analysis", "task prioritization", "what's the 80/20", "break this down", or wants tasks sorted by impact and effort. Creates a comprehensive execution plan using the Pareto principle (80/20 breakdown).
 metadata:
   tags: planning, pareto, prioritization, d2, execution-graph
 allowed-tools: d2

@@ -55,19 +55,22 @@ SKILLS/
 
 ### 3.1 `SKILL.md` Frontmatter (Required)
 
+The `description` field is **trigger context for the AI agent**, not a description of the skill itself. It must tell Crush _when_ to load and use this skill. If it reads like a feature list or a README sentence, rewrite it.
+
 ```yaml
 ---
 name: skill-name # lowercase, hyphens, MUST match directory name
-description: > # THIS IS A TRIGGER, NOT DOCUMENTATION
-  Tells the agent WHEN to activate. Be explicit and pushy.
-  Include what it does + exact trigger phrases + adjacent contexts.
+description: > # TRIGGER CONTEXT — tells the agent WHEN to use this skill
+  WHEN the user asks about X, says Y, or needs Z.
+  Include exact trigger phrases + adjacent contexts + what the agent will do.
+  Be explicit and slightly pushy; agents under-trigger.
   Max ~1024 chars.
 metadata:
   tags: foo, bar # comma-separated, helps with discovery
 ---
 ```
 
-**Critical nuance:** The `description` is read by Crush's skill selection system. If it is vague, the skill will never activate. If it describes what the skill _contains_ rather than when to _use_ it, the skill will never activate. Study existing good descriptions in `go-modularize`, `nix-review`, `how-to-golang`, `naming-review`.
+**Critical nuance:** The `description` is read by Crush's skill selection system. It must answer "what user task makes this skill the right tool?" If it is vague, the skill will never activate. If it describes what the skill _is_ or _contains_ rather than _when to use it_, the skill will never activate. Study existing good descriptions in `go-modularize`, `nix-review`, `how-to-golang`, `naming-review`.
 
 ### 3.2 Body Style
 
