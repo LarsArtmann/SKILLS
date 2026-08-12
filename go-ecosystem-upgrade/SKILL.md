@@ -194,7 +194,11 @@ This is the phase that gets skipped most often and causes the most damage.
 
 ### Phase 6 — Release: tag without poisoning the proxy
 
-If you're cutting tags (releasing a library, not just consuming one):
+If you're cutting tags (releasing a library, not just consuming one). **For the
+full release procedure, load the `go-release` skill** — it covers the complete
+lifecycle (version determination, CHANGELOG, pre-release verification, GoReleaser,
+post-push validation, recovery). The rules below are the minimum that applies
+within an ecosystem upgrade:
 
 1. **NEVER delete and recreate git tags with the same version number.** The Go module
    proxy (`sum.golang.org`) caches checksums immutably. Once a tag is fetched, its hash is
