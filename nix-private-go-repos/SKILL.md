@@ -18,17 +18,12 @@ You need **both** parts:
 
 > ## Verification status (read first)
 >
-> **Verified independent of private projects:**
+> **All claims verified against `go-nix-helpers` source** (as of 2026-08-12):
 >
-> - `GOPRIVATE`, `vendorHash`, `buildGoModule`, `replace` directives, and `git+ssh://` flake inputs are all public, documented Nix and Go concepts. The two-part solution (hermetic build via source preparation + devShell GOPRIVATE) follows logically from how Go modules and the Nix sandbox interact.
+> - `GOPRIVATE`, `vendorHash`, `buildGoModule`, `replace` directives, and `git+ssh://` flake inputs are public, documented Nix and Go concepts.
+> - The `mkPreparedSource` function, the `flakeModules.go-standard` module, and their specific APIs (`deps` map, `validatePrivateDeps`, `publicDeps`, `postPatchExtra`, `privateGlobPattern`, `requireDeps`) are confirmed against the current source in `/home/lars/projects/go-nix-helpers`.
+> - The `go-standard` module has 39 options total; this skill covers the subset relevant to private-dep management.
 > - The problems with committed `vendor/` (massive diffs, stale deps, merge conflicts) are well-known and widely documented.
->
-> **Could not be independently verified from public sources:**
->
-> - `github.com/LarsArtmann/go-nix-helpers` is a **private** repo (`git+ssh://git@github.com/LarsArtmann/go-nix-helpers`, SSH-only). The `mkPreparedSource` function, the `flakeModules.go-standard` module, and their specific APIs (`deps` map, `validatePrivateDeps`, `postPatchExtra`) are from local access to that repo, not from a public registry or documentation.
-> - The exact `go-standard` option names (`pname`, `vendorHash`, `description`, `deps`) and the auto-injection behavior cannot be confirmed without access to the private source.
->
-> **Bottom line:** the approach (replace directives + GOPRIVATE + vendorHash + one flake input per private repo) is the standard pattern for private Go deps in Nix. The specific helper library API may evolve; verify option names against the current `go-nix-helpers` source before relying on them.
 
 ## 1. Diagnose
 
@@ -84,8 +79,10 @@ outputs = inputs@{ self, ... }:
       deps = {
         "github.com/larsartmann/go-cqrs-lite" = inputs.go-cqrs-lite;
       };
-      # GOPRIVATE is auto-injected. mkPreparedSource is auto-wired.
-      # Sub-modules are auto-discovered. GOTOOLCHAIN=local is set.
+      # GOPRIVATE is auto-injected (controlled by autoGoPrivate + privateGlobPattern).
+      # mkPreparedSource is auto-wired. Sub-modules are auto-discovered.
+      # GOTOOLCHAIN=local and GOWORK=off are set in all devShells.
+      # publicDeps = [ "github.com/larsartmann/go-atomic-write" ]; # exclude public repos from validation
     };
   };
 ```
@@ -137,7 +134,7 @@ Load [./references/ci-auth.md](./references/ci-auth.md) for copy-paste workflows
 | Gotcha                              | Symptom                                                           | Fix                                                                    |
 | ----------------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | Case-sensitive `GOPRIVATE`          | `go mod tidy` still fails for mixed-case imports                  | Use `GOPRIVATE = "github.com/larsartmann/*,github.com/LarsArtmann/*";` |
-| Public LarsArtmann repo in `go.mod` | `mkPreparedSource` validation fails because repo is not in `deps` | Set `validatePrivateDeps = false;`                                     |
+| Public LarsArtmann repo in `go.mod` | `mkPreparedSource` validation fails because repo is not in `deps` | Add to `publicDeps` (preferred) or set `validatePrivateDeps = false;`   |
 | Transitive private deps             | Build fails on a private dep of a private dep                     | Add the transitive dep as a flake input too, or disable validation     |
 | `tools/go.mod`                      | Secondary module lacks `replace` directives                       | Use `postPatchExtra` to inject replaces there too                      |
 | `go.work`                           | Workspace resolution interferes with module builds                | Set `GOWORK = "off";` in devShells                                     |

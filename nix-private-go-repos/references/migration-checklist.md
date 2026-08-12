@@ -10,7 +10,7 @@ Use this checklist when moving a Go project from committed `vendor/` to a hermet
   grep -E 'github\.com/[Ll]ars[Aa]rtmann' go.mod | awk '{print $1}' | sed 's|/v[0-9]*||' | sort -u
   ```
 
-- [ ] Decide whether any public LarsArtmann repos are present. If yes, plan to set `validatePrivateDeps = false;`.
+- [ ] Decide whether any public LarsArtmann repos are present. If yes, add them to `publicDeps` (preferred — excludes specific repos from validation only). Use `validatePrivateDeps = false;` only if all matching deps are public.
 - [ ] Check for transitive private deps by inspecting the `go.mod` files of each private dependency.
 - [ ] Check for secondary modules such as `tools/go.mod` that also need `replace` directives.
 - [ ] Check whether the project uses `go.work`. If yes, plan to set `GOWORK = "off";` in devShells.

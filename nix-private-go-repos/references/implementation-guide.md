@@ -165,7 +165,16 @@ Without this, Go tries HTTPS and fails with `could not read Username`.
 
 ### 1. Public LarsArtmann repos
 
-Some LarsArtmann repos are public. If a public repo is in `go.mod` but not in `deps`, set `validatePrivateDeps = false;`.
+Some LarsArtmann repos are public. If a public repo is in `go.mod` but not in `deps`, add it to `publicDeps` (preferred — only excludes that specific repo from validation):
+
+```nix
+go-standard = {
+  publicDeps = [ "github.com/larsartmann/go-atomic-write" ];
+  # Versioned-path aware: also excludes /v2, /v3, etc.
+};
+```
+
+Or set `validatePrivateDeps = false;` to disable all validation (blunt instrument — use only if all matching deps are public).
 
 ### 2. Transitive private deps
 
@@ -195,7 +204,7 @@ If using Go workspace mode, set `GOWORK = "off";` in devShells to prevent worksp
 
 Go module paths are case-sensitive. `github.com/larsartmann/go-cqrs-lite` and `github.com/LarsArtmann/go-cqrs-lite` are different modules. `deps` map keys must match the exact case used in `go.mod`, and `GOPRIVATE` must cover both casings.
 
-### 7. `GONOSUMDB` / `GONOSUMCHECK`
+### 7. `GONOSUMDB` / `GONOPROXY`
 
 `GOPRIVATE` automatically implies `GONOSUMDB` and `GONOPROXY` for matching paths. Do not set them separately.
 
