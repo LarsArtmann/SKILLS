@@ -67,18 +67,23 @@ find . -name '*.go' -exec sed -i 's|"github.com/myorg/myrepo"|"github.com/myorg/
 ```
 
 **Go-native alternative**: `gofmt -r` understands Go syntax and rewrites only
-string literals, so it won't corrupt comments or unrelated text. Use it as the
-primary method, falling back to `sed` only if `gofmt` cannot handle a generated
-file:
+string literals, so it won't corrupt comments or unrelated text. Use it for the
+root package import; for sub-packages, add a rule per package or fall back to the
+scoped `sed` command above.
+
+The package name used in code (e.g., `myrepo.X`) does not change automatically,
+but it does not need to: the imported package's `package` declaration (not the
+import path) determines the name. So `import "github.com/myorg/myrepo/v2"` still
+binds to `myrepo` if the package declares `package myrepo`.
 
 ```bash
-# Rewrite both root and sub-package imports
+# Root package only — safe and syntax-aware
 gofmt -r '"github.com/myorg/myrepo" -> "github.com/myorg/myrepo/v2"' -w .
-gofmt -r '"github.com/myorg/myrepo/" -> "github.com/myorg/myrepo/v2/"' -w .
 
-# Or combine both rules in one invocation
-gofmt -r '"github.com/myorg/myrepo" -> "github.com/myorg/myrepo/v2"' \
-      -r '"github.com/myorg/myrepo/" -> "github.com/myorg/myrepo/v2/"' -w .
+# Sub-packages: one rule per sub-package, or use the scoped sed prefix rewrite
+# for many sub-packages at once
+gofmt -r '"github.com/myorg/myrepo/sub" -> "github.com/myorg/myrepo/v2/sub"' -w .
+gofmt -r '"github.com/myorg/myrepo/api" -> "github.com/myorg/myrepo/v2/api"' -w .
 ```
 
 **Critical**: scope the rewrite carefully. Use the exact module path to avoid

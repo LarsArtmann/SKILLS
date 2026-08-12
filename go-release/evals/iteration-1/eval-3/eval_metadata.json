@@ -1,0 +1,13 @@
+{
+  "eval_id": 3,
+  "eval_name": "goreleaser-binary-release-wrong-tag",
+  "prompt": "Build a v2.0.0 release of my Go CLI github.com/myorg/tool using GoReleaser. The last tag push included three tags on the same commit and GoReleaser keeps picking the wrong one. How do I fix the release and what does the .goreleaser.yml look like?",
+  "assertions": [
+    "Response sets GORELEASER_CURRENT_TAG=v2.0.0 for the release command or CI job",
+    "Response explains that multiple tags at one commit cause git describe to pick the alphabetically-last tag",
+    "Response includes a .goreleaser.yml with version: 2 at the top",
+    "Response includes CGO_ENABLED=0 and -trimpath for cross-compilation",
+    "Response mentions running goreleaser release --clean --snapshot --skip=publish to test the pipeline first",
+    "Response warns that v2.0.0 for a CLI is semver, not necessarily a Go module v2 path migration"
+  ]
+}

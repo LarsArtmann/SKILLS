@@ -202,11 +202,11 @@ release is part of a larger ecosystem upgrade:
 
 1. **Verify the tag resolves in a clean module.** After pushing, run `go get
   github.com/foo/bar@v1.2.0` in a fresh module (or `GONOSUMDB=*` if the proxy hasn't
-  cached it yet). Don't assume the tag works — prove it.
+   cached it yet). Don't assume the tag works — prove it.
 
 2. **Re-verify CHANGELOG accuracy after any git operation.** A sibling session's
-  revert can make your CHANGELOG entries false. A lying CHANGELOG is worse than no
-  CHANGELOG.
+   revert can make your CHANGELOG entries false. A lying CHANGELOG is worse than no
+   CHANGELOG.
 
 ## The failure-mode catalog (compact reference)
 

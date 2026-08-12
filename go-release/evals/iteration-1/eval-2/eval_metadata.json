@@ -1,0 +1,13 @@
+{
+  "eval_id": 2,
+  "eval_name": "multi-module-monorepo-minor-release",
+  "prompt": "Cut a release of my multi-module Go monorepo at github.com/myorg/mono. There are two modules: github.com/myorg/mono and github.com/myorg/mono/cli. I need to release v1.3.0 of both from the same commit. What exact git tags do I push and in what order?",
+  "assertions": [
+    "Response identifies this as a multi-module monorepo release and references references/multi-module.md",
+    "Response states that both tags (mono/v1.3.0 and cli/v1.3.0) must point to the same commit",
+    "Response mentions using go mod edit -require to bump the cli module's dependency on the root module without needing the proxy yet",
+    "Response warns about the chicken-and-egg problem of go mod tidy before tags are pushed",
+    "Response mentions setting GORELEASER_CURRENT_TAG=mono/v1.3.0 if GoReleaser is used",
+    "Response includes post-push verification with GONOSUMDB=* go get for both modules"
+  ]
+}

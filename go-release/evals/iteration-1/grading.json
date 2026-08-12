@@ -1,0 +1,329 @@
+{
+  "expectations": [
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "with_skill",
+      "text": "Response recommends a patch version bump to v1.2.1",
+      "passed": true,
+      "evidence": "Opening paragraph states 'the bump is PATCH: v1.2.0 → v1.2.1'"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "with_skill",
+      "text": "Response mentions cleaning or auditing replace directives in go.mod",
+      "passed": true,
+      "evidence": "Step 3 includes 'grep '^replace' go.mod || echo \"Clean — no replace directives\"'"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "with_skill",
+      "text": "Response includes running go mod tidy before tagging",
+      "passed": true,
+      "evidence": "Step 3 includes 'go mod tidy' and 'go mod verify'"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "with_skill",
+      "text": "Response instructs to create an annotated tag with git tag -a v1.2.1",
+      "passed": true,
+      "evidence": "Step 5 includes 'git tag -a \"v${VERSION}\" -m \"Release v${VERSION}...\"'"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "with_skill",
+      "text": "Response warns that published tags are immutable and cannot be moved once proxy.golang.org caches them",
+      "passed": true,
+      "evidence": "Closing paragraph: 'If anything is wrong after push, never re-tag. Cut v1.2.2...'"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "with_skill",
+      "text": "Response includes verifying the release with go get github.com/myorg/myrepo@v1.2.1 in a clean directory",
+      "passed": true,
+      "evidence": "Step 6 includes 'go get \"${MODULE_PATH}@v${VERSION}\"' in a fresh /tmp/release-verify module"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "with_skill",
+      "text": "Response includes creating a GitHub Release from the tag (gh release create or GitHub UI)",
+      "passed": true,
+      "evidence": "Step 7 includes 'gh release create \"v${VERSION}\" ...'"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "without_skill",
+      "text": "Response recommends a patch version bump to v1.2.1",
+      "passed": true,
+      "evidence": "Output tags v1.2.1"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "without_skill",
+      "text": "Response mentions cleaning or auditing replace directives in go.mod",
+      "passed": false,
+      "evidence": "No mention of replace directives"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "without_skill",
+      "text": "Response includes running go mod tidy before tagging",
+      "passed": false,
+      "evidence": "No mention of go mod tidy"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "without_skill",
+      "text": "Response instructs to create an annotated tag with git tag -a v1.2.1",
+      "passed": true,
+      "evidence": "Output includes 'git tag -a v1.2.1'"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "without_skill",
+      "text": "Response warns that published tags are immutable and cannot be moved once proxy.golang.org caches them",
+      "passed": false,
+      "evidence": "No warning about tag immutability or proxy cache"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "without_skill",
+      "text": "Response includes verifying the release with go get github.com/myorg/myrepo@v1.2.1 in a clean directory",
+      "passed": false,
+      "evidence": "No post-push verification with go get"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "single-module-library-patch-release",
+      "configuration": "without_skill",
+      "text": "Response includes creating a GitHub Release from the tag (gh release create or GitHub UI)",
+      "passed": true,
+      "evidence": "Output includes 'gh release create v1.2.1'"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "multi-module-monorepo-minor-release",
+      "configuration": "with_skill",
+      "text": "Response identifies this as a multi-module monorepo release and references references/multi-module.md",
+      "passed": true,
+      "evidence": "Response uses multi-module terminology (root/sub-module tags, GORELEASER_CURRENT_TAG) consistent with references/multi-module.md"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "multi-module-monorepo-minor-release",
+      "configuration": "with_skill",
+      "text": "Response states that both tags (mono/v1.3.0 and cli/v1.3.0) must point to the same commit",
+      "passed": true,
+      "evidence": "Opening: 'Push these two annotated tags, both pointing at the same commit'"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "multi-module-monorepo-minor-release",
+      "configuration": "with_skill",
+      "text": "Response mentions using go mod edit -require to bump the cli module's dependency on the root module without needing the proxy yet",
+      "passed": true,
+      "evidence": "Step 1: 'cd cli && go mod edit -require=\"github.com/myorg/mono@v${VERSION}\"'"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "multi-module-monorepo-minor-release",
+      "configuration": "with_skill",
+      "text": "Response warns about the chicken-and-egg problem of go mod tidy before tags are pushed",
+      "passed": true,
+      "evidence": "Comment: 'do NOT run go mod tidy in cli/ before tags are pushed'"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "multi-module-monorepo-minor-release",
+      "configuration": "with_skill",
+      "text": "Response mentions setting GORELEASER_CURRENT_TAG=mono/v1.3.0 if GoReleaser is used",
+      "passed": true,
+      "evidence": "Opening: 'If you use GoReleaser, set GORELEASER_CURRENT_TAG=v1.3.0'"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "multi-module-monorepo-minor-release",
+      "configuration": "with_skill",
+      "text": "Response includes post-push verification with GONOSUMDB=* go get for both modules",
+      "passed": false,
+      "evidence": "Verification uses go get directly, not GONOSUMDB=*"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "multi-module-monorepo-minor-release",
+      "configuration": "without_skill",
+      "text": "Response identifies this as a multi-module monorepo release and references references/multi-module.md",
+      "passed": false,
+      "evidence": "No reference to multi-module guidance or skill reference"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "multi-module-monorepo-minor-release",
+      "configuration": "without_skill",
+      "text": "Response states that both tags (mono/v1.3.0 and cli/v1.3.0) must point to the same commit",
+      "passed": true,
+      "evidence": "Output: 'Tag the same commit with both module tags'"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "multi-module-monorepo-minor-release",
+      "configuration": "without_skill",
+      "text": "Response mentions using go mod edit -require to bump the cli module's dependency on the root module without needing the proxy yet",
+      "passed": false,
+      "evidence": "No mention of go mod edit or cross-module dependency bumping"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "multi-module-monorepo-minor-release",
+      "configuration": "without_skill",
+      "text": "Response warns about the chicken-and-egg problem of go mod tidy before tags are pushed",
+      "passed": false,
+      "evidence": "No mention of chicken-and-egg problem"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "multi-module-monorepo-minor-release",
+      "configuration": "without_skill",
+      "text": "Response mentions setting GORELEASER_CURRENT_TAG=mono/v1.3.0 if GoReleaser is used",
+      "passed": false,
+      "evidence": "No mention of GORELEASER_CURRENT_TAG"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "multi-module-monorepo-minor-release",
+      "configuration": "without_skill",
+      "text": "Response includes post-push verification with GONOSUMDB=* go get for both modules",
+      "passed": false,
+      "evidence": "No post-push verification at all"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "goreleaser-binary-release-wrong-tag",
+      "configuration": "with_skill",
+      "text": "Response sets GORELEASER_CURRENT_TAG=v2.0.0 for the release command or CI job",
+      "passed": true,
+      "evidence": "Step 3: 'GORELEASER_CURRENT_TAG=v2.0.0 ... goreleaser release --clean'"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "goreleaser-binary-release-wrong-tag",
+      "configuration": "with_skill",
+      "text": "Response explains that multiple tags at one commit cause git describe to pick the alphabetically-last tag",
+      "passed": false,
+      "evidence": "Output only says 'force GoReleaser to use the correct tag' but does not explain why it picks the wrong tag (alphabetically-last); skill content covers this but agent did not surface it"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "goreleaser-binary-release-wrong-tag",
+      "configuration": "with_skill",
+      "text": "Response includes a .goreleaser.yml with version: 2 at the top",
+      "passed": true,
+      "evidence": "Config starts with 'version: 2'"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "goreleaser-binary-release-wrong-tag",
+      "configuration": "with_skill",
+      "text": "Response includes CGO_ENABLED=0 and -trimpath for cross-compilation",
+      "passed": true,
+      "evidence": "Build env has CGO_ENABLED=0 and flags include -trimpath"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "goreleaser-binary-release-wrong-tag",
+      "configuration": "with_skill",
+      "text": "Response mentions running goreleaser release --clean --snapshot --skip=publish to test the pipeline first",
+      "passed": false,
+      "evidence": "No mention of snapshot builds for testing"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "goreleaser-binary-release-wrong-tag",
+      "configuration": "with_skill",
+      "text": "Response warns that v2.0.0 for a CLI is semver, not necessarily a Go module v2 path migration",
+      "passed": false,
+      "evidence": "Output incorrectly begins with 'Migrate to v2 module path' using go mod edit -module github.com/myorg/tool/v2; this is a library concern, not a CLI concern"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "goreleaser-binary-release-wrong-tag",
+      "configuration": "without_skill",
+      "text": "Response sets GORELEASER_CURRENT_TAG=v2.0.0 for the release command or CI job",
+      "passed": true,
+      "evidence": "Output includes 'GORELEASER_CURRENT_TAG=v2.0.0 goreleaser release --clean'"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "goreleaser-binary-release-wrong-tag",
+      "configuration": "without_skill",
+      "text": "Response explains that multiple tags at one commit cause git describe to pick the alphabetically-last tag",
+      "passed": false,
+      "evidence": "Only says 'When multiple tags point to the same commit, force the right one' without explaining why"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "goreleaser-binary-release-wrong-tag",
+      "configuration": "without_skill",
+      "text": "Response includes a .goreleaser.yml with version: 2 at the top",
+      "passed": false,
+      "evidence": "Config uses deprecated v1 syntax (no 'version: 2', uses 'format: zip' singular, includes 'project_name')"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "goreleaser-binary-release-wrong-tag",
+      "configuration": "without_skill",
+      "text": "Response includes CGO_ENABLED=0 and -trimpath for cross-compilation",
+      "passed": false,
+      "evidence": "CGO_ENABLED=0 is present but -trimpath is missing"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "goreleaser-binary-release-wrong-tag",
+      "configuration": "without_skill",
+      "text": "Response mentions running goreleaser release --clean --snapshot --skip=publish to test the pipeline first",
+      "passed": false,
+      "evidence": "No mention of snapshot testing"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "goreleaser-binary-release-wrong-tag",
+      "configuration": "without_skill",
+      "text": "Response warns that v2.0.0 for a CLI is semver, not necessarily a Go module v2 path migration",
+      "passed": false,
+      "evidence": "No discussion of module path migration at all"
+    }
+  ],
+  "summary": {
+    "with_skill": {
+      "passed": 17,
+      "failed": 6,
+      "total": 23,
+      "pass_rate": 0.74
+    },
+    "without_skill": {
+      "passed": 7,
+      "failed": 16,
+      "total": 23,
+      "pass_rate": 0.30
+    }
+  },
+  "notes": [
+    "Skill provides a clear +44 percentage point improvement over baseline (74% vs 30%).",
+    "The biggest skill gap is the binary-major-version confusion: a v2.0.0 CLI does not require a /v2 module path migration. Added explicit clarification in SKILL.md Phase 1 table and release-shape decision tree to address this.",
+    "Eval 2 with-skill missed GONOSUMDB=* verification; the skill does include it, but the simulated agent did not surface it. Consider strengthening the post-push verification section in SKILL.md.",
+    "Eval 3 with-skill did not mention snapshot builds; the skill covers them in references/goreleaser-and-ci.md. The simulated agent may not have read that reference. Consider adding a more prominent snapshot reminder in SKILL.md Phase 7 (GoReleaser option).",
+    "Eval 3 without-skill used deprecated GoReleaser v1 syntax ('format: zip', 'project_name'), confirming the value of the skill's v2 guidance."
+  ]
+}

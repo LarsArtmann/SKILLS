@@ -279,14 +279,28 @@ the hash wasn't updated.
 
 **Fix**:
 
+If the project provides a Nix app for this, use it (the package-manager-native way):
+
 ```bash
-# Set a fake hash to force the error with the correct value
-sed -i 's|vendorHash = ".*"|vendorHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="|' flake.nix
+nix run .#fix-vendor-hash
+```
 
-# Build to get the correct hash from the error output
+Otherwise, use `lib.fakeHash` to let the Nix evaluator tell you the correct hash:
+
+```nix
+# In flake.nix, temporarily set:
+vendorHash = lib.fakeHash;
+```
+
+```bash
+# Build; the error prints the expected hash next to "got:"
 nix build .#default --no-link 2>&1 | grep "got:"
+```
 
-# Apply the correct hash
+Copy the hash from the error into `flake.nix`, replacing `lib.fakeHash`. As a
+fallback if you cannot edit the file by hand, you can script the update:
+
+```bash
 CORRECT_HASH=$(nix build .#default --no-link 2>&1 | grep "got:" | sed 's/.*got: *//; s/ *$//')
 sed -i "s|vendorHash = \".*\"|vendorHash = \"$CORRECT_HASH\"|" flake.nix
 

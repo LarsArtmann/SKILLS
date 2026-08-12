@@ -40,7 +40,9 @@ This skill handles three release shapes:
 linked by `go.work` → multi-module (load [./references/multi-module.md](./references/multi-module.md)).
 Has a `cmd/` directory or produces binaries → application (load
 [./references/goreleaser-and-ci.md](./references/goreleaser-and-ci.md)). Planning
-a v2+ release → also load [./references/major-versions.md](./references/major-versions.md).
+a v2+ release → also load [./references/major-versions.md](./references/major-versions.md),
+**but only for libraries**: a binary-only v2.0.0 is just a SemVer major bump, not a
+module path migration.
 
 For what goes wrong and how to recover, load
 [./references/failure-modes.md](./references/failure-modes.md).
@@ -59,8 +61,7 @@ Table of Contents:
 - [Phase 7: Create the GitHub Release](#phase-7-create-the-github-release)
 - [Phase 8: Post-release cleanup](#phase-8-post-release-cleanup)
 - [Phase 9: Recovery — when a release goes wrong](#phase-9-recovery--when-a-release-goes-wrong)
-- [Quick reference: Checklist](#quick-reference-checklist)
-- [Quick reference: Gotchas](#quick-reference-gotchas)
+- [Quick reference](#quick-reference)
 - [Reference files](#reference-files)
 
 ## Relationship to other skills
@@ -122,11 +123,11 @@ release yet.
 
 Go modules use Semantic Versioning: `vMAJOR.MINOR.PATCH`.
 
-| Bump                 | When                                                                                                                             | Example         |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------- | --------------- |
-| **PATCH** (`v1.2.4`) | Bug fixes, dependency bumps, toolchain/security fixes, additive non-breaking changes                                             | v1.2.3 → v1.2.4 |
-| **MINOR** (`v1.3.0`) | New features, new API additions, new exported symbols. In 0.x: also breaking changes                                             | v1.2.4 → v1.3.0 |
-| **MAJOR** (`v2.0.0`) | Post-1.0 breaking changes — requires module path migration. See [./references/major-versions.md](./references/major-versions.md) | v1.3.0 → v2.0.0 |
+| Bump                 | When                                                                                                                                                                    | Example         |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| **PATCH** (`v1.2.4`) | Bug fixes, dependency bumps, toolchain/security fixes, additive non-breaking changes                                                                                    | v1.2.3 → v1.2.4 |
+| **MINOR** (`v1.3.0`) | New features, new API additions, new exported symbols. In 0.x: also breaking changes                                                                                    | v1.2.4 → v1.3.0 |
+| **MAJOR** (`v2.0.0`) | Post-1.0 breaking changes for libraries — requires `/v2` module path migration. For binary-only releases, it is just a SemVer major bump; no module path change needed. | v1.3.0 → v2.0.0 |
 
 **0.x projects**: breaking changes are MINOR bumps (`v0.2.0` → `v0.3.0`). The project
 is pre-stability; SemVer permits breaking changes between minor versions in 0.x.
@@ -224,6 +225,18 @@ head -1 go.mod
 
 Run all checks before tagging. A failed check here is cheap to fix; a failed check
 after push may require a new version number (see the immutability rule).
+
+**Use the helper script** to automate the gate checks:
+
+```bash
+./scripts/pre-release-check.sh        # standard checks
+./scripts/pre-release-check.sh --race # include -race tests
+./scripts/pre-release-check.sh --lint # also run golangci-lint
+```
+
+The script checks for local `replace` directives, pseudo-version placeholders, a
+dirty git tree, and runs `go mod tidy`, `go mod verify`, `go build`, `go test`, and
+`go vet`.
 
 ### 4.1 Build, vet, test, lint
 
@@ -439,44 +452,11 @@ For the full failure-mode catalog and recovery procedures, load
 
 ---
 
-## Quick reference: Checklist
+## Quick reference
 
-```
-[ ] Phase 0: Assess — enough unreleased work to justify a release?
-[ ] Phase 1: Determine version (PATCH / MINOR / MAJOR)
-[ ] Phase 2: CHANGELOG — split [Unreleased], create [X.Y.Z], curate notes
-[ ] Phase 3: go.mod clean — no replace directives, no pseudo-versions
-[ ] Phase 3: go mod tidy + go mod verify pass
-[ ] Phase 4: go vet ./... passes
-[ ] Phase 4: go test -race -count=1 ./... passes
-[ ] Phase 4: golangci-lint passes (if configured)
-[ ] Phase 4: git status clean (all release prep committed)
-[ ] Phase 5: Create annotated tag (-a) at the right commit
-[ ] Phase 5: Verify tag points at commit with all expected changes
-[ ] Phase 5: Push master + tag
-[ ] Phase 6: Proxy indexed the version (go list -m -versions)
-[ ] Phase 6: go get works in clean /tmp directory
-[ ] Phase 6: pkg.go.dev docs triggered
-[ ] Phase 6: CI green
-[ ] Phase 7: GitHub Release created (gh CLI or GoReleaser)
-[ ] Phase 8: CHANGELOG [Unreleased] has empty placeholders
-[ ] Phase 8: Docs updated (README, AGENTS.md if needed)
-```
-
----
-
-## Quick reference: Gotchas
-
-| Issue                                                        | Cause                                                                  | Fix                                                                                                                       |
-| ------------------------------------------------------------ | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Consumer `go get` fails with `unknown revision 000000000000` | `replace` directive in published go.mod                                | Remove `replace` before tagging. Use `go.work` for local dev.                                                             |
-| Consumer gets `SECURITY ERROR: checksum mismatch`            | Tag was moved/deleted after proxy cached it                            | Cut a new version. NEVER re-tag. Add `retract` directive.                                                                 |
-| `go mod tidy` strips all require blocks                      | Tags not pushed yet; proxy can't resolve unpublished version           | Don't run tidy on sub-modules before push. See [./references/multi-module.md](./references/multi-module.md).              |
-| `sum.golang.org` returns 500                                 | Checksum DB propagation delay                                          | Wait 2-10 minutes. Retry. Not an error.                                                                                   |
-| goreleaser picks wrong tag                                   | Multiple tags at same commit; `git describe` picks alphabetically-last | Set `GORELEASER_CURRENT_TAG=vX.Y.Z`. See [./references/goreleaser-and-ci.md](./references/goreleaser-and-ci.md).          |
-| Pre-release versions not selected by `@latest`               | SemVer pre-release semantics: `v1.0.0-rc.1` excluded from `@latest`    | Consumers must request explicitly: `go get foo@v1.0.0-rc.1`                                                               |
-| `+incompatible` suffix on versions                           | v2+ module without `/vN` path suffix                                   | Migrate module path. See [./references/major-versions.md](./references/major-versions.md).                                |
-| Private dep fails with "could not read Username"             | Module proxy can't access private repos                                | Set `GOPRIVATE`, configure git URL rewriting. See [./references/goreleaser-and-ci.md](./references/goreleaser-and-ci.md). |
+The condensed checklist and common-gotchas table live in
+[./references/quick-reference.md](./references/quick-reference.md). Use it as a
+pre-flight checklist before cutting any release.
 
 ---
 

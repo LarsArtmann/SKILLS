@@ -605,15 +605,15 @@ creating a real release.
 
 ## Common GoReleaser failure modes
 
-| Error                                                | Cause                                  | Fix                                                       |
-| ---------------------------------------------------- | -------------------------------------- | --------------------------------------------------------- |
-| `git is currently in a dirty state`                  | Uncommitted changes                    | Commit all changes, or wait for auto-commit daemon        |
-| `git doesn't contain any tags`                       | No tags, or shallow clone missing tags | Use `fetch-depth: 0` in checkout; create a tag first      |
-| `only configurations files on the version: 2 schema` | Config uses v1 schema                  | Add `version: 2` to top of `.goreleaser.yml`              |
-| `github: token could not be created`                 | Missing GITHUB_TOKEN or permissions    | Add `permissions: contents: write` and `GITHUB_TOKEN` env |
-| `gcc: error: unrecognized command-line option`       | CGO enabled without cross-compiler     | Set `CGO_ENABLED=0` in build env                          |
-| `getting key from fulcio: getting cert: oidc`        | Missing `id-token: write` permission   | Add `permissions: id-token: write`                        |
-| Wrong tag selected                                   | Multiple tags at same commit           | Set `GORELEASER_CURRENT_TAG=vX.Y.Z`                       |
-| Build matrix timeout                                 | Too many platforms                     | Reduce targets or split into parallel jobs                |
-| `could not read Username for 'https://github.com'`   | Private deps not authenticated         | Set GOPRIVATE + git URL rewriting (above)                 |
-| Hook fails with "command not found" or shell errors | GoReleaser OSS invokes `exec.CommandContext` directly, not a shell | Wrap shell features in `sh -c "..."` (e.g., `sh -c 'foo && bar \| baz'`) |
+| Error                                                | Cause                                                              | Fix                                                                      |
+| ---------------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `git is currently in a dirty state`                  | Uncommitted changes                                                | Commit all changes, or wait for auto-commit daemon                       |
+| `git doesn't contain any tags`                       | No tags, or shallow clone missing tags                             | Use `fetch-depth: 0` in checkout; create a tag first                     |
+| `only configurations files on the version: 2 schema` | Config uses v1 schema                                              | Add `version: 2` to top of `.goreleaser.yml`                             |
+| `github: token could not be created`                 | Missing GITHUB_TOKEN or permissions                                | Add `permissions: contents: write` and `GITHUB_TOKEN` env                |
+| `gcc: error: unrecognized command-line option`       | CGO enabled without cross-compiler                                 | Set `CGO_ENABLED=0` in build env                                         |
+| `getting key from fulcio: getting cert: oidc`        | Missing `id-token: write` permission                               | Add `permissions: id-token: write`                                       |
+| Wrong tag selected                                   | Multiple tags at same commit                                       | Set `GORELEASER_CURRENT_TAG=vX.Y.Z`                                      |
+| Build matrix timeout                                 | Too many platforms                                                 | Reduce targets or split into parallel jobs                               |
+| `could not read Username for 'https://github.com'`   | Private deps not authenticated                                     | Set GOPRIVATE + git URL rewriting (above)                                |
+| Hook fails with "command not found" or shell errors  | GoReleaser OSS invokes `exec.CommandContext` directly, not a shell | Wrap shell features in `sh -c "..."` (e.g., `sh -c 'foo && bar \| baz'`) |
