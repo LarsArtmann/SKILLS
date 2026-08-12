@@ -165,11 +165,13 @@
 ## f) Up to 50 Things to Get Done Next
 
 ### Critical (fix now)
+
 1. Replace `rm -rf` with `trash` in SKILL.md Phase 6.2 and multi-module.md Step 9
 2. Rewrite the `+incompatible` paragraph in major-versions.md (remove "Wait —")
 3. Scan all files for other safety-rule violations (NEVER rules from AGENTS.md)
 
 ### Verification (high impact)
+
 4. Verify GoReleaser v2 `version: 2` requirement against live goreleaser.com docs
 5. Verify cosign signing args against sigstore docs
 6. Verify `go mod edit -retract=v1.2.4` syntax against go.dev/ref/mod
@@ -178,6 +180,7 @@
 9. Run `verify-external-claims` skill against all technical claims in go-release
 
 ### Testing (skill-creator process)
+
 10. Write 3 realistic test prompts for go-release
 11. Run test prompts with skill loaded
 12. Run test prompts without skill (baseline)
@@ -185,6 +188,7 @@
 14. Create `evals/evals.json` with test cases
 
 ### Structure improvements
+
 15. Move Checklist Summary to `references/checklist.md` or inline it more compactly
 16. Move Gotchas table to `references/failure-modes.md` (already has R-codes)
 17. Add `allowed-tools: goreleaser gh` to frontmatter
@@ -193,6 +197,7 @@
 20. Add `GOFLAGS=-mod=readonly` mention for CI verification context
 
 ### Cross-skill hygiene
+
 21. Refactor go-ecosystem-upgrade Phase 6 to be a thinner pointer to go-release
 22. Verify go-ecosystem-upgrade still passes check-skills.sh after the edit (done, but recheck)
 23. Check docs/feedback/new/ for release-related feedback files
@@ -200,6 +205,7 @@
 25. Add go-release to AGENTS.md §10 (External Dependencies table) if it references tools
 
 ### Content depth
+
 26. Add a section on release branch strategies (main-only vs maintenance branches)
 27. Add Docker image publishing to goreleaser-and-ci.md (currently only binaries)
 28. Add Homebrew tap / Scoop bucket publishing patterns
@@ -211,6 +217,7 @@
 34. Add section on what to do when proxy.golang.org is down/slow
 
 ### Documentation
+
 35. Update FEATURES.md if it tracks skill inventory
 36. Update CHANGELOG.md with the new skill
 37. Consider adding go-release to the "High-Value Reference Files" table in AGENTS.md
@@ -218,6 +225,7 @@
 39. Write a brief "when to use go-release vs go-ecosystem-upgrade" decision guide
 
 ### Polish
+
 40. Balance reference file depths (major-versions.md at 204 vs goreleaser at 443)
 41. Add table of contents to SKILL.md (currently only reference files have them)
 42. Add more worked examples to multi-module.md (currently one shape, could show both)
@@ -227,6 +235,7 @@
 46. Add error output examples to failure-modes.md (what the actual error looks like)
 
 ### Future considerations
+
 47. Consider whether go-release should produce an HTML release report (html-report-kit)
 48. Consider a `go-release-check` CI script for pre-release gates
 49. Monitor for Go version changes that affect release mechanics (e.g., Go 1.27+ changes)
@@ -266,15 +275,15 @@
 The skill is **structurally sound and comprehensive in coverage** but has known
 quality gaps:
 
-| Dimension | Grade | Notes |
-|-----------|-------|-------|
-| Research depth | A | Three research agents, Go source code verified |
-| Structural quality | A | Passes all checks, progressive disclosure, cross-refs |
-| Technical accuracy | B+ | Core claims verified against source; peripheral claims unverified |
-| Safety compliance | C | `rm -rf` violations — the exact issue I criticized in source skills |
-| Writing quality | B | One stream-of-consciousness paragraph in major-versions.md |
-| Testing | F | No test prompts written or run |
-| Practical readiness | B | Ready to use, but untested against real releases |
+| Dimension           | Grade | Notes                                                               |
+| ------------------- | ----- | ------------------------------------------------------------------- |
+| Research depth      | A     | Three research agents, Go source code verified                      |
+| Structural quality  | A     | Passes all checks, progressive disclosure, cross-refs               |
+| Technical accuracy  | B+    | Core claims verified against source; peripheral claims unverified   |
+| Safety compliance   | C     | `rm -rf` violations — the exact issue I criticized in source skills |
+| Writing quality     | B     | One stream-of-consciousness paragraph in major-versions.md          |
+| Testing             | F     | No test prompts written or run                                      |
+| Practical readiness | B     | Ready to use, but untested against real releases                    |
 
 **The skill is good. It is not yet superb.** The path to superb runs through: fix
 the safety violations, verify the external claims, write and run test prompts, and

@@ -1,6 +1,7 @@
 # Major Version Migration (v2+)
 
 Table of Contents:
+
 - [When you need this](#when-you-need-this)
 - [The module path rule](#the-module-path-rule)
 - [Step-by-step: v1 to v2 migration](#step-by-step-v1-to-v2-migration)
@@ -24,11 +25,11 @@ change", "breaking API change release", or asks about `+incompatible` versions.
 
 ## The module path rule
 
-| Major version | Module path | Import example |
-|---------------|-------------|----------------|
-| v0, v1 | `github.com/org/module` | `import "github.com/org/module"` |
-| v2 | `github.com/org/module/v2` | `import "github.com/org/module/v2"` |
-| v3 | `github.com/org/module/v3` | `import "github.com/org/module/v3"` |
+| Major version | Module path                | Import example                      |
+| ------------- | -------------------------- | ----------------------------------- |
+| v0, v1        | `github.com/org/module`    | `import "github.com/org/module"`    |
+| v2            | `github.com/org/module/v2` | `import "github.com/org/module/v2"` |
+| v3            | `github.com/org/module/v3` | `import "github.com/org/module/v3"` |
 
 v0 and v1 have **no suffix**. v2+ **must** include the suffix. There is no exception.
 
@@ -120,7 +121,7 @@ git push origin v2.0.0
 ### 7. Verify go get works
 
 ```bash
-rm -rf /tmp/test-v2 && mkdir /tmp/test-v2 && cd /tmp/test-v2
+trash /tmp/test-v2 2>/dev/null; mkdir -p /tmp/test-v2 && cd /tmp/test-v2
 go mod init test
 go get github.com/myorg/myrepo/v2@v2.0.0
 ```
@@ -163,13 +164,12 @@ were v1 for import path purposes. This works but has drawbacks:
 - `go mod tidy` may produce warnings
 
 **Avoid `+incompatible` for new releases.** Always migrate the module path when
-cutting v2+. If you inherit a project with `+incompatible` versions, migrating to
-proper `/v2` is a breaking change — cut `v2.0.0` (not `v3.0.0`) after fixing the path.
-
-Wait — that would conflict with the existing `v2.0.0+incompatible` tag. The first
-proper v2 release should be `v2.0.0` on a `/v2` module path. The old
-`v2.0.0+incompatible` tag becomes inaccessible through the proper path. This is
-acceptable — the `+incompatible` version was never a proper v2 module.
+cutting v2+. If you inherit a project with `+incompatible` versions, fix the module
+path to include `/v2` and then tag `v2.0.0`. The new tag resolves under the proper
+`/v2` module path, while the old `v2.0.0+incompatible` tag continues to serve
+consumers who haven't migrated (it lives under the suffix-less path). The two are
+different modules from Go's perspective, so there is no conflict — consumers migrate
+from the `+incompatible` path to the `/v2` path at their own pace.
 
 ---
 

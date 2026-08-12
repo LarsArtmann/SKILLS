@@ -1,6 +1,7 @@
 # Multi-Module Monorepo Releases
 
 Table of Contents:
+
 - [The problem](#the-problem)
 - [The chicken-and-egg solution](#the-chicken-and-egg-solution)
 - [Phase-by-phase: releasing a multi-module monorepo](#phase-by-phase-releasing-a-multi-module-monorepo)
@@ -41,11 +42,11 @@ myrepo/
 
 Each module gets its own git tag at the same commit:
 
-| Module | Import path | Tag format |
-|--------|-------------|------------|
-| Core | `github.com/myorg/myrepo` | `vX.Y.Z` |
-| Viz | `github.com/myorg/myrepo/viz` | `viz/vX.Y.Z` |
-| Live | `github.com/myorg/myrepo/live` | `live/vX.Y.Z` |
+| Module | Import path                    | Tag format    |
+| ------ | ------------------------------ | ------------- |
+| Core   | `github.com/myorg/myrepo`      | `vX.Y.Z`      |
+| Viz    | `github.com/myorg/myrepo/viz`  | `viz/vX.Y.Z`  |
+| Live   | `github.com/myorg/myrepo/live` | `live/vX.Y.Z` |
 
 The Go module proxy discovers each module's versions from its corresponding tag prefix.
 
@@ -58,20 +59,26 @@ version being released. But `go mod tidy` can't resolve that version from the mo
 proxy until the tags are pushed. Running `go mod tidy` before pushing tags **will
 corrupt `go.mod`** — it strips all require blocks because nothing resolves.
 
-**Solution**: bump the version string manually with `sed`, never run `go mod tidy`
-on sub-modules until after tags are pushed.
+**Solution**: use `go mod edit -require` to set the version string directly.
+This writes the require line without resolving it against the proxy, avoiding
+the chicken-and-egg problem. Never run `go mod tidy` on sub-modules until after
+tags are pushed.
 
 ```bash
 VERSION="1.2.4"
+MODULE="github.com/myorg/myrepo"
 
-# In viz/go.mod: change the core require line
-# Note: the dots in the regex MUST be escaped (\.) — unescaped dots match any char
-sed -i "s|myrepo v[0-9]\.[0-9]\.[0-9]|myrepo v${VERSION}|g" viz/go.mod
+# In viz/go.mod: set the core module require line
+(cd viz && go mod edit -require="${MODULE}@v${VERSION}")
 
-# In live/go.mod: change both core and viz require lines
-sed -i "s|myrepo v[0-9]\.[0-9]\.[0-9]|myrepo v${VERSION}|g" live/go.mod
-sed -i "s|myrepo/viz v[0-9]\.[0-9]\.[0-9]|myrepo/viz v${VERSION}|g" live/go.mod
+# In live/go.mod: set both core and viz require lines
+(cd live && go mod edit -require="${MODULE}@v${VERSION}" \
+                  -require="${MODULE}/viz@v${VERSION}")
 ```
+
+`go mod edit` is preferred over `sed` because it's a Go-native tool that
+understands go.mod syntax. It writes the require line without attempting
+resolution, so the unpublished version doesn't cause errors.
 
 ### Verify the bump
 
@@ -81,6 +88,9 @@ grep 'myrepo' viz/go.mod live/go.mod
 # live/go.mod should show: github.com/myorg/myrepo v${VERSION}
 #                         github.com/myorg/myrepo/viz v${VERSION}
 ```
+
+If a require line didn't update, `go mod edit` may have added a new line
+instead of replacing the existing one. Check for duplicates with `grep -c`.
 
 ### CRITICAL: Verify no replace directives
 
@@ -109,7 +119,7 @@ type. See SKILL.md Phase 1.
 ### Step 2: Prepare CHANGELOG and bump versions
 
 1. Cut the CHANGELOG (SKILL.md Phase 2)
-2. Bump sub-module go.mod versions with `sed` (above)
+2. Bump sub-module go.mod versions with `go mod edit` (above)
 3. Verify no replace directives
 
 ### Step 3: Pre-push verification (workspace mode)
@@ -215,15 +225,15 @@ experience.
 
 ```bash
 # Core
-rm -rf /tmp/test-core && mkdir /tmp/test-core && cd /tmp/test-core
+trash /tmp/test-core 2>/dev/null; mkdir -p /tmp/test-core && cd /tmp/test-core
 go mod init test && go get github.com/myorg/myrepo@v${VERSION}
 
 # Viz (standalone — proves no replace-directive leak)
-rm -rf /tmp/test-viz && mkdir /tmp/test-viz && cd /tmp/test-viz
+trash /tmp/test-viz 2>/dev/null; mkdir -p /tmp/test-viz && cd /tmp/test-viz
 go mod init test && go get github.com/myorg/myrepo/viz@viz/v${VERSION}
 
 # Live
-rm -rf /tmp/test-live && mkdir /tmp/test-live && cd /tmp/test-live
+trash /tmp/test-live 2>/dev/null; mkdir -p /tmp/test-live && cd /tmp/test-live
 go mod init test && go get github.com/myorg/myrepo/live@live/v${VERSION}
 ```
 
@@ -273,9 +283,9 @@ This forces GoReleaser to use the core module's tag, bypassing `git describe`.
 
 The two-phase verification approach is essential for multi-module releases:
 
-| Phase | Mode | What it proves | When |
-|-------|------|----------------|------|
-| Pre-push | Workspace (`go.work`) | Code compiles and tests pass locally | Before tagging |
+| Phase     | Mode                      | What it proves                                           | When                          |
+| --------- | ------------------------- | -------------------------------------------------------- | ----------------------------- |
+| Pre-push  | Workspace (`go.work`)     | Code compiles and tests pass locally                     | Before tagging                |
 | Post-push | Standalone (`GOWORK=off`) | Modules resolve from the proxy like consumers experience | After tag push + checksum fix |
 
 Pre-push workspace-mode verification is sufficient confidence to tag and push. The

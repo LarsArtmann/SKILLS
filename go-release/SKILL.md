@@ -18,6 +18,7 @@ metadata:
   tags: go, release, publish, version, tag, semver, module-proxy, goreleaser,
     github-actions, multi-module, monorepo, changelog, pkg.go.dev, retraction,
     supply-chain, go.work
+allowed-tools: goreleaser gh
 ---
 
 # Go Release
@@ -29,17 +30,18 @@ into production. Follow it precisely.
 
 This skill handles three release shapes:
 
-| Shape | What | Tags |
-|-------|------|------|
-| **Single-module library** | One `go.mod`, consumed via `go get` | One tag: `vX.Y.Z` |
-| **Multi-module monorepo** | Multiple `go.mod` files linked by `go.work` | One tag per module, same commit |
-| **Application/binary** | A CLI or server distributed as compiled binaries | One tag + GoReleaser artifacts |
+| Shape                     | What                                             | Tags                            |
+| ------------------------- | ------------------------------------------------ | ------------------------------- |
+| **Single-module library** | One `go.mod`, consumed via `go get`              | One tag: `vX.Y.Z`               |
+| **Multi-module monorepo** | Multiple `go.mod` files linked by `go.work`      | One tag per module, same commit |
+| **Application/binary**    | A CLI or server distributed as compiled binaries | One tag + GoReleaser artifacts  |
 
-For multi-module mechanics (the chicken-and-egg version-bump problem), load
-[./references/multi-module.md](./references/multi-module.md). For major version
-v2+ module-path migrations, load
-[./references/major-versions.md](./references/major-versions.md). For GoReleaser
-and CI/CD, load [./references/goreleaser-and-ci.md](./references/goreleaser-and-ci.md).
+**Which shape is this?** Count the `go.mod` files: one → single-module. Multiple
+linked by `go.work` → multi-module (load [./references/multi-module.md](./references/multi-module.md)).
+Has a `cmd/` directory or produces binaries → application (load
+[./references/goreleaser-and-ci.md](./references/goreleaser-and-ci.md)). Planning
+a v2+ release → also load [./references/major-versions.md](./references/major-versions.md).
+
 For what goes wrong and how to recover, load
 [./references/failure-modes.md](./references/failure-modes.md).
 
@@ -102,14 +104,19 @@ release yet.
 
 Go modules use Semantic Versioning: `vMAJOR.MINOR.PATCH`.
 
-| Bump | When | Example |
-|------|------|---------|
-| **PATCH** (`v1.2.4`) | Bug fixes, dependency bumps, toolchain/security fixes, additive non-breaking changes | v1.2.3 → v1.2.4 |
-| **MINOR** (`v1.3.0`) | New features, new API additions, new exported symbols. In 0.x: also breaking changes | v1.2.4 → v1.3.0 |
+| Bump                 | When                                                                                                                             | Example         |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| **PATCH** (`v1.2.4`) | Bug fixes, dependency bumps, toolchain/security fixes, additive non-breaking changes                                             | v1.2.3 → v1.2.4 |
+| **MINOR** (`v1.3.0`) | New features, new API additions, new exported symbols. In 0.x: also breaking changes                                             | v1.2.4 → v1.3.0 |
 | **MAJOR** (`v2.0.0`) | Post-1.0 breaking changes — requires module path migration. See [./references/major-versions.md](./references/major-versions.md) | v1.3.0 → v2.0.0 |
 
 **0.x projects**: breaking changes are MINOR bumps (`v0.2.0` → `v0.3.0`). The project
 is pre-stability; SemVer permits breaking changes between minor versions in 0.x.
+
+**Pre-release versions** (`v1.0.0-rc.1`, `v1.0.0-alpha.2`, `v1.0.0-beta.1`): valid
+SemVer, but excluded from `@latest` resolution. Consumers must request them
+explicitly (`go get foo@v1.0.0-rc.1`). Use them for release candidates. Tag all
+v0.x releases as `--prerelease` on GitHub.
 
 State the version number to the user before proceeding. Example: "There are 3
 features and 1 breaking change since v0.8.2 — this is a MINOR bump to v0.9.0."
@@ -299,7 +306,7 @@ This is the definitive test that the release works for consumers.
 ```bash
 MODULE_PATH=$(head -1 go.mod | cut -d' ' -f2)
 
-rm -rf /tmp/release-verify && mkdir /tmp/release-verify && cd /tmp/release-verify
+trash /tmp/release-verify 2>/dev/null; mkdir -p /tmp/release-verify && cd /tmp/release-verify
 go mod init test
 go get "${MODULE_PATH}@v${VERSION}"
 ```
@@ -442,16 +449,16 @@ For the full failure-mode catalog and recovery procedures, load
 
 ## Quick reference: Gotchas
 
-| Issue | Cause | Fix |
-|-------|-------|-----|
-| Consumer `go get` fails with `unknown revision 000000000000` | `replace` directive in published go.mod | Remove `replace` before tagging. Use `go.work` for local dev. |
-| Consumer gets `SECURITY ERROR: checksum mismatch` | Tag was moved/deleted after proxy cached it | Cut a new version. NEVER re-tag. Add `retract` directive. |
-| `go mod tidy` strips all require blocks | Tags not pushed yet; proxy can't resolve unpublished version | Don't run tidy on sub-modules before push. See [./references/multi-module.md](./references/multi-module.md). |
-| `sum.golang.org` returns 500 | Checksum DB propagation delay | Wait 2-10 minutes. Retry. Not an error. |
-| goreleaser picks wrong tag | Multiple tags at same commit; `git describe` picks alphabetically-last | Set `GORELEASER_CURRENT_TAG=vX.Y.Z`. See [./references/goreleaser-and-ci.md](./references/goreleaser-and-ci.md). |
-| Pre-release versions not selected by `@latest` | SemVer pre-release semantics: `v1.0.0-rc.1` excluded from `@latest` | Consumers must request explicitly: `go get foo@v1.0.0-rc.1` |
-| `+incompatible` suffix on versions | v2+ module without `/vN` path suffix | Migrate module path. See [./references/major-versions.md](./references/major-versions.md). |
-| Private dep fails with "could not read Username" | Module proxy can't access private repos | Set `GOPRIVATE`, configure git URL rewriting. See [./references/goreleaser-and-ci.md](./references/goreleaser-and-ci.md). |
+| Issue                                                        | Cause                                                                  | Fix                                                                                                                       |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Consumer `go get` fails with `unknown revision 000000000000` | `replace` directive in published go.mod                                | Remove `replace` before tagging. Use `go.work` for local dev.                                                             |
+| Consumer gets `SECURITY ERROR: checksum mismatch`            | Tag was moved/deleted after proxy cached it                            | Cut a new version. NEVER re-tag. Add `retract` directive.                                                                 |
+| `go mod tidy` strips all require blocks                      | Tags not pushed yet; proxy can't resolve unpublished version           | Don't run tidy on sub-modules before push. See [./references/multi-module.md](./references/multi-module.md).              |
+| `sum.golang.org` returns 500                                 | Checksum DB propagation delay                                          | Wait 2-10 minutes. Retry. Not an error.                                                                                   |
+| goreleaser picks wrong tag                                   | Multiple tags at same commit; `git describe` picks alphabetically-last | Set `GORELEASER_CURRENT_TAG=vX.Y.Z`. See [./references/goreleaser-and-ci.md](./references/goreleaser-and-ci.md).          |
+| Pre-release versions not selected by `@latest`               | SemVer pre-release semantics: `v1.0.0-rc.1` excluded from `@latest`    | Consumers must request explicitly: `go get foo@v1.0.0-rc.1`                                                               |
+| `+incompatible` suffix on versions                           | v2+ module without `/vN` path suffix                                   | Migrate module path. See [./references/major-versions.md](./references/major-versions.md).                                |
+| Private dep fails with "could not read Username"             | Module proxy can't access private repos                                | Set `GOPRIVATE`, configure git URL rewriting. See [./references/goreleaser-and-ci.md](./references/goreleaser-and-ci.md). |
 
 ---
 

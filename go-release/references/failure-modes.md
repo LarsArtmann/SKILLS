@@ -4,6 +4,7 @@ The comprehensive catalog of what goes wrong during Go releases, why, and how to
 recover. Every entry traces to a real incident.
 
 Table of Contents:
+
 - [Tag immutability failures](#tag-immutability-failures)
 - [go.mod contamination](#gomod-contamination)
 - [Wrong commit / missing changes](#wrong-commit--missing-changes)
@@ -62,6 +63,7 @@ go.mod was included in the tagged commit. The Go module system interprets local
 replace directives as zero-version pseudo-versions, which don't resolve on the proxy.
 
 **Fix**:
+
 1. Remove the `replace` directive from go.mod
 2. For local development, use `go.work` instead (it doesn't leak into tags)
 3. Cut a new version
@@ -81,6 +83,7 @@ instead of a tagged release.
 `go mod tidy` to resolve to proper versions.
 
 **Detection**:
+
 ```bash
 grep '00010101\|000000000000' go.mod   # sentinel values for pseudo-versions
 ```
@@ -108,6 +111,7 @@ doesn't match what they migrated to. Missing symbols, renamed functions, removed
 (rename, removal, fix). The published tag contains the OLD API surface.
 
 **Detection**: Before tagging, verify the key changes are in the tagged tree:
+
 ```bash
 # Verify the commit with your change is an ancestor of HEAD
 git merge-base --is-ancestor <key-commit> HEAD && echo "OK" || echo "MISSING"
@@ -150,6 +154,7 @@ modules.
 This is expected in the multi-module workflow — go.sum is updated post-push.
 
 **Fix**: After pushing tags, run `go mod tidy -e` on each sub-module:
+
 ```bash
 cd viz && GOWORK=off go mod tidy -e && cd ..
 cd live && GOWORK=off go mod tidy -e && cd ..
@@ -199,6 +204,7 @@ environment has either network access or a vendored dependency set. For Nix, the
 returns 404, and git tries to prompt for credentials interactively (which fails in CI).
 
 **Fix**: Configure three layers:
+
 1. `GOPRIVATE=github.com/myorg/*` — skip proxy for private repos
 2. `git config --global url."https://x-access-token:${GH_PAT}@github.com/".insteadOf "https://github.com/"` — inject token
 3. `GH_PAT` secret in GitHub Actions — a PAT with read access to private repos
@@ -213,6 +219,7 @@ See [./goreleaser-and-ci.md#private-dependency-authentication](./goreleaser-and-
 have expiration dates by default).
 
 **Fix**:
+
 ```bash
 gh secret list                              # check if GH_PAT exists
 gh secret set GH_PAT                        # create new one
@@ -233,6 +240,7 @@ describe` which returns the alphabetically-last tag (e.g., `viz/v1.2.4` instead 
 `v1.2.4`).
 
 **Fix**: Always set `GORELEASER_CURRENT_TAG`:
+
 ```bash
 GORELEASER_CURRENT_TAG="v${VERSION}" goreleaser release --clean
 ```
@@ -270,6 +278,7 @@ from `@latest` resolution. Consumers must request them explicitly.
 the hash wasn't updated.
 
 **Fix**:
+
 ```bash
 # Set a fake hash to force the error with the correct value
 sed -i 's|vendorHash = ".*"|vendorHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="|' flake.nix
@@ -344,6 +353,7 @@ vendored deps should be sufficient without re-running `go mod tidy`.
    `https://proxy.golang.org/<module>/@v/vX.Y.Z.info`
 
 **Common causes** (in order of frequency):
+
 - Replace directive in go.mod (R3)
 - Proxy propagation delay (R9) — wait 10 minutes
 - Wrong commit tagged (R6)
@@ -358,6 +368,7 @@ module.
 but the consumer's go.sum (or a different proxy path) is serving new content.
 
 **Consumer workaround** (temporary, not a real fix):
+
 ```bash
 GONOSUMDB=* go get <module>@vX.Y.Z   # skip checksum verification
 ```

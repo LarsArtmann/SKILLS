@@ -51,7 +51,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 | **bdd-testing**              | BDD tests with `onsi/ginkgo` for Go projects                                                                                              | 🟢 Solid         |
 | **go-ecosystem-upgrade**     | Protocol for bumping/releasing/migrating Go library versions across many consumers — 18 failure modes extracted from 14 real self-reviews | 🟢 Comprehensive |
 | **go-modularize**            | Splits Go monorepos into semi-independent sub-modules                                                                                     | 🟢 Comprehensive |
-| **go-release**               | Cuts, pushes, and verifies Go module releases — single-module, multi-module, and binary. Tag immutability, recovery, GoReleaser, CI        | 🆕 New           |
+| **go-release**               | Cuts, pushes, and verifies Go module releases — single-module, multi-module, and binary. Tag immutability, recovery, GoReleaser, CI       | 🆕 New           |
 | **go-error-modernization**   | Go 1.26+ error-matching modernization — prevents cargo-cult `errors.As`/`errors.Is` regressions (`erraudit` CLI not publicly findable)    | 🆕 New           |
 | **how-to-golang**            | Go development decision guide — what to use, not how                                                                                      | 🟢 Comprehensive |
 | **samber-do-best-practices** | Correct samber/do v2 DI usage — lifecycle, scopes, anti-patterns DO-1 → DO-6                                                              | 🆕 New           |

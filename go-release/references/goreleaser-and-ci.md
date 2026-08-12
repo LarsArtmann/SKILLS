@@ -1,6 +1,7 @@
 # GoReleaser and CI/CD for Go Releases
 
 Table of Contents:
+
 - [GoReleaser basics](#goreleaser-basics)
 - [Minimal .goreleaser.yml](#minimal-goreleaseryml)
 - [GitHub Actions release workflow](#github-actions-release-workflow)
@@ -24,12 +25,12 @@ GoReleaser v2 requires `version: 2` at the top of the config file.
 
 ### When to use GoReleaser vs gh CLI
 
-| Use case | Tool |
-|----------|------|
-| Library (no binaries) | `gh release create` — no artifacts to build |
-| Application/CLI with binaries | GoReleaser — builds cross-platform archives |
-| Need checksums, signing, SBOM | GoReleaser — automates all of it |
-| Quick release, dirty tree | `gh release create` — GoReleaser requires clean state |
+| Use case                      | Tool                                                  |
+| ----------------------------- | ----------------------------------------------------- |
+| Library (no binaries)         | `gh release create` — no artifacts to build           |
+| Application/CLI with binaries | GoReleaser — builds cross-platform archives           |
+| Need checksums, signing, SBOM | GoReleaser — automates all of it                      |
+| Quick release, dirty tree     | `gh release create` — GoReleaser requires clean state |
 
 ---
 
@@ -44,7 +45,7 @@ before:
 
 builds:
   - env:
-      - CGO_ENABLED=0          # critical for cross-compilation
+      - CGO_ENABLED=0 # critical for cross-compilation
     goos:
       - linux
       - darwin
@@ -53,9 +54,9 @@ builds:
       - amd64
       - arm64
     flags:
-      - -trimpath               # removes filesystem paths for reproducible builds
+      - -trimpath # removes filesystem paths for reproducible builds
     ldflags:
-      - -s -w                   # strip debug info and DWARF
+      - -s -w # strip debug info and DWARF
       - -X main.version={{ .Version }}
       - -X main.commit={{ .ShortCommit }}
       - -X main.date={{ .Date }}
@@ -63,39 +64,39 @@ builds:
 archives:
   - format_overrides:
       - goos: windows
-        formats: [zip]          # zip for Windows, tar.gz for everything else
+        formats: [zip] # zip for Windows, tar.gz for everything else
     files:
       - README.md
       - LICENSE
 
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "checksums.txt"
 
 changelog:
-  use: github-native             # use GitHub's auto-generated release notes
+  use: github-native # use GitHub's auto-generated release notes
   sort: asc
   filters:
     exclude:
-      - '^docs:'
-      - '^test:'
-      - '^chore:'
-      - 'Merge pull request'
-      - 'Merge branch'
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+      - "Merge pull request"
+      - "Merge branch"
 
 release:
-  prerelease: auto               # auto-detect pre-releases from tag name
+  prerelease: auto # auto-detect pre-releases from tag name
 ```
 
 ### Key ldflags explained
 
-| Flag | Purpose |
-|------|---------|
-| `-s` | Strip symbol table (smaller binary) |
-| `-w` | Strip DWARF debug info (smaller binary) |
-| `-X main.version={{.Version}}` | Inject version at build time |
-| `-X main.commit={{.ShortCommit}}` | Inject commit hash |
-| `-X main.date={{.Date}}` | Inject build date |
-| `-trimpath` | Remove filesystem paths (reproducible builds, privacy) |
+| Flag                              | Purpose                                                |
+| --------------------------------- | ------------------------------------------------------ |
+| `-s`                              | Strip symbol table (smaller binary)                    |
+| `-w`                              | Strip DWARF debug info (smaller binary)                |
+| `-X main.version={{.Version}}`    | Inject version at build time                           |
+| `-X main.commit={{.ShortCommit}}` | Inject commit hash                                     |
+| `-X main.date={{.Date}}`          | Inject build date                                      |
+| `-trimpath`                       | Remove filesystem paths (reproducible builds, privacy) |
 
 ### Build targets
 
@@ -128,11 +129,11 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
-  contents: write        # required to create GitHub releases
-  id-token: write        # required for cosign keyless signing
+  contents: write # required to create GitHub releases
+  id-token: write # required for cosign keyless signing
 
 jobs:
   release:
@@ -140,12 +141,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0          # full history for changelog generation
+          fetch-depth: 0 # full history for changelog generation
           persist-credentials: false
 
       - uses: actions/setup-go@v5
         with:
-          go-version: 'stable'
+          go-version: "stable"
           check-latest: true
           cache: true
 
@@ -154,7 +155,7 @@ jobs:
       - uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
-          version: '~> v2'
+          version: "~> v2"
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -162,13 +163,13 @@ jobs:
 
 ### Key workflow settings
 
-| Setting | Why |
-|---------|-----|
-| `fetch-depth: 0` | GoReleaser needs full git history for changelog between tags |
-| `persist-credentials: false` | Security — prevents token leakage |
-| `permissions: contents: write` | GoReleaser needs to create releases |
-| `permissions: id-token: write` | Required for keyless cosign signing (OIDC) |
-| `--clean` | Removes `dist/` before building (prevents stale artifacts) |
+| Setting                        | Why                                                          |
+| ------------------------------ | ------------------------------------------------------------ |
+| `fetch-depth: 0`               | GoReleaser needs full git history for changelog between tags |
+| `persist-credentials: false`   | Security — prevents token leakage                            |
+| `permissions: contents: write` | GoReleaser needs to create releases                          |
+| `permissions: id-token: write` | Required for keyless cosign signing (OIDC)                   |
+| `--clean`                      | Removes `dist/` before building (prevents stale artifacts)   |
 
 ### Manual trigger with validation
 
@@ -177,11 +178,11 @@ For projects that want a validation step before tagging:
 ```yaml
 on:
   push:
-    tags: ['v*']
+    tags: ["v*"]
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version (e.g., 1.2.3)'
+        description: "Version (e.g., 1.2.3)"
         required: true
 
 jobs:
@@ -194,7 +195,7 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version: 'stable'
+          go-version: "stable"
 
       - name: Resolve version
         id: version
@@ -340,13 +341,28 @@ signs:
     certificate: "${artifact}.pem"
     args:
       - "sign-blob"
-      - "--oidc-issuer=https://token.actions.githubusercontent.com"
       - "--output-certificate=${certificate}"
       - "--output-signature=${signature}"
       - "${artifact}"
       - "--yes"
     artifacts: checksum
 ```
+
+**Cosign v3 note:** Cosign v3+ deprecated `--output-signature` /
+`--output-certificate` in favor of the required `--bundle` flag. If using
+cosign v3+, replace the args above with:
+
+```yaml
+args:
+  - "sign-blob"
+  - "--bundle=${artifact}.bundle.json"
+  - "${artifact}"
+  - "--yes"
+```
+
+Pin `sigstore/cosign-installer` to a compatible version for your cosign
+major version. The `--yes` flag replaces the removed `--force` and skips the
+transparency-log confirmation prompt.
 
 Required CI setup:
 
@@ -359,27 +375,32 @@ Required permissions:
 
 ```yaml
 permissions:
-  id-token: write      # OIDC token for keyless signing
+  id-token: write # OIDC token for keyless signing
   contents: write
 ```
 
 ### Including verification instructions in release notes
 
-```yaml
+````yaml
 release:
   header: |
     ### Verify checksums file signature
 
+    The checksums file is signed using [Cosign](https://docs.sigstore.dev/) with GitHub OIDC.
     ```shell
+    curl -LO https://github.com/{{ .Env.GITHUB_REPOSITORY }}/releases/download/{{ .Tag }}/checksums.txt
+    curl -LO https://github.com/{{ .Env.GITHUB_REPOSITORY }}/releases/download/{{ .Tag }}/checksums.txt.pem
+    curl -LO https://github.com/{{ .Env.GITHUB_REPOSITORY }}/releases/download/{{ .Tag }}/checksums.txt.sig
+
     cosign verify-blob checksums.txt \
       --certificate checksums.txt.pem \
       --signature checksums.txt.sig \
-      --certificate-identity-regexp=https://github.com/myorg \
+      --certificate-identity-regexp=https://github.com/{{ .Env.GITHUB_REPOSITORY_OWNER }} \
       --certificate-oidc-issuer=https://token.actions.githubusercontent.com
 
     sha256sum -c checksums.txt --ignore-missing
     ```
-```
+````
 
 ---
 
@@ -389,16 +410,8 @@ SLSA (Supply-chain Levels for Software Artifacts) provenance provides cryptograp
 proof of build origin. This is the highest tier of supply-chain security.
 
 ```yaml
-- name: Generate subject hashes for SLSA
-  id: hash
-  env:
-    ARTIFACTS: "${{ steps.goreleaser.outputs.artifacts }}"
-  run: |
-    checksum_file=$(echo "$ARTIFACTS" | jq -r '.[] | select(.type=="Checksum") | .path')
-    echo "hashes=$(cat "$checksum_file" | base64 -w0)" >> "$GITHUB_OUTPUT"
-
 - name: Attest build provenance
-  uses: actions/attest-build-provenance@v1
+  uses: actions/attest-build-provenance@v2
   with:
     subject-checksums: ./dist/checksums.txt
 ```
@@ -430,14 +443,14 @@ creating a real release.
 
 ## Common GoReleaser failure modes
 
-| Error | Cause | Fix |
-|-------|-------|-----|
-| `git is currently in a dirty state` | Uncommitted changes | Commit all changes, or wait for auto-commit daemon |
-| `git doesn't contain any tags` | No tags, or shallow clone missing tags | Use `fetch-depth: 0` in checkout; create a tag first |
-| `only configurations files on the version: 2 schema` | Config uses v1 schema | Add `version: 2` to top of `.goreleaser.yml` |
-| `github: token could not be created` | Missing GITHUB_TOKEN or permissions | Add `permissions: contents: write` and `GITHUB_TOKEN` env |
-| `gcc: error: unrecognized command-line option` | CGO enabled without cross-compiler | Set `CGO_ENABLED=0` in build env |
-| `getting key from fulcio: getting cert: oidc` | Missing `id-token: write` permission | Add `permissions: id-token: write` |
-| Wrong tag selected | Multiple tags at same commit | Set `GORELEASER_CURRENT_TAG=vX.Y.Z` |
-| Build matrix timeout | Too many platforms | Reduce targets or split into parallel jobs |
-| `could not read Username for 'https://github.com'` | Private deps not authenticated | Set GOPRIVATE + git URL rewriting (above) |
+| Error                                                | Cause                                  | Fix                                                       |
+| ---------------------------------------------------- | -------------------------------------- | --------------------------------------------------------- |
+| `git is currently in a dirty state`                  | Uncommitted changes                    | Commit all changes, or wait for auto-commit daemon        |
+| `git doesn't contain any tags`                       | No tags, or shallow clone missing tags | Use `fetch-depth: 0` in checkout; create a tag first      |
+| `only configurations files on the version: 2 schema` | Config uses v1 schema                  | Add `version: 2` to top of `.goreleaser.yml`              |
+| `github: token could not be created`                 | Missing GITHUB_TOKEN or permissions    | Add `permissions: contents: write` and `GITHUB_TOKEN` env |
+| `gcc: error: unrecognized command-line option`       | CGO enabled without cross-compiler     | Set `CGO_ENABLED=0` in build env                          |
+| `getting key from fulcio: getting cert: oidc`        | Missing `id-token: write` permission   | Add `permissions: id-token: write`                        |
+| Wrong tag selected                                   | Multiple tags at same commit           | Set `GORELEASER_CURRENT_TAG=vX.Y.Z`                       |
+| Build matrix timeout                                 | Too many platforms                     | Reduce targets or split into parallel jobs                |
+| `could not read Username for 'https://github.com'`   | Private deps not authenticated         | Set GOPRIVATE + git URL rewriting (above)                 |
