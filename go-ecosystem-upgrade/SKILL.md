@@ -194,38 +194,19 @@ This is the phase that gets skipped most often and causes the most damage.
 
 ### Phase 6 — Release: tag without poisoning the proxy
 
-If you're cutting tags (releasing a library, not just consuming one). **For the
-full release procedure, load the `go-release` skill** — it covers the complete
-lifecycle (version determination, CHANGELOG, pre-release verification, GoReleaser,
-post-push validation, recovery). The rules below are the minimum that applies
-within an ecosystem upgrade:
+If you're cutting tags (releasing a library, not just consuming one). **Load the
+`go-release` skill** — it covers the complete lifecycle (version determination,
+CHANGELOG, pre-release verification, GoReleaser, post-push validation, recovery).
+The two rules below are the additional checks that apply specifically when a
+release is part of a larger ecosystem upgrade:
 
-1. **NEVER delete and recreate git tags with the same version number.** The Go module
-   proxy (`sum.golang.org`) caches checksums immutably. Once a tag is fetched, its hash is
-   recorded forever. Re-creating the tag with different content produces a checksum
-   mismatch that blocks every consumer. **Always bump to a fresh version number.** This is
-   failure mode F7 — it has poisoned the proxy multiple times.
+1. **Verify the tag resolves in a clean module.** After pushing, run `go get
+  github.com/foo/bar@v1.2.0` in a fresh module (or `GONOSUMDB=*` if the proxy hasn't
+  cached it yet). Don't assume the tag works — prove it.
 
-2. **Tag from the right commit.** Before tagging, verify the tag commit contains ALL
-   expected symbols. Run `git merge-base --is-ancestor <key-commit> <tag-commit>` to
-   confirm the commit with your breaking change is an ancestor of the tag. Or simpler:
-   always tag from HEAD after confirming HEAD has what you need. Tagging from a commit
-   before a rename publishes an API surface that doesn't match what consumers migrated to
-   (failure mode F8).
-
-3. **Strip local `replace` directives before tagging.** `replace` directives in `go.mod`
-   that point at local paths (`=> ../foo`) leak into published tags and break every
-   external consumer with `v0.0.0-00010101000000-000000000000` pseudo-versions. Use a
-   release script that strips replaces, runs `go mod tidy` to resolve real versions, and
-   verifies no pseudo-versions remain before pushing the tag.
-
-4. **Verify the tag resolves.** After pushing, run `go get
-github.com/foo/bar@v1.2.0` in a clean module (or `GONOSUMDB=*` if the proxy hasn't
-   cached it yet). Don't assume the tag works — prove it.
-
-5. **Update the CHANGELOG** for every tagged release, and **re-verify CHANGELOG accuracy
-   after any git operation** — a sibling session's revert can make your CHANGELOG entries
-   false. A lying CHANGELOG is worse than no CHANGELOG.
+2. **Re-verify CHANGELOG accuracy after any git operation.** A sibling session's
+  revert can make your CHANGELOG entries false. A lying CHANGELOG is worse than no
+  CHANGELOG.
 
 ## The failure-mode catalog (compact reference)
 

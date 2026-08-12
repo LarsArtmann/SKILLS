@@ -66,7 +66,22 @@ find . -name '*.go' -exec sed -i 's|"github.com/myorg/myrepo/|"github.com/myorg/
 find . -name '*.go' -exec sed -i 's|"github.com/myorg/myrepo"|"github.com/myorg/myrepo/v2"|g' {} +
 ```
 
-**Critical**: scope the `sed` carefully. Use the exact module path to avoid
+**Go-native alternative**: `gofmt -r` understands Go syntax and rewrites only
+string literals, so it won't corrupt comments or unrelated text. Use it as the
+primary method, falling back to `sed` only if `gofmt` cannot handle a generated
+file:
+
+```bash
+# Rewrite both root and sub-package imports
+gofmt -r '"github.com/myorg/myrepo" -> "github.com/myorg/myrepo/v2"' -w .
+gofmt -r '"github.com/myorg/myrepo/" -> "github.com/myorg/myrepo/v2/"' -w .
+
+# Or combine both rules in one invocation
+gofmt -r '"github.com/myorg/myrepo" -> "github.com/myorg/myrepo/v2"' \
+      -r '"github.com/myorg/myrepo/" -> "github.com/myorg/myrepo/v2/"' -w .
+```
+
+**Critical**: scope the rewrite carefully. Use the exact module path to avoid
 corrupting unrelated imports that happen to share a prefix. Always verify with `grep`
 afterwards:
 

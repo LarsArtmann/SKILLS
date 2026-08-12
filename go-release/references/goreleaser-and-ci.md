@@ -10,6 +10,10 @@ Table of Contents:
 - [SBOM generation](#sbom-generation)
 - [Cosign signing](#cosign-signing)
 - [SLSA provenance](#slsa-provenance)
+- [Docker image publishing](#docker-image-publishing)
+- [Homebrew cask publishing](#homebrew-cask-publishing)
+- [Scoop bucket publishing](#scoop-bucket-publishing)
+- [Release branch strategies](#release-branch-strategies)
 - [Snapshot builds for testing](#snapshot-builds-for-testing)
 - [Common GoReleaser failure modes](#common-goreleaser-failure-modes)
 
@@ -427,6 +431,164 @@ permissions:
 
 ---
 
+## Docker image publishing
+
+Use `dockers_v2` (not the deprecated `dockers` section) to build and push OCI
+images. GoReleaser v2's Docker v2 pipeline uses the Docker buildx backend.
+
+### Minimal Docker v2 config
+
+```yaml
+dockers_v2:
+  - images:
+      - "ghcr.io/myorg/myrepo"
+    tags:
+      - "v{{ .Version }}"
+      - "latest"
+    extra_files:
+      - scripts/entrypoint.sh
+    labels:
+      "org.opencontainers.image.description": "My Go service"
+      "org.opencontainers.image.created": "{{.Date}}"
+      "org.opencontainers.image.revision": "{{.FullCommit}}"
+      "org.opencontainers.image.version": "{{.Version}}"
+    annotations:
+      "org.opencontainers.image.source": "{{.GitURL}}"
+```
+
+### Required CI setup
+
+The GitHub Actions runner needs Docker buildx and registry login:
+
+```yaml
+- name: Set up Docker Buildx
+  uses: docker/setup-buildx-action@v3
+
+- name: Login to GitHub Container Registry
+  uses: docker/login-action@v3
+  with:
+    registry: ghcr.io
+    username: ${{ github.actor }}
+    password: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### Multi-platform images
+
+Add `platforms` to build for multiple architectures. You must also list the
+matching build targets in the `builds` section and set `CGO_ENABLED=0`.
+
+```yaml
+dockers_v2:
+  - images:
+      - "ghcr.io/myorg/myrepo"
+    tags:
+      - "v{{ .Version }}"
+      - "latest"
+    platforms:
+      - linux/amd64
+      - linux/arm64
+```
+
+---
+
+## Homebrew cask publishing
+
+GoReleaser v2 deprecated the `brews` (formula) section in favor of
+`homebrew_casks`. Configure a separate tap repository — GoReleaser will commit
+the generated cask file to it.
+
+```yaml
+homebrew_casks:
+  - repository:
+      owner: myorg
+      name: homebrew-tap
+      token: "{{ .Env.GH_PAT }}"
+    homepage: https://github.com/myorg/myrepo
+    description: "My CLI tool"
+    license: MIT
+    conflicts:
+      - cask: myrepo-pro
+```
+
+### Required CI secrets
+
+`GH_PAT` must have `contents: write` permission on the tap repository. The
+workflow that runs GoReleaser must pass it as an environment variable:
+
+```yaml
+env:
+  GH_PAT: ${{ secrets.GH_PAT }}
+```
+
+---
+
+## Scoop bucket publishing
+
+Scoop is the Windows-native package manager. GoReleaser can publish a
+`myrepo.json` manifest to a Scoop bucket repository.
+
+```yaml
+scoops:
+  - repository:
+      owner: myorg
+      name: scoop-bucket
+      token: "{{ .Env.GH_PAT }}"
+    directory: bucket
+    homepage: https://github.com/myorg/myrepo
+    description: "My CLI tool"
+    license: MIT
+```
+
+Like Homebrew, this requires `GH_PAT` with write access to the bucket repo.
+
+---
+
+## Release branch strategies
+
+For most projects, releases are cut from the default branch (`master` or `main`).
+When you need to maintain multiple major or minor versions, use release branches.
+
+### When to use release branches
+
+- **Long-term support**: v1.x keeps getting security patches while v2.x is developed
+- **Hotfix without shipping unreleased main**: main has v2.0.0-beta work, but you
+  need to release v1.2.5 now
+- **Stable release cadence**: monthly patch releases from a `release/v1.2` branch
+
+### Release branch workflow
+
+1. Create the branch from the tag you want to patch:
+
+   ```bash
+   git checkout -b release/v1.2 v1.2.4
+   ```
+
+2. Cherry-pick the fix from main:
+
+   ```bash
+   git cherry-pick <fix-commit-hash>
+   ```
+
+3. Run the full release verification pipeline on the branch.
+
+4. Tag from the release branch, not from main:
+
+   ```bash
+   git tag -a v1.2.5 -m "Release v1.2.5"
+   git push origin release/v1.2
+   git push origin v1.2.5
+   ```
+
+### Critical rule: do not merge release branches back into main
+
+A release branch contains older code. Merging it back into main can downgrade
+dependencies or revert already-merged changes. Treat release branches as
+one-way: cherry-pick fixes **from** main **to** the release branch, then tag and
+push. If you need to bring a release-branch-specific fix back to main, cherry-pick
+it separately.
+
+---
+
 ## Snapshot builds for testing
 
 Test the release pipeline without publishing:
@@ -454,3 +616,4 @@ creating a real release.
 | Wrong tag selected                                   | Multiple tags at same commit           | Set `GORELEASER_CURRENT_TAG=vX.Y.Z`                       |
 | Build matrix timeout                                 | Too many platforms                     | Reduce targets or split into parallel jobs                |
 | `could not read Username for 'https://github.com'`   | Private deps not authenticated         | Set GOPRIVATE + git URL rewriting (above)                 |
+| Hook fails with "command not found" or shell errors | GoReleaser OSS invokes `exec.CommandContext` directly, not a shell | Wrap shell features in `sh -c "..."` (e.g., `sh -c 'foo && bar \| baz'`) |

@@ -1,0 +1,51 @@
+{
+  "skill_name": "go-release",
+  "evals": [
+    {
+      "id": 1,
+      "name": "single-module-library-patch-release",
+      "prompt": "Release v1.2.1 of my Go library github.com/myorg/myrepo. The last tag was v1.2.0 and I just merged a bug fix into master. Walk me through the exact commands.",
+      "expected_output": "A step-by-step release checklist for a single-module Go library patch release, including version bump, CHANGELOG update, go.mod cleanup, annotated tag creation, push, proxy verification, and GitHub Release creation.",
+      "files": [],
+      "expectations": [
+        "Response recommends a patch version bump to v1.2.1",
+        "Response mentions cleaning or auditing replace directives in go.mod",
+        "Response includes running go mod tidy before tagging",
+        "Response instructs to create an annotated tag with git tag -a v1.2.1",
+        "Response warns that published tags are immutable and cannot be moved once proxy.golang.org caches them",
+        "Response includes verifying the release with go get github.com/myorg/myrepo@v1.2.1 in a clean directory",
+        "Response includes creating a GitHub Release from the tag (gh release create or GitHub UI)"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "multi-module-monorepo-minor-release",
+      "prompt": "Cut a release of my multi-module Go monorepo at github.com/myorg/mono. There are two modules: github.com/myorg/mono and github.com/myorg/mono/cli. I need to release v1.3.0 of both from the same commit. What exact git tags do I push and in what order?",
+      "expected_output": "A multi-module release procedure that tags both modules at the same commit, updates cross-module requires with go mod edit, and explicitly sets GORELEASER_CURRENT_TAG if using GoReleaser.",
+      "files": [],
+      "expectations": [
+        "Response identifies this as a multi-module monorepo release and references references/multi-module.md",
+        "Response states that both tags (mono/v1.3.0 and cli/v1.3.0) must point to the same commit",
+        "Response mentions using go mod edit -require to bump the cli module's dependency on the root module without needing the proxy yet",
+        "Response warns about the chicken-and-egg problem of go mod tidy before tags are pushed",
+        "Response mentions setting GORELEASER_CURRENT_TAG=mono/v1.3.0 if GoReleaser is used",
+        "Response includes post-push verification with GONOSUMDB=* go get for both modules"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "goreleaser-binary-release-wrong-tag",
+      "prompt": "Build a v2.0.0 release of my Go CLI github.com/myorg/tool using GoReleaser. The last tag push included three tags on the same commit and GoReleaser keeps picking the wrong one. How do I fix the release and what does the .goreleaser.yml look like?",
+      "expected_output": "A GoReleaser binary release procedure that sets GORELEASER_CURRENT_TAG explicitly, uses a minimal v2 config with version: 2, and explains why git describe picks the alphabetically-last tag.",
+      "files": [],
+      "expectations": [
+        "Response sets GORELEASER_CURRENT_TAG=v2.0.0 for the release command or CI job",
+        "Response explains that multiple tags at one commit cause git describe to pick the alphabetically-last tag",
+        "Response includes a .goreleaser.yml with version: 2 at the top",
+        "Response includes CGO_ENABLED=0 and -trimpath for cross-compilation",
+        "Response mentions running goreleaser release --clean --snapshot --skip=publish to test the pipeline first",
+        "Response warns that v2.0.0 for a CLI is semver, not necessarily a Go module v2 path migration"
+      ]
+    }
+  ]
+}

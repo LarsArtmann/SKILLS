@@ -45,6 +45,24 @@ a v2+ release → also load [./references/major-versions.md](./references/major-
 For what goes wrong and how to recover, load
 [./references/failure-modes.md](./references/failure-modes.md).
 
+Table of Contents:
+
+- [Relationship to other skills](#relationship-to-other-skills)
+- [THE #1 RULE: Tags are immutable](#the-1-rule-tags-are-immutable)
+- [Phase 0: Assess whether a release is needed](#phase-0-assess-whether-a-release-is-needed)
+- [Phase 1: Determine the version bump](#phase-1-determine-the-version-bump)
+- [Phase 2: Prepare the CHANGELOG](#phase-2-prepare-the-changelog)
+- [Phase 3: Prepare go.mod files](#phase-3-prepare-gomod-files)
+- [Phase 4: Pre-push verification](#phase-4-pre-push-verification)
+- [Phase 5: Tag and push](#phase-5-tag-and-push)
+- [Phase 6: Post-push verification](#phase-6-post-push-verification)
+- [Phase 7: Create the GitHub Release](#phase-7-create-the-github-release)
+- [Phase 8: Post-release cleanup](#phase-8-post-release-cleanup)
+- [Phase 9: Recovery — when a release goes wrong](#phase-9-recovery--when-a-release-goes-wrong)
+- [Quick reference: Checklist](#quick-reference-checklist)
+- [Quick reference: Gotchas](#quick-reference-gotchas)
+- [Reference files](#reference-files)
+
 ## Relationship to other skills
 
 - **go-ecosystem-upgrade** — The demand side: bumping consumer dependencies AFTER
