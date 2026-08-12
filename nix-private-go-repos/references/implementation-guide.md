@@ -2,6 +2,25 @@
 
 Full annotated example and gotcha catalog for using `mkPreparedSource` + `GOPRIVATE` instead of committed `vendor/`.
 
+> **This guide covers the manual (Option B) path.** If you are using `flakeModules.go-standard` (Option A), most of this is automatic — see the main skill file. This guide is for projects that call `mkPreparedSource` directly.
+
+## go-standard auto-behaviors (Option A reference)
+
+When using `flakeModules.go-standard` with `deps` set, these behaviors are fully automatic (no configuration needed):
+
+| Behavior | Mechanism |
+|----------|----------|
+| `mkPreparedSource` wired | Source is patched with `replace` directives before build |
+| `GOPRIVATE` injected | `autoGoPrivate = true` + `privateGlobPattern` (default: both casings) |
+| `GOWORK = "off"` | Set in all devShells |
+| `GOTOOLCHAIN = "local"` | Set in all devShells |
+| `proxyVendor = false` | Vendor/ produced from local deps, not Go proxy |
+| FOD `go mod tidy` | Runs in modBuildPhase, syncs go.mod/go.sum to main build |
+| Sub-module discovery | Recursive scan for all `go.mod` files in each dep |
+
+Override GOPRIVATE via `go-standard.shellExtraEnv.GOPRIVATE = "your-pattern/*";`.
+Override the glob via `go-standard.privateGlobPattern = "github.com/myorg/*";`.
+
 ## Full `flake.nix` Example
 
 ```nix
@@ -65,9 +84,9 @@ Full annotated example and gotcha catalog for using `mkPreparedSource` + `GOPRIV
               "github.com/larsartmann/go-cqrs-lite" = inputs.go-cqrs-lite;
               "github.com/larsartmann/go-branded-id" = inputs.go-branded-id;
             };
-            # Some LarsArtmann repos are public; disable validation only when
-            # a public repo in go.mod is intentionally not listed in deps.
-            validatePrivateDeps = false;
+            # Exclude specific public LarsArtmann repos from validation
+            # (preferred over disabling all validation).
+            publicDeps = [ "github.com/larsartmann/go-atomic-write" ];
           };
         in
         {
@@ -198,7 +217,7 @@ Whenever deps change, set `vendorHash = pkgs.lib.fakeHash;` and run `nix build .
 
 ### 5. `GOWORK` interaction
 
-If using Go workspace mode, set `GOWORK = "off";` in devShells to prevent workspace resolution from interfering with module-based builds.
+If using Go workspace mode, set `GOWORK = "off";` in devShells to prevent workspace resolution from interfering with module-based builds. This is automatic in go-standard.
 
 ### 6. Mixed case in import paths
 

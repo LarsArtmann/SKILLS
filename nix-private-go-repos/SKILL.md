@@ -1,7 +1,7 @@
 ---
 name: nix-private-go-repos
 description: |
-  Use when building Go projects with Nix flakes that depend on private GitHub repositories. Triggers on phrases like "private Go repo in Nix", "vendor/ in Nix", "mkPreparedSource", "GOPRIVATE", "could not read Username", "410 Gone from proxy.golang.org", or when migrating a Go project from committed vendor/ to a hermetic Nix build. Covers flake inputs, mkPreparedSource, vendorHash, GOPRIVATE in devShells, and CI SSH authentication.
+  Use when building Go projects with Nix flakes that depend on private GitHub repositories. Triggers on phrases like "private Go repo in Nix", "vendor/ in Nix", "mkPreparedSource", "GOPRIVATE", "publicDeps", "validatePrivateDeps", "could not read Username", "410 Gone from proxy.golang.org", or when migrating a Go project from committed vendor/ to a hermetic Nix build. Covers flake inputs, mkPreparedSource, vendorHash, GOPRIVATE in devShells, and CI SSH authentication.
 allowed-tools: bash view edit grep
 metadata:
   tags: nix, flakes, go, golang, private-repos, github, vendor, mkPreparedSource, GOPRIVATE, reproducibility
@@ -90,6 +90,18 @@ outputs = inputs@{ self, ... }:
 That's it. No manual mkPreparedSource import, no GOPRIVATE boilerplate, no postPatch
 workarounds. The module handles everything when `deps` is non-empty.
 
+**Auto-behaviors when `deps` is non-empty** (all automatic, no configuration needed):
+
+| Behavior | What happens |
+|----------|-------------|
+| `mkPreparedSource` | Auto-wired; source is patched with `replace` directives before build |
+| `GOPRIVATE` | Auto-injected into all devShells via `autoGoPrivate` + `privateGlobPattern` |
+| `GOWORK = "off"` | Set in all devShells to prevent workspace interference |
+| `GOTOOLCHAIN = "local"` | Set in all devShells to prevent Go toolchain downloads |
+| `proxyVendor = false` | Set so vendor/ is produced from local deps, not the Go proxy |
+| FOD `go mod tidy` | Runs `go mod tidy` + `go mod vendor` in the FOD, syncs go.mod/go.sum to main build |
+| Sub-module auto-discovery | Recursively scans each dep for all `go.mod` files at any depth |
+
 ### Option B: Manual mkPreparedSource (for projects not using go-standard)
 
 For projects not using the `go-standard` module from `github.com/LarsArtmann/go-nix-helpers`:
@@ -137,7 +149,7 @@ Load [./references/ci-auth.md](./references/ci-auth.md) for copy-paste workflows
 | Public LarsArtmann repo in `go.mod` | `mkPreparedSource` validation fails because repo is not in `deps` | Add to `publicDeps` (preferred) or set `validatePrivateDeps = false;`  |
 | Transitive private deps             | Build fails on a private dep of a private dep                     | Add the transitive dep as a flake input too, or disable validation     |
 | `tools/go.mod`                      | Secondary module lacks `replace` directives                       | Use `postPatchExtra` to inject replaces there too                      |
-| `go.work`                           | Workspace resolution interferes with module builds                | Set `GOWORK = "off";` in devShells                                     |
+| `go.work`                           | Workspace resolution interferes with module builds                | Automatic in go-standard; set `GOWORK = "off"` manually for Option B  |
 
 For the full gotcha list, load [./references/implementation-guide.md](./references/implementation-guide.md).
 

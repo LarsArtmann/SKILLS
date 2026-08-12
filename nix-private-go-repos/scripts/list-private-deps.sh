@@ -11,7 +11,7 @@ fi
 
 private_pattern='github\.com/[Ll]ars[Aa]rtmann'
 
-unique_deps=$(grep -E "${private_pattern}" go.mod | awk '{print $1}' | sed -E 's|/v[0-9]+||' | sort -u)
+unique_deps=$(grep -E "${private_pattern}" go.mod | awk '{print $1}' | grep -E '^github\.com/' | sed -E 's|/v[0-9]+||' | sort -u || true)
 
 if [ -z "${unique_deps}" ]; then
 	echo "No private LarsArtmann dependencies found in go.mod."
