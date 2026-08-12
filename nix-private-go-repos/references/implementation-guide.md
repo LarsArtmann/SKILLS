@@ -8,15 +8,15 @@ Full annotated example and gotcha catalog for using `mkPreparedSource` + `GOPRIV
 
 When using `flakeModules.go-standard` with `deps` set, these behaviors are fully automatic (no configuration needed):
 
-| Behavior | Mechanism |
-|----------|----------|
-| `mkPreparedSource` wired | Source is patched with `replace` directives before build |
-| `GOPRIVATE` injected | `autoGoPrivate = true` + `privateGlobPattern` (default: both casings) |
-| `GOWORK = "off"` | Set in all devShells |
-| `GOTOOLCHAIN = "local"` | Set in all devShells |
-| `proxyVendor = false` | Vendor/ produced from local deps, not Go proxy |
-| FOD `go mod tidy` | Runs in modBuildPhase, syncs go.mod/go.sum to main build |
-| Sub-module discovery | Recursive scan for all `go.mod` files in each dep |
+| Behavior                 | Mechanism                                                             |
+| ------------------------ | --------------------------------------------------------------------- |
+| `mkPreparedSource` wired | Source is patched with `replace` directives before build              |
+| `GOPRIVATE` injected     | `autoGoPrivate = true` + `privateGlobPattern` (default: both casings) |
+| `GOWORK = "off"`         | Set in all devShells                                                  |
+| `GOTOOLCHAIN = "local"`  | Set in all devShells                                                  |
+| `proxyVendor = false`    | Vendor/ produced from local deps, not Go proxy                        |
+| FOD `go mod tidy`        | Runs in modBuildPhase, syncs go.mod/go.sum to main build              |
+| Sub-module discovery     | Recursive scan for all `go.mod` files in each dep                     |
 
 Override GOPRIVATE via `go-standard.shellExtraEnv.GOPRIVATE = "your-pattern/*";`.
 Override the glob via `go-standard.privateGlobPattern = "github.com/myorg/*";`.
