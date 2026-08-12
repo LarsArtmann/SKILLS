@@ -1,7 +1,7 @@
 # Skill Proposal: `samber-do-best-practices`
 
-**Date:** 2026-07-23  
-**Proposed by:** Crush session auditing samber/do usage across `/home/lars/projects`  
+**Date:** 2026-07-23\
+**Proposed by:** Crush session auditing samber/do usage across `/home/lars/projects`\
 **Related work:**
 
 - `/home/lars/projects/samber-do-auditlog/docs/research/samber-do-best-practices-and-anti-patterns.md` (new comprehensive report)

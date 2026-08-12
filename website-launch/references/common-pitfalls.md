@@ -168,7 +168,6 @@ export GOEXPERIMENT=jsonv2
 ````
 
 ````
-
 ## Deployment Issues
 
 ### 8. Firebase upload endpoint unreachable

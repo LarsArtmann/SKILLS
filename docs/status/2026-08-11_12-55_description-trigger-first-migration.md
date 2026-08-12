@@ -10,12 +10,14 @@
 ### 1. Guidance documents updated
 
 **`AGENTS.md` §3.1** — Rewrote the frontmatter section:
+
 - Template comment changed from `THIS IS A TRIGGER, NOT DOCUMENTATION` to `TRIGGER CONTEXT — tells the agent WHEN to use this skill`
 - Added opening paragraph: "The `description` field is **trigger context for the AI agent**, not a description of the skill itself."
 - Rewrote the critical nuance paragraph to answer "what user task makes this skill the right tool?"
 - Added explicit "If it describes what the skill _is_ or _contains_ rather than _when to use it_, the skill will never activate."
 
 **`how-to-write-skills.md` §1** — Rewrote the core principle:
+
 - Section title changed from "is a trigger, not documentation" to "is trigger context — it tells the agent _when_ to use the skill"
 - Added 3rd bad example: `A self-contained HTML report design system...` (describes the skill itself)
 - Added 4th good example: trigger-first naming-review description
@@ -28,30 +30,31 @@
 
 Every skill that previously opened with "Reviews...", "Generates...", "Creates...", "Implements...", "Performs...", "Runs...", "Triggers...", "Finds...", "Launches..." was rewritten to open with "Use when the user..." or "Use this skill when...".
 
-| Skill | Old opening | New opening |
-| --- | --- | --- |
-| architecture-review | "Reviews the current architecture..." | "Use when the user asks about architecture quality..." |
-| architecture-visualization | "Generates D2 architecture diagrams..." | "Use when the user wants architecture diagrams..." |
-| bdd-testing | "Implements Behavior-driven development..." | "Use when the user wants to add BDD tests..." |
-| brutal-self-review | "Triggers a brutally honest self-review..." | "Use when the user asks for self-reflection..." |
-| code-quality-scan | "Runs build, lint, and code duplication..." | "Use when the user asks to check code quality..." |
-| data-model-review | "Reviews and redesigns data models..." | "Use when the user wants to review a data model..." |
-| deduplicate-code | "Finds and removes code duplication..." | "Use when the user wants to find and remove..." |
-| docs-health | "Creates, verifies, and maintains..." | "Use when the user wants to build a TODO list..." |
-| full-code-review | "Performs a comprehensive code review..." | "Use when the user wants a full codebase review..." |
-| go-modularize | "Splits or merges Go modules..." | "Use when the user wants to modularize..." |
-| how-to-golang | "Go development decision guide..." | "Use this skill when writing Go code..." |
-| html-report-kit | "Shared HTML report design system..." | "Use when a skill needs to write a styled..." |
-| library-deep-dive | "Performs a deep-dive research audit..." | "Use this skill when the user asks..." |
-| naming-review | "Reviews and improves naming quality..." | "Use when the user wants to review, audit..." |
-| nix-review | "Reviews and improves .nix files..." | "Use when the user wants to review, audit..." |
-| pareto-planning | "Creates a comprehensive execution plan..." | "Use when the user wants to plan work..." |
-| status-report | "Generates a full comprehensive status..." | "Use when the user asks for a status update..." |
-| website-launch | "Launches a public documentation website..." | "Use this skill when the user asks to create..." |
+| Skill                      | Old opening                                  | New opening                                            |
+| -------------------------- | -------------------------------------------- | ------------------------------------------------------ |
+| architecture-review        | "Reviews the current architecture..."        | "Use when the user asks about architecture quality..." |
+| architecture-visualization | "Generates D2 architecture diagrams..."      | "Use when the user wants architecture diagrams..."     |
+| bdd-testing                | "Implements Behavior-driven development..."  | "Use when the user wants to add BDD tests..."          |
+| brutal-self-review         | "Triggers a brutally honest self-review..."  | "Use when the user asks for self-reflection..."        |
+| code-quality-scan          | "Runs build, lint, and code duplication..."  | "Use when the user asks to check code quality..."      |
+| data-model-review          | "Reviews and redesigns data models..."       | "Use when the user wants to review a data model..."    |
+| deduplicate-code           | "Finds and removes code duplication..."      | "Use when the user wants to find and remove..."        |
+| docs-health                | "Creates, verifies, and maintains..."        | "Use when the user wants to build a TODO list..."      |
+| full-code-review           | "Performs a comprehensive code review..."    | "Use when the user wants a full codebase review..."    |
+| go-modularize              | "Splits or merges Go modules..."             | "Use when the user wants to modularize..."             |
+| how-to-golang              | "Go development decision guide..."           | "Use this skill when writing Go code..."               |
+| html-report-kit            | "Shared HTML report design system..."        | "Use when a skill needs to write a styled..."          |
+| library-deep-dive          | "Performs a deep-dive research audit..."     | "Use this skill when the user asks..."                 |
+| naming-review              | "Reviews and improves naming quality..."     | "Use when the user wants to review, audit..."          |
+| nix-review                 | "Reviews and improves .nix files..."         | "Use when the user wants to review, audit..."          |
+| pareto-planning            | "Creates a comprehensive execution plan..."  | "Use when the user wants to plan work..."              |
+| status-report              | "Generates a full comprehensive status..."   | "Use when the user asks for a status update..."        |
+| website-launch             | "Launches a public documentation website..." | "Use this skill when the user asks to create..."       |
 
 ### 3. Already-trigger-first skills verified (6 unchanged)
 
 These 6 were already trigger-first and needed no changes:
+
 - `go-ecosystem-upgrade` — "Use when bumping, upgrading..."
 - `go-error-modernization` — "Use when modernizing Go 1.26+..."
 - `nix-private-go-repos` — "Use when building Go projects with Nix..."
@@ -72,11 +75,13 @@ These 6 were already trigger-first and needed no changes:
 ### 1. `how-to-write-skills.md` Pattern 11 disambiguation example
 
 Line 477 still says:
+
 ```
 [what it does + trigger phrases]. Distinct from [competing-skill]
 ```
 
 This should be updated to:
+
 ```
 [trigger phrases + what the agent will do]. Distinct from [competing-skill]
 ```
@@ -184,6 +189,7 @@ The user explicitly said "Use the Questions tool properly to go through all with
 ### Q1: Should the `skill-creator` meta-skill be updated as part of this work?
 
 The `skill-creator` skill at `/home/lars/.agents/skills/skill-creator/SKILL.md` is the upstream source — it teaches agents how to write descriptions, and its guidance still says "include both what the skill does AND specific contexts." This is NOT in the SKILLS repo. Should I:
+
 - (a) Update it anyway (it's a global install on this machine)?
 - (b) Leave it and note it as external?
 - (c) Create a companion skill or override in this repo?
@@ -191,6 +197,7 @@ The `skill-creator` skill at `/home/lars/.agents/skills/skill-creator/SKILL.md` 
 ### Q2: Should I add a hard regression guard to `check-skills.sh` that fails when a description does NOT start with a trigger phrase?
 
 This would prevent future skills from reintroducing the old pattern. But it could also be too strict — there may be valid descriptions that don't start with "Use when" but are still trigger-first (e.g., "Activate for...", "Trigger on..."). Should the guard be:
+
 - (a) Strict: must start with "Use "
 - (b) Loose: must contain "when" in the first sentence
 - (c) Pattern-based: must NOT start with a 3rd-person verb ("Reviews", "Generates", etc.)

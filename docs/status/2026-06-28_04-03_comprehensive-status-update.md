@@ -250,33 +250,33 @@ The working tree is clean (after committing this report).
 
 ## f) Top #25 Things to Get Done Next
 
-| #   | Priority | Task                                                                              | Impact              |
-| --- | -------- | --------------------------------------------------------------------------------- | ------------------- |
-| 1   | 🔴 HIGH  | Validate Test Module Pattern in a real project                                    | Theory → practice   |
-| 2   | 🔴 HIGH  | Flesh out `bdd-testing` skill (ginkgo syntax, test structure, file naming)        | Thin skill → useful |
-| 3   | 🔴 HIGH  | Flesh out `code-quality-scan` skill (tool integration, severity guide)            | Thin skill → useful |
-| 4   | 🔴 HIGH  | Verify and fix `how-to-golang` code snippets (gopter, json/v2, E2E)               | Correctness         |
-| 5   | 🔴 HIGH  | Convert `how-to-write-skills.md` to proper skill directory                        | Structure           |
-| 6   | 🟠 MED   | Flesh out `architecture-visualization` skill (D2 examples, diagram types)         | Thin skill → useful |
-| 7   | 🟠 MED   | Flesh out `todo-list-builder` skill (sub-agent context guidance)                  | Thin skill → useful |
-| 8   | 🟠 MED   | Wire inter-skill cross-references (audit target graph)                            | Discoverability     |
-| 9   | 🟠 MED   | Add `allowed-tools: d2` to `architecture-visualization`                           | Pre-approval        |
-| 10  | 🟠 MED   | Add `allowed-tools: art-dupl` to `deduplicate-code` and `code-quality-scan`       | Pre-approval        |
-| 11  | 🟠 MED   | Verify `naming-review` scripts exist and work                                     | Correctness         |
-| 12  | 🟠 MED   | Update README.md skills table (verify all 20 listed)                              | Accuracy            |
-| 13  | 🟠 MED   | Extract `references/` for `deduplicate-code` (art-dupl integration, patterns)     | Depth               |
-| 14  | 🟠 MED   | Extract `references/` for `full-code-review` (review checklist)                   | Depth               |
-| 15  | 🟡 LOW   | Add "Common Mistakes" section to `how-to-write-skills.md`                         | Prevention          |
-| 16  | 🟡 LOW   | Study patterns from external Go multi-module projects (reduce single-author bias) | Validity            |
-| 17  | 🟡 LOW   | Add skill health dashboard script                                                 | Tooling             |
-| 18  | 🟡 LOW   | Add deprecation flow checklist to phases.md Phase 1.5                             | Completeness        |
-| 19  | 🟡 LOW   | Document `replace` directive style convention (single block vs split)             | Consistency         |
-| 20  | 🟡 LOW   | Verify `library-deep-dive` skill completeness (146 lines, no references)          | Depth               |
-| 21  | 🟡 LOW   | Add `references/` for `nix-flake-migration` if flake templates grow               | Depth               |
-| 22  | 🟡 LOW   | Extract review checklist from `brutal-self-review` to `references/`               | Depth               |
-| 23  | 🟡 LOW   | Verify all `originals/*.md` files are truly frozen (no edits since conversion)    | Integrity           |
-| 24  | 🟡 LOW   | Add a "skill lifecycle" guide (creation → improvement → deprecation)              | Process             |
-| 25  | 🟡 LOW   | Run `nix-review` skill on own `flake.nix` (if exists) or document why none        | Meta                |
+| #  | Priority | Task                                                                              | Impact              |
+| -- | -------- | --------------------------------------------------------------------------------- | ------------------- |
+| 1  | 🔴 HIGH  | Validate Test Module Pattern in a real project                                    | Theory → practice   |
+| 2  | 🔴 HIGH  | Flesh out `bdd-testing` skill (ginkgo syntax, test structure, file naming)        | Thin skill → useful |
+| 3  | 🔴 HIGH  | Flesh out `code-quality-scan` skill (tool integration, severity guide)            | Thin skill → useful |
+| 4  | 🔴 HIGH  | Verify and fix `how-to-golang` code snippets (gopter, json/v2, E2E)               | Correctness         |
+| 5  | 🔴 HIGH  | Convert `how-to-write-skills.md` to proper skill directory                        | Structure           |
+| 6  | 🟠 MED   | Flesh out `architecture-visualization` skill (D2 examples, diagram types)         | Thin skill → useful |
+| 7  | 🟠 MED   | Flesh out `todo-list-builder` skill (sub-agent context guidance)                  | Thin skill → useful |
+| 8  | 🟠 MED   | Wire inter-skill cross-references (audit target graph)                            | Discoverability     |
+| 9  | 🟠 MED   | Add `allowed-tools: d2` to `architecture-visualization`                           | Pre-approval        |
+| 10 | 🟠 MED   | Add `allowed-tools: art-dupl` to `deduplicate-code` and `code-quality-scan`       | Pre-approval        |
+| 11 | 🟠 MED   | Verify `naming-review` scripts exist and work                                     | Correctness         |
+| 12 | 🟠 MED   | Update README.md skills table (verify all 20 listed)                              | Accuracy            |
+| 13 | 🟠 MED   | Extract `references/` for `deduplicate-code` (art-dupl integration, patterns)     | Depth               |
+| 14 | 🟠 MED   | Extract `references/` for `full-code-review` (review checklist)                   | Depth               |
+| 15 | 🟡 LOW   | Add "Common Mistakes" section to `how-to-write-skills.md`                         | Prevention          |
+| 16 | 🟡 LOW   | Study patterns from external Go multi-module projects (reduce single-author bias) | Validity            |
+| 17 | 🟡 LOW   | Add skill health dashboard script                                                 | Tooling             |
+| 18 | 🟡 LOW   | Add deprecation flow checklist to phases.md Phase 1.5                             | Completeness        |
+| 19 | 🟡 LOW   | Document `replace` directive style convention (single block vs split)             | Consistency         |
+| 20 | 🟡 LOW   | Verify `library-deep-dive` skill completeness (146 lines, no references)          | Depth               |
+| 21 | 🟡 LOW   | Add `references/` for `nix-flake-migration` if flake templates grow               | Depth               |
+| 22 | 🟡 LOW   | Extract review checklist from `brutal-self-review` to `references/`               | Depth               |
+| 23 | 🟡 LOW   | Verify all `originals/*.md` files are truly frozen (no edits since conversion)    | Integrity           |
+| 24 | 🟡 LOW   | Add a "skill lifecycle" guide (creation → improvement → deprecation)              | Process             |
+| 25 | 🟡 LOW   | Run `nix-review` skill on own `flake.nix` (if exists) or document why none        | Meta                |
 
 ---
 

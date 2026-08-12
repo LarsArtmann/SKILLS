@@ -59,7 +59,7 @@ Include 4–5 cards:
 | Adoption Score       | 0–100 from Phase 4                 | color by band (good/warn/bad) |
 | Features Leveraged   | fully-leveraged / total applicable | `.score-good` if > 60%        |
 | Missed Opportunities | count of 🔴 findings               | `.score-bad` if > 5           |
-| Anti-Patterns        | count of ⚠️ findings               | `.score-bad` if > 0           |
+| Anti-Patterns        | count of ⚠️ findings                | `.score-bad` if > 0           |
 | Version Gap          | versions behind latest             | `.score-warn` if major behind |
 
 ### 3. Summary (the bottom line)

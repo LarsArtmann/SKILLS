@@ -18,63 +18,63 @@ The repo has grown from **15 → 19 skills** since the last audit (+5 new compre
 
 ## A) FULLY DONE ✅
 
-| #   | Item                                                                  | Evidence                                                                                                                                                              |
-| --- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **19 skills, all with valid YAML frontmatter**                        | `name` + `description` + `metadata.tags` present on every `SKILL.md`                                                                                                  |
-| 2   | **5 new comprehensive skills since May**                              | `data-model-review` (147), `go-modularize` (872), `html-report-kit` (82), `naming-review` (266), `nix-review` (231)                                                   |
-| 3   | **Thinness crisis resolved**                                          | 9 thin → 3 thin. `deduplicate-code` 27→144, `nix-flake-migration` 21→163                                                                                              |
-| 4   | **Legacy root files moved to `originals/`**                           | `1.md`–`17.md` gone from root; 17 files in `originals/`, documented as non-canonical                                                                                  |
-| 5   | **`PARTIALLY_FUNTIONAL` typo fixed**                                  | `features-audit/SKILL.md` now reads `PARTIALLY_FUNCTIONAL`                                                                                                            |
-| 6   | **`html-report-kit` shared design system**                            | Two template variants (dark-dashboard + editorial-light), full component vocabulary, referenced by 10 consumers                                                       |
-| 7   | **`html-report-kit` per-skill install breakage FIXED (this session)** | Vendored into `<consumer>/assets/html-report-kit/`; all refs rewritten `../` → `./assets/`; `scripts/sync-html-kit.sh` (sync/check/list); `--check` passes for all 10 |
-| 8   | **`execution-mode` removed → parallelism contradiction resolved**     | The "1 sub-agent at a time" vs "multiple tasks" split brain no longer exists; one side is gone                                                                        |
-| 9   | **`full-code-review` Pareto split brain resolved**                    | Planning now delegates to `pareto-planning` instead of inlining a duplicate                                                                                           |
-| 10  | **Inter-skill reference graph maturing**                              | 10 skills wired to `html-report-kit`; `full-code-review`→`pareto-planning`; multiple Go skills→`how-to-golang`                                                        |
-| 11  | **`how-to-golang` reference-heavy pattern established**               | 93-line entrypoint + 9 reference files — the template for rich skills                                                                                                 |
-| 12  | **Clean git history**                                                 | Logical, descriptive commits throughout                                                                                                                               |
+| #  | Item                                                                  | Evidence                                                                                                                                                              |
+| -- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1  | **19 skills, all with valid YAML frontmatter**                        | `name` + `description` + `metadata.tags` present on every `SKILL.md`                                                                                                  |
+| 2  | **5 new comprehensive skills since May**                              | `data-model-review` (147), `go-modularize` (872), `html-report-kit` (82), `naming-review` (266), `nix-review` (231)                                                   |
+| 3  | **Thinness crisis resolved**                                          | 9 thin → 3 thin. `deduplicate-code` 27→144, `nix-flake-migration` 21→163                                                                                              |
+| 4  | **Legacy root files moved to `originals/`**                           | `1.md`–`17.md` gone from root; 17 files in `originals/`, documented as non-canonical                                                                                  |
+| 5  | **`PARTIALLY_FUNTIONAL` typo fixed**                                  | `features-audit/SKILL.md` now reads `PARTIALLY_FUNCTIONAL`                                                                                                            |
+| 6  | **`html-report-kit` shared design system**                            | Two template variants (dark-dashboard + editorial-light), full component vocabulary, referenced by 10 consumers                                                       |
+| 7  | **`html-report-kit` per-skill install breakage FIXED (this session)** | Vendored into `<consumer>/assets/html-report-kit/`; all refs rewritten `../` → `./assets/`; `scripts/sync-html-kit.sh` (sync/check/list); `--check` passes for all 10 |
+| 8  | **`execution-mode` removed → parallelism contradiction resolved**     | The "1 sub-agent at a time" vs "multiple tasks" split brain no longer exists; one side is gone                                                                        |
+| 9  | **`full-code-review` Pareto split brain resolved**                    | Planning now delegates to `pareto-planning` instead of inlining a duplicate                                                                                           |
+| 10 | **Inter-skill reference graph maturing**                              | 10 skills wired to `html-report-kit`; `full-code-review`→`pareto-planning`; multiple Go skills→`how-to-golang`                                                        |
+| 11 | **`how-to-golang` reference-heavy pattern established**               | 93-line entrypoint + 9 reference files — the template for rich skills                                                                                                 |
+| 12 | **Clean git history**                                                 | Logical, descriptive commits throughout                                                                                                                               |
 
 ---
 
 ## B) PARTIALLY DONE 🔶
 
-| #   | Item                                | Status                                                     | What's Missing                                                                                                                                                                       |
-| --- | ----------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1   | **This session's vendoring fix**    | All 10 consumers synced and `--check` passes; docs updated | **Vendored copies + `scripts/` are uncommitted** — `git status` shows them as untracked                                                                                              |
-| 2   | **`architecture-review` flesh-out** | 30 → 51 lines; references `html-report-kit`                | Still no assessment rubric, criteria, or methodology in a `references/` file — agent will produce generic output                                                                     |
-| 3   | **`status-report` flesh-out**       | 36 → 52 lines; references kit                              | Output template is the kit, but the skill body still embeds the literal "FULL COMPREHENSIVE..." prompt; `git commit <--` typo remains (1 occ.)                                       |
-| 4   | **`code-quality-scan` flesh-out**   | 34 → 43 lines                                              | Still thin; tool list (`art-dupl`) not documented; no install guidance                                                                                                               |
-| 5   | **`how-to-golang` code accuracy**   | 9 reference files written                                  | May-3 audit flagged 4 inaccuracies (gopter signature, `encoding/json/v2` Go version, E2E HTTP API, Rule 002 CI cmd) — **not re-verified this session**, likely still partially wrong |
-| 6   | **`docs-freshness-check`**          | 30 → 29 lines (essentially unchanged)                      | Still checks a hardcoded file list; no definition of "stale"; no configurable list                                                                                                   |
-| 7   | **Skill count documentation**       | README/AGENTS exist                                        | README says "20 skills", AGENTS says "18 total" / "9 of 18 thin" — **all stale**, reality is 19                                                                                      |
-| 8   | **Cross-skill references**          | `html-report-kit` graph is solid                           | `full-code-review`→`deduplicate-code`, `brutal-self-review`→`architecture-review` still not wired                                                                                    |
+| # | Item                                | Status                                                     | What's Missing                                                                                                                                                                       |
+| - | ----------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1 | **This session's vendoring fix**    | All 10 consumers synced and `--check` passes; docs updated | **Vendored copies + `scripts/` are uncommitted** — `git status` shows them as untracked                                                                                              |
+| 2 | **`architecture-review` flesh-out** | 30 → 51 lines; references `html-report-kit`                | Still no assessment rubric, criteria, or methodology in a `references/` file — agent will produce generic output                                                                     |
+| 3 | **`status-report` flesh-out**       | 36 → 52 lines; references kit                              | Output template is the kit, but the skill body still embeds the literal "FULL COMPREHENSIVE..." prompt; `git commit <--` typo remains (1 occ.)                                       |
+| 4 | **`code-quality-scan` flesh-out**   | 34 → 43 lines                                              | Still thin; tool list (`art-dupl`) not documented; no install guidance                                                                                                               |
+| 5 | **`how-to-golang` code accuracy**   | 9 reference files written                                  | May-3 audit flagged 4 inaccuracies (gopter signature, `encoding/json/v2` Go version, E2E HTTP API, Rule 002 CI cmd) — **not re-verified this session**, likely still partially wrong |
+| 6 | **`docs-freshness-check`**          | 30 → 29 lines (essentially unchanged)                      | Still checks a hardcoded file list; no definition of "stale"; no configurable list                                                                                                   |
+| 7 | **Skill count documentation**       | README/AGENTS exist                                        | README says "20 skills", AGENTS says "18 total" / "9 of 18 thin" — **all stale**, reality is 19                                                                                      |
+| 8 | **Cross-skill references**          | `html-report-kit` graph is solid                           | `full-code-review`→`deduplicate-code`, `brutal-self-review`→`architecture-review` still not wired                                                                                    |
 
 ---
 
 ## C) NOT STARTED ⬜
 
-| #   | Item                                                      | Impact                                                                            |
-| --- | --------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| 1   | **Commit this session's vendoring work**                  | 🔴 Critical — the fix is done but uncommitted; a checkout loses it                |
-| 2   | **Empirical trigger-description testing**                 | 🔴 Critical — zero skills tested in Crush; every description is an educated guess |
-| 3   | **`library-guide` skill from `LIBRARY_GUIDE.md`**         | 🟡 High — 13 Lars-authored Go libraries unmapped from any skill                   |
-| 4   | **`crush.json` for the repo**                             | 🟠 Medium — enables `skills_paths` auto-discovery                                 |
-| 5   | **`allowed-tools` frontmatter** on CLI-dependent skills   | 🟠 Medium — `d2`, `art-dupl` still prompt for permission                          |
-| 6   | **Eval test suite** (≥2 prompts/skill, automated grading) | 🟠 Medium — no way to detect regressions in skill quality                         |
-| 7   | **Error-handling guidance** for missing tools             | 🟠 Medium — what if `d2`/`art-dupl` isn't installed?                              |
-| 8   | **Version/timestamp frontmatter** on skills               | ⚪ Low — no way to track freshness of a given skill                               |
+| # | Item                                                      | Impact                                                                            |
+| - | --------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| 1 | **Commit this session's vendoring work**                  | 🔴 Critical — the fix is done but uncommitted; a checkout loses it                |
+| 2 | **Empirical trigger-description testing**                 | 🔴 Critical — zero skills tested in Crush; every description is an educated guess |
+| 3 | **`library-guide` skill from `LIBRARY_GUIDE.md`**         | 🟡 High — 13 Lars-authored Go libraries unmapped from any skill                   |
+| 4 | **`crush.json` for the repo**                             | 🟠 Medium — enables `skills_paths` auto-discovery                                 |
+| 5 | **`allowed-tools` frontmatter** on CLI-dependent skills   | 🟠 Medium — `d2`, `art-dupl` still prompt for permission                          |
+| 6 | **Eval test suite** (≥2 prompts/skill, automated grading) | 🟠 Medium — no way to detect regressions in skill quality                         |
+| 7 | **Error-handling guidance** for missing tools             | 🟠 Medium — what if `d2`/`art-dupl` isn't installed?                              |
+| 8 | **Version/timestamp frontmatter** on skills               | ⚪ Low — no way to track freshness of a given skill                               |
 
 ---
 
 ## D) TOTALLY FUCKED UP! 💥
 
-| #   | Item                                                | Why It's Fucked                                                                                                                                                                                                                                                                          | Severity    |
-| --- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 1   | **`git commit <--` typo in 3 skills**               | `full-code-review` (×3), `pareto-planning` (×2), `status-report` (×1). The `<--` is **not a git flag** — it's an artifact from the original prompts. An LLM may interpret it as a literal flag and error out or improvise a broken command. Flagged in May, **still not fixed in June**. | 🔴 Critical |
-| 2   | **3 dangerously thin skills remain**                | `bdd-testing` (23 lines, zero ginkgo syntax), `features-audit` (24 lines, no FEATURES.md template), `docs-freshness-check` (29 lines, hardcoded file list). Each will produce thin, inconsistent output.                                                                                 | 🔴 Critical |
-| 3   | **`brainstorm-data-model/` empty orphan directory** | Zero files. Not referenced anywhere. Not git-trackable (git ignores empty dirs). Pure cruft that signals "half-finished work" to anyone browsing the repo.                                                                                                                               | 🟡 High     |
-| 4   | **Stale counts in canonical docs**                  | README: "20 skills" (reality 19). AGENTS.md §2: "18 total" (reality 19). AGENTS.md §5.4: "9 of 18 skills thin" (reality 3 of 19). These are the docs agents read first — they mislead every session.                                                                                     | 🟡 High     |
-| 5   | **`how-to-golang` reference code may be wrong**     | 4 flagged inaccuracies from May not re-verified. Wrong code in a reference is worse than no code — it teaches the wrong pattern.                                                                                                                                                         | 🟡 High     |
-| 6   | **Vendored kit uncommitted**                        | The fix is correct and verified, but 11 untracked dirs + `scripts/` are sitting in the working tree.                                                                                                                                                                                     | 🟡 High     |
+| # | Item                                                | Why It's Fucked                                                                                                                                                                                                                                                                          | Severity    |
+| - | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 1 | **`git commit <--` typo in 3 skills**               | `full-code-review` (×3), `pareto-planning` (×2), `status-report` (×1). The `<--` is **not a git flag** — it's an artifact from the original prompts. An LLM may interpret it as a literal flag and error out or improvise a broken command. Flagged in May, **still not fixed in June**. | 🔴 Critical |
+| 2 | **3 dangerously thin skills remain**                | `bdd-testing` (23 lines, zero ginkgo syntax), `features-audit` (24 lines, no FEATURES.md template), `docs-freshness-check` (29 lines, hardcoded file list). Each will produce thin, inconsistent output.                                                                                 | 🔴 Critical |
+| 3 | **`brainstorm-data-model/` empty orphan directory** | Zero files. Not referenced anywhere. Not git-trackable (git ignores empty dirs). Pure cruft that signals "half-finished work" to anyone browsing the repo.                                                                                                                               | 🟡 High     |
+| 4 | **Stale counts in canonical docs**                  | README: "20 skills" (reality 19). AGENTS.md §2: "18 total" (reality 19). AGENTS.md §5.4: "9 of 18 skills thin" (reality 3 of 19). These are the docs agents read first — they mislead every session.                                                                                     | 🟡 High     |
+| 5 | **`how-to-golang` reference code may be wrong**     | 4 flagged inaccuracies from May not re-verified. Wrong code in a reference is worse than no code — it teaches the wrong pattern.                                                                                                                                                         | 🟡 High     |
+| 6 | **Vendored kit uncommitted**                        | The fix is correct and verified, but 11 untracked dirs + `scripts/` are sitting in the working tree.                                                                                                                                                                                     | 🟡 High     |
 
 ---
 
@@ -110,33 +110,33 @@ The repo has grown from **15 → 19 skills** since the last audit (+5 new compre
 
 Ranked by impact × urgency. Items #1–#8 are the Pareto front — they cover ~80% of the remaining value.
 
-| #   | Task                                                                                                         | Impact | Effort | Category     |
-| --- | ------------------------------------------------------------------------------------------------------------ | ------ | ------ | ------------ |
-| 1   | **Commit this session's vendoring fix** (11 dirs + `scripts/` + doc edits)                                   | 🔴     | 2min   | Critical     |
-| 2   | **Fix `git commit <--` in 3 skills** → clear prose; add a grep guard                                         | 🔴     | 10min  | Correctness  |
-| 3   | **Fix stale skill counts** in README ("20"→19) + AGENTS.md ("18"/"9 of 18"→19/3)                             | 🔴     | 5min   | Docs         |
-| 4   | **Delete empty `brainstorm-data-model/`**                                                                    | 🟡     | 1min   | Cleanup      |
-| 5   | **Flesh out `bdd-testing`** — ginkgo syntax ref, test structure template, file naming                        | 🔴     | 45min  | Content      |
-| 6   | **Flesh out `features-audit`** — FEATURES.md template with status badges + examples                          | 🔴     | 30min  | Content      |
-| 7   | **Flesh out `docs-freshness-check`** — define "stale", configurable file list, methodology                   | 🟡     | 30min  | Content      |
-| 8   | **Wire `sync-html-kit.sh --check` into CI / pre-commit**                                                     | 🔴     | 15min  | Drift guard  |
-| 9   | **Re-verify `how-to-golang` code snippets** (gopter, json/v2, E2E HTTP, Rule 002)                            | 🟡     | 45min  | Quality      |
-| 10  | **Convert `how-to-write-skills.md` to a skill dir** (eat our own dog food)                                   | 🟡     | 20min  | Architecture |
-| 11  | **Create `library-guide` skill** from `LIBRARY_GUIDE.md` (13 Go libs)                                        | 🟡     | 45min  | New skill    |
-| 12  | **Wire remaining cross-refs** (full-code-review→deduplicate-code, brutal-self-review→architecture-review)    | 🟡     | 15min  | Integration  |
-| 13  | **Test trigger descriptions** with skill-creator's optimization loop                                         | 🟠     | 60min  | Validation   |
-| 14  | **Add `allowed-tools`** to CLI-dependent skills (`d2`, `art-dupl`)                                           | 🟠     | 15min  | Config       |
-| 15  | **Add output templates** to `todo-list-builder` and the 3 thin skills                                        | 🟡     | 30min  | Quality      |
-| 16  | **Create `crush.json`** for repo-level `skills_paths` auto-discovery                                         | 🟠     | 10min  | Config       |
-| 17  | **Add error-handling guidance** for missing external tools                                                   | 🟠     | 30min  | Robustness   |
-| 18  | **Add `architecture-review` rubric** — assessment criteria + methodology in `references/`                    | 🟡     | 30min  | Content      |
-| 19  | **Build eval test suite** — ≥2 prompts/skill, automated grading                                              | 🟠     | 2hr    | Validation   |
-| 20  | **Add version/timestamp** frontmatter to track skill freshness                                               | ⚪     | 10min  | Maintenance  |
-| 21  | **Document `html-report-kit` Artifact decision rule** centrally (it's in how-to-write-skills.md, surface it) | ⚪     | 10min  | Docs         |
-| 22  | **Audit `originals/`** — confirm 17 files map 1:1 to skills, prune orphans                                   | ⚪     | 15min  | Cleanup      |
-| 23  | **Add `.gitignore`** for any build artifacts if vendoring moves to generated-only                            | ⚪     | 5min   | Hygiene      |
-| 24  | **Standardize execution footer** — reference a shared block instead of copy-pasting                          | ⚪     | 15min  | DRY          |
-| 25  | **Generate a repo skill-dependency graph** (D2) showing the reference graph                                  | ⚪     | 20min  | Docs         |
+| #  | Task                                                                                                         | Impact | Effort | Category     |
+| -- | ------------------------------------------------------------------------------------------------------------ | ------ | ------ | ------------ |
+| 1  | **Commit this session's vendoring fix** (11 dirs + `scripts/` + doc edits)                                   | 🔴     | 2min   | Critical     |
+| 2  | **Fix `git commit <--` in 3 skills** → clear prose; add a grep guard                                         | 🔴     | 10min  | Correctness  |
+| 3  | **Fix stale skill counts** in README ("20"→19) + AGENTS.md ("18"/"9 of 18"→19/3)                             | 🔴     | 5min   | Docs         |
+| 4  | **Delete empty `brainstorm-data-model/`**                                                                    | 🟡     | 1min   | Cleanup      |
+| 5  | **Flesh out `bdd-testing`** — ginkgo syntax ref, test structure template, file naming                        | 🔴     | 45min  | Content      |
+| 6  | **Flesh out `features-audit`** — FEATURES.md template with status badges + examples                          | 🔴     | 30min  | Content      |
+| 7  | **Flesh out `docs-freshness-check`** — define "stale", configurable file list, methodology                   | 🟡     | 30min  | Content      |
+| 8  | **Wire `sync-html-kit.sh --check` into CI / pre-commit**                                                     | 🔴     | 15min  | Drift guard  |
+| 9  | **Re-verify `how-to-golang` code snippets** (gopter, json/v2, E2E HTTP, Rule 002)                            | 🟡     | 45min  | Quality      |
+| 10 | **Convert `how-to-write-skills.md` to a skill dir** (eat our own dog food)                                   | 🟡     | 20min  | Architecture |
+| 11 | **Create `library-guide` skill** from `LIBRARY_GUIDE.md` (13 Go libs)                                        | 🟡     | 45min  | New skill    |
+| 12 | **Wire remaining cross-refs** (full-code-review→deduplicate-code, brutal-self-review→architecture-review)    | 🟡     | 15min  | Integration  |
+| 13 | **Test trigger descriptions** with skill-creator's optimization loop                                         | 🟠     | 60min  | Validation   |
+| 14 | **Add `allowed-tools`** to CLI-dependent skills (`d2`, `art-dupl`)                                           | 🟠     | 15min  | Config       |
+| 15 | **Add output templates** to `todo-list-builder` and the 3 thin skills                                        | 🟡     | 30min  | Quality      |
+| 16 | **Create `crush.json`** for repo-level `skills_paths` auto-discovery                                         | 🟠     | 10min  | Config       |
+| 17 | **Add error-handling guidance** for missing external tools                                                   | 🟠     | 30min  | Robustness   |
+| 18 | **Add `architecture-review` rubric** — assessment criteria + methodology in `references/`                    | 🟡     | 30min  | Content      |
+| 19 | **Build eval test suite** — ≥2 prompts/skill, automated grading                                              | 🟠     | 2hr    | Validation   |
+| 20 | **Add version/timestamp** frontmatter to track skill freshness                                               | ⚪     | 10min  | Maintenance  |
+| 21 | **Document `html-report-kit` Artifact decision rule** centrally (it's in how-to-write-skills.md, surface it) | ⚪     | 10min  | Docs         |
+| 22 | **Audit `originals/`** — confirm 17 files map 1:1 to skills, prune orphans                                   | ⚪     | 15min  | Cleanup      |
+| 23 | **Add `.gitignore`** for any build artifacts if vendoring moves to generated-only                            | ⚪     | 5min   | Hygiene      |
+| 24 | **Standardize execution footer** — reference a shared block instead of copy-pasting                          | ⚪     | 15min  | DRY          |
+| 25 | **Generate a repo skill-dependency graph** (D2) showing the reference graph                                  | ⚪     | 20min  | Docs         |
 
 ---
 

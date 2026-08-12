@@ -87,13 +87,13 @@ For every capability the library offers, determine the project's adoption status
 
 Grade each capability:
 
-| Status                     | Meaning                                                  | Visual                               |
-| -------------------------- | -------------------------------------------------------- | ------------------------------------ |
-| **Fully Leveraged**        | Used correctly and optimally — nothing to improve        | 🟢 `.card-solution` / `.score-good`  |
-| **Partially Used**         | Used, but a more powerful built-in path exists           | 🟡 `.card-warning` / `.score-warn`   |
-| **Missed Opportunity**     | Powerful feature not used at all — high potential impact | 🔴 `.card-problem` / `.score-bad`    |
+| Status                     | Meaning                                                  | Visual                              |
+| -------------------------- | -------------------------------------------------------- | ----------------------------------- |
+| **Fully Leveraged**        | Used correctly and optimally — nothing to improve        | 🟢 `.card-solution` / `.score-good` |
+| **Partially Used**         | Used, but a more powerful built-in path exists           | 🟡 `.card-warning` / `.score-warn`  |
+| **Missed Opportunity**     | Powerful feature not used at all — high potential impact | 🔴 `.card-problem` / `.score-bad`   |
 | **Misused / Anti-Pattern** | Used against best practices — actively harmful           | ⚠️ `.card-problem` + warning callout |
-| **Not Applicable**         | Feature exists but doesn't apply to this project's needs | ⚪ muted / excluded from scoring     |
+| **Not Applicable**         | Feature exists but doesn't apply to this project's needs | ⚪ muted / excluded from scoring    |
 
 Every "Partially Used", "Missed Opportunity", and "Misused" finding must include:
 

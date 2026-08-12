@@ -8,16 +8,16 @@
 
 ## a) FULLY DONE
 
-| #   | Item                                                           | Details                                                    |
-| --- | -------------------------------------------------------------- | ---------------------------------------------------------- |
-| 1   | All 14 skills created with SKILL.md                            | Each in its own directory with YAML frontmatter            |
-| 2   | Skills refactored for consistent formatting                    | Commit `5c3a09b` — metadata, mantra, structure unified     |
-| 3   | Markdown formatting consistency pass                           | Commit `be1a2af` — tables, indentation, blank lines        |
-| 4   | Extracted `references/go-ecosystem.md`                         | Used by `brutal-self-review`                               |
-| 5   | Extracted `references/architect-checklist.md`                  | Used by `full-code-review`                                 |
-| 6   | `how-to-write-skills.md` comprehensive rewrite                 | 138 → 233 lines; merged insights from `skill-creator`      |
-| 7   | Full comparison of `how-to-write-skills.md` vs `skill-creator` | Identified gaps, overlaps, and improvements                |
-| 8   | Previous status report                                         | `docs/status/2026-05-02_22-50_skills-conversion-status.md` |
+| # | Item                                                           | Details                                                    |
+| - | -------------------------------------------------------------- | ---------------------------------------------------------- |
+| 1 | All 14 skills created with SKILL.md                            | Each in its own directory with YAML frontmatter            |
+| 2 | Skills refactored for consistent formatting                    | Commit `5c3a09b` — metadata, mantra, structure unified     |
+| 3 | Markdown formatting consistency pass                           | Commit `be1a2af` — tables, indentation, blank lines        |
+| 4 | Extracted `references/go-ecosystem.md`                         | Used by `brutal-self-review`                               |
+| 5 | Extracted `references/architect-checklist.md`                  | Used by `full-code-review`                                 |
+| 6 | `how-to-write-skills.md` comprehensive rewrite                 | 138 → 233 lines; merged insights from `skill-creator`      |
+| 7 | Full comparison of `how-to-write-skills.md` vs `skill-creator` | Identified gaps, overlaps, and improvements                |
+| 8 | Previous status report                                         | `docs/status/2026-05-02_22-50_skills-conversion-status.md` |
 
 ### What the `how-to-write-skills.md` rewrite added
 
@@ -53,21 +53,21 @@ Two items identified but not yet added:
 
 ## c) NOT STARTED
 
-| #   | Item                                                                       | Priority | Notes                                      |
-| --- | -------------------------------------------------------------------------- | -------- | ------------------------------------------ |
-| 1   | Test all 14 skills in Crush                                                | Critical | Verify they activate on correct triggers   |
-| 2   | Create `crush.json` with `skills_paths`                                    | Critical | Needed for Crush to discover these skills  |
-| 3   | Write README.md for the SKILLS project                                     | High     | Explain project, list all skills           |
-| 4   | Remove original `1.md`–`17.md` files                                       | Medium   | Waiting on user confirmation               |
-| 5   | Refine descriptions from activation testing                                | High     | Depends on #1                              |
-| 6   | Add cross-references between related skills                                | Medium   | e.g., brutal-self-review → pareto-planning |
-| 7   | Flesh out thin skills (nix-flake-migration: 21L, architecture-review: 30L) | Medium   | Currently very sparse                      |
-| 8   | Add `allowed-tools` to skills where appropriate                            | Low      | Experimental feature                       |
-| 9   | Reference `go-ecosystem.md` from full-code-review and code-quality-scan    | Medium   | Currently only in brutal-self-review       |
-| 10  | Add CHANGELOG.md or version tracking                                       | Low      | No versioning exists                       |
-| 11  | Move `how-to-write-skills.md` to better location                           | Low      | Currently in project root                  |
-| 12  | Add `.gitignore` if needed                                                 | Low      | Housekeeping                               |
-| 13  | Test with non-Go projects (false-positive check)                           | Low      | Go-specific skills may falsely trigger     |
+| #  | Item                                                                       | Priority | Notes                                      |
+| -- | -------------------------------------------------------------------------- | -------- | ------------------------------------------ |
+| 1  | Test all 14 skills in Crush                                                | Critical | Verify they activate on correct triggers   |
+| 2  | Create `crush.json` with `skills_paths`                                    | Critical | Needed for Crush to discover these skills  |
+| 3  | Write README.md for the SKILLS project                                     | High     | Explain project, list all skills           |
+| 4  | Remove original `1.md`–`17.md` files                                       | Medium   | Waiting on user confirmation               |
+| 5  | Refine descriptions from activation testing                                | High     | Depends on #1                              |
+| 6  | Add cross-references between related skills                                | Medium   | e.g., brutal-self-review → pareto-planning |
+| 7  | Flesh out thin skills (nix-flake-migration: 21L, architecture-review: 30L) | Medium   | Currently very sparse                      |
+| 8  | Add `allowed-tools` to skills where appropriate                            | Low      | Experimental feature                       |
+| 9  | Reference `go-ecosystem.md` from full-code-review and code-quality-scan    | Medium   | Currently only in brutal-self-review       |
+| 10 | Add CHANGELOG.md or version tracking                                       | Low      | No versioning exists                       |
+| 11 | Move `how-to-write-skills.md` to better location                           | Low      | Currently in project root                  |
+| 12 | Add `.gitignore` if needed                                                 | Low      | Housekeeping                               |
+| 13 | Test with non-Go projects (false-positive check)                           | Low      | Go-specific skills may falsely trigger     |
 
 ---
 
@@ -109,33 +109,33 @@ Nothing. No known issues with the current files. All 14 skills have valid frontm
 
 ## f) Top #25 Things We Should Get Done Next
 
-| #   | Task                                                                              | Impact   | Effort | Depends On          |
-| --- | --------------------------------------------------------------------------------- | -------- | ------ | ------------------- |
-| 1   | Test all 14 skills in Crush — verify correct activation                           | Critical | 30min  | `crush.json` config |
-| 2   | Create `crush.json` with `skills_paths` pointing to this repo                     | Critical | 5min   | —                   |
-| 3   | Write README.md for the SKILLS project                                            | High     | 15min  | —                   |
-| 4   | Refine descriptions based on activation test results                              | High     | 30min  | #1                  |
-| 5   | Run `skill-creator` description optimizer on all 14 skills                        | High     | 2hr    | #1, #2              |
-| 6   | Remove original `1.md`–`17.md` after user confirmation                            | Medium   | 2min   | User OK             |
-| 7   | Flesh out `nix-flake-migration` with decision tree, examples                      | Medium   | 15min  | —                   |
-| 8   | Flesh out `architecture-review` with detailed process steps                       | Medium   | 15min  | —                   |
-| 9   | Add cross-references between chained skills                                       | Medium   | 20min  | —                   |
-| 10  | Reference `go-ecosystem.md` from full-code-review, code-quality-scan, bdd-testing | Medium   | 5min   | —                   |
-| 11  | Add examples/output formats to each skill that lacks them                         | Medium   | 30min  | —                   |
-| 12  | Add "When to use" clarification to `how-to-write-skills.md` template              | Low      | 5min   | —                   |
-| 13  | Add triggering mechanism explanation to `how-to-write-skills.md`                  | Low      | 10min  | —                   |
-| 14  | Verify `architecture-visualization` D2 change was intentional                     | Low      | 2min   | User input          |
-| 15  | Consider splitting `execution-mode` into reflect vs execute skills                | Low      | 15min  | —                   |
-| 16  | Add `allowed-tools` to skills that need specific tools                            | Low      | 15min  | —                   |
-| 17  | Add CHANGELOG.md                                                                  | Low      | 10min  | —                   |
-| 18  | Move `how-to-write-skills.md` to `docs/`                                          | Low      | 2min   | —                   |
-| 19  | Add `.gitignore`                                                                  | Low      | 2min   | —                   |
-| 20  | Test with non-Go projects (false-positive check)                                  | Low      | 15min  | #1                  |
-| 21  | Create a `scripts/` helper for any skill that does repetitive work                | Low      | Varies | Usage testing       |
-| 22  | Write integration tests for skill triggering accuracy                             | Low      | 1hr    | #1, #2              |
-| 23  | Add `metadata.tags` that are more specific/useful                                 | Low      | 10min  | —                   |
-| 24  | Consider a skill registry/index that maps user intents → skills                   | Low      | 20min  | —                   |
-| 25  | Archive or git-tag the pre-conversion state for history                           | Low      | 2min   | —                   |
+| #  | Task                                                                              | Impact   | Effort | Depends On          |
+| -- | --------------------------------------------------------------------------------- | -------- | ------ | ------------------- |
+| 1  | Test all 14 skills in Crush — verify correct activation                           | Critical | 30min  | `crush.json` config |
+| 2  | Create `crush.json` with `skills_paths` pointing to this repo                     | Critical | 5min   | —                   |
+| 3  | Write README.md for the SKILLS project                                            | High     | 15min  | —                   |
+| 4  | Refine descriptions based on activation test results                              | High     | 30min  | #1                  |
+| 5  | Run `skill-creator` description optimizer on all 14 skills                        | High     | 2hr    | #1, #2              |
+| 6  | Remove original `1.md`–`17.md` after user confirmation                            | Medium   | 2min   | User OK             |
+| 7  | Flesh out `nix-flake-migration` with decision tree, examples                      | Medium   | 15min  | —                   |
+| 8  | Flesh out `architecture-review` with detailed process steps                       | Medium   | 15min  | —                   |
+| 9  | Add cross-references between chained skills                                       | Medium   | 20min  | —                   |
+| 10 | Reference `go-ecosystem.md` from full-code-review, code-quality-scan, bdd-testing | Medium   | 5min   | —                   |
+| 11 | Add examples/output formats to each skill that lacks them                         | Medium   | 30min  | —                   |
+| 12 | Add "When to use" clarification to `how-to-write-skills.md` template              | Low      | 5min   | —                   |
+| 13 | Add triggering mechanism explanation to `how-to-write-skills.md`                  | Low      | 10min  | —                   |
+| 14 | Verify `architecture-visualization` D2 change was intentional                     | Low      | 2min   | User input          |
+| 15 | Consider splitting `execution-mode` into reflect vs execute skills                | Low      | 15min  | —                   |
+| 16 | Add `allowed-tools` to skills that need specific tools                            | Low      | 15min  | —                   |
+| 17 | Add CHANGELOG.md                                                                  | Low      | 10min  | —                   |
+| 18 | Move `how-to-write-skills.md` to `docs/`                                          | Low      | 2min   | —                   |
+| 19 | Add `.gitignore`                                                                  | Low      | 2min   | —                   |
+| 20 | Test with non-Go projects (false-positive check)                                  | Low      | 15min  | #1                  |
+| 21 | Create a `scripts/` helper for any skill that does repetitive work                | Low      | Varies | Usage testing       |
+| 22 | Write integration tests for skill triggering accuracy                             | Low      | 1hr    | #1, #2              |
+| 23 | Add `metadata.tags` that are more specific/useful                                 | Low      | 10min  | —                   |
+| 24 | Consider a skill registry/index that maps user intents → skills                   | Low      | 20min  | —                   |
+| 25 | Archive or git-tag the pre-conversion state for history                           | Low      | 2min   | —                   |
 
 ---
 

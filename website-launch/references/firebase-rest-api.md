@@ -171,10 +171,10 @@ Found at: `requiredDnsUpdates.desired[0].records[0]`
 
 ```json
 {
-	"domainName": "go-workflow-auditlog.lars.software",
-	"type": "CNAME",
-	"rdata": "auditlog.web.app",
-	"requiredAction": "ADD"
+  "domainName": "go-workflow-auditlog.lars.software",
+  "type": "CNAME",
+  "rdata": "auditlog.web.app",
+  "requiredAction": "ADD"
 }
 ```
 
@@ -189,10 +189,10 @@ Found at: `cert.verification.dns.desired[0].records[0]`
 
 ```json
 {
-	"domainName": "_acme-challenge.go-workflow-auditlog.lars.software",
-	"type": "TXT",
-	"rdata": "Kl50WF6Xp532l4EmJ2TigjWE2b4u9Njl_-JtkiXmPig",
-	"requiredAction": "ADD"
+  "domainName": "_acme-challenge.go-workflow-auditlog.lars.software",
+  "type": "TXT",
+  "rdata": "Kl50WF6Xp532l4EmJ2TigjWE2b4u9Njl_-JtkiXmPig",
+  "requiredAction": "ADD"
 }
 ```
 

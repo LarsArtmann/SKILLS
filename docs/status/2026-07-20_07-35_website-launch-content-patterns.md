@@ -19,17 +19,17 @@ User shared `https://sp8d.github.io/introduction/what-is-sp8d/` and asked what o
 
 ## a) FULLY DONE
 
-| #   | Item                                                                                                                                                     | Files                                                   |
-| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| 1   | Created `content-patterns.md` reference — 7 stack-independent patterns + a retrofit checklist                                                            | `website-launch/references/content-patterns.md` (new)   |
-| 2   | Created `design-inspiration.md` reference — names the "Nextra-class" aesthetic, maps each quality to a Starlight equivalent, argues why we stay on Astro | `website-launch/references/design-inspiration.md` (new) |
-| 3   | Added "Who is this for?" + "When NOT to use this" to the standard README section order (Phase 2)                                                         | `website-launch/SKILL.md`                               |
-| 4   | Added §3.10 "Starlight config knobs (the nice docs enablers)" with `lastUpdated` + `editLink` config block                                               | `website-launch/SKILL.md`                               |
-| 5   | Added §0.6 "Hosting target: Firebase vs GitHub Pages" decision table (Firebase stays default)                                                            | `website-launch/SKILL.md`                               |
-| 6   | Augmented Phase 0.0 maintenance mode to audit & retrofit existing sites (the mechanism for "all implementations inherit this")                           | `website-launch/SKILL.md`                               |
-| 7   | Added design-inspiration pointer in Phase 3.1                                                                                                            | `website-launch/SKILL.md`                               |
-| 8   | Updated `readme-template.md`: new section order, two new pattern subsections, 2 new checklist items                                                      | `website-launch/references/readme-template.md`          |
-| 9   | Verified: `scripts/check-skills.sh` passes for all 20 skills; code-fence balance OK in all 4 touched files                                               | —                                                       |
+| # | Item                                                                                                                                                     | Files                                                   |
+| - | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| 1 | Created `content-patterns.md` reference — 7 stack-independent patterns + a retrofit checklist                                                            | `website-launch/references/content-patterns.md` (new)   |
+| 2 | Created `design-inspiration.md` reference — names the "Nextra-class" aesthetic, maps each quality to a Starlight equivalent, argues why we stay on Astro | `website-launch/references/design-inspiration.md` (new) |
+| 3 | Added "Who is this for?" + "When NOT to use this" to the standard README section order (Phase 2)                                                         | `website-launch/SKILL.md`                               |
+| 4 | Added §3.10 "Starlight config knobs (the nice docs enablers)" with `lastUpdated` + `editLink` config block                                               | `website-launch/SKILL.md`                               |
+| 5 | Added §0.6 "Hosting target: Firebase vs GitHub Pages" decision table (Firebase stays default)                                                            | `website-launch/SKILL.md`                               |
+| 6 | Augmented Phase 0.0 maintenance mode to audit & retrofit existing sites (the mechanism for "all implementations inherit this")                           | `website-launch/SKILL.md`                               |
+| 7 | Added design-inspiration pointer in Phase 3.1                                                                                                            | `website-launch/SKILL.md`                               |
+| 8 | Updated `readme-template.md`: new section order, two new pattern subsections, 2 new checklist items                                                      | `website-launch/references/readme-template.md`          |
+| 9 | Verified: `scripts/check-skills.sh` passes for all 20 skills; code-fence balance OK in all 4 touched files                                               | —                                                       |
 
 **Diff stat:** `SKILL.md` +117/-… , `readme-template.md` +74/-…, plus 2 new untracked reference files. `website-launch/SKILL.md` grew from 1013 → 1098 lines.
 

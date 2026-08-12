@@ -159,37 +159,37 @@ dialects instead of 1. **Order matters: shared template first, conversions secon
 
 ### The 1% → 51% (do FIRST, unblocks everything)
 
-| #   | Task                                                                                                                                                  | Impact  | Effort | Ratio      |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------ | ---------- |
-| 1   | Extract shared `assets/report.html` + `references/html-output-guide.md` from existing HTML + `output-guide.md`; use language-agnostic `.tok-*` tokens | 🔴 High | 30min  | ⭐⭐⭐⭐⭐ |
+| # | Task                                                                                                                                                  | Impact  | Effort | Ratio      |
+| - | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------ | ---------- |
+| 1 | Extract shared `assets/report.html` + `references/html-output-guide.md` from existing HTML + `output-guide.md`; use language-agnostic `.tok-*` tokens | 🔴 High | 30min  | ⭐⭐⭐⭐⭐ |
 
 ### The 4% → 64% (highest-leverage conversions + the consolidation)
 
-| #   | Task                                                                                                    | Impact  | Effort | Ratio      |
-| --- | ------------------------------------------------------------------------------------------------------- | ------- | ------ | ---------- |
-| 2   | Convert `status-report` → HTML output + point at shared guide                                           | 🔴 High | 20min  | ⭐⭐⭐⭐⭐ |
-| 3   | Convert `pareto-planning` → HTML; embed D2→inline SVG; add `allowed-tools: d2`                          | 🔴 High | 25min  | ⭐⭐⭐⭐⭐ |
-| 4   | **Consolidate**: make `full-code-review` delegate planning to `pareto-planning` (delete inlined Pareto) | 🔴 High | 20min  | ⭐⭐⭐⭐⭐ |
-| 5   | Convert `go-modularize` `PROPOSAL.md`/`EXECUTION_PLAN.md`/`DEPENDENCY_GRAPH.md` → single HTML proposal  | 🟡 Med  | 30min  | ⭐⭐⭐⭐   |
+| # | Task                                                                                                    | Impact  | Effort | Ratio      |
+| - | ------------------------------------------------------------------------------------------------------- | ------- | ------ | ---------- |
+| 2 | Convert `status-report` → HTML output + point at shared guide                                           | 🔴 High | 20min  | ⭐⭐⭐⭐⭐ |
+| 3 | Convert `pareto-planning` → HTML; embed D2→inline SVG; add `allowed-tools: d2`                          | 🔴 High | 25min  | ⭐⭐⭐⭐⭐ |
+| 4 | **Consolidate**: make `full-code-review` delegate planning to `pareto-planning` (delete inlined Pareto) | 🔴 High | 20min  | ⭐⭐⭐⭐⭐ |
+| 5 | Convert `go-modularize` `PROPOSAL.md`/`EXECUTION_PLAN.md`/`DEPENDENCY_GRAPH.md` → single HTML proposal  | 🟡 Med  | 30min  | ⭐⭐⭐⭐   |
 
 ### The 20% → 80% (Tier 2 conversions)
 
-| #   | Task                                                                                    | Impact | Effort | Ratio    |
-| --- | --------------------------------------------------------------------------------------- | ------ | ------ | -------- |
-| 6   | Convert `code-quality-scan` → HTML issue table (also fixes its **missing output path**) | 🟡 Med | 25min  | ⭐⭐⭐⭐ |
-| 7   | Convert `naming-review` report → HTML (category-colored tables)                         | 🟡 Med | 25min  | ⭐⭐⭐   |
-| 8   | Convert `nix-flake-migration` `MIGRATION_TO_NIX_FLAKES_PROPOSAL.md` → HTML              | 🟡 Med | 20min  | ⭐⭐⭐   |
-| 9   | Convert `brutal-self-review` improvement plan → HTML                                    | 🟢 Low | 20min  | ⭐⭐     |
+| # | Task                                                                                    | Impact | Effort | Ratio    |
+| - | --------------------------------------------------------------------------------------- | ------ | ------ | -------- |
+| 6 | Convert `code-quality-scan` → HTML issue table (also fixes its **missing output path**) | 🟡 Med | 25min  | ⭐⭐⭐⭐ |
+| 7 | Convert `naming-review` report → HTML (category-colored tables)                         | 🟡 Med | 25min  | ⭐⭐⭐   |
+| 8 | Convert `nix-flake-migration` `MIGRATION_TO_NIX_FLAKES_PROPOSAL.md` → HTML              | 🟡 Med | 20min  | ⭐⭐⭐   |
+| 9 | Convert `brutal-self-review` improvement plan → HTML                                    | 🟢 Low | 20min  | ⭐⭐     |
 
 ### Polish (the long tail)
 
-| #   | Task                                                                         | Impact | Effort | Ratio    |
-| --- | ---------------------------------------------------------------------------- | ------ | ------ | -------- |
-| 10  | Encode the `Artifact` type-model decision rule into `how-to-write-skills.md` | 🟡 Med | 15min  | ⭐⭐⭐⭐ |
-| 11  | Add `allowed-tools` frontmatter to all graph/CLI-dependent skills            | 🟢 Low | 10min  | ⭐⭐⭐   |
-| 12  | Add cross-references: converted skills link the shared guide                 | 🟢 Low | 10min  | ⭐⭐     |
-| 13  | Update `AGENTS.md` §5 to document the shared HTML design system              | 🟢 Low | 10min  | ⭐⭐     |
-| 14  | Update `README.md` skills table to note HTML-output skills                   | 🟢 Low | 5min   | ⭐⭐     |
+| #  | Task                                                                         | Impact | Effort | Ratio    |
+| -- | ---------------------------------------------------------------------------- | ------ | ------ | -------- |
+| 10 | Encode the `Artifact` type-model decision rule into `how-to-write-skills.md` | 🟡 Med | 15min  | ⭐⭐⭐⭐ |
+| 11 | Add `allowed-tools` frontmatter to all graph/CLI-dependent skills            | 🟢 Low | 10min  | ⭐⭐⭐   |
+| 12 | Add cross-references: converted skills link the shared guide                 | 🟢 Low | 10min  | ⭐⭐     |
+| 13 | Update `AGENTS.md` §5 to document the shared HTML design system              | 🟢 Low | 10min  | ⭐⭐     |
+| 14 | Update `README.md` skills table to note HTML-output skills                   | 🟢 Low | 5min   | ⭐⭐     |
 
 ### Explicitly OUT OF SCOPE (stay Markdown — proven by the type model)
 

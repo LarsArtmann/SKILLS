@@ -178,7 +178,7 @@ This report covers ONLY this session's work and what it surfaced.
    example.
 4. **Add a TOC-integrity check to `check-skills.sh`.** Two sessions in a row,
    I've introduced TOC drift in `annotation-placement.md`. A script-level
-   guard (count `## ` headings vs TOC entries) would catch this at
+   guard (count `##` headings vs TOC entries) would catch this at
    commit time.
 5. **Do the `docs-health` references-first refactor.** It's at 500/500 lines
    — the same structural pressure that forced the `update-old-docs` refactor.
@@ -203,7 +203,7 @@ This report covers ONLY this session's work and what it surfaced.
 3. **Fix `docs-health` buried failure mode** — surface "HARVEST-skipping is
    the #1 cause of TODO_LIST staleness" in the intro (requires trimming
    elsewhere — docs-health is at 500/500)
-4. **Add TOC-integrity check to `check-skills.sh`** — count `## ` headings
+4. **Add TOC-integrity check to `check-skills.sh`** — count `##` headings
    vs `[N. ...](#...)` entries, fail on mismatch
 5. **Run behavioral eval** — write 2-3 test prompts using skill-creator
    framework; include 41-file/table-row scenario; assert inline-marker count

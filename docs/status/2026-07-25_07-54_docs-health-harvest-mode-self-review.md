@@ -22,14 +22,14 @@ Result: every "Top 50 next things" list was entombed in a timestamped file. Conf
 
 Six edits to `/home/lars/projects/SKILLS/docs-health/SKILL.md`:
 
-| #   | Change                                                                                                                                                                                          | Purpose                                                   |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| 1   | Frontmatter `description` extended with harvest triggers ("harvest status report", "pull next tasks into TODO_LIST", "extract open items from recent reports")                                  | So Crush actually activates the skill on harvest intent   |
-| 2   | "Living vs Historical" prose clarified: "cannot be rewritten ≠ cannot be read"                                                                                                                  | Removes the false constraint that blocked reading reports |
-| 3   | Task table gained HARVEST as a peer mode alongside BUILD/VERIFY/AUDIT                                                                                                                           | Discoverability                                           |
-| 4   | New `## HARVEST` section: select recent 1–3 reports, extract forward items (NOT open questions), verify against code, route to TODO_LIST/ROADMAP/drop, cite both code + report, 5 anti-patterns | The actual procedure                                      |
-| 5   | AUDIT process now runs HARVEST as step 3 (before VERIFY)                                                                                                                                        | So full audits don't skip the harvest                     |
-| 6   | Two-way relationship note: forward = HARVEST (docs-health), backward = annotation (update-old-docs)                                                                                             | Kills the "update-old-docs handles it" misconception      |
+| # | Change                                                                                                                                                                                          | Purpose                                                   |
+| - | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| 1 | Frontmatter `description` extended with harvest triggers ("harvest status report", "pull next tasks into TODO_LIST", "extract open items from recent reports")                                  | So Crush actually activates the skill on harvest intent   |
+| 2 | "Living vs Historical" prose clarified: "cannot be rewritten ≠ cannot be read"                                                                                                                  | Removes the false constraint that blocked reading reports |
+| 3 | Task table gained HARVEST as a peer mode alongside BUILD/VERIFY/AUDIT                                                                                                                           | Discoverability                                           |
+| 4 | New `## HARVEST` section: select recent 1–3 reports, extract forward items (NOT open questions), verify against code, route to TODO_LIST/ROADMAP/drop, cite both code + report, 5 anti-patterns | The actual procedure                                      |
+| 5 | AUDIT process now runs HARVEST as step 3 (before VERIFY)                                                                                                                                        | So full audits don't skip the harvest                     |
+| 6 | Two-way relationship note: forward = HARVEST (docs-health), backward = annotation (update-old-docs)                                                                                             | Kills the "update-old-docs handles it" misconception      |
 
 ### 3. Updated 3 reference files
 

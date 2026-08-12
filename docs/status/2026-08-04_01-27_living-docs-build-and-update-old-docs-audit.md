@@ -252,78 +252,78 @@ Resolution` sections. Zero inline corrections. Zero strikethrough `done at`
 
 ### P0 — fix this session's failures
 
-| #   | Task                                                                                    | Impact   | Effort |
-| --- | --------------------------------------------------------------------------------------- | -------- | ------ |
-| 1   | Inline-resolve numbered f-section items in the 8 annotated reports (strike + `done at`) | Critical | High   |
-| 2   | Reconcile how-to-golang status across README (🟢) and FEATURES (🟡)                     | High     | Low    |
-| 3   | Run docs-health health-report-format properly (Accuracy + Fitness scores + math)        | High     | Med    |
-| 4   | Verify CHANGELOG commit-hash ranges against actual git log                              | Med      | Low    |
+| # | Task                                                                                    | Impact   | Effort |
+| - | --------------------------------------------------------------------------------------- | -------- | ------ |
+| 1 | Inline-resolve numbered f-section items in the 8 annotated reports (strike + `done at`) | Critical | High   |
+| 2 | Reconcile how-to-golang status across README (🟢) and FEATURES (🟡)                     | High     | Low    |
+| 3 | Run docs-health health-report-format properly (Accuracy + Fitness scores + math)        | High     | Med    |
+| 4 | Verify CHANGELOG commit-hash ranges against actual git log                              | Med      | Low    |
 
 ### P1 — complete the docs-health AUDIT properly
 
-| #   | Task                                                                                | Impact | Effort |
-| --- | ----------------------------------------------------------------------------------- | ------ | ------ |
-| 5   | Update AGENTS.md to reference the 4 new living docs                                 | High   | Low    |
-| 6   | Point README "Quality & Status" at FEATURES.md instead of duplicating               | Med    | Low    |
-| 7   | Verify every internal markdown link across ALL docs (not just the 4 new ones)       | Med    | Low    |
-| 8   | Run the docs-health `verify-checklist.md` regression scenarios                      | Med    | Med    |
-| 9   | Open each skill's SKILL.md and verify FEATURES.md status claims against actual code | High   | High   |
-| 10  | Confirm how-to-golang code-accuracy issues still exist (open the reference files)   | High   | Med    |
+| #  | Task                                                                                | Impact | Effort |
+| -- | ----------------------------------------------------------------------------------- | ------ | ------ |
+| 5  | Update AGENTS.md to reference the 4 new living docs                                 | High   | Low    |
+| 6  | Point README "Quality & Status" at FEATURES.md instead of duplicating               | Med    | Low    |
+| 7  | Verify every internal markdown link across ALL docs (not just the 4 new ones)       | Med    | Low    |
+| 8  | Run the docs-health `verify-checklist.md` regression scenarios                      | Med    | Med    |
+| 9  | Open each skill's SKILL.md and verify FEATURES.md status claims against actual code | High   | High   |
+| 10 | Confirm how-to-golang code-accuracy issues still exist (open the reference files)   | High   | Med    |
 
 ### P2 — extend update-old-docs to older reports
 
-| #   | Task                                                                                                 | Impact | Effort |
-| --- | ---------------------------------------------------------------------------------------------------- | ------ | ------ |
-| 11  | Classify the ~20 older reports (ANNOTATE / ARCHIVE / SKIP / LEAVE ALONE)                             | Med    | Med    |
-| 12  | Archive fully-resolved older reports to `docs/status/archived/`                                      | Med    | Low    |
-| 13  | Annotate older reports that still have open items                                                    | Med    | Med    |
-| 14  | Check if `docs/status/2026-05-03_07-51_comprehensive-skills-audit.md` is fully stale                 | Med    | Low    |
-| 15  | Check the 2 HTML status reports for staleness (`2026-06-17_20-41_*.html`, `2026-06-18_16-57_*.html`) | Low    | Med    |
+| #  | Task                                                                                                 | Impact | Effort |
+| -- | ---------------------------------------------------------------------------------------------------- | ------ | ------ |
+| 11 | Classify the ~20 older reports (ANNOTATE / ARCHIVE / SKIP / LEAVE ALONE)                             | Med    | Med    |
+| 12 | Archive fully-resolved older reports to `docs/status/archived/`                                      | Med    | Low    |
+| 13 | Annotate older reports that still have open items                                                    | Med    | Med    |
+| 14 | Check if `docs/status/2026-05-03_07-51_comprehensive-skills-audit.md` is fully stale                 | Med    | Low    |
+| 15 | Check the 2 HTML status reports for staleness (`2026-06-17_20-41_*.html`, `2026-06-18_16-57_*.html`) | Low    | Med    |
 
 ### P3 — skill quality (from harvested TODO_LIST)
 
-| #   | Task                                                                 | Impact   | Effort |
-| --- | -------------------------------------------------------------------- | -------- | ------ |
-| 16  | Run trigger collision analysis across all 25 skills (TODO_LIST T1)   | Critical | Med    |
-| 17  | Add disambiguation between overlapping skill pairs (TODO_LIST T2)    | High     | Low    |
-| 18  | Audit `verify-before-filing/SKILL.md` body and claims (TODO_LIST T3) | High     | Low    |
-| 19  | Validate `how-to-golang` code snippets (TODO_LIST T4)                | High     | Med    |
-| 20  | Refactor `docs-health/SKILL.md` references-first (TODO_LIST T5)      | High     | Med    |
-| 21  | Add TOC-integrity guard to `check-skills.sh` (TODO_LIST T6)          | Med      | Low    |
-| 22  | Add marker-vocabulary guard to `check-skills.sh` (TODO_LIST T7)      | Med      | Low    |
-| 23  | Reconcile docs-health scoring systems (TODO_LIST T8)                 | Med      | Low    |
-| 24  | Create `scripts/check-agents-md.sh` (TODO_LIST T9)                   | Med      | Med    |
-| 25  | Deepen `architecture-review` skill (TODO_LIST T12)                   | Med      | Med    |
-| 26  | Deepen `code-quality-scan` skill (TODO_LIST T13)                     | Med      | Med    |
-| 27  | Deepen `bdd-testing` skill (TODO_LIST T14)                           | Med      | Med    |
-| 28  | Refactor `website-launch` (1106 lines → references) (TODO_LIST T16)  | Low      | Med    |
+| #  | Task                                                                 | Impact   | Effort |
+| -- | -------------------------------------------------------------------- | -------- | ------ |
+| 16 | Run trigger collision analysis across all 25 skills (TODO_LIST T1)   | Critical | Med    |
+| 17 | Add disambiguation between overlapping skill pairs (TODO_LIST T2)    | High     | Low    |
+| 18 | Audit `verify-before-filing/SKILL.md` body and claims (TODO_LIST T3) | High     | Low    |
+| 19 | Validate `how-to-golang` code snippets (TODO_LIST T4)                | High     | Med    |
+| 20 | Refactor `docs-health/SKILL.md` references-first (TODO_LIST T5)      | High     | Med    |
+| 21 | Add TOC-integrity guard to `check-skills.sh` (TODO_LIST T6)          | Med      | Low    |
+| 22 | Add marker-vocabulary guard to `check-skills.sh` (TODO_LIST T7)      | Med      | Low    |
+| 23 | Reconcile docs-health scoring systems (TODO_LIST T8)                 | Med      | Low    |
+| 24 | Create `scripts/check-agents-md.sh` (TODO_LIST T9)                   | Med      | Med    |
+| 25 | Deepen `architecture-review` skill (TODO_LIST T12)                   | Med      | Med    |
+| 26 | Deepen `code-quality-scan` skill (TODO_LIST T13)                     | Med      | Med    |
+| 27 | Deepen `bdd-testing` skill (TODO_LIST T14)                           | Med      | Med    |
+| 28 | Refactor `website-launch` (1106 lines → references) (TODO_LIST T16)  | Low      | Med    |
 
 ### P4 — polish and completeness
 
-| #   | Task                                                                                              | Impact | Effort  |
-| --- | ------------------------------------------------------------------------------------------------- | ------ | ------- |
-| 29  | Add commit hyperlinks to CHANGELOG milestone waves                                                | Low    | Low     |
-| 30  | Update the comprehensive audit doc to reflect current state (TODO_LIST T17)                       | Low    | Low     |
-| 31  | Add "competing skills" section to `how-to-write-skills.md` (TODO_LIST T18)                        | Low    | Low     |
-| 32  | Append appendix-only incident to `case-study.md` (TODO_LIST T10)                                  | Low    | Low     |
-| 33  | Add condensing checklist to `how-to-write-skills.md` (TODO_LIST T11)                              | Low    | Low     |
-| 34  | Check whether `how-to-write-skills.md` should move to a skill directory                           | Low    | Low     |
-| 35  | Verify `CONTRIBUTING.md` links resolve                                                            | Low    | Trivial |
-| 36  | Add a "Living Documentation" section to README pointing at the 4 new docs                         | Low    | Low     |
-| 37  | Check if the `docs/brainstorming/` HTML file is stale                                             | Low    | Low     |
-| 38  | Verify the `originals/` directory is complete (no missing seed prompts)                           | Low    | Low     |
-| 39  | Add the new living docs to the repo's `.gitignore` exclusions if needed (unlikely)                | Low    | Trivial |
-| 40  | Consider whether FEATURES.md should track the `html-report-kit` as a skill or infra               | Low    | Trivial |
-| 41  | Add a "last verified" date to FEATURES.md status claims                                           | Low    | Low     |
-| 42  | Cross-reference TODO_LIST items from CHANGELOG entries where applicable                           | Low    | Low     |
-| 43  | Add ROADMAP.md to the README table of contents                                                    | Low    | Trivial |
-| 44  | Check if the feedback loop (`docs/feedback/new/`) has unprocessed items                           | Low    | Trivial |
-| 45  | Verify the AGENTS.md §5.5 inter-skill graph is current after this session                         | Low    | Low     |
-| 46  | Consider whether the CHANGELOG milestone-wave format should be documented in AGENTS.md            | Low    | Low     |
-| 47  | Add a "How to update these docs" pointer from each living doc to docs-health skill                | Low    | Low     |
-| 48  | Check whether the status-report skill's HTML default needs revisiting (3rd .md override in a row) | Low    | Low     |
-| 49  | Verify no orphaned cross-references exist (skill A links to B, B doesn't acknowledge)             | Low    | Med     |
-| 50  | Run `sync-html-kit.sh --check` to verify vendored copies are current                              | Low    | Trivial |
+| #  | Task                                                                                              | Impact | Effort  |
+| -- | ------------------------------------------------------------------------------------------------- | ------ | ------- |
+| 29 | Add commit hyperlinks to CHANGELOG milestone waves                                                | Low    | Low     |
+| 30 | Update the comprehensive audit doc to reflect current state (TODO_LIST T17)                       | Low    | Low     |
+| 31 | Add "competing skills" section to `how-to-write-skills.md` (TODO_LIST T18)                        | Low    | Low     |
+| 32 | Append appendix-only incident to `case-study.md` (TODO_LIST T10)                                  | Low    | Low     |
+| 33 | Add condensing checklist to `how-to-write-skills.md` (TODO_LIST T11)                              | Low    | Low     |
+| 34 | Check whether `how-to-write-skills.md` should move to a skill directory                           | Low    | Low     |
+| 35 | Verify `CONTRIBUTING.md` links resolve                                                            | Low    | Trivial |
+| 36 | Add a "Living Documentation" section to README pointing at the 4 new docs                         | Low    | Low     |
+| 37 | Check if the `docs/brainstorming/` HTML file is stale                                             | Low    | Low     |
+| 38 | Verify the `originals/` directory is complete (no missing seed prompts)                           | Low    | Low     |
+| 39 | Add the new living docs to the repo's `.gitignore` exclusions if needed (unlikely)                | Low    | Trivial |
+| 40 | Consider whether FEATURES.md should track the `html-report-kit` as a skill or infra               | Low    | Trivial |
+| 41 | Add a "last verified" date to FEATURES.md status claims                                           | Low    | Low     |
+| 42 | Cross-reference TODO_LIST items from CHANGELOG entries where applicable                           | Low    | Low     |
+| 43 | Add ROADMAP.md to the README table of contents                                                    | Low    | Trivial |
+| 44 | Check if the feedback loop (`docs/feedback/new/`) has unprocessed items                           | Low    | Trivial |
+| 45 | Verify the AGENTS.md §5.5 inter-skill graph is current after this session                         | Low    | Low     |
+| 46 | Consider whether the CHANGELOG milestone-wave format should be documented in AGENTS.md            | Low    | Low     |
+| 47 | Add a "How to update these docs" pointer from each living doc to docs-health skill                | Low    | Low     |
+| 48 | Check whether the status-report skill's HTML default needs revisiting (3rd .md override in a row) | Low    | Low     |
+| 49 | Verify no orphaned cross-references exist (skill A links to B, B doesn't acknowledge)             | Low    | Med     |
+| 50 | Run `sync-html-kit.sh --check` to verify vendored copies are current                              | Low    | Trivial |
 
 ---
 

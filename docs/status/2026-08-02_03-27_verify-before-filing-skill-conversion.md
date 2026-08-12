@@ -12,35 +12,35 @@ Converted two feedback files describing the **same failure pattern** (filing pre
 
 ## a) FULLY DONE ✅
 
-| #   | Work item                                               | Evidence                                                                                                                                                                                                  |
-| --- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **Created `verify-before-filing/SKILL.md`** (193 lines) | Merged the best of both feedback files: gate-based workflow from the polished draft + the "Red Flags" quick-triage table unique to the raw proposal. 9 sections, under the 500-line gate.                 |
-| 2   | **Frontmatter valid**                                   | `name: verify-before-filing` matches directory; description is a real trigger (567 chars, well under 1024); `allowed-tools` + `tags` set. `check-skills.sh` confirms.                                     |
-| 3   | **README.md inventory updated**                         | Added row to "Skill Authoring & Verification" table; bumped count `24 → 25`; updated Quality & Status breakdown (Four → Five 🆕 New). Count guard passes.                                                 |
-| 4   | **Bidirectional inter-skill link**                      | New skill §8 references `verify-external-claims` (outbound); `verify-external-claims/SKILL.md:13` now references `verify-before-filing` (inbound). Both directions confirmed via grep.                    |
-| 5   | **Feedback archived**                                   | Both files `git mv`'d from `new/` to `processed/` with date-prefixed descriptive names. `docs/feedback/new/` is empty. Feedback-loop staleness check clean.                                               |
-| 6   | **`check-skills.sh` passes**                            | All 25 skills valid, 0 thin skills, backlink integrity OK, count guard satisfied.                                                                                                                         |
-| 7   | **Verified the embedded `gh` CLI command**              | `gh search issues --repo OWNER/REPO --state closed "keyword"` — confirmed `--repo` (`-R`) and `--state` flags exist via `--help`. The verification skill does not itself contain an unverified CLI claim. |
+| # | Work item                                               | Evidence                                                                                                                                                                                                  |
+| - | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 | **Created `verify-before-filing/SKILL.md`** (193 lines) | Merged the best of both feedback files: gate-based workflow from the polished draft + the "Red Flags" quick-triage table unique to the raw proposal. 9 sections, under the 500-line gate.                 |
+| 2 | **Frontmatter valid**                                   | `name: verify-before-filing` matches directory; description is a real trigger (567 chars, well under 1024); `allowed-tools` + `tags` set. `check-skills.sh` confirms.                                     |
+| 3 | **README.md inventory updated**                         | Added row to "Skill Authoring & Verification" table; bumped count `24 → 25`; updated Quality & Status breakdown (Four → Five 🆕 New). Count guard passes.                                                 |
+| 4 | **Bidirectional inter-skill link**                      | New skill §8 references `verify-external-claims` (outbound); `verify-external-claims/SKILL.md:13` now references `verify-before-filing` (inbound). Both directions confirmed via grep.                    |
+| 5 | **Feedback archived**                                   | Both files `git mv`'d from `new/` to `processed/` with date-prefixed descriptive names. `docs/feedback/new/` is empty. Feedback-loop staleness check clean.                                               |
+| 6 | **`check-skills.sh` passes**                            | All 25 skills valid, 0 thin skills, backlink integrity OK, count guard satisfied.                                                                                                                         |
+| 7 | **Verified the embedded `gh` CLI command**              | `gh search issues --repo OWNER/REPO --state closed "keyword"` — confirmed `--repo` (`-R`) and `--state` flags exist via `--help`. The verification skill does not itself contain an unverified CLI claim. |
 
 ---
 
 ## b) PARTIALLY DONE ⚠️
 
-| #   | Item                                 | What's missing                                                                                                                                                                                                                                                                                                              |
-| --- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **Inter-skill graph documentation**  | I added the bidirectional _link_ between the skills, but did NOT record the new pair in **AGENTS.md §5.5** ("Inter-Skill References") — the canonical place agents check before adding cross-references. Future agents won't know this link exists and could duplicate or break it. **This is the biggest gap.**            |
-| 2   | **README "Quality & Status" nuance** | I bumped "Four → Five 🆕 New" correctly, and "Three of these carry verification-status blocks" remains accurate (the new skill has no unverified claims). But I did not add a sentence explaining _why_ `verify-before-filing` has no verification-status block while its sibling does — a future reader may wonder. Minor. |
+| # | Item                                 | What's missing                                                                                                                                                                                                                                                                                                              |
+| - | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 | **Inter-skill graph documentation**  | I added the bidirectional _link_ between the skills, but did NOT record the new pair in **AGENTS.md §5.5** ("Inter-Skill References") — the canonical place agents check before adding cross-references. Future agents won't know this link exists and could duplicate or break it. **This is the biggest gap.**            |
+| 2 | **README "Quality & Status" nuance** | I bumped "Four → Five 🆕 New" correctly, and "Three of these carry verification-status blocks" remains accurate (the new skill has no unverified claims). But I did not add a sentence explaining _why_ `verify-before-filing` has no verification-status block while its sibling does — a future reader may wonder. Minor. |
 
 ---
 
 ## c) NOT STARTED ⏭️
 
-| #   | Item                                              | Why                                                                                  | Should it be done?                               |
-| --- | ------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------ |
-| 1   | **Git commit**                                    | User did not ask.                                                                    | Awaiting instruction.                            |
-| 2   | **Trigger-description testing**                   | Out of session scope; skill-creator eval loop not run.                               | Valuable but optional for a 🆕 New skill.        |
-| 3   | **Sync installed `~/.config/crush/skills/` copy** | The repo is the canonical source; the installed copy I edited is a separate concern. | User manages their own install.                  |
-| 4   | **Add to a comprehensive audit doc**              | No new audit was requested.                                                          | Next time `docs-health` or `status-report` runs. |
+| # | Item                                              | Why                                                                                  | Should it be done?                               |
+| - | ------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------ |
+| 1 | **Git commit**                                    | User did not ask.                                                                    | Awaiting instruction.                            |
+| 2 | **Trigger-description testing**                   | Out of session scope; skill-creator eval loop not run.                               | Valuable but optional for a 🆕 New skill.        |
+| 3 | **Sync installed `~/.config/crush/skills/` copy** | The repo is the canonical source; the installed copy I edited is a separate concern. | User manages their own install.                  |
+| 4 | **Add to a comprehensive audit doc**              | No new audit was requested.                                                          | Next time `docs-health` or `status-report` runs. |
 
 ---
 

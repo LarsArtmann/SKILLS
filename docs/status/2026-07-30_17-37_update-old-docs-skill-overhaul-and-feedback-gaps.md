@@ -33,6 +33,7 @@ comments.
 
 New `ARCHIVE` decision added to tl;dr, classification table, and a dedicated
 section. When EVERY actionable item is resolved, `git mv <dir>/<file>.md
+
 <dir>/archived/<file>.md`. Rules: `git mv` only (never plain `mv`), annotate
 before archiving, no actionable items = not a candidate, re-runs reach archival
 naturally.
@@ -208,18 +209,18 @@ resolution."
 > Prioritized by impact. Items 1-5 are direct consequences of this session's
 > gaps.
 
-| #   | Priority     | Task                                                                                                                                                                                       |
-| --- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1   | **CRITICAL** | Fix the feedback/processed mistake — move feedback back to `new/` OR create explicit TODO for docs-health HARVEST change so it's not lost                                                  |
-| 2   | **HIGH**     | Investigate docs-health HARVEST section — read `docs-health/SKILL.md`, find HARVEST, assess suggestion #6, implement if valid                                                              |
-| 3   | **HIGH**     | Check `update-old-docs/references/annotation-placement.md` for old `DONE:` format references — update to `done at` vocabulary                                                              |
-| 4   | **HIGH**     | Reconcile "resolve every item" vs "leave open items untouched" tension in SKILL.md prose — make explicit that checking IS resolving                                                        |
-| 5   | **MEDIUM**   | Integrate archiving into the numbered workflow (Step 6) rather than a standalone section                                                                                                   |
-| 6   | **MEDIUM**   | Check `update-old-docs/references/case-study.md` for old format references                                                                                                                 |
-| 7   | **MEDIUM**   | Propagate "resolve" terminology through tl;dr and decision table (currently only in list-item section)                                                                                     |
-| 8   | **LOW**      | Update AGENTS.md §5.5 inter-skill references if docs-health HARVEST change is implemented                                                                                                  |
-| 9   | **LOW**      | Consider whether the completeness gate needs a concrete verification command (the feedback suggested `sed`/`grep` — rejected as brittle, but a lighter heuristic might help)               |
-| 10  | **LOW**      | Review whether `OPEN:` cross-references (`OPEN: tracked in TODO_LIST "<section>"`) should be allowed for genuinely-open items that a reader would want to find — currently banned entirely |
+| #  | Priority     | Task                                                                                                                                                                                       |
+| -- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1  | **CRITICAL** | Fix the feedback/processed mistake — move feedback back to `new/` OR create explicit TODO for docs-health HARVEST change so it's not lost                                                  |
+| 2  | **HIGH**     | Investigate docs-health HARVEST section — read `docs-health/SKILL.md`, find HARVEST, assess suggestion #6, implement if valid                                                              |
+| 3  | **HIGH**     | Check `update-old-docs/references/annotation-placement.md` for old `DONE:` format references — update to `done at` vocabulary                                                              |
+| 4  | **HIGH**     | Reconcile "resolve every item" vs "leave open items untouched" tension in SKILL.md prose — make explicit that checking IS resolving                                                        |
+| 5  | **MEDIUM**   | Integrate archiving into the numbered workflow (Step 6) rather than a standalone section                                                                                                   |
+| 6  | **MEDIUM**   | Check `update-old-docs/references/case-study.md` for old format references                                                                                                                 |
+| 7  | **MEDIUM**   | Propagate "resolve" terminology through tl;dr and decision table (currently only in list-item section)                                                                                     |
+| 8  | **LOW**      | Update AGENTS.md §5.5 inter-skill references if docs-health HARVEST change is implemented                                                                                                  |
+| 9  | **LOW**      | Consider whether the completeness gate needs a concrete verification command (the feedback suggested `sed`/`grep` — rejected as brittle, but a lighter heuristic might help)               |
+| 10 | **LOW**      | Review whether `OPEN:` cross-references (`OPEN: tracked in TODO_LIST "<section>"`) should be allowed for genuinely-open items that a reader would want to find — currently banned entirely |
 
 ---
 

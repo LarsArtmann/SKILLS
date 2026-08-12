@@ -145,7 +145,7 @@ Out of ~45 files in the website, most are boilerplate. A skill should explicitly
 | `src/styles/starlight.css`        | Customize                                                   | All accent color tokens                                                     |
 | `src/layouts/LandingLayout.astro` | Customize                                                   | theme-color meta, JSON-LD name                                              |
 | `src/pages/index.astro`           | **Copy verbatim**                                           |                                                                             |
-| All 14 components                 | **Copy verbatim** (except HeroSection.astro GitHub API URL) |
+| All 14 components                 | **Copy verbatim** (except HeroSection.astro GitHub API URL) |                                                                             |
 | `public/favicon.svg`              | **Full rewrite**                                            |                                                                             |
 | `public/manifest.json`            | Customize                                                   | name, description, theme_color                                              |
 | `public/robots.txt`               | Customize                                                   | sitemap URL                                                                 |

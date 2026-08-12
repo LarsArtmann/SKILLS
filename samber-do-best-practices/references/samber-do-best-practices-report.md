@@ -1,8 +1,8 @@
 # samber/do v2: Best Practices & Anti-Patterns
 
-**Scope:** Every Go project in `/home/lars/projects` that depends on `github.com/samber/do`.  
-**Date:** 2026-07-23  
-**Library versions observed:** v2.0.0, v2.1.0  
+**Scope:** Every Go project in `/home/lars/projects` that depends on `github.com/samber/do`.\
+**Date:** 2026-07-23\
+**Library versions observed:** v2.0.0, v2.1.0\
 **Related work:** `samber-do-auditlog`, `branching-flow/pkg/doanalyzerv2`, `reports/docs/01-technical-analysis/go-libraries/samber-ro-do-linter-design.md`
 
 ---

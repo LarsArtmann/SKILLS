@@ -93,7 +93,7 @@
 
 ### P2 — Deepen and polish
 
-9. **Add TOC-integrity guard to `check-skills.sh`** (TODO T6) — count `## ` headings vs TOC entries.
+9. **Add TOC-integrity guard to `check-skills.sh`** (TODO T6) — count `##` headings vs TOC entries.
 10. **Add marker-vocabulary guard to `check-skills.sh`** (TODO T7) — verify HARVEST references ANNOTATE-owned markers.
 11. **Reconcile scoring systems** (TODO T8) — `agents-quality-guide.md` has 5-dimension rubric; `health-report-format.md` has 2-score. Split brain.
 12. **Create `scripts/check-agents-md.sh`** (TODO T9) — package temporal-pollution grep patterns.

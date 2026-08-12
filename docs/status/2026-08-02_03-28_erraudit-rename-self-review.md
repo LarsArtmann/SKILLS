@@ -70,33 +70,33 @@
 
 ## f) Next Tasks (up to 50, sorted by impact)
 
-| #   | Task                                                                                                                                         | Impact   | Effort  |
-| --- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
-| 1   | Fix README.md — remove "(CLI unverified)", update quality paragraph for erraudit                                                             | High     | Trivial |
-| 2   | Fix practical example in cli-and-flags.md — restore historical accuracy                                                                      | High     | Low     |
-| 3   | Ask user: is `GOEXPERIMENT=jsonv2` still required with `erraudit`?                                                                           | Critical | N/A     |
-| 4   | Ask user: what does `--enforce-go-error-family` actually enforce?                                                                            | Critical | N/A     |
-| 5   | Ask user: does `//nolint:legacyerrors` still work, or did the analyzer name change?                                                          | High     | N/A     |
-| 6   | Once #4 is answered: rewrite `--enforce-go-error-family` docs with real understanding                                                        | High     | Low     |
-| 7   | Once #3 is answered: remove `GOEXPERIMENT=jsonv2` from commands if not needed                                                                | High     | Low     |
-| 8   | Run trigger collision analysis across all 25 skills                                                                                          | High     | Medium  |
-| 9   | Run skill-creator evals on the 9 rewritten descriptions                                                                                      | High     | Medium  |
-| 10  | Add disambiguation between code-quality-scan vs full-code-review                                                                             | Medium   | Low     |
-| 11  | Add disambiguation between deduplicate-code vs code-quality-scan                                                                             | Medium   | Low     |
-| 12  | Add disambiguation between architecture-review vs full-code-review                                                                           | Medium   | Low     |
-| 13  | Audit verify-before-filing/SKILL.md body, tags, cross-references                                                                             | Medium   | Low     |
-| 14  | Create retroactive planning doc for phase 2 (erraudit rename)                                                                                | Low      | Trivial |
-| 15  | Update planning doc from phase 1 with completion markers                                                                                     | Low      | Trivial |
-| 16  | Add "competing skills" guidance to how-to-write-skills.md                                                                                    | Medium   | Medium  |
-| 17  | Consider whether `--type-aware` makes the decision tree simpler (fewer false positives to review)                                            | Medium   | Medium  |
-| 18  | Re-verify exit code table against `erraudit` binary if available                                                                             | Medium   | Low     |
-| 19  | Consider adding erraudit to code-quality-scan as one of its checks                                                                           | Low      | Medium  |
-| 20  | Consider whether the practical example's "0% precision" claim still holds with `--type-aware`                                                | Low      | Low     |
-| 21  | Evaluate whether the how-to-golang key-patterns.md cross-ref should mention `erraudit` by name                                               | Low      | Trivial |
-| 22  | Add `erraudit` to the tags in go-error-modernization (already done — verify)                                                                 | Low      | Trivial |
-| 23  | Consider whether `--enforce-go-error-family` is related to the `errorfamily` package referenced in the decision-tree classification examples | Low      | Low     |
-| 24  | Review whether the verification-status block is now too long (it grew significantly)                                                         | Low      | Low     |
-| 25  | Consider splitting the SKILL.md flag tables entirely into references/cli-and-flags.md to reduce body length                                  | Low      | Low     |
+| #  | Task                                                                                                                                         | Impact   | Effort  |
+| -- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
+| 1  | Fix README.md — remove "(CLI unverified)", update quality paragraph for erraudit                                                             | High     | Trivial |
+| 2  | Fix practical example in cli-and-flags.md — restore historical accuracy                                                                      | High     | Low     |
+| 3  | Ask user: is `GOEXPERIMENT=jsonv2` still required with `erraudit`?                                                                           | Critical | N/A     |
+| 4  | Ask user: what does `--enforce-go-error-family` actually enforce?                                                                            | Critical | N/A     |
+| 5  | Ask user: does `//nolint:legacyerrors` still work, or did the analyzer name change?                                                          | High     | N/A     |
+| 6  | Once #4 is answered: rewrite `--enforce-go-error-family` docs with real understanding                                                        | High     | Low     |
+| 7  | Once #3 is answered: remove `GOEXPERIMENT=jsonv2` from commands if not needed                                                                | High     | Low     |
+| 8  | Run trigger collision analysis across all 25 skills                                                                                          | High     | Medium  |
+| 9  | Run skill-creator evals on the 9 rewritten descriptions                                                                                      | High     | Medium  |
+| 10 | Add disambiguation between code-quality-scan vs full-code-review                                                                             | Medium   | Low     |
+| 11 | Add disambiguation between deduplicate-code vs code-quality-scan                                                                             | Medium   | Low     |
+| 12 | Add disambiguation between architecture-review vs full-code-review                                                                           | Medium   | Low     |
+| 13 | Audit verify-before-filing/SKILL.md body, tags, cross-references                                                                             | Medium   | Low     |
+| 14 | Create retroactive planning doc for phase 2 (erraudit rename)                                                                                | Low      | Trivial |
+| 15 | Update planning doc from phase 1 with completion markers                                                                                     | Low      | Trivial |
+| 16 | Add "competing skills" guidance to how-to-write-skills.md                                                                                    | Medium   | Medium  |
+| 17 | Consider whether `--type-aware` makes the decision tree simpler (fewer false positives to review)                                            | Medium   | Medium  |
+| 18 | Re-verify exit code table against `erraudit` binary if available                                                                             | Medium   | Low     |
+| 19 | Consider adding erraudit to code-quality-scan as one of its checks                                                                           | Low      | Medium  |
+| 20 | Consider whether the practical example's "0% precision" claim still holds with `--type-aware`                                                | Low      | Low     |
+| 21 | Evaluate whether the how-to-golang key-patterns.md cross-ref should mention `erraudit` by name                                               | Low      | Trivial |
+| 22 | Add `erraudit` to the tags in go-error-modernization (already done — verify)                                                                 | Low      | Trivial |
+| 23 | Consider whether `--enforce-go-error-family` is related to the `errorfamily` package referenced in the decision-tree classification examples | Low      | Low     |
+| 24 | Review whether the verification-status block is now too long (it grew significantly)                                                         | Low      | Low     |
+| 25 | Consider splitting the SKILL.md flag tables entirely into references/cli-and-flags.md to reduce body length                                  | Low      | Low     |
 
 ---
 

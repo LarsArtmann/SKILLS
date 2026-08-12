@@ -25,71 +25,71 @@ The SKILLS repo has **15 skills** (14 original + 1 new `how-to-golang`), all wit
 
 ## A) FULLY DONE ✅
 
-| #   | Item                                                             | Evidence                                                                            |
-| --- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| 1   | 17 raw `.md` files → 14 skill directories conversion             | All 14 have SKILL.md + valid frontmatter                                            |
-| 2   | 3 overlapping merges executed                                    | `1+4→execution-mode`, `2→brutal-self-review`, `3→pareto-planning`                   |
-| 3   | YAML frontmatter on all 14 original skills                       | `name` + `description` + `metadata.tags` validated                                  |
-| 4   | Shared references extracted                                      | `go-ecosystem.md` (brutal-self-review), `architect-checklist.md` (full-code-review) |
-| 5   | `how-to-write-skills.md` comprehensive guide                     | 233 lines, merged skill-creator insights                                            |
-| 6   | README.md with skills inventory and installation guide           | Complete with table + npx instructions                                              |
-| 7   | Go-specific descriptions on Go skills                            | brutal-self-review, bdd-testing, etc.                                               |
-| 8   | `how-to-golang` skill with 9 reference files                     | 93-line SKILL.md + 9 references totaling ~1005 lines                                |
-| 9   | "READ, UNDERSTAND, RESEARCH, REFLECT" mantra added to all skills | Consistent execution footer                                                         |
-| 10  | Git history is clean and well-structured                         | Logical commits, descriptive messages                                               |
+| #  | Item                                                             | Evidence                                                                            |
+| -- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| 1  | 17 raw `.md` files → 14 skill directories conversion             | All 14 have SKILL.md + valid frontmatter                                            |
+| 2  | 3 overlapping merges executed                                    | `1+4→execution-mode`, `2→brutal-self-review`, `3→pareto-planning`                   |
+| 3  | YAML frontmatter on all 14 original skills                       | `name` + `description` + `metadata.tags` validated                                  |
+| 4  | Shared references extracted                                      | `go-ecosystem.md` (brutal-self-review), `architect-checklist.md` (full-code-review) |
+| 5  | `how-to-write-skills.md` comprehensive guide                     | 233 lines, merged skill-creator insights                                            |
+| 6  | README.md with skills inventory and installation guide           | Complete with table + npx instructions                                              |
+| 7  | Go-specific descriptions on Go skills                            | brutal-self-review, bdd-testing, etc.                                               |
+| 8  | `how-to-golang` skill with 9 reference files                     | 93-line SKILL.md + 9 references totaling ~1005 lines                                |
+| 9  | "READ, UNDERSTAND, RESEARCH, REFLECT" mantra added to all skills | Consistent execution footer                                                         |
+| 10 | Git history is clean and well-structured                         | Logical commits, descriptive messages                                               |
 
 ---
 
 ## B) PARTIALLY DONE 🔶
 
-| #   | Item                                       | Status                                                     | What's Missing                                                                                                       |
-| --- | ------------------------------------------ | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| 1   | **Legacy file cleanup**                    | 17 raw `.md` files still in repo root                      | Need deletion after user confirmation                                                                                |
-| 2   | **Skill depth/content**                    | 9/15 skills are "thin" (<35 lines)                         | Concrete examples, output templates, tool-specific guidance                                                          |
-| 3   | **`how-to-write-skills.md` location**      | Still raw file at repo root                                | Should become a skill directory OR move to `docs/`                                                                   |
-| 4   | **Inter-skill cross-references**           | Only `brutal-self-review` references `how-to-golang`       | Most skills should reference relevant sibling skills                                                                 |
-| 5   | **Go ecosystem reference coverage**        | `go-ecosystem.md` exists but only in `brutal-self-review/` | Other Go skills (bdd-testing, code-quality-scan) don't reference it                                                  |
-| 6   | **`how-to-golang` code accuracy**          | Reference files written but contain API inaccuracies       | `gopter` signature wrong, `encoding/json/v2` assumes Go 1.26+, E2E HTTP API mismatch, Rule 002 CI command misleading |
-| 7   | **`architecture-visualization` D2 change** | Externally modified to D2 instead of Mermaid               | Never verified as intentional                                                                                        |
-| 8   | **Trigger description testing**            | All skills have descriptions                               | None tested empirically in Crush for trigger accuracy                                                                |
+| # | Item                                       | Status                                                     | What's Missing                                                                                                       |
+| - | ------------------------------------------ | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| 1 | **Legacy file cleanup**                    | 17 raw `.md` files still in repo root                      | Need deletion after user confirmation                                                                                |
+| 2 | **Skill depth/content**                    | 9/15 skills are "thin" (<35 lines)                         | Concrete examples, output templates, tool-specific guidance                                                          |
+| 3 | **`how-to-write-skills.md` location**      | Still raw file at repo root                                | Should become a skill directory OR move to `docs/`                                                                   |
+| 4 | **Inter-skill cross-references**           | Only `brutal-self-review` references `how-to-golang`       | Most skills should reference relevant sibling skills                                                                 |
+| 5 | **Go ecosystem reference coverage**        | `go-ecosystem.md` exists but only in `brutal-self-review/` | Other Go skills (bdd-testing, code-quality-scan) don't reference it                                                  |
+| 6 | **`how-to-golang` code accuracy**          | Reference files written but contain API inaccuracies       | `gopter` signature wrong, `encoding/json/v2` assumes Go 1.26+, E2E HTTP API mismatch, Rule 002 CI command misleading |
+| 7 | **`architecture-visualization` D2 change** | Externally modified to D2 instead of Mermaid               | Never verified as intentional                                                                                        |
+| 8 | **Trigger description testing**            | All skills have descriptions                               | None tested empirically in Crush for trigger accuracy                                                                |
 
 ---
 
 ## C) NOT STARTED ⬜
 
-| #   | Item                                         | Impact                                                           |
-| --- | -------------------------------------------- | ---------------------------------------------------------------- |
-| 1   | **Delete legacy `1.md`–`17.md` files**       | High — repo root is cluttered with dead files                    |
-| 2   | **Empirical skill testing in Crush**         | Critical — no evidence skills work as intended                   |
-| 3   | **Integrate LIBRARY_GUIDE.md**               | High — 13 Lars libraries unmapped from any skill                 |
-| 4   | **Create `crush.json` for the repo**         | Medium — enables `skills_paths` auto-discovery                   |
-| 5   | **Add `allowed-tools` to skill frontmatter** | Medium — reduces permission prompts during skill execution       |
-| 6   | **Flesh out thin skills** (9 of 15)          | High — thin skills produce thin output                           |
-| 7   | **Add output templates/examples to skills**  | High — most skills lack concrete output format                   |
-| 8   | **Fix `git commit <--` syntax in 4 skills**  | Medium — LLMs may interpret `<--` as literal git flag            |
-| 9   | **Remove duplicated execution boilerplate**  | Medium — 6+ skills repeat identical "READ, UNDERSTAND..." footer |
-| 10  | **Version/timestamp skills**                 | Low — no way to track when a skill was last updated              |
-| 11  | **Add error handling guidance to skills**    | Medium — what happens when tools are missing?                    |
-| 12  | **Validate `how-to-golang` code snippets**   | High — wrong code in references = broken output                  |
-| 13  | **Create `library-guide` skill**             | High — LIBRARY_GUIDE.md content needs a proper skill home        |
-| 14  | **Add domain-types examples**                | Medium — `domain-types.md` has zero code samples for 7+ types    |
+| #  | Item                                         | Impact                                                           |
+| -- | -------------------------------------------- | ---------------------------------------------------------------- |
+| 1  | **Delete legacy `1.md`–`17.md` files**       | High — repo root is cluttered with dead files                    |
+| 2  | **Empirical skill testing in Crush**         | Critical — no evidence skills work as intended                   |
+| 3  | **Integrate LIBRARY_GUIDE.md**               | High — 13 Lars libraries unmapped from any skill                 |
+| 4  | **Create `crush.json` for the repo**         | Medium — enables `skills_paths` auto-discovery                   |
+| 5  | **Add `allowed-tools` to skill frontmatter** | Medium — reduces permission prompts during skill execution       |
+| 6  | **Flesh out thin skills** (9 of 15)          | High — thin skills produce thin output                           |
+| 7  | **Add output templates/examples to skills**  | High — most skills lack concrete output format                   |
+| 8  | **Fix `git commit <--` syntax in 4 skills**  | Medium — LLMs may interpret `<--` as literal git flag            |
+| 9  | **Remove duplicated execution boilerplate**  | Medium — 6+ skills repeat identical "READ, UNDERSTAND..." footer |
+| 10 | **Version/timestamp skills**                 | Low — no way to track when a skill was last updated              |
+| 11 | **Add error handling guidance to skills**    | Medium — what happens when tools are missing?                    |
+| 12 | **Validate `how-to-golang` code snippets**   | High — wrong code in references = broken output                  |
+| 13 | **Create `library-guide` skill**             | High — LIBRARY_GUIDE.md content needs a proper skill home        |
+| 14 | **Add domain-types examples**                | Medium — `domain-types.md` has zero code samples for 7+ types    |
 
 ---
 
 ## D) TOTALLY FUCKED UP 💥
 
-| #   | Item                                                      | Why It's Fucked                                                                                                                                                                                 | Severity    |
-| --- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 1   | **`nix-flake-migration` skill**                           | 21 lines. Creates a "proposal" but doesn't say what goes in it. Almost useless as-is. Agent will improvise wildly.                                                                              | 🔴 Critical |
-| 2   | **`architecture-review` skill**                           | 30 lines. Two questions + 5 generic steps. No methodology, no assessment criteria, no rubric. Agent will produce generic fluff.                                                                 | 🔴 Critical |
-| 3   | **`bdd-testing` skill**                                   | 23 lines. Says "use ginkgo" but provides zero ginkgo syntax, no test structure, no file naming conventions. Agent will write bad BDD tests.                                                     | 🔴 Critical |
-| 4   | **`features-audit` skill**                                | 24 lines. Lists status indicators but no FEATURES.md template. Agent will produce inconsistent output. Also has `PARTIALLY_FUNTIONAL` typo.                                                     | 🔴 Critical |
-| 5   | **`docs-freshness-check` skill**                          | 30 lines. Only checks 4 hardcoded files. No definition of "stale". No configurable file list.                                                                                                   | 🟡 High     |
-| 6   | **`code-quality-scan` skill**                             | 34 lines. Hardcodes `just fd` and `art-dupl` without installation guidance. Tells agent to "RESEARCH the best golang code duplication finder" — the skill should already know this.             | 🟡 High     |
-| 7   | **`deduplicate-code` skill**                              | 27 lines. Hardcodes `art-dupl` CLI with no explanation of what it is or how to install it. "Don't write a file" contradicts normal workflow.                                                    | 🟡 High     |
-| 8   | **`how-to-golang` reference inaccuracies**                | `gopter` property-based testing has wrong function signature, `encoding/json/v2` references Go 1.26+ (unreleased), E2E test references non-standard HTTP API, Rule 002 CI command is misleading | 🟡 High     |
-| 9   | **`brutal-self-review` ↔ `execution-mode` contradiction** | brutal-self-review says "1 Sub Agent per file, ONLY 1 at a time"; execution-mode Mode 2 says "Use MULTIPLE Tasks". Agent gets conflicting instructions.                                         | 🟡 High     |
-| 10  | **Duplicated content across skills**                      | Pareto planning logic in both `full-code-review` and `pareto-planning`. Execution boilerplate duplicated in 6+ skills. If one is updated, others become stale.                                  | 🟡 High     |
+| #  | Item                                                      | Why It's Fucked                                                                                                                                                                                 | Severity    |
+| -- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 1  | **`nix-flake-migration` skill**                           | 21 lines. Creates a "proposal" but doesn't say what goes in it. Almost useless as-is. Agent will improvise wildly.                                                                              | 🔴 Critical |
+| 2  | **`architecture-review` skill**                           | 30 lines. Two questions + 5 generic steps. No methodology, no assessment criteria, no rubric. Agent will produce generic fluff.                                                                 | 🔴 Critical |
+| 3  | **`bdd-testing` skill**                                   | 23 lines. Says "use ginkgo" but provides zero ginkgo syntax, no test structure, no file naming conventions. Agent will write bad BDD tests.                                                     | 🔴 Critical |
+| 4  | **`features-audit` skill**                                | 24 lines. Lists status indicators but no FEATURES.md template. Agent will produce inconsistent output. Also has `PARTIALLY_FUNTIONAL` typo.                                                     | 🔴 Critical |
+| 5  | **`docs-freshness-check` skill**                          | 30 lines. Only checks 4 hardcoded files. No definition of "stale". No configurable file list.                                                                                                   | 🟡 High     |
+| 6  | **`code-quality-scan` skill**                             | 34 lines. Hardcodes `just fd` and `art-dupl` without installation guidance. Tells agent to "RESEARCH the best golang code duplication finder" — the skill should already know this.             | 🟡 High     |
+| 7  | **`deduplicate-code` skill**                              | 27 lines. Hardcodes `art-dupl` CLI with no explanation of what it is or how to install it. "Don't write a file" contradicts normal workflow.                                                    | 🟡 High     |
+| 8  | **`how-to-golang` reference inaccuracies**                | `gopter` property-based testing has wrong function signature, `encoding/json/v2` references Go 1.26+ (unreleased), E2E test references non-standard HTTP API, Rule 002 CI command is misleading | 🟡 High     |
+| 9  | **`brutal-self-review` ↔ `execution-mode` contradiction** | brutal-self-review says "1 Sub Agent per file, ONLY 1 at a time"; execution-mode Mode 2 says "Use MULTIPLE Tasks". Agent gets conflicting instructions.                                         | 🟡 High     |
+| 10 | **Duplicated content across skills**                      | Pareto planning logic in both `full-code-review` and `pareto-planning`. Execution boilerplate duplicated in 6+ skills. If one is updated, others become stale.                                  | 🟡 High     |
 
 ---
 

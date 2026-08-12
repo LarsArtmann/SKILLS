@@ -413,23 +413,23 @@ This is a separate phase with a different mindset — slow, critical, paranoid.
 Generate a review checklist _from the specific proposal_, not from generic questions.
 For each proposed module, ask:
 
-| #   | Question                | Check                                                                                                    |
-| --- | ----------------------- | -------------------------------------------------------------------------------------------------------- |
-| 1   | What did you forget?    | Any packages not assigned to a module? Any imports not accounted for?                                    |
-| 2   | What could be improved? | Are any modules doing more than one thing? Any Unix principle violations?                                |
-| 3   | Split brains?           | Duplicate type definitions across modules that should be shared? Shared types that should be duplicated? |
-| 4   | Right granularity?      | Any module with 15+ packages (too coarse)? Any module with 1 trivial package (too fine)?                 |
-| 5   | Existing code reuse?    | Can existing code fill the role without creating new packages?                                           |
-| 6   | Type model quality?     | Can type improvements create cleaner module interfaces?                                                  |
-| 7   | Reinventing the wheel?  | Are you leveraging well-established Go libraries instead of writing custom code?                         |
-| 8   | Import paths verified?  | Does the replace/workspace strategy actually work? Did you trace the full import chain?                  |
-| 9   | Test deps isolated?     | Are test-only deps absent from production go.mod files? Audit with `go mod why`.                         |
-| 10  | CI actually faster?     | Will modularization speed up CI, or just move the bottleneck? Estimate per-module test times.            |
-| 11  | Versioning realistic?   | Does the versioning strategy match how this project is actually consumed?                                |
-| 12  | Error types accessible? | Can consumers use `errors.Is`/`errors.As` across module boundaries? Trace the imports.                   |
-| 13  | internal/ safe?         | Did moving packages behind `internal/` break any cross-module imports?                                   |
-| 14  | Over-modularized?       | Should any proposed modules be merged? Do they always change together?                                   |
-| 15  | Consumers broken?       | Will external consumers compile after this change? Run the breaking change analysis.                     |
+| #  | Question                | Check                                                                                                    |
+| -- | ----------------------- | -------------------------------------------------------------------------------------------------------- |
+| 1  | What did you forget?    | Any packages not assigned to a module? Any imports not accounted for?                                    |
+| 2  | What could be improved? | Are any modules doing more than one thing? Any Unix principle violations?                                |
+| 3  | Split brains?           | Duplicate type definitions across modules that should be shared? Shared types that should be duplicated? |
+| 4  | Right granularity?      | Any module with 15+ packages (too coarse)? Any module with 1 trivial package (too fine)?                 |
+| 5  | Existing code reuse?    | Can existing code fill the role without creating new packages?                                           |
+| 6  | Type model quality?     | Can type improvements create cleaner module interfaces?                                                  |
+| 7  | Reinventing the wheel?  | Are you leveraging well-established Go libraries instead of writing custom code?                         |
+| 8  | Import paths verified?  | Does the replace/workspace strategy actually work? Did you trace the full import chain?                  |
+| 9  | Test deps isolated?     | Are test-only deps absent from production go.mod files? Audit with `go mod why`.                         |
+| 10 | CI actually faster?     | Will modularization speed up CI, or just move the bottleneck? Estimate per-module test times.            |
+| 11 | Versioning realistic?   | Does the versioning strategy match how this project is actually consumed?                                |
+| 12 | Error types accessible? | Can consumers use `errors.Is`/`errors.As` across module boundaries? Trace the imports.                   |
+| 13 | internal/ safe?         | Did moving packages behind `internal/` break any cross-module imports?                                   |
+| 14 | Over-modularized?       | Should any proposed modules be merged? Do they always change together?                                   |
+| 15 | Consumers broken?       | Will external consumers compile after this change? Run the breaking change analysis.                     |
 
 ### 4.2 Cross-reference with how-to-golang
 

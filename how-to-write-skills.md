@@ -78,12 +78,12 @@ Include:
 
 Use this quick test before finalizing a description:
 
-| Question | Pass |
-| --- | --- |
-| Does it start with the user’s task or a trigger phrase? | Yes |
-| Could it be mistaken for a README sentence or feature list? | No |
-| Does it mention concrete words a user would actually say? | Yes |
-| Does it say what the agent will do, not what the skill _is_? | Yes |
+| Question                                                     | Pass |
+| ------------------------------------------------------------ | ---- |
+| Does it start with the user’s task or a trigger phrase?      | Yes  |
+| Could it be mistaken for a README sentence or feature list?  | No   |
+| Does it mention concrete words a user would actually say?    | Yes  |
+| Does it say what the agent will do, not what the skill _is_? | Yes  |
 
 ### 2. The SKILL.md body is the procedure.
 

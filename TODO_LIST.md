@@ -22,9 +22,9 @@
 
 ## P0 — Skill Quality & Reliability
 
-| ID  | Task                                       | Status | Impact | Effort | Evidence |
-| --- | ------------------------------------------ | ------ | ------ | ------ | -------- |
-| —   | _(empty — all items completed 2026-08-04)_ | —      | —      | —      | —        |
+| ID | Task                                       | Status | Impact | Effort | Evidence |
+| -- | ------------------------------------------ | ------ | ------ | ------ | -------- |
+| —  | _(empty — all items completed 2026-08-04)_ | —      | —      | —      | —        |
 
 ---
 

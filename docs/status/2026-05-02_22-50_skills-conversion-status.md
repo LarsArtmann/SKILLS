@@ -62,24 +62,24 @@ Nothing. No known issues with the current skill files.
 
 ## f) Top #25 Things We Should Get Done Next
 
-| #   | Task                                                                                     | Impact   | Effort |
-| --- | ---------------------------------------------------------------------------------------- | -------- | ------ |
-| 1   | Test all 14 skills in Crush — verify they activate on correct triggers                   | Critical | 30min  |
-| 2   | Create `crush.json` with `skills_paths` so Crush discovers these skills                  | Critical | 5min   |
-| 3   | Write README.md for the SKILLS project                                                   | High     | 15min  |
-| 4   | Remove original 1.md–17.md after user confirmation                                       | High     | 2min   |
-| 5   | Refine descriptions based on activation test results                                     | High     | 30min  |
-| 6   | Add cross-references between related skills (e.g., brutal-self-review → pareto-planning) | Medium   | 20min  |
-| 7   | Flesh out thin skills (nix-flake-migration, architecture-review) with more detail        | Medium   | 20min  |
-| 8   | Consider adding `allowed-tools` to skills that always need specific tools                | Medium   | 15min  |
-| 9   | Reference go-ecosystem.md from full-code-review and code-quality-scan too                | Medium   | 5min   |
-| 10  | Add a CHANGELOG.md or version tracking to skills                                         | Low      | 10min  |
-| 11  | Move how-to-write-skills.md to docs/ or a skill of its own                               | Low      | 2min   |
-| 12  | Consider splitting execution-mode into two separate skills (reflect vs execute)          | Low      | 15min  |
-| 13  | Add examples/usage snippets to each skill                                                | Low      | 30min  |
-| 14  | Test with non-Go projects to ensure skills don't falsely activate                        | Low      | 15min  |
-| 15  | Verify architecture-visualization D2 change was intentional                              | Medium   | 2min   |
-| 16  | Add `.gitignore` for the project if needed                                               | Low      | 2min   |
+| #  | Task                                                                                     | Impact   | Effort |
+| -- | ---------------------------------------------------------------------------------------- | -------- | ------ |
+| 1  | Test all 14 skills in Crush — verify they activate on correct triggers                   | Critical | 30min  |
+| 2  | Create `crush.json` with `skills_paths` so Crush discovers these skills                  | Critical | 5min   |
+| 3  | Write README.md for the SKILLS project                                                   | High     | 15min  |
+| 4  | Remove original 1.md–17.md after user confirmation                                       | High     | 2min   |
+| 5  | Refine descriptions based on activation test results                                     | High     | 30min  |
+| 6  | Add cross-references between related skills (e.g., brutal-self-review → pareto-planning) | Medium   | 20min  |
+| 7  | Flesh out thin skills (nix-flake-migration, architecture-review) with more detail        | Medium   | 20min  |
+| 8  | Consider adding `allowed-tools` to skills that always need specific tools                | Medium   | 15min  |
+| 9  | Reference go-ecosystem.md from full-code-review and code-quality-scan too                | Medium   | 5min   |
+| 10 | Add a CHANGELOG.md or version tracking to skills                                         | Low      | 10min  |
+| 11 | Move how-to-write-skills.md to docs/ or a skill of its own                               | Low      | 2min   |
+| 12 | Consider splitting execution-mode into two separate skills (reflect vs execute)          | Low      | 15min  |
+| 13 | Add examples/usage snippets to each skill                                                | Low      | 30min  |
+| 14 | Test with non-Go projects to ensure skills don't falsely activate                        | Low      | 15min  |
+| 15 | Verify architecture-visualization D2 change was intentional                              | Medium   | 2min   |
+| 16 | Add `.gitignore` for the project if needed                                               | Low      | 2min   |
 
 ## g) Top #1 Question I Can NOT Figure Out Myself
 

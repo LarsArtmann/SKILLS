@@ -25,38 +25,38 @@ Not all skills have superb names and descriptions. The skill `description` field
 
 ### 1% that delivers 51%
 
-| #   | Task                                                    | Why                                                                                                                            |
-| --- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| 1   | Rename `hierarchical-errors` → `go-error-modernization` | The ONLY broken name. Every other skill is named after its domain; this one is named after a tool that may not exist publicly. |
-| 2   | Rewrite `bdd-testing` description (210 chars)           | Thinnest description in the repo. Only 4 trigger phrases.                                                                      |
-| 3   | Rewrite `code-quality-scan` description (210 chars)     | Tied for thinnest. Missing "lint", "static analysis", "code smells".                                                           |
+| # | Task                                                    | Why                                                                                                                            |
+| - | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| 1 | Rename `hierarchical-errors` → `go-error-modernization` | The ONLY broken name. Every other skill is named after its domain; this one is named after a tool that may not exist publicly. |
+| 2 | Rewrite `bdd-testing` description (210 chars)           | Thinnest description in the repo. Only 4 trigger phrases.                                                                      |
+| 3 | Rewrite `code-quality-scan` description (210 chars)     | Tied for thinnest. Missing "lint", "static analysis", "code smells".                                                           |
 
 ### 4% that delivers 64%
 
-| #   | Task                                                  | Why                                                          |
-| --- | ----------------------------------------------------- | ------------------------------------------------------------ |
-| 4   | Rewrite `deduplicate-code` description (232 chars)    | Missing "DRY", "find duplicates", "copy-paste code".         |
-| 5   | Rewrite `status-report` description (269 chars)       | Missing "project status", "where are we", "project health".  |
-| 6   | Rewrite `architecture-review` description (270 chars) | Repeats skill name as trigger. Missing "architecture audit". |
+| # | Task                                                  | Why                                                          |
+| - | ----------------------------------------------------- | ------------------------------------------------------------ |
+| 4 | Rewrite `deduplicate-code` description (232 chars)    | Missing "DRY", "find duplicates", "copy-paste code".         |
+| 5 | Rewrite `status-report` description (269 chars)       | Missing "project status", "where are we", "project health".  |
+| 6 | Rewrite `architecture-review` description (270 chars) | Repeats skill name as trigger. Missing "architecture audit". |
 
 ### 20% that delivers 80%
 
-| #   | Task                                                     | Why                                                                         |
-| --- | -------------------------------------------------------- | --------------------------------------------------------------------------- |
-| 7   | Rewrite `pareto-planning` description (314 chars)        | Missing "prioritize", "what should I work on first". Ends with impl detail. |
-| 8   | Rewrite `full-code-review` description (412 chars)       | Last 2 sentences describe contents, not triggers.                           |
-| 9   | Strip provenance from `go-ecosystem-upgrade` (966 chars) | "Built from 14 status reports" is not a trigger.                            |
-| 10  | Strip markdown links from `html-report-kit` (627 chars)  | Raw links don't render in skill-selection context.                          |
+| #  | Task                                                     | Why                                                                         |
+| -- | -------------------------------------------------------- | --------------------------------------------------------------------------- |
+| 7  | Rewrite `pareto-planning` description (314 chars)        | Missing "prioritize", "what should I work on first". Ends with impl detail. |
+| 8  | Rewrite `full-code-review` description (412 chars)       | Last 2 sentences describe contents, not triggers.                           |
+| 9  | Strip provenance from `go-ecosystem-upgrade` (966 chars) | "Built from 14 status reports" is not a trigger.                            |
+| 10 | Strip markdown links from `html-report-kit` (627 chars)  | Raw links don't render in skill-selection context.                          |
 
 ### The other 20% (polish to 100%)
 
-| #   | Task                                     | Why                                                         |
-| --- | ---------------------------------------- | ----------------------------------------------------------- |
-| 11  | Update all cross-references after rename | AGENTS.md, README.md, how-to-golang, verify-external-claims |
-| 12  | Run `scripts/check-skills.sh`            | Verify no structural regressions                            |
-| 13  | Verify all names match directories       | Programmatic check                                          |
-| 14  | Verify all descriptions < 1024 chars     | Programmatic check                                          |
-| 15  | Final documentation-creep audit          | No rewritten description describes contents                 |
+| #  | Task                                     | Why                                                         |
+| -- | ---------------------------------------- | ----------------------------------------------------------- |
+| 11 | Update all cross-references after rename | AGENTS.md, README.md, how-to-golang, verify-external-claims |
+| 12 | Run `scripts/check-skills.sh`            | Verify no structural regressions                            |
+| 13 | Verify all names match directories       | Programmatic check                                          |
+| 14 | Verify all descriptions < 1024 chars     | Programmatic check                                          |
+| 15 | Final documentation-creep audit          | No rewritten description describes contents                 |
 
 ---
 
@@ -64,12 +64,12 @@ Not all skills have superb names and descriptions. The skill `description` field
 
 Sorted by impact/effort/customer-value.
 
-| #   | Task                                                                                                                          | Impact   | Effort | Est   | Depends On |
-| --- | ----------------------------------------------------------------------------------------------------------------------------- | -------- | ------ | ----- | ---------- |
-| M1  | Rename `hierarchical-errors` → `go-error-modernization` + all cross-references                                                | Critical | Medium | 45min | —          |
-| M2  | Rewrite Tier-1 descriptions (5 weakest: bdd-testing, code-quality-scan, deduplicate-code, status-report, architecture-review) | Critical | Low    | 40min | —          |
-| M3  | Rewrite Tier-2 descriptions (pareto-planning, full-code-review, go-ecosystem-upgrade, html-report-kit)                        | Medium   | Low    | 30min | —          |
-| M4  | Full verification pass — check-skills.sh, name-dir matching, char counts, documentation-creep audit                           | High     | Low    | 30min | M1, M2, M3 |
+| #  | Task                                                                                                                          | Impact   | Effort | Est   | Depends On |
+| -- | ----------------------------------------------------------------------------------------------------------------------------- | -------- | ------ | ----- | ---------- |
+| M1 | Rename `hierarchical-errors` → `go-error-modernization` + all cross-references                                                | Critical | Medium | 45min | —          |
+| M2 | Rewrite Tier-1 descriptions (5 weakest: bdd-testing, code-quality-scan, deduplicate-code, status-report, architecture-review) | Critical | Low    | 40min | —          |
+| M3 | Rewrite Tier-2 descriptions (pareto-planning, full-code-review, go-ecosystem-upgrade, html-report-kit)                        | Medium   | Low    | 30min | —          |
+| M4 | Full verification pass — check-skills.sh, name-dir matching, char counts, documentation-creep audit                           | High     | Low    | 30min | M1, M2, M3 |
 
 ---
 

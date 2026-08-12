@@ -144,33 +144,33 @@
 
 ## f) Top #25 Things To Do Next
 
-| #   | Task                                                                                          | Impact | Effort | Category    |
-| --- | --------------------------------------------------------------------------------------------- | ------ | ------ | ----------- |
-| 1   | Test naming-smells.sh against a real production Go codebase                                   | HIGH   | LOW    | Validation  |
-| 2   | Test naming-smells.sh against a real TypeScript codebase                                      | HIGH   | LOW    | Validation  |
-| 3   | Create naming glossary auto-generation script                                                 | HIGH   | MED    | Feature     |
-| 4   | Sync how-to-golang to installed location                                                      | MED    | LOW    | Sync        |
-| 5   | Add eval test cases via skill-creator                                                         | HIGH   | MED    | Quality     |
-| 6   | Add linter auto-detection to naming-smells.sh                                                 | MED    | MED    | Feature     |
-| 7   | Split-brain detection for TypeScript classes/interfaces                                       | MED    | MED    | Feature     |
-| 8   | Split-brain detection for Python classes                                                      | MED    | MED    | Feature     |
-| 9   | Run description optimization via run_loop.py                                                  | MED    | LOW    | Quality     |
-| 10  | Migrate 3 orphan skills to source repo (copywriting, improve-codebase-architecture, remotion) | MED    | LOW    | Sync        |
-| 11  | Add GraphQL schema naming conventions                                                         | LOW    | LOW    | Content     |
-| 12  | Add gRPC/Protobuf field naming conventions                                                    | LOW    | LOW    | Content     |
-| 13  | Add more Rust anti-pattern examples                                                           | LOW    | LOW    | Content     |
-| 14  | Add Java anti-pattern examples                                                                | LOW    | LOW    | Content     |
-| 15  | Add C# anti-pattern examples                                                                  | LOW    | LOW    | Content     |
-| 16  | CI/CD pre-commit hook for naming-smells.sh                                                    | MED    | LOW    | Integration |
-| 17  | Integrate naming-review as sub-step of full-code-review                                       | LOW    | LOW    | Integration |
-| 18  | Add naming "quick fix" mode — just list rename suggestions, no full report                    | MED    | LOW    | Feature     |
-| 19  | Add naming consistency score (0-100) to reports                                               | MED    | LOW    | Feature     |
-| 20  | Add "naming migration" mode — apply a canonical glossary across codebase                      | MED    | MED    | Feature     |
-| 21  | Add naming-smells.sh to how-to-golang as recommended tool                                     | LOW    | LOW    | Integration |
-| 22  | Add Protocol Buffers naming (snake_case fields, PascalCase messages)                          | LOW    | LOW    | Content     |
-| 23  | Add Kubernetes resource naming conventions                                                    | LOW    | LOW    | Content     |
-| 24  | Add Terraform/Infrastructure-as-Code naming conventions                                       | LOW    | LOW    | Content     |
-| 25  | Create a naming-review README.md with quickstart guide                                        | MED    | LOW    | Docs        |
+| #  | Task                                                                                          | Impact | Effort | Category    |
+| -- | --------------------------------------------------------------------------------------------- | ------ | ------ | ----------- |
+| 1  | Test naming-smells.sh against a real production Go codebase                                   | HIGH   | LOW    | Validation  |
+| 2  | Test naming-smells.sh against a real TypeScript codebase                                      | HIGH   | LOW    | Validation  |
+| 3  | Create naming glossary auto-generation script                                                 | HIGH   | MED    | Feature     |
+| 4  | Sync how-to-golang to installed location                                                      | MED    | LOW    | Sync        |
+| 5  | Add eval test cases via skill-creator                                                         | HIGH   | MED    | Quality     |
+| 6  | Add linter auto-detection to naming-smells.sh                                                 | MED    | MED    | Feature     |
+| 7  | Split-brain detection for TypeScript classes/interfaces                                       | MED    | MED    | Feature     |
+| 8  | Split-brain detection for Python classes                                                      | MED    | MED    | Feature     |
+| 9  | Run description optimization via run_loop.py                                                  | MED    | LOW    | Quality     |
+| 10 | Migrate 3 orphan skills to source repo (copywriting, improve-codebase-architecture, remotion) | MED    | LOW    | Sync        |
+| 11 | Add GraphQL schema naming conventions                                                         | LOW    | LOW    | Content     |
+| 12 | Add gRPC/Protobuf field naming conventions                                                    | LOW    | LOW    | Content     |
+| 13 | Add more Rust anti-pattern examples                                                           | LOW    | LOW    | Content     |
+| 14 | Add Java anti-pattern examples                                                                | LOW    | LOW    | Content     |
+| 15 | Add C# anti-pattern examples                                                                  | LOW    | LOW    | Content     |
+| 16 | CI/CD pre-commit hook for naming-smells.sh                                                    | MED    | LOW    | Integration |
+| 17 | Integrate naming-review as sub-step of full-code-review                                       | LOW    | LOW    | Integration |
+| 18 | Add naming "quick fix" mode — just list rename suggestions, no full report                    | MED    | LOW    | Feature     |
+| 19 | Add naming consistency score (0-100) to reports                                               | MED    | LOW    | Feature     |
+| 20 | Add "naming migration" mode — apply a canonical glossary across codebase                      | MED    | MED    | Feature     |
+| 21 | Add naming-smells.sh to how-to-golang as recommended tool                                     | LOW    | LOW    | Integration |
+| 22 | Add Protocol Buffers naming (snake_case fields, PascalCase messages)                          | LOW    | LOW    | Content     |
+| 23 | Add Kubernetes resource naming conventions                                                    | LOW    | LOW    | Content     |
+| 24 | Add Terraform/Infrastructure-as-Code naming conventions                                       | LOW    | LOW    | Content     |
+| 25 | Create a naming-review README.md with quickstart guide                                        | MED    | LOW    | Docs        |
 
 ---
 
@@ -202,11 +202,11 @@ naming-review/                           2,671 lines
 
 ## Sync Status
 
-| Source (`~/projects/SKILLS/`) | Installed (`~/.config/crush/skills/`) | Status           |
-| ----------------------------- | ------------------------------------- | ---------------- |
-| naming-review/                | naming-review/                        | ✅ Synced        |
-| how-to-golang/                | —                                     | ❌ NOT synced    |
-| 14 other skills               | 14 other skills                       | ✅ Synced        |
+| Source (`~/projects/SKILLS/`) | Installed (`~/.config/crush/skills/`) | Status          |
+| ----------------------------- | ------------------------------------- | --------------- |
+| naming-review/                | naming-review/                        | ✅ Synced       |
+| how-to-golang/                | —                                     | ❌ NOT synced   |
+| 14 other skills               | 14 other skills                       | ✅ Synced       |
 | —                             | copywriting/                          | ⚠️ Not in source |
 | —                             | improve-codebase-architecture/        | ⚠️ Not in source |
 | —                             | remotion-best-practices/              | ⚠️ Not in source |

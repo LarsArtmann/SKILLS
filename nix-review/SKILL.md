@@ -227,26 +227,26 @@ Produce a structured report with these sections:
 
 ## Critical Issues (Must Fix)
 
-| #   | File      | Line | Issue                  | Fix                      |
-| --- | --------- | ---- | ---------------------- | ------------------------ |
-| 1   | flake.nix | 42   | Placeholder vendorHash | Replace with actual hash |
+| # | File      | Line | Issue                  | Fix                      |
+| - | --------- | ---- | ---------------------- | ------------------------ |
+| 1 | flake.nix | 42   | Placeholder vendorHash | Replace with actual hash |
 
 ## Structural Issues (Should Fix)
 
-| #   | File        | Issue     | Recommendation                         |
-| --- | ----------- | --------- | -------------------------------------- |
-| 1   | service.nix | 550 lines | Split into server/repos/runner modules |
+| # | File        | Issue     | Recommendation                         |
+| - | ----------- | --------- | -------------------------------------- |
+| 1 | service.nix | 550 lines | Split into server/repos/runner modules |
 
 ## Consistency Issues
 
-| #   | Files    | Issue             | Fix                           |
-| --- | -------- | ----------------- | ----------------------------- |
-| 1   | 3 flakes | Formatter missing | Add `formatter = pkgs.nixfmt` |
+| # | Files    | Issue             | Fix                           |
+| - | -------- | ----------------- | ----------------------------- |
+| 1 | 3 flakes | Formatter missing | Add `formatter = pkgs.nixfmt` |
 
 ## Best Practice Violations
 
-| #   | File | Violation | Better Approach |
-| --- | ---- | --------- | --------------- |
+| # | File | Violation | Better Approach |
+| - | ---- | --------- | --------------- |
 
 ## Strengths (What's Done Well)
 

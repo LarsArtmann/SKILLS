@@ -5,12 +5,12 @@ Distilled from rules 033-038. Testing is not optional — it's the safety net th
 ## Testing Pyramid for Go
 
 ```
-         ╱  E2E  ╲          — Critical user journeys, run before release
-        ╱ Integration ╲     — Real DB, real services, no mocks
-       ╱  BDD (Ginkgo) ╲   — Behavior specification, not implementation
-      ╱  Property-Based ╲  — Invariants across wide input ranges
-     ╱  Unit (table-driven)╲ — Pure functions, fast, isolated
-    ╱ Benchmark (continuous) ╲— Performance budgets in CI
+     ╱  E2E  ╲          — Critical user journeys, run before release
+    ╱ Integration ╲     — Real DB, real services, no mocks
+   ╱  BDD (Ginkgo) ╲   — Behavior specification, not implementation
+  ╱  Property-Based ╲  — Invariants across wide input ranges
+ ╱  Unit (table-driven)╲ — Pure functions, fast, isolated
+╱ Benchmark (continuous) ╲— Performance budgets in CI
 ```
 
 ## Rule 033: Test-Driven Development

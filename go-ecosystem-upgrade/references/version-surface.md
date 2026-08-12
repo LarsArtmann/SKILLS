@@ -13,7 +13,7 @@ upgrade (8 consumers).
 | Location                  | What to grep                | Notes                                                                                                                            |
 | ------------------------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | `go.mod` (every module)   | `^go 1.` or `module-path v` | The canonical declaration. Use `go mod edit`, never sed.                                                                         |
-| `go.work` / `go.work.sum` | `^go ` and `toolchain`      | Workspace files carry their own `go` directive. If any exist, they must be aligned with the modules they cover. Often forgotten. |
+| `go.work` / `go.work.sum` | `^go` and `toolchain`       | Workspace files carry their own `go` directive. If any exist, they must be aligned with the modules they cover. Often forgotten. |
 | `go.sum`                  | version hash lines          | Don't hand-edit. Run `go mod tidy` or `go mod verify`.                                                                           |
 | `vendor/modules.txt`      | `# module-path version`     | If vendor/ exists, this file must match. Run `go mod vendor`.                                                                    |
 | `vendor/` source trees    | actual vendored source      | Committed vendor dirs drift silently. A `go mod vendor` syncs the ENTIRE tree, not just one dep.                                 |
