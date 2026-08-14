@@ -107,23 +107,25 @@
 | 5  | Add `reflect` behavior differences note                                                                    | Medium | Low    |
 | 6  | Add a decision tree entry in `how-to-golang/SKILL.md` for alias-vs-definition                              | High   | Low    |
 | 7  | Add trigger phrases ("type alias", "type definition") to `how-to-golang/SKILL.md` description              | High   | Low    |
-| 8  | Read `/home/lars/projects/httputil` code to understand the actual mistake                                  | High   | Low    |
-| 9  | Cross-reference `go-error-modernization` skill — error types depend on alias-vs-definition                 | Medium | Low    |
-| 10 | Cross-reference `data-model-review` skill — type design decisions                                          | Low    | Low    |
-| 11 | Check `how-to-golang/references/architecture.md` for overlap or conflict with new section                  | Medium | Low    |
-| 12 | Check other Go skills (`go-modularize`, `samber-do-best-practices`) for alias/definition usage in examples | Low    | Low    |
-| 13 | Add embedding-vs-aliasing-vs-definition comparison to `domain-types.md`                                    | Medium | Medium |
-| 14 | Clarify that type definitions CAN have methods re-declared (just not inherited)                            | Low    | Low    |
-| 15 | Add anchor link (`#type-alias--vs-type-definition-no-`) to any cross-references                            | Low    | Low    |
-| 16 | Consider whether the `go-error-modernization` skill needs its own alias-vs-definition section              | Medium | Medium |
-| 17 | Run `go vet` / `golangci-lint` on the Go examples in the guidance to catch syntax errors                   | Medium | Low    |
-| 18 | Consider adding the alias-vs-definition distinction to the `how-to-write-skills.md` guide as a Go gotcha   | Low    | Low    |
+| 8  | Fix `DOMAIN_LANGUAGE.md` in httputil — it calls a type definition an "alias"                              | High   | Low    |
+| 9  | Decide on .agents sync strategy (script, docs, or hook)                                                   | High   | Low    |
+| 10 | Refresh `.agents/skills/` from project repo to eliminate current divergence                                | Medium | Medium |
+| 11 | Cross-reference `go-error-modernization` skill — error types depend on alias-vs-definition               | Medium | Low    |
+| 12 | Cross-reference `data-model-review` skill — type design decisions                                          | Low    | Low    |
+| 13 | Check `how-to-golang/references/architecture.md` for overlap or conflict with new section                  | Medium | Low    |
+| 14 | Check other Go skills (`go-modularize`, `samber-do-best-practices`) for alias/definition usage in examples | Low    | Low    |
+| 15 | Add embedding-vs-aliasing-vs-definition comparison to `domain-types.md`                                    | Medium | Medium |
+| 16 | Clarify that type definitions CAN have methods re-declared (just not inherited)                            | Low    | Low    |
+| 17 | Add anchor link (`#type-alias--vs-type-definition-no-`) to any cross-references                            | Low    | Low    |
+| 18 | Consider whether the `go-error-modernization` skill needs its own alias-vs-definition section              | Medium | Medium |
+| 19 | Run `go vet` / `golangci-lint` on the Go examples in the guidance to catch syntax errors                   | Medium | Low    |
+| 20 | Consider adding the alias-vs-definition distinction to the `how-to-write-skills.md` guide as a Go gotcha | Low    | Low    |
 
 ---
 
 ## g) Questions I Cannot Answer Myself
 
-1. **What was the specific mistake in httputil?** Was it an alias used where a definition was needed (lost type safety), or a definition used where an alias was needed (lost methods/convertibility)? The guidance should be tested against the real case.
+1. **~~What was the specific mistake in httputil?~~** — **ANSWERED.** It was a type **definition** where a type **alias** was needed. `type Middleware func(http.Handler) http.Handler` in both `httputil/recorder.go` and `server_timing/middleware.go` created two distinct types, forcing explicit `Middleware(...)` conversions at every composition boundary. The fix is `type Middleware = func(http.Handler) http.Handler` (alias).
 
 2. **Should this guidance live in `domain-types.md` (where I put it) or in `rules.md` (which covers the formal Go rules)?** Both are plausible homes. `domain-types.md` is about branded types and domain primitives; `rules.md` is about development rules. The alias-vs-definition distinction spans both — it's relevant to domain types AND is a general Go rule. Should it be in both with a cross-reference, or in one with a pointer from the other?
 
