@@ -252,7 +252,7 @@ Ranked roughly by impact × urgency. Bugs from §d are at the top.
 26. Add a `scripts/verify-docs-health.sh` that automates the new mandatory consistency checks (link resolution, count verification, ghost-file detection).
 27. Grep every SKILL.md for the phrase "if one exists" and review each occurrence — most are probably anti-patterns.
 28. Grep every SKILL.md for the phrase "clean" and ensure none use it without enumeration.
-29. Add Go to the update-old-docs verification-gate quality command list too (currently says "cargo test, npm test" — Go is also missing here).
+29. Add Go to the update-old-docs verification-gate quality command list too (currently says "cargo test, pnpm test" — Go is also missing here).
 30. Add a named anti-pattern callout in docs-health for "Marketing-score anti-pattern" (parallel to "Verschlimmbesserung" in update-old-docs).
 31. Cross-link from `update-old-docs/references/case-study.md` to the two processed feedback files that motivated hardening.
 32. Verify the new cross-file consistency grep commands actually work (e.g., `grep -roE '\]\([^)]+\)' *.md docs/` — test in this repo).

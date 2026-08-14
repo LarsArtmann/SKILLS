@@ -3,7 +3,7 @@
 # sync-html-kit.sh — Vendor the canonical html-report-kit/ into every consumer skill.
 #
 # WHY THIS EXISTS
-#   The Agent Skills spec (and the `npx skills` / `bunx skills` CLI) treats each
+#   The Agent Skills spec (and the `pnpm dlx skills` / `bunx skills` CLI) treats each
 #   skill as a flat, self-contained unit. There is no dependency system, no
 #   `dependencies:` frontmatter field, and no shared-asset resolution. When a
 #   user runs `bunx skills add LarsArtmann/SKILLS@status-report`, ONLY

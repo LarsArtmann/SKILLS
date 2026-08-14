@@ -109,7 +109,7 @@ paths compatible with the Icon component.
 Copy `.github/workflows/website.yml` from gogenfilter. It uses a two-job
 pattern:
 
-1. **build-website** — `npm ci`, `astro check`, `astro build`, HTML
+1. **build-website** — `pnpm install --frozen-lockfile`, `astro check`, `astro build`, HTML
    validation, upload artifact
 2. **deploy-website** — download artifact, deploy to Firebase via
    `GOOGLE_APPLICATION_CREDENTIALS` secret

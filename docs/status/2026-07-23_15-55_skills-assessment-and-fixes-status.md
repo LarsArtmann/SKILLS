@@ -117,7 +117,7 @@ I edited 20+ files across this session and never noticed that a hook was auto-co
 ### Documentation
 
 16. **Update AGENTS.md §5.8** to list which skills now have `allowed-tools`
-17. **Add a "portability checklist" to `how-to-write-skills.md`** — no absolute paths, no author-specific values, test with `npx skills add <one-skill>`
+17. **Add a "portability checklist" to `how-to-write-skills.md`** — no absolute paths, no author-specific values, test with `pnpm dlx skills add <one-skill>`
 18. **Write a verification-status block for `nix-private-go-repos`** — it references `mkPreparedSource` and `go-nix-helpers` which should be verified
 19. **Audit all cross-skill references** — confirm every `../sibling-skill/SKILL.md` link resolves after per-skill install (vendoring model)
 

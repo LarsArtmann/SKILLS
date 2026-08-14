@@ -5,8 +5,8 @@
 
 ## Build and Deploy
 
-- [ ] `npm run build` succeeds with 0 errors (run from `website/`)
-- [ ] `npx astro check` passes with 0 errors
+- [ ] `pnpm run build` succeeds with 0 errors (run from `website/`)
+- [ ] `pnpm dlx astro check` passes with 0 errors
 - [ ] `https://{siteId}.web.app` returns HTTP 200
 - [ ] All docs pages return HTTP 200 on web.app
 - [ ] All internal doc links resolve (no 404s in Starlight sidebar)

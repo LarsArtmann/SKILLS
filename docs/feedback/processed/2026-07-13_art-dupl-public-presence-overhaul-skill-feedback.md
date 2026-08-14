@@ -33,7 +33,7 @@
 
 7. Added CNAME record to `domains/lars.software.tf`: `art-dupl` → `art-dupl.web.app.`
 8. Upgraded `website/firebase.json` with full security headers (HSTS, X-Frame-Options, Permissions-Policy, CORP, COOP) matching go-atomic-write/gogenfilter pattern
-9. Upgraded deploy workflow to two-job pattern (build → deploy) with npm ci, astro check, HTML validation, artifact passing, GOOGLE_APPLICATION_CREDENTIALS auth
+9. Upgraded deploy workflow to two-job pattern (build → deploy) with pnpm install --frozen-lockfile, astro check, HTML validation, artifact passing, GOOGLE_APPLICATION_CREDENTIALS auth
 10. Updated ALL URLs from `art-dupl.web.app` to `art-dupl.lars.software` across 5 files
 11. Updated GitHub homepage URL
 12. Rebuilt website — still works, canonical URLs correct
@@ -58,7 +58,7 @@
 
 3. **The icon path catalog** — `Icon.astro` uses a hardcoded map of SVG path data. I had to invent new icon paths for art-dupl-specific icons (tree, semantic, output, filter, ci, sdk, terminal, pipeline, review, refactor, monitor). Some of these may be malformed or render incorrectly. A skill should include a standard icon set.
 
-4. **The mandatory preview step** — "After building, ALWAYS run `npm run preview` and visually verify the landing page before declaring done." I skipped this entirely. A skill would have enforced it as a gate.
+4. **The mandatory preview step** — "After building, ALWAYS run `pnpm run preview` and visually verify the landing page before declaring done." I skipped this entirely. A skill would have enforced it as a gate.
 
 5. **The MDX gotchas** — Characters like `<`, `>`, `<=`, `>=` break MDX parsing. This is mentioned in prior feedback but I didn't have the skill loaded so I was lucky to avoid it.
 
@@ -143,7 +143,7 @@
 
 1. **Commit checkpoints** — Define mandatory commit points:
    - After README rewrite (stable, verified `go build` passes)
-   - After website builds successfully (verified `npm run build` exits 0)
+   - After website builds successfully (verified `pnpm run build` exits 0)
    - After Firebase/DNS config changes (validated configs)
 
 2. **The "two repos" awareness** — When working on a project website that involves DNS, there are always TWO repos to commit: the project repo and the domains repo. List both explicitly.
@@ -170,10 +170,10 @@ This is the single biggest quality risk in the entire session. A human developer
 
 **What should be in the SKILL.md:**
 
-1. **The mandatory QA sequence** — After `npm run build`:
+1. **The mandatory QA sequence** — After `pnpm run build`:
 
    ```bash
-   npm run preview &
+   pnpm run preview &
    sleep 3
    # Take screenshots or at minimum verify key pages return 200
    curl -s -o /dev/null -w "%{http_code}" http://localhost:4321/

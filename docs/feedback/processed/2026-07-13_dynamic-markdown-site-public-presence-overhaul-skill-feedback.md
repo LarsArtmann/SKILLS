@@ -54,11 +54,11 @@
 
 3. **The icon path catalog** — `Icon.astro` uses a hardcoded map of SVG path data. I had to invent new icon paths for dynamic-markdown-site-specific icons (`cloud`, `search`, `diagram`, `code`). Some of these may render incorrectly. A skill should include a standard icon set that covers common feature/use-case icons, with verified-valid SVG path data.
 
-4. **The build verification sequence** — After `npm install` (or `bun install`), run `npm run build` (or `bun run build`), expect N pages, verify `astro check` returns 0 errors. I did this correctly but a skill would make it deterministic.
+4. **The build verification sequence** — After `pnpm install` (or `bun install`), run `pnpm run build` (or `bun run build`), expect N pages, verify `astro check` returns 0 errors. I did this correctly but a skill would make it deterministic.
 
 5. **The MDX gotchas** — Characters like `<`, `>`, `<=`, `>=` break MDX parsing in `.mdx` files. I was lucky to avoid this. Prior feedback files document hitting this bug. A skill should list the exact characters that need escaping and the workaround.
 
-6. **The package manager ambiguity** — The reference sites say "CI uses npm" in `.gitignore`, but bun is the only JS runtime available on this machine. I used `bun install` and `bun run build`. A skill should document which package manager to use and how to get a real Node.js for `firebase deploy` (which requires native `re2` module that bun's node shim can't load).
+6. **The package manager ambiguity** — The reference sites say "CI uses pnpm" in `.gitignore`, but bun is the only JS runtime available on this machine. I used `bun install` and `bun run build`. A skill should document which package manager to use and how to get a real Node.js for `firebase deploy` (which requires native `re2` module that bun's node shim can't load).
 
 **Impact:** Would have saved 45+ minutes of reference reading and color computation. The website creation would go from ~90 minutes to ~25 minutes.
 
@@ -91,7 +91,7 @@
    // Authorization: Bearer {token from firebase-tools.json}
    ```
 
-3. **The Node.js/bun deployment gotcha** — `firebase deploy` uses the `re2` native module which fails under bun's node shim (`re2.node: undefined symbol`). The fix: use a REAL Node.js from Nix: `PATH=$(nix build nixpkgs#nodejs --no-link --print-out-paths)/bin:$PATH npx firebase-tools deploy`. This took me 3 failed attempts and a debugging detour to discover. A skill would document this upfront.
+3. **The Node.js/bun deployment gotcha** — `firebase deploy` uses the `re2` native module which fails under bun's node shim (`re2.node: undefined symbol`). The fix: use a REAL Node.js from Nix: `PATH=$(nix build nixpkgs#nodejs --no-link --print-out-paths)/bin:$PATH pnpm dlx firebase-tools deploy`. This took me 3 failed attempts and a debugging detour to discover. A skill would document this upfront.
 
 4. **The ACME challenge extraction** — The response from domain creation includes `certChallengeDns.token` and `certChallengeDns.domainName`. These map directly to Terraform TXT records. Document the exact path.
 
@@ -179,11 +179,11 @@
 
 **What the SKILL.md should contain:**
 
-1. **The "debugging dependencies" rule** — Never `bun add` / `npm install` a package as a debugging step without immediately removing it if it doesn't solve the problem. Use `bunx` / `npx` for one-off command execution.
+1. **The "debugging dependencies" rule** — Never `bun add` / `pnpm install` a package as a debugging step without immediately removing it if it doesn't solve the problem. Use `bunx` / `pnpm dlx` for one-off command execution.
 
 2. **The reference dependency list** — The exact `package.json` dependencies and devDependencies that every project website should have. `firebase-tools` is NOT one of them. The deploy tool should come from the Nix devShell or `bunx`.
 
-3. **The post-edit verification** — After any `bun add` or `npm install`, check `git diff package.json` to verify no stray dependencies were added.
+3. **The post-edit verification** — After any `bun add` or `pnpm install`, check `git diff package.json` to verify no stray dependencies were added.
 
 **Impact:** Would have prevented the stray `firebase-tools` dependency that now needs cleanup before committing.
 

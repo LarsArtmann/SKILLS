@@ -123,7 +123,7 @@ Add to the HARVEST anti-patterns section:
 
 ### What happened
 
-docs-health VERIFY step 7 (line 319-331) says: "Run the project's quality gate. Mandatory." It lists examples: `cargo clippy`, `npm test`, `nix flake check`. I read this section during HARVEST but **did not run `nix flake check` or `nix run .#check`** — I ran `go vet`, `golangci-lint`, and `go test` directly instead. These are equivalent for code verification but **bypass the Nix build's fileset and sandbox checks**, which is exactly where the `examples/` fileset gap hides.
+docs-health VERIFY step 7 (line 319-331) says: "Run the project's quality gate. Mandatory." It lists examples: `cargo clippy`, `pnpm test`, `nix flake check`. I read this section during HARVEST but **did not run `nix flake check` or `nix run .#check`** — I ran `go vet`, `golangci-lint`, and `go test` directly instead. These are equivalent for code verification but **bypass the Nix build's fileset and sandbox checks**, which is exactly where the `examples/` fileset gap hides.
 
 ### The problem
 
@@ -155,7 +155,7 @@ I shipped `nix run .#bench-diff` using `go run golang.org/x/perf/cmd/benchstat@l
 
 ### The problem
 
-The `nix-review` skill reviews `.nix` files. The `how-to-golang` skill advises on Go library choices. Neither has a rule like: **"If this project uses Nix flakes, every new tool dependency must be vendored via a flake input or `buildGoModule`, never `go run pkg@latest` or `npx`."**
+The `nix-review` skill reviews `.nix` files. The `how-to-golang` skill advises on Go library choices. Neither has a rule like: **"If this project uses Nix flakes, every new tool dependency must be vendored via a flake input or `buildGoModule`, never `go run pkg@latest` or `pnpm dlx`."**
 
 ### Fix
 
@@ -166,7 +166,7 @@ Add to `nix-review` (or `how-to-golang`'s Nix section) a rule:
 
 In a project with a `flake.nix`, every tool invoked by a nix app or devShell
 MUST come from a flake input or nixpkgs attribute. `go run pkg@latest`,
-`npx pkg`, `pip install`, and `cargo install` in app scripts are
+`pnpm dlx pkg`, `pip install`, and `cargo install` in app scripts are
 **banned** — they break reproducibility silently. If a tool isn't in nixpkgs,
 add it as a flake input or `buildGoModule` derivation.
 ```
@@ -243,7 +243,7 @@ All six sections acted upon. No skill was left untouched.
 | 2 | HARVEST discoverability            | `docs-health`   | Added a situation-first "Quick start: which mode do I need?" table above the documentation model. Strengthened the "After every `status-report` session" HARVEST trigger with the "run HARVEST now" consequence. |
 | 3 | "Top N" override mismatch          | `docs-health`   | Added a HARVEST anti-pattern: when the user overrides Top N to 50, expect a brainstorm and route most extras to ROADMAP.                                                                                         |
 | 4 | Quality-gate substitution          | `docs-health`   | VERIFY step 7 now says "detect the canonical gate — do not substitute" and explains that `go test` ≠ `nix run .#check` (fileset/sandbox integrity).                                                              |
-| 5 | Hermeticity invariant              | `nix-review`    | Added a "Hermeticity invariant for apps and devShells" subsection + a Purity checklist item banning `go run pkg@latest`, `npx`, `pip install`, `cargo install`, `curl                                            |
+| 5 | Hermeticity invariant              | `nix-review`    | Added a "Hermeticity invariant for apps and devShells" subsection + a Purity checklist item banning `go run pkg@latest`, `pnpm dlx`, `pip install`, `cargo install`, `curl                                            |
 | 6 | Structural decay (under-populated) | `docs-health`   | Added an "Under-populated" Medium-High failure mode, plus two VERIFY checks: TODO_LIST thin vs recent reports, and `docs/status/` newer than the last TODO_LIST edit.                                            |
 
 Verified: `scripts/check-skills.sh` passes (24 skills). Moved to `docs/feedback/processed/`.

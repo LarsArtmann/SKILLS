@@ -35,7 +35,7 @@
 3. Ran `terraform init -upgrade` (lock file had drifted from terraform.io to opentofu.org registry)
 4. Ran `terraform fmt` and `terraform plan` — plan failed: Namecheap API key is a placeholder
 5. Created Firebase hosting site `do-auditlog` via `firebase hosting:sites:create`
-6. Built website with npm and deployed to Firebase (`firebase deploy --only hosting:do-auditlog`) — success, 65 files uploaded, HTTP 200 confirmed
+6. Built website with pnpm and deployed to Firebase (`firebase deploy --only hosting:do-auditlog`) — success, 65 files uploaded, HTTP 200 confirmed
 7. Added custom domain `do-auditlog.lars.software` via Firebase Hosting REST API (2 attempts — first 400 due to missing `site` field in body)
 8. Created Firebase service account key for `firebase-adminsdk-dwv0a@lars-software.iam.gserviceaccount.com` via `gcloud iam service-accounts keys create`
 9. Set `FIREBASE_SERVICE_ACCOUNT` GitHub secret via `gh secret set`
@@ -100,9 +100,9 @@ With the note: **Do NOT pin `vite` in overrides — Astro 7 manages its own Vite
 After the website builds, there's a specific sequence that must happen. I discovered this through trial and error across two sessions. A skill should encode:
 
 ```
-1. [ ] Build passes:         cd website && npm run build
-2. [ ] Type check passes:    npx astro check
-3. [ ] HTML validates:       npx html-validate "dist/**/*.html"
+1. [ ] Build passes:         cd website && pnpm run build
+2. [ ] Type check passes:    pnpm dlx astro check
+3. [ ] HTML validates:       pnpm dlx html-validate "dist/**/*.html"
 4. [ ] Create Firebase site: firebase hosting:sites:create {name} --project lars-software
 5. [ ] Deploy:               cd website && firebase deploy --only hosting:{name} --project lars-software
 6. [ ] Verify web.app URL:   curl -sI https://{name}.web.app | head -1  (expect 200)
@@ -240,7 +240,7 @@ rm /tmp/firebase-ci-key.json
 
 3. **Didn't check Namecheap credentials before starting** — Spent the entire second session configuring Firebase and DNS only to discover at `terraform plan` time that the API key is a placeholder. Should have checked at the very start.
 
-4. **Left package-lock.json uncommitted** — Generated it during the build but didn't commit it. CI will need it for reproducible builds and npm cache.
+4. **Left package-lock.json uncommitted** — Generated it during the build but didn't commit it. CI will need it for reproducible builds and pnpm cache.
 
 5. **Pre-existing staged changes** — The domains repo had uncommitted changes from prior sessions (go-output, filewatcher, go-workflow-auditlog, go-error-family DNS records). My do-auditlog CNAME is mixed into this staged diff. The ACME TXT is unstaged. Messy git state.
 

@@ -32,7 +32,7 @@ The SKILLS repo has **15 skills** (14 original + 1 new `how-to-golang`), all wit
 | 3  | YAML frontmatter on all 14 original skills                       | `name` + `description` + `metadata.tags` validated                                  |
 | 4  | Shared references extracted                                      | `go-ecosystem.md` (brutal-self-review), `architect-checklist.md` (full-code-review) |
 | 5  | `how-to-write-skills.md` comprehensive guide                     | 233 lines, merged skill-creator insights                                            |
-| 6  | README.md with skills inventory and installation guide           | Complete with table + npx instructions                                              |
+| 6  | README.md with skills inventory and installation guide           | Complete with table + pnpm dlx instructions                                              |
 | 7  | Go-specific descriptions on Go skills                            | brutal-self-review, bdd-testing, etc.                                               |
 | 8  | `how-to-golang` skill with 9 reference files                     | 93-line SKILL.md + 9 references totaling ~1005 lines                                |
 | 9  | "READ, UNDERSTAND, RESEARCH, REFLECT" mantra added to all skills | Consistent execution footer                                                         |
@@ -147,7 +147,7 @@ Ranked by impact × urgency. Pareto-optimal ordering — doing #1–#8 covers ~8
 | 16     | **Add `domain-types.md` code examples** for DataPoint, ActorChain, Bitemporal, Cents, Money, etc.                                                                       | 🟡     | 30min  | Content      |
 | ~~17~~ | ~~**Resolve `brutal-self-review` ↔ `execution-mode` contradiction**~~ done — `execution-mode` deleted at `afb6181`                                                      | 🟡     | 10min  | Consistency  |
 | 18     | **Test trigger descriptions** with skill-creator's optimization loop                                                                                                    | 🟠     | 60min  | Validation   |
-| 19     | ~~**Create `crush.json`** for the repo~~ NOT-DO — intentional: skills installed via `skills_paths` or `npx skills add` (AGENTS.md §5.7)                                 | 🟠     | 10min  | Config       |
+| 19     | ~~**Create `crush.json`** for the repo~~ NOT-DO — intentional: skills installed via `skills_paths` or `pnpm dlx skills add` (AGENTS.md §5.7)                                 | 🟠     | 10min  | Config       |
 | ~~20~~ | ~~**Add `allowed-tools`** to skill frontmatter~~ done — `code-quality-scan`, `deduplicate-code`, `pareto-planning` have it; others added as needed (AGENTS.md §5.8)     | 🟠     | 15min  | Config       |
 | ~~21~~ | ~~**Verify `architecture-visualization` D2 change**~~ done — D2 is the canonical choice; `allowed-tools: d2` added                                                      | 🟠     | 5min   | Verification |
 | 22     | **Add error handling guidance** to skills (what if `d2` CLI isn't installed? `art-dupl` missing?)                                                                       | 🟠     | 30min  | Robustness   |

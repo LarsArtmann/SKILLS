@@ -43,7 +43,7 @@ Run this checklist on every external claim. A claim is verified only when you ca
 | Go source repos | `github.com`, `golang.org/x`, `go.googlesource.com` |
 | Code search     | `sourcegraph`, `grep.app`, GitHub search            |
 | Nix packages    | `search.nixos.org`, `github.com/NixOS/nixpkgs`      |
-| npm / JS        | `npmjs.com`, `jsr.io`                               |
+| pnpm / JS        | `npmjs.com`, `jsr.io`                               |
 | Python          | `pypi.org`, GitHub source                           |
 | Rust            | `crates.io`, `docs.rs`                              |
 

@@ -106,7 +106,7 @@ A doc is fresh only when you confirm its concrete claims against code. "Looks fi
 3. **Classify findings:** Critical (ghosts, wrong commands), Medium-High (structural decay — completed items in TODO_LIST, "Previously Completed" sections), Medium (contradicts code, stale status), Low (cosmetic).
 4. **Fix drift in place.** Prefer computing counts from the repo over hardcoding.
 5. **Cross-file consistency:** no feature PLANNED in TODO_LIST and FULLY_FUNCTIONAL in FEATURES; no completed item in both TODO_LIST and CHANGELOG; every internal markdown link resolves; TODO_LIST not suspiciously thin vs recent reports.
-6. **Run the project's quality gate.** Detect the build system (`nix flake check`, `cargo test`, `npm test`, `scripts/check-skills.sh`) and run the canonical command — do not substitute. If no build system, state that explicitly.
+6. **Run the project's quality gate.** Detect the build system (`nix flake check`, `cargo test`, `pnpm test`, `scripts/check-skills.sh`) and run the canonical command — do not substitute. If no build system, state that explicitly.
 
 For the full per-doc verification checklist and cross-file table, load [./references/verify-checklist.md](./references/verify-checklist.md).
 

@@ -40,7 +40,7 @@ NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#terraform -c terraform plan
 nix run nixpkgs#opentofu -- plan
 ```
 
-### 19. npm/node/firebase not in PATH
+### 19. pnpm/node/firebase not in PATH
 
 **Symptom:** Commands fail with `executable file not found in $PATH`.
 
@@ -49,7 +49,7 @@ nix run nixpkgs#opentofu -- plan
 **Fix:** Always invoke via `nix shell`:
 
 ```bash
-nix shell nixpkgs#nodejs -c npm install
+nix shell nixpkgs#nodejs -c pnpm install
 nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c firebase deploy --only hosting:{target}
 ```
 
@@ -78,25 +78,25 @@ Pinning Vite to 7.x causes a fatal Rollup version mismatch.
 **Prevention:** See [dependency-versions.md](./dependency-versions.md) —
 the "Vite Override — Critical Fix" section documents this in detail. If
 you copy gogenfilter's `package.json`, delete the `"vite"` line before
-running `npm install`.
+running `pnpm install`.
 
-### 2. npm v11 install scripts blocked
+### 2. pnpm v11 install scripts blocked
 
 **Symptom:** Build fails with missing `esbuild` or `sharp` binary.
 
-**Cause:** npm v11+ blocks install scripts by default.
+**Cause:** pnpm v11+ blocks install scripts by default.
 
 **Fix:**
 
 ```bash
-npm approve-scripts esbuild sharp
+pnpm approve-scripts esbuild sharp
 ```
 
 **Prevention:** If using bun, this is handled automatically.
 
 ### 3. `--legacy-peer-deps` without `.npmrc`
 
-**Symptom:** `npm install` fails with `ERESOLVE` for contributors who
+**Symptom:** `pnpm install` fails with `ERESOLVE` for contributors who
 clone the repo.
 
 **Cause:** The lockfile was generated with `--legacy-peer-deps` but no
@@ -116,7 +116,7 @@ compatible versions so the flag is unnecessary.
 
 ```bash
 PATH=$(nix build nixpkgs#nodejs --no-link --print-out-paths)/bin:$PATH \
-  npx firebase-tools deploy --only hosting:{siteId}
+  pnpm dlx firebase-tools deploy --only hosting:{siteId}
 ```
 
 ## Content Errors
@@ -222,14 +222,14 @@ everything is lost.
 
 **Symptom:** `package.json` has `firebase-tools` in devDependencies.
 
-**Cause:** `npm install firebase-tools` or `bun add firebase-tools` was
+**Cause:** `pnpm add firebase-tools` or `bun add firebase-tools` was
 used as a debugging step for deploy issues and never removed.
 
-**Fix:** `firebase-tools` should come from the Nix devShell or `npx`/
+**Fix:** `firebase-tools` should come from the Nix devShell or `pnpm dlx`/
 `bunx`. Remove it from `package.json`:
 
 ```bash
-npm remove firebase-tools  # or: bun remove firebase-tools
+pnpm remove firebase-tools  # or: bun remove firebase-tools
 ```
 
 ### 13. Missing `package-lock.json` / `flake.lock`
@@ -240,7 +240,7 @@ npm remove firebase-tools  # or: bun remove firebase-tools
 
 **Fix:** Both files must be committed:
 
-- `package-lock.json` — reproducible npm installs in CI
+- `package-lock.json` — reproducible pnpm installs in CI
 - `flake.lock` — reproducible Nix builds
 
 ### 14. Edit tool collateral damage on Terraform
@@ -334,19 +334,19 @@ the Phase 1 Code Example Verification checklist:
 6. Are time units correct? (500*time.Millisecond not 500*time.Second)
 ```
 
-### 24. npm run from wrong working directory
+### 24. pnpm run from wrong working directory
 
-**Symptom:** `npm error code ENOENT ... Could not read package.json: Error:
+**Symptom:** `pnpm error code ENOENT ... Could not read package.json: Error:
 ENOENT: no such file or directory, open '/home/lars/projects/{repo}/package.json'`
 
-**Cause:** Running `npm install` or `npm run build` from the project root
+**Cause:** Running `pnpm install` or `pnpm run build` from the project root
 instead of the `website/` subdirectory.
 
-**Fix:** Always `cd website` before npm commands. When using Nix shell
+**Fix:** Always `cd website` before pnpm commands. When using Nix shell
 wrappers, set the working directory explicitly:
 
 ```bash
-nix shell nixpkgs#nodejs -c npm install   # run from website/ directory
+nix shell nixpkgs#nodejs -c pnpm install   # run from website/ directory
 ```
 
 ### 25. flake.lock generation fails without git add
@@ -487,14 +487,14 @@ omit the license badge or use `license-Proprietary-lightgrey.svg`.
 
 ### 33. Lockfile package-manager mismatch
 
-**Symptom:** CI fails with `npm ci` because `package-lock.json` doesn't
+**Symptom:** CI fails with `pnpm install --frozen-lockfile` because `package-lock.json` doesn't
 exist. The dev environment used `bun install` which generated `bun.lock`
 (which is gitignored).
 
-**Cause:** Using bun locally for speed but not generating the npm lockfile
+**Cause:** Using bun locally for speed but not generating the pnpm lockfile
 that CI needs.
 
-**Fix:** If CI uses npm, run `npm install` once to generate
+**Fix:** If CI uses pnpm, run `pnpm install` once to generate
 `package-lock.json` and commit it. The `bun.lock` stays gitignored. See
 [dependency-versions.md](./dependency-versions.md) Lockfile Decision table.
 

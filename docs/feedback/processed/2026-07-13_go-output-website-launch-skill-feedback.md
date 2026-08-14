@@ -46,13 +46,13 @@ Over this session, I:
 
 ### 2. The `--legacy-peer-deps` Trap
 
-**What happened:** When `astro-og-canvas@0.11.1` conflicted with `astro@7.x` (peer dep requires `astro@^5.0.0 || ^6.0.0-alpha`), I used `npm install --legacy-peer-deps` as a workaround. This generated a lockfile that silently works locally but will fail in CI or for other contributors who run plain `npm install`. No `.npmrc` was created to document the requirement.
+**What happened:** When `astro-og-canvas@0.11.1` conflicted with `astro@7.x` (peer dep requires `astro@^5.0.0 || ^6.0.0-alpha`), I used `pnpm install --legacy-peer-deps` as a workaround. This generated a lockfile that silently works locally but will fail in CI or for other contributors who run plain `pnpm install`. No `.npmrc` was created to document the requirement.
 
 **What a skill could have said:**
 
 > "If you must use `--legacy-peer-deps`, create a `.npmrc` file with `legacy-peer-deps=true` in the same commit. Otherwise the lockfile is non-reproducible. Better: pin compatible versions (see version matrix above) so `--legacy-peer-deps` is unnecessary."
 
-**Impact:** Anyone cloning the repo and running `npm install` will get ERESOLVE errors. The build works only because the lockfile was generated with the flag.
+**Impact:** Anyone cloning the repo and running `pnpm install` will get ERESOLVE errors. The build works only because the lockfile was generated with the flag.
 
 ### 3. The Pointer Dereference Bug Pattern
 
@@ -121,13 +121,13 @@ My hero code example wrote `b.AddNode(output.NewGraphNode("compile", "Compile"))
 
 **Impact:** 20+ minutes of repeated failed deploys before I gave up. No way to know if this is a temporary outage or a permanent network restriction.
 
-### 7. The npm Script Approval Pattern
+### 7. The pnpm Script Approval Pattern
 
-**What happened:** npm v11+ with `allow-scripts` requires explicit approval for packages with install scripts (`esbuild`, `sharp`). After `npm install`, the build silently failed because esbuild's binary wasn't installed. I had to run `npm approve-scripts esbuild` and `npm approve-scripts sharp` separately, then reinstall.
+**What happened:** pnpm v11+ with `allow-scripts` requires explicit approval for packages with install scripts (`esbuild`, `sharp`). After `pnpm install`, the build silently failed because esbuild's binary wasn't installed. I had to run `pnpm approve-scripts esbuild` and `pnpm approve-scripts sharp` separately, then reinstall.
 
 **What a skill could have said:**
 
-> "npm v11+ blocks install scripts by default. After `npm install`, run `npm approve-scripts --allow-scripts-pending` to approve esbuild and sharp. Without this, the Astro build fails with missing native binaries."
+> "pnpm v11+ blocks install scripts by default. After `pnpm install`, run `pnpm approve-scripts --allow-scripts-pending` to approve esbuild and sharp. Without this, the Astro build fails with missing native binaries."
 
 **Impact:** 2 failed builds + 2 extra install cycles before discovering the approval requirement.
 
@@ -150,14 +150,14 @@ My hero code example wrote `b.AddNode(output.NewGraphNode("compile", "Compile"))
 
 ### 9. The `astro-og-canvas` Peer Dependency Conflict Pattern
 
-**What happened:** The OG image generation plugin (`astro-og-canvas`) requires `sharp` for image processing. Sharp has native bindings that need `node install.js` to run. npm v11 blocks this by default. Additionally, `astro-og-canvas@0.12.0` requires `astro@^5 || ^6`, but I had `astro@7.x`. The interaction between these three issues (Astro version, peer dep, install scripts) took multiple debugging cycles to untangle.
+**What happened:** The OG image generation plugin (`astro-og-canvas`) requires `sharp` for image processing. Sharp has native bindings that need `node install.js` to run. pnpm v11 blocks this by default. Additionally, `astro-og-canvas@0.12.0` requires `astro@^5 || ^6`, but I had `astro@7.x`. The interaction between these three issues (Astro version, peer dep, install scripts) took multiple debugging cycles to untangle.
 
 **What a skill could have said:**
 
 > "The OG image pipeline has three known friction points:
 >
 > 1. Version pinning (see matrix above)
-> 2. npm script approval (`sharp` needs `npm approve-scripts`)
+> 2. pnpm script approval (`sharp` needs `pnpm approve-scripts`)
 > 3. Native binary availability (`sharp` needs platform-specific binaries)
 >    If OG images fail, check all three. If you don't need OG images, remove `astro-og-canvas` from dependencies and delete `src/pages/og/[...slug].ts`."
 
@@ -173,7 +173,7 @@ The existing feedback file (`2026-07-13_website-launch-firebase-hosting-feedback
 
 1. **The verified dependency version matrix** — exact Astro/Starlight/og-canvas versions that work together. No guessing, no bumping.
 2. **The `--legacy-peer-deps` + `.npmrc` requirement** — if peer deps conflict, either fix versions or document the flag
-3. **The npm v11 script approval pattern** — `npm approve-scripts` for esbuild/sharp
+3. **The pnpm v11 script approval pattern** — `pnpm approve-scripts` for esbuild/sharp
 4. **The Go code example verification checklist** — pointer/value, receiver type, return type, parameter type
 5. **The Terraform edit safety pattern** — `git diff` after EVERY edit to verify no collateral damage
 6. **The Firebase upload endpoint pre-check** — verify `upload-firebasehosting.googleapis.com` reachability before attempting deploy

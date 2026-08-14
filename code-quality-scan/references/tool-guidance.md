@@ -26,7 +26,7 @@ Detect the build system and use its native commands:
 | Nix flakes   | `flake.nix` exists      | `nix build`       | `nix flake check`       | `nix run .#test` |
 | Make         | `Makefile` exists       | `make build`      | `make lint`             | `make test`      |
 | Go           | `go.mod` exists         | `go build ./...`  | `go vet ./...` + linter | `go test ./...`  |
-| npm/pnpm     | `package.json` exists   | `npm run build`   | `npm run lint`          | `npm test`       |
+| pnpm/pnpm     | `package.json` exists   | `pnpm run build`   | `pnpm run lint`          | `pnpm test`       |
 | Cargo        | `Cargo.toml` exists     | `cargo build`     | `cargo clippy`          | `cargo test`     |
 | Python       | `pyproject.toml` exists | `python -m build` | `ruff check .`          | `pytest`         |
 
@@ -62,7 +62,7 @@ art-dupl --type-aware --sort total-tokens -t 5 --html
 If `art-dupl` is not installed, fall back to `jscpd` (language-agnostic copy-paste detection):
 
 ```bash
-npx jscpd src/ --format "go" --reporters html
+pnpm dlx jscpd src/ --format "go" --reporters html
 ```
 
 ---
@@ -74,7 +74,7 @@ npx jscpd src/ --format "go" --reporters html
 | `tsc`    | Type errors                                          | `tsc --noEmit`            |
 | `eslint` | Code quality, style, best practices                  | `eslint . --ext .ts,.tsx` |
 | `biome`  | Fast linter + formatter (replaces eslint + prettier) | `biome check .`           |
-| `jscpd`  | Copy-paste detection                                 | `npx jscpd src/`          |
+| `jscpd`  | Copy-paste detection                                 | `pnpm dlx jscpd src/`          |
 
 ---
 

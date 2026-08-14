@@ -41,10 +41,10 @@ constraints**. These apply throughout:
 - **`curl` is BANNED** in Crush. Use the `fetch` tool for HTTP requests, or
   Node.js `https.request` for scripted API calls. Every `curl` in older
   references has been replaced.
-- **`npm` / `node` are not in PATH by default.** Use:
+- **`pnpm` / `node` are not in PATH by default.** Use:
   ```bash
-  nix shell nixpkgs#nodejs -c npm install
-  nix shell nixpkgs#nodejs -c npm run build
+  nix shell nixpkgs#nodejs -c pnpm install
+  nix shell nixpkgs#nodejs -c pnpm run build
   ```
 - **`firebase` CLI is not in PATH by default.** Use:
   ```bash
@@ -541,14 +541,14 @@ order, and Starlight config knobs, load
 
 ```bash
 cd website
-nix shell nixpkgs#nodejs -c npm install
-nix shell nixpkgs#nodejs -c npm run build
+nix shell nixpkgs#nodejs -c pnpm install
+nix shell nixpkgs#nodejs -c pnpm run build
 ```
 
-If using npm v11+, native binary packages need approval:
+If using pnpm v11+, native binary packages need approval:
 
 ```bash
-nix shell nixpkgs#nodejs -c npx approve-scripts esbuild sharp   # if blocked
+nix shell nixpkgs#nodejs -c pnpm dlx approve-scripts esbuild sharp   # if blocked
 ```
 
 Expected output: N pages generated, sitemap, pagefind search index, 0 errors.
@@ -556,8 +556,8 @@ Expected output: N pages generated, sitemap, pagefind search index, 0 errors.
 Run type checking and HTML validation:
 
 ```bash
-nix shell nixpkgs#nodejs -c npx astro check          # 0 errors, 0 warnings
-nix shell nixpkgs#nodejs -c npx html-validate "dist/**/*.html"
+nix shell nixpkgs#nodejs -c pnpm dlx astro check          # 0 errors, 0 warnings
+nix shell nixpkgs#nodejs -c pnpm dlx html-validate "dist/**/*.html"
 ```
 
 ### Visual QA Gate (mandatory — Phase 4 does not start until this passes)
@@ -571,7 +571,7 @@ risk in the entire workflow.
 
 ```bash
 # Start preview server
-nix shell nixpkgs#nodejs -c npm run preview &
+nix shell nixpkgs#nodejs -c pnpm run preview &
 sleep 3
 
 # Verify key pages return 200 (use fetch tool, not curl)
@@ -704,7 +704,7 @@ rm /tmp/firebase-ci-key.json
 Load the [CI workflow reference](./references/ci-workflow.md) for the
 full template. It uses a two-job pattern:
 
-1. **build-website** — `npm ci`, `astro check`, `astro build`, HTML validation,
+1. **build-website** — `pnpm install --frozen-lockfile`, `astro check`, `astro build`, HTML validation,
    upload artifact
 2. **deploy-website** — download artifact, deploy to Firebase via
    `GOOGLE_APPLICATION_CREDENTIALS` secret
@@ -742,7 +742,7 @@ full list. The most critical:
    Nix invocations and Node.js, not curl.
 2. **Terraform is unfree** — use `NIXPKGS_ALLOW_UNFREE=1 nix shell --impure
 nixpkgs#terraform` or `opentofu`.
-3. **`npm`, `node`, `firebase` are not in PATH** — always invoke via
+3. **`pnpm`, `node`, `firebase` are not in PATH** — always invoke via
    `nix shell nixpkgs#{package} -c {command}`.
 4. **Vite override conflicts** — **Remove `vite` from overrides entirely.**
    Astro 7 manages its own Vite version (Vite 8). Pinning `vite: 7.3.2`
@@ -756,8 +756,8 @@ nixpkgs#terraform` or `opentofu`.
 7. **`package-lock.json` + `flake.lock`** — Must be generated and committed.
 8. **`GOEXPERIMENT=jsonv2`** — If the library uses `encoding/json/v2`,
    document the build constraint in README.
-9. **Stray dependencies** — Never `npm install` a package as a debugging step
-   without removing it. Use `npx` for one-off commands.
+9. **Stray dependencies** — Never `pnpm install` a package as a debugging step
+   without removing it. Use `pnpm dlx` for one-off commands.
 10. **Firebase upload endpoint** — `upload-firebasehosting.googleapis.com` is a
     different host. If unreachable, deploys fail. Verify before attempting.
 11. **bun vs Node.js for deploy** — `firebase deploy` uses the `re2` native
@@ -787,8 +787,8 @@ nixpkgs#terraform` or `opentofu`.
     session found `.goreleaser.yaml` claiming MIT while the LICENSE file
     was proprietary — actively misleading Homebrew/Scoop/Nix repositories.
 20. **Lockfile package-manager mismatch** — If the dev environment uses
-    `bun install` but CI uses `npm ci`, there's no `package-lock.json`.
-    Either: (a) run `npm install` once to generate `package-lock.json`
+    `bun install` but CI uses `pnpm install --frozen-lockfile`, there's no `package-lock.json`.
+    Either: (a) run `pnpm install` once to generate `package-lock.json`
     for CI, or (b) update CI to use bun and commit `bun.lock` (remove
     it from `.gitignore` first).
 21. **Application README claims wrong framework** — A README that claims

@@ -24,7 +24,7 @@
 
 ## b) PARTIALLY DONE
 
-1. **The "npm vs bun" guidance is split across files.** Dependency-versions.md has the deploy guidance, common-pitfalls.md has the re2 failure mode, SKILL.md Phase 3 doesn't mention bun at all. An agent reading just SKILL.md might run `bun run build` then hit the re2 error at deploy time without knowing why. The cross-referencing is there but the SKILL.md body should surface the one-liner: "bun is fine for build; deploy needs real Node.js from Nix."
+1. **The "pnpm vs bun" guidance is split across files.** Dependency-versions.md has the deploy guidance, common-pitfalls.md has the re2 failure mode, SKILL.md Phase 3 doesn't mention bun at all. An agent reading just SKILL.md might run `bun run build` then hit the re2 error at deploy time without knowing why. The cross-referencing is there but the SKILL.md body should surface the one-liner: "bun is fine for build; deploy needs real Node.js from Nix."
 
 2. **CSP patching is documented but not gated.** file-manifest.md now has a CSP section explaining `fix-csp.mjs`, but SKILL.md doesn't mention CSP as a decision point in Phase 2. An agent following SKILL.md linearly would copy the gogenfilter baseline (which has CSP) but might not realize the build script MUST include `&& node scripts/fix-csp.mjs` or CSP-protected inline scripts will break.
 

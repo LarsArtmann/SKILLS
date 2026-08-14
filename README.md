@@ -82,7 +82,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 Install the entire collection:
 
 ```bash
-npx skills add https://github.com/LarsArtmann/SKILLS
+pnpm dlx skills add https://github.com/LarsArtmann/SKILLS
 ```
 
 Or add to your project's `crush.json`:

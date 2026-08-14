@@ -66,7 +66,7 @@ Added CNAME + TXT records to `domains/lars.software.tf`. Validated. Discovered a
 
 3. **The accent color palette** — Not just the hex value. The FULL token set for both dark and light mode (bg-primary, bg-card, border, border-accent, text-primary/secondary/muted, accent/accent-hover/accent-dim/accent-light, Starlight sl-color-\* mappings). I had to manually compute light-mode variants for each token. A skill could include a color palette generator or at least document the mapping formula.
 
-4. **The build verification steps** — `npm install`, `npm run build`, expected output (N pages, sitemap, pagefind index). The exact commands to run and what "success" looks like.
+4. **The build verification steps** — `pnpm install`, `pnpm run build`, expected output (N pages, sitemap, pagefind index). The exact commands to run and what "success" looks like.
 
 5. **The MDX gotchas** — `<`, `>`, `<=`, `>=` break MDX. Characters that need escaping in Starlight `.mdx` files vs regular `.md`. I hit this on the first build and had to fix it. A skill would have warned me upfront.
 

@@ -146,7 +146,7 @@ This file is currently at the repo root. The status report recommends either con
 
 ### 5.7 No `crush.json` Present
 
-There is no `crush.json` in this repo, so Crush does not auto-discover these skills. Users install them via `npx skills add`, `skills_paths` in their own `crush.json`, or by copying directories into `~/.config/crush/skills/`.
+There is no `crush.json` in this repo, so Crush does not auto-discover these skills. Users install them via `pnpm dlx skills add`, `skills_paths` in their own `crush.json`, or by copying directories into `~/.config/crush/skills/`.
 
 ### 5.8 `allowed-tools` Frontmatter Field
 

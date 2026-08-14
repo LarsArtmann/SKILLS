@@ -16,7 +16,7 @@
 ## Verified Working — Simple (samber-do-auditlog baseline — Astro 7)
 
 The recommended starting point for new sites. No OG images, no CSP.
-Verified 2026-07-13 with a clean `npm install` + `npm run build`:
+Verified 2026-07-13 with a clean `pnpm install` + `pnpm run build`:
 
 ```json
 {
@@ -94,7 +94,7 @@ rollupOptions.input should not be an html file when building for SSR.
 **This was the #1 build failure in the samber-do-auditlog session
 (2026-07-13).** If you copy gogenfilter's `package.json` as a starting
 point, delete the `"vite"` line from overrides before running
-`npm install`.
+`pnpm install`.
 
 ## The Astro 6 vs 7 History (resolved)
 
@@ -107,13 +107,13 @@ A prior session (go-output) hit a Rollup error when using
 **Both issues are now resolved.** Use `astro-og-canvas@^0.12.0` with
 Astro 7, and **never pin `vite` in overrides**.
 
-## npm v11+ Install Scripts
+## pnpm v11+ Install Scripts
 
-npm v11+ blocks install scripts by default (`esbuild`, `sharp` need them).
-After `npm install`, run:
+pnpm v11+ blocks install scripts by default (`esbuild`, `sharp` need them).
+After `pnpm install`, run:
 
 ```bash
-npm approve-scripts esbuild sharp
+pnpm approve-scripts esbuild sharp
 ```
 
 Without this, the Astro build fails with missing native binaries.
@@ -130,7 +130,7 @@ file in the same commit:
 legacy-peer-deps=true
 ```
 
-Without this, anyone cloning the repo and running plain `npm install` will
+Without this, anyone cloning the repo and running plain `pnpm install` will
 get `ERESOLVE` errors. The lockfile works only because it was generated
 with the flag.
 
@@ -141,17 +141,17 @@ versions are compatible without `--legacy-peer-deps`.
 
 | Task                 | Tool                   | Why                                                                        |
 | -------------------- | ---------------------- | -------------------------------------------------------------------------- |
-| Install dependencies | `npm install`          | Recommended — CI uses `npm ci` with `package-lock.json`                    |
-| Build                | `npm run build`        | Works under both npm and bun                                               |
+| Install dependencies | `pnpm install`          | Recommended — CI uses `pnpm install --frozen-lockfile` with `package-lock.json`                    |
+| Build                | `pnpm run build`        | Works under both pnpm and bun                                               |
 | Deploy to Firebase   | Real Node.js (not bun) | `firebase deploy` uses `re2` native module — bun's node shim can't load it |
 
-**Default to `npm`.** Use `bun` only for fast iteration during development,
+**Default to `pnpm`.** Use `bun` only for fast iteration during development,
 then switch to real Node.js (via Nix) for deploy.
 
 ### Lockfile Decision
 
-Commit `package-lock.json` (not `bun.lock`). The CI workflow uses `npm install`
-with `cache: npm`, which requires `package-lock.json`. If both lockfiles exist,
+Commit `package-lock.json` (not `bun.lock`). The CI workflow uses `pnpm install`
+with `cache: pnpm`, which requires `package-lock.json`. If both lockfiles exist,
 add `bun.lock` to `.gitignore` (the gogenfilter `.gitignore` does this).
 
 ```gitignore
@@ -176,11 +176,11 @@ devDependencies. It comes from:
 1. The Nix devShell (`flake.nix`), or
 2. `nix shell nixpkgs#firebase-tools` for one-off commands
 
-If you accidentally `npm install firebase-tools` while debugging, remove it
+If you accidentally `pnpm add firebase-tools` while debugging, remove it
 before committing:
 
 ```bash
-npm remove firebase-tools
+pnpm remove firebase-tools
 ```
 
 Reference websites do NOT have `firebase-tools` as a dependency.

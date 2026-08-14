@@ -718,12 +718,12 @@ devShells.default = pkgs.mkShell {
 
 ### 44. Heavy Operations in shellHook
 
-shellHook runs on every shell entry — keep it fast. No `npm install`, no network access.
+shellHook runs on every shell entry — keep it fast. No `pnpm install`, no network access.
 
 ```nix
 # ANTI-PATTERN - blocks shell startup
 shellHook = ''
-  npm install   # Could take minutes
+  pnpm install   # Could take minutes
   go mod download  # Network access
 '';
 

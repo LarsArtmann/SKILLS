@@ -144,7 +144,7 @@ Avoid heavy-handed `ALWAYS`/`MUST`/`NEVER` directives when a clear explanation a
 
 The best skills narrow what the agent has to figure out on its own:
 
-- **Exact commands**: `npx create-video@latest --yes --blank --no-tailwind` instead of "set up a Remotion project"
+- **Exact commands**: `pnpm dlx create-video@latest --yes --blank --no-tailwind` instead of "set up a Remotion project"
 - **Glossaries**: define domain terms so the agent uses consistent terminology
 - **Decision trees**: map out common scenarios with clear branches
 - **Anti-patterns**: state what NOT to do explicitly

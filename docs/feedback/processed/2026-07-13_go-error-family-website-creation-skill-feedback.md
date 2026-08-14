@@ -35,7 +35,7 @@ Created the entire `website/` directory from scratch:
 
 ### Phase 3: Build Verification
 
-`npm install` + `npm run build` — 13 pages, sitemap, pagefind search index, 0 errors.
+`pnpm install` + `pnpm run build` — 13 pages, sitemap, pagefind search index, 0 errors.
 
 ### Phase 4: GitHub + DNS
 
@@ -184,7 +184,7 @@ Things I missed that a skill would have caught:
 
 2. **`flake.lock` must be generated** — For reproducible Nix builds. The reference sites all have it. I created `flake.nix` but never ran `nix flake lock`.
 
-3. **`package-lock.json` must be committed** — For reproducible npm builds in CI. I generated it via `npm install` but didn't flag it for committing.
+3. **`package-lock.json` must be committed** — For reproducible pnpm builds in CI. I generated it via `pnpm install` but didn't flag it for committing.
 
 4. **CSP headers** — gogenfilter has Content-Security-Policy in astro.config.mjs with a `fix-csp.mjs` post-build script. go-atomic-write doesn't. A skill should include CSP as the default (more secure) and document the `fix-csp.mjs` pattern.
 
@@ -208,7 +208,7 @@ Things I missed that a skill would have caught:
 
 1. **The site creation command** — `firebase hosting:sites:create {name} --project lars-software`
 2. **The multi-site pattern** — All LarsArtmann websites live in the `lars-software` Firebase project as separate hosting sites. The `.firebaserc` targets map site IDs to names.
-3. **The deploy command** — `nix run .#deploy` (which runs `npm run build && firebase deploy --only hosting`)
+3. **The deploy command** — `nix run .#deploy` (which runs `pnpm run build && firebase deploy --only hosting`)
 4. **The custom domain flow** — Console UI steps or REST API script (the go-filewatcher feedback already documented the REST API shape)
 5. **The ACme challenge pattern** — Firebase generates a TXT record value for `_acme-challenge.{subdomain}` that must be added to DNS before SSL provisioning completes
 6. **The verification step** — `curl -I https://{subdomain}.lars.software` should return 200 after SSL is provisioned
@@ -264,7 +264,7 @@ Things I missed that a skill would have caught:
 | Writing 8 customize-specific-fields files   | 10 min         | 3 min (scaffold + fill)        |
 | Manual accent color palette computation     | 10 min         | 0 min (pre-computed table)     |
 | Writing 25 project-specific content files   | 25 min         | 20 min (still manual)          |
-| npm install + build verification            | 5 min          | 5 min                          |
+| pnpm install + build verification            | 5 min          | 5 min                          |
 | README + GitHub + DNS updates               | 10 min         | 5 min                          |
 | Self-review and status report               | 10 min         | 5 min (checklist catches gaps) |
 | **Total**                                   | **~90 min**    | **~38 min**                    |

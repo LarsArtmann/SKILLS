@@ -9,7 +9,7 @@
 ```bash
 cd website
 git add flake.nix   # nix flake lock requires the file to be tracked by git
-nix shell nixpkgs#nodejs -c npm install   # generates package-lock.json
+nix shell nixpkgs#nodejs -c pnpm install   # generates package-lock.json
 nix flake lock                                # generates flake.lock
 # Commit package-lock.json AND flake.lock for reproducible CI builds
 ```

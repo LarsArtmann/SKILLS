@@ -32,7 +32,7 @@ I ignored the formula entirely and invented a number that "felt right." This is 
 
 The skill says:
 
-> Run the project's quality gate if one exists (`nix run .#quality`, `make test`, `npm test`, etc.).
+> Run the project's quality gate if one exists (`nix run .#quality`, `make test`, `pnpm test`, etc.).
 
 I ran **zero** of: `cargo test`, `cargo fmt --check`, `cargo clippy`, `cargo doc`, `nix flake check`. I declared done without any of them. My AGENTS.md edit changed the project-layout block — a typo there would have rotted the onboarding doc silently, and I would not have caught it.
 
@@ -119,7 +119,7 @@ to:
 > **Run the project's quality gate. This is mandatory, not optional.** Detect the build system and run the canonical commands:
 >
 > - Rust: `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo test`, `cargo doc`
-> - Node: `npm test`, `npm run lint`, `npx tsc --noEmit`
+> - Node: `pnpm test`, `pnpm run lint`, `pnpm dlx tsc --noEmit`
 > - Nix: `nix flake check`
 > - Python: `pytest`, `ruff check`
 >
