@@ -137,8 +137,8 @@ not yet understood. See [`content-patterns.md`](./content-patterns.md) §2.
 Always include a dependencies table — it builds trust:
 
 ```markdown
-| Dependency                 | Purpose            |
-| -------------------------- | ------------------ |
+| Dependency                                                  | Purpose            |
+| ----------------------------------------------------------- | ------------------ |
 | [`fsnotify/fsnotify`](https://github.com/fsnotify/fsnotify) | Core file watching |
 ```
 

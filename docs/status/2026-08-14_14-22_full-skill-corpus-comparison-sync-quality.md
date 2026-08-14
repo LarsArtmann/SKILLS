@@ -105,48 +105,48 @@
 
 ## f) Next Tasks (Up to 50)
 
-| #  | Task                                                                                              | Impact | Effort |
-| -- | ------------------------------------------------------------------------------------------------- | ------ | ------ |
-| 1  | Add the `.agents`/repo source-of-truth rule to `AGENTS.md`                                      | High   | Low    |
-| 2  | Reference `scripts/sync-skills-to-agents.sh` in `README.md`                                       | High   | Low    |
-| 3  | Add `--dry-run` and `--force` flags to `scripts/sync-skills-to-agents.sh`                         | High   | Low    |
-| 4  | Add pre-commit hook that runs `sync-skills-to-agents.sh --check`                                | Medium | Low    |
-| 5  | Bring orphan `.agents` skills (`copywriting`, `find-skills`, etc.) into the project repo        | High   | Medium |
-| 6  | Decide whether to delete orphan skills from `.agents` if they are not repo-worthy                 | Medium | Low    |
-| 7  | Trim `website-launch/SKILL.md` to <500 lines by moving detail to `references/`                   | Medium | High   |
-| 8  | Add alias-vs-definition decision tree entry to `how-to-golang/SKILL.md`                           | High   | Low    |
-| 9  | Add trigger phrases to `how-to-golang/SKILL.md` description                                     | High   | Low    |
-| 10 | Cross-reference `go-error-modernization` from the alias-vs-definition section                     | Medium | Low    |
-| 11 | Fix the type-alias mislabel in httputil `DOMAIN_LANGUAGE.md`                                      | Medium | Low    |
-| 12 | Create `scripts/check-skill-links.sh` for CI-grade broken-link detection                          | High   | Medium |
-| 13 | Run `scripts/sync-html-kit.sh --check` and fix any drift                                         | Medium | Low    |
-| 14 | Manually review all 25 SKILL.md descriptions for trigger quality                                | Medium | Medium |
-| 15 | Verify Go code snippets in `how-to-golang` references compile                                   | High   | Medium |
-| 16 | Verify Go code snippets in `go-error-modernization` references compile                            | High   | Medium |
-| 17 | Verify Go code snippets in `samber-do-best-practices` references compile                          | Medium | Medium |
-| 18 | Add a `skill-quality-check.sh` script that combines frontmatter, links, line counts, etc.       | High   | Medium |
-| 19 | Run empirical trigger tests for the 5 most-used skills                                          | Medium | High   |
-| 20 | Update `how-to-write-skills.md` to mention the new sync script                                  | Low    | Low    |
-| 21 | Add `--help` smoke test for `scripts/sync-skills-to-agents.sh`                                  | Low    | Low    |
+| #  | Task                                                                                               | Impact | Effort |
+| -- | -------------------------------------------------------------------------------------------------- | ------ | ------ |
+| 1  | Add the `.agents`/repo source-of-truth rule to `AGENTS.md`                                         | High   | Low    |
+| 2  | Reference `scripts/sync-skills-to-agents.sh` in `README.md`                                        | High   | Low    |
+| 3  | Add `--dry-run` and `--force` flags to `scripts/sync-skills-to-agents.sh`                          | High   | Low    |
+| 4  | Add pre-commit hook that runs `sync-skills-to-agents.sh --check`                                   | Medium | Low    |
+| 5  | Bring orphan `.agents` skills (`copywriting`, `find-skills`, etc.) into the project repo           | High   | Medium |
+| 6  | Decide whether to delete orphan skills from `.agents` if they are not repo-worthy                  | Medium | Low    |
+| 7  | Trim `website-launch/SKILL.md` to <500 lines by moving detail to `references/`                     | Medium | High   |
+| 8  | Add alias-vs-definition decision tree entry to `how-to-golang/SKILL.md`                            | High   | Low    |
+| 9  | Add trigger phrases to `how-to-golang/SKILL.md` description                                        | High   | Low    |
+| 10 | Cross-reference `go-error-modernization` from the alias-vs-definition section                      | Medium | Low    |
+| 11 | Fix the type-alias mislabel in httputil `DOMAIN_LANGUAGE.md`                                       | Medium | Low    |
+| 12 | Create `scripts/check-skill-links.sh` for CI-grade broken-link detection                           | High   | Medium |
+| 13 | Run `scripts/sync-html-kit.sh --check` and fix any drift                                           | Medium | Low    |
+| 14 | Manually review all 25 SKILL.md descriptions for trigger quality                                   | Medium | Medium |
+| 15 | Verify Go code snippets in `how-to-golang` references compile                                      | High   | Medium |
+| 16 | Verify Go code snippets in `go-error-modernization` references compile                             | High   | Medium |
+| 17 | Verify Go code snippets in `samber-do-best-practices` references compile                           | Medium | Medium |
+| 18 | Add a `skill-quality-check.sh` script that combines frontmatter, links, line counts, etc.          | High   | Medium |
+| 19 | Run empirical trigger tests for the 5 most-used skills                                             | Medium | High   |
+| 20 | Update `how-to-write-skills.md` to mention the new sync script                                     | Low    | Low    |
+| 21 | Add `--help` smoke test for `scripts/sync-skills-to-agents.sh`                                     | Low    | Low    |
 | 22 | Make `scripts/sync-skills-to-agents.sh` derive repo dir from script location instead of hardcoding | Low    | Low    |
-| 23 | Back up `.agents/skills` before destructive sync in the script                                   | Medium | Low    |
-| 24 | Add CI workflow step for `scripts/check-skills.sh`                                              | Medium | Low    |
-| 25 | Add CI workflow step for `scripts/sync-skills-to-agents.sh --check`                             | Medium | Low    |
-| 26 | Review `status-report` skill for overlap with `docs-health`                                     | Low    | Medium |
-| 27 | Review `verify-external-claims` / `verify-before-filing` pair for consistency                   | Low    | Medium |
-| 28 | Check whether `go-release` references are up to date with latest GoReleaser/GitHub features      | Low    | Medium |
-| 29 | Audit `nix-review` for any Nix language changes since it was written                            | Low    | Medium |
-| 30 | Audit `website-launch` dependency versions (Firebase, Astro, Starlight, Tailwind)                | Low    | Medium |
-| 31 | Add a CONTRIBUTING section explaining how to add a new skill                                     | Low    | Low    |
-| 32 | Remove duplicated "READ, UNDERSTAND..." footers if they are now redundant                        | Low    | Medium |
-| 33 | Add line-count warning to `check-skills.sh` for reference files that are >300 lines without ToC   | Low    | Low    |
-| 34 | Verify `architecture-visualization` D2 examples still render with current `d2` CLI               | Low    | Medium |
-| 35 | Check `deduplicate-code` `art-dupl` references for accuracy                                      | Low    | Medium |
-| 36 | Check `code-quality-scan` tool guidance for stale commands                                       | Low    | Medium |
-| 37 | Review `full-code-review` for duplicated pareto-planning content                               | Low    | Medium |
-| 38 | Ensure every skill with HTML output references the vendored `html-report-kit`                   | Low    | Low    |
-| 39 | Add a skill inventory JSON or machine-readable index                                             | Low    | Medium |
-| 40 | Create a test fixture skill for validating the skill format itself                               | Low    | Medium |
+| 23 | Back up `.agents/skills` before destructive sync in the script                                     | Medium | Low    |
+| 24 | Add CI workflow step for `scripts/check-skills.sh`                                                 | Medium | Low    |
+| 25 | Add CI workflow step for `scripts/sync-skills-to-agents.sh --check`                                | Medium | Low    |
+| 26 | Review `status-report` skill for overlap with `docs-health`                                        | Low    | Medium |
+| 27 | Review `verify-external-claims` / `verify-before-filing` pair for consistency                      | Low    | Medium |
+| 28 | Check whether `go-release` references are up to date with latest GoReleaser/GitHub features        | Low    | Medium |
+| 29 | Audit `nix-review` for any Nix language changes since it was written                               | Low    | Medium |
+| 30 | Audit `website-launch` dependency versions (Firebase, Astro, Starlight, Tailwind)                  | Low    | Medium |
+| 31 | Add a CONTRIBUTING section explaining how to add a new skill                                       | Low    | Low    |
+| 32 | Remove duplicated "READ, UNDERSTAND..." footers if they are now redundant                          | Low    | Medium |
+| 33 | Add line-count warning to `check-skills.sh` for reference files that are >300 lines without ToC    | Low    | Low    |
+| 34 | Verify `architecture-visualization` D2 examples still render with current `d2` CLI                 | Low    | Medium |
+| 35 | Check `deduplicate-code` `art-dupl` references for accuracy                                        | Low    | Medium |
+| 36 | Check `code-quality-scan` tool guidance for stale commands                                         | Low    | Medium |
+| 37 | Review `full-code-review` for duplicated pareto-planning content                                   | Low    | Medium |
+| 38 | Ensure every skill with HTML output references the vendored `html-report-kit`                      | Low    | Low    |
+| 39 | Add a skill inventory JSON or machine-readable index                                               | Low    | Medium |
+| 40 | Create a test fixture skill for validating the skill format itself                                 | Low    | Medium |
 
 ---
 

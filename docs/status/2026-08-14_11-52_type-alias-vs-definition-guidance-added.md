@@ -47,7 +47,7 @@
 
 ~~1. **Did NOT look at the actual httputil issue.**~~ — **FIXED.** Read the httputil code. The issue was: `type Middleware func(http.Handler) http.Handler` (definition) in both `recorder.go` and `server_timing/middleware.go` created two distinct types, requiring explicit `Middleware(servertiming.ServerTimingMiddleware())` conversions at every composition boundary. The fix (uncommitted) changes both to aliases (`type Middleware = func(http.Handler) http.Handler`), eliminating all conversion friction. `DOMAIN_LANGUAGE.md` also incorrectly called the definition an "alias" — the docs lied about what it was. The guidance section has been updated with this real-world middleware example.
 
-1. **File paths were wrong in the original report.** I initially claimed the edit was in `/home/lars/.config/crush/skills/how-to-golang/references/domain-types.md`. That path is a symlink (`~/.config/crush/skills/how-to-golang -> ../../../.agents/skills/how-to-golang`) that resolves to `/home/lars/.agents/skills/how-to-golang/references/domain-types.md`. The **canonical source of truth** is `/home/lars/projects/SKILLS/how-to-golang/references/domain-types.md`. I have now copied the change to the canonical project repo; git status shows ` M how-to-golang/references/domain-types.md`. The `.agents` copy is a runtime installation used by Crush, not the source repo.
+1. **File paths were wrong in the original report.** I initially claimed the edit was in `/home/lars/.config/crush/skills/how-to-golang/references/domain-types.md`. That path is a symlink (`~/.config/crush/skills/how-to-golang -> ../../../.agents/skills/how-to-golang`) that resolves to `/home/lars/.agents/skills/how-to-golang/references/domain-types.md`. The **canonical source of truth** is `/home/lars/projects/SKILLS/how-to-golang/references/domain-types.md`. I have now copied the change to the canonical project repo; git status shows `M how-to-golang/references/domain-types.md`. The `.agents` copy is a runtime installation used by Crush, not the source repo.
 
 2. **~/.config/crush/.agents does not exist.** The user asked to compare `/home/lars/.config/crush/.agents` to `/home/lars/projects/SKILLS`. The actual installed skills live at `/home/lars/.agents/skills/` (not under `.config/crush`). Crush accesses them through symlinks in `~/.config/crush/skills/`.
 
@@ -63,7 +63,7 @@
    - **`reflect` behavior differs.** Type aliases produce identical `reflect.Type` values; type definitions produce distinct ones. This matters for serialization, ORM mapping, and any reflection-based code.
    - **Embedding vs aliasing** — not mentioned at all. `type Foo struct { time.Time }` (embedding) vs `type Foo = time.Time` (alias) vs `type Foo time.Time` (definition) are three very different things.
 
-3. **The "common mistake: definition where alias is needed" example may be slightly misleading.** It claims `type UserID id.ID[UserBrand, nanoid.NanoID]` would lose all methods. This is correct per the Go spec (type definitions have empty method sets), but the example doesn't mention that you CAN re-declare methods on the new type — it's just tedious. The guidance implies it's impossible rather than impractical.
+6. **The "common mistake: definition where alias is needed" example may be slightly misleading.** It claims `type UserID id.ID[UserBrand, nanoid.NanoID]` would lose all methods. This is correct per the Go spec (type definitions have empty method sets), but the example doesn't mention that you CAN re-declare methods on the new type — it's just tedious. The guidance implies it's impossible rather than impractical.
 
 ---
 
@@ -107,10 +107,10 @@
 | 5  | Add `reflect` behavior differences note                                                                    | Medium | Low    |
 | 6  | Add a decision tree entry in `how-to-golang/SKILL.md` for alias-vs-definition                              | High   | Low    |
 | 7  | Add trigger phrases ("type alias", "type definition") to `how-to-golang/SKILL.md` description              | High   | Low    |
-| 8  | Fix `DOMAIN_LANGUAGE.md` in httputil — it calls a type definition an "alias"                              | High   | Low    |
-| 9  | Decide on .agents sync strategy (script, docs, or hook)                                                   | High   | Low    |
+| 8  | Fix `DOMAIN_LANGUAGE.md` in httputil — it calls a type definition an "alias"                               | High   | Low    |
+| 9  | Decide on .agents sync strategy (script, docs, or hook)                                                    | High   | Low    |
 | 10 | Refresh `.agents/skills/` from project repo to eliminate current divergence                                | Medium | Medium |
-| 11 | Cross-reference `go-error-modernization` skill — error types depend on alias-vs-definition               | Medium | Low    |
+| 11 | Cross-reference `go-error-modernization` skill — error types depend on alias-vs-definition                 | Medium | Low    |
 | 12 | Cross-reference `data-model-review` skill — type design decisions                                          | Low    | Low    |
 | 13 | Check `how-to-golang/references/architecture.md` for overlap or conflict with new section                  | Medium | Low    |
 | 14 | Check other Go skills (`go-modularize`, `samber-do-best-practices`) for alias/definition usage in examples | Low    | Low    |
@@ -119,7 +119,7 @@
 | 17 | Add anchor link (`#type-alias--vs-type-definition-no-`) to any cross-references                            | Low    | Low    |
 | 18 | Consider whether the `go-error-modernization` skill needs its own alias-vs-definition section              | Medium | Medium |
 | 19 | Run `go vet` / `golangci-lint` on the Go examples in the guidance to catch syntax errors                   | Medium | Low    |
-| 20 | Consider adding the alias-vs-definition distinction to the `how-to-write-skills.md` guide as a Go gotcha | Low    | Low    |
+| 20 | Consider adding the alias-vs-definition distinction to the `how-to-write-skills.md` guide as a Go gotcha   | Low    | Low    |
 
 ---
 
@@ -185,9 +185,9 @@ and make the project-repo skills superb.
 
 ### Remaining quality gaps
 
-| #  | Gap                                                                 | Priority |
-| -- | ------------------------------------------------------------------- | -------- |
-| 1  | `website-launch/SKILL.md` is 797 lines (should be <500)             | Medium   |
-| 2  | `copywriting`, `find-skills`, `frontend-design`, etc. exist only in `.agents` | Low      |
-| 3  | Several skills still duplicate the "READ, UNDERSTAND..." footer     | Low      |
-| 4  | No empirical trigger testing in Crush                               | Medium   |
+| # | Gap                                                                           | Priority |
+| - | ----------------------------------------------------------------------------- | -------- |
+| 1 | `website-launch/SKILL.md` is 797 lines (should be <500)                       | Medium   |
+| 2 | `copywriting`, `find-skills`, `frontend-design`, etc. exist only in `.agents` | Low      |
+| 3 | Several skills still duplicate the "READ, UNDERSTAND..." footer               | Low      |
+| 4 | No empirical trigger testing in Crush                                         | Medium   |

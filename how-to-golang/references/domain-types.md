@@ -58,10 +58,10 @@ behave very differently. Picking the wrong one causes subtle bugs — methods
 that silently vanish, conversions that shouldn't be needed (or are missing
 when they should be), and `errors.As`/`errors.Is` matches that fail.
 
-| Syntax                     | Kind            | Identity | Inherits methods? | Assignable to underlying? |
-| -------------------------- | --------------- | -------- | ----------------- | ------------------------- |
-| `type Alias = Underlying` | Type alias      | **Same type** — `Alias` IS `Underlying` everywhere | Yes — it's the same type | Yes — freely, no conversion |
-| `type Def Underlying`     | Type definition | **New, distinct type** | No — only methods you write on `Def` | No — explicit conversion required |
+| Syntax                    | Kind            | Identity                                           | Inherits methods?                    | Assignable to underlying?         |
+| ------------------------- | --------------- | -------------------------------------------------- | ------------------------------------ | --------------------------------- |
+| `type Alias = Underlying` | Type alias      | **Same type** — `Alias` IS `Underlying` everywhere | Yes — it's the same type             | Yes — freely, no conversion       |
+| `type Def Underlying`     | Type definition | **New, distinct type**                             | No — only methods you write on `Def` | No — explicit conversion required |
 
 ### When to use a type alias (`type X = Y`)
 
@@ -94,7 +94,7 @@ type Email = string
 type Email string
 ```
 
-With the alias, `func SendEmail(e Email)` accepts *any* string — the type
+With the alias, `func SendEmail(e Email)` accepts _any_ string — the type
 safety you wanted is gone.
 
 ### Common mistake: definition where alias is needed

@@ -71,37 +71,37 @@
 
 ## f) Next Tasks (up to 50)
 
-| #  | Task                                                                                                    | Impact | Effort |
-| -- | ------------------------------------------------------------------------------------------------------- | ------ | ------ |
-| 1  | Run `skills ls -g` — verify CLI sees only the 5 third-party skills as tracked                           | High   | Low    |
-| 2  | Run `skills update -g` once — verify only third-party offered, symlinks untouched                        | High   | Low    |
-| 3  | ANNOTATE 14:22 report: mark obsolete items (its f1-f6 sync tasks, f13, f22-f25) done-at or NOT-DO        | High   | Low    |
-| 4  | Update README.md: symlink model, link script usage, third-party policy                                    | High   | Low    |
-| 5  | Test `link-skills-to-agents.sh --force` on a scratch skill to prove the recovery path                     | High   | Low    |
-| 6  | Verify what `skills remove --all` / future CLI cleanup would do to untracked symlinked skills             | High   | Medium |
-| 7  | Document the three one-off crush skills (font-design, go-cqrs-lite, templ-components) in AGENTS.md §5.10 | Medium | Low    |
-| 8  | Decide + execute backup disposal (`~/.agents/.backup-skills-20260814/`, lockfile `.bak`)                 | Medium | Low    |
-| 9  | Add pre-commit hook: `link-skills-to-agents.sh --check`                                                   | Medium | Low    |
-| 10 | docs-health HARVEST this report's section (f) into TODO_LIST.md                                           | Medium | Low    |
-| 11 | Smoke-test `link-skills-to-agents.sh --help` (sed line range correctness)                                 | Low    | Low    |
-| 12 | Document `AGENTS_DIR` env override in link script header (it's supported but only in code)                | Low    | Low    |
-| 13 | Consider a guard note/wrapper against `skills add larsartmann/SKILLS` nuking symlinks (beyond AGENTS.md) | Medium | Low    |
-| 14 | Verify other agents' dirs (e.g. `~/.codex/skills`, `~/.cursor/skills`) still resolve through `.agents`    | Medium | Low    |
-| 15 | Pin/record skills CLI version whose behavior this model depends on (currently 1.5.22)                     | Medium | Low    |
-| 16 | Trim `website-launch/SKILL.md` below 500 lines (pre-existing; only over-limit skill)                      | Medium | High   |
-| 17 | Carry-over from 14:22 report: alias-vs-definition entries in `how-to-golang` (its f8-f11)                 | High   | Low    |
-| 18 | Carry-over: run `scripts/sync-html-kit.sh --check` for vendored kit drift (its f13)                       | Medium | Low    |
-| 19 | Carry-over: CI-grade link checker script `check-skill-links.sh` (its f12)                                 | High   | Medium |
-| 20 | Carry-over: manually review all 25 SKILL.md trigger descriptions (its f14)                                | Medium | Medium |
-| 21 | Carry-over: verify Go snippets in how-to-golang / go-error-modernization compile (its f15-f17)            | High   | Medium |
-| 22 | Carry-over: `skill-quality-check.sh` combining frontmatter + links + line counts (its f18)                | High   | Medium |
-| 23 | Carry-over: empirical trigger tests for top skills (its f19)                                              | Medium | High   |
-| 24 | Carry-over: httputil `DOMAIN_LANGUAGE.md` alias mislabel fix (its f11)                                    | Medium | Low    |
-| 25 | Add CONTRIBUTING section for new skills incl. the link step                                               | Low    | Low    |
-| 26 | Consider making `check-skills.sh` also verify link state (merge the two scripts)                          | Low    | Medium |
-| 27 | Update `how-to-write-skills.md` with the runtime-symlink install pattern for local development            | Low    | Low    |
-| 28 | Review whether `~/.agents/skills/README.md` (real file in runtime dir) is stale                           | Low    | Low    |
-| 29 | Decide policy: should any third-party skill ever be vendored/forked into the repo?                        | Low    | Low    |
+| #  | Task                                                                                                       | Impact | Effort |
+| -- | ---------------------------------------------------------------------------------------------------------- | ------ | ------ |
+| 1  | Run `skills ls -g` — verify CLI sees only the 5 third-party skills as tracked                              | High   | Low    |
+| 2  | Run `skills update -g` once — verify only third-party offered, symlinks untouched                          | High   | Low    |
+| 3  | ANNOTATE 14:22 report: mark obsolete items (its f1-f6 sync tasks, f13, f22-f25) done-at or NOT-DO          | High   | Low    |
+| 4  | Update README.md: symlink model, link script usage, third-party policy                                     | High   | Low    |
+| 5  | Test `link-skills-to-agents.sh --force` on a scratch skill to prove the recovery path                      | High   | Low    |
+| 6  | Verify what `skills remove --all` / future CLI cleanup would do to untracked symlinked skills              | High   | Medium |
+| 7  | Document the three one-off crush skills (font-design, go-cqrs-lite, templ-components) in AGENTS.md §5.10   | Medium | Low    |
+| 8  | Decide + execute backup disposal (`~/.agents/.backup-skills-20260814/`, lockfile `.bak`)                   | Medium | Low    |
+| 9  | Add pre-commit hook: `link-skills-to-agents.sh --check`                                                    | Medium | Low    |
+| 10 | docs-health HARVEST this report's section (f) into TODO_LIST.md                                            | Medium | Low    |
+| 11 | Smoke-test `link-skills-to-agents.sh --help` (sed line range correctness)                                  | Low    | Low    |
+| 12 | Document `AGENTS_DIR` env override in link script header (it's supported but only in code)                 | Low    | Low    |
+| 13 | Consider a guard note/wrapper against `skills add larsartmann/SKILLS` nuking symlinks (beyond AGENTS.md)   | Medium | Low    |
+| 14 | Verify other agents' dirs (e.g. `~/.codex/skills`, `~/.cursor/skills`) still resolve through `.agents`     | Medium | Low    |
+| 15 | Pin/record skills CLI version whose behavior this model depends on (currently 1.5.22)                      | Medium | Low    |
+| 16 | Trim `website-launch/SKILL.md` below 500 lines (pre-existing; only over-limit skill)                       | Medium | High   |
+| 17 | Carry-over from 14:22 report: alias-vs-definition entries in `how-to-golang` (its f8-f11)                  | High   | Low    |
+| 18 | Carry-over: run `scripts/sync-html-kit.sh --check` for vendored kit drift (its f13)                        | Medium | Low    |
+| 19 | Carry-over: CI-grade link checker script `check-skill-links.sh` (its f12)                                  | High   | Medium |
+| 20 | Carry-over: manually review all 25 SKILL.md trigger descriptions (its f14)                                 | Medium | Medium |
+| 21 | Carry-over: verify Go snippets in how-to-golang / go-error-modernization compile (its f15-f17)             | High   | Medium |
+| 22 | Carry-over: `skill-quality-check.sh` combining frontmatter + links + line counts (its f18)                 | High   | Medium |
+| 23 | Carry-over: empirical trigger tests for top skills (its f19)                                               | Medium | High   |
+| 24 | Carry-over: httputil `DOMAIN_LANGUAGE.md` alias mislabel fix (its f11)                                     | Medium | Low    |
+| 25 | Add CONTRIBUTING section for new skills incl. the link step                                                | Low    | Low    |
+| 26 | Consider making `check-skills.sh` also verify link state (merge the two scripts)                           | Low    | Medium |
+| 27 | Update `how-to-write-skills.md` with the runtime-symlink install pattern for local development             | Low    | Low    |
+| 28 | Review whether `~/.agents/skills/README.md` (real file in runtime dir) is stale                            | Low    | Low    |
+| 29 | Decide policy: should any third-party skill ever be vendored/forked into the repo?                         | Low    | Low    |
 | 30 | Investigate `skills` CLI "well-known" providers (wellknownDigest in lock entries) — may auto-update things | Low    | Medium |
 
 ---
@@ -116,4 +116,4 @@
 
 ---
 
-*Written as Markdown per explicit user instruction (overrides status-report HTML default). Report based solely on this session's work; prior-report carry-overs are marked as such.*
+_Written as Markdown per explicit user instruction (overrides status-report HTML default). Report based solely on this session's work; prior-report carry-overs are marked as such._
