@@ -42,7 +42,7 @@
 
 ## d) TOTALLY FUCKED UP
 
-1. **Did NOT look at the actual httputil issue.** The user said "I just had an issue in `/home/lars/projects/httputil`". I wrote generic guidance without understanding what specifically went wrong. The guidance might not address the exact mistake the user made. I should have read the relevant code in httputil to understand the specific confusion, then tailored the guidance to prevent that exact pattern.
+~~1. **Did NOT look at the actual httputil issue.**~~ — **FIXED.** Read the httputil code. The issue was: `type Middleware func(http.Handler) http.Handler` (definition) in both `recorder.go` and `server_timing/middleware.go` created two distinct types, requiring explicit `Middleware(servertiming.ServerTimingMiddleware())` conversions at every composition boundary. The fix (uncommitted) changes both to aliases (`type Middleware = func(http.Handler) http.Handler`), eliminating all conversion friction. `DOMAIN_LANGUAGE.md` also incorrectly called the definition an "alias" — the docs lied about what it was. The guidance section has been updated with this real-world middleware example.
 
 2. **Missing important nuances in the guidance section.** The comparison table and examples are correct for the common cases but miss several important subtleties:
 
