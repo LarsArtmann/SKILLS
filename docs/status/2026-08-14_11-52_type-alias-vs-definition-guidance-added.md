@@ -130,3 +130,64 @@
 2. **Should this guidance live in `domain-types.md` (where I put it) or in `rules.md` (which covers the formal Go rules)?** Both are plausible homes. `domain-types.md` is about branded types and domain primitives; `rules.md` is about development rules. The alias-vs-definition distinction spans both — it's relevant to domain types AND is a general Go rule. Should it be in both with a cross-reference, or in one with a pointer from the other?
 
 3. **Should we also create a dedicated `go-type-design` skill** that covers alias-vs-definition, embedding, generics constraints, interface design, and type-level domain modeling — pulling together content currently scattered across `how-to-golang`, `data-model-review`, and `go-error-modernization`? Or is the current distributed approach (guidance in each skill where it's relevant) better?
+
+---
+
+## h) Full Skill Corpus Comparison & Sync (additional work)
+
+After resolving the alias-vs-definition issue, the user asked to compare **all**
+skills between `/home/lars/projects/SKILLS/` and `/home/lars/.agents/skills/`
+and make the project-repo skills superb.
+
+### What was compared
+
+- **Project repo:** `/home/lars/projects/SKILLS/` (git repo, canonical source)
+- **Runtime copy:** `/home/lars/.agents/skills/` (accessed via symlink
+  `~/.config/crush/skills/<skill> -> ../../../.agents/skills/<skill>`)
+
+### Findings
+
+1. **25 skills in project repo, ~30 in `.agents`.** Skills present only in
+   `.agents` (not in project repo): `copywriting`, `find-skills`,
+   `frontend-design`, `improve-codebase-architecture`, `skill-creator`. These
+   appear to be installed skills that were never added to the project repo.
+2. **6 skills drifted between project repo and `.agents`:**
+   `code-quality-scan`, `docs-health`, `nix-private-go-repos`, `nix-review`,
+   `verify-external-claims`, `website-launch`. In every case, the **project repo
+   was ahead** of `.agents` (local commits had not been refreshed to the runtime
+   copy).
+3. **No sync script existed.** There was no automated or documented way to keep
+   `.agents` in sync with the project repo.
+
+### Actions taken
+
+1. **Created `scripts/sync-skills-to-agents.sh`** with three modes:
+   - `--list` — show skills that would be synced
+   - `--check` — detect drift, exit 1 if runtime is out of sync
+   - default — sync project-repo skills to `.agents` via `rsync -a --delete`
+2. **Ran the sync.** All 25 project-repo skills are now identical to their
+   `.agents` counterparts (verified with `diff -rq`).
+3. **Fixed broken internal links in skill files:**
+   - `docs-health/references/build-guide.md`: 7 links pointed to
+     `../../assets/` but templates live in `docs-health/assets/`; corrected to
+     `../assets/`
+   - `website-launch/references/readme-template.md`: replaced placeholder
+     `(url)` with `https://github.com/fsnotify/fsnotify`
+4. **Improved a weak trigger description:**
+   - `html-report-kit/SKILL.md`: removed feature-list language ("Provides...")
+     and added explicit trigger phrases ("HTML report", "dashboard",
+     " Bauhaus design", etc.)
+5. **Validated all SKILL.md frontmatter** with a Python YAML parser — all 25
+   skills have valid frontmatter, matching `name:` values, and required
+   `description` fields.
+6. **Checked for broken internal links** in skill files, ignoring code blocks —
+   after fixes, no broken internal links remain.
+
+### Remaining quality gaps
+
+| #  | Gap                                                                 | Priority |
+| -- | ------------------------------------------------------------------- | -------- |
+| 1  | `website-launch/SKILL.md` is 797 lines (should be <500)             | Medium   |
+| 2  | `copywriting`, `find-skills`, `frontend-design`, etc. exist only in `.agents` | Low      |
+| 3  | Several skills still duplicate the "READ, UNDERSTAND..." footer     | Low      |
+| 4  | No empirical trigger testing in Crush                               | Medium   |

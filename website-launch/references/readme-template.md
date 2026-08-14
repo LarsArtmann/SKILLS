@@ -139,7 +139,7 @@ Always include a dependencies table — it builds trust:
 ```markdown
 | Dependency                 | Purpose            |
 | -------------------------- | ------------------ |
-| [`fsnotify/fsnotify`](url) | Core file watching |
+| [`fsnotify/fsnotify`](https://github.com/fsnotify/fsnotify) | Core file watching |
 ```
 
 ## What to Remove

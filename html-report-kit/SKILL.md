@@ -2,10 +2,10 @@
 name: html-report-kit
 description: >
   Use when a skill needs to write a styled, self-contained HTML report, dashboard,
-  proposal, audit, or review — instead of a flat Markdown file. Provides the design
-  spec, CSS tokens, and copy-paste templates in two variants: a dark dashboard theme
-  and a warm editorial-light theme. Other skills reference this kit via its bundled
-  references and assets directories.
+  proposal, audit, or review — instead of a flat Markdown file. Triggers on phrases
+  like "HTML report", "styled report", "dashboard", "audit output", " Bauhaus design",
+  "dark theme report", or "generate HTML". Loads the shared Bauhaus CSS tokens,
+  report templates, and copy-paste components from this kit.
 metadata:
   tags: html, report, design-system, template, dark-theme, light-theme, editorial, shared-assets
 ---

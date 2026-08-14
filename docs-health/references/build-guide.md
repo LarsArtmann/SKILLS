@@ -29,7 +29,7 @@
 
 ### Structure
 
-Copy [../../assets/README-template.md](../../assets/README-template.md) and fill in:
+Copy [../assets/README-template.md](../assets/README-template.md) and fill in:
 
 1. **One-line hook.** What this project does, in plain English. No jargon.
 2. **Why it exists.** The problem it solves, in one paragraph.
@@ -62,7 +62,7 @@ Copy [../../assets/README-template.md](../../assets/README-template.md) and fill
 
 ### Structure
 
-Copy [../../assets/AGENTS-template.md](../../assets/AGENTS-template.md) and fill in:
+Copy [../assets/AGENTS-template.md](../assets/AGENTS-template.md) and fill in:
 
 1. **What This Is.** One paragraph: what kind of project, what it
    produces, what it does NOT produce. This is the orientation section —
@@ -139,7 +139,7 @@ rubric, load [./agents-quality-guide.md](./agents-quality-guide.md).
 
 ### Structure
 
-Copy [../../assets/FEATURES-template.md](../../assets/FEATURES-template.md) and
+Copy [../assets/FEATURES-template.md](../assets/FEATURES-template.md) and
 fill in. Group by domain area. One row per user-visible feature (not per
 function or endpoint).
 
@@ -202,7 +202,7 @@ When dispatching a sub-agent to read a file, tell it:
 
 ### Structure
 
-Copy [../../assets/TODO_LIST-template.md](../../assets/TODO_LIST-template.md)
+Copy [../assets/TODO_LIST-template.md](../assets/TODO_LIST-template.md)
 and fill in. Rank by impact (High / Medium / Low). Estimate effort.
 
 ### Lifecycle: delete done items, never annotate them
@@ -249,7 +249,7 @@ dominant structural-decay failure mode for this file.
 
 ### Structure
 
-Copy [../../assets/ROADMAP-template.md](../../assets/ROADMAP-template.md) and
+Copy [../assets/ROADMAP-template.md](../assets/ROADMAP-template.md) and
 fill in:
 
 1. **Themes.** 3 to 5 high-level directions (not tasks).
@@ -277,7 +277,7 @@ fill in:
 
 ### Structure
 
-Copy [../../assets/CHANGELOG-template.md](../../assets/CHANGELOG-template.md)
+Copy [../assets/CHANGELOG-template.md](../assets/CHANGELOG-template.md)
 and fill in. Follow the [Keep a Changelog](https://keepachangelog.com/) format:
 
 ```
@@ -326,7 +326,7 @@ ubiquitous language.
 
 ### Structure
 
-Copy [../../assets/DOMAIN_LANGUAGE-template.md](../../assets/DOMAIN_LANGUAGE-template.md)
+Copy [../assets/DOMAIN_LANGUAGE-template.md](../assets/DOMAIN_LANGUAGE-template.md)
 and fill in:
 
 1. **Glossary table.** Term, definition, where used in code.
