@@ -9,13 +9,16 @@
 1. **Identified the correct skill** — `how-to-golang` is the Go decision guide ("go code style", "go rules"). The alias-vs-definition distinction is a Go language/type-system concept, so this is the right home.
 2. **Read the SKILL.md and references directory** — Confirmed `domain-types.md` already uses a type alias (`type UserID = id.ID[UserBrand, nanoid.NanoID]`) in the branded ID pattern without explaining the distinction.
 3. **Read `domain-types.md` and `rules.md`** — Confirmed neither file covers the alias-vs-definition distinction.
-4. **Added a "Type alias (`=`) vs type definition (no `=`)" section** to `how-to-golang/references/domain-types.md` containing:
+4. **Added a "Type alias (`=`) vs type definition (no `=`)" section** to the canonical `how-to-golang/references/domain-types.md` (project repo path) containing:
    - A comparison table (kind, identity, method inheritance, assignability)
    - "When to use a type alias" section with 3 use cases
    - "When to use a type definition" section with 3 use cases
-   - Two "common mistake" examples (alias-where-definition-needed and definition-where-alias-needed)
-   - A one-line decision rule
-5. **Ran `scripts/check-skills.sh`** — All 25 skills pass structural checks. No regressions.
+   - Two "common mistake" examples, including a real-world middleware example derived from the actual `/home/lars/projects/httputil` issue
+   - A one-line decision rule and a diagnostic heuristic
+5. **Investigated the actual httputil mistake** — The issue was `type Middleware func(http.Handler) http.Handler` (definition) in both `httputil/recorder.go` and `server_timing/middleware.go`, creating two distinct types that required explicit `Middleware(...)` conversions. The fix changes both to aliases (`type Middleware = func(http.Handler) http.Handler`). `DOMAIN_LANGUAGE.md` also incorrectly called the definition an "alias".
+6. **Resolved the source-of-truth confusion** — Discovered that `~/.config/crush/skills/how-to-golang` is a symlink to `/home/lars/.agents/skills/how-to-golang`, and that the canonical source is `/home/lars/projects/SKILLS/`. Copied the updated `domain-types.md` from `.agents` back to the project repo so the change is tracked in git.
+7. **Verified sync** — `diff -rq` shows `how-to-golang/` is now identical between project repo and `.agents`. `git status` shows the expected single modified file.
+8. **Ran `scripts/check-skills.sh`** — All 25 skills pass structural checks. No regressions.
 
 ---
 
@@ -44,7 +47,15 @@
 
 ~~1. **Did NOT look at the actual httputil issue.**~~ — **FIXED.** Read the httputil code. The issue was: `type Middleware func(http.Handler) http.Handler` (definition) in both `recorder.go` and `server_timing/middleware.go` created two distinct types, requiring explicit `Middleware(servertiming.ServerTimingMiddleware())` conversions at every composition boundary. The fix (uncommitted) changes both to aliases (`type Middleware = func(http.Handler) http.Handler`), eliminating all conversion friction. `DOMAIN_LANGUAGE.md` also incorrectly called the definition an "alias" — the docs lied about what it was. The guidance section has been updated with this real-world middleware example.
 
-2. **Missing important nuances in the guidance section.** The comparison table and examples are correct for the common cases but miss several important subtleties:
+1. **File paths were wrong in the original report.** I initially claimed the edit was in `/home/lars/.config/crush/skills/how-to-golang/references/domain-types.md`. That path is a symlink (`~/.config/crush/skills/how-to-golang -> ../../../.agents/skills/how-to-golang`) that resolves to `/home/lars/.agents/skills/how-to-golang/references/domain-types.md`. The **canonical source of truth** is `/home/lars/projects/SKILLS/how-to-golang/references/domain-types.md`. I have now copied the change to the canonical project repo; git status shows ` M how-to-golang/references/domain-types.md`. The `.agents` copy is a runtime installation used by Crush, not the source repo.
+
+2. **~/.config/crush/.agents does not exist.** The user asked to compare `/home/lars/.config/crush/.agents` to `/home/lars/projects/SKILLS`. The actual installed skills live at `/home/lars/.agents/skills/` (not under `.config/crush`). Crush accesses them through symlinks in `~/.config/crush/skills/`.
+
+3. **The project repo and `.agents` copy are NOT fully in sync.** After syncing `how-to-golang`, I compared every skill directory. Many other skills differ between the project repo and `.agents` — including `code-quality-scan`, `docs-health`, `nix-private-go-repos`, `nix-review`, `verify-external-claims`, and `website-launch`. This means `.agents` is lagging behind the project repo. This is expected if skills are installed/copied from the repo periodically, but it's a source of truth problem: an agent editing `.agents` directly would lose changes when the repo is re-installed.
+
+4. **No sync script exists.** `scripts/check-skills.sh` and `scripts/sync-html-kit.sh` exist, but there is no `scripts/sync-to-agents.sh` or equivalent. The `.agents` copy must be updated manually or via the `skills` CLI. This is a process gap worth documenting.
+
+5. **Missing important nuances in the guidance section.** The comparison table and examples are correct for the common cases but miss several important subtleties:
 
    - **Underlying type operations ARE preserved for type definitions.** The table says methods are not inherited (correct), but doesn't mention that arithmetic operators (`+`, `-`, `*`), comparison operators (`==`, `<`), and other built-in operations ARE available on `type MyInt int` because they operate on the underlying type. This is a key difference from methods.
    - **Untyped constants can be assigned to type definitions without conversion.** `var x MyInt = 5` works even though `var x MyInt = intVar` does not. This is a common source of confusion.
@@ -74,9 +85,14 @@
 
 5. **Cross-reference `go-error-modernization`.** Error types are a domain where the alias-vs-definition distinction is critical. Add a note in both skills.
 
-6. **Read the httputil code** to understand the actual mistake and verify the guidance covers it.
+6. **Fix `DOMAIN_LANGUAGE.md` in httputil.** It incorrectly calls `type Middleware func(http.Handler) http.Handler` an "alias" when it was a definition. The docs should match the code.
 
-7. **Check `architecture.md`** for overlap or conflict before the guidance grows further.
+7. **Address the .agents source-of-truth gap.** There is no automated way to sync `/home/lars/projects/SKILLS/` to `/home/lars/.agents/skills/`. Agents editing `.agents` directly create changes that are invisible to git. Options:
+   - Add a `scripts/sync-skills-to-agents.sh` script that rsyncs/copies the repo to `.agents`
+   - Document that agents MUST edit `/home/lars/projects/SKILLS/` and that `.agents` is rebuilt from it
+   - Add a CI check or pre-commit hook that warns when `.agents` is out of sync
+
+8. **Reconcile existing divergence.** Many skills (`code-quality-scan`, `docs-health`, `nix-private-go-repos`, `nix-review`, `verify-external-claims`, `website-launch`) differ between project repo and `.agents`. Determine if `.agents` should be refreshed from the repo.
 
 ---
 
