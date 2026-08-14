@@ -189,6 +189,20 @@ After editing the canonical kit, re-vendor into every consumer and verify:
 
 When a new skill needs HTML reports: (1) reference `./assets/html-report-kit/...` from its `SKILL.md`, (2) run `./scripts/sync-html-kit.sh` to populate the vendored copy — the script auto-discovers any `SKILL.md` that mentions `html-report-kit`.
 
+### 5.10 Runtime Sync Model — Symlinks, Not Copies
+
+`/home/lars/projects/SKILLS/` is the **only** copy of these skills. The runtime dir `~/.agents/skills/` holds a **relative symlink** per repo skill (`../../projects/SKILLS/<skill>`), so an edit in the repo is live in every agent (Crush, Codex, Cursor, ...) instantly — there is no sync step and no drift is possible. `~/.config/crush/skills/<skill>` chains through `~/.agents/skills/` (double indirection resolves fine).
+
+**Third-party skills are different:** `copywriting`, `find-skills`, `frontend-design`, `improve-codebase-architecture`, `skill-creator` are real directories in `~/.agents/skills/`, installed and tracked by the [skills CLI](https://skills.sh) via `~/.local/state/skills/.skill-lock.json`. They are updated **manually** with `skills update -g` and must never be edited by hand or added to this repo. The 2026-08-14 status report called these "orphans" — they are not; they have upstream sources in the lockfile.
+
+**Rules:**
+
+1. NEVER edit anything under `~/.agents/skills/` or `~/.config/crush/skills/` — the repo is canonical. Editing a runtime copy either edits the repo through the symlink (confusing) or forks a third-party skill (drift).
+2. Own skills are **not** in the lockfile (removed 2026-08-14). If a future `skills add` ever reinstalls one, it will `rm -rf` the symlink and leave a real directory — recover with `scripts/link-skills-to-agents.sh --force`.
+3. Link state is managed by `scripts/link-skills-to-agents.sh` (`--check` for CI/verification, `--list` to inspect, default mode is idempotent repair). The old `sync-skills-to-agents.sh` rsync script is deleted — copying is exactly the drift this model eliminates.
+4. Adding a new skill: create the directory here, run `scripts/link-skills-to-agents.sh`. Done.
+5. Removing a skill: `git rm` the directory, then remove the `~/.agents/skills/<skill>` symlink.
+
 ---
 
 ## 6. High-Value Reference Files
