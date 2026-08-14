@@ -264,7 +264,7 @@ Things I missed that a skill would have caught:
 | Writing 8 customize-specific-fields files   | 10 min         | 3 min (scaffold + fill)        |
 | Manual accent color palette computation     | 10 min         | 0 min (pre-computed table)     |
 | Writing 25 project-specific content files   | 25 min         | 20 min (still manual)          |
-| pnpm install + build verification            | 5 min          | 5 min                          |
+| pnpm install + build verification           | 5 min          | 5 min                          |
 | README + GitHub + DNS updates               | 10 min         | 5 min                          |
 | Self-review and status report               | 10 min         | 5 min (checklist catches gaps) |
 | **Total**                                   | **~90 min**    | **~38 min**                    |

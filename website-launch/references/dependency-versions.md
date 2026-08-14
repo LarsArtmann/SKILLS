@@ -139,11 +139,11 @@ versions are compatible without `--legacy-peer-deps`.
 
 ## Package Manager Guidance
 
-| Task                 | Tool                   | Why                                                                        |
-| -------------------- | ---------------------- | -------------------------------------------------------------------------- |
-| Install dependencies | `pnpm install`          | Recommended — CI uses `pnpm install --frozen-lockfile` with `package-lock.json`                    |
-| Build                | `pnpm run build`        | Works under both pnpm and bun                                               |
-| Deploy to Firebase   | Real Node.js (not bun) | `firebase deploy` uses `re2` native module — bun's node shim can't load it |
+| Task                 | Tool                   | Why                                                                             |
+| -------------------- | ---------------------- | ------------------------------------------------------------------------------- |
+| Install dependencies | `pnpm install`         | Recommended — CI uses `pnpm install --frozen-lockfile` with `package-lock.json` |
+| Build                | `pnpm run build`       | Works under both pnpm and bun                                                   |
+| Deploy to Firebase   | Real Node.js (not bun) | `firebase deploy` uses `re2` native module — bun's node shim can't load it      |
 
 **Default to `pnpm`.** Use `bun` only for fast iteration during development,
 then switch to real Node.js (via Nix) for deploy.

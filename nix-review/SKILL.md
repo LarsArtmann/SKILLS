@@ -161,7 +161,7 @@ network at run time:
 | Banned (network-dependent)                | Vendor instead                               |
 | ----------------------------------------- | -------------------------------------------- |
 | `go run golang.org/x/.../cmd/tool@latest` | A `buildGoModule` derivation or nixpkgs attr |
-| `pnpm dlx pkg` / `bunx pkg`                    | A flake input / nixpkgs attr, in `packages`  |
+| `pnpm dlx pkg` / `bunx pkg`               | A flake input / nixpkgs attr, in `packages`  |
 | `pip install pkg`                         | A nixpkgs Python package in the devShell     |
 | `cargo install pkg`                       | `crane`/`rustPlatform` derivation or nixpkgs |
 | `curl ... \| sh` / `wget` installers      | Vendor the binary via a flake input          |

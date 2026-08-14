@@ -26,7 +26,7 @@ Detect the build system and use its native commands:
 | Nix flakes   | `flake.nix` exists      | `nix build`       | `nix flake check`       | `nix run .#test` |
 | Make         | `Makefile` exists       | `make build`      | `make lint`             | `make test`      |
 | Go           | `go.mod` exists         | `go build ./...`  | `go vet ./...` + linter | `go test ./...`  |
-| pnpm/pnpm     | `package.json` exists   | `pnpm run build`   | `pnpm run lint`          | `pnpm test`       |
+| pnpm/pnpm    | `package.json` exists   | `pnpm run build`  | `pnpm run lint`         | `pnpm test`      |
 | Cargo        | `Cargo.toml` exists     | `cargo build`     | `cargo clippy`          | `cargo test`     |
 | Python       | `pyproject.toml` exists | `python -m build` | `ruff check .`          | `pytest`         |
 
@@ -74,7 +74,7 @@ pnpm dlx jscpd src/ --format "go" --reporters html
 | `tsc`    | Type errors                                          | `tsc --noEmit`            |
 | `eslint` | Code quality, style, best practices                  | `eslint . --ext .ts,.tsx` |
 | `biome`  | Fast linter + formatter (replaces eslint + prettier) | `biome check .`           |
-| `jscpd`  | Copy-paste detection                                 | `pnpm dlx jscpd src/`          |
+| `jscpd`  | Copy-paste detection                                 | `pnpm dlx jscpd src/`     |
 
 ---
 
