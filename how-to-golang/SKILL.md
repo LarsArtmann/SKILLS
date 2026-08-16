@@ -31,7 +31,8 @@ When working on a Go project:
 6. For testing strategy (TDD, integration, E2E, property-based, load, snapshot) — load [./references/testing-strategy.md](references/testing-strategy.md). Minimum 80% coverage; use Ginkgo/Gomega for BDD, real databases for integration, go-snaps for snapshots.
 7. For security (auth, API security, encryption, OWASP, container hardening) — load [./references/security.md](references/security.md). Never roll your own auth; run `gosec` + `govulncheck` in CI.
 8. For development rules (latest Go version, clean root, performance first, observability) — load [./references/rules.md](references/rules.md).
-9. For engineering philosophy (why behind the rules, from real-world experience) — load [./references/philosophy.md](references/philosophy.md).
+9. For performance tuning (GOMAXPROCS economics, measuring the concurrency knee, container CPU quotas, GC knobs, cache-aware data layout, sync contention, IO/network/DB tuning, NUMA) — load [./references/performance-tuning.md](references/performance-tuning.md).
+10. For engineering philosophy (why behind the rules, from real-world experience) — load [./references/philosophy.md](references/philosophy.md).
 
 ## Decision Trees
 
@@ -76,6 +77,14 @@ When working on a Go project:
 - Vulnerability scanning → `govulncheck`
 - Secret leak detection → `gitleaks`
 - Container scanning → `trivy`
+
+### Choosing a concurrency level
+
+- Compute-bound → scale to GOMAXPROCS
+- Bandwidth-bound (stream/hash/copy large buffers) → measure the knee with a `-cpu` benchmark sweep, cap workers below it (`errgroup.SetLimit`)
+- Latency-bound service with p99 SLOs → cap below the knee; oversubscription inflates tail latency first
+- Container with CPU quota → Go 1.25+ derives GOMAXPROCS from the cgroup quota automatically; older → set `GOMAXPROCS` env
+- Allocation-heavy on multi-socket → check the NUMA section of [./references/performance-tuning.md](references/performance-tuning.md)
 
 ## Quick Bans Reference
 

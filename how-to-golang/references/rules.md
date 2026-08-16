@@ -82,6 +82,8 @@ Performance is a feature, not an afterthought. Build systems that are inherently
 | Use `failsafe-go` for retries                                    | 10x lower overhead than avast/retry-go              |
 | Profile before optimizing                                        | `go test -cpuprofile`, `go tool pprof`              |
 
+Performance tuning beyond library choice (GOMAXPROCS vs measured bandwidth knee, containers, GC knobs, cache-aware layout, sync, IO/network/DB) has its own guide: [./performance-tuning.md](./performance-tuning.md).
+
 ### Continuous Benchmarking
 
 ```go
