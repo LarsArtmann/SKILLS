@@ -268,6 +268,29 @@ tagging. **The tag must point at a commit that includes ALL release changes.**
 Tagging before committing the CHANGELOG or go.mod fix is the most common release
 mistake.
 
+### 4.4 CI is green on the exact commit being tagged
+
+Local gates are not enough: CI runs environment-dependent checks (vendor-hash
+drift, govulncheck against a fresh vuln DB, OS matrices) that local runs skip.
+A red tag-CI run is permanent — the workflow file at the tag commit is frozen,
+so the release shows a failed check forever. Never tag while the latest run on
+the release branch is red or still in progress.
+
+```bash
+gh run list --limit=5   # latest run on the release branch must be success
+```
+
+If the failing job is govulncheck flagging stdlib CVEs that are fixed in a Go
+patch release setup-go did not install, pin the toolchain explicitly:
+`setup-go`'s version manifest lags `go.dev` by hours, so `go-version: "1.26.x"`
+can resolve to yesterday's patch. Go's own toolchain switching downloads the
+exact version regardless of what setup-go installed:
+
+```yaml
+env:
+  GOTOOLCHAIN: go1.26.6   # step-, job-, or workflow-level
+```
+
 ---
 
 ## Phase 5: Tag and push
