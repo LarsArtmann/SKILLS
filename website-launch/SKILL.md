@@ -9,7 +9,9 @@ description: >-
   samber-do-auditlog, go-workflow-auditlog, etc.). Also triggers on "website launch",
   "public presence overhaul", "deploy website", or "lars.software domain". Launches a
   public documentation website for a Go project (library OR application/server) using
-  the LarsArtmann Astro + Starlight + Tailwind v4 + Firebase Hosting pattern.
+  the LarsArtmann Astro + Starlight + Tailwind v4 + Firebase Hosting pattern. Every
+  launch includes a rendered demo video (HyperFrames HTML→MP4) on the landing page by
+  default — trigger on "demo video", "product tour", or "promo clip" for the site too.
 metadata:
   tags: website, firebase, astro, starlight, dns, deployment, documentation
 allowed-tools: bash view edit write grep fetch
@@ -98,6 +100,9 @@ rebuild:
   comparison table inside the relevant docs page.
 - `astro.config.mjs`: enable `lastUpdated: true` and `editLink` (see §3.10).
 - Swap bold-text warnings for `:::caution` / `:::tip` callouts.
+- **Demo video: if the landing page has none, produce one** (see §3.11 and the
+  [demo video reference](./references/demo-video.md)) — it retrofits onto any
+  existing site as a ShowcaseSection + `public/demo.mp4`.
 
 The full retrofit checklist is in the
 [content patterns reference](./references/content-patterns.md)
@@ -535,6 +540,22 @@ For favicon/logo design, MDX escaping, section component patterns, creation
 order, and Starlight config knobs, load
 [./references/website-creation-details.md](./references/website-creation-details.md).
 
+### 3.11 Demo video — default for every project
+
+Produce a 20-30s product-tour video and embed it on the landing page. This is
+part of the launch, not a bonus: a working-product video above the fold
+converts where prose cannot, and it is cheap (~30-60 min) with HyperFrames
+(HTML/CSS/GSAP → deterministic MP4).
+
+Load the [demo video reference](./references/demo-video.md) for the full
+pipeline — NixOS invocation (`HYPERFRAMES_BROWSER_PATH`, direct CLI path),
+seek-safe composition rules, the canonical `website/video/` location (commit
+the composition, never stage it in `/tmp`), ShowcaseSection integration,
+mp4 cache headers, and frame-level verification without eyes.
+
+Order of operations: ship the site first if the session is long, then add the
+video as an immediate follow-up commit — but do not skip it.
+
 ---
 
 ## Phase 4: Build Verification
@@ -795,3 +816,8 @@ nixpkgs#terraform` or `opentofu`.
     Gin/Echo/Fiber when the code uses `net/http` destroys credibility.
     Always verify `go.mod` for the actual HTTP framework before writing
     the tech stack table.
+22. **Video composition left in `/tmp`** — HyperFrames work staged in `/tmp`
+    is lost on reboot (happened on emeet-pixyd; only the committed MP4
+    survived). The composition lives in `{repo}/website/video/` from the
+    first command. Also: `firebase.json` cache headers must cover `mp4|webm`,
+    or the video serves without long-cache headers.

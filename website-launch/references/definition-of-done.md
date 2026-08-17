@@ -35,6 +35,13 @@
 - [ ] `terraform validate` passes
 - [ ] `terraform fmt -check` passes
 
+## Demo video
+
+- [ ] `website/public/demo.mp4` exists (< 3 MB, ~20-30s), embedded via a ShowcaseSection above the feature grid
+- [ ] HyperFrames composition committed under `website/video/` (NOT left in `/tmp`)
+- [ ] `firebase.json` asset cache glob covers `mp4|webm|mov`
+- [ ] `HEAD /demo.mp4` on the live site returns `Cache-Control: public, max-age=31536000, immutable`
+
 ## Files
 
 - [ ] `package-lock.json` committed
