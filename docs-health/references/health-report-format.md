@@ -94,6 +94,16 @@ flawless but structurally rotten. Under any composite formula, perfect
 Accuracy pulls the number up and hides the Fitness collapse. The split tells
 you _which_ kind of fix is needed.
 
+## Math discipline (the 2026-08-18 garbled-math lesson)
+
+The score lines must be a **pure function of the findings table** — nothing else. Rules:
+
+1. **Count first, score second.** Finish the findings table before writing either score line. Each score is computed by substituting the table's column counts into the formula — nothing more.
+2. **No narrative adjustments.** Never write "floor-adjusted to…", "grouped as…", "effectively…". If the computed number feels wrong, the FINDINGS LIST is wrong — go fix the table, then recompute. Arithmetic is never massaged to match intuition.
+3. **Grouping happens in the table, not the formula.** If 6 raw observations collapse into 3 findings (same root cause), they enter the table as 3 rows and the formula sees 3. The collapse is visible in the findings list where a reader can challenge it.
+4. **Show the substitution** exactly as in the example: `10 − 1·1 Critical − 0.5·2 Medium …`. A bare number with no visible math is unverifiable.
+5. **Qualitative beats pseudo-quantitative.** If you cannot honestly classify/count the findings, say so in words ("roughly a half-dozen Medium accuracy gaps") instead of fabricating precise-looking arithmetic. Incoherent precision is worse than admitted vagueness.
+
 ## Report rules
 
 - State what was stale and fixed, what was already fresh, and what you could

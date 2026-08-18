@@ -136,6 +136,8 @@ Old reports contain numbered items (lists `1. 2. 3.` or table rows). **You must 
 
 **Format:** `~~<original line, unchanged>~~ done at <short-git-hashes>`. Variants: `Won't implement — <reason>`, `NOT-DO/DUPLICATE — <reason>`. Leave open items untouched — absence of a marker IS the "open" signal. Strike the ENTIRE original line; cite hashes; never renumber.
 
+**Tooling (do not hand-roll):** batch annotations use [./assets/annotate-rows.py](./assets/annotate-rows.py) (numbered table rows) and [./assets/annotate-prose.py](./assets/annotate-prose.py) (numbered prose lists). Both are section-scoped (`## f)` by default / explicit prefix), atomic (write only if every spec matched), refuse already-annotated lines, and support `--dry-run` — ALWAYS dry-run the first spec against a new file shape before mutating (that omission shipped a marker-placement bug on 2026-08-18). Spec grammar: `<n>:<kind>:<value>` with kinds `h` (hashes), `v` (verified evidence), `p` (docs-health pass), `w` (won't implement); quote values containing spaces.
+
 **Skipping items you didn't check is the #1 failure mode.** For the full format catalog (variants, table-row patterns, multi-item tables 5+), load [./references/resolving-items.md](./references/resolving-items.md).
 
 ### Classify each file before annotating
