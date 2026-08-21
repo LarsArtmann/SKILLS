@@ -39,18 +39,33 @@
 
 ## Badge Template
 
-Standard order: Go Reference | CI | Go Report Card | License: MIT.
+Standard order: Go Reference | CI | Go Report Card | License.
 
 ```markdown
 <p align="center">
 <a href="https://pkg.go.dev/github.com/LarsArtmann/{repo}"><img src="https://pkg.go.dev/badge/github.com/LarsArtmann/{repo}.svg" alt="Go Reference"></a>
 <a href="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml"><img src="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
 <a href="https://goreportcard.com/report/github.com/LarsArtmann/{repo}"><img src="https://goreportcard.com/badge/github.com/LarsArtmann/{repo}" alt="Go Report Card"></a>
-<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-{LICENSE}-blue.svg" alt="License: {LICENSE}"></a>
 </p>
 ```
 
+**License badge:** replace `{LICENSE}` with the license actually declared in
+the LICENSE file. Do NOT assume MIT — verify first. Some projects are
+proprietary.
+
 For v2+ libraries, include `/v2` in the pkg.go.dev and Go Report Card URLs.
+
+**Applications/servers:** replace the Go Reference badge with a Docker (or
+GitHub Release) badge and omit pkg.go.dev — applications are not importable:
+
+```markdown
+<p align="center">
+<a href="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml"><img src="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+<a href="https://github.com/LarsArtmann/{repo}/pkgs/container/{repo}"><img src="https://img.shields.io/badge/docker-ghcr.io-blue.svg" alt="Docker"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-{LICENSE}-blue.svg" alt="License: {LICENSE}"></a>
+</p>
+```
 
 ## Documentation Link Bar
 

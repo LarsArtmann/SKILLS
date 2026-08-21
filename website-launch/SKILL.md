@@ -431,57 +431,16 @@ If the existing README has any of these, remove them:
 - "Made with heart" footer
 - Redundant sections that duplicate the website docs
 
-### Badge Markdown (copy-paste template)
+### Badge row + Documentation Link Bar
 
-**For Go libraries:**
-
-```markdown
-<p align="center">
-<a href="https://pkg.go.dev/github.com/LarsArtmann/{repo}"><img src="https://pkg.go.dev/badge/github.com/LarsArtmann/{repo}.svg" alt="Go Reference"></a>
-<a href="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml"><img src="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-<a href="https://goreportcard.com/report/github.com/LarsArtmann/{repo}"><img src="https://goreportcard.com/badge/github.com/LarsArtmann/{repo}" alt="Go Report Card"></a>
-<a href="LICENSE"><img src="https://img.shields.io/badge/license-{LICENSE}-blue.svg" alt="License: {LICENSE}"></a>
-</p>
-```
-
-**For Go applications/servers:**
-
-Replace Go Reference badge with Docker or GitHub Release badge. Omit
-pkg.go.dev (applications are not importable).
-
-```markdown
-<p align="center">
-<a href="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml"><img src="https://github.com/LarsArtmann/{repo}/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-<a href="https://github.com/LarsArtmann/{repo}/pkgs/container/{repo}"><img src="https://img.shields.io/badge/docker-ghcr.io-blue.svg" alt="Docker"></a>
-<a href="LICENSE"><img src="https://img.shields.io/badge/license-{LICENSE}-blue.svg" alt="License: {LICENSE}"></a>
-</p>
-```
-
-**License badge:** Replace `{LICENSE}` with the actual license declared in
-the LICENSE file. Do NOT assume MIT — verify first. Some projects are
-proprietary.
-
-### Documentation Link Bar (below tagline)
-
-**For Go libraries:**
-
-```markdown
-<p align="center">
-<a href="https://{subdomain}.lars.software">Documentation</a> · <a href="https://pkg.go.dev/github.com/LarsArtmann/{repo}">API Reference</a>
-</p>
-```
-
-**For Go applications/servers:**
-
-```markdown
-<p align="center">
-<a href="https://{subdomain}.lars.software">Documentation</a> · <a href="CHANGELOG.md">Changelog</a>
-</p>
-```
-
-Once the demo video exists (§3.11), append a "Watch the {N}s demo" link to
-either bar — see the Documentation Link Bar section in the
-[README template](./references/readme-template.md).
+Both live as copy-paste templates in the
+[README template](./references/readme-template.md) ("Badge Template" and
+"Documentation Link Bar" sections): the library badge set (with the
+`{LICENSE}` placeholder — verify the real license, never assume MIT), the
+application variant (Docker instead of Go Reference), and the link bar —
+which gains a "Watch the {N}s demo" third link once the §3.11 video exists.
+Do not re-invent either markup here; every restatement has historically
+drifted from the template.
 
 ---
 
