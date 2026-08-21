@@ -25,7 +25,7 @@ When working on a Go project:
 
 1. Check `go.mod` against the banned libraries list — load [./references/banned-libraries.md](references/banned-libraries.md) and verify no banned dependencies are present. This catches security CVEs and deprecated packages before they cause problems.
 2. Verify the project uses the required stack — load [./references/required-libraries.md](references/required-libraries.md) and confirm the project aligns. If a required library is missing, suggest adoption.
-3. For domain types (IDs, Email, Money, etc.), use `go-composable-business-types` — load [./references/domain-types.md](references/domain-types.md) for the branded ID pattern and type catalog. Never use primitive strings for domain identifiers.
+3. For domain types (IDs, Email, Money, etc.), use `go-branded-id` (branded IDs) + `go-composable-business-types` (Email, Money, bounded, ...) — load [./references/domain-types.md](references/domain-types.md) for the branded ID pattern and type catalog. Never use primitive strings for domain identifiers.
 4. For implementation patterns (DI, config, logging, CLI, testing, HTTP API), follow the canonical patterns — load [./references/key-patterns.md](references/key-patterns.md).
 5. For project structure, code style, and architecture patterns — load [./references/architecture.md](references/architecture.md).
 6. For testing strategy (TDD, integration, E2E, property-based, load, snapshot) — load [./references/testing-strategy.md](references/testing-strategy.md). Minimum 80% coverage; use Ginkgo/Gomega for BDD, real databases for integration, go-snaps for snapshots.
@@ -42,7 +42,7 @@ When working on a Go project:
 - DB primary key → `oklog/ulid` (sortable, better index performance)
 - URL-safe public identifier → `sixafter/nanoid`
 - Event log / time-ordered → `segmentio/ksuid`
-- Domain entity with compile-time safety → `go-composable-business-types/id.ID[Brand, V]`
+- Domain entity with compile-time safety → `go-branded-id`'s `id.ID[Brand, V]`
 
 ### Choosing alias vs definition
 

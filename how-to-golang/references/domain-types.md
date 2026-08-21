@@ -1,13 +1,19 @@
-# Domain Types (go-composable-business-types)
+# Domain Types (go-branded-id + go-composable-business-types)
 
 Required for all new services. No primitive types for domain concepts.
+
+> **Import paths verified 2026-08-21** (compile-checked against
+> `go-branded-id` v0.5.1 and `sixafter/nanoid` v1.64.5): the branded ID
+> lives in `github.com/larsartmann/go-branded-id` (package `id`). The older
+> `go-composable-business-types/id` / `.../nanoid` subpackages no longer
+> exist at v0.6.0+ — do not use them.
 
 ## Core Types
 
 | Type                     | Package     | Use For                        |
 | ------------------------ | ----------- | ------------------------------ |
-| `id.ID[Brand, V]`        | `id`        | Branded entity identifiers     |
-| `nanoid.NanoID`          | `nanoid`    | URL-safe unique IDs (21 chars) |
+| `id.ID[Brand, V]`        | `id` (`github.com/larsartmann/go-branded-id`) | Branded entity identifiers     |
+| `nanoid.ID`               | `nanoid` (`github.com/sixafter/nanoid`) | URL-safe unique IDs (21 chars by default) |
 | `types.Email`            | `types`     | Validated email                |
 | `types.URL`              | `types`     | Validated URL (http/https)     |
 | `types.Cents`            | `types`     | Money (int64, no float errors) |
@@ -26,28 +32,34 @@ Required for all new services. No primitive types for domain concepts.
 package ids
 
 import (
-	id "github.com/larsartmann/go-composable-business-types/id"
-	"github.com/larsartmann/go-composable-business-types/nanoid"
+	"fmt"
+
+	id "github.com/larsartmann/go-branded-id"
+	"github.com/sixafter/nanoid"
 )
 
 type UserBrand struct{}
-type UserID = id.ID[UserBrand, nanoid.NanoID]
+
+func (UserBrand) Name() string { return "User" }
+
+type UserID = id.ID[UserBrand, nanoid.ID]
 
 func GenerateUserID() UserID {
-	return id.NewID[UserBrand, nanoid.NanoID](nanoid.New())
+	return id.NewID[UserBrand](nanoid.Must())
 }
 
 func GenerateUserIDFromString(s string) (UserID, error) {
-	nid, err := nanoid.Parse(s)
-	if err != nil { return UserID{}, fmt.Errorf("invalid user ID: %w", err) }
-	return id.NewID[UserBrand, nanoid.NanoID](nid), nil
+	if len(s) != 21 {
+		return UserID{}, fmt.Errorf("invalid user ID %q: want 21 nanoid chars", s)
+	}
+	return id.NewID[UserBrand](nanoid.ID(s)), nil
 }
 ```
 
 Key points:
 
-- `id.ID[Brand, V]` implements `sql.Scanner`, `driver.Valuer`, `json.Marshaler`/`Unmarshaler` — no manual methods
-- Zero value serializes to JSON `null`
+- `id.ID[Brand, V]` implements `sql.Scanner`, `driver.Valuer`, `json.Marshaler`/`Unmarshaler` (v1 + v2), `encoding.TextMarshaler`, `BinaryMarshaler`, and `GobEncoder` — no manual methods (verified against v0.5.1)
+- Zero value serializes to JSON `null`; `IsZero()`/`Or(default)` give zero-value semantics
 - `ProcessUser(orderID)` → **compile error**, not runtime bug
 - sqlc `overrides` maps DB columns to branded IDs directly
 
@@ -160,7 +172,7 @@ embedded field name joins the struct's namespace.
 Use an alias when `X` and `Y` must be **the same type** — interchangeable
 everywhere, sharing all methods, no conversions:
 
-- **Branded IDs that wrap a generic base type**, e.g. `type UserID = id.ID[UserBrand, nanoid.NanoID]`. The alias keeps `UserID` assignable to `id.ID[UserBrand, nanoid.NanoID]` so library functions, scanners, and marshalers all work without conversion or re-declaration.
+- **Branded IDs that wrap a generic base type**, e.g. `type UserID = id.ID[UserBrand, nanoid.ID]`. The alias keeps `UserID` assignable to `id.ID[UserBrand, nanoid.ID]` so library functions, scanners, and marshalers all work without conversion or re-declaration.
 - **Re-exporting a type from another package** for a cleaner import path
   (`type Config = configpkg.Config`).
 - **Gradual refactoring** — alias the old name to the new type so callers
@@ -201,12 +213,12 @@ boundary.
 
 ```go
 // WRONG — UserID is now a distinct type; id.NewID[...] returns
-// id.ID[UserBrand, nanoid.NanoID], not UserID, so every call site
+// id.ID[UserBrand, nanoid.ID], not UserID, so every call site
 // needs a conversion and library functions won't accept it.
-type UserID id.ID[UserBrand, nanoid.NanoID]
+type UserID id.ID[UserBrand, nanoid.ID]
 
 // RIGHT — same type, all library methods and conversions work
-type UserID = id.ID[UserBrand, nanoid.NanoID]
+type UserID = id.ID[UserBrand, nanoid.ID]
 ```
 
 #### Example 2: middleware types across packages (real-world)
