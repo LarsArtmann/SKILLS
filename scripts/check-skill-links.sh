@@ -109,9 +109,23 @@ cache = {}
 def load(path):
     if path not in cache:
         try:
+            kept, _ = anchors_of(path)
+            # ordered heading slugs (for duplicate suffixing) + HTML anchors
+            ordered = []
+            in_code = False
             with open(path, encoding="utf-8") as fh:
-                lines = fh.read().splitlines()
-            cache[path] = (strip_fences(lines), headings_of(lines))
+                for line in fh.read().splitlines():
+                    if FENCE_RE.match(line):
+                        in_code = not in_code
+                        continue
+                    if in_code:
+                        continue
+                    m = HEADING_RE.match(line)
+                    if m:
+                        ordered.append(slugify(m.group(2)))
+            _, html_anchors = anchors_of(path)
+            slugs = slug_counts(ordered) | html_anchors
+            cache[path] = (kept, slugs)
         except OSError:
             cache[path] = None
     return cache[path]
@@ -126,8 +140,8 @@ for f in files:
         broken += 1
         continue
     lines, slugs = loaded
-    for lineno, line in enumerate(lines, 1):
-        for _, target in LINK_RE.findall(line):
+    for lineno, line in lines:
+        for _, target in LINK_RE.findall(strip_inline_code(line)):
             if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", target) or target.startswith("//"):
                 continue  # external / scheme URLs
             path_part, _, fragment = target.partition("#")

@@ -26,6 +26,8 @@
 #        context. Hard-fails the pre-2026-08-11 style ("Reviews...",
 #        "Generates...") and any opening sentence with no trigger word;
 #        warns on valid-but-non-canonical openings (AGENTS.md §3.1).
+#    12. Internal-link integrity across ALL skill .md files via the dedicated
+#        scripts/check-skill-links.sh (file links + in-file anchors).
 #
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
@@ -309,6 +311,14 @@ if [[ -f "$dh" ]]; then
 			failed=1
 		fi
 	done
+fi
+
+# --- Internal-link integrity (delegated) -----------------------------------------
+# The dedicated checker covers ALL skill .md files (SKILL.md + references/),
+# file links AND in-file anchors, with GitHub-style slug rules. It supersedes
+# the SKILL.md-only backlink loop above (kept as a belt-and-braces subset).
+if ! "$(dirname "${BASH_SOURCE[0]}")/check-skill-links.sh"; then
+	failed=1
 fi
 
 if [[ "$failed" -ne 0 ]]; then

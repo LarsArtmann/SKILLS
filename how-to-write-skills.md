@@ -522,6 +522,24 @@ For skills with objectively verifiable outputs (file transforms, data extraction
 
 Use the `skill-creator` skill for a full eval/benchmarking workflow with automated iteration.
 
+### Eval harnesses: two shapes
+
+- **with/without skill** — measures whether the skill changes agent behavior at all (baseline vs loaded skill, same prompts). Use for new skills.
+- **old-skill vs new-skill** — measures whether a _rewrite_ actually improved behavior (check out the pre-rewrite skill to a temp dir, run both, same prompts). Use to justify rewrites; a rewrite that only "reads better" is reasoned, not measured. Proven 2026-08-21 on `website-launch` (old 35% → new 100% on sales-video assertions).
+
+### An eval is not done until it is on disk
+
+Every eval run must persist, immediately per run: `evals/iteration-N/eval-X/{config}/output.md` plus a `grading.json` with per-assertion pass/fail **and evidence quotes**. Outputs that live only in the session transcript are lost — an empty eval directory is invisible to git, and "we ran it" without artifacts is indistinguishable from "we didn't."
+
+## Hard-Won Process Lessons
+
+Each of these cost a real session time; all are verified by a status report in `docs/status/`.
+
+- **The Questions tool has a ~200-char limit per choice description.** Full skill descriptions run 300-700 chars — they do not fit. When asked to review long-form text with the user, write the candidates to a markdown review file the user can browse (or execute and present a diff) instead of burning rounds fighting the tool. (2026-08-11 report, d1)
+- **Any new sentence about an external tool's behavior gets "verified: how/date" or gets hedged.** Written prose is claim-encoding too — see the chat-time gate in the `verify-external-claims` skill. Unverified CLI/limit/flag claims written into a reference while that very skill was loaded happened on 2026-08-21 and had to be softened later.
+- **When a reference documents external tools whose behavior was checked, put a verification-status table in the reference** (claim / status / source, dated). See `how-to-golang/references/performance-tuning.md` and `domain-types.md` for the pattern. It tells the next session what is verified fact vs. plausible prose.
+- **The trash rule applies to scratch and temp directories too.** `rm -rf /tmp/foo` in test commands violates the same safety rule as anywhere else — and sessions keep repeating this mistake while testing safety tooling (2026-08-12 and 2026-08-21 reports). Use `trash`, always, no path exceptions.
+
 ## Minimal Starter Template
 
 ```yaml

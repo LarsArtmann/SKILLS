@@ -8,7 +8,7 @@ GOMAXPROCS is a **hardware-topology default, not a workload optimum**. It answer
 2. [Measure first: profiling and benchmark methodology](#measure-first-profiling-and-benchmark-methodology)
 3. [Finding the knee: measure, don't guess](#finding-the-knee-measure-dont-guess)
 4. [Capping parallelism in code](#capping-parallelism-in-code)
-5. [Containers: GOMAXPROCS and cgroup quotas](#containers-gomaxprocs-and-cgroup-quota)
+5. [Containers: GOMAXPROCS and cgroup quotas](#containers-gomaxprocs-and-cgroup-quotas)
 6. [GC: bandwidth share and deployment knobs](#gc-bandwidth-share-and-deployment-knobs)
 7. [Memory: allocation and cache-aware data layout](#memory-allocation-and-cache-aware-data-layout)
 8. [Synchronization](#synchronization)
