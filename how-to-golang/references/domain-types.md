@@ -63,6 +63,98 @@ when they should be), and `errors.As`/`errors.Is` matches that fail.
 | `type Alias = Underlying` | Type alias      | **Same type** — `Alias` IS `Underlying` everywhere | Yes — it's the same type             | Yes — freely, no conversion       |
 | `type Def Underlying`     | Type definition | **New, distinct type**                             | No — only methods you write on `Def` | No — explicit conversion required |
 
+### Nuances the table does not show (compiler-verified)
+
+Every claim below was compile- and run-verified against Go 1.26 (2026-08-21),
+including the exact compiler errors, so you can recognize them in the wild.
+
+**1. A definition does NOT inherit methods — so it does not satisfy the
+underlying type's interfaces.**
+
+```go
+type DefBuffer bytes.Buffer // definition
+
+var _ io.Writer = &DefBuffer{}
+// compile error: "*DefBuffer does not implement io.Writer (missing method Write)"
+```
+
+An alias keeps satisfying everything the underlying type satisfies (it IS
+that type). Methods are not forbidden on a definition — they are lost, and
+you can re-declare them — but rewriting them all is exactly the cost that
+usually signals you wanted an alias.
+
+One case that looks like a contradiction: a definition whose underlying type
+is an **interface** (`type MyReader io.Reader`) creates a new interface type
+with the same method set, and Go's interface satisfaction is structural, so
+values still flow between `MyReader` and `io.Reader` freely. The method-loss
+trap only fires for definitions from **concrete** types.
+
+**2. Operators and built-in operations ARE preserved for definitions.**
+
+Methods do not carry over, but the underlying type's operators do:
+
+```go
+type Celsius float64
+
+c := Celsius(20) + Celsius(5)*2 // OK: float64 arithmetic preserved
+c2 := c > Celsius(0)            // OK: comparison operators preserved
+
+type Lines []string
+
+lines := Lines{"a"}
+lines[0] = "z"             // OK: indexing preserved
+lines = append(lines, "b") // OK: append works on any defined slice type
+```
+
+**3. Untyped constants assign without conversion; typed values do not.**
+
+```go
+type MyInt int
+
+const five = 5
+var a MyInt = five // OK: untyped constant takes MyInt's type
+f := float64(1.5)
+var b MyInt = f
+// compile error: "cannot use f (variable of type float64) as MyInt value
+// in variable declaration"
+```
+
+This asymmetry — `var a MyInt = 5` works but `var b MyInt = intVar` does
+not — is a recurring source of confusion: constants are untyped in Go,
+variables are not. Aliases have no such asymmetry (there is only one type).
+
+**4. `reflect` sees them differently.**
+
+```go
+type DefDur time.Duration
+type AliasDur = time.Duration
+
+reflect.TypeOf(DefDur(5)) == reflect.TypeOf(time.Duration(5))   // false — distinct
+reflect.TypeOf(AliasDur(5)) == reflect.TypeOf(time.Duration(5)) // true  — identical
+reflect.TypeOf(DefDur(5)).Name()   // "DefDur"
+reflect.TypeOf(AliasDur(5)).Name() // "Duration" (the underlying name)
+```
+
+An alias is invisible to reflection; a definition is a brand-new type.
+Serialization frameworks, ORMs, and anything switching on `reflect.Type`
+identity will treat them differently.
+
+**5. Embedding vs aliasing vs definition — three different tools.**
+
+When you want to extend a type from another package:
+
+| Declaration                        | What you get      | Methods of the foreign type                                             |
+| ---------------------------------- | ----------------- | ----------------------------------------------------------------------- |
+| `type T = other.T` (alias)         | Same type, renamed | Kept — but you cannot add new ones (`cannot define new methods on non-local type`) |
+| `type T other.T` (definition)      | Distinct type      | All lost — `T` starts with an empty method set                            |
+| `type T struct{ other.T }` (embed) | New struct         | Promoted — callable on `T`, and you can add your own methods on top       |
+
+Embedding is the only way to give a foreign type new behavior while keeping
+the old: embedded methods are promoted and the embedded value is a real
+field you can also reach directly. The trade: `T` is not `other.T`, it no
+longer satisfies interfaces requiring the exact original type, and the
+embedded field name joins the struct's namespace.
+
 ### When to use a type alias (`type X = Y`)
 
 Use an alias when `X` and `Y` must be **the same type** — interchangeable

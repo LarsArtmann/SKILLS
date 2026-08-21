@@ -65,8 +65,12 @@ this section is the website-launch lens on the same rules, not a rival.
 **If the session has `hyperframes*` skills available, route through them.**
 Start with the `hyperframes` entry-point skill; the route is
 `/product-launch-video` ("market or showcase a website, product site, app,
-or company"). Those skills own the composition craft — story doctrine, motion
-rules, scene blueprints, media, publishing.
+or company" — quoted from the entry skill's routing table). Those skills own
+the composition craft: story doctrine (`hyperframes-creative`), motion rules
+and scene blueprints (`hyperframes-animation`), media (`media-use`),
+publishing and hosted/distributed renders (`publish`/`cloud`/`lambda`/
+`cloudrun` in `hyperframes-cli`) — verified against the skill bodies
+2026-08-21.
 
 Pre-fill the workflow's brief from Phase 2 so the intent interview is short:
 
@@ -80,8 +84,10 @@ Pre-fill the workflow's brief from Phase 2 so the intent interview is short:
 This reference owns what the workflow does not know: the website integration
 (below), the canonical composition location, and the NixOS invocation
 constraints. **Apply the NixOS constraints to every CLI call the workflow
-prescribes** — `npx hyperframes ...` fails in approve-builds prompt loops the
-same way on `skills update` as on `render`; invoke the CLI directly via node.
+prescribes** — the `npx hyperframes` / `pnpm exec` wrappers have failed in
+approve-builds prompt loops (observed on `render`; untested on other
+subcommands, so assume the failure is subcommand-independent) — invoke the
+CLI directly via node.
 
 ## Tool: HyperFrames (HTML/CSS/GSAP → deterministic MP4)
 
@@ -156,8 +162,12 @@ composition), `package.json`, and the rendered output copied to
 
 The emeet-pixyd session kept the composition in `/tmp` and lost it on reboot —
 the MP4 survived only because it was committed. A committed composition makes
-every future edit (copy tweak, new scene, 9:16 social cut) a one-command
-re-render. Never stage HyperFrames work in `/tmp`.
+every future edit (copy tweak, new scene) a one-command re-render. A 9:16
+social cut is more work than a render flag: the composition hardcodes its
+size on the root (`data-width`/`data-height`, per `hyperframes-core`'s
+"Root must be sized" rule) with px-authored layout, so a vertical variant
+needs a resized composition, not a CLI argument. Never stage HyperFrames work
+in `/tmp`.
 
 Add to `website/.gitignore`:
 
@@ -225,7 +235,7 @@ arrived. Ship in tiers — never let a tier block the launch:
 | Tier                   | Items                                                                                                                                             | When                               |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
 | 1 — Launch-blocking    | Hero embed + poster + `#demo` anchor + README link + `og:image` + JSON-LD + cache headers                                                         | Part of the launch commit sequence |
-| 2 — Same-day follow-up | 9:16 vertical cut for Shorts/TikTok (re-render from the committed composition, same narrative) + launch post copy derived from the README summary | Immediately after the launch lands |
+| 2 — Same-day follow-up | 9:16 vertical cut for Shorts/TikTok (adapt the committed composition to a resized variant — same narrative; not a render flag, see "Location") + launch post copy derived from the README summary | Immediately after the launch lands |
 | 3 — Optional later     | TTS voiceover + burned captions, animated GIF teaser for the README (≤6s, 480p, watch the size), YouTube version                                  | When the launch gets traction      |
 
 The launch post copy reuses the one narrative: hook sentence (the README

@@ -698,22 +698,14 @@ or Go Report Card — those are for importable packages only).
 
 ### Documentation link bar
 
-**For Go libraries:**
-
-```markdown
-**[Documentation](https://{subdomain}.lars.software)** ·
-**[pkg.go.dev](https://pkg.go.dev/github.com/LarsArtmann/{repo})** ·
-**[Changelog](CHANGELOG.md)**
-```
-
-**For Go applications/servers:**
-
-```markdown
-**[Documentation](https://{subdomain}.lars.software)** ·
-**[Changelog](CHANGELOG.md)**
-```
-
-Omit pkg.go.dev — applications are not importable.
+Do not re-invent a bar variant here — the README already carries the bar
+Phase 2 placed. The canonical markup (HTML `<p align="center">` form,
+libraries vs applications) lives in the
+[README template](./references/readme-template.md) "Documentation Link Bar"
+section, including the "Watch the {N}s demo" third link that gets appended
+once the §3.11 demo video exists. Verify the shipped README matches that
+template — a bold-link bar here and an HTML bar in the template is exactly
+the split brain that produced two different bars across launched repos.
 
 ---
 

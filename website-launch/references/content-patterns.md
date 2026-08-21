@@ -189,7 +189,7 @@ so it costs zero authoring effort and is always accurate.
 ## Retrofitting existing sites
 
 When the skill runs against an _existing_ website (maintenance mode,
-SKILL.md Phase 0.0), check each docs page and the README for these seven
+SKILL.md Phase 0.0), check each docs page and the README for these eight
 patterns and add the missing ones. This is how every existing
 implementation inherits the improvements without a rebuild:
 
@@ -200,3 +200,7 @@ implementation inherits the improvements without a rebuild:
 - [ ] `editLink` is enabled in Starlight config
 - [ ] Warnings/tips use callouts, not bold text
 - [ ] `lastUpdated: true` is set in Starlight config
+- [ ] Demo video: present, selling (poster + `#demo` anchor + README
+      "Watch the demo" link in the documentation bar), and still matches the
+      README "Why?" — videos rot; audit the narrative, not just the
+      file's existence (see `demo-video.md`)
