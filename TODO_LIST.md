@@ -49,6 +49,7 @@
 | T17 | Fix the type-alias mislabel in httputil `DOMAIN_LANGUAGE.md` (calls a type definition an "alias") — external repo, not SKILLS     | 🔴 TODO | Medium | Low    | `docs/status/2026-08-14_11-52_*` e6, f8; `2026-08-14_14-22` f11                                               |
 | T18 | `link-skills-to-agents.sh`: document the supported `AGENTS_DIR` env override in the header + smoke-test `--help` (sed line range) | 🔴 TODO | Low    | Low    | `docs/status/2026-08-14_15-04_*` f11/f12                                                                      |
 | T19 | `website-launch` references: og:image (1200×630) guidance where OG images are configured + launch-post copy mini-template in `content-patterns.md` | 🔴 TODO | Medium | Low    | `docs/status/2026-08-21_12-06_*` f11/f12                                                                      |
+| T20 | Extend `CONTRIBUTING.md` with "adding a new skill" steps incl. the `scripts/link-skills-to-agents.sh` link step | 🔴 TODO | Low    | Low    | `CONTRIBUTING.md` (covers validation only, no add-skill flow — verified 2026-08-21); `2026-08-14_14-22` f31; `2026-08-14_15-04` f25 |
 
 ---
 
