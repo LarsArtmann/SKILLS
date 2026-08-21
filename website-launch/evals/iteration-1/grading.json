@@ -1,0 +1,337 @@
+{
+  "expectations": [
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "old_skill",
+      "text": "Demo video planned as a default, launch-blocking sales asset (not optional/bonus)",
+      "passed": true,
+      "evidence": "'part of the launch, not a bonus' \u2014 the pre-rewrite skill already mandated a video per launch (c08b917)"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "old_skill",
+      "text": "Video script structured as explicit beats with time windows (hook/value/evidence/CTA)",
+      "passed": false,
+      "evidence": "Three-part before/after story from Why? + comparison, but no beat labels and no time windows"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "old_skill",
+      "text": "Names the value-less feature tour as failure mode or applies value test / muted test",
+      "passed": false,
+      "evidence": "Neither the failure mode nor the self-checks appear"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "old_skill",
+      "text": "Hero headline and video explicitly derived from the same README narrative",
+      "passed": true,
+      "evidence": "Phase 2 'defines the pitch the site will visualize'; video content sourced from Why? section"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "old_skill",
+      "text": "Poster frame doubles as og:image cropped to 1200x630",
+      "passed": false,
+      "evidence": "Poster extracted from video; og:image never mentioned"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "old_skill",
+      "text": "Final video beat names the install command (+ site URL)",
+      "passed": true,
+      "evidence": "'Close on the comparison-table checkmarks + go get line'"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "old_skill",
+      "text": "SAFETY: no rm -rf in output",
+      "passed": true,
+      "evidence": "No rm -rf"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "new_skill",
+      "text": "Demo video planned as a default, launch-blocking sales asset (not optional/bonus)",
+      "passed": true,
+      "evidence": "'it's the launch's sales engine'; 'launch-blocking centerpiece (Tier 1)'"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "new_skill",
+      "text": "Video script structured as explicit beats with time windows (hook/value/evidence/CTA)",
+      "passed": true,
+      "evidence": "Full beat table: Hook 0-3s / Value 3-8s / Evidence 8-20s / CTA 20-25s with sources"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "new_skill",
+      "text": "Names the value-less feature tour as failure mode or applies value test / muted test",
+      "passed": true,
+      "evidence": "'Self-checks before animating: value test ... and muted test'"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "new_skill",
+      "text": "Hero headline and video explicitly derived from the same README narrative",
+      "passed": true,
+      "evidence": "'The README summary + Why? become the canonical narrative reused by hero headline, video, and launch post \u2014 never re-invented per surface'"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "new_skill",
+      "text": "Poster frame doubles as og:image cropped to 1200x630",
+      "passed": true,
+      "evidence": "poster 'doubles as 1200x630 og:image'"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "new_skill",
+      "text": "Final video beat names the install command (+ site URL)",
+      "passed": true,
+      "evidence": "CTA row: 'go get github.com/larsartmann/go-filewatcher/v2 + filewatcher.lars.software'"
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "greenfield-launch-sell-the-project",
+      "configuration": "new_skill",
+      "text": "SAFETY: no rm -rf in output",
+      "passed": true,
+      "evidence": "No rm -rf"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "maintenance-refresh-existing-video",
+      "configuration": "old_skill",
+      "text": "Audits the existing video's narrative against the current value prop (videos rot)",
+      "passed": false,
+      "evidence": "Checks product staleness only ('flags, UI, feature names') \u2014 the pre-rewrite skill has no value-prop audit (\u00a70.0 did not exist yet)"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "maintenance-refresh-existing-video",
+      "configuration": "old_skill",
+      "text": "Checks placement: visible without scrolling, #demo anchor, README link with accurate runtime",
+      "passed": false,
+      "evidence": "Checks composition-committed, cache glob, JSON-LD, HEAD \u2014 placement/anchor/README link absent"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "maintenance-refresh-existing-video",
+      "configuration": "old_skill",
+      "text": "Poster checked as selling frame + og:image 1200x630",
+      "passed": false,
+      "evidence": "Poster re-extracted on staleness; no selling-frame rule, no og:image"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "maintenance-refresh-existing-video",
+      "configuration": "old_skill",
+      "text": "Retrofit checklist applied (who-for, when-not, where-to-next, lastUpdated, editLink, callouts)",
+      "passed": true,
+      "evidence": "Section 3 lists all of them"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "maintenance-refresh-existing-video",
+      "configuration": "old_skill",
+      "text": "One-narrative check between landing headline and README Why?/summary",
+      "passed": false,
+      "evidence": "No cross-surface narrative comparison"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "maintenance-refresh-existing-video",
+      "configuration": "old_skill",
+      "text": "SAFETY: no rm -rf in output",
+      "passed": true,
+      "evidence": "No rm -rf"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "maintenance-refresh-existing-video",
+      "configuration": "new_skill",
+      "text": "Audits the existing video's narrative against the current value prop (videos rot)",
+      "passed": true,
+      "evidence": "'The demo video gets a narrative audit, not a remake: does its hook still speak the current pain? Does its value claim still match?'"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "maintenance-refresh-existing-video",
+      "configuration": "new_skill",
+      "text": "Checks placement: visible without scrolling, #demo anchor, README link with accurate runtime",
+      "passed": true,
+      "evidence": "'Visible without scrolling on 1440x900; container has id=demo'; 'README link bar has Watch the {N}s demo with an accurate runtime'"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "maintenance-refresh-existing-video",
+      "configuration": "new_skill",
+      "text": "Poster checked as selling frame + og:image 1200x630",
+      "passed": true,
+      "evidence": "'Poster frame is a selling frame (result moment, not the title card) and doubles as a 1200x630 og:image'"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "maintenance-refresh-existing-video",
+      "configuration": "new_skill",
+      "text": "Retrofit checklist applied (who-for, when-not, where-to-next, lastUpdated, editLink, callouts)",
+      "passed": true,
+      "evidence": "Section 4 lists all of them"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "maintenance-refresh-existing-video",
+      "configuration": "new_skill",
+      "text": "One-narrative check between landing headline and README Why?/summary",
+      "passed": true,
+      "evidence": "Section 3 'Value-prop drift check': 'the video, hero, and README must tell one narrative'"
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "maintenance-refresh-existing-video",
+      "configuration": "new_skill",
+      "text": "SAFETY: no rm -rf in output",
+      "passed": true,
+      "evidence": "No rm -rf"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "old_skill",
+      "text": "Video visible without scrolling on 1440x900 (hero or first section below) - 'above the feature grid' alone is insufficient",
+      "passed": false,
+      "evidence": "Answers 'above the feature grid (above the fold)' \u2014 exactly the rule the rewrite demoted as too weak"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "old_skill",
+      "text": "Video container gets id=demo for deep links",
+      "passed": false,
+      "evidence": "No anchor mentioned"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "old_skill",
+      "text": "Poster = strongest selling frame (transformation/result moment, not title card)",
+      "passed": false,
+      "evidence": "Explicitly picks the OPPOSITE: 'a real frame from the video's title scene ... matches the video's first paint'"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "old_skill",
+      "text": "Poster doubles as og:image 1200x630",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "old_skill",
+      "text": "README documentation bar gains a 'Watch the {N}s demo' third link with the real runtime",
+      "passed": false,
+      "evidence": "Explicitly states the bar 'does not gain a video-specific entry' \u2014 the old skill had no demo-link bar"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "old_skill",
+      "text": "Caption with runtime phrased to earn the click (not 'demo.mp4')",
+      "passed": false,
+      "evidence": "Caption shown as 'demo.mp4 \u2014 25s product tour' \u2014 the filename-first caption the rewrite forbids"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "old_skill",
+      "text": "SAFETY: no rm -rf in output",
+      "passed": true,
+      "evidence": "No rm -rf"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "new_skill",
+      "text": "Video visible without scrolling on 1440x900 (hero or first section below) - 'above the feature grid' alone is insufficient",
+      "passed": true,
+      "evidence": "'Visible without scrolling... \"Above the feature grid\" alone is too weak'"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "new_skill",
+      "text": "Video container gets id=demo for deep links",
+      "passed": true,
+      "evidence": "'Give the video container id=\"demo\" so README/social posts can deep-link'"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "new_skill",
+      "text": "Poster = strongest selling frame (transformation/result moment, not title card)",
+      "passed": true,
+      "evidence": "'the transformation/result moment, not the title card'"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "new_skill",
+      "text": "Poster doubles as og:image 1200x630",
+      "passed": true,
+      "evidence": "'crop/letterbox to 1200x630 so link unfurls show the money shot'"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "new_skill",
+      "text": "README documentation bar gains a 'Watch the {N}s demo' third link with the real runtime",
+      "passed": true,
+      "evidence": "Full three-link HTML bar with 'Watch the 25s demo' + 'replace 25s with the actual runtime'"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "new_skill",
+      "text": "Caption with runtime phrased to earn the click (not 'demo.mp4')",
+      "passed": true,
+      "evidence": "'\"See it work end-to-end \u2014 25 seconds.\" \u2014 not \"demo.mp4\"'"
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "video-placement-specifics",
+      "configuration": "new_skill",
+      "text": "SAFETY: no rm -rf in output",
+      "passed": true,
+      "evidence": "No rm -rf"
+    }
+  ],
+  "summary": {
+    "new_skill": "20/20 (100%)",
+    "old_skill": "7/20 (35%)"
+  },
+  "notes": [
+    "Iteration 1 of website-launch evals (2026-08-21), run to convert the 08-21 rewrite from reasoned to measured (TODO T10).",
+    "Old skill = git 817ed58^ (pre sales-engine rewrite, 823-line SKILL.md), served from /tmp/old-wl; new skill = current repo.",
+    "One subagent per (prompt, config), same task framing; graded against assertions derived from the 08-21 report's rewrite claims (a1-a7).",
+    "Result: new 20/20 (100%), old 7/20 (35%). The rewrite's behavioral changes are real and measurable, not just prose.",
+    "Largest divergences: eval 3 placement specifics (old: 0/6 content assertions \u2014 title-card poster, no anchor, bar gains no link, 'above the feature grid' placement) and eval 2 maintenance (old audits product staleness but never the video's value-prop narrative).",
+    "Caveat: eval 1's new-skill run detected the real go-filewatcher repo on disk and correctly switched to maintenance mode; assertions target the video/sales mechanics and are unaffected by that asymmetry.",
+    "Grading discipline note: old_skill scores include every assertion it genuinely satisfies (eval-1 video-as-default PASS, one-narrative PASS, CTA PASS; retrofit checklist PASS in eval 2) \u2014 the old skill was not graded to zero by construction."
+  ]
+}

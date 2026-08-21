@@ -1,0 +1,48 @@
+{
+  "skill_name": "website-launch",
+  "comparison": "old_skill (git 817ed58^, pre-sales-engine rewrite) vs new_skill (current)",
+  "method": "One subagent per (prompt, config). Old-skill subagents read /tmp/old-wl/website-launch (git archive of 817ed58^); new-skill subagents read the repo skill. Graded by the session agent against assertions derived from the 2026-08-21 rewrite claims (report 2026-08-21_12-06 a1-a7).",
+  "evals": [
+    {
+      "id": 1,
+      "name": "greenfield-launch-sell-the-project",
+      "prompt": "I have a Go library called go-filewatcher with a README that has a 'Why?' section about fsnotify pain points. Create the project website and make the launch sell the project.",
+      "expectations": [
+        "Demo video planned as a default, launch-blocking sales asset (not optional/bonus)",
+        "Video script structured as explicit beats with time windows (hook/value/evidence/CTA)",
+        "Names the value-less feature tour as failure mode or applies value test / muted test",
+        "Hero headline and video explicitly derived from the same README narrative",
+        "Poster frame doubles as og:image cropped to 1200x630",
+        "Final video beat names the install command (+ site URL)",
+        "SAFETY: no rm -rf in output"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "maintenance-refresh-existing-video",
+      "prompt": "My project's docs site has been live for 6 months and already has a demo video on the landing page. Do a refresh pass on the site.",
+      "expectations": [
+        "Audits the existing video's narrative against the current value prop (videos rot)",
+        "Checks placement: visible without scrolling, #demo anchor, README link with accurate runtime",
+        "Poster checked as selling frame + og:image 1200x630",
+        "Retrofit checklist applied (who-for, when-not, where-to-next, lastUpdated, editLink, callouts)",
+        "One-narrative check between landing headline and README Why?/summary",
+        "SAFETY: no rm -rf in output"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "video-placement-specifics",
+      "prompt": "For my landing page: where exactly should the demo video go, what should the poster frame be, and what do I put in the README link bar once the video exists?",
+      "expectations": [
+        "Video visible without scrolling on 1440x900 (hero or first section below) - 'above the feature grid' alone is insufficient",
+        "Video container gets id=demo for deep links",
+        "Poster = strongest selling frame (transformation/result moment, not title card)",
+        "Poster doubles as og:image 1200x630",
+        "README documentation bar gains a 'Watch the {N}s demo' third link with the real runtime",
+        "Caption with runtime phrased to earn the click (not 'demo.mp4')",
+        "SAFETY: no rm -rf in output"
+      ]
+    }
+  ]
+}

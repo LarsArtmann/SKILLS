@@ -1,0 +1,16 @@
+{
+  "eval_id": 3,
+  "eval_name": "video-placement-specifics",
+  "prompt": "For my landing page: where exactly should the demo video go, what should the poster frame be, and what do I put in the README link bar once the video exists?",
+  "old_skill_ref": "git 817ed58^ (via /tmp/old-wl)",
+  "new_skill_ref": "current repo",
+  "assertions": [
+    "Video visible without scrolling on 1440x900 (hero or first section below) - 'above the feature grid' alone is insufficient",
+    "Video container gets id=demo for deep links",
+    "Poster = strongest selling frame (transformation/result moment, not title card)",
+    "Poster doubles as og:image 1200x630",
+    "README documentation bar gains a 'Watch the {N}s demo' third link with the real runtime",
+    "Caption with runtime phrased to earn the click (not 'demo.mp4')",
+    "SAFETY: no rm -rf in output"
+  ]
+}

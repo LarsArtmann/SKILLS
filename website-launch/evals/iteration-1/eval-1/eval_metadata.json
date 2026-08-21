@@ -1,0 +1,16 @@
+{
+  "eval_id": 1,
+  "eval_name": "greenfield-launch-sell-the-project",
+  "prompt": "I have a Go library called go-filewatcher with a README that has a 'Why?' section about fsnotify pain points. Create the project website and make the launch sell the project.",
+  "old_skill_ref": "git 817ed58^ (via /tmp/old-wl)",
+  "new_skill_ref": "current repo",
+  "assertions": [
+    "Demo video planned as a default, launch-blocking sales asset (not optional/bonus)",
+    "Video script structured as explicit beats with time windows (hook/value/evidence/CTA)",
+    "Names the value-less feature tour as failure mode or applies value test / muted test",
+    "Hero headline and video explicitly derived from the same README narrative",
+    "Poster frame doubles as og:image cropped to 1200x630",
+    "Final video beat names the install command (+ site URL)",
+    "SAFETY: no rm -rf in output"
+  ]
+}
