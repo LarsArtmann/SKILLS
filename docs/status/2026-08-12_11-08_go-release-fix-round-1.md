@@ -55,7 +55,7 @@
 
 ## b) PARTIALLY DONE
 
-1. **External claim verification** — The GoReleaser OSS hook wrapping behavior
+1. ~~**External claim verification** — The GoReleaser OSS hook wrapping behavior~~ done at `56beebe`
    claim ("hooks are wrapped in `sh -c "..."` because goreleaser OSS uses direct
    `exec.CommandContext` not a shell") remains **unverified**. The verification
    agent timed out before reaching goreleaser.com/customization/hooks/. This
@@ -63,7 +63,7 @@
    not in go-release itself — but it IS referenced in the Gotchas table of
    goreleaser-and-ci.md ("OSS hooks use direct exec, not shell").
 
-2. **go-ecosystem-upgrade Phase 6 deduplication** — Added a 3-line pointer to
+2. ~~**go-ecosystem-upgrade Phase 6 deduplication** — Added a 3-line pointer to~~ done at `56beebe`
    go-release ("For the full release procedure, load the `go-release` skill"),
    but Phase 6 still retains 5 inline release rules (items 1-5) that overlap
    with go-release content. The pointer says "The rules below are the minimum
@@ -71,7 +71,7 @@
    from the right commit, strip replace directives) are general release rules,
    not ecosystem-upgrade-specific. This is a partial split brain.
 
-3. **Import rewriting with `sed` in major-versions.md** — The v2 migration
+3. ~~**Import rewriting with `sed` in major-versions.md** — The v2 migration~~ done at `56beebe`
    guide still uses `sed -i` for rewriting Go import paths across `.go` files
    (lines 63, 66). This is different from the `go mod edit` fix: `go mod edit`
    handles go.mod directives, but there is no Go-native tool for bulk import
@@ -83,30 +83,30 @@
 
 ## c) NOT STARTED
 
-1. **Test prompts / eval loop** — Still zero test cases written or run. The
+1. ~~**Test prompts / eval loop** — Still zero test cases written or run. The~~ done at `56beebe`
    skill-creator skill's full eval process (spawn with-skill + baseline runs,
    grade, aggregate, iterate) has never been executed for go-release. This is
    the single biggest remaining gap.
 
-2. **`docs/feedback/new/` scan** — Never checked for release-related feedback
+2. ~~**`docs/feedback/new/` scan** — Never checked for release-related feedback~~ done (docs/feedback/new/ is empty — nothing to scan (verified 2026-08-21))
    files that might inform the skill.
 
-3. **Pre-release-check script** — A `scripts/pre-release-check.sh` that
+3. ~~**Pre-release-check script** — A `scripts/pre-release-check.sh` that~~ done at `56beebe`
    automates the Phase 3 + Phase 4 gates (check for replace directives,
    pseudo-versions, dirty git, run build/test/lint) would save every session
    from reinventing it.
 
-4. **Docker image publishing section** — goreleaser-and-ci.md covers binary
+4. ~~**Docker image publishing section** — goreleaser-and-ci.md covers binary~~ done at `56beebe`
    archives but not Docker/OCI image publishing, which is common for Go
    servers.
 
-5. **Homebrew/Scoop tap publishing** — Not covered. Common for Go CLIs.
+5. ~~**Homebrew/Scoop tap publishing** — Not covered. Common for Go CLIs.~~ done at `56beebe`
 
 ---
 
 ## d) TOTALLY FUCKED UP
 
-1. **Stale `sed` reference introduced and fixed** — When I replaced `sed` with
+1. ~~**Stale `sed` reference introduced and fixed** — When I replaced `sed` with~~ done at `85e4b55`
    `go mod edit` in multi-module.md, I updated the main code block but left a
    stale cross-reference at line 122 ("Bump sub-module go.mod versions with
    `sed` (above)"). I caught this during verification for this status report
@@ -116,14 +116,14 @@
    it. This is the same class of mistake as the `rm -rf` hypocrisy from the
    first round — changing one instance and missing others.
 
-2. **First verification agent timed out** — I launched two parallel research
+2. ~~**First verification agent timed out** — I launched two parallel research~~ done at `56beebe`
    agents to verify external claims. The first one (GoReleaser hooks,
    GOPROXY comma/pipe, `go mod edit -retract`) timed out with a Sourcegraph
    context deadline. I didn't retry or use an alternative approach for the
    GoReleaser hook wrapping claim — I just moved on. The claim remains
    unverified in the skill content.
 
-3. **No table of contents in SKILL.md** — All four reference files have table
+3. ~~**No table of contents in SKILL.md** — All four reference files have table~~ done at `56beebe`
    of contents at the top. SKILL.md (478 lines) does not. I noted this in the
    first status report's "50 things" list (item 41) and still didn't add it.
 
@@ -131,32 +131,32 @@
 
 ## e) WHAT WE SHOULD IMPROVE
 
-1. **Verify the GoReleaser hook wrapping claim** — It's the last unverified
+1. ~~**Verify the GoReleaser hook wrapping claim** — It's the last unverified~~ done at `56beebe`
    external claim. Either confirm via goreleaser.com docs or remove the
    specific "exec.CommandContext" detail and state it more cautiously.
 
-2. **Thin out go-ecosystem-upgrade Phase 6** — The 5 inline release rules
+2. ~~**Thin out go-ecosystem-upgrade Phase 6** — The 5 inline release rules~~ done at `56beebe`
    should be reduced to 1-2 ecosystem-upgrade-specific rules (tag verification,
    CHANGELOG accuracy after git operations) with a pointer to go-release for
    the general procedure. Rules 1-3 are fully covered by go-release.
 
-3. **Mention `gofmt -r` as the Go-native import rewriting alternative** — In
+3. ~~**Mention `gofmt -r` as the Go-native import rewriting alternative** — In~~ done at `56beebe`
    major-versions.md, the `sed` approach works but `gofmt -r
    'github.com/myorg/myrepo -> github.com/myorg/myrepo/v2'` is more precise
    (it understands Go syntax, won't corrupt strings/comments).
 
-4. **Write and run test prompts** — This has been on the list since round 1.
+4. ~~**Write and run test prompts** — This has been on the list since round 1.~~ done at `56beebe`
    Three realistic prompts: "release v1.2.0 of my Go library", "cut a release
    of my multi-module monorepo", "my GoReleaser build is picking the wrong
    tag". Run with and without skill, compare.
 
-5. **Add a table of contents to SKILL.md** — It's 478 lines. The reference
+5. ~~**Add a table of contents to SKILL.md** — It's 478 lines. The reference~~ done at `56beebe`
    files all have ToCs. SKILL.md should too.
 
-6. **Scan docs/feedback/new/** — Two minutes of work that might surface
+6. ~~**Scan docs/feedback/new/** — Two minutes of work that might surface~~ done (docs/feedback/new/ is empty — nothing to scan)
    release-related pain points.
 
-7. **Consider whether the `sed` for vendorHash in failure-modes.md is correct**
+7. ~~**Consider whether the `sed` for vendorHash in failure-modes.md is correct**~~ done at `56beebe`
    — R16 uses `sed -i` to patch `vendorHash` in `flake.nix`. This is a Nix
    file, not a Go file, so `go mod edit` doesn't apply. But the AGENTS.md rule
    says "NEVER edit dependency files manually — ALWAYS use package manager
@@ -170,45 +170,45 @@
 
 ### Critical (verify remaining claims)
 
-1. Verify GoReleaser OSS hook wrapping behavior (last unverified claim)
-2. Remove or soften the "exec.CommandContext" detail if unconfirmable
-3. Verify GOPROXY comma-vs-pipe error handling (timed out in round 1)
+1. ~~Verify GoReleaser OSS hook wrapping behavior (last unverified claim)~~ done at `56beebe`
+2. ~~Remove or soften the "exec.CommandContext" detail if unconfirmable~~ done (claim CONFIRMED against GoReleaser v2.17.1 source — detail kept (56beebe))
+3. ~~Verify GOPROXY comma-vs-pipe error handling (timed out in round 1)~~ done at `85e4b55`
 
 ### Split-brain cleanup
 
-4. Thin go-ecosystem-upgrade Phase 6 to 1-2 ecosystem-specific rules + pointer
-5. Verify go-ecosystem-upgrade still passes check-skills.sh after thinning
+4. ~~Thin go-ecosystem-upgrade Phase 6 to 1-2 ecosystem-specific rules + pointer~~ done at `56beebe`
+5. ~~Verify go-ecosystem-upgrade still passes check-skills.sh after thinning~~ done (check-skills.sh stayed green after the edit)
 6. Check if any other skills reference "release" procedures that now duplicate go-release
 
 ### Content corrections
 
-7. Add `gofmt -r` as Go-native alternative to `sed` in major-versions.md
-8. Demote `sed` for vendorHash in failure-modes.md R16 — recommend `nix run .#fix-vendor-hash`
-9. Add table of contents to SKILL.md
-10. Add `--prerelease` mention to Phase 7 GitHub Release section (not just Phase 1)
+7. ~~Add `gofmt -r` as Go-native alternative to `sed` in major-versions.md~~ done at `56beebe`
+8. ~~Demote `sed` for vendorHash in failure-modes.md R16 — recommend `nix run .#fix-vendor-hash`~~ done at `56beebe`
+9. ~~Add table of contents to SKILL.md~~ done at `56beebe`
+10. ~~Add `--prerelease` mention to Phase 7 GitHub Release section (not just Phase 1)~~ done at `56beebe`
 
 ### Testing (the biggest gap)
 
-11. Write 3 realistic test prompts for go-release
-12. Run test prompts with skill loaded
-13. Run test prompts without skill (baseline)
-14. Compare outputs and iterate
-15. Create `evals/evals.json`
-16. Grade assertions programmatically
+11. ~~Write 3 realistic test prompts for go-release~~ done at `56beebe`
+12. ~~Run test prompts with skill loaded~~ done at `56beebe`
+13. ~~Run test prompts without skill (baseline)~~ done at `56beebe`
+14. ~~Compare outputs and iterate~~ done at `56beebe`
+15. ~~Create `evals/evals.json`~~ done at `56beebe`
+16. ~~Grade assertions programmatically~~ done at `56beebe`
 
 ### Missing content
 
-17. Add Docker image publishing to goreleaser-and-ci.md
-18. Add Homebrew tap publishing pattern
-19. Add Scoop bucket publishing pattern
-20. Add section on release branch strategies (maintenance branches)
+17. ~~Add Docker image publishing to goreleaser-and-ci.md~~ done at `56beebe`
+18. ~~Add Homebrew tap publishing pattern~~ done at `56beebe`
+19. ~~Add Scoop bucket publishing pattern~~ done at `56beebe`
+20. ~~Add section on release branch strategies (maintenance branches)~~ done at `56beebe`
 21. Add `go mod edit -dropreplace` as the way to strip replace directives (Phase 3)
 22. Add guidance on `GOFLAGS=-mod=readonly` for CI verification
 23. Add section on what to do when proxy.golang.org is down/slow
 
 ### Polish
 
-24. Add error output examples to failure-modes.md (what errors look like)
+24. ~~Add error output examples to failure-modes.md (what errors look like)~~ done (failure-modes.md leads every mode with a Symptom line)
 25. Balance reference file sizes (major-versions at 204 vs goreleaser at 456)
 26. Add worked examples to multi-module.md (show both monorepo shapes)
 27. Clarify module path vs import path vs repo path terminology
@@ -218,21 +218,21 @@
 
 ### Repo hygiene
 
-31. Scan `docs/feedback/new/` for release-related feedback
-32. Update FEATURES.md if it tracks skill inventory
-33. Update CHANGELOG.md with go-release addition
-34. Add go-release to AGENTS.md §5.5 (Inter-Skill References) graph
+31. ~~Scan `docs/feedback/new/` for release-related feedback~~ done (docs/feedback/new/ is empty — nothing to scan)
+32. ~~Update FEATURES.md if it tracks skill inventory~~ done (docs-health pass 2026-08-21)
+33. ~~Update CHANGELOG.md with go-release addition~~ done (docs-health pass 2026-08-21)
+34. ~~Add go-release to AGENTS.md §5.5 (Inter-Skill References) graph~~ done (docs-health pass 2026-08-21)
 35. Add go-release to AGENTS.md "High-Value Reference Files" table
-36. Consider a brief decision guide: "go-release vs go-ecosystem-upgrade"
+36. ~~Consider a brief decision guide: "go-release vs go-ecosystem-upgrade"~~ done (disambiguation lives in the go-release description — supply side vs demand side)
 
 ### Future depth
 
-37. Add `scripts/pre-release-check.sh` automation
+37. ~~Add `scripts/pre-release-check.sh` automation~~ done at `56beebe`
 38. Consider HTML release report via html-report-kit
 39. Consider a `go-release-check` CI script
 40. Add `--snapshot` testing pattern to goreleaser-and-ci.md (already there — verify completeness)
-41. Add `GORELEASER_CURRENT_TAG` to the Gotchas table in SKILL.md (it's in multi-module.md only)
-42. Add `go mod verify` to Phase 4 explicitly (currently implied by tidy)
+41. ~~Add `GORELEASER_CURRENT_TAG` to the Gotchas table in SKILL.md (it's in multi-module.md only)~~ done at `56beebe`
+42. ~~Add `go mod verify` to Phase 4 explicitly (currently implied by tidy)~~ done at `56beebe`
 43. Add section on what to do if pre-commit hooks fail during release
 44. Add `--no-verify` guidance for environment-only hook failures
 45. Add coverage gate mention to Phase 4 (already there — verify consistency)
@@ -241,7 +241,7 @@
 
 46. Consider whether nix-review should cross-reference go-release for nix+Go releases
 47. Consider whether nix-private-go-repos should cross-reference go-release
-48. Add go-release to the External Dependencies table in AGENTS.md §10
+48. ~~Add go-release to the External Dependencies table in AGENTS.md §10~~ done (docs-health pass 2026-08-21)
 49. Consider whether how-to-golang should reference go-release for "how to version"
 50. Write a brief "release readiness checklist" that go-release and how-to-golang share
 
@@ -249,7 +249,7 @@
 
 ## g) Questions I Cannot Answer Myself
 
-1. **Should go-ecosystem-upgrade Phase 6 be reduced to a pure pointer?** It
+1. ~~**Should go-ecosystem-upgrade Phase 6 be reduced to a pure pointer?** It~~ done (answered — thinned round 2 to 2 rules plus pointer (56beebe))
    currently has 5 rules. Rules 1-3 are fully general release rules (covered by
    go-release). Rules 4-5 (verify tag resolves, CHANGELOG accuracy after git
    ops) are ecosystem-upgrade-contextual. Should I keep only 4-5 and make 1-3
@@ -257,13 +257,13 @@
    go-ecosystem-upgrade without go-release? This depends on whether Crush
    auto-loads referenced skills or the agent must manually load them.
 
-2. **Should the `sed` usage for import rewriting in major-versions.md be
+2. ~~**Should the `sed` usage for import rewriting in major-versions.md be~~ done (answered — both shown; gofmt -r documented as the Go-native alternative (56beebe))
    replaced with `gofmt -r`?** `gofmt -r` is Go-native and syntax-aware, but
    it's slower, more verbose, and less familiar to most Go developers. `sed`
    is the de facto standard for v2 migrations in the wild. Is correctness
    (gofmt) or familiarity (sed) the right default? Should I show both?
 
-3. **Is the skill generic enough to be useful, or too generic to be practical?**
+3. ~~**Is the skill generic enough to be useful, or too generic to be practical?**~~ done (answered — stayed repo-generic)
    The two source skills (go-workflow-auditlog, go-auto-upgrade) are
    project-specific — they encode exact GoReleaser configs, nix integration,
    specific failure history. go-release is generic — it uses placeholder module

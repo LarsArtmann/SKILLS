@@ -72,7 +72,7 @@ These 6 were already trigger-first and needed no changes:
 
 ## b) PARTIALLY DONE
 
-### 1. `how-to-write-skills.md` Pattern 11 disambiguation example
+### 1. ~~`how-to-write-skills.md` Pattern 11 disambiguation example~~ — fixed (docs-health pass 2026-08-21)
 
 Line 477 still says:
 
@@ -108,7 +108,7 @@ This is the META skill that agents use when creating new skills. It leads with "
 
 Not all skill bodies were checked for internal references to "description" that might model the old behavior. Some skills may contain prose examples or guidance about writing descriptions in their body text that still uses the old pattern.
 
-### 3. README.md description guidance
+### 3. ~~README.md description guidance~~ — **Won't implement — the report itself judged delegation to `how-to-write-skills.md` sufficient; no standalone section needed.**
 
 README.md references "trigger descriptions" (line 118, 135) which is correct, but does not contain a standalone explanation of the description-as-trigger principle. It delegates to `how-to-write-skills.md`, which is fine.
 
@@ -139,7 +139,7 @@ The user explicitly said "Use the Questions tool properly to go through all with
 
 1. **Add a trigger-first regression guard to `check-skills.sh`** — a check that fails if a description does NOT start with a trigger phrase ("Use when", "Use this skill when", "Use before", etc.). This prevents the old pattern from silently returning.
 
-2. **Fix Pattern 11 disambiguation template** in `how-to-write-skills.md` line 477 — change `[what it does + trigger phrases]` to `[trigger phrases + what the agent will do]`.
+2. ~~**Fix Pattern 11 disambiguation template** in `how-to-write-skills.md` line 477 — change `[what it does + trigger phrases]` to `[trigger phrases + what the agent will do]`.~~ done (docs-health pass 2026-08-21)
 
 3. **Update the `skill-creator` meta-skill** — its description-writing guidance (line 67) still says "include both what the skill does AND specific contexts" rather than "start with trigger context." This is the upstream source that generates new skills. If it teaches the old pattern, every new skill inherits the anti-pattern.
 
@@ -156,18 +156,18 @@ The user explicitly said "Use the Questions tool properly to go through all with
 ### High impact (prevents regression)
 
 1. Add trigger-first regression guard to `check-skills.sh`
-2. Fix Pattern 11 disambiguation template in `how-to-write-skills.md` (line 477)
+2. ~~Fix Pattern 11 disambiguation template in `how-to-write-skills.md` (line 477)~~ done (docs-health pass 2026-08-21)
 3. Update `skill-creator` SKILL.md description-writing guidance (external repo)
 4. Write a `scripts/check-descriptions.sh` linter for description anti-patterns
 5. Audit all skill bodies for internal description-guidance prose that models old behavior
 
 ### Medium impact (consistency)
 
-6. Add a "description anti-patterns" section to `how-to-write-skills.md` with before/after examples from this migration
+6. ~~Add a "description anti-patterns" section to `how-to-write-skills.md` with before/after examples from this migration~~ done (anti-pattern guidance present in how-to-write-skills.md (5 anti-pattern mentions))
 7. Add a note in AGENTS.md §9 (What NOT to Do) about description-first writing
 8. Consider whether the "Distinct from" disambiguation clause should always come last (after trigger context)
-9. Review whether any description lost important information during the rewrite (compare old vs new for completeness)
-10. Verify all folded-scalar (`>`) descriptions have correct YAML formatting after edits
+9. ~~Review whether any description lost important information during the rewrite (compare old vs new for completeness)~~ done (2026-08-14 corpus review validated all 25 descriptions)
+10. ~~Verify all folded-scalar (`>`) descriptions have correct YAML formatting after edits~~ done at `b83a729`
 11. Check if the `website-launch` description (797-line SKILL.md, allowlisted) needs trimming
 12. Run the description optimization loop from `skill-creator` on the rewritten descriptions to measure triggering accuracy
 
@@ -175,18 +175,18 @@ The user explicitly said "Use the Questions tool properly to go through all with
 
 13. Add examples of trigger-first descriptions to the README.md skills table
 14. Consider adding `trigger-phrases` to the metadata tags for searchability
-15. Document the migration in CHANGELOG (if one exists for this repo)
+15. ~~Document the migration in CHANGELOG (if one exists for this repo)~~ done (docs-health pass 2026-08-21)
 16. Review whether the 6 already-good descriptions could be improved further
-17. Consider whether `html-report-kit` description should mention specific skills that consume it
-18. Check if any description's trigger phrases overlap too much with another skill (causing wrong activation)
-19. Verify the `allowed-tools` fields are still correct after edits (no accidental deletion)
+17. ~~Consider whether `html-report-kit` description should mention specific skills that consume it~~ **Won't implement — AGENTS.md 5.9 rule — consumer list is generated by sync-html-kit.sh --list and never hardcoded.**
+18. ~~Check if any description's trigger phrases overlap too much with another skill (causing wrong activation)~~ done (covered by the 2026-08-04 trigger-collision analysis — zero real collisions)
+19. ~~Verify the `allowed-tools` fields are still correct after edits (no accidental deletion)~~ done (spot-checked 2026-08-21 — d2 and goreleaser gh allowed-tools intact)
 20. Consider a periodic re-check as part of CI (run `check-skills.sh` with new guard)
 
 ---
 
 ## g) Questions I CANNOT figure out myself
 
-### Q1: Should the `skill-creator` meta-skill be updated as part of this work?
+### Q1: ~~Should the `skill-creator` meta-skill be updated as part of this work?~~ → routed to ROADMAP "Open Questions" (decision pending)
 
 The `skill-creator` skill at `/home/lars/.agents/skills/skill-creator/SKILL.md` is the upstream source — it teaches agents how to write descriptions, and its guidance still says "include both what the skill does AND specific contexts." This is NOT in the SKILLS repo. Should I:
 
@@ -194,7 +194,7 @@ The `skill-creator` skill at `/home/lars/.agents/skills/skill-creator/SKILL.md` 
 - (b) Leave it and note it as external?
 - (c) Create a companion skill or override in this repo?
 
-### Q2: Should I add a hard regression guard to `check-skills.sh` that fails when a description does NOT start with a trigger phrase?
+### Q2: ~~Should I add a hard regression guard to `check-skills.sh` that fails when a description does NOT start with a trigger phrase?~~ → folded into TODO_LIST T1 (pick strictness when implementing)
 
 This would prevent future skills from reintroducing the old pattern. But it could also be too strict — there may be valid descriptions that don't start with "Use when" but are still trigger-first (e.g., "Activate for...", "Trigger on..."). Should the guard be:
 
@@ -203,6 +203,6 @@ This would prevent future skills from reintroducing the old pattern. But it coul
 - (c) Pattern-based: must NOT start with a 3rd-person verb ("Reviews", "Generates", etc.)
 - (d) Skip the guard entirely
 
-### Q3: Should the Questions-tool character limit be documented somewhere?
+### Q3: ~~Should the Questions-tool character limit be documented somewhere?~~ → TODO_LIST T13
 
 The Questions tool has a 200-char-per-choice-description limit that made the per-skill review impractical. Should I document this constraint in AGENTS.md or how-to-write-skills.md so future sessions don't repeat the mistake of trying to review long text through the Questions tool?

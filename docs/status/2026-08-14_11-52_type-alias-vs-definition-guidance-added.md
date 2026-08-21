@@ -39,7 +39,7 @@
 5. **No cross-reference to `data-model-review`** — That skill covers type design and "make impossible states unrepresentable". The alias-vs-definition choice is a type design decision. No link was added.
 6. **No check of `architecture.md`** for overlap or conflict — `rules.md` says `architecture.md` covers "Strong types only" and "No `any`, no primitives for domains". The new section might overlap or conflict with content there. Not checked.
 7. **No check of other skills/references** for the same alias/definition confusion — Other Go skills (`go-modularize`, `samber-do-best-practices`, `go-error-modernization`) might use type aliases or definitions in examples without explanation.
-8. **No feedback file created** — Per the AGENTS.md feedback loop, this kind of "I had an issue, what skill should we improve" interaction is feedback-worthy. Though since we immediately improved the skill, the feedback was already converted to action, so a feedback file may be unnecessary.
+8. ~~**No feedback file created** — Per the AGENTS.md feedback loop, this kind of "I had an issue, what skill should we improve" interaction is feedback-worthy. Though since we immediately improved the skill, the feedback was already converted to action, so a feedback file may be unnecessary.~~ **Won't implement — feedback was immediately converted into the skill improvement — the loop already served its purpose.**
 
 ---
 
@@ -47,13 +47,13 @@
 
 ~~1. **Did NOT look at the actual httputil issue.**~~ — **FIXED.** Read the httputil code. The issue was: `type Middleware func(http.Handler) http.Handler` (definition) in both `recorder.go` and `server_timing/middleware.go` created two distinct types, requiring explicit `Middleware(servertiming.ServerTimingMiddleware())` conversions at every composition boundary. The fix (uncommitted) changes both to aliases (`type Middleware = func(http.Handler) http.Handler`), eliminating all conversion friction. `DOMAIN_LANGUAGE.md` also incorrectly called the definition an "alias" — the docs lied about what it was. The guidance section has been updated with this real-world middleware example.
 
-1. **File paths were wrong in the original report.** I initially claimed the edit was in `/home/lars/.config/crush/skills/how-to-golang/references/domain-types.md`. That path is a symlink (`~/.config/crush/skills/how-to-golang -> ../../../.agents/skills/how-to-golang`) that resolves to `/home/lars/.agents/skills/how-to-golang/references/domain-types.md`. The **canonical source of truth** is `/home/lars/projects/SKILLS/how-to-golang/references/domain-types.md`. I have now copied the change to the canonical project repo; git status shows `M how-to-golang/references/domain-types.md`. The `.agents` copy is a runtime installation used by Crush, not the source repo.
+1. ~~**File paths were wrong in the original report.** I initially claimed the edit was in `/home/lars/.config/crush/skills/how-to-golang/references/domain-types.md`. That path is a symlink (`~/.config/crush/skills/how-to-golang -> ../../../.agents/skills/how-to-golang`) that resolves to `/home/lars/.agents/skills/how-to-golang/references/domain-types.md`. The **canonical source of truth** is `/home/lars/projects/SKILLS/how-to-golang/references/domain-types.md`. I have now copied the change to the canonical project repo; git status shows `M how-to-golang/references/domain-types.md`. The `.agents` copy is a runtime installation used by Crush, not the source repo.~~ done at `6efb022`
 
-2. **~/.config/crush/.agents does not exist.** The user asked to compare `/home/lars/.config/crush/.agents` to `/home/lars/projects/SKILLS`. The actual installed skills live at `/home/lars/.agents/skills/` (not under `.config/crush`). Crush accesses them through symlinks in `~/.config/crush/skills/`.
+2. ~~**~/.config/crush/.agents does not exist.** The user asked to compare `/home/lars/.config/crush/.agents` to `/home/lars/projects/SKILLS`. The actual installed skills live at `/home/lars/.agents/skills/` (not under `.config/crush`). Crush accesses them through symlinks in `~/.config/crush/skills/`.~~ done at `6efb022`
 
-3. **The project repo and `.agents` copy are NOT fully in sync.** After syncing `how-to-golang`, I compared every skill directory. Many other skills differ between the project repo and `.agents` — including `code-quality-scan`, `docs-health`, `nix-private-go-repos`, `nix-review`, `verify-external-claims`, and `website-launch`. This means `.agents` is lagging behind the project repo. This is expected if skills are installed/copied from the repo periodically, but it's a source of truth problem: an agent editing `.agents` directly would lose changes when the repo is re-installed.
+3. ~~**The project repo and `.agents` copy are NOT fully in sync.** After syncing `how-to-golang`, I compared every skill directory. Many other skills differ between the project repo and `.agents` — including `code-quality-scan`, `docs-health`, `nix-private-go-repos`, `nix-review`, `verify-external-claims`, and `website-launch`. This means `.agents` is lagging behind the project repo. This is expected if skills are installed/copied from the repo periodically, but it's a source of truth problem: an agent editing `.agents` directly would lose changes when the repo is re-installed.~~ done at `6efb022`
 
-4. **No sync script exists.** `scripts/check-skills.sh` and `scripts/sync-html-kit.sh` exist, but there is no `scripts/sync-to-agents.sh` or equivalent. The `.agents` copy must be updated manually or via the `skills` CLI. This is a process gap worth documenting.
+4. ~~**No sync script exists.** `scripts/check-skills.sh` and `scripts/sync-html-kit.sh` exist, but there is no `scripts/sync-to-agents.sh` or equivalent. The `.agents` copy must be updated manually or via the `skills` CLI. This is a process gap worth documenting.~~ done at `b83a729`, `6efb022`
 
 5. **Missing important nuances in the guidance section.** The comparison table and examples are correct for the common cases but miss several important subtleties:
 
@@ -87,12 +87,12 @@
 
 6. **Fix `DOMAIN_LANGUAGE.md` in httputil.** It incorrectly calls `type Middleware func(http.Handler) http.Handler` an "alias" when it was a definition. The docs should match the code.
 
-7. **Address the .agents source-of-truth gap.** There is no automated way to sync `/home/lars/projects/SKILLS/` to `/home/lars/.agents/skills/`. Agents editing `.agents` directly create changes that are invisible to git. Options:
+7. ~~**Address the .agents source-of-truth gap.** There is no automated way to sync `/home/lars/projects/SKILLS/` to `/home/lars/.agents/skills/`. Agents editing `.agents` directly create changes that are invisible to git. Options:~~ done at `6efb022`
    - Add a `scripts/sync-skills-to-agents.sh` script that rsyncs/copies the repo to `.agents`
    - Document that agents MUST edit `/home/lars/projects/SKILLS/` and that `.agents` is rebuilt from it
    - Add a CI check or pre-commit hook that warns when `.agents` is out of sync
 
-8. **Reconcile existing divergence.** Many skills (`code-quality-scan`, `docs-health`, `nix-private-go-repos`, `nix-review`, `verify-external-claims`, `website-launch`) differ between project repo and `.agents`. Determine if `.agents` should be refreshed from the repo.
+8. ~~**Reconcile existing divergence.** Many skills (`code-quality-scan`, `docs-health`, `nix-private-go-repos`, `nix-review`, `verify-external-claims`, `website-launch`) differ between project repo and `.agents`. Determine if `.agents` should be refreshed from the repo.~~ done at `6efb022`
 
 ---
 
@@ -108,8 +108,8 @@
 | 6  | Add a decision tree entry in `how-to-golang/SKILL.md` for alias-vs-definition                              | High   | Low    |
 | 7  | Add trigger phrases ("type alias", "type definition") to `how-to-golang/SKILL.md` description              | High   | Low    |
 | 8  | Fix `DOMAIN_LANGUAGE.md` in httputil — it calls a type definition an "alias"                               | High   | Low    |
-| 9  | Decide on .agents sync strategy (script, docs, or hook)                                                    | High   | Low    |
-| 10 | Refresh `.agents/skills/` from project repo to eliminate current divergence                                | Medium | Medium |
+| ~~9~~  | ~~Decide on .agents sync strategy (script, docs, or hook)~~ done at `6efb022` | ~~High~~ | ~~Low~~ |
+| ~~10~~ | ~~Refresh `.agents/skills/` from project repo to eliminate current divergence~~ done at `6efb022` | ~~Medium~~ | ~~Medium~~ |
 | 11 | Cross-reference `go-error-modernization` skill — error types depend on alias-vs-definition                 | Medium | Low    |
 | 12 | Cross-reference `data-model-review` skill — type design decisions                                          | Low    | Low    |
 | 13 | Check `how-to-golang/references/architecture.md` for overlap or conflict with new section                  | Medium | Low    |
@@ -127,9 +127,9 @@
 
 1. **~~What was the specific mistake in httputil?~~** — **ANSWERED.** It was a type **definition** where a type **alias** was needed. `type Middleware func(http.Handler) http.Handler` in both `httputil/recorder.go` and `server_timing/middleware.go` created two distinct types, forcing explicit `Middleware(...)` conversions at every composition boundary. The fix is `type Middleware = func(http.Handler) http.Handler` (alias).
 
-2. **Should this guidance live in `domain-types.md` (where I put it) or in `rules.md` (which covers the formal Go rules)?** Both are plausible homes. `domain-types.md` is about branded types and domain primitives; `rules.md` is about development rules. The alias-vs-definition distinction spans both — it's relevant to domain types AND is a general Go rule. Should it be in both with a cross-reference, or in one with a pointer from the other?
+2. ~~**Should this guidance live in `domain-types.md` (where I put it) or in `rules.md` (which covers the formal Go rules)?** Both are plausible homes. `domain-types.md` is about branded types and domain primitives; `rules.md` is about development rules. The alias-vs-definition distinction spans both — it's relevant to domain types AND is a general Go rule. Should it be in both with a cross-reference, or in one with a pointer from the other?~~ done (routed to ROADMAP Open Questions — guidance home is a user decision)
 
-3. **Should we also create a dedicated `go-type-design` skill** that covers alias-vs-definition, embedding, generics constraints, interface design, and type-level domain modeling — pulling together content currently scattered across `how-to-golang`, `data-model-review`, and `go-error-modernization`? Or is the current distributed approach (guidance in each skill where it's relevant) better?
+3. ~~**Should we also create a dedicated `go-type-design` skill** that covers alias-vs-definition, embedding, generics constraints, interface design, and type-level domain modeling — pulling together content currently scattered across `how-to-golang`, `data-model-review`, and `go-error-modernization`? Or is the current distributed approach (guidance in each skill where it's relevant) better?~~ done (routed to ROADMAP Open Questions — go-type-design skill granularity)
 
 ---
 

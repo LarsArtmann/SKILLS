@@ -113,7 +113,7 @@ None.
    `run_eval.py` / `run_loop.py` would give trigger-accuracy metrics and variance
    analysis.
 
-4. **Vendor html-report-kit if producing HTML eval reports** — Not needed for the
+4. ~~**Vendor html-report-kit if producing HTML eval reports** — Not needed for the~~ **Won't implement — eval artifacts are Markdown — an HTML report remains a ROADMAP raw idea, not a need.**
    current Markdown eval artifacts.
 
 ---

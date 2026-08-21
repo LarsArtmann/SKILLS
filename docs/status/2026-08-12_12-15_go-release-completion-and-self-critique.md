@@ -85,7 +85,7 @@
    Python script that mimics GitHub's algorithm, but I did not render the Markdown
    with a real parser to verify every link resolves.
 
-6. **Markdown formatting not linted** — `dprint` is not available, so formatting was
+6. ~~**Markdown formatting not linted** — `dprint` is not available, so formatting was~~ done (dprint adopted repo-wide since (dprint.json) — tidy passes covered changed files)
    done by hand. Some long table rows or code blocks may be slightly off the project's
    preferred style.
 
@@ -110,7 +110,7 @@
 9. Adding CI/workflow examples that use `pre-release-check.sh`.
 10. Adding a note about `GOWORK=off` behavior to the pre-release-check script.
 11. Documenting how to install/use the pre-release-check script outside the skill.
-12. Verifying that the new `quick-reference.md` file is discovered by the skill-loading
+12. ~~Verifying that the new `quick-reference.md` file is discovered by the skill-loading~~ done (quick-reference.md is linked from SKILL.md (verified 2026-08-21))
     system and referenced correctly from SKILL.md.
 
 ---
@@ -128,12 +128,12 @@
    AGENTS.md rule says "NEVER use `rm` → ALWAYS use `trash`". I violated it while
    testing a script whose purpose is to enforce release discipline. Embarrassing.
 
-3. **Initial grading summary was wrong** — I first counted the eval 3 with-skill
+3. ~~**Initial grading summary was wrong** — I first counted the eval 3 with-skill~~ done at `66ff020`
    "alphabetically-last" expectation as passed even though the subagent did not surface
    the explanation. This inflated the with-skill pass rate from 74% to 78%. I caught it
    and fixed it, but the mistake reveals that I was too eager to score the skill well.
 
-4. **Eval 3 with-skill incorrectly triggered `/v2` migration for a CLI** — The subagent
+4. ~~**Eval 3 with-skill incorrectly triggered `/v2` migration for a CLI** — The subagent~~ done at `66ff020`
    loaded `major-versions.md` and applied a library v2 migration to a binary-only CLI
    release. This exposed a real ambiguity in the skill: the release-shape decision tree
    says "application → load goreleaser-and-ci.md" but does not explicitly say "do NOT
@@ -150,7 +150,7 @@
    issues. I had to re-run with the dedicated `grep` tool. This was sloppy and could
    have been avoided by using `grep` directly.
 
-7. **I did not validate the `gofmt -r` sub-package limitation before writing it** — I
+7. ~~**I did not validate the `gofmt -r` sub-package limitation before writing it** — I~~ done at `66ff020`
    wrote the note claiming `gofmt -r` can handle sub-packages, then tested it and
    discovered it only matches exact string literals, not prefixes. I corrected the note,
    but I should have tested before writing.
@@ -159,7 +159,7 @@
 
 ## e) WHAT WE SHOULD IMPROVE
 
-1. **Make the release-shape gate explicit and early** — At the very start of the
+1. ~~**Make the release-shape gate explicit and early** — At the very start of the~~ done at `85e4b55`
    response, force a choice: "Is this a library (needs `go.mod` path rules) or a
    binary (needs GoReleaser rules)?" This prevents library-only guidance like
    `/v2` migration from leaking into binary releases.
@@ -193,7 +193,7 @@
    changed files. Also run a spell-checker to catch typos like the one I noticed in the
    todo description ("import importing rewriting").
 
-10. **Consider the pre-release-check script's portability** — It requires `trash` for
+10. ~~**Consider the pre-release-check script's portability** — It requires `trash` for~~ **Won't implement — script creates no temp dirs — nothing to decide.**
     temp cleanup if we add temp-dir usage later. Currently it has no temp dirs, so it's
     fine, but we should decide whether to keep it that way.
 
@@ -219,20 +219,20 @@
 5. Test `pre-release-check.sh` in a multi-module `go.work` repo.
 6. Test `pre-release-check.sh` when `go.mod` contains a valid remote `replace` (not local).
 7. Render SKILL.md and verify all ToC anchor links resolve.
-8. Run `dprint check` on all changed files when `dprint` is available.
+8. ~~Run `dprint check` on all changed files when `dprint` is available.~~ done (dprint adopted repo-wide (dprint.json))
 9. Run spell-check on `go-release/` files.
 10. Validate the new GoReleaser publishing examples by running `goreleaser check`.
 
 ### Skill content
 
 11. Add a "Safety notes" section to SKILL.md (temp dirs, `trash`, no `rm -rf`).
-12. Add a decision gate at the top of SKILL.md responses: library vs binary vs multi-module.
+12. ~~Add a decision gate at the top of SKILL.md responses: library vs binary vs multi-module.~~ done at `85e4b55`
 13. Add a CI workflow example that runs `pre-release-check.sh` before allowing a tag push.
 14. Add a note about `GOWORK=off` and multi-module verification to the script and skill.
-15. Add a section on release retraction to SKILL.md or failure-modes.md.
-16. Add a section on private-dependency release failures to failure-modes.md.
-17. Add a section on checksum mismatch recovery to failure-modes.md.
-18. Add a note about `+incompatible` avoidance in quick-reference.md.
+15. ~~Add a section on release retraction to SKILL.md or failure-modes.md.~~ done at `f8baf43`
+16. ~~Add a section on private-dependency release failures to failure-modes.md.~~ done at `f8baf43`
+17. ~~Add a section on checksum mismatch recovery to failure-modes.md.~~ done at `f8baf43`
+18. ~~Add a note about `+incompatible` avoidance in quick-reference.md.~~ done at `56beebe`
 19. Add a note about GoReleaser Pro features vs OSS limits.
 20. Add a section on release asset naming conventions.
 21. Add a section on handling generated code in releases.
@@ -266,7 +266,7 @@
 
 ### Repository & maintenance
 
-46. Update the `website-launch` allowlist if it remains over 500 lines.
+46. ~~Update the `website-launch` allowlist if it remains over 500 lines.~~ **Won't implement — allowlist still covers it — trim tracked as TODO_LIST T11.**
 47. Add a CONTRIBUTING note about evals for new skills.
 48. Consider moving `how-to-write-skills.md` to a proper skill directory per the audit.
 49. Add a script to auto-run evals for all skills in the repo.
@@ -276,17 +276,17 @@
 
 ## g) Questions I Cannot Figure Out Myself
 
-1. **Do you want `pre-release-check.sh` to remain a copy-pasteable script inside the
+1. ~~**Do you want `pre-release-check.sh` to remain a copy-pasteable script inside the~~ done (routed to ROADMAP Open Questions — standalone promotion is a user decision)
    skill, or should it be promoted to an installable standalone tool** (e.g., via
    `go install`, `nix run`, or a published GitHub release)? This affects how much
    effort I put into portability, argument parsing, and distribution.
 
-2. **Should I keep the raw subagent eval outputs that contain `rm -rf` as authentic
+2. ~~**Should I keep the raw subagent eval outputs that contain `rm -rf` as authentic~~ done (routed to ROADMAP Open Questions — artifact-integrity vs safety consistency)
    test artifacts, or should I sanitize them to use `trash`?** Sanitizing misrepresents
    what the agent actually produced; keeping them documents a real safety failure. I
    need your preference on eval artifact integrity vs. safety consistency.
 
-3. **Is the current subagent-based evaluation sufficient to mark `go-release` as tested
+3. ~~**Is the current subagent-based evaluation sufficient to mark `go-release` as tested~~ done (routed to ROADMAP Open Questions — eval sufficiency for the tested claim)
    in the README, or should I wait until the full skill-creator runtime (`claude -p`)
    is available?** I already moved it to 🟢 Comprehensive, but the testing was
    improvised because `claude -p` is missing in this environment.
