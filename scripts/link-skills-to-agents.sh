@@ -13,6 +13,10 @@
 #   scripts/link-skills-to-agents.sh --check    # exit 1 if a link is missing or wrong
 #   scripts/link-skills-to-agents.sh --list     # show repo skills and their link state
 #   scripts/link-skills-to-agents.sh --force    # replace a conflicting real dir (DANGEROUS)
+#
+# Environment:
+#   AGENTS_DIR  target runtime dir (default: ~/.agents/skills). Override for
+#               isolated testing, e.g. AGENTS_DIR=/tmp/test-agents scripts/...
 
 set -euo pipefail
 
@@ -27,7 +31,7 @@ fi
 mapfile -t repo_skills < <(find "$REPO_DIR" -maxdepth 2 -name 'SKILL.md' -printf '%h\n' | sort)
 
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
-	sed -n '2,14p' "$0"
+	sed -n '2,19p' "$0"
 	exit 0
 fi
 

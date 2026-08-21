@@ -193,7 +193,9 @@ When a new skill needs HTML reports: (1) reference `./assets/html-report-kit/...
 
 `/home/lars/projects/SKILLS/` is the **only** copy of these skills. The runtime dir `~/.agents/skills/` holds a **relative symlink** per repo skill (`../../projects/SKILLS/<skill>`), so an edit in the repo is live in every agent (Crush, Codex, Cursor, ...) instantly — there is no sync step and no drift is possible. `~/.config/crush/skills/<skill>` chains through `~/.agents/skills/` (double indirection resolves fine).
 
-**Third-party skills are different:** `copywriting`, `find-skills`, `frontend-design`, `improve-codebase-architecture`, `skill-creator` are real directories in `~/.agents/skills/`, installed and tracked by the [skills CLI](https://skills.sh) via `~/.local/state/skills/.skill-lock.json`. They are updated **manually** with `skills update -g` and must never be edited by hand or added to this repo. The 2026-08-14 status report called these "orphans" — they are not; they have upstream sources in the lockfile.
+**Third-party skills are different:** `copywriting`, `find-skills`, `frontend-design`, `improve-codebase-architecture`, `skill-creator`, plus the 9-skill HyperFrames suite (`hyperframes`, `-animation`, `-audio`, `-cli`, `-core`, `-creative`, `-keyframes`, `-registry`, `media-use`) are real directories in `~/.agents/skills/`, installed and tracked by the [skills CLI](https://skills.sh) via `~/.local/state/skills/.skill-lock.json` (14 entries as of 2026-08-21). They are updated **manually** with `skills update -g` and must never be edited by hand or added to this repo. The 2026-08-14 status report called these "orphans" — they are not; they have upstream sources in the lockfile.
+
+**Empirically verified 2026-08-21** (run via `bun x skills` — the CLI has no standalone binary on this machine): `skills ls -g` lists ALL skills, not only third-party ones — lockfile-tracked skills display their GitHub source (`heygen-com/hyperframes`, `anthropics/skills`, ...), own skills display `Source: local`. `skills update -g` updated 10 lockfile skills and left all 25 own-skill symlinks byte-identical (target + identity diffed before/after).
 
 **Rules:**
 
