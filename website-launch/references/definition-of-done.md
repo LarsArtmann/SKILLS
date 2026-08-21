@@ -37,8 +37,13 @@
 
 ## Demo video
 
-- [ ] `website/public/demo.mp4` exists (< 3 MB, ~20-30s), embedded via a ShowcaseSection above the feature grid
+- [ ] `website/public/demo.mp4` exists (< 3 MB, ~20-30s)
+- [ ] Script beats derived from the README value prop: hook (outcome language) → value claim → evidence → CTA
+- [ ] Video visible without scrolling on a 1440x900 viewport (hero or first section below it); container has `id="demo"`
 - [ ] HyperFrames composition committed under `website/video/` (NOT left in `/tmp`)
+- [ ] Poster frame is a selling frame (readable product visuals, not blank/title-only)
+- [ ] README documentation bar links the demo with accurate runtime
+- [ ] Landing page `og:image` set from the poster (1200x630)
 - [ ] `firebase.json` asset cache glob covers `mp4|webm|mov`
 - [ ] `HEAD /demo.mp4` on the live site returns `Cache-Control: public, max-age=31536000, immutable`
 

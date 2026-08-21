@@ -62,6 +62,15 @@ Below the tagline, before the `---` separator:
 </p>
 ```
 
+Once the demo video exists (SKILL.md §3.11), append a third link with the real
+runtime so GitHub visitors reach the product in motion in one click:
+
+```markdown
+<p align="center">
+<a href="https://{subdomain}.lars.software">Documentation</a> · <a href="https://pkg.go.dev/github.com/LarsArtmann/{repo}">API Reference</a> · <a href="https://{subdomain}.lars.software/#demo">Watch the 25s demo</a>
+</p>
+```
+
 ## Header Pattern
 
 Use HTML alignment, not markdown headers, for the title section:

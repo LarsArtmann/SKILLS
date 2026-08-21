@@ -10,8 +10,9 @@ description: >-
   "public presence overhaul", "deploy website", or "lars.software domain". Launches a
   public documentation website for a Go project (library OR application/server) using
   the LarsArtmann Astro + Starlight + Tailwind v4 + Firebase Hosting pattern. Every
-  launch includes a rendered demo video (HyperFrames HTML→MP4) on the landing page by
-  default — trigger on "demo video", "product tour", or "promo clip" for the site too.
+  launch sells the project with a rendered demo video (HyperFrames HTML→MP4) as the
+  landing page's centerpiece by default — trigger on "demo video", "product tour",
+  "promo clip", or "make the launch sell the project" for the site too.
 metadata:
   tags: website, firebase, astro, starlight, dns, deployment, documentation
 allowed-tools: bash view edit write grep fetch
@@ -102,7 +103,9 @@ rebuild:
 - Swap bold-text warnings for `:::caution` / `:::tip` callouts.
 - **Demo video: if the landing page has none, produce one** (see §3.11 and the
   [demo video reference](./references/demo-video.md)) — it retrofits onto any
-  existing site as a ShowcaseSection + `public/demo.mp4`.
+  existing site as a ShowcaseSection + `public/demo.mp4`. If one exists, audit
+  it against the current value prop (headline/message match, hook frame, README
+  link, poster) — videos rot as the product evolves.
 
 The full retrofit checklist is in the
 [content patterns reference](./references/content-patterns.md)
@@ -411,6 +414,13 @@ copy-paste templates for every section above, plus patterns for docs
 pages (curated "Where to go next", comparison tables repeated in docs,
 callouts, feedback links).
 
+**The value proposition is written once.** The one-paragraph summary and
+"## Why?" section are the canonical sales narrative for the entire launch:
+the landing hero headline, the demo video's hook and value beat (§3.11),
+and any launch post copy are all derived from them — never re-invented
+per surface. When these drift apart, the page fights itself and each
+element undersells.
+
 ### What to Remove
 
 If the existing README has any of these, remove them:
@@ -468,6 +478,10 @@ proprietary.
 <a href="https://{subdomain}.lars.software">Documentation</a> · <a href="CHANGELOG.md">Changelog</a>
 </p>
 ```
+
+Once the demo video exists (§3.11), append a "Watch the {N}s demo" link to
+either bar — see the Documentation Link Bar section in the
+[README template](./references/readme-template.md).
 
 ---
 
@@ -540,21 +554,32 @@ For favicon/logo design, MDX escaping, section component patterns, creation
 order, and Starlight config knobs, load
 [./references/website-creation-details.md](./references/website-creation-details.md).
 
-### 3.11 Demo video — default for every project
+### 3.11 Demo video — the launch's sales engine (default for every project)
 
-Produce a 20-30s product-tour video and embed it on the landing page. This is
-part of the launch, not a bonus: a working-product video above the fold
-converts where prose cannot, and it is cheap (~30-60 min) with HyperFrames
-(HTML/CSS/GSAP → deterministic MP4).
+Produce a 20-30s video that SELLS the project and embed it on the landing
+page. This is part of the launch, not a bonus: a working-product video
+above the fold converts where prose cannot, and it is cheap (~30-60 min)
+with HyperFrames (HTML/CSS/GSAP → deterministic MP4).
+
+The video shares ONE sales narrative with the README and the landing hero
+(written once in Phase 2): its hook speaks the README "Why?" pain in
+outcome language, its value claim is the one-paragraph summary compressed
+to one sentence, and its final beat is the install command. A feature tour
+that never states the value is the known failure mode — it demonstrates
+but does not sell.
 
 Load the [demo video reference](./references/demo-video.md) for the full
-pipeline — NixOS invocation (`HYPERFRAMES_BROWSER_PATH`, direct CLI path),
-seek-safe composition rules, the canonical `website/video/` location (commit
-the composition, never stage it in `/tmp`), ShowcaseSection integration,
-mp4 cache headers, and frame-level verification without eyes.
+pipeline — script-before-pixels beat structure, routing through the
+HyperFrames `/product-launch-video` workflow when the session has
+`hyperframes*` skills (hand-rolled pipeline as fallback), NixOS invocation
+(`HYPERFRAMES_BROWSER_PATH`, direct CLI path), seek-safe composition
+rules, the canonical `website/video/` location (commit the composition,
+never stage it in `/tmp`), hero placement + README deep-link +
+poster/`og:image`, mp4 cache headers, distribution tiers, and frame-level
+verification without eyes.
 
-Order of operations: ship the site first if the session is long, then add the
-video as an immediate follow-up commit — but do not skip it.
+Order of operations: ship the site first if the session is long, then add
+the video as an immediate follow-up commit — but do not skip it.
 
 ---
 
