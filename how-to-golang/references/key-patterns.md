@@ -23,27 +23,33 @@ For the full DI audit checklist (DO-1 → DO-6 anti-patterns, canonical provider
 ## Error Handling
 
 ```go
-// Railway pipeline
-return uniflow.NewPipeline().
-    Then(validate).Then(create).Then(emit).Run(ctx, input)
-
-// Sentinel errors + wrapping
+// Sentinel errors + wrapping (cockroachdb/errors — verified compiling 2026-08-21)
 var ErrNotFound = errors.New("not found")
 return nil, errors.Wrap(err, "failed to get user")
 if errors.Is(err, ErrNotFound) { ... }
 ```
+
+> **uniflow status (verified 2026-08-21):** the module path is
+> `github.com/LarsArtmann/uniflow` (capital L and A — the lowercase path is
+> unfetchable), its public API is a config-driven message-flow engine
+> (`core.NewUniflow(&core.Config{...})`), and at @latest (v0.0.0-2026-05-16)
+> it does not compile at all — a broken `charmbracelet/x/cellbuf` transitive
+> pin. There is no `NewPipeline().Then(...)` chain API. Do not copy pipeline
+> snippets from memory; check the library source first.
 
 > **Go 1.26+ modernization:** `errors.As` is being superseded by the generic `errors.AsType[E]`. `errors.Is` is NOT legacy — it remains the correct API for sentinel matching. See the [`go-error-modernization` skill](../../go-error-modernization/SKILL.md) for the migration decision tree and the cargo-cult trap to avoid when an agent drives a linter to zero.
 
 ## Config (koanf)
 
 Priority: defaults → config file → env vars (`APP_` prefix, `_` → `.`).
+Import paths (verified compiling 2026-08-21): core at `github.com/knadh/koanf/v2`;
+providers/parsers are separate modules at the v1 module path — `github.com/knadh/koanf/providers/{confmap,file}` and `github.com/knadh/koanf/parsers/yaml` — except env, whose `Opt` API lives only in `github.com/knadh/koanf/providers/env/v2`:
 
 ```go
 k := koanf.New(".")
 k.Load(confmap.Provider(defaults, "."), nil)
 k.Load(file.Provider(path), yaml.Parser())
-k.Load(env.Provider(".", env.Opt{Prefix: "APP_"}), nil)
+k.Load(env.Provider(".", env.Opt{Prefix: "APP_"}), nil) // import .../providers/env/v2
 k.Unmarshal("", &cfg)
 ```
 

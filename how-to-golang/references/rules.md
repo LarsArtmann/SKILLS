@@ -153,7 +153,7 @@ var (
 )
 ```
 
-Use `uniflow` for pipeline-style error composition and user-friendly error formatting.
+Use `cockroachdb/errors` for wrapping and sentinel matching. (`uniflow` was previously recommended for pipeline-style composition — it does not compile at @latest as of 2026-08-21 and has no pipeline-chain API; see key-patterns.md error-handling note.)
 
 ## Rule 015-019: Observability & Health
 

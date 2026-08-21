@@ -28,7 +28,7 @@ Libraries banned from all Go projects with reasons and replacements.
 | viper                             | Global state, complex, 4x larger binaries   | `knadh/koanf`                                |
 | urfave/cli                        | Less polished TUI                           | `charm.land/fang/v2`                         |
 | go-cache, ristretto, bigcache     | Stale APIs, lock contention, poor hit rates | `maypok86/otter/v2`                          |
-| pkg/errors                        | Unmaintained                                | `cockroachdb/errors` + `larsartmann/uniflow` |
+| pkg/errors                        | Unmaintained                                | `cockroachdb/errors`                         |
 | logrus, zerolog                   | Fragmented, slog is standard                | `log/slog` + `charm.land/log/v2`             |
 | swaggo                            | Annotations drift from code                 | `danielgtaylor/huma`                         |
 | go-playground/validator           | 5-44x slower than govalid                   | `sivchari/govalid`                           |

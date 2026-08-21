@@ -87,7 +87,7 @@ var _ = Describe("UserRepository", func() {
         Expect(err).NotTo(HaveOccurred())
 
         // Run migrations
-        _, err = db.Exec(ctx, migrationSQL)
+        _, err = db.ExecContext(ctx, migrationSQL)
         Expect(err).NotTo(HaveOccurred())
 
         repo = NewUserRepository(db)
@@ -223,13 +223,16 @@ func TestAPIConcurrency(t *testing.T) {
 
 ## Snapshot Testing (go-snaps)
 
-For API responses and structured data that rarely changes:
+For API responses and structured data that rarely changes. Import the
+**package** path (module root has no Go files): `github.com/gkampitakis/go-snaps/snaps`.
+Inside a Ginkgo `It` block there is no `*testing.T` — pass `GinkgoT()`
+(it satisfies `testing.TB`):
 
 ```go
 It("returns expected user API response", func() {
     resp, err := client.Get("/api/users/123")
     Expect(err).NotTo(HaveOccurred())
-    snaps.MatchSnapshot(t, resp.Body)
+    snaps.MatchSnapshot(GinkgoT(), resp.Body)
 })
 ```
 

@@ -15,10 +15,10 @@ Decision guide for WHAT to use. For HOW, read the library docs.
 | TUI/Styling   | Charm v2                     | `charm.land/lipgloss/v2`, `charm.land/huh/v2`, `charm.land/bubbletea/v2`, `charm.land/bubbles/v2`                     |
 | Caching       | Otter v2                     | `github.com/maypok86/otter/v2`                                                                                        |
 | Testing       | Ginkgo/Gomega                | `github.com/onsi/ginkgo/v2` + `github.com/onsi/gomega`                                                                |
-| Testing       | go-snaps                     | `github.com/gkampitakis/go-snaps` — snapshot testing                                                                  |
+| Testing       | go-snaps                     | `github.com/gkampitakis/go-snaps/snaps` (package path; module root has no Go files) — snapshot testing                        |
 | Templates     | Templ                        | `github.com/a-h/templ`                                                                                                |
 | Functional    | lo + mo                      | `github.com/samber/lo` + `github.com/samber/mo`                                                                       |
-| Errors        | uniflow + cockroachdb/errors | `github.com/larsartmann/uniflow` + `github.com/cockroachdb/errors`                                                    |
+| Errors        | cockroachdb/errors (+ uniflow when it stabilizes) | `github.com/cockroachdb/errors`. `github.com/LarsArtmann/uniflow` (capital L/A; lowercase path is unfetchable) was uncompilable at @latest as of 2026-08-21 — broken cellbuf transitive pin, and no pipeline-chain API exists |
 | Resilience    | failsafe-go                  | `github.com/failsafe-go/failsafe-go`                                                                                  |
 | YAML          | go-faster/yaml               | `github.com/go-faster/yaml`                                                                                           |
 | JSON          | stdlib v2                    | `encoding/json/v2` (Go 1.25+, experimental: `GOEXPERIMENT=jsonv2`)                                                    |

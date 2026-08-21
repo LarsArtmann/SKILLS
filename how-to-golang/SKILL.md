@@ -104,7 +104,7 @@ These are the most common violations. For the complete list, load [./references/
 | gorm                    | sqlc                            |
 | viper                   | koanf                           |
 | gorilla/mux             | gin                             |
-| pkg/errors              | cockroachdb/errors + uniflow    |
+| pkg/errors              | cockroachdb/errors              |
 | logrus/zerolog          | slog + charm.land/log/v2        |
 | go-playground/validator | govalid                         |
 | yaml.v2/v3              | go-faster/yaml                  |
