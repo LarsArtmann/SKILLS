@@ -56,6 +56,9 @@ repo = os.getcwd()
 FENCE_RE = re.compile(r"^```")
 LINK_RE = re.compile(r"(!?)\[[^\]]*\]\(([^)\s]+)\)")
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.*)$")
+# HTML anchors: <a id="x"> / <a name="x"> (valid jump targets on GitHub)
+ANCHOR_RE = re.compile(r"<a\s+(?:id|name)=[\"']([^\"']+)[\"']", re.IGNORECASE)
+INLINE_CODE_RE = re.compile(r"`[^`]*`")
 # GitHub slugger: keep word chars, spaces, and hyphens; lowercase; spaces -> '-'
 STRIP_RE = re.compile(r"[^\w\s-]", re.UNICODE)
 
@@ -64,35 +67,42 @@ def slugify(text: str) -> str:
     return STRIP_RE.sub("", text.strip().lower()).replace(" ", "-")
 
 
-def headings_of(lines):
-    """Return the set of valid GitHub-style heading anchors (with dup suffixes)."""
-    slugs, counts = set(), {}
+def anchors_of(path):
+    """(visible_lines_with_true_numbers, heading+html anchor set).
+
+    Lines inside fenced code blocks are dropped from link scanning but keep
+    their original line numbers, so failures point at the real file location.
+    """
+    kept, anchors = [], set()
     in_code = False
-    for line in lines:
-        if FENCE_RE.match(line):
-            in_code = not in_code
-            continue
-        if in_code:
-            continue
-        m = HEADING_RE.match(line)
-        if not m:
-            continue
-        slug = slugify(m.group(2))
+    with open(path, encoding="utf-8") as fh:
+        for lineno, line in enumerate(fh.read().splitlines(), 1):
+            if FENCE_RE.match(line):
+                in_code = not in_code
+                continue
+            if in_code:
+                continue
+            kept.append((lineno, line))
+            m = HEADING_RE.match(line)
+            if m:
+                anchors.add(slugify(m.group(2)))
+            for a in ANCHOR_RE.findall(line):
+                anchors.add(a)
+    return kept, anchors
+
+
+def slug_counts(anchors_in_order):
+    """Expand raw slugs with GitHub-style duplicate suffixes (-1, -2, ...)."""
+    out, counts = set(), {}
+    for slug in anchors_in_order:
         n = counts.get(slug, 0)
         counts[slug] = n + 1
-        slugs.add(slug if n == 0 else f"{slug}-{n}")
-    return slugs
-
-
-def strip_fences(lines):
-    out, in_code = [], False
-    for line in lines:
-        if FENCE_RE.match(line):
-            in_code = not in_code
-            continue
-        if not in_code:
-            out.append(line)
+        out.add(slug if n == 0 else f"{slug}-{n}")
     return out
+
+
+def strip_inline_code(line):
+    return INLINE_CODE_RE.sub(" ", line)
 
 
 cache = {}
