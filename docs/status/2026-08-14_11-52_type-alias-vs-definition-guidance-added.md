@@ -147,40 +147,40 @@ and make the project-repo skills superb.
 
 ### Findings
 
-1. **25 skills in project repo, ~30 in `.agents`.** Skills present only in
+1. ~~**25 skills in project repo, ~30 in `.agents`.**~~ done at `6efb022` — lockfile split resolved the composition: 25 own (symlinked) + 5 third-party
    `.agents` (not in project repo): `copywriting`, `find-skills`,
    `frontend-design`, `improve-codebase-architecture`, `skill-creator`. These
    appear to be installed skills that were never added to the project repo.
-2. **6 skills drifted between project repo and `.agents`:**
+2. ~~**6 skills drifted between project repo and `.agents`:**~~ done at `6efb022` — symlinks replaced copies; drift is now impossible
    `code-quality-scan`, `docs-health`, `nix-private-go-repos`, `nix-review`,
    `verify-external-claims`, `website-launch`. In every case, the **project repo
    was ahead** of `.agents` (local commits had not been refreshed to the runtime
    copy).
-3. **No sync script existed.** There was no automated or documented way to keep
+3. ~~**No sync script existed.**~~ done at `b83a729` — script created, then superseded by the symlink model (`6efb022`)
    `.agents` in sync with the project repo.
 
 ### Actions taken
 
-1. **Created `scripts/sync-skills-to-agents.sh`** with three modes:
+1. ~~**Created `scripts/sync-skills-to-agents.sh`** with three modes:~~ done at `b83a729` — script later deleted and replaced by `link-skills-to-agents.sh` (`6efb022`)
    - `--list` — show skills that would be synced
    - `--check` — detect drift, exit 1 if runtime is out of sync
    - default — sync project-repo skills to `.agents` via `rsync -a --delete`
-2. **Ran the sync.** All 25 project-repo skills are now identical to their
+2. ~~**Ran the sync.**~~ done at `b83a729` — moot since symlinks (`6efb022`)
    `.agents` counterparts (verified with `diff -rq`).
-3. **Fixed broken internal links in skill files:**
+3. ~~**Fixed broken internal links in skill files:**~~ done at `b83a729`
    - `docs-health/references/build-guide.md`: 7 links pointed to
      `../../assets/` but templates live in `docs-health/assets/`; corrected to
      `../assets/`
    - `website-launch/references/readme-template.md`: replaced placeholder
      `(url)` with `https://github.com/fsnotify/fsnotify`
-4. **Improved a weak trigger description:**
+4. ~~**Improved a weak trigger description:**~~ done at `b83a729`
    - `html-report-kit/SKILL.md`: removed feature-list language ("Provides...")
      and added explicit trigger phrases ("HTML report", "dashboard",
      " Bauhaus design", etc.)
-5. **Validated all SKILL.md frontmatter** with a Python YAML parser — all 25
+5. ~~**Validated all SKILL.md frontmatter**~~ done at `b83a729` — all 25 skills valid
    skills have valid frontmatter, matching `name:` values, and required
    `description` fields.
-6. **Checked for broken internal links** in skill files, ignoring code blocks —
+6. ~~**Checked for broken internal links**~~ done at `b83a729` — zero broken links after fixes
    after fixes, no broken internal links remain.
 
 ### Remaining quality gaps
@@ -188,6 +188,6 @@ and make the project-repo skills superb.
 | # | Gap                                                                           | Priority |
 | - | ----------------------------------------------------------------------------- | -------- |
 | 1 | `website-launch/SKILL.md` is 797 lines (should be <500)                       | Medium   |
-| 2 | `copywriting`, `find-skills`, `frontend-design`, etc. exist only in `.agents` | Low      |
+| ~~2~~ | ~~`copywriting`, `find-skills`, `frontend-design`, etc. exist only in `.agents`~~ **Won't implement — resolved 15:04: third-party installs with lockfile sources, intentionally outside this repo.** | ~~Low~~      |
 | 3 | Several skills still duplicate the "READ, UNDERSTAND..." footer               | Low      |
 | 4 | No empirical trigger testing in Crush                                         | Medium   |

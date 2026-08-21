@@ -23,16 +23,16 @@
 ## b) PARTIALLY DONE
 
 1. **Code snippets in `performance-tuning.md` are not compile-tested.** The errgroup/semaphore/benchmark snippets are standard idioms, but `AGENTS.md` §10 already warns that `how-to-golang` reference snippets have accuracy issues — this file follows the same (imperfect) pattern. A scratch-module compile check would close it.
-2. **Repo `AGENTS.md` not yet updated for the new reference** (see c): the global memory protocol says update at moment of discovery — I discovered the gap and deferred it instead.
-3. **Session work sits uncommitted** (`M how-to-golang/SKILL.md`, `M references/rules.md`, `?? references/performance-tuning.md`). The auto-commit daemon has not picked it up yet. Only this report gets a manual commit (per status-report skill); the work files await either the daemon or explicit user instruction.
+2. ~~**Repo `AGENTS.md` not yet updated for the new reference** (see c): the global memory protocol says update at moment of discovery — I discovered the gap and deferred it instead.~~ done (docs-health pass 2026-08-21)
+3. ~~**Session work sits uncommitted** (`M how-to-golang/SKILL.md`, `M references/rules.md`, `?? references/performance-tuning.md`). The auto-commit daemon has not picked it up yet. Only this report gets a manual commit (per status-report skill); the work files await either the daemon or explicit user instruction.~~ done at `60c799c`
 
 ## c) NOT STARTED
 
-1. Repo `AGENTS.md` §6: "how-to-golang" row says **9 reference files** — now **10**. Table needs a `performance-tuning.md` row.
-2. Repo `AGENTS.md` §10 external-deps table: newly referenced tools (`benchstat`, `goleak`, `fieldalignment` analyzer, `x/sys/cpu`, `klauspost/compress`, `uber-go/automaxprocs`) are all verified public but absent from the table.
-3. `README.md`: how-to-golang inventory row accuracy unverified after the change.
-4. `docs-health` HARVEST of this report's section (f) into `TODO_LIST.md` / `ROADMAP.md`.
-5. `scripts/link-skills-to-agents.sh --check` — confirm symlink model intact after adding the file (should be a no-op since the dir is symlinked, but unverified).
+1. ~~Repo `AGENTS.md` §6: "how-to-golang" row says **9 reference files** — now **10**. Table needs a `performance-tuning.md` row.~~ done (docs-health pass 2026-08-21)
+2. ~~Repo `AGENTS.md` §10 external-deps table: newly referenced tools (`benchstat`, `goleak`, `fieldalignment` analyzer, `x/sys/cpu`, `klauspost/compress`, `uber-go/automaxprocs`) are all verified public but absent from the table.~~ done (docs-health pass 2026-08-21)
+3. ~~`README.md`: how-to-golang inventory row accuracy unverified after the change.~~ done (README how-to-golang row verified accurate 2026-08-21)
+4. ~~`docs-health` HARVEST of this report's section (f) into `TODO_LIST.md` / `ROADMAP.md`.~~ done (docs-health pass 2026-08-21)
+5. ~~`scripts/link-skills-to-agents.sh --check` — confirm symlink model intact after adding the file (should be a no-op since the dir is symlinked, but unverified).~~ done (link-skills-to-agents.sh --check green (2026-08-21))
 6. Compile-check of the new snippets (see b1).
 
 ## d) TOTALLY FUCKED UP!
@@ -44,7 +44,7 @@
 ## e) WHAT WE SHOULD IMPROVE!
 
 1. **Verify specifics before speaking, not just before writing.** The failure in (d) is a verification-skill gap: the gate fired at encode-time but not at say-time. Candidate rule: any number, issue ID, URL, version, or flag named from memory in an answer gets a check before the sentence ships — or gets hedged as unverified.
-2. **Update repo AGENTS.md at the moment of discovery**, not deferred — the §6 count drift was visible the instant the file was created.
+2. ~~**Update repo AGENTS.md at the moment of discovery**, not deferred — the §6 count drift was visible the instant the file was created.~~ done (docs-health pass 2026-08-21)
 3. **Compile-test code snippets added to `how-to-golang` references** — the repo already carries a known-snippet-accuracy caveat; new content shouldn't extend the debt.
 4. The verification-status table pattern (currently a `verify-external-claims` prescription for SKILL.md bodies) worked well **inside a references/ file** — worth generalizing in `how-to-write-skills.md` so any deep reference carrying external claims gets the same table.
 
@@ -54,13 +54,13 @@ Session-scoped, sorted by impact. 1–7 are direct cleanup of this session; 8+ a
 
 **Direct cleanup (this session's residue):**
 
-1. Update repo `AGENTS.md` §6 — reference count 9→10 + add `performance-tuning.md` row (5 min).
-2. Update repo `AGENTS.md` §10 — add the 6 newly referenced, verified tools (benchstat, goleak, fieldalignment, x/sys/cpu, klauspost/compress, automaxprocs).
+1. ~~Update repo `AGENTS.md` §6 — reference count 9→10 + add `performance-tuning.md` row (5 min).~~ done (docs-health pass 2026-08-21)
+2. ~~Update repo `AGENTS.md` §10 — add the 6 newly referenced, verified tools (benchstat, goleak, fieldalignment, x/sys/cpu, klauspost/compress, automaxprocs).~~ done (docs-health pass 2026-08-21)
 3. Compile-check `performance-tuning.md` snippets in a scratch module; fix anything that doesn't build.
-4. Run `scripts/link-skills-to-agents.sh --check` to confirm runtime symlink integrity.
-5. Verify `README.md` how-to-golang inventory row is still accurate.
-6. Commit the session work (`how-to-golang` changes) if the daemon hasn't when you next look.
-7. Run `docs-health` HARVEST to route this section (f) into `TODO_LIST.md`/`ROADMAP.md` (canonical loop-closer for status reports).
+4. ~~Run `scripts/link-skills-to-agents.sh --check` to confirm runtime symlink integrity.~~ done (link-skills-to-agents.sh --check green (2026-08-21))
+5. ~~Verify `README.md` how-to-golang inventory row is still accurate.~~ done (row accurate — verified 2026-08-21)
+6. ~~Commit the session work (`how-to-golang` changes) if the daemon hasn't when you next look.~~ done at `60c799c`
+7. ~~Run `docs-health` HARVEST to route this section (f) into `TODO_LIST.md`/`ROADMAP.md` (canonical loop-closer for status reports).~~ done (docs-health pass 2026-08-21)
 
 **Content hardening of the new reference:**
 
@@ -74,21 +74,21 @@ Session-scoped, sorted by impact. 1–7 are direct cleanup of this session; 8+ a
 
 13. Add the "verify before you say" rule (e1) to `verify-external-claims` as a chat-time gate, not just encode-time.
 14. Document the verification-status-table-in-references pattern in `how-to-write-skills.md`.
-15. `status-report` skill: consider an explicit `.md` override note is already present — verify it renders correctly (it does, per this file) — no action beyond confirming the override flag protocol worked.
+15. ~~`status-report` skill: consider an explicit `.md` override note is already present — verify it renders correctly (it does, per this file) — no action beyond confirming the override flag protocol worked.~~ done (override protocol confirmed working — this report renders as .md with the flag)
 
 **Observed during the session (repo health, not researched further):**
 
 16. `check-skills.sh` still WARNs `website-launch` SKILL.md at 797 lines (allowlisted) — trim task remains open from prior reports.
 17. `how-to-write-skills.md` still lives at repo root, not a skill dir (AGENTS.md §5.6 open decision, unchanged).
 18. `erraudit` CLI in `go-error-modernization` remains publicly unfindable — re-verify status if it matters this quarter.
-19. `how-to-golang` known snippet-accuracy issues from the 2026-06 audit (gopter signature, json/v2 version, E2E API) — still open, worth a fix sweep now that a snippet-compile habit (item 12) is proposed.
+19. ~~`how-to-golang` known snippet-accuracy issues from the 2026-06 audit (gopter signature, json/v2 version, E2E API) — still open, worth a fix sweep now that a snippet-compile habit (item 12) is proposed.~~ done (fixed 2026-08-04 — predates this report (CHANGELOG))
 20. GOMAXPROCS/knee insight is machine-specific to Lars' PC (32 CPU / knee 20) — if more machines get measured, record the numbers somewhere durable instead of one anecdote row.
 
 ## g) Questions I can NOT figure out myself
 
-1. **Skill granularity:** should performance tuning stay a reference inside `how-to-golang`, or graduate to its own `go-performance-tuning` skill (owning triggers like "profile my service", "why is p99 high", "GC tuning") that don't obviously match how-to-golang's "WHAT to use, not HOW" framing? Your call — both are defensible; splitting adds a trigger surface, keeping it adds depth to an existing skill.
-2. **Format policy:** you asked for this report as `.md`; the skill default is HTML. One-off, or should your status reports default to Markdown permanently (skill change)?
-3. **HARVEST timing:** the status-report skill says run `docs-health` HARVEST after writing if the session continues — you said WAIT. Harvest section (f) into TODO_LIST.md now, or do you want to triage the 20-item list yourself first (some items may not survive your review)?
+1. ~~**Skill granularity:** should performance tuning stay a reference inside `how-to-golang`, or graduate to its own `go-performance-tuning` skill (owning triggers like "profile my service", "why is p99 high", "GC tuning") that don't obviously match how-to-golang's "WHAT to use, not HOW" framing? Your call — both are defensible; splitting adds a trigger surface, keeping it adds depth to an existing skill.~~ done (routed to ROADMAP Open Questions — granularity is a user decision)
+2. ~~**Format policy:** you asked for this report as `.md`; the skill default is HTML. One-off, or should your status reports default to Markdown permanently (skill change)?~~ done (routed to ROADMAP Open Questions — format default is a user decision)
+3. ~~**HARVEST timing:** the status-report skill says run `docs-health` HARVEST after writing if the session continues — you said WAIT. Harvest section (f) into TODO_LIST.md now, or do you want to triage the 20-item list yourself first (some items may not survive your review)?~~ done (harvested 2026-08-21 on user instruction)
 
 ---
 

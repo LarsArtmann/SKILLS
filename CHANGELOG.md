@@ -23,8 +23,9 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 - `ROADMAP.md` refreshed: resolved raw ideas pruned (TOC guard, check-agents-md,
   legacy snippet fixes), new themes (snippet discipline, go-release depth),
   10 open questions routed from reports' g-sections
-- `docs/status/archived/` — reports with every numbered item resolved are now
-  archived there
+- Archive verdict: **no 2026-08-1x report qualified** — every one retains
+  verified-open items (all now tracked in `TODO_LIST.md`/`ROADMAP.md`), so none
+  was moved to an `archived/` directory
 
 ### Changed (2026-08-21 — docs-health full audit, this session)
 

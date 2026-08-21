@@ -29,9 +29,9 @@
 ## b) PARTIALLY DONE
 
 1. **Verified the model end-to-end except the CLI itself.** Symlink resolution, Crush registration, instant auto-sync, and lockfile contents are all verified. NOT verified: what `skills ls`/`skills update -g` now actually report/do against the 5-entry lockfile (`bunx` not on my shell PATH; did not retry via `npx`). High confidence from source reading, zero empirical confirmation.
-2. **AGENTS.md §5.10 documents the model but not the special cases.** `~/.config/crush/skills/` contains three one-off entries that don't fit the documented model: `font-design` → `/home/lars/projects/DiscordSync/.crush/skills/font-design`, `go-cqrs-lite` → a nix store path, `templ-components` → a real directory. Undocumented; a future cleanup session could mistake them for drift.
-3. **The previous report (14:22) is now partially obsolete and not annotated.** Its task list still contains sync-script work items that this session deleted (its f2, f3, f4, f13, f22, f23, f25) and its "bring orphans into the repo" items (f5, f6) that are now resolved as wrong-premise. ANNOTATE mode was not run.
-4. **README.md not updated.** The repo README still describes whatever install/sync story it had; the new symlink model and link script are documented only in AGENTS.md. (This was already open task f2 in the previous report — now the task's subject changed but the gap remains.)
+2. ~~**AGENTS.md §5.10 documents the model but not the special cases.** `~/.config/crush/skills/` contains three one-off entries that don't fit the documented model: `font-design` → `/home/lars/projects/DiscordSync/.crush/skills/font-design`, `go-cqrs-lite` → a nix store path, `templ-components` → a real directory. Undocumented; a future cleanup session could mistake them for drift.~~ done (docs-health pass 2026-08-21)
+3. ~~**The previous report (14:22) is now partially obsolete and not annotated.** Its task list still contains sync-script work items that this session deleted (its f2, f3, f4, f13, f22, f23, f25) and its "bring orphans into the repo" items (f5, f6) that are now resolved as wrong-premise. ANNOTATE mode was not run.~~ done (docs-health pass 2026-08-21)
+4. ~~**README.md not updated.** The repo README still describes whatever install/sync story it had; the new symlink model and link script are documented only in AGENTS.md. (This was already open task f2 in the previous report — now the task's subject changed but the gap remains.)~~ **Won't implement — README targets external installs; the machine-local model lives in AGENTS.md 5.10 — deliberate.**
 
 ---
 
@@ -39,12 +39,12 @@
 
 1. **Empirical `skills update -g` run** to confirm it offers updates only for the 5 third-party skills and never touches the 25 symlinks.
 2. **`skills ls -g` verification** that the CLI's view of "installed" now matches the 5-entry lockfile.
-3. **ANNOTATE of the 14:22 report** (see b3).
-4. **README.md update** (see b4).
+3. ~~**ANNOTATE of the 14:22 report** (see b3).~~ done (docs-health pass 2026-08-21)
+4. ~~**README.md update** (see b4).~~ **Won't implement — README targets external installs — deliberate scope.**
 5. **Pre-commit or CI enforcement of link state** (`link-skills-to-agents.sh --check`). Previous report's f4-equivalent, still open, subject changed.
 6. **`--force` recovery path tested** — documented but never exercised on a scratch case.
 7. **Backup disposal** — both `~/.agents/.backup-skills-20260814/` (25 full skill copies) and the lockfile `.bak` still exist; no decision taken on retention.
-8. **docs-health HARVEST from this report** into TODO_LIST.md — intentionally not run; user instructed report-then-wait.
+8. ~~**docs-health HARVEST from this report** into TODO_LIST.md — intentionally not run; user instructed report-then-wait.~~ done (docs-health pass 2026-08-21)
 9. **Link script `--help` smoke test** (its help prints header lines 2-14 via sed — untested).
 
 ---
@@ -64,8 +64,8 @@
 1. **State-file surgery should prefer the owning tool.** For any lockfile/manifest owned by a CLI (skills, npm, cargo, go.sum), use the tool's commands or at minimum re-validate with the tool immediately after (`skills ls`) — not just a JSON parse.
 2. **Ask the directional question before recommending architecture changes.** "Who owns which copy" is a business decision, not an inference. My symlink recommendation was right, but the orphan-skills premise inside it was wrong and only the user's correction caught it.
 3. **Empirical check belongs in the same session as the change.** The entire hybrid model rests on source-reading of the skills CLI (v1.5.22 today). One `skills ls -g` + one `skills update -g` run would have converted "high confidence" into "verified". `bunx` missing from PATH was treated as a blocker instead of trying `npx` or asking the user to run one command.
-4. **Self-referential reports go stale instantly — annotate immediately.** The 14:22 report is now wrong in specific, enumerable ways; every hour unannotated is a window for a future session to act on obsolete tasks (exactly the failure mode ANNOTATE exists for).
-5. **Document one-off exceptions when writing a canonical model.** §5.10 now says "the runtime dir holds symlinks per repo skill + real dirs for third-party" — true, but three crush-level oddballs (font-design, go-cqrs-lite, templ-components) violate the pattern silently. A model with undocumented exceptions is a model that generates false alarms later.
+4. ~~**Self-referential reports go stale instantly — annotate immediately.** The 14:22 report is now wrong in specific, enumerable ways; every hour unannotated is a window for a future session to act on obsolete tasks (exactly the failure mode ANNOTATE exists for).~~ done (docs-health pass 2026-08-21)
+5. ~~**Document one-off exceptions when writing a canonical model.** §5.10 now says "the runtime dir holds symlinks per repo skill + real dirs for third-party" — true, but three crush-level oddballs (font-design, go-cqrs-lite, templ-components) violate the pattern silently. A model with undocumented exceptions is a model that generates false alarms later.~~ done (docs-health pass 2026-08-21)
 
 ---
 
@@ -75,14 +75,14 @@
 | -- | ---------------------------------------------------------------------------------------------------------- | ------ | ------ |
 | 1  | Run `skills ls -g` — verify CLI sees only the 5 third-party skills as tracked                              | High   | Low    |
 | 2  | Run `skills update -g` once — verify only third-party offered, symlinks untouched                          | High   | Low    |
-| 3  | ANNOTATE 14:22 report: mark obsolete items (its f1-f6 sync tasks, f13, f22-f25) done-at or NOT-DO          | High   | Low    |
-| 4  | Update README.md: symlink model, link script usage, third-party policy                                     | High   | Low    |
+| ~~3~~  | ~~ANNOTATE 14:22 report: mark obsolete items (its f1-f6 sync tasks, f13, f22-f25) done-at or NOT-DO~~ done (docs-health pass 2026-08-21) | ~~High~~ | ~~Low~~ |
+| ~~4~~  | ~~Update README.md: symlink model, link script usage, third-party policy~~ **Won't implement — README targets external installs — deliberate scope.** | ~~High~~ | ~~Low~~ |
 | 5  | Test `link-skills-to-agents.sh --force` on a scratch skill to prove the recovery path                      | High   | Low    |
 | 6  | Verify what `skills remove --all` / future CLI cleanup would do to untracked symlinked skills              | High   | Medium |
-| 7  | Document the three one-off crush skills (font-design, go-cqrs-lite, templ-components) in AGENTS.md §5.10   | Medium | Low    |
+| ~~7~~  | ~~Document the three one-off crush skills (font-design, go-cqrs-lite, templ-components) in AGENTS.md §5.10~~ done (docs-health pass 2026-08-21) | ~~Medium~~ | ~~Low~~ |
 | 8  | Decide + execute backup disposal (`~/.agents/.backup-skills-20260814/`, lockfile `.bak`)                   | Medium | Low    |
 | 9  | Add pre-commit hook: `link-skills-to-agents.sh --check`                                                    | Medium | Low    |
-| 10 | docs-health HARVEST this report's section (f) into TODO_LIST.md                                            | Medium | Low    |
+| ~~10~~ | ~~docs-health HARVEST this report's section (f) into TODO_LIST.md~~ done (docs-health pass 2026-08-21) | ~~Medium~~ | ~~Low~~ |
 | 11 | Smoke-test `link-skills-to-agents.sh --help` (sed line range correctness)                                  | Low    | Low    |
 | 12 | Document `AGENTS_DIR` env override in link script header (it's supported but only in code)                 | Low    | Low    |
 | 13 | Consider a guard note/wrapper against `skills add larsartmann/SKILLS` nuking symlinks (beyond AGENTS.md)   | Medium | Low    |
@@ -90,9 +90,9 @@
 | 15 | Pin/record skills CLI version whose behavior this model depends on (currently 1.5.22)                      | Medium | Low    |
 | 16 | Trim `website-launch/SKILL.md` below 500 lines (pre-existing; only over-limit skill)                       | Medium | High   |
 | 17 | Carry-over from 14:22 report: alias-vs-definition entries in `how-to-golang` (its f8-f11)                  | High   | Low    |
-| 18 | Carry-over: run `scripts/sync-html-kit.sh --check` for vendored kit drift (its f13)                        | Medium | Low    |
+| ~~18~~ | ~~Carry-over: run `scripts/sync-html-kit.sh --check` for vendored kit drift (its f13)~~ done (sync-html-kit.sh --check green (2026-08-21)) | ~~Medium~~ | ~~Low~~ |
 | 19 | Carry-over: CI-grade link checker script `check-skill-links.sh` (its f12)                                  | High   | Medium |
-| 20 | Carry-over: manually review all 25 SKILL.md trigger descriptions (its f14)                                 | Medium | Medium |
+| ~~20~~ | ~~Carry-over: manually review all 25 SKILL.md trigger descriptions (its f14)~~ done (all 25 descriptions rewritten trigger-first 2026-08-11 and validated 2026-08-14) | ~~Medium~~ | ~~Medium~~ |
 | 21 | Carry-over: verify Go snippets in how-to-golang / go-error-modernization compile (its f15-f17)             | High   | Medium |
 | 22 | Carry-over: `skill-quality-check.sh` combining frontmatter + links + line counts (its f18)                 | High   | Medium |
 | 23 | Carry-over: empirical trigger tests for top skills (its f19)                                               | Medium | High   |
@@ -108,11 +108,11 @@
 
 ## g) Questions I Cannot Answer Myself
 
-1. **Backup retention:** `~/.agents/.backup-skills-20260814/` (25 full skill copies) and `.skill-lock.json.bak-20260814` — trash now that links are verified, or keep for N days? Deletion is irreversible, so it's your call.
+1. ~~**Backup retention:** `~/.agents/.backup-skills-20260814/` (25 full skill copies) and `.skill-lock.json.bak-20260814` — trash now that links are verified, or keep for N days? Deletion is irreversible, so it's your call.~~ done (routed to ROADMAP Open Questions — backup retention is a user decision)
 
-2. **Third-party policy long-term:** Should the 5 third-party skills stay upstream-managed forever (`skills update -g` manual), or do you want any of them eventually vendored/forked into this repo (e.g. if you start customizing `skill-creator` or `copywriting`)? This decides whether edits to them are ever legitimate.
+2. ~~**Third-party policy long-term:** Should the 5 third-party skills stay upstream-managed forever (`skills update -g` manual), or do you want any of them eventually vendored/forked into this repo (e.g. if you start customizing `skill-creator` or `copywriting`)? This decides whether edits to them are ever legitimate.~~ done (routed to ROADMAP Open Questions — third-party policy is a user decision)
 
-3. **Enforcement level:** Is `link-skills-to-agents.sh --check` as a manual/CI command enough, or do you want a pre-commit hook (and a minimal GitHub Action, since this repo currently has none) that fails when link state drifts or `check-skills.sh` fails?
+3. ~~**Enforcement level:** Is `link-skills-to-agents.sh --check` as a manual/CI command enough, or do you want a pre-commit hook (and a minimal GitHub Action, since this repo currently has none) that fails when link state drifts or `check-skills.sh` fails?~~ done (routed to ROADMAP Open Questions — enforcement level is a user decision)
 
 ---
 

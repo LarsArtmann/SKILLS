@@ -35,9 +35,9 @@
 
 2. **Only one weak description was fixed.** The automated check flagged only `html-report-kit`, but manual review of the other 24 descriptions might reveal more that are feature-list-like or missing trigger phrases.
 
-3. **The sync script is operational but not integrated.** It exists and works, but it is not yet referenced from `AGENTS.md`, `README.md`, or any CI/pre-commit hook. An agent or user has to know it exists.
+3. ~~**The sync script is operational but not integrated.** It exists and works, but it is not yet referenced from `AGENTS.md`, `README.md`, or any CI/pre-commit hook. An agent or user has to know it exists.~~ done at `6efb022 — superseded by the link manager`, ` documented in AGENTS.md 5.10`
 
-4. **Orphan skills in `.agents` were identified but not added to the project repo.** They are outside the canonical source and could be lost on a fresh install.
+4. ~~**Orphan skills in `.agents` were identified but not added to the project repo.** They are outside the canonical source and could be lost on a fresh install.~~ done at `6efb022 — resolved 15:04 as wrong premise`
 
 5. **The `website-launch` over-length issue was noted but not fixed.** It's 797 lines; the `check-skills.sh` allowlist hides this. Trimming it would require moving content to `references/`, which is non-trivial.
 
@@ -45,8 +45,8 @@
 
 ## c) NOT STARTED
 
-1. **Did not add the orphan `.agents` skills to the project repo.** `copywriting`, `find-skills`, `frontend-design`, `improve-codebase-architecture`, `skill-creator` are not under version control in `/home/lars/projects/SKILLS/`.
-2. **Did not document the sync workflow in `AGENTS.md` or `README.md`.**
+1. ~~**Did not add the orphan `.agents` skills to the project repo.** `copywriting`, `find-skills`, `frontend-design`, `improve-codebase-architecture`, `skill-creator` are not under version control in `/home/lars/projects/SKILLS/`.~~ **Won't implement — wrong premise — third-party installs tracked by the skills CLI lockfile; never belonged in this repo (resolved 15:04).**
+2. ~~**Did not document the sync workflow in `AGENTS.md` or `README.md`.**~~ done at `6efb022`
 3. **Did not add the sync script to CI or pre-commit hooks.** There's no automated enforcement that `.agents` stays in sync.
 4. **Did not run empirical skill tests in Crush.** We have no evidence that any skill's description triggers correctly for its intended tasks.
 5. **Did not verify code snippets compile.** Many skills contain Go examples; only the alias-vs-definition section was partially verified by reading the httputil code.
@@ -55,27 +55,27 @@
 8. **Did not cross-reference `go-error-modernization`** from the alias-vs-definition section.
 9. **Did not fix the `DOMAIN_LANGUAGE.md` lie in httputil** (calls a type definition an "alias").
 10. **Did not trim `website-launch/SKILL.md` below 500 lines.**
-11. **Did not check whether the vendored `html-report-kit` assets in consumer skills are in sync** after the description change. The `sync-html-kit.sh` script should be run.
-12. **Did not verify the new sync script is portable.** It hardcodes `/home/lars/projects/SKILLS` and `/home/lars/.agents/skills`.
-13. **Did not add `--help` output test or any tests for `scripts/sync-skills-to-agents.sh`.**
-14. **Did not check whether other project files (e.g. `AGENTS.md`) reference the old `.config/crush/skills` path in a way that should now point to the sync script.**
-15. **Did not run `dprint` or any markdown formatter** on the edited files.
+11. ~~**Did not check whether the vendored `html-report-kit` assets in consumer skills are in sync** after the description change. The `sync-html-kit.sh` script should be run.~~ done (sync-html-kit.sh --check green (verified 2026-08-21))
+12. ~~**Did not verify the new sync script is portable.** It hardcodes `/home/lars/projects/SKILLS` and `/home/lars/.agents/skills`.~~ **Won't implement — script deleted 15:04 — replaced by link-skills-to-agents.sh.**
+13. ~~**Did not add `--help` output test or any tests for `scripts/sync-skills-to-agents.sh`.**~~ **Won't implement — script deleted 15:04.**
+14. ~~**Did not check whether other project files (e.g. `AGENTS.md`) reference the old `.config/crush/skills` path in a way that should now point to the sync script.**~~ done at `6efb022`
+15. ~~**Did not run `dprint` or any markdown formatter** on the edited files.~~ done at `de15154`, `1f181ab`
 
 ---
 
 ## d) TOTALLY FUCKED UP
 
-1. **I edited the wrong copy first.** In the earlier part of this session I changed `how-to-golang/references/domain-types.md` under `~/.config/crush/skills/` (which resolves to `.agents/`) instead of the canonical project repo. I eventually caught it and synced back, but this should never have happened. The project repo is the source of truth; runtime copies are read-only.
+1. ~~**I edited the wrong copy first.** In the earlier part of this session I changed `how-to-golang/references/domain-types.md` under `~/.config/crush/skills/` (which resolves to `.agents/`) instead of the canonical project repo. I eventually caught it and synced back, but this should never have happened. The project repo is the source of truth; runtime copies are read-only.~~ done (docs-health pass 2026-08-21)
 
-2. **The link checker I wrote had bugs.** My first iteration reported many false positives because it did not ignore fenced code blocks. If I had trusted it blindly, I would have "fixed" valid Go code snippets in `go-error-modernization`, `how-to-golang`, and `samber-do-best-practices`. I caught this and rewrote the checker, but it wasted time and could have introduced errors.
+2. ~~**The link checker I wrote had bugs.** My first iteration reported many false positives because it did not ignore fenced code blocks. If I had trusted it blindly, I would have "fixed" valid Go code snippets in `go-error-modernization`, `how-to-golang`, and `samber-do-best-practices`. I caught this and rewrote the checker, but it wasted time and could have introduced errors.~~ done at `b83a729`
 
-3. **The sync script is naïve about orphans.** It only syncs skills that exist in the project repo. Skills that exist only in `.agents` (`copywriting`, `find-skills`, etc.) are silently ignored. This is correct for a one-way sync, but it means those skills have no canonical backup and could be lost.
+3. ~~**The sync script is naïve about orphans.** It only syncs skills that exist in the project repo. Skills that exist only in `.agents` (`copywriting`, `find-skills`, etc.) are silently ignored. This is correct for a one-way sync, but it means those skills have no canonical backup and could be lost.~~ **Won't implement — script deleted — the symlink model has no copying at all.**
 
-4. **I left the previous status report in a partially-updated state.** After adding the corpus-comparison section to `docs/status/2026-08-14_11-52_type-alias-vs-definition-guidance-added.md`, I did not re-read the whole report end-to-end for consistency. Some earlier sections may now contradict the later ones (e.g., task numbering, claims about what was "not started").
+4. ~~**I left the previous status report in a partially-updated state.** After adding the corpus-comparison section to `docs/status/2026-08-14_11-52_type-alias-vs-definition-guidance-added.md`, I did not re-read the whole report end-to-end for consistency. Some earlier sections may now contradict the later ones (e.g., task numbering, claims about what was "not started").~~ done (docs-health pass 2026-08-21)
 
-5. **No rollback plan.** If the `rsync --delete` in the sync script runs and `.agents` has newer local edits someone cares about, they are gone. The script has no dry-run-by-default, no backup, and no `--force` flag.
+5. ~~**No rollback plan.** If the `rsync --delete` in the sync script runs and `.agents` has newer local edits someone cares about, they are gone. The script has no dry-run-by-default, no backup, and no `--force` flag.~~ **Won't implement — moot — destructive sync no longer exists.**
 
-6. **I did not ask whether `.agents` should be the source or the sink.** I assumed project repo → `.agents`. If the user intended the opposite for some skills (e.g., the orphans), my sync may have been the wrong direction.
+6. ~~**I did not ask whether `.agents` should be the source or the sink.** I assumed project repo → `.agents`. If the user intended the opposite for some skills (e.g., the orphans), my sync may have been the wrong direction.~~ done at `6efb022 — user decided: own auto`, ` third-party manual`
 
 ---
 
@@ -83,11 +83,11 @@
 
 1. **Define and enforce "superb" as a checkable quality gate.** Currently it's subjective. A `scripts/skill-quality-check.sh` could verify: frontmatter, line counts, broken links, trigger-description heuristics, and cross-reference freshness.
 
-2. **Document the source-of-truth rule.** Add a section to `AGENTS.md` stating that `/home/lars/projects/SKILLS/` is canonical, `.agents` is a runtime copy, and edits must be made in the repo followed by `scripts/sync-skills-to-agents.sh`.
+2. ~~**Document the source-of-truth rule.** Add a section to `AGENTS.md` stating that `/home/lars/projects/SKILLS/` is canonical, `.agents` is a runtime copy, and edits must be made in the repo followed by `scripts/sync-skills-to-agents.sh`.~~ done at `6efb022`
 
-3. **Integrate the sync script.** Add it to pre-commit, CI, or at least `README.md` so it doesn't become another hidden piece of lore.
+3. ~~**Integrate the sync script.** Add it to pre-commit, CI, or at least `README.md` so it doesn't become another hidden piece of lore.~~ done at `6efb022`
 
-4. **Bring orphan skills into the repo.** `copywriting`, `find-skills`, `frontend-design`, `improve-codebase-architecture`, and `skill-creator` should be in the project repo or explicitly removed from `.agents`.
+4. ~~**Bring orphan skills into the repo.** `copywriting`, `find-skills`, `frontend-design`, `improve-codebase-architecture`, and `skill-creator` should be in the project repo or explicitly removed from `.agents`.~~ **Won't implement — wrong premise — third-party, stay out.**
 
 5. **Trim `website-launch`.** At 797 lines it's the only over-limit skill. Move reference-level detail out of `SKILL.md`.
 
@@ -95,7 +95,7 @@
 
 7. **Add a link-checker to CI.** The current check was ad-hoc Python; it should be a script that fails CI on broken links.
 
-8. **Make the sync script safer.** Add `--dry-run`, require `--force` for destructive sync, and back up `.agents` before deleting.
+8. ~~**Make the sync script safer.** Add `--dry-run`, require `--force` for destructive sync, and back up `.agents` before deleting.~~ **Won't implement — script deleted — moot.**
 
 9. **Run `sync-html-kit.sh --check` in CI.** Consumer skills vendor the HTML report kit; it's easy for copies to drift.
 
@@ -107,20 +107,20 @@
 
 | #  | Task                                                                                               | Impact | Effort |
 | -- | -------------------------------------------------------------------------------------------------- | ------ | ------ |
-| 1  | Add the `.agents`/repo source-of-truth rule to `AGENTS.md`                                         | High   | Low    |
-| 2  | Reference `scripts/sync-skills-to-agents.sh` in `README.md`                                        | High   | Low    |
-| 3  | Add `--dry-run` and `--force` flags to `scripts/sync-skills-to-agents.sh`                          | High   | Low    |
+| ~~1~~  | ~~Add the `.agents`/repo source-of-truth rule to `AGENTS.md`~~ done at `6efb022` | ~~High~~ | ~~Low~~ |
+| ~~2~~  | ~~Reference `scripts/sync-skills-to-agents.sh` in `README.md`~~ **Won't implement — superseded — README targets external installs; machine-local runtime documented in AGENTS.md 5.10.** | ~~High~~ | ~~Low~~ |
+| ~~3~~  | ~~Add `--dry-run` and `--force` flags to `scripts/sync-skills-to-agents.sh`~~ **Won't implement — script deleted — replacement ships --force and a non-destructive default.** | ~~High~~ | ~~Low~~ |
 | 4  | Add pre-commit hook that runs `sync-skills-to-agents.sh --check`                                   | Medium | Low    |
-| 5  | Bring orphan `.agents` skills (`copywriting`, `find-skills`, etc.) into the project repo           | High   | Medium |
-| 6  | Decide whether to delete orphan skills from `.agents` if they are not repo-worthy                  | Medium | Low    |
+| ~~5~~  | ~~Bring orphan `.agents` skills (`copywriting`, `find-skills`, etc.) into the project repo~~ **Won't implement — wrong premise — third-party installs, stay out (resolved 15:04).** | ~~High~~ | ~~Medium~~ |
+| ~~6~~  | ~~Decide whether to delete orphan skills from `.agents` if they are not repo-worthy~~ **Won't implement — managed third-party installs — kept, never deleted.** | ~~Medium~~ | ~~Low~~ |
 | 7  | Trim `website-launch/SKILL.md` to <500 lines by moving detail to `references/`                     | Medium | High   |
 | 8  | Add alias-vs-definition decision tree entry to `how-to-golang/SKILL.md`                            | High   | Low    |
 | 9  | Add trigger phrases to `how-to-golang/SKILL.md` description                                        | High   | Low    |
 | 10 | Cross-reference `go-error-modernization` from the alias-vs-definition section                      | Medium | Low    |
 | 11 | Fix the type-alias mislabel in httputil `DOMAIN_LANGUAGE.md`                                       | Medium | Low    |
 | 12 | Create `scripts/check-skill-links.sh` for CI-grade broken-link detection                           | High   | Medium |
-| 13 | Run `scripts/sync-html-kit.sh --check` and fix any drift                                           | Medium | Low    |
-| 14 | Manually review all 25 SKILL.md descriptions for trigger quality                                   | Medium | Medium |
+| ~~13~~ | ~~Run `scripts/sync-html-kit.sh --check` and fix any drift~~ done (sync-html-kit.sh --check green (2026-08-21)) | ~~Medium~~ | ~~Low~~ |
+| ~~14~~ | ~~Manually review all 25 SKILL.md descriptions for trigger quality~~ done (all 25 descriptions rewritten trigger-first 2026-08-11 and validated 2026-08-14) | ~~Medium~~ | ~~Medium~~ |
 | 15 | Verify Go code snippets in `how-to-golang` references compile                                      | High   | Medium |
 | 16 | Verify Go code snippets in `go-error-modernization` references compile                             | High   | Medium |
 | 17 | Verify Go code snippets in `samber-do-best-practices` references compile                           | Medium | Medium |
@@ -133,7 +133,7 @@
 | 24 | Add CI workflow step for `scripts/check-skills.sh`                                                 | Medium | Low    |
 | 25 | Add CI workflow step for `scripts/sync-skills-to-agents.sh --check`                                | Medium | Low    |
 | 26 | Review `status-report` skill for overlap with `docs-health`                                        | Low    | Medium |
-| 27 | Review `verify-external-claims` / `verify-before-filing` pair for consistency                      | Low    | Medium |
+| ~~27~~ | ~~Review `verify-external-claims` / `verify-before-filing` pair for consistency~~ done (e50929d clarified directions before this report; AGENTS.md 5.5 refreshed 2026-08-21) | ~~Low~~ | ~~Medium~~ |
 | 28 | Check whether `go-release` references are up to date with latest GoReleaser/GitHub features        | Low    | Medium |
 | 29 | Audit `nix-review` for any Nix language changes since it was written                               | Low    | Medium |
 | 30 | Audit `website-launch` dependency versions (Firebase, Astro, Starlight, Tailwind)                  | Low    | Medium |
@@ -142,8 +142,8 @@
 | 33 | Add line-count warning to `check-skills.sh` for reference files that are >300 lines without ToC    | Low    | Low    |
 | 34 | Verify `architecture-visualization` D2 examples still render with current `d2` CLI                 | Low    | Medium |
 | 35 | Check `deduplicate-code` `art-dupl` references for accuracy                                        | Low    | Medium |
-| 36 | Check `code-quality-scan` tool guidance for stale commands                                         | Low    | Medium |
-| 37 | Review `full-code-review` for duplicated pareto-planning content                                   | Low    | Medium |
+| ~~36~~ | ~~Check `code-quality-scan` tool guidance for stale commands~~ done (tool-guidance.md matrix refreshed 2026-08-04) | ~~Low~~ | ~~Medium~~ |
+| ~~37~~ | ~~Review `full-code-review` for duplicated pareto-planning content~~ done (delegation completed 2026-08-04 — predates this report) | ~~Low~~ | ~~Medium~~ |
 | 38 | Ensure every skill with HTML output references the vendored `html-report-kit`                      | Low    | Low    |
 | 39 | Add a skill inventory JSON or machine-readable index                                               | Low    | Medium |
 | 40 | Create a test fixture skill for validating the skill format itself                                 | Low    | Medium |
@@ -152,8 +152,8 @@
 
 ## g) Questions I Cannot Answer Myself
 
-1. **What is the intended direction of truth for the five orphan skills** (`copywriting`, `find-skills`, `frontend-design`, `improve-codebase-architecture`, `skill-creator`)? Are they custom skills that should be added to `/home/lars/projects/SKILLS/`, or are they installed from external sources and intentionally kept out of this repo?
+1. ~~**What is the intended direction of truth for the five orphan skills** (`copywriting`, `find-skills`, `frontend-design`, `improve-codebase-architecture`, `skill-creator`)? Are they custom skills that should be added to `/home/lars/projects/SKILLS/`, or are they installed from external sources and intentionally kept out of this repo?~~ done (answered 15:04 — third-party installs, stay out of the repo)
 
-2. **Should the sync script be destructive by default?** I used `rsync -a --delete` so that removing a skill from the project repo also removes it from `.agents`. This is correct for one-way canonical sync, but it risks deleting skills that exist only in `.agents` if they are later added to the repo list. Should the script instead refuse to delete unless `--prune` is passed?
+2. ~~**Should the sync script be destructive by default?** I used `rsync -a --delete` so that removing a skill from the project repo also removes it from `.agents`. This is correct for one-way canonical sync, but it risks deleting skills that exist only in `.agents` if they are later added to the repo list. Should the script instead refuse to delete unless `--prune` is passed?~~ done (moot — sync script deleted 15:04)
 
-3. **What does "superb" mean for you beyond the checks I ran?** I validated structure, links, frontmatter, line counts, and trigger descriptions. Are there specific dimensions (e.g., every code example compiles, every skill tested in Crush, every reference <300 lines with ToC) that should be gates before calling a skill superb?
+3. ~~**What does "superb" mean for you beyond the checks I ran?** I validated structure, links, frontmatter, line counts, and trigger descriptions. Are there specific dimensions (e.g., every code example compiles, every skill tested in Crush, every reference <300 lines with ToC) that should be gates before calling a skill superb?~~ done (routed to ROADMAP theme 2 (quality gates) — enforcement level still open)

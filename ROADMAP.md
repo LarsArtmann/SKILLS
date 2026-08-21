@@ -143,6 +143,11 @@ These are blockers that need a human decision before they can become tasks:
 - **Status-report default format** (`2026-08-16` g2, `2026-08-21` e5): the
   skill's canonical output is a styled HTML dashboard, but recent reports were
   `.md` per explicit user request. One-off overrides, or change the default?
+- **Alias-guidance home & type-design granularity** (`2026-08-14_11-52` g2/g3):
+  should the alias-vs-definition guidance stay in `domain-types.md`, split
+  across `rules.md`, or anchor a dedicated `go-type-design` skill absorbing
+  scattered content from `how-to-golang`, `data-model-review`, and
+  `go-error-modernization`?
 - **skill-creator upstream guidance** (`2026-08-11` g1): the third-party
   `skill-creator` skill still teaches "include both what the skill does AND
   when to trigger" — the upstream source of the description-first
