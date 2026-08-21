@@ -22,6 +22,10 @@
 #        ## heading accounted for in the TOC (AGENTS.md §5.4 thin-skills).
 #    10. Marker-vocabulary guard: docs-health ANNOTATE/HARVEST must share the
 #        resolution-marker vocabulary (done at, Won't implement, NOT-DO).
+#    11. Trigger-first guard: every description must open with trigger
+#        context. Hard-fails the pre-2026-08-11 style ("Reviews...",
+#        "Generates...") and any opening sentence with no trigger word;
+#        warns on valid-but-non-canonical openings (AGENTS.md §3.1).
 #
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
@@ -120,6 +124,50 @@ for d in "${skill_dirs[@]}"; do
 	if [[ -n "$desc_len" ]] && [[ "$desc_len" -gt 1024 ]]; then
 		echo "FAIL $skill: description is $desc_len chars (limit 1024) — Crush will refuse to load this skill"
 		failed=1
+	fi
+	# Check 6: trigger-first guard — description must open with trigger context
+	# (AGENTS.md §3.1). The 2026-08-11 migration rewrote 18 description-first
+	# skills because "Reviews X" describes the skill instead of telling the
+	# agent WHEN to use it, and such skills never activate. Strictness (per
+	# 08-11 report g2): hard-fail the known 3rd-person-verb anti-pattern and
+	# any trigger-less opening; accept-but-warn other phrasings so future
+	# valid openings are not blocked. If a new style is adopted on purpose,
+	# extend the patterns below — do not silence the guard.
+	desc_text=$(awk '
+    BEGIN { block=0; done=0; desc="" }
+    !done && /^description:[[:space:]]*[>|]/ {
+      line=$0; sub(/^description:[[:space:]]*[>|]-?[[:space:]]*/, "", line)
+      desc=line; block=1; next
+    }
+    !done && /^description:/ {
+      line=$0; sub(/^description:[[:space:]]*/, "", line)
+      sub(/[[:space:]]+$/, "", line)
+      desc=line; done=1; next
+    }
+    block && !done {
+      if ($0 !~ /^[[:space:]]/) { done=1; next }
+      line=$0; sub(/^[[:space:]]+/, "", line)
+      sub(/[[:space:]]+$/, "", line)
+      if (desc != "") desc = desc " " line; else desc = line
+    }
+    END { print desc }
+  ' "$f")
+	first_sentence="${desc_text%%.*}"
+	first_sentence="${first_sentence#"${first_sentence%%[![:space:]]*}"}"
+	[[ ${#first_sentence} -gt 200 ]] && first_sentence="${first_sentence:0:200}"
+	anti_re='^(Reviews|Generates|Creates|Implements|Performs|Runs|Triggers|Finds|Launches|Audits|Scans|Builds|Produces|Provides|Converts|Analyzes|Validates|Maintains|Updates|Writes|Migrates|Renames|Refactors|Splits|Merges|Displays|Shows|Lists|Reads|Parses|Fetches|Downloads|Installs|Configures|Helps|Allows|Enables)[[:space:]]'
+	if [[ -z "$desc_text" ]]; then
+		: # missing description already flagged by check 3
+	elif [[ "$desc_text" == "Use "* ]]; then
+		: # canonical trigger-first opening (all current skills)
+	elif [[ "$first_sentence" =~ $anti_re ]]; then
+		echo "FAIL $skill: description opens with a 3rd-person verb ('$first_sentence...') — rewrite to open with trigger context, 'Use when...' (AGENTS.md §3.1)"
+		failed=1
+	elif [[ ! "$first_sentence" =~ ([Ww]hen|before|after|while|during|whenever|any[[:space:]]time|anytime) ]]; then
+		echo "FAIL $skill: description opening has no trigger context (no when/before/after/... in first sentence) — say WHEN the skill applies, not what it is (AGENTS.md §3.1)"
+		failed=1
+	else
+		echo "WARN $skill: description carries trigger context but does not open with the canonical 'Use ...' form — consider aligning (AGENTS.md §3.1)"
 	fi
 done
 

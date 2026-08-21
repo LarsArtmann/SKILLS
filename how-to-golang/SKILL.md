@@ -1,6 +1,6 @@
 ---
 name: how-to-golang
-description: Use this skill when writing Go code, choosing Go libraries, setting up a Go project, reviewing Go dependencies, or when the user asks about Go best practices, Go library choices, banned Go libraries, Go architecture patterns, Go project structure, Go domain types, Go DI patterns, Go testing strategy, Go security, Go performance, or says "how to golang", "go policy", "go stack", "go libraries", "go architecture", "go code style", "go rules", "go testing", "go security", or any Go development question. Also use when reviewing go.mod for banned dependencies or choosing between Go libraries for any category. A decision guide for WHAT to use, not HOW.
+description: Use this skill when writing Go code, choosing Go libraries, setting up a Go project, reviewing Go dependencies, choosing between a type alias and a type definition (`type X = Y` vs `type X Y`), or when the user asks about Go best practices, Go library choices, banned Go libraries, Go architecture patterns, Go project structure, Go domain types, Go DI patterns, Go testing strategy, Go security, Go performance, or says "how to golang", "go policy", "go stack", "go libraries", "go architecture", "go code style", "go rules", "go testing", "go security", "type alias", "type definition", "type X = Y", "alias vs definition", or any Go development question. Also use when reviewing go.mod for banned dependencies or choosing between Go libraries for any category. A decision guide for WHAT to use, not HOW.
 metadata:
   tags: go, golang, libraries, architecture, policy, banned, decisions, testing, security, performance, rules
 allowed-tools: bash view edit grep go
@@ -43,6 +43,14 @@ When working on a Go project:
 - URL-safe public identifier → `sixafter/nanoid`
 - Event log / time-ordered → `segmentio/ksuid`
 - Domain entity with compile-time safety → `go-composable-business-types/id.ID[Brand, V]`
+
+### Choosing alias vs definition
+
+- Same type under a new name (branded IDs like `type UserID = id.ID[...]`, re-exports, gradual refactors) → type **alias**: `type X = Y` — identical type, keeps all methods and assignability
+- Distinct type with compile-time safety (domain primitives like `type Email string`) → type **definition**: `type X Y` — new type, does NOT inherit the underlying type's methods
+- Extending a foreign type with your own methods → **embed** it — you cannot add methods to an alias, and a definition strips the underlying type's methods
+- Diagnostic: conversions like `Middleware(other.Middleware(...))` everywhere → definition where alias fits; `Email` accepting any string → alias where definition fits
+- Full comparison table, five compiler-verified nuances, and common-mistake examples → [./references/domain-types.md](references/domain-types.md#type-alias--vs-type-definition-no-)
 
 ### Choosing a cache
 
