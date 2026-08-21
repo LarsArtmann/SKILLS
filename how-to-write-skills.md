@@ -474,7 +474,7 @@ Add a "Distinct from" clause at the end of the `description` field:
 
 ```yaml
 description: >
-  [what it does + trigger phrases]. Distinct from [competing-skill]
+  [trigger phrases + what the agent will do]. Distinct from [competing-skill]
   ([one-sentence difference — what makes THIS skill the right pick]).
 ```
 
