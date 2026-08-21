@@ -69,7 +69,7 @@ Use `pprof.Labels` to attach request/endpoint labels so production profiles aggr
 - For pre-1.24 loops (`for i := 0; i < b.N; i++`), assign results to a package-level sink so the compiler cannot eliminate the work.
 - `b.ReportAllocs()` on every benchmark — allocation regressions matter as much as time.
 - `b.RunParallel` when the hot path is contended; a single-goroutine benchmark hides lock convoying.
-- Compare with `benchstat` (golang.org/x/perf/cmd/benchstat), never by eyeballing ±5% noise: run `-count=10`, feed old and new output files to benchstat, and trust only deltas it marks significant.
+- Compare with `benchstat` (golang.org/x/perf/cmd/benchstat), never by eyeballing ±5% noise: run `-count=10`, feed old and new output files to benchstat, and trust only deltas it marks significant. A worked end-to-end example (measure → fix → re-measure → compare) is in [Cache-aware data modeling](#cache-aware-data-modeling) below.
 
 ## Finding the knee: measure, don't guess
 
@@ -79,7 +79,24 @@ The `-cpu` flag reruns benchmarks at multiple GOMAXPROCS values — the scaling 
 go test -bench=StreamBuffer -cpu=4,8,12,16,20,24,32 -benchmem ./
 ```
 
-Read the output as a curve: the knee is where per-iteration time stops improving or reverses (e.g. `ns/op` flat from 20→24→32). That number is your worker cap.
+Read the output as a curve: the knee is where per-iteration time stops improving or reverses. That number is your worker cap.
+
+**Worked example (real output, run 2026-08-21).** Each `RunParallel` worker streams its own 64 MB buffer (exceeds L3, forces DRAM traffic), so the aggregate is memory-bandwidth-bound — the classic shape that scales well below core count:
+
+```text
+AMD RYZEN AI MAX+ 395 (32 logical), go1.26.5
+go test -bench=StreamBuffer -cpu=1,2,4,8,16,24,32 -benchmem .
+
+BenchmarkStreamBuffer       542   2001996 ns/op   123817 B/op   0 allocs/op
+BenchmarkStreamBuffer-2     931   1183914 ns/op   144165 B/op   0 allocs/op
+BenchmarkStreamBuffer-4    1057   1011835 ns/op   253961 B/op   0 allocs/op
+BenchmarkStreamBuffer-8    1552    658479 ns/op   345924 B/op   0 allocs/op
+BenchmarkStreamBuffer-16   2006    608107 ns/op   535270 B/op   0 allocs/op   <- knee
+BenchmarkStreamBuffer-24   1897    599870 ns/op   849038 B/op   0 allocs/op
+BenchmarkStreamBuffer-32   1820    606179 ns/op  1179945 B/op   0 allocs/op   <- WORSE than 16
+```
+
+Reading it: 1→8 workers cuts per-op time 3x (DRAM bandwidth still has headroom); 8→16 gains only 8%; 16→24→32 is flat-to-reversed. The knee is ~16 on this machine — a `g.SetLimit(16)` cap (8 if you want latency margin) is the measured answer, and adding workers past 24 actively hurts through allocation-side traffic (note B/op growing with worker count). Re-run this on the deployment hardware; the knee is a property of the memory subsystem, not of the code.
 
 Rules of the measurement:
 
@@ -153,6 +170,40 @@ Implications:
 The memory hierarchy is the real machine: registers ~ns-free, L1 ~4 cycles, L2 ~12, L3 ~40, DRAM ~200+ cycles. Every technique below is about keeping the hot set in the small fast levels.
 
 - **False sharing:** two goroutines writing different fields of the same struct can share one 64-byte cache line — every write invalidates the other core's copy. Symptom: contention-shaped profiles with no contended lock. Fix: pad hot per-goroutine/per-P state with `cpu.CacheLinePad` (golang.org/x/sys/cpu).
+
+  **Worked example (real run, 2026-08-21)** — two goroutines incrementing adjacent `int64` fields, `-cpu=2 -count=6`, before and after a 56-byte pad:
+
+  ```go
+  // before: a and b share one cache line (coherence ping-pong per increment)
+  type Counters struct {
+  	a int64
+  	b int64
+  }
+
+  // after: padded — each counter owns its line
+  type Counters struct {
+  	a int64
+  	_ [56]byte
+  	b int64
+  	_ [56]byte
+  }
+  ```
+
+  ```text
+  go test . -run=NONE -bench=Counter -count=6 -cpu=2 > old.txt   # shared
+  # ...apply the pad, same benchmark name, same package...
+  go test . -run=NONE -bench=Counter -count=6 -cpu=2 > new.txt   # padded
+  benchstat old.txt new.txt
+
+            │   old.txt    │               new.txt                │
+            │    sec/op    │    sec/op      vs base               │
+  Counter-2   1.7270n ± 9%   0.3417n ± 13%  -80.21% (p=0.002 n=6)
+  ```
+
+  One pad removed 80% of the op time with a p-value that says it is signal,
+  not noise. That is the whole benchstat workflow in miniature: identical
+  benchmark name + package on both sides, `-count≥6`, and only the delta
+  benchstat marks significant counts as the result.
 - **Field ordering:** group fields by size/alignment to cut struct padding. The `fieldalignment` analyzer (golang.org/x/tools) reports wasteful layouts. Apply where it matters (hot, high-volume types) — don't churn domain types for a few bytes.
 - **SoA over AoS:** if a loop touches one field across many records, `[]field` beats `[]struct` — you stream exactly the bytes you use instead of dragging whole cache lines per record.
 - **Tile/chunk:** process data in blocks sized to L2/L3 so each byte is loaded from DRAM once and reused from cache. This converts DRAM-bound (doesn't scale with cores) into cache-bound (does).

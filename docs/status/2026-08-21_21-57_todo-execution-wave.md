@@ -122,25 +122,35 @@ ancestors).
 
 ## c) NOT STARTED
 
+> All items in this section were completed later in the same session — see
+> the CHANGELOG "TODO wave T1–T20 fully executed" entries and the `done at`
+> markers in section (f).
+
 1. **T11** — Trim `website-launch/SKILL.md` below 800 via readme-template
    extraction (~60 lines). (Recurring since 2026-08-14; the T4 fix already
-   removed 8 lines.)
-2. **T12** — `scripts/check-skill-links.sh` CI-grade broken-link detector.
+   removed 8 lines.) — **done at 2026-08-21** (799 lines)
+2. **T12** — `scripts/check-skill-links.sh` CI-grade broken-link detector. —
+   **done at 2026-08-21** (found + fixed one genuine broken TOC anchor)
 3. **T13** — Process lessons in `how-to-write-skills.md` (Questions-tool
    200-char limit → review file; "verify before you say" chat-time gate in
-   `verify-external-claims`; verification-status-table pattern).
+   `verify-external-claims`; verification-status-table pattern). —
+   **done at 2026-08-21**
 4. **T14** — Real (run, not invented) examples for `performance-tuning.md`
-   (`-cpu` sweep with knee, benchstat before/after, false sharing).
-5. **T15** — Cross-link `bdd-testing` benchmark lens → `performance-tuning.md`.
+   (`-cpu` sweep with knee, benchstat before/after, false sharing). —
+   **done at 2026-08-21** (real outputs pasted; knee at 16, benchstat
+   -80.21% p=0.002)
+5. **T15** — Cross-link `bdd-testing` benchmark lens → `performance-tuning.md`. —
+   **done at 2026-08-21** ("Benchmarks are not specs")
 6. **T16** — `trash`-not-`rm -rf` item in `go-release/references/
-   quick-reference.md`. (The eval safety assertion from T7 covers the evals;
-   the quick-reference checklist item itself is still absent.)
+   quick-reference.md`. — **done at 2026-08-21**
 7. **T19** — og:image (1200×630) guidance where OG images are configured +
-   launch-post mini-template in `content-patterns.md`.
+   launch-post mini-template in `content-patterns.md`. — **done at
+   2026-08-21**
 8. **T20** — CONTRIBUTING.md "adding a new skill" flow incl. the
-   `link-skills-to-agents.sh` step.
+   `link-skills-to-agents.sh` step. — **done at 2026-08-21**
 9. **TODO_LIST.md / CHANGELOG.md bookkeeping** — completed items (T1–T10, T17,
-   T18) not yet removed/logged per the legend.
+   T18) not yet removed/logged per the legend. — **done at 2026-08-21**
+   (TODO_LIST rebuilt as T21–T26)
 
 ---
 
@@ -211,20 +221,20 @@ ancestors).
 
 | #  | Task                                                                                                      | Impact | Effort |
 | -- | --------------------------------------------------------------------------------------------------------- | ------ | ------ |
-| 1  | T11: extract Phase 2 badge/link-bar markdown into readme-template.md (SKILL.md 840 → <800)                | Medium | M      |
-| 2  | T12: `scripts/check-skill-links.sh` (fragment-stripping, TOC-aware, dir-aware)                             | High   | M      |
-| 3  | T13: process lessons into how-to-write-skills.md (incl. d1's scratch-dir trash lesson)                     | Medium | S      |
-| 4  | T14: real `-cpu` sweep + benchstat + false-sharing examples in performance-tuning.md                       | Medium | M      |
-| 5  | T15: one-way cross-link bdd-testing → performance-tuning.md                                                | Medium | S      |
-| 6  | T16: trash item in go-release quick-reference.md                                                           | Medium | S      |
-| 7  | T19: og:image guidance (file-manifest/website-creation-details) + launch-post template in content-patterns | Medium | S      |
-| 8  | T20: CONTRIBUTING.md add-skill flow with link-skills step                                                  | Low    | S      |
-| 9  | Update TODO_LIST.md (remove done T1–T10/T17/T18) + CHANGELOG wave entry for this session                     | High   | S      |
-| 10 | go-release: make `GONOSUMDB=*` explicit in multi-module.md verification (last eval miss)                   | Medium | S      |
-| 11 | Re-check README.md website-launch row + skills-table counts after this wave                                | Low    | S      |
+| 1  | ~~T11: extract Phase 2 badge/link-bar markdown into readme-template.md (SKILL.md 840 → <800)~~ done at 2026-08-21 (799 lines; applications badge variant + {LICENSE} placeholder ported to template) |
+| 2  | ~~T12: `scripts/check-skill-links.sh` (fragment-stripping, TOC-aware, dir-aware)~~ done at 2026-08-21 (inline-code + HTML-anchor aware, dup-slug suffixes, wired into check-skills.sh as check 12; fixed the one real broken TOC anchor it found) |
+| 3  | ~~T13: process lessons into how-to-write-skills.md (incl. d1's scratch-dir trash lesson)~~ done at 2026-08-21 (Hard-Won Process Lessons section + eval-harness shapes + on-disk rule; chat-time gate added to verify-external-claims §0) |
+| 4  | ~~T14: real `-cpu` sweep + benchstat + false-sharing examples in performance-tuning.md~~ done at 2026-08-21 (sweep knee at 16 on 32-thread Ryzen; benchstat -80.21% p=0.002 n=6) |
+| 5  | ~~T15: one-way cross-link bdd-testing → performance-tuning.md~~ done at 2026-08-21 ("Benchmarks are not specs" section) |
+| 6  | ~~T16: trash item in go-release quick-reference.md~~ done at 2026-08-21 (Phase 6 checklist row) |
+| 7  | ~~T19: og:image guidance (file-manifest/website-creation-details) + launch-post template in content-patterns~~ done at 2026-08-21 (file-manifest og-sizing rule + content-patterns launch-post mini-template) |
+| 8  | ~~T20: CONTRIBUTING.md add-skill flow with link-skills step~~ done at 2026-08-21 |
+| 9  | ~~Update TODO_LIST.md (remove done T1–T10/T17/T18) + CHANGELOG wave entry for this session~~ done at 2026-08-21 (all of T1–T20 removed; TODO_LIST rebuilt as T21–T26) |
+| 10 | ~~go-release: make `GONOSUMDB=*` explicit in multi-module.md verification (last eval miss)~~ done at 2026-08-21 (Step 9 + rationale; semantics verified against `go help environment`) |
+| 11 | ~~Re-check README.md website-launch row + skills-table counts after this wave~~ done at 2026-08-21 (row already mentions sales engine; 25-count accurate — no change needed) |
 | 12 | Retro-audit live sites against the new demo-video Definition of Done (08-21 f10, still open)               | Medium | M      |
 | 13 | HyperFrames ground-truth: one real demo-video render through the corrected 9:16 guidance                   | High   | M      |
-| 14 | scratch-dir helper script (e1)                                                                             | Low    | S      |
+| 14 | ~~scratch-dir helper script (e1)~~ done at 2026-08-21 (scripts/scratch.sh: create + manifest + --clean via trash) |
 
 ---
 

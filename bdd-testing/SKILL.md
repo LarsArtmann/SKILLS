@@ -48,3 +48,7 @@ All spec files use `package <pkg>_test` (black-box) and import `onsi/ginkgo` + `
 ## When to use tables
 
 When many inputs share one behavior shape, prefer `DescribeTable` + `Entry` over copy-pasted `It` blocks — see the syntax reference's "Table-driven specs" section. Each `Entry` is its own spec, so failures point at the exact case.
+
+## Benchmarks are not specs
+
+Performance assertions do not belong in the Ginkgo suite — write plain `testing.B` benchmarks next to the code they measure (`BenchmarkXxx(b *testing.B)` in the ordinary `_test.go` files) and gate them with CI comparison, not `Expect`. The methodology (b.Loop, ReportAllocs, `-count` + `benchstat` significance, `-cpu` sweeps) is owned by `how-to-golang`'s [performance-tuning reference](../how-to-golang/references/performance-tuning.md) — follow it rather than restating it here.

@@ -17,6 +17,7 @@
 [ ] Phase 5: Push master + tag
 [ ] Phase 6: Proxy indexed the version (go list -m -versions)
 [ ] Phase 6: go get works in clean /tmp directory
+[ ] Phase 6: cleanup uses trash, never rm -rf (temp verify dirs are data too)
 [ ] Phase 6: pkg.go.dev docs triggered
 [ ] Phase 6: CI green
 [ ] Phase 7: GitHub Release created (gh CLI or GoReleaser)

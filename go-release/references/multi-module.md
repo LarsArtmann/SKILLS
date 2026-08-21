@@ -226,16 +226,21 @@ experience.
 ```bash
 # Core
 trash /tmp/test-core 2>/dev/null; mkdir -p /tmp/test-core && cd /tmp/test-core
-go mod init test && go get github.com/myorg/myrepo@v${VERSION}
+GONOSUMDB='*' go mod init test && GONOSUMDB='*' go get github.com/myorg/myrepo@v${VERSION}
 
 # Viz (standalone — proves no replace-directive leak)
 trash /tmp/test-viz 2>/dev/null; mkdir -p /tmp/test-viz && cd /tmp/test-viz
-go mod init test && go get github.com/myorg/myrepo/viz@viz/v${VERSION}
+GONOSUMDB='*' go mod init test && GONOSUMDB='*' go get github.com/myorg/myrepo/viz@viz/v${VERSION}
 
 # Live
 trash /tmp/test-live 2>/dev/null; mkdir -p /tmp/test-live && cd /tmp/test-live
-go mod init test && go get github.com/myorg/myrepo/live@live/v${VERSION}
+GONOSUMDB='*' go mod init test && GONOSUMDB='*' go get github.com/myorg/myrepo/live@live/v${VERSION}
 ```
+
+`GONOSUMDB='*'` makes these checks independent of sum.golang.org propagation
+delays (a just-pushed tag may not be in the checksum DB yet, and a checksum
+DB hiccup should never read as a release failure — that's a proxy-side
+symptom, not a bad tag).
 
 If any `go get` fails with `unknown revision 000000000000`, a sub-module go.mod has a
 `replace` directive that wasn't caught in Step 2. Fix it, amend, re-tag, re-push.

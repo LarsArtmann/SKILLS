@@ -143,6 +143,15 @@ To customize for a new project:
 3. Update the `bgGradient` if desired
 4. Ensure `astro-og-canvas` is in dependencies (see dependency-versions.md)
 
+**og:image sizing rule (1200×630):** link unfurls (Slack, X, LinkedIn,
+Discord) crop or letterbox anything that is not 1200×630. The generated
+per-page OG images should render at that size, and once the demo video
+exists, the **landing page's `og:image` should be the video poster** (the
+strongest selling frame), not the generic generated image — shares of the
+landing page then show the product in motion's money shot. Configure this in
+the landing layout's `<meta property="og:image">` (override the per-page
+default for `/` only); see `demo-video.md` "Landing-page integration".
+
 ## Multi-Color Design Systems (Secondary Colors)
 
 Some projects (e.g. go-output) use secondary accent colors alongside the

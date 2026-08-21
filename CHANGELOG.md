@@ -13,6 +13,83 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-08-21 — TODO wave T1–T20 fully executed)
+
+- `scripts/check-skill-links.sh`: CI-grade broken-internal-link detector for
+  ALL skill markdown (file links, in-file anchors, GitHub-style slug rules,
+  inline-code and HTML-anchor aware); wired into `check-skills.sh` as check 12
+  and fixed the one genuine broken anchor it found (performance-tuning TOC)
+- Trigger-first regression guard in `scripts/check-skills.sh` (check 6):
+  hard-fails 3rd-person-verb and trigger-less description openings, warns
+  non-canonical ones — negative-tested in three modes
+- `how-to-golang/SKILL.md`: "Choosing alias vs definition" decision tree +
+  trigger phrases ("type alias", "type definition", "type X = Y")
+- `how-to-golang/references/domain-types.md`: five compiler-verified
+  alias-vs-definition nuances (method loss vs structural interface
+  satisfaction, operator preservation, untyped-constant asymmetry, reflect
+  divergence, embedding-vs-aliasing-vs-definition table) — 16 positive
+  assertions + 4 negative compile cases run against go1.26.5
+- `performance-tuning.md`: REAL worked examples, run not invented — the
+  `-cpu` sweep (knee at 16 on a 32-thread Ryzen, reverses at 32) and the
+  false-sharing before/after with `benchstat` verdict
+  `-80.21% (p=0.002 n=6)`
+- `go-release/evals/iteration-2/`: evals re-run after the binary-v2.0.0 fix
+  with a normalized subagent prompt + new safety assertion (no `rm -rf`);
+  with-skill 21/22 (95%, up from 79%), the miss and the safety fix both stuck
+- `website-launch/evals/iteration-1/`: old-skill-vs-new-skill eval of the
+  2026-08-21 sales-video rewrite — new 20/20 (100%) vs old 7/20 (35%);
+  the rewrite's behavioral changes are measured, not reasoned
+- `how-to-write-skills.md`: eval harness shapes (with/without vs
+  old-vs-new), "an eval is not done until it is on disk", and a Hard-Won
+  Process Lessons section (Questions-tool 200-char limit, verify-before-you-
+  write, verification-status tables, trash-for-scratch-dirs)
+- `verify-external-claims/SKILL.md`: §0 chat-time gate — applies at the
+  moment any sentence about external tool behavior is written, not only at
+  skill-creation time
+- `scripts/scratch.sh`: scratch-dir helper (create + manifest + `--clean`
+  via trash) making the no-`rm -rf` rule the path of least resistance
+- `CONTRIBUTING.md`: "Adding a New Skill" flow (authoring guide, html-kit
+  vendoring, symlink step via `link-skills-to-agents.sh`, inventory, checks)
+
+### Changed (2026-08-21 — TODO wave T1–T20 fully executed)
+
+- `how-to-golang/references/`: all 31 Go blocks compile-checked in a scratch
+  module; six real bugs fixed — branded-ID imports moved to
+  `go-branded-id` + `sixafter/nanoid` (old subpackages no longer exist),
+  fabricated uniflow pipeline API removed (module is
+  `github.com/LarsArtmann/uniflow`, uncompilable at @latest), koanf env via
+  `providers/env/v2`, go-snaps `/snaps` package path, `GinkgoT()` in
+  snapshot specs, `db.ExecContext`; `required-libraries.md`, `banned-
+  libraries.md`, `rules.md`, and AGENTS.md §10 aligned
+- `website-launch/SKILL.md` 848 → 799 lines: Phase 6 link-bar split brain
+  fixed (points at canonical readme-template bar) and Phase 2 badge/link-bar
+  markup extracted into `readme-template.md` (which gains the applications
+  badge variant + `{LICENSE}` placeholder)
+- `website-launch/references/demo-video.md`: HyperFrames claims corrected
+  against the actual skill bodies — routing quote verified, `npx`-wrapper
+  failure scoped to `render`, 9:16 re-render reframed as a resized
+  composition (root hardcodes `data-width`/`data-height`)
+- `website-launch/references/content-patterns.md`: demo-video item added to
+  the retrofit checklist (eight patterns) + launch-post copy mini-template
+- `website-launch/references/file-manifest.md`: og:image 1200×630 rule +
+  poster-as-og:image override for the landing page
+- `go-release/references/`: `trash` item in quick-reference checklist;
+  `GONOSUMDB='*'` made explicit in multi-module Step 9 (semantics verified
+  against `go help environment`)
+- `scripts/link-skills-to-agents.sh`: `AGENTS_DIR` override documented in
+  header + `--help` sed range fixed; `--force` recovery path proven
+  end-to-end on a scratch skill (real dir preserved as
+  `.replaced-<timestamp>`, data never deleted)
+- AGENTS.md §5.10: skills-CLI facts corrected empirically — lockfile is 14
+  entries (not 5), `skills ls -g` lists ALL skills with per-skill sources,
+  `skills update -g` leaves the 25 own-skill symlinks untouched
+- httputil (external): `DOMAIN_LANGUAGE.md` Middleware row now shows the
+  actual alias declaration (with `=`) instead of the pre-fix definition
+- `bdd-testing/SKILL.md`: one-way "Benchmarks are not specs" cross-link to
+  `performance-tuning.md` methodology
+- `TODO_LIST.md` rebuilt: T1–T20 all done and removed; six remaining
+  verified-open items (T21–T26) with evidence
+
 ### Added (2026-08-21 — docs-health full audit, this session)
 
 - `TODO_LIST.md` rebuilt via HARVEST: 19 verified-open items (T1-T19) from the

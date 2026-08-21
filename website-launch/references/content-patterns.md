@@ -186,6 +186,32 @@ so it costs zero authoring effort and is always accurate.
 
 ---
 
+## Launch-post copy (mini-template)
+
+The launch post reuses the one narrative — never a fresh pitch. Derive it
+from the README's "Why?" pain (hook), the site link, and one proof point
+(benchmark number, comparison row, or the demo video). Fill the brackets,
+delete the rest:
+
+```markdown
+[Hook: the README "Why?" pain, restated as the reader's outcome in one sentence.]
+
+[Ninety-character version of the one-paragraph summary — what it is + the one
+differentiator that matters.]
+
+▶ See it in {N} seconds: https://{subdomain}.lars.software/#demo
+▶ Install: go get github.com/{org}/{repo}
+
+[Proof point: one benchmark table row, before/after numbers, or one sentence
+pointing at the comparison. No feature lists.]
+```
+
+Rules: hook in the first line (feeds get truncated), exactly one link to the
+site (the `#demo` deep link if a video exists), no emoji bullets beyond the
+two ▶ markers, and no claims that the README cannot back.
+
+---
+
 ## Retrofitting existing sites
 
 When the skill runs against an _existing_ website (maintenance mode,
