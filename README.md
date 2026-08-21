@@ -42,13 +42,13 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 | Skill                      | What It Does                                                                        | Status |
 | -------------------------- | ----------------------------------------------------------------------------------- | ------ |
 | **verify-before-filing**   | Verify your diagnosis before filing issues/PRs to external projects                 | 🆕 New |
-| **verify-external-claims** | Verify external tool/library claims before encoding them into skills, code, or docs | 🆕 New |
+| **verify-external-claims** | Verify external tool/library claims before encoding them into skills, code, or docs | 🟢 Solid |
 
 ### Go Ecosystem
 
 | Skill                        | What It Does                                                                                                                              | Status           |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| **bdd-testing**              | BDD tests with `onsi/ginkgo` for Go projects                                                                                              | 🟢 Solid         |
+| **bdd-testing**              | BDD tests with `onsi/ginkgo` for Go projects                                                                                              | 🟡 Functional     |
 | **go-ecosystem-upgrade**     | Protocol for bumping/releasing/migrating Go library versions across many consumers — 18 failure modes extracted from 14 real self-reviews | 🟢 Comprehensive |
 | **go-modularize**            | Splits Go monorepos into semi-independent sub-modules                                                                                     | 🟢 Comprehensive |
 | **go-release**               | Cuts, pushes, and verifies Go module releases — single-module, multi-module, and binary. Tag immutability, recovery, GoReleaser, CI       | 🟢 Comprehensive |
@@ -75,7 +75,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | **docs-health**    | Creates, verifies, and maintains all project docs (living AND historical) — BUILD, HARVEST, VERIFY, ANNOTATE modes           | 🟢 Solid         |
 | **status-report**  | Full project status updates as styled HTML dashboards                                                                        | 🟡 Functional    |
-| **website-launch** | Launches documentation websites (Astro + Starlight + Firebase) with pre-flight checks, color palettes, and go-live checklist | 🟢 Comprehensive |
+| **website-launch** | Launches documentation websites (Astro + Starlight + Firebase) with a HyperFrames demo video as the launch's sales engine            | 🟢 Comprehensive |
 
 ## Quick Start
 
@@ -122,7 +122,7 @@ New skills should follow the pattern of [`how-to-golang/`](how-to-golang/) (lean
 
 ## Quality & Status
 
-This repository is honest about its state. **20 of 25 skills are solid, comprehensive, or functional** — every established skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). A handful are still **functional** (`architecture-review`, `code-quality-scan`, `deduplicate-code`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. **Five skills are 🆕 New** (`go-error-modernization`, `nix-private-go-repos`, `samber-do-best-practices`, `verify-before-filing`, `verify-external-claims`) — structurally valid and based on real concepts, but they have not yet been triggered against real work. Three of these carry verification-status blocks (`go-error-modernization` for its `erraudit` CLI that is not publicly findable, `nix-private-go-repos` for its private `go-nix-helpers` dependency, `samber-do-best-practices` for its private `branching-flow/pkg/doanalyzerv2` reference) — the skills' value rests on durable concepts, not on the specific private tooling. Validate the repo anytime with `scripts/check-skills.sh`.
+This repository is honest about its state. **21 of 25 skills are solid, comprehensive, or functional** — every established skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). Five are still **functional** (`architecture-review`, `bdd-testing`, `code-quality-scan`, `deduplicate-code`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. **Four skills are 🆕 New** (`go-error-modernization`, `nix-private-go-repos`, `samber-do-best-practices`, `verify-before-filing`) — structurally valid and based on real concepts, but not yet triggered against real work. Three of these carry verification-status blocks (`go-error-modernization` for its `erraudit` CLI that is not publicly findable, `nix-private-go-repos` for its private `go-nix-helpers` dependency, `samber-do-best-practices` for its private `branching-flow/pkg/doanalyzerv2` reference) — the skills' value rests on durable concepts, not on the specific private tooling. Validate the repo anytime with `scripts/check-skills.sh`.
 
 See [`docs/status/`](docs/status/) for detailed audit reports, including a comprehensive breakdown of every skill's strengths, gaps, and recommended next steps.
 
