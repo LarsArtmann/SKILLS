@@ -13,6 +13,100 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-08-21 — docs-health full audit, this session)
+
+- `TODO_LIST.md` rebuilt via HARVEST: 19 verified-open items (T1-T19) from the
+  2026-08-11 → 2026-08-21 status reports; every item carries code + report
+  evidence
+- `CHANGELOG.md` waves for 2026-08-11 → 2026-08-21 (this entry and those below
+  — six sessions of work previously undocumented here)
+- `ROADMAP.md` refreshed: resolved raw ideas pruned (TOC guard, check-agents-md,
+  legacy snippet fixes), new themes (snippet discipline, go-release depth),
+  10 open questions routed from reports' g-sections
+- `docs/status/archived/` — reports with every numbered item resolved are now
+  archived there
+
+### Changed (2026-08-21 — docs-health full audit, this session)
+
+- `FEATURES.md` rebuilt: `go-release` row added (was missing entirely),
+  line counts re-verified, `verify-external-claims` 🆕 → 🟢 (proven 2026-08-16),
+  `website-launch` 1106 → 848, `how-to-golang` 10 references, stale "no
+  assessment rubric" note fixed
+- `README.md`: counts corrected to 21-of-25 solid/functional (bdd-testing
+  aligned to 🟡, verify-external-claims to 🟢), website-launch row mentions the
+  demo-video sales engine
+- `AGENTS.md` drift fixed: §5.5 cross-reference graph now records the
+  `go-release` ↔ `go-ecosystem-upgrade` and `website-launch` ↔
+  `hyperframes-creative` pairs; §5.10 gains the canonical-path rule (hit twice
+  by sessions) and the three one-off crush-skills exceptions; §6 count 9 → 10
+  references; §10 gains goreleaser/gh and the six verified performance tools;
+  stale "known accuracy issues" note corrected (fixed 2026-08-04)
+- `how-to-write-skills.md` Pattern 11 template fixed:
+  `[what it does + trigger phrases]` → `[trigger phrases + what the agent will
+  do]` (leftover from pre-2026-08-11 style, flagged in the 08-11 report)
+- All nine 2026-08-1x status reports annotated inline (every numbered item
+  resolved with `done at` / `Won't implement` / verified-open verdicts)
+
+### Added (2026-08-11 — trigger-first description migration) — `b0e96c7`
+
+- All 18 description-first skills rewritten to open with trigger context
+  ("Use when…"); 6 already-trigger-first skills verified unchanged; 24/24
+  confirmed to start with "Use " and stay under 1024 chars
+- `AGENTS.md` §3.1 and `how-to-write-skills.md` §1 rewritten to teach
+  description-as-trigger (when to activate, not what the skill is)
+
+### Added (2026-08-12 — go-release skill, four-session arc) — `f8baf43`–`66ff020`
+
+- `go-release` skill (skill count 24 → 25): 10-phase release workflow for
+  single-module, multi-module, and binary releases; 5 references (multi-module,
+  major-versions, goreleaser-and-ci, failure-modes R1-R17, quick-reference)
+- `scripts/pre-release-check.sh` — automates replace/pseudo-version/dirty-tree
+  gates plus tidy/verify/build/test/vet
+- `evals/` with 3 graded prompts: with-skill 74% vs baseline 30%
+- Every external claim verified against primary sources (GoReleaser v2.17.1
+  source, `go help mod edit`, sigstore/SLSA docs); two fabricated details
+  corrected before encoding
+- Safety: 5 `rm -rf` occurrences replaced with `trash`; `+incompatible`
+  draft-think paragraph rewritten; release-shape decision tree + ToC +
+  `allowed-tools: goreleaser gh` added
+- `go-ecosystem-upgrade` Phase 6 thinned to 2 ecosystem-specific rules + a
+  pointer to `go-release` (split-brain cleanup)
+
+### Added (2026-08-14 — alias guidance, corpus sync, symlink model) — `2108cd1`–`6efb022`
+
+- `how-to-golang/references/domain-types.md` — type-alias vs type-definition
+  section with the real httputil middleware case
+- Full corpus comparison repo ↔ `~/.agents`: 7 broken asset links fixed,
+  `html-report-kit` description sharpened to trigger-first, all frontmatter
+  validated
+- **Runtime symlink model**: `scripts/link-skills-to-agents.sh` (idempotent
+  repair / `--check` / `--list` / `--force`) replaces the rsync copy script;
+  own skills symlinked (no sync step, no drift possible), lockfile split to
+  5 third-party entries; documented in `AGENTS.md` §5.10
+
+### Added (2026-08-16 — performance-tuning reference) — `60c799c`
+
+- `how-to-golang/references/performance-tuning.md` (263 lines, 13 sections):
+  concurrency decision tree, profiling methodology, GOMAXPROCS knee
+  measurement, container GOMAXPROCS (Go 1.25+), GC knobs, cache-aware
+  modeling, NUMA facts — 24/24 claims verified against primary sources, 4
+  fabrications caught before encoding
+- `go-release`: green-CI-before-tagging rule — `8482246`
+
+### Added (2026-08-18 — annotation tooling, demo-video standard) — `560ddb3`, `c08b917`
+
+- `docs-health` batch annotation tooling: `annotate-rows.py` + `annotate-prose.py`
+  (section-scoped, atomic, refuse already-annotated lines, `--dry-run`) and
+  health-report math-discipline rules
+- `website-launch`: HyperFrames demo video made standard for every launch
+
+### Changed (2026-08-21 — website-launch sales engine) — `817ed58`
+
+- Demo video repositioned from showcase asset to the launch's sales engine:
+  §3.11 rewritten (hook/value/CTA beats), Phase 2 one-narrative rule,
+  maintenance-mode video audit, `references/demo-video.md` rewritten 153 → 249
+  lines, definition-of-done demo items 4 → 9, README-template demo-link variant
+
 ### Added (2026-08-04 full TODO_LIST execution)
 
 - `scripts/check-agents-md.sh` — standalone AGENTS.md quality scorer packaging
