@@ -288,7 +288,7 @@ exact version regardless of what setup-go installed:
 
 ```yaml
 env:
-  GOTOOLCHAIN: go1.26.6   # step-, job-, or workflow-level
+  GOTOOLCHAIN: go1.26.6 # step-, job-, or workflow-level
 ```
 
 ---

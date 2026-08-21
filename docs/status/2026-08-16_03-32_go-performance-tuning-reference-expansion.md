@@ -39,7 +39,7 @@
 
 **Nothing in the repository.** But one honest process near-miss worth recording:
 
-- **I fabricated two specifics with full confidence in conversation before verifying** — "tracked in golang/go#19270, long marked not planned" (wrong number AND wrong status framing) and a `go.dev/doc/gomaxprocs` URL that doesn't exist. The `verify-external-claims` gate caught both **before they entered a file**, which is exactly what it's for — but chat answers containing verifiable specifics deserve the same bar as file content. A user who had skimmed the NUMA answer and repeated "#19270" in a bug report would have propagated the error. Root cause: answering from plausible memory instead of checking primary sources *first*. Also two near-misses (MaxIdleConns default, arena status) were only caught because verification was mandatory — memory alone got them wrong too.
+- **I fabricated two specifics with full confidence in conversation before verifying** — "tracked in golang/go#19270, long marked not planned" (wrong number AND wrong status framing) and a `go.dev/doc/gomaxprocs` URL that doesn't exist. The `verify-external-claims` gate caught both **before they entered a file**, which is exactly what it's for — but chat answers containing verifiable specifics deserve the same bar as file content. A user who had skimmed the NUMA answer and repeated "#19270" in a bug report would have propagated the error. Root cause: answering from plausible memory instead of checking primary sources _first_. Also two near-misses (MaxIdleConns default, arena status) were only caught because verification was mandatory — memory alone got them wrong too.
 
 ## e) WHAT WE SHOULD IMPROVE!
 

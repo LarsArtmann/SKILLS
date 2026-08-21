@@ -49,15 +49,15 @@ Tuning blind produces cargo cults. Before changing anything, know which layer is
 
 **Profiles to know (all stdlib, `runtime/pprof` / `net/http/pprof` for live services):**
 
-| Profile                      | Catches                                                    | How to enable                                        |
-| ---------------------------- | ---------------------------------------------------------- | ---------------------------------------------------- |
-| CPU                          | Where cycles go                                            | `go test -cpuprofile`, pprof endpoint               |
-| Heap (`inuse_space`)         | What live memory is held by whom                           | `go test -memprofile`, pprof endpoint               |
-| Heap (`alloc_space`)         | Allocation churn (GC pressure) even if nothing is retained | pprof endpoint, `-memprofile` with `-alloc_space`   |
-| Goroutine                    | Leaks, blocked goroutine stacks                            | pprof `goroutine` profile                            |
-| Mutex                        | Lock contention hotspots                                   | `runtime.SetMutexProfileFraction(1)`                |
-| Block                        | Time blocked on channels/locks/syscalls                    | `runtime.SetBlockProfileRate(1)`                    |
-| Execution tracer             | Scheduler latency, GC pauses, goroutine wake-up gaps       | `go test -trace` / `runtime/trace`, `go tool trace` |
+| Profile              | Catches                                                    | How to enable                                       |
+| -------------------- | ---------------------------------------------------------- | --------------------------------------------------- |
+| CPU                  | Where cycles go                                            | `go test -cpuprofile`, pprof endpoint               |
+| Heap (`inuse_space`) | What live memory is held by whom                           | `go test -memprofile`, pprof endpoint               |
+| Heap (`alloc_space`) | Allocation churn (GC pressure) even if nothing is retained | pprof endpoint, `-memprofile` with `-alloc_space`   |
+| Goroutine            | Leaks, blocked goroutine stacks                            | pprof `goroutine` profile                           |
+| Mutex                | Lock contention hotspots                                   | `runtime.SetMutexProfileFraction(1)`                |
+| Block                | Time blocked on channels/locks/syscalls                    | `runtime.SetBlockProfileRate(1)`                    |
+| Execution tracer     | Scheduler latency, GC pauses, goroutine wake-up gaps       | `go test -trace` / `runtime/trace`, `go tool trace` |
 
 Use `pprof.Labels` to attach request/endpoint labels so production profiles aggregate by code path, not by shared function.
 
@@ -130,19 +130,19 @@ Background GC mark work targets **25% of GOMAXPROCS** (`gcBackgroundUtilization 
 
 Implications:
 
-- On bandwidth-bound services, a lower GOMAXPROCS sometimes *increases* throughput purely by throttling GC parallelism. Measure with a `-cpu` sweep — this is the same knee, measured end-to-end.
+- On bandwidth-bound services, a lower GOMAXPROCS sometimes _increases_ throughput purely by throttling GC parallelism. Measure with a `-cpu` sweep — this is the same knee, measured end-to-end.
 - Pointer-light data (values, arrays, SoA over AoS, contiguous slices instead of pointer graphs) cuts both your access cost and the GC's scan cost.
 - Set `GOMEMLIMIT` to cap heap size on services; a heap that fits in cache is a heap the GC scans cheaply.
 
 **Deployment knobs:**
 
-| Knob                                  | Default   | What it does / when to touch                                                                                                                                              |
-| ------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `GOGC`                                | `100`     | Heap grows to (live × (1+GOGC/100)) before next cycle. Raising it = fewer cycles, more memory; lowering = more cycles, less memory. Tune together with GOMEMLIMIT, not alone. |
-| `GOMEMLIMIT`                          | unlimited | Soft limit on total memory (heap + stacks + runtime). The container OOM guard: set to ~90% of the container memory limit. It is soft — the runtime would rather GC harder than crash. |
-| `GOGC=off` + `GOMEMLIMIT`             | —         | Batch-job trick: no GC cycles mid-run until the limit is hit; throughput win when the job's live set is bounded.                                                           |
-| `GODEBUG=madvdontneed`                | on        | Linux default is `MADV_DONTNEED`, so freed heap pages drop out of RSS promptly. Setting `madvdontneed=0` opts into `MADV_FREE` (lazier RSS, marginally cheaper).           |
-| `debug.FreeOSMemory()`                | —         | Forces GC + returns memory to the OS. It is a full-STW-cycle tool for idle transitions, not a per-request knob. Calling it in hot paths is a self-inflicted pause.          |
+| Knob                      | Default   | What it does / when to touch                                                                                                                                                          |
+| ------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GOGC`                    | `100`     | Heap grows to (live × (1+GOGC/100)) before next cycle. Raising it = fewer cycles, more memory; lowering = more cycles, less memory. Tune together with GOMEMLIMIT, not alone.         |
+| `GOMEMLIMIT`              | unlimited | Soft limit on total memory (heap + stacks + runtime). The container OOM guard: set to ~90% of the container memory limit. It is soft — the runtime would rather GC harder than crash. |
+| `GOGC=off` + `GOMEMLIMIT` | —         | Batch-job trick: no GC cycles mid-run until the limit is hit; throughput win when the job's live set is bounded.                                                                      |
+| `GODEBUG=madvdontneed`    | on        | Linux default is `MADV_DONTNEED`, so freed heap pages drop out of RSS promptly. Setting `madvdontneed=0` opts into `MADV_FREE` (lazier RSS, marginally cheaper).                      |
+| `debug.FreeOSMemory()`    | —         | Forces GC + returns memory to the OS. It is a full-STW-cycle tool for idle transitions, not a per-request knob. Calling it in hot paths is a self-inflicted pause.                    |
 
 **RSS vs heap:** process RSS will exceed the Go heap (stacks, runtime, freed-but-not-returned pages). Monitor `runtime/metrics` heap numbers for capacity planning; use RSS for container limits. A sawtooth RSS on an idle-ish service is normal GC behavior, not a leak — a monotonic RSS climb with flat heap is.
 
@@ -234,30 +234,30 @@ Mitigations, in escalation order (measure with `numastat` / `perf c2c` before in
 
 ## Verification status
 
-| Claim                                                            | Status      | Source                                                                            |
-| ---------------------------------------------------------------- | ----------- | --------------------------------------------------------------------------------- |
-| `-cpu` flag reruns benchmarks at listed GOMAXPROCS values        | ✅ Verified | `go help testflag`, Go 1.26.5                                                     |
-| `testing.B.Loop` exists, resets timer around setup/cleanup       | ✅ Verified | `go doc testing.B.Loop`, Go 1.26.5                                                |
-| GC background mark utilization = 25% of GOMAXPROCS               | ✅ Verified | `runtime/mgcpacer.go` (`gcBackgroundUtilization = 0.25`), Go 1.26.5               |
-| GOMAXPROCS default considers cgroup quota (Linux), auto-updates  | ✅ Verified | `go doc runtime.GOMAXPROCS`, Go 1.26.5                                            |
-| Env var / `runtime.GOMAXPROCS(n)` disables automatic updates     | ✅ Verified | `go doc runtime.GOMAXPROCS`, Go 1.26.5                                            |
-| `errgroup.SetLimit(n)` blocks `Go` at the limit                  | ✅ Verified | pkg.go.dev/golang.org/x/sync/errgroup                                             |
-| `DefaultMaxIdleConnsPerHost = 2`; `MaxIdleConns` 0 = no limit    | ✅ Verified | `net/http/transport.go` (Go 1.26.5) + `go doc net/http.Transport`                  |
-| `database/sql` `MaxOpenConns` default 0 (unlimited)              | ✅ Verified | `database/sql/sql.go` SetMaxOpenConns doc, Go 1.26.5                               |
-| `bufio` default buffer 4096 bytes                                | ✅ Verified | `bufio/bufio.go` (`defaultBufSize = 4096`), Go 1.26.5                              |
-| TCP_NODELAY (no delay) on by default                             | ✅ Verified | `go doc net.TCPConn.SetNoDelay`, Go 1.26.5                                         |
-| `net.Buffers` optimized into batch write (writev)                | ✅ Verified | `go doc net.Buffers`, Go 1.26.5                                                    |
-| `syscall.Fdatasync` exists (Linux)                               | ✅ Verified | `go doc syscall.Fdatasync`, Go 1.26.5                                              |
-| `pprof.Labels` exists for profile attribution                    | ✅ Verified | `go doc runtime/pprof.Labels`, Go 1.26.5                                           |
-| `-gcflags=-m` prints optimization (escape) decisions             | ✅ Verified | `go tool compile -h`, Go 1.26.5                                                    |
-| Linux default `MADV_DONTNEED`; `GODEBUG=madvdontneed=0` → MADV_FREE | ✅ Verified | `runtime/extern.go` GODEBUG docs, Go 1.26.5                                      |
-| Arena experiment exists behind GOEXPERIMENT (experimental, unsupported) | ✅ Verified | `internal/goexperiment/flags.go`, Go 1.26.5 — treat as experimental, not policy |
-| `cpu.CacheLinePad` in golang.org/x/sys/cpu                       | ✅ Verified | golang/sys `cpu/cache.go`: "used to pad structs to avoid false sharing"            |
-| `fieldalignment` analyzer exists                                 | ✅ Verified | golang/tools `go/analysis/passes/fieldalignment`                                   |
-| `benchstat` exists                                               | ✅ Verified | golang/perf `cmd/benchstat`                                                        |
-| `goleak` exists                                                  | ✅ Verified | uber-go/goleak                                                                     |
-| klauspost/compress exists (zstd)                                 | ✅ Verified | github.com/klauspost/compress                                                      |
-| Scheduler/allocator not NUMA-aware; multi-NUMA perf degradation  | ✅ Verified | golang/go#78044 (open); no NUMA API in `runtime` docs                             |
-| `uber-go/automaxprocs` exists for pre-1.25 container defaults    | ✅ Verified | pkg.go.dev/github.com/uber-go/automaxprocs                                         |
-| Bandwidth knee example (~20 of 32 CPUs)                          | ⚠️ Anecdote | One measurement on one machine (2026-08-16); illustrative, not portable — measure  |
-| Cache/DRAM cycle latencies, NUMA 1.5-2x, syscall context-switch costs | ⚠️ Order-of-magnitude | Standard architecture knowledge (hardware-dependent); used qualitatively, verify on target HW |
+| Claim                                                                   | Status               | Source                                                                                        |
+| ----------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------- |
+| `-cpu` flag reruns benchmarks at listed GOMAXPROCS values               | ✅ Verified          | `go help testflag`, Go 1.26.5                                                                 |
+| `testing.B.Loop` exists, resets timer around setup/cleanup              | ✅ Verified          | `go doc testing.B.Loop`, Go 1.26.5                                                            |
+| GC background mark utilization = 25% of GOMAXPROCS                      | ✅ Verified          | `runtime/mgcpacer.go` (`gcBackgroundUtilization = 0.25`), Go 1.26.5                           |
+| GOMAXPROCS default considers cgroup quota (Linux), auto-updates         | ✅ Verified          | `go doc runtime.GOMAXPROCS`, Go 1.26.5                                                        |
+| Env var / `runtime.GOMAXPROCS(n)` disables automatic updates            | ✅ Verified          | `go doc runtime.GOMAXPROCS`, Go 1.26.5                                                        |
+| `errgroup.SetLimit(n)` blocks `Go` at the limit                         | ✅ Verified          | pkg.go.dev/golang.org/x/sync/errgroup                                                         |
+| `DefaultMaxIdleConnsPerHost = 2`; `MaxIdleConns` 0 = no limit           | ✅ Verified          | `net/http/transport.go` (Go 1.26.5) + `go doc net/http.Transport`                             |
+| `database/sql` `MaxOpenConns` default 0 (unlimited)                     | ✅ Verified          | `database/sql/sql.go` SetMaxOpenConns doc, Go 1.26.5                                          |
+| `bufio` default buffer 4096 bytes                                       | ✅ Verified          | `bufio/bufio.go` (`defaultBufSize = 4096`), Go 1.26.5                                         |
+| TCP_NODELAY (no delay) on by default                                    | ✅ Verified          | `go doc net.TCPConn.SetNoDelay`, Go 1.26.5                                                    |
+| `net.Buffers` optimized into batch write (writev)                       | ✅ Verified          | `go doc net.Buffers`, Go 1.26.5                                                               |
+| `syscall.Fdatasync` exists (Linux)                                      | ✅ Verified          | `go doc syscall.Fdatasync`, Go 1.26.5                                                         |
+| `pprof.Labels` exists for profile attribution                           | ✅ Verified          | `go doc runtime/pprof.Labels`, Go 1.26.5                                                      |
+| `-gcflags=-m` prints optimization (escape) decisions                    | ✅ Verified          | `go tool compile -h`, Go 1.26.5                                                               |
+| Linux default `MADV_DONTNEED`; `GODEBUG=madvdontneed=0` → MADV_FREE     | ✅ Verified          | `runtime/extern.go` GODEBUG docs, Go 1.26.5                                                   |
+| Arena experiment exists behind GOEXPERIMENT (experimental, unsupported) | ✅ Verified          | `internal/goexperiment/flags.go`, Go 1.26.5 — treat as experimental, not policy               |
+| `cpu.CacheLinePad` in golang.org/x/sys/cpu                              | ✅ Verified          | golang/sys `cpu/cache.go`: "used to pad structs to avoid false sharing"                       |
+| `fieldalignment` analyzer exists                                        | ✅ Verified          | golang/tools `go/analysis/passes/fieldalignment`                                              |
+| `benchstat` exists                                                      | ✅ Verified          | golang/perf `cmd/benchstat`                                                                   |
+| `goleak` exists                                                         | ✅ Verified          | uber-go/goleak                                                                                |
+| klauspost/compress exists (zstd)                                        | ✅ Verified          | github.com/klauspost/compress                                                                 |
+| Scheduler/allocator not NUMA-aware; multi-NUMA perf degradation         | ✅ Verified          | golang/go#78044 (open); no NUMA API in `runtime` docs                                         |
+| `uber-go/automaxprocs` exists for pre-1.25 container defaults           | ✅ Verified          | pkg.go.dev/github.com/uber-go/automaxprocs                                                    |
+| Bandwidth knee example (~20 of 32 CPUs)                                 | ⚠️ Anecdote           | One measurement on one machine (2026-08-16); illustrative, not portable — measure             |
+| Cache/DRAM cycle latencies, NUMA 1.5-2x, syscall context-switch costs   | ⚠️ Order-of-magnitude | Standard architecture knowledge (hardware-dependent); used qualitatively, verify on target HW |

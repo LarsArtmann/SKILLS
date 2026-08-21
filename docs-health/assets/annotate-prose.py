@@ -15,6 +15,7 @@ original item text in ~~...~~ and appends the marker. Fails loudly on
 missing/duplicate item numbers and already-annotated lines; writes only if
 every spec matched (atomic in-memory then single write).
 """
+
 import re
 import sys
 from datetime import date
@@ -47,7 +48,11 @@ def main() -> None:
         if start is None:
             raise SystemExit(f"section {prefix!r} not found")
         end = next(
-            (i for i, l in enumerate(lines[start + 1 :], start + 1) if l.startswith("## ")),
+            (
+                i
+                for i, l in enumerate(lines[start + 1 :], start + 1)
+                if l.startswith("## ")
+            ),
             len(lines),
         )
     else:
@@ -67,10 +72,13 @@ def main() -> None:
         hits = [
             i
             for i in range(start, end)
-            if pat.match(lines[i]) and re.match(rf"^\s*(?:\*\*)?{num}\.(?:\*\*)?\s", lines[i])
+            if pat.match(lines[i])
+            and re.match(rf"^\s*(?:\*\*)?{num}\.(?:\*\*)?\s", lines[i])
         ]
         if len(hits) != 1:
-            raise SystemExit(f"item {num}: expected 1 match in section, found {len(hits)}")
+            raise SystemExit(
+                f"item {num}: expected 1 match in section, found {len(hits)}"
+            )
         i = hits[0]
         if "~~" in lines[i]:
             raise SystemExit(f"item {num}: already annotated")
@@ -84,7 +92,9 @@ def main() -> None:
         done.append(num)
     if not dry_run:
         target.write_text("".join(lines))
-    print(f"{target.name}: {'would annotate' if dry_run else 'annotated'} {len(done)} items -> {sorted(done)}")
+    print(
+        f"{target.name}: {'would annotate' if dry_run else 'annotated'} {len(done)} items -> {sorted(done)}"
+    )
 
 
 if __name__ == "__main__":

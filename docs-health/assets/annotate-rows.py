@@ -17,6 +17,7 @@ append the marker inside the FIRST cell (the task column). Fails loudly on
 missing/duplicate rows and on already-annotated rows; writes only if every
 spec matched (atomic in-memory then single write).
 """
+
 import re
 import sys
 from datetime import date
@@ -39,7 +40,9 @@ def marker_for(kind: str, value: str) -> str:
 def strike_row(line: str, row: int, marker: str) -> str:
     m = re.match(r"^(\|\s*)(\d+)(\s*\|)(.*)(\|)\s*$", line)
     if not m:
-        raise SystemExit(f"row {row}: line does not match table-row shape: {line[:80]!r}")
+        raise SystemExit(
+            f"row {row}: line does not match table-row shape: {line[:80]!r}"
+        )
     cells = m.group(4).split("|")
     struck = [f" ~~{c.strip()}~~ " for c in cells]
     struck[0] = struck[0].rstrip() + f" {marker} "
@@ -72,7 +75,11 @@ def main() -> None:
         f_start = next((i for i, l in enumerate(lines) if l.startswith("## f)")), None)
         if f_start is not None:
             f_end = next(
-                (i for i, l in enumerate(lines[f_start + 1 :], f_start + 1) if l.startswith("## ")),
+                (
+                    i
+                    for i, l in enumerate(lines[f_start + 1 :], f_start + 1)
+                    if l.startswith("## ")
+                ),
                 len(lines),
             )
             hits = [i for i in hits if f_start <= i < f_end]
@@ -89,7 +96,9 @@ def main() -> None:
         used.add(row)
     if not dry_run:
         target.write_text("".join(lines))
-    print(f"{target.name}: {'would annotate' if dry_run else 'annotated'} {len(used)} rows -> {sorted(used)}")
+    print(
+        f"{target.name}: {'would annotate' if dry_run else 'annotated'} {len(used)} rows -> {sorted(used)}"
+    )
 
 
 if __name__ == "__main__":
