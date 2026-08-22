@@ -1,6 +1,6 @@
 # HTML Output Guide
 
-The data-model-review skill produces a self-contained HTML presentation at `docs/brainstorming/YYYY-MM-DD_<slug>.html`.
+The data-model-review skill produces a self-contained HTML presentation at `docs/reviews/YYYY-MM-DD_<slug>.html`.
 
 ## Design Requirements
 
@@ -63,4 +63,4 @@ not data-model-specific classes:
 
 ## Example Filename
 
-`docs/brainstorming/2026-06-05_user-domain-redesign.html`
+`docs/reviews/2026-06-05_user-domain-redesign.html`

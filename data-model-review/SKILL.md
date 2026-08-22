@@ -92,6 +92,20 @@ Key patterns:
 
 ### Step 5: Create the HTML Presentation
 
+**Before writing anything, read the series context:**
+
+1. **Read prior reports in the series.** List `docs/reviews/*.html` and skim
+   the most recent 1-3 (TOC + findings tables). The new report must
+   cross-reference them (companion reports, follow-up items resolved) — a
+   review series reads as one continuous conversation, not isolated
+   documents.
+2. **Copy the template, never transcribe.** Start from
+   `./assets/html-report-kit/assets/report-template.html` by copying the
+   file and editing its content. Never re-type CSS or structure from
+   memory or from another report's rendered source — hand-transcribed CSS
+   drifts from the kit (wrong tokens, missing classes) and re-introduces
+   bugs the kit already fixed.
+
 Write a self-contained, zero-dependency HTML file at `docs/reviews/YYYY-MM-DD_<slug>.html`.
 
 Use the **shared design system** from the `html-report-kit` skill:
