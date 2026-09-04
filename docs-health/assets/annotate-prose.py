@@ -11,9 +11,12 @@ Usage: annotate-prose.py [--dry-run] <file> <section-prefix> <spec>...
     kind w -> **Won't implement — <value>.**
 
 --dry-run prints the would-be new line instead of writing. Wraps the ENTIRE
-original item text in ~~...~~ and appends the marker. Fails loudly on
-missing/duplicate item numbers and already-annotated lines; writes only if
-every spec matched (atomic in-memory then single write).
+original item text in ~~...~~ and appends the marker. Multi-line items:
+indented continuation lines up to the next numbered item, blank line or
+section end are struck line-by-line (preserve indentation, ~~ around each
+line's text). Fails loudly on missing/duplicate item numbers and
+already-annotated lines; writes only if every spec matched (atomic
+in-memory then single write).
 """
 
 import re
@@ -82,13 +85,33 @@ def main() -> None:
         i = hits[0]
         if "~~" in lines[i]:
             raise SystemExit(f"item {num}: already annotated")
+        # Item span: the start line plus indented continuation lines until
+        # the next numbered item, a blank line, or the section end.
+        span_end = i + 1
+        while span_end < end:
+            line = lines[span_end]
+            if pat.match(line) or not line.strip():
+                break
+            span_end += 1
         raw = lines[i].rstrip("\n")
         m = re.match(r"^(\s*)((?:\*\*)?\d+\.(?:\*\*)?\s*)(.*)$", raw)
         new = f"{m.group(1)}{m.group(2)}~~{m.group(3)}~~ {marker}"
         if dry_run:
-            print(f"DRY {target.name} item {num}:\n  - {raw}\n  + {new}")
+            print(f"DRY {target.name} item {num} (lines {i + 1}-{span_end}):\n  - {raw}\n  + {new}")
         else:
             lines[i] = new + ("\n" if lines[i].endswith("\n") else "")
+        for j in range(i + 1, span_end):
+            cont = lines[j].rstrip("\n")
+            if "~~" in cont:
+                raise SystemExit(
+                    f"item {num}: continuation line {j + 1} already annotated"
+                )
+            cm = re.match(r"^(\s*)(.*)$", cont)
+            struck = f"{cm.group(1)}~~{cm.group(2)}~~"
+            if dry_run:
+                print(f"  - {cont}\n  + {struck}")
+            else:
+                lines[j] = struck + ("\n" if lines[j].endswith("\n") else "")
         done.append(num)
     if not dry_run:
         target.write_text("".join(lines))

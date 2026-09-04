@@ -39,16 +39,16 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Skill Authoring & Verification
 
-| Skill                      | What It Does                                                                        | Status |
-| -------------------------- | ----------------------------------------------------------------------------------- | ------ |
-| **verify-before-filing**   | Verify your diagnosis before filing issues/PRs to external projects                 | 🆕 New |
+| Skill                      | What It Does                                                                        | Status   |
+| -------------------------- | ----------------------------------------------------------------------------------- | -------- |
+| **verify-before-filing**   | Verify your diagnosis before filing issues/PRs to external projects                 | 🆕 New   |
 | **verify-external-claims** | Verify external tool/library claims before encoding them into skills, code, or docs | 🟢 Solid |
 
 ### Go Ecosystem
 
 | Skill                        | What It Does                                                                                                                              | Status           |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| **bdd-testing**              | BDD tests with `onsi/ginkgo` for Go projects                                                                                              | 🟡 Functional     |
+| **bdd-testing**              | BDD tests with `onsi/ginkgo` for Go projects                                                                                              | 🟡 Functional    |
 | **go-ecosystem-upgrade**     | Protocol for bumping/releasing/migrating Go library versions across many consumers — 18 failure modes extracted from 14 real self-reviews | 🟢 Comprehensive |
 | **go-modularize**            | Splits Go monorepos into semi-independent sub-modules                                                                                     | 🟢 Comprehensive |
 | **go-release**               | Cuts, pushes, and verifies Go module releases — single-module, multi-module, and binary. Tag immutability, recovery, GoReleaser, CI       | 🟢 Comprehensive |
@@ -71,11 +71,11 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Project Intelligence
 
-| Skill              | What It Does                                                                                                                 | Status           |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| **docs-health**    | Creates, verifies, and maintains all project docs (living AND historical) — BUILD, HARVEST, VERIFY, ANNOTATE modes           | 🟢 Solid         |
-| **status-report**  | Full project status updates as styled HTML dashboards                                                                        | 🟡 Functional    |
-| **website-launch** | Launches documentation websites (Astro + Starlight + Firebase) with a HyperFrames demo video as the launch's sales engine            | 🟢 Comprehensive |
+| Skill              | What It Does                                                                                                              | Status           |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **docs-health**    | Creates, verifies, and maintains all project docs (living AND historical) — BUILD, HARVEST, VERIFY, ANNOTATE modes        | 🟢 Solid         |
+| **status-report**  | Full project status updates as styled HTML dashboards                                                                     | 🟡 Functional    |
+| **website-launch** | Launches documentation websites (Astro + Starlight + Firebase) with a HyperFrames demo video as the launch's sales engine | 🟢 Comprehensive |
 
 ## Quick Start
 

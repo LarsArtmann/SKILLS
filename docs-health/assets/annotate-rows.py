@@ -43,7 +43,8 @@ def marker_for(kind: str, value: str) -> str:
         hashes = ", ".join(f"`{h}`" for h in value.split(","))
         return f"done at {hashes}"
     if kind == "v":
-        return f"done ({value})"
+        evidence = re.sub(r"^done\b[\s:—-]*", "", value.strip())
+        return f"done — {evidence}" if evidence else "done"
     if kind == "p":
         return f"done (docs-health pass {value if value != '-' else date.today().isoformat()})"
     if kind == "w":
