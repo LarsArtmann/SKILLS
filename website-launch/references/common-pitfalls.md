@@ -516,3 +516,43 @@ grep 'gin-gonic\|echo\|fiber\|gorilla\|chi' go.mod
 Remove framework-specific GitHub topics (e.g. `gin`) and replace with
 `net-http` if appropriate. Update the tech stack table to say "Go standard
 library `net/http`" instead of the framework name.
+
+## Dependency Pin Fragility (fleet-wide, 2026-09-04)
+
+### 31. astro-og-canvas pulls a broken canvaskit-wasm — pin it DIRECTLY
+
+**Symptom:** Astro prerender crashes on `/og/*.png` with an emscripten
+error mentioning `__dirname` (or similar Node/ESM incompatibility) inside
+`canvaskit-wasm`. The error text misleadingly blames pnpm hoisting.
+
+**Cause:** `astro-og-canvas@0.13.x` requires `canvaskit-wasm@^0.42.0`
+transitively; 0.42.x's emscripten Node build is ESM-incompatible. When a
+lockfile regen lets the transitive range win, every `/og` route dies and
+the site cannot build.
+
+**Fix:** add `canvaskit-wasm` as a DIRECT dependency with the exact
+known-good version (`0.41.1`) in `package.json` — not just a lockfile
+entry, which a regen can overwrite:
+
+```json
+"canvaskit-wasm": "0.41.1"
+```
+
+Re-widen only after upstream fixes the emscripten ESM issue. Applied to
+go-output (2026-09-03) and gogenfilter (2026-09-04).
+
+### 32. pnpm v11 traps that break deterministic builds
+
+Three separate traps, each costing real debugging time:
+
+1. **Placeholder `allowBuilds` values silently block build scripts.**
+   `esbuild: set this to true or false` (a literal placeholder) is not
+   `true` — esbuild's postinstall is skipped and installs warn with
+   `[ERR_PNPM_IGNORED_BUILDS]`. Set real booleans in
+   `pnpm-workspace.yaml`.
+2. **npm-style top-level `overrides` in `package.json` are IGNORED** by
+   pnpm. Pin via direct exact versions or `pnpm-workspace.yaml`.
+3. **`CI=true` forces `--frozen-lockfile`**, and interactive shells
+   without a TTY abort on pnpm's purge prompt — always run website
+   installs as `CI=true nix shell nixpkgs#nodejs -c pnpm install
+   --frozen-lockfile` (or `--no-frozen-lockfile` when regenerating).
