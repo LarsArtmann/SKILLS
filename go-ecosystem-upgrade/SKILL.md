@@ -172,6 +172,20 @@ This is the phase that gets skipped most often and causes the most damage.
 6. **Confirm the full test suite passes with `-race`** on critical/concurrent code paths.
    Data races don't show up in build or basic tests.
 
+7. **Run the production-data compat gate when the bump touches persistence**
+   (added 2026-09-07, source: crush-daily go-cqrs-lite bump — synthetic fresh
+   DBs proved nothing about reading months of real rows). Copy the production
+   store (never touch the original), then on the copy: `PRAGMA
+   integrity_check`, rehydrate/replay with the NEW build, and diff the
+   observable output (rendered report, read-model dump, doctor) against the
+   OLD build. Byte-identical modulo timestamps = pass. Document the evidence
+   in the status report. If the consumer has no production data yet, pin the
+   legacy-format compatibility with a fixture regression test instead (see
+   crush-daily's `legacy_snapshot_test.go`), and note that flake-tracked
+   master may auto-migrate schema on boot even when the tagged pin does not
+   (crush-daily's snapshots aggregate→stream RENAME COLUMN) — tests asserting
+   one exact schema will fail in the other world.
+
 ### Phase 5 — Commit: per-repo, durable, immediately
 
 1. **Commit per-repository**, not as one mega-commit. Each repo has its own history, CI,
