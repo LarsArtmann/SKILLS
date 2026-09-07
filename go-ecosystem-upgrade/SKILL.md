@@ -303,3 +303,9 @@ For a library release (tagging), add:
 - [./references/version-surface.md](./references/version-surface.md) — The exhaustive
   inventory of where a version number lives across a Go ecosystem (go.mod, go.work,
   vendor/, CI, Nix flakes, Dockerfiles, etc.) so you never miss a reference.
+- [./references/private-monorepo-diverged-branches.md](./references/private-monorepo-diverged-branches.md) —
+  Decision tree for private monorepos whose release tags come from diverged
+  branches (tag pin vs master-pin vs pseudo-versions), the MVS ordering trap
+  (`v4.4.1-0.` pseudo sorting BELOW an existing v4.5.0 tag), and the
+  flake.lock/go.mod same-rev invariant. Added 2026-09-07 from the
+  PapDashboard go-cqrs-lite master-pin upgrade session.
