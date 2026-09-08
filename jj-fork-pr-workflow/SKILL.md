@@ -275,30 +275,27 @@ stay intact after their parent PR merges.
 
 ## Verification status
 
-Evidence levels for every claim in this skill (all 2026-09-08):
+Canonical block format per [verify-external-claims §5](../verify-external-claims/SKILL.md) ("Verification-Status Block Template"). All verification dated 2026-09-08.
 
-- **Execution-verified** against jj 0.45.1 in hermetic two-remote scratch
-  repos — the full Phase 1-5 lifecycle, 11/11 assertions: colocated clone +
-  upstream remote, sibling + stacked changes, `push -c` bookmark creation,
-  the bulk `roots(mine() & mutable())` rebase (stacks intact, siblings
-  parallel), same-`-c` re-push of rebased PRs (stable branch names), bare
-  push skipping true siblings (why `-b 'push-*'`), squash-merge →
-  `empty()`, `mine() & mutable()`-guarded abandon, bookmark delete +
-  `--deleted` push. Rerun anytime (e.g. after a jj upgrade):
-  [./scripts/validate-workflow.sh](./scripts/validate-workflow.sh).
-- **Flag-verified** against jj 0.45.1 `--help`: all other commands and revset
-  functions (`heads()`, `description()`, `author()`...).
-- **gh-verified** against gh 2.99.0: `gh repo fork --clone=false`,
-  `gh repo sync`, `gh repo view` exit codes (1 = missing), `gh pr checks`
-  argument semantics (PR selector or current branch — not `owner/repo`).
-- **Raw-source-verified** via the GitHub API: charmbracelet CONTRIBUTING.md,
-  the org-level PR template (two checkboxes), and `bubbletea` merge history
-  (single-parent `(#NNNN)` commits ⇒ squash-merge). An earlier draft's
-  "Problem/Fix/Validation template" claim was summarizer fabrication,
-  caught and corrected by raw verification.
-- `jj mergemerge` confirmed nonexistent (local command list + official docs
-  - source search).
-- Official docs: <https://docs.jj-vcs.dev/latest/github/>
+| Claim                                                                  | Status                 | Source                                                                                                                                       |
+| ---------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Full Phase 1-5 lifecycle, 11/11 assertions (colocated clone, sibling + stacked changes, `push -c`, bulk `roots(mine() & mutable())` rebase, re-push, bare-push skip, squash-merge → `empty()`, guarded abandon, bookmark delete + `--deleted`) | ✅ Execution-verified  | [./scripts/validate-workflow.sh](./scripts/validate-workflow.sh) in hermetic two-remote scratch repos; rerun after any jj upgrade            |
+| All other jj commands and revset functions (`heads()`, `description()`, `author()`, ...)     | ✅ Flag-verified       | jj 0.45.1 `--help` text                                                                                                                      |
+| `gh repo fork --clone=false`, `gh repo sync`, `gh repo view` exit codes, `gh pr checks` argument semantics   | ✅ gh-verified         | gh 2.99.0 (`gh pr checks` takes a PR selector or the current branch — not `owner/repo`; `gh repo view` exits 1 on a missing repo)            |
+| charmbracelet CONTRIBUTING.md, org PR template (two checkboxes), squash-merge history        | ✅ Raw-source-verified | GitHub API raw fetch; an earlier "Problem/Fix/Validation template" claim was summarizer fabrication, caught and corrected by this fetch      |
+| `jj mergemerge`                                                        | ❌ Does not exist      | Local jj 0.45.1 command list + official docs + source search; the intent maps to the Phase 4 sync loop                                       |
+| Official GitHub collaboration guide                                    | ✅ Reference           | <https://docs.jj-vcs.dev/latest/github/>                                                                                                     |
+
+## Prior art
+
+Known upstream jj agent skills, so future sessions do not redo the survey
+(checked 2026-09-08 via Sourcegraph + web search):
+
+- **Carbon Language's** `.agents/skills/jj/SKILL.md` — jj basics for Carbon
+  contributors. No fork + multi-PR sync coverage; complementary, not a rival.
+- A small `jj-commit` prompt snippet — single-commit message guidance only.
+- No public skill covers fork setup + the multi-PR sync loop; this skill
+  fills that gap.
 
 ## Cross-skill handoffs
 

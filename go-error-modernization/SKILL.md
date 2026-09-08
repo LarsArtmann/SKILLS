@@ -8,24 +8,21 @@ metadata:
 
 # Go Error Modernization
 
-> ## Verification status (read first)
->
-> **What is verified independent of the source feedback:**
->
-> - `errors.AsType[E error](err error) (E, bool)` is a real Go 1.26.0 stdlib function — confirmed via [pkg.go.dev/errors](https://pkg.go.dev/errors).
-> - The Go docs explicitly say "For most uses, prefer AsType" over `errors.As`.
-> - `errors.Is` is NOT legacy. It is the stdlib-documented API for sentinel value matching (`io.EOF`, `sql.ErrNoRows`, `syscall.EXDEV`, `context.Canceled`, your own `var ErrFoo = errors.New(...)`). See the [Go blog: Working with Errors](https://go.dev/blog/go1.13-errors).
-> - The decision tree and anti-patterns below follow logically from how these three APIs actually behave.
->
-> **What could NOT be independently verified (treat as reported, not confirmed):**
->
-> - The `erraudit` CLI binary is **not publicly findable**. Searched GitHub, Sourcegraph, pkg.go.dev (2026-08-02). Zero matches for `erraudit`, `--enforce-go-error-family`, or the previous name `hierarchical-errors`. The tool is reported to exist by the repository owner (who also owns the `errorfamily` library — see below), so it is likely private/unreleased. All CLI flags, exit codes, and behaviors below are reported by the user and original source feedback — treat as hypotheses to verify against your installed binary.
-> - The `--enforce-go-error-family` flag is **not found in any public codebase**. It presumably relates to [`github.com/larsartmann/go-error-family`](https://github.com/larsartmann/go-error-family) (v0.10.0), a real structured error classification library with six error families (Rejection, Conflict, Transient, Corruption, Infrastructure, Orchestration). The flag's exact behavior has not been verified.
-> - The `legacyerrors` analyzer name (used in `//nolint:legacyerrors`) does not appear in `golang.org/x/tools/go/analysis/passes/` or any public repository.
-> - Exit codes, error messages, and the "0% precision" statistic in [./references/cli-and-flags.md](./references/cli-and-flags.md) are reproduced from the original source feedback (2026-07-21) and have not been re-verified against the renamed `erraudit` binary.
-> - The `GOEXPERIMENT=jsonv2` prefix on every command is unconfirmed as a requirement. It may be a quirk of the original project (`golangci-lint-auto-configure`) rather than a hard requirement.
->
-> **The decision tree, anti-patterns, and fix-to-zero warning are verified** — they follow from how Go's three error-matching APIs actually behave, independent of any specific linter. The skill's value survives even if `erraudit` is private or changes.
+## Verification status (read first)
+
+Canonical block format per `verify-external-claims/SKILL.md` §5. Web-verification searches dated 2026-08-02.
+
+| Claim                                                                                                                                          | Status                   | Source                                                                                                                                                             |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `errors.AsType[E error](err error) (E, bool)` is a real Go 1.26.0 stdlib function                                                              | ✅ Verified              | [pkg.go.dev/errors](https://pkg.go.dev/errors)                                                                                                                     |
+| Go docs: "For most uses, prefer AsType" over `errors.As`                                                                                        | ✅ Verified              | [pkg.go.dev/errors](https://pkg.go.dev/errors)                                                                                                                     |
+| `errors.Is` is NOT legacy — it is the stdlib API for sentinel value matching (`io.EOF`, `sql.ErrNoRows`, `syscall.EXDEV`, `context.Canceled`, your own `var ErrFoo`) | ✅ Verified              | [Go blog: Working with Errors](https://go.dev/blog/go1.13-errors)                                                                                                  |
+| The decision tree, anti-patterns, and fix-to-zero warning below                                                                                 | ✅ Verified              | Follow from how Go's three error-matching APIs actually behave — the skill's value survives even if `erraudit` is private or changes                               |
+| The `erraudit` CLI binary (formerly `hierarchical-errors`)                                                                                      | ❌ Unverified            | Not publicly findable: searched GitHub, Sourcegraph, pkg.go.dev (2026-08-02); zero matches. Likely private/unreleased. All flags, exit codes, and behaviors below are reported — treat as hypotheses to verify against your installed binary |
+| The `--enforce-go-error-family` flag                                                                                                            | ❌ Unverified            | Not found in any public codebase; presumably relates to [`github.com/larsartmann/go-error-family`](https://github.com/LarsArtmann/go-error-family) v0.10.0 (a verified library with six error families) |
+| The `legacyerrors` analyzer name (used in `//nolint:legacyerrors`)                                                                              | ❌ Unverified            | Does not appear in `golang.org/x/tools/go/analysis/passes/` or any public repository                                                                                |
+| Exit codes, error messages, and the "0% precision" statistic in [./references/cli-and-flags.md](./references/cli-and-flags.md)                  | ❌ Unverified — reported | Reproduced from the original source feedback (2026-07-21); not re-verified against the renamed `erraudit` binary                                                    |
+| The `GOEXPERIMENT=jsonv2` prefix on every command being a hard requirement                                                                      | ❌ Unverified            | May be a quirk of the original project (`golangci-lint-auto-configure`) rather than a requirement                                                                   |
 
 ---
 

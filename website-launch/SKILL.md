@@ -377,33 +377,15 @@ the complete structure, badge templates, and section ordering.
 
 ### Standard README Structure
 
-```
-1. Centered header (h1 align="center") with project name
-2. Centered tagline (strong)
-3. Centered badge row (library: Go Reference | CI | Go Report Card; application: CI | Docker)
-4. Centered documentation links (Documentation · API Reference)
-5. --- separator
-6. One-paragraph summary (what it is, what it's built on)
-7. ## Why? — the problem this solves
-8. ## Who is this for? — named audience personas (3–5)
-9. ## Comparison — table vs alternatives
-10. ## How it works — numbered pipeline
-11. ## When NOT to use this — specific exclusions + the alternative to reach for
-12. ## Install — go get command
-13. ## Usage — minimal working example (verified against source)
-14. ## Configuration Options — table of all options
-15. ## Domain-specific API tables (filters, middleware, etc.)
-16. ## Event/Type definitions — struct + rules
-17. ## Advanced features — resilience, observability, etc.
-18. ## Benchmarks — table
-19. ## Dependencies — table
-20. ## Design Decisions — bullet list
-21. ## Error Handling — sentinel errors, example
-22. ## Development — Nix commands
-23. ## Examples — table of runnable examples
-24. ## API Stability — versioning policy
-25. ## License — verify actual license from LICENSE file (NOT hardcoded MIT)
-```
+The canonical section order (centered header → tagline → badges → docs
+links → one-paragraph summary → `## Why?` → audience → comparison → how it
+works → when-NOT-to-use → install → usage → API tables → benchmarks →
+license) lives in the
+[README template](./references/readme-template.md) §"Standard Section
+Order" — and only there. Earlier drafts of this SKILL.md restated the full
+list; every restatement drifted from the template, so the template is the
+single source of truth for structure, badge markup, and the documentation
+link bar.
 
 **Why "Who is this for?" and "When NOT to use this"?** They are the two
 highest-leverage trust signals in technical docs: the first tells a

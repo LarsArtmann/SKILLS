@@ -16,14 +16,16 @@ You need **both** parts:
 - **`mkPreparedSource`** for hermetic `nix build` — it copies private deps into the source tree and injects `replace` directives before the build derivation.
 - **`GOPRIVATE` in devShell** for local development — it stops `go mod tidy` / `go get` from hitting the public Go proxy for private paths.
 
-> ## Verification status (read first)
->
-> **All claims verified against `go-nix-helpers` source** (as of 2026-08-12):
->
-> - `GOPRIVATE`, `vendorHash`, `buildGoModule`, `replace` directives, and `git+ssh://` flake inputs are public, documented Nix and Go concepts.
-> - The `mkPreparedSource` function, the `flakeModules.go-standard` module, and their specific APIs (`deps` map, `validatePrivateDeps`, `publicDeps`, `postPatchExtra`, `privateGlobPattern`, `requireDeps`) are confirmed against the current source in `/home/lars/projects/go-nix-helpers`.
-> - The `go-standard` module has 39 options total; this skill covers the subset relevant to private-dep management.
-> - The problems with committed `vendor/` (massive diffs, stale deps, merge conflicts) are well-known and widely documented.
+## Verification status (read first)
+
+Canonical block format per `verify-external-claims/SKILL.md` §5. All claims verified against the `go-nix-helpers` source (2026-08-12).
+
+| Claim                                                                                                                                                             | Status      | Source                                                                          |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------- |
+| `GOPRIVATE`, `vendorHash`, `buildGoModule`, `replace` directives, and `git+ssh://` flake inputs                                                                    | ✅ Verified | Public, documented Nix and Go concepts                                          |
+| The `mkPreparedSource` function, the `flakeModules.go-standard` module, and their specific APIs (`deps` map, `validatePrivateDeps`, `publicDeps`, `postPatchExtra`, `privateGlobPattern`, `requireDeps`) | ✅ Verified | Current source in `/home/lars/projects/go-nix-helpers`                          |
+| The `go-standard` module has 39 options total (this skill covers the private-dep subset)                                                                           | ✅ Verified | `go-nix-helpers` source (2026-08-12)                                            |
+| Committed `vendor/` problems (massive diffs, stale deps, merge conflicts, repo bloat)                                                                              | ✅ Verified | Widely documented; independently observed in this repo's history                |
 
 ## 1. Diagnose
 
