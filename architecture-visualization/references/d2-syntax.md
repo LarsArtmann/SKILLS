@@ -21,13 +21,13 @@ stderr, to gate the next step.
 
 ## Shape vocabulary (architecture-relevant)
 
-| Shape       | Syntax                     | Use for                       |
-| ----------- | -------------------------- | ----------------------------- |
-| rectangle   | `api: API {shape: rectangle}` (default) | services, modules |
-| cylinder    | `db: Postgres {shape: cylinder}`        | databases, stores |
-| cloud       | `cdn: CDN {shape: cloud}`               | external services  |
-| queue       | `events: Bus {shape: queue}`            | buses, channels    |
-| page        | `users: Users {shape: person}`          | actors             |
+| Shape     | Syntax                                  | Use for           |
+| --------- | --------------------------------------- | ----------------- |
+| rectangle | `api: API {shape: rectangle}` (default) | services, modules |
+| cylinder  | `db: Postgres {shape: cylinder}`        | databases, stores |
+| cloud     | `cdn: CDN {shape: cloud}`               | external services |
+| queue     | `events: Bus {shape: queue}`            | buses, channels   |
+| page      | `users: Users {shape: person}`          | actors            |
 
 ## Direction and grouping
 

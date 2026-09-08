@@ -5,7 +5,7 @@ calls, no files created in the project repo. It follows the `website-launch`
 skill (SKILL.md + all 13 references) phase by phase, adapted to what was
 actually verified in `/tmp/eval-fictional/go-pixelwand`.
 
-**Goal:** a public documentation website that *sells* go-pixelwand — the
+**Goal:** a public documentation website that _sells_ go-pixelwand — the
 intermediate-allocation pain story from the README "Why?" section becomes the
 landing page's spine, backed by a demo video, honest comparison table, and
 trust patterns ("Who is this for?" / "When NOT to use this").
@@ -17,19 +17,19 @@ trust patterns ("Who is this for?" / "When NOT to use this").
 Everything below was read from the actual repo — the plan's code examples,
 links, and claims are grounded in it.
 
-| Item | Verified value |
-| --- | --- |
-| Module path | `github.com/fictional-dev/go-pixelwand` (go.mod) |
-| Go version | `go 1.26`, **zero dependencies** (stdlib only) |
-| Project type | **Library** — no `main.go`, no `cmd/` (per skill decision branch) |
-| Public API | `type Wand struct` (unexported `ops` field); `(*Wand).Resize(w2, h int) *Wand`; `(*Wand).Gray() *Wand`; `(*Wand).Render(src []byte) ([]byte, error)` |
-| Constructor | **There is NO `New()`** — the zero value `&pixelwand.Wand{}` is the entry point. Chain via pointer receivers: `w.Resize(...).Gray().Render(src)` |
-| README today | Tagline "Zero-allocation chained image transforms for Go.", a good `## Why?` (intermediate allocation pain), a 3-column comparison (imaging / bild / go-pixelwand). No badges, no install, no usage, no license |
-| LICENSE file | **Missing** — blocks the license badge, README license section, and part of GitHub metadata |
-| CI workflow | **Missing** (`.github/` does not exist) — a CI badge would 404 today |
-| CHANGELOG.md / benchmarks / examples/ | **Missing** |
-| `GOEXPERIMENT=jsonv2` | Not used — no `encoding/json` anywhere. Requirement N/A (checked per skill Phase 1 step 4) |
-| Existing website / old static site | None (`website/` and `site/` absent) → fresh creation, not maintenance mode |
+| Item                                  | Verified value                                                                                                                                                                                                  |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Module path                           | `github.com/fictional-dev/go-pixelwand` (go.mod)                                                                                                                                                                |
+| Go version                            | `go 1.26`, **zero dependencies** (stdlib only)                                                                                                                                                                  |
+| Project type                          | **Library** — no `main.go`, no `cmd/` (per skill decision branch)                                                                                                                                               |
+| Public API                            | `type Wand struct` (unexported `ops` field); `(*Wand).Resize(w2, h int) *Wand`; `(*Wand).Gray() *Wand`; `(*Wand).Render(src []byte) ([]byte, error)`                                                            |
+| Constructor                           | **There is NO `New()`** — the zero value `&pixelwand.Wand{}` is the entry point. Chain via pointer receivers: `w.Resize(...).Gray().Render(src)`                                                                |
+| README today                          | Tagline "Zero-allocation chained image transforms for Go.", a good `## Why?` (intermediate allocation pain), a 3-column comparison (imaging / bild / go-pixelwand). No badges, no install, no usage, no license |
+| LICENSE file                          | **Missing** — blocks the license badge, README license section, and part of GitHub metadata                                                                                                                     |
+| CI workflow                           | **Missing** (`.github/` does not exist) — a CI badge would 404 today                                                                                                                                            |
+| CHANGELOG.md / benchmarks / examples/ | **Missing**                                                                                                                                                                                                     |
+| `GOEXPERIMENT=jsonv2`                 | Not used — no `encoding/json` anywhere. Requirement N/A (checked per skill Phase 1 step 4)                                                                                                                      |
+| Existing website / old static site    | None (`website/` and `site/` absent) → fresh creation, not maintenance mode                                                                                                                                     |
 
 ### Code-example verification (skill Phase 1, the #1 trap)
 
@@ -52,23 +52,23 @@ duration parameters exist).
 fuses them into a single pass" and "0 (fused)" allocations, but `Render` is
 currently a stub that returns `src` unchanged. Before the website publishes
 allocation/benchmark numbers, real benchmarks must exist (see Phase 2,
-Benchmarks). Until then any animated output in the demo video is *labeled
-illustrative* per the skill's "fabricated hero output" pitfall.
+Benchmarks). Until then any animated output in the demo video is _labeled
+illustrative_ per the skill's "fabricated hero output" pitfall.
 
 ---
 
 ## Phase 0 — Pre-flight decisions (before any file is written)
 
-| Check | Result / decision |
-| --- | --- |
-| 0.0 Existing website | None — greenfield launch |
-| 0.0.1 Old static site | None — nothing to migrate |
-| 0.1 Firebase project | **Shared `lars-software` with a hosting target** (skill default for new projects). Standalone only if the org wants isolated infra — surface as an option |
-| 0.2 Credentials | To be verified at execution: domains repo Namecheap key, `firebase projects:list`, `hosting:sites:list` collision scan, upload-endpoint reachability |
-| 0.3 Domain naming | Candidate subdomain `pixelwand` (short form acceptable — no sibling repo/DNS collision expected; verify via grep in `domains/lars.software.tf` + `gh repo list`). **Site ID: full slug `go-pixelwand`** (immutable) |
-| 0.4 Confirm with user | **BLOCKING GATE.** Nothing is committed until the user confirms `pixelwand.lars.software` + site ID `go-pixelwand`. A rename after commit touches 8+ files |
-| 0.5 Collision check | `grep -r "pixelwand" ~/projects/domains/lars.software.tf` at execution time |
-| 0.6 Hosting target | **Firebase Hosting** (default) — custom domain, security headers/CSP, DNS pipeline. GitHub Pages stays the fallback if the org declines Firebase infra |
+| Check                 | Result / decision                                                                                                                                                                                                   |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0.0 Existing website  | None — greenfield launch                                                                                                                                                                                            |
+| 0.0.1 Old static site | None — nothing to migrate                                                                                                                                                                                           |
+| 0.1 Firebase project  | **Shared `lars-software` with a hosting target** (skill default for new projects). Standalone only if the org wants isolated infra — surface as an option                                                           |
+| 0.2 Credentials       | To be verified at execution: domains repo Namecheap key, `firebase projects:list`, `hosting:sites:list` collision scan, upload-endpoint reachability                                                                |
+| 0.3 Domain naming     | Candidate subdomain `pixelwand` (short form acceptable — no sibling repo/DNS collision expected; verify via grep in `domains/lars.software.tf` + `gh repo list`). **Site ID: full slug `go-pixelwand`** (immutable) |
+| 0.4 Confirm with user | **BLOCKING GATE.** Nothing is committed until the user confirms `pixelwand.lars.software` + site ID `go-pixelwand`. A rename after commit touches 8+ files                                                          |
+| 0.5 Collision check   | `grep -r "pixelwand" ~/projects/domains/lars.software.tf` at execution time                                                                                                                                         |
+| 0.6 Hosting target    | **Firebase Hosting** (default) — custom domain, security headers/CSP, DNS pipeline. GitHub Pages stays the fallback if the org declines Firebase infra                                                              |
 
 **Additional user decisions surfaced by this plan (not in the skill, but
 blocking):**
@@ -93,7 +93,7 @@ keeping the existing Why? prose as the seed.
 ### Target section order and content plan
 
 1. Centered `h1` header: **go-pixelwand**
-2. Centered tagline: *Zero-allocation chained image transforms for Go.*
+2. Centered tagline: _Zero-allocation chained image transforms for Go._
 3. Centered badge row (library set, adapted to the real org):
    `pkg.go.dev/github.com/fictional-dev/go-pixelwand` (Go Reference) · CI
    (`github.com/fictional-dev/go-pixelwand/actions/workflows/ci.yml`) · Go
@@ -116,12 +116,12 @@ keeping the existing Why? prose as the seed.
 9. `## Comparison` — expand the existing table, glyph style, same row set as
    the website:
 
-   | | imaging | bild | stdlib | go-pixelwand |
-   | --- | :---: | :---: | :---: | :---: |
-   | Intermediate allocs | 1/op | 1/op | 1/op | ✓ 0 (fused) |
-   | Chained/builder API | ✓ | | | ✓ |
-   | Dependencies | several | several | none | none |
-   | Ops today | many | many | manual | resize, gray |
+   |                     | imaging |  bild   | stdlib | go-pixelwand |
+   | ------------------- | :-----: | :-----: | :----: | :----------: |
+   | Intermediate allocs |  1/op   |  1/op   |  1/op  | ✓ 0 (fused)  |
+   | Chained/builder API |    ✓    |         |        |      ✓       |
+   | Dependencies        | several | several |  none  |     none     |
+   | Ops today           |  many   |  many   | manual | resize, gray |
 
 10. `## How it works` — numbered: construct zero-value `Wand` → queue ops
     (`Resize`, `Gray`) → `Render` fuses the queue into one pass, bytes to bytes
@@ -176,13 +176,13 @@ search.
   fictional-dev), `astro.config.mjs` (site URL, title "go-pixelwand", sidebar,
   `lastUpdated: true`, `editLink` →
   `github.com/fictional-dev/go-pixelwand/edit/{branch}/website`), `.firebaserc`
-  + `firebase.json` (shared-project hosting target `go-pixelwand`, security
-  headers, CSP, **cache glob extended to `mp4|webm|mov`**),
-  `src/data/config.ts` (include `pkgGoDev` — library), `src/styles/global.css`
-  + `starlight.css` (accent tokens below; warm dark base `#0a0908` /
-  light `#faf8f5`), `HeroSection.astro` (GitHub stars fetch → fictional-dev
-  repo; hero code = verified snippet), `Logo.astro`, `public/manifest.json`,
-  `public/robots.txt`, OG endpoint border color
+  - `firebase.json` (shared-project hosting target `go-pixelwand`, security
+    headers, CSP, **cache glob extended to `mp4|webm|mov`**),
+    `src/data/config.ts` (include `pkgGoDev` — library), `src/styles/global.css`
+  - `starlight.css` (accent tokens below; warm dark base `#0a0908` /
+    light `#faf8f5`), `HeroSection.astro` (GitHub stars fetch → fictional-dev
+    repo; hero code = verified snippet), `Logo.astro`, `public/manifest.json`,
+    `public/robots.txt`, OG endpoint border color
 - **Write fresh (~20 files):** `src/data/features.ts` (6 cards — zero
   intermediate allocations, single fused pass, builder chaining, bytes-to-bytes
   API, zero dependencies, tiny API surface), `src/data/hero-code.ts`
@@ -263,7 +263,7 @@ the feature grid, `<video controls preload="metadata" poster=...>`, caption
 `SoftwareApplication` JSON-LD, `firebase.json` cache glob includes mp4,
 post-deploy `HEAD /demo.mp4` → 200 with `Cache-Control: public,
 max-age=31536000, immutable`. If `Render` remains a stub, scene 3 renders the
-*concept* (counter/diagram) and the video is labeled illustrative — no
+_concept_ (counter/diagram) and the video is labeled illustrative — no
 fabricated output imagery.
 
 Order: ship the site first if the session runs long, then land the video as

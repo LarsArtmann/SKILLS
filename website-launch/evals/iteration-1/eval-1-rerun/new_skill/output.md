@@ -16,19 +16,19 @@ ci-workflow, common-pitfalls, definition-of-done).
 
 Read from `/tmp/eval-fictional/go-pixelwand`:
 
-| Fact | Value | Consequence |
-| --- | --- | --- |
-| Module path | `github.com/fictional-dev/go-pixelwand` | All badges/links use `fictional-dev`, NOT `LarsArtmann` (skill default) — substitute everywhere |
-| Go version | `go 1.26` | Prerequisite line in Install docs |
-| Project type | **Library** (no `main` package, no `cmd/`) | pkg.go.dev links, Go Reference + Go Report Card badges, `pkgGoDev` in `config.ts`, hero code = Go import + call |
-| Public API | `Wand` struct; `(*Wand).Resize(w2, h int) *Wand`; `(*Wand).Gray() *Wand`; `(*Wand).Render(src []byte) ([]byte, error)` | Verified signatures — see hero code + API table below |
-| Constructor | **None exported.** Zero-value `&pixelwand.Wand{}` is the entry point | Do NOT fabricate `pixelwand.New()` in any example (top code-example trap) |
-| Dependencies | None (`go.mod` has zero requires) | "Zero dependencies" is a selling point; empty dependencies table |
-| `encoding/json/v2` | Not used | The #1 forgotten requirement (GOEXPERIMENT) was checked → **N/A**, no build-constraint docs needed |
-| Existing README | Title, tagline, `Why?` (intermediate-allocation pain), minimal comparison table | Rewrite per template; keep the existing `Why?` narrative as the canonical sales narrative |
-| LICENSE file | **Missing** | Blocker for the license badge (never assume MIT) — user decision, see §3 |
-| Git | **Not a git repo yet** | `git init` + initial commit required before `nix flake lock` (flakes only operate on git-tracked files) and before any skill checkpoint commits |
-| `Render` behavior | Currently returns `src` unchanged (stub) | Honesty gate on benchmarks/evidence — see §12 |
+| Fact               | Value                                                                                                                  | Consequence                                                                                                                                     |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Module path        | `github.com/fictional-dev/go-pixelwand`                                                                                | All badges/links use `fictional-dev`, NOT `LarsArtmann` (skill default) — substitute everywhere                                                 |
+| Go version         | `go 1.26`                                                                                                              | Prerequisite line in Install docs                                                                                                               |
+| Project type       | **Library** (no `main` package, no `cmd/`)                                                                             | pkg.go.dev links, Go Reference + Go Report Card badges, `pkgGoDev` in `config.ts`, hero code = Go import + call                                 |
+| Public API         | `Wand` struct; `(*Wand).Resize(w2, h int) *Wand`; `(*Wand).Gray() *Wand`; `(*Wand).Render(src []byte) ([]byte, error)` | Verified signatures — see hero code + API table below                                                                                           |
+| Constructor        | **None exported.** Zero-value `&pixelwand.Wand{}` is the entry point                                                   | Do NOT fabricate `pixelwand.New()` in any example (top code-example trap)                                                                       |
+| Dependencies       | None (`go.mod` has zero requires)                                                                                      | "Zero dependencies" is a selling point; empty dependencies table                                                                                |
+| `encoding/json/v2` | Not used                                                                                                               | The #1 forgotten requirement (GOEXPERIMENT) was checked → **N/A**, no build-constraint docs needed                                              |
+| Existing README    | Title, tagline, `Why?` (intermediate-allocation pain), minimal comparison table                                        | Rewrite per template; keep the existing `Why?` narrative as the canonical sales narrative                                                       |
+| LICENSE file       | **Missing**                                                                                                            | Blocker for the license badge (never assume MIT) — user decision, see §3                                                                        |
+| Git                | **Not a git repo yet**                                                                                                 | `git init` + initial commit required before `nix flake lock` (flakes only operate on git-tracked files) and before any skill checkpoint commits |
+| `Render` behavior  | Currently returns `src` unchanged (stub)                                                                               | Honesty gate on benchmarks/evidence — see §12                                                                                                   |
 
 ---
 
@@ -37,16 +37,16 @@ Read from `/tmp/eval-fictional/go-pixelwand`:
 Skill gate: **no commits until the domain is confirmed** (a rename after commit
 touches 8+ files).
 
-| Decision | Proposal (default per skill) | Alternative | Status |
-| --- | --- | --- | --- |
-| Hosting target | **Firebase Hosting** (custom domain, headers/CSP, DNS pipeline) | GitHub Pages (zero infra; skips Phases 5 DNS + 7 SA) | Propose Firebase |
-| Firebase project | **Shared `lars-software`** with hosting target `go-pixelwand` | Standalone project | Propose shared |
-| Subdomain | **`go-pixelwand.lars.software`** (full repo slug; no collision risk expected — verify via `grep` in `~/projects/domains/lars.software.tf` + `gh repo list`) | — | **Needs user confirmation** |
-| Firebase site ID | **`go-pixelwand`** (immutable after creation) | — | **Needs user confirmation** (same gate) |
-| License | Ask user; create `LICENSE` + matching badge | — | **Blocker for README badge** |
-| Default branch | Ask user (repo has no git yet); affects `editLink` + ALL branch refs in CI workflow | `main` recommended | **Needs user confirmation** |
-| Path substitution | Skill assumes `~/projects/{repo}`; actual repo is `/tmp/eval-fictional/go-pixelwand` — substitute in every command | — | Noted |
-| Org substitution | Skill templates hardcode `LarsArtmann`; this module lives under `fictional-dev`. Also confirm the `lars.software` domain is the right home for a `fictional-dev` project (domain ownership) | Project GitHub Pages or fictional-dev-owned domain | **Needs user confirmation** |
+| Decision          | Proposal (default per skill)                                                                                                                                                                | Alternative                                          | Status                                  |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | --------------------------------------- |
+| Hosting target    | **Firebase Hosting** (custom domain, headers/CSP, DNS pipeline)                                                                                                                             | GitHub Pages (zero infra; skips Phases 5 DNS + 7 SA) | Propose Firebase                        |
+| Firebase project  | **Shared `lars-software`** with hosting target `go-pixelwand`                                                                                                                               | Standalone project                                   | Propose shared                          |
+| Subdomain         | **`go-pixelwand.lars.software`** (full repo slug; no collision risk expected — verify via `grep` in `~/projects/domains/lars.software.tf` + `gh repo list`)                                 | —                                                    | **Needs user confirmation**             |
+| Firebase site ID  | **`go-pixelwand`** (immutable after creation)                                                                                                                                               | —                                                    | **Needs user confirmation** (same gate) |
+| License           | Ask user; create `LICENSE` + matching badge                                                                                                                                                 | —                                                    | **Blocker for README badge**            |
+| Default branch    | Ask user (repo has no git yet); affects `editLink` + ALL branch refs in CI workflow                                                                                                         | `main` recommended                                   | **Needs user confirmation**             |
+| Path substitution | Skill assumes `~/projects/{repo}`; actual repo is `/tmp/eval-fictional/go-pixelwand` — substitute in every command                                                                          | —                                                    | Noted                                   |
+| Org substitution  | Skill templates hardcode `LarsArtmann`; this module lives under `fictional-dev`. Also confirm the `lars.software` domain is the right home for a `fictional-dev` project (domain ownership) | Project GitHub Pages or fictional-dev-owned domain   | **Needs user confirmation**             |
 
 Other Phase 0 checks to run at execution time (not run in this planning
 session): existing-website check (`website/package.json` — none exists: fresh
@@ -86,24 +86,24 @@ video). Derived from the existing `Why?` section:
 Restructure `README.md` to the canonical section order from
 `readme-template.md`. Current content maps into it; the rest is written fresh.
 
-| # | Section | Content plan |
-| --- | --- | --- |
-| 1–2 | Centered header + tagline | `<h1 align="center">go-pixelwand</h1>` + centered tagline |
-| 3 | Badge row | Library set, template order: **Go Reference \| CI \| Go Report Card \| License** — all URLs use `github.com/fictional-dev/go-pixelwand`; `{LICENSE}` pending user decision |
-| 4 | Documentation link bar | `Documentation · API Reference` (pkg.go.dev); a third link `Watch the 25s demo` is appended once the video exists |
-| 5–6 | Separator + one-paragraph summary | §3 canonical paragraph |
-| 7 | `## Why?` | Keep/extend existing intermediate-allocation narrative (concrete failure mode: 3-op 4K pipeline, hundreds of MB GC churn) |
-| 8 | `## Who is this for?` | 4 personas (drafted in §5) |
-| 9 | `## Comparison` | Existing table upgraded to glyph style, stdlib column added, same rows reused on landing page + docs page |
-| 10 | `## How it works` | 1. Queue ops on a `Wand` → 2. `Render(src)` fuses the queue → 3. single pass, one output buffer |
-| 11 | `## When NOT to use this` | 4 honest exclusions (drafted in §5) |
-| 12 | `## Install` | `go get github.com/fictional-dev/go-pixelwand` (Go 1.26+) |
-| 13 | `## Usage` | The verified hero snippet (below) |
-| 14 | `## API` | Table of `Wand`, `Resize`, `Gray`, `Render` with real signatures |
-| 17 | `## Benchmarks` | **Real runs only** — see honesty gate §12 |
-| 18 | `## Dependencies` | "None." — stated explicitly as a feature |
-| 19–23 | Design decisions / Error handling / Development / API stability | Written per template; Development section must match the repo's actual (currently absent) flake/tooling — keep minimal or add flake first |
-| 24 | `## License` | Matches the user-confirmed LICENSE file |
+| #     | Section                                                         | Content plan                                                                                                                                                               |
+| ----- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1–2   | Centered header + tagline                                       | `<h1 align="center">go-pixelwand</h1>` + centered tagline                                                                                                                  |
+| 3     | Badge row                                                       | Library set, template order: **Go Reference \| CI \| Go Report Card \| License** — all URLs use `github.com/fictional-dev/go-pixelwand`; `{LICENSE}` pending user decision |
+| 4     | Documentation link bar                                          | `Documentation · API Reference` (pkg.go.dev); a third link `Watch the 25s demo` is appended once the video exists                                                          |
+| 5–6   | Separator + one-paragraph summary                               | §3 canonical paragraph                                                                                                                                                     |
+| 7     | `## Why?`                                                       | Keep/extend existing intermediate-allocation narrative (concrete failure mode: 3-op 4K pipeline, hundreds of MB GC churn)                                                  |
+| 8     | `## Who is this for?`                                           | 4 personas (drafted in §5)                                                                                                                                                 |
+| 9     | `## Comparison`                                                 | Existing table upgraded to glyph style, stdlib column added, same rows reused on landing page + docs page                                                                  |
+| 10    | `## How it works`                                               | 1. Queue ops on a `Wand` → 2. `Render(src)` fuses the queue → 3. single pass, one output buffer                                                                            |
+| 11    | `## When NOT to use this`                                       | 4 honest exclusions (drafted in §5)                                                                                                                                        |
+| 12    | `## Install`                                                    | `go get github.com/fictional-dev/go-pixelwand` (Go 1.26+)                                                                                                                  |
+| 13    | `## Usage`                                                      | The verified hero snippet (below)                                                                                                                                          |
+| 14    | `## API`                                                        | Table of `Wand`, `Resize`, `Gray`, `Render` with real signatures                                                                                                           |
+| 17    | `## Benchmarks`                                                 | **Real runs only** — see honesty gate §12                                                                                                                                  |
+| 18    | `## Dependencies`                                               | "None." — stated explicitly as a feature                                                                                                                                   |
+| 19–23 | Design decisions / Error handling / Development / API stability | Written per template; Development section must match the repo's actual (currently absent) flake/tooling — keep minimal or add flake first                                  |
+| 24    | `## License`                                                    | Matches the user-confirmed LICENSE file                                                                                                                                    |
 
 Removals from current README: none needed (no emoji, no ToC) — it is sparse,
 everything is additive.
@@ -124,12 +124,12 @@ out, err := w.Resize(1920, 1080).Gray().Render(src)
 
 API table content (from source):
 
-| Symbol | Signature | Notes |
-| --- | --- | --- |
-| `Wand` | `type Wand struct` | Transform queue; zero-value is usable |
-| Resize | `(w *Wand) Resize(width, height int) *Wand` | Queues resize; returns receiver for chaining |
-| Gray | `(w *Wand) Gray() *Wand` | Queues grayscale |
-| Render | `(w *Wand) Render(src []byte) ([]byte, error)` | Fuses + applies all queued ops in one pass |
+| Symbol | Signature                                      | Notes                                        |
+| ------ | ---------------------------------------------- | -------------------------------------------- |
+| `Wand` | `type Wand struct`                             | Transform queue; zero-value is usable        |
+| Resize | `(w *Wand) Resize(width, height int) *Wand`    | Queues resize; returns receiver for chaining |
+| Gray   | `(w *Wand) Gray() *Wand`                       | Queues grayscale                             |
+| Render | `(w *Wand) Render(src []byte) ([]byte, error)` | Fuses + applies all queued ops in one pass   |
 
 ---
 
@@ -159,15 +159,15 @@ API table content (from source):
 
 **Comparison table (glyphs; identical row set on landing page and docs page)**
 
-| | stdlib `x/image/draw` | imaging | bild | go-pixelwand |
-| --- | :---: | :---: | :---: | :---: |
-| Chained ops in one pass | | | | ✓ |
-| Intermediate allocations | 1 per op | 1 per op | 1 per op | **0** |
-| Builder API | | fluent | functional | ✓ |
-| Dependencies | low | few | few | **0** |
+|                          | stdlib `x/image/draw` | imaging  |    bild    | go-pixelwand |
+| ------------------------ | :-------------------: | :------: | :--------: | :----------: |
+| Chained ops in one pass  |                       |          |            |      ✓       |
+| Intermediate allocations |       1 per op        | 1 per op |  1 per op  |    **0**     |
+| Builder API              |                       |  fluent  | functional |      ✓       |
+| Dependencies             |          low          |   few    |    few     |    **0**     |
 
-Sentence under the table: the differentiator row is *intermediate
-allocations* — every other library materializes a full image per step;
+Sentence under the table: the differentiator row is _intermediate
+allocations_ — every other library materializes a full image per step;
 go-pixelwand never does.
 
 **Six feature cards (features.ts)**: Zero intermediate allocations ·
@@ -261,12 +261,12 @@ pre-filled from Phase 2 so the intent interview is short:
 
 **Storyboard (proposal table — get user agreement before animating):**
 
-| Frame | Beat | On-screen | Source |
-| --- | --- | --- | --- |
-| 0–3s | Hook | A 4K image duplicating per pipeline step; allocation counter climbing into hundreds of MB. Text: "Every step of your image pipeline allocates another full frame." | README `Why?` pain, outcome language |
-| 3–8s | Value claim | The duplicates collapse into one pass arrow. Text: "go-pixelwand fuses the whole chain into one pass — no intermediate buffers." | One-paragraph summary |
-| 8–20s | Evidence | 2 scenes: (a) the real hero code typing itself; (b) **real captured** `go test -bench` output with allocs/op for chained ops | Real product behavior only — see §12 gate |
-| 20–25s | CTA | "go get github.com/fictional-dev/go-pixelwand" + `go-pixelwand.lars.software/#demo` | Install section |
+| Frame  | Beat        | On-screen                                                                                                                                                          | Source                                    |
+| ------ | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------- |
+| 0–3s   | Hook        | A 4K image duplicating per pipeline step; allocation counter climbing into hundreds of MB. Text: "Every step of your image pipeline allocates another full frame." | README `Why?` pain, outcome language      |
+| 3–8s   | Value claim | The duplicates collapse into one pass arrow. Text: "go-pixelwand fuses the whole chain into one pass — no intermediate buffers."                                   | One-paragraph summary                     |
+| 8–20s  | Evidence    | 2 scenes: (a) the real hero code typing itself; (b) **real captured** `go test -bench` output with allocs/op for chained ops                                       | Real product behavior only — see §12 gate |
+| 20–25s | CTA         | "go get github.com/fictional-dev/go-pixelwand" + `go-pixelwand.lars.software/#demo`                                                                                | Install section                           |
 
 Self-checks on the beat list: **value test** — delete evidence beats, hook +
 value + CTA still state the value ✓. **Muted test** — every scene carries the

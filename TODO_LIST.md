@@ -22,10 +22,10 @@
 
 ## Open items
 
-| ID  | Task                                                                                                                     | Status    | Impact | Effort | Evidence                                                                                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------ | --------- | ------ | ------ | ----------------------------------------------------------------------------------------------- |
-| T30 | After the first real PR kept green via the sync loop: flip README status 🆕→🟢 with a documented run note                | 🔵 BLOCKED | Low    | Low    | `docs/status/2026-09-08_20-39_*` c3/f15 — needs a real-world run to happen first                 |
-| T33 | Apply retro-audit follow-ups in the SITE repos (redeploy emeet-pixyd for cache headers, id="demo" + README demo link, recreate lost composition, video flows for gogenfilter/go-atomic-write/go-filewatcher) | 🔴 TODO | Medium | M/site | `docs/status/2026-09-08_23-15_demo-video-retro-audit.md` — lives in site repos, tracked here for visibility |
+| ID  | Task                                                                                                                                                                                                         | Status     | Impact | Effort | Evidence                                                                                                    |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | ------ | ------ | ----------------------------------------------------------------------------------------------------------- |
+| T30 | After the first real PR kept green via the sync loop: flip README status 🆕→🟢 with a documented run note                                                                                                    | 🔵 BLOCKED | Low    | Low    | `docs/status/2026-09-08_20-39_*` c3/f15 — needs a real-world run to happen first                            |
+| T33 | Apply retro-audit follow-ups in the SITE repos (redeploy emeet-pixyd for cache headers, id="demo" + README demo link, recreate lost composition, video flows for gogenfilter/go-atomic-write/go-filewatcher) | 🔴 TODO    | Medium | M/site | `docs/status/2026-09-08_23-15_demo-video-retro-audit.md` — lives in site repos, tracked here for visibility |
 
 ---
 
