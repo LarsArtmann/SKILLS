@@ -5,8 +5,8 @@ type CreateUserRequest struct {
     Email string `json:"email"`
 
     //govalid:required
-    //govalid:min_len=2
-    //govalid:max_len=100
+    //govalid:minlength=2
+    //govalid:maxlength=100
     Name string `json:"name"`
 }
 

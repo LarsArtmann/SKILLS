@@ -109,6 +109,10 @@ huma.Register(api, huma.Operation{
 
 ## Validation (govalid)
 
+Marker names matter: `minlength`/`maxlength` are real, `min_len`/`max_len`
+are **silently ignored** by the generator (no error, no check — verified
+2026-09-08 against v1.9.0).
+
 ```go
 type CreateUserRequest struct {
     //govalid:required
@@ -116,10 +120,23 @@ type CreateUserRequest struct {
     Email string `json:"email"`
 
     //govalid:required
-    //govalid:min_len=2
-    //govalid:max_len=100
+    //govalid:minlength=2
+    //govalid:maxlength=100
     Name string `json:"name"`
 }
 ```
 
-Run `go generate ./...` to generate validation code. Zero allocations at runtime.
+Generate with a pinned version (full list: upstream `MARKERS.md`):
+
+```go
+//go:generate go run github.com/sivchari/govalid/cmd/govalid@v1.9.0 .
+```
+
+Then `go generate ./...`. Generated file (`<file>_<struct>_validator.go`)
+adds pointer-receiver `Validate() error` and `ValidateContext(ctx)`, plus
+`Err<Struct><Field><Rule>Validation` sentinel vars; the package needs
+`github.com/sivchari/govalid` as a runtime dependency. First-time
+bootstrap: run the generator before any code references `Validate()`, or
+package analysis fails on the missing method (a non-issue once generated
+files are committed). "Zero allocations at runtime" is the upstream claim
+(README/MARKERS.md), not independently benchmarked here.
