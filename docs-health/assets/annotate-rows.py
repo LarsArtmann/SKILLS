@@ -123,7 +123,9 @@ def main() -> None:
             "\n" if lines[i].endswith("\n") else ""
         )
         if dry_run:
-            print(f"DRY {target.name} row {row}:\n  - {lines[i].rstrip()}\n  + {edits[i].rstrip()}")
+            print(
+                f"DRY {target.name} row {row}:\n  - {lines[i].rstrip()}\n  + {edits[i].rstrip()}"
+            )
     if dry_run:
         print(f"{target.name}: would annotate {len(edits)} rows -> {sorted(edits)}")
         return
@@ -141,11 +143,17 @@ def main() -> None:
         )
     for i, new in edits.items():
         if i >= len(reread_lines) or new.strip() not in reread_lines[i]:
-            problems.append(f"line {i + 1}: annotated row missing or mangled after write")
+            problems.append(
+                f"line {i + 1}: annotated row missing or mangled after write"
+            )
     if problems:
         target.write_text(original)  # restore; never leave a collapsed table
-        raise SystemExit("SHAPE CHECK FAILED (original restored):\n  " + "\n  ".join(problems))
-    print(f"{target.name}: annotated {len(edits)} rows -> {sorted(edits)} (shape verified)")
+        raise SystemExit(
+            "SHAPE CHECK FAILED (original restored):\n  " + "\n  ".join(problems)
+        )
+    print(
+        f"{target.name}: annotated {len(edits)} rows -> {sorted(edits)} (shape verified)"
+    )
 
 
 if __name__ == "__main__":

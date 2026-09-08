@@ -1,6 +1,6 @@
 ## Why it happens
 
-GoReleaser infers the "current tag" from git. When several tags point at the same commit, it can't know which one you mean and may pick the wrong one (GoReleaser aborts with a *multiple tags* error, or silently picks the first match). The fix is to tell it explicitly.
+GoReleaser infers the "current tag" from git. When several tags point at the same commit, it can't know which one you mean and may pick the wrong one (GoReleaser aborts with a _multiple tags_ error, or silently picks the first match). The fix is to tell it explicitly.
 
 ## Fix the release
 
@@ -29,7 +29,7 @@ goreleaser release --clean
 name: release
 on:
   push:
-    tags: ['v*']
+    tags: ["v*"]
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
@@ -42,7 +42,7 @@ jobs:
           go-version: stable
       - uses: goreleaser/goreleaser-action@v6
         with:
-          version: '~> v2'
+          version: "~> v2"
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -84,15 +84,15 @@ archives:
         formats: [zip]
 
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "checksums.txt"
 
 changelog:
   sort: asc
   filters:
     exclude:
-      - '^docs:'
-      - '^test:'
-      - '^chore:'
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
 
 release:
   github:

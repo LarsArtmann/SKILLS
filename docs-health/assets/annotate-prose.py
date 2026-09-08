@@ -97,7 +97,9 @@ def main() -> None:
         m = re.match(r"^(\s*)((?:\*\*)?\d+\.(?:\*\*)?\s*)(.*)$", raw)
         new = f"{m.group(1)}{m.group(2)}~~{m.group(3)}~~ {marker}"
         if dry_run:
-            print(f"DRY {target.name} item {num} (lines {i + 1}-{span_end}):\n  - {raw}\n  + {new}")
+            print(
+                f"DRY {target.name} item {num} (lines {i + 1}-{span_end}):\n  - {raw}\n  + {new}"
+            )
         else:
             lines[i] = new + ("\n" if lines[i].endswith("\n") else "")
         for j in range(i + 1, span_end):

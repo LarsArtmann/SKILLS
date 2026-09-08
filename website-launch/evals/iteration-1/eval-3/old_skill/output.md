@@ -20,6 +20,7 @@ Extract a **real frame from the video's title scene** with `ffmpeg -ss <t> -fram
 The skill's link bar (below the tagline, before the `---` separator) does **not** gain a video-specific entry — the video lives on the landing page, so it's reached via the Documentation link:
 
 **Libraries:**
+
 ```markdown
 **[Documentation](https://{subdomain}.lars.software)** ·
 **[pkg.go.dev](https://pkg.go.dev/github.com/LarsArtmann/{repo})** ·
@@ -27,6 +28,7 @@ The skill's link bar (below the tagline, before the `---` separator) does **not*
 ```
 
 **Applications/servers** (omit pkg.go.dev):
+
 ```markdown
 **[Documentation](https://{subdomain}.lars.software)** ·
 **[Changelog](CHANGELOG.md)**

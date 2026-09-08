@@ -167,33 +167,33 @@ where rigor slipped. No, it was not the best I can do — it was about 85%.
 
 ## f) Next tasks (ranked; feeds docs-health HARVEST)
 
-| #  | Task                                                                                      | Impact   | Effort | Category      |
-| -- | ----------------------------------------------------------------------------------------- | -------- | ------ | ------------- |
-| 1  | Fix `gh pr checks` usage in `references/charmbracelet.md` (verified defect d1)             | Critical | S      | Bug           |
-| 2  | Fix Phase 0 fork-existence check in `SKILL.md` line 85 (verified defect d2)                | Critical | S      | Bug           |
-| 3  | Reword the skill's verification-status section to scope the "verified" claim to jj-only    | High     | S      | Documentation |
-| 4  | Run docs-health HARVEST on this report's section (f) into TODO_LIST.md                     | High     | S      | Documentation |
-| 5  | Scratch-repo E2E validation of the full skill lifecycle (incl. `--dry-run` pushes)         | High     | M      | Quality       |
-| 6  | Fetch raw `charmbracelet/.github` CONTRIBUTING.md + a real PULL_REQUEST_TEMPLATE.md; correct the reference if needed | High | S | Quality |
-| 7  | Behavioral trigger test: fresh Crush session, realistic prompts ("fork bubbletea and fix X") | High     | S      | Quality       |
-| 8  | Read `verify-external-claims` SKILL.md; align verification-block format or define one      | Medium   | S      | Quality       |
-| 9  | Add `scripts/sync-all-prs.sh` helper encoding Phase 4                                     | Medium   | M      | Feature       |
-| 10 | Verify the "bare `jj git push` skips sibling chains" pitfall empirically; keep or cut it   | Medium   | S      | Quality       |
-| 11 | Verify `roots(mine() & mutable())` multi-root rebase semantics empirically in scratch repo | Medium   | S      | Quality       |
-| 12 | Clarify Phase 5: push-* bookmarks (from `-c`) need the same delete + `--deleted` cleanup   | Medium   | S      | Documentation |
-| 13 | Add a "known upstream skills" note (Carbon-lang jj skill) to the skill's reference file    | Low      | S      | Documentation |
-| 14 | Confirm auto-commit daemon picked up the §10 AGENTS.md row (was uncommitted at report time)| Low      | S      | Cleanup       |
-| 15 | After first real PR kept green by the sync loop: flip README status 🆕→🟢 with a run note  | Low      | S      | Documentation |
+| #  | Task                                                                                                                 | Impact   | Effort | Category      |
+| -- | -------------------------------------------------------------------------------------------------------------------- | -------- | ------ | ------------- |
+| 1  | Fix `gh pr checks` usage in `references/charmbracelet.md` (verified defect d1)                                       | Critical | S      | Bug           |
+| 2  | Fix Phase 0 fork-existence check in `SKILL.md` line 85 (verified defect d2)                                          | Critical | S      | Bug           |
+| 3  | Reword the skill's verification-status section to scope the "verified" claim to jj-only                              | High     | S      | Documentation |
+| 4  | Run docs-health HARVEST on this report's section (f) into TODO_LIST.md                                               | High     | S      | Documentation |
+| 5  | Scratch-repo E2E validation of the full skill lifecycle (incl. `--dry-run` pushes)                                   | High     | M      | Quality       |
+| 6  | Fetch raw `charmbracelet/.github` CONTRIBUTING.md + a real PULL_REQUEST_TEMPLATE.md; correct the reference if needed | High     | S      | Quality       |
+| 7  | Behavioral trigger test: fresh Crush session, realistic prompts ("fork bubbletea and fix X")                         | High     | S      | Quality       |
+| 8  | Read `verify-external-claims` SKILL.md; align verification-block format or define one                                | Medium   | S      | Quality       |
+| 9  | Add `scripts/sync-all-prs.sh` helper encoding Phase 4                                                                | Medium   | M      | Feature       |
+| 10 | Verify the "bare `jj git push` skips sibling chains" pitfall empirically; keep or cut it                             | Medium   | S      | Quality       |
+| 11 | Verify `roots(mine() & mutable())` multi-root rebase semantics empirically in scratch repo                           | Medium   | S      | Quality       |
+| 12 | Clarify Phase 5: push-* bookmarks (from `-c`) need the same delete + `--deleted` cleanup                             | Medium   | S      | Documentation |
+| 13 | Add a "known upstream skills" note (Carbon-lang jj skill) to the skill's reference file                              | Low      | S      | Documentation |
+| 14 | Confirm auto-commit daemon picked up the §10 AGENTS.md row (was uncommitted at report time)                          | Low      | S      | Cleanup       |
+| 15 | After first real PR kept green by the sync loop: flip README status 🆕→🟢 with a run note                            | Low      | S      | Documentation |
 
 Repo-wide items noticed this session (from check-skills inventory, for HARVEST routing):
 
-| #  | Task                                                                                      | Impact   | Effort | Category      |
-| -- | ----------------------------------------------------------------------------------------- | -------- | ------ | ------------- |
-| 16 | `website-launch` SKILL.md is 799 lines, allowlisted with a trim plan that does not exist yet | Medium | M      | Cleanup       |
-| 17 | Thin skills flagged in inventory: `architecture-visualization` (39), `code-quality-scan` (41), `architecture-review` (54), `bdd-testing` (54) — flesh out per latest audit | Medium | L | Quality |
-| 18 | §5.6: `how-to-write-skills.md` still at repo root — decide skill-dir vs docs/ move         | Medium   | S      | Cleanup       |
-| 19 | `status-report`/`brutal-self-review` HTML-vs-Markdown override happens often enough to note in their SKILL.md (user frequently demands .md) — consider making .md a documented first-class mode | Low | S | Documentation |
-| 20 | Consider a repo-level "session start" checklist file (feedback scan + latest status report + AGENTS §8) so agents execute it instead of recalling it | Medium | S | Process |
+| #  | Task                                                                                                                                                                                            | Impact | Effort | Category      |
+| -- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | ------------- |
+| 16 | `website-launch` SKILL.md is 799 lines, allowlisted with a trim plan that does not exist yet                                                                                                    | Medium | M      | Cleanup       |
+| 17 | Thin skills flagged in inventory: `architecture-visualization` (39), `code-quality-scan` (41), `architecture-review` (54), `bdd-testing` (54) — flesh out per latest audit                      | Medium | L      | Quality       |
+| 18 | §5.6: `how-to-write-skills.md` still at repo root — decide skill-dir vs docs/ move                                                                                                              | Medium | S      | Cleanup       |
+| 19 | `status-report`/`brutal-self-review` HTML-vs-Markdown override happens often enough to note in their SKILL.md (user frequently demands .md) — consider making .md a documented first-class mode | Low    | S      | Documentation |
+| 20 | Consider a repo-level "session start" checklist file (feedback scan + latest status report + AGENTS §8) so agents execute it instead of recalling it                                            | Medium | S      | Process       |
 
 ## g) Questions I cannot answer myself
 

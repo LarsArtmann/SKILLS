@@ -193,7 +193,7 @@ between commits — you rarely need them for trunk syncs.
 
 ## Phase 5 — Post-merge cleanup
 
-Squash-merge repos (all of charmbracelet) make the local change *empty*
+Squash-merge repos (all of charmbracelet) make the local change _empty_
 after upstream absorbs it: main receives a new squashed commit, so the
 rebased change's diff vanishes while its description survives. Clean up:
 
@@ -244,7 +244,7 @@ stay intact after their parent PR merges.
   push/fetch/clone/remote, abandon, bookmark; revset functions `mine()`,
   `mutable()`, `roots()`, `heads()`, `empty()`, `description()`).
 - `jj mergemerge` confirmed nonexistent (local command list + official docs
-  + source search, 2026-09-08).
+  - source search, 2026-09-08).
 - charmbracelet conventions researched 2026-09-08 from
   `charmbracelet/.github` CONTRIBUTING.md and repo PR templates — see
   [./references/charmbracelet.md](./references/charmbracelet.md). Re-verify

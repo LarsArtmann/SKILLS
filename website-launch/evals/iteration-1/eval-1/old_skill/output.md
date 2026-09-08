@@ -41,8 +41,8 @@ Astro + Starlight + Tailwind v4, **gogenfilter as baseline** (security headers, 
 
 **Content decision:** go-filewatcher is a **pure-API library**, so per the demo-video matrix the video is an animated **before/after code sequence**, not screen capture — and the script is your README's **Why? section + comparison table**:
 
-1. *Before:* raw fsnotify handler drowning in an event flood from one editor save (Create/Write/Chmod/Rename spam, duplicate triggers).
-2. *After:* the same save through go-filewatcher → one clean, debounced callback (the hero quick-start snippet).
+1. _Before:_ raw fsnotify handler drowning in an event flood from one editor save (Create/Write/Chmod/Rename spam, duplicate triggers).
+2. _After:_ the same save through go-filewatcher → one clean, debounced callback (the hero quick-start snippet).
 3. Close on the comparison-table checkmarks + `go get` line.
 
 **Mechanics:** composition committed in `website/video/` (never `/tmp`), rendered to `website/public/demo.mp4` (<3 MB), `lint`/`check` gates, poster frame extracted from the video, `firebase.json` cache glob extended to `mp4|webm|mov`, `VideoObject` JSON-LD, frame-level ffmpeg verification, live `HEAD /demo.mp4` check after deploy.

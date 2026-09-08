@@ -42,7 +42,7 @@ Raw ideas:
   contents vs stating trigger conditions) beyond the TODO T1 trigger-first
   guard
 - A combined `skill-quality-check.sh` gate: frontmatter + links + line counts
-  + description heuristics in one command
+  - description heuristics in one command
 - Decide enforcement level for `link-skills-to-agents.sh --check` (manual,
   pre-commit hook, or GitHub Action) — blocked on the user decision in Open
   Questions

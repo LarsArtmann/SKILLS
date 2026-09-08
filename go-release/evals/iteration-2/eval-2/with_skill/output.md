@@ -1,9 +1,9 @@
 Two tags, both annotated, both on the same commit — the root module's plain tag first, then the sub-module's directory-prefixed tag:
 
-| Module | Import path | Tag |
-|---|---|---|
-| Root | `github.com/myorg/mono` | `v1.3.0` |
-| CLI | `github.com/myorg/mono/cli` | `cli/v1.3.0` |
+| Module | Import path                 | Tag          |
+| ------ | --------------------------- | ------------ |
+| Root   | `github.com/myorg/mono`     | `v1.3.0`     |
+| CLI    | `github.com/myorg/mono/cli` | `cli/v1.3.0` |
 
 ## Steps
 

@@ -10,7 +10,7 @@
   </video>
   ```
   Default is click-to-play with a styled poster; muted autoplay/loop only if you ask for it.
-- Caption it with the runtime, phrased to earn the click: *"See it work end-to-end — 25 seconds."* — not "demo.mp4".
+- Caption it with the runtime, phrased to earn the click: _"See it work end-to-end — 25 seconds."_ — not "demo.mp4".
 
 ## Poster frame
 

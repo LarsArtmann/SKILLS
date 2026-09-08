@@ -22,47 +22,47 @@
 
 ## Skill Collection — Architecture & Design
 
-| Skill                      | Status                    | Lines | References  | Notes                                                                       |
-| -------------------------- | ------------------------- | ----- | ----------- | --------------------------------------------------------------------------- |
-| architecture-visualization | 🟢 `FULLY_FUNCTIONAL`     | 39    | —           | Generates D2 diagrams; focused, single-purpose                              |
-| data-model-review          | 🟢 `FULLY_FUNCTIONAL`     | 140   | ✅          | Go-native type system review with decision trees                            |
-| pareto-planning            | 🟢 `FULLY_FUNCTIONAL`     | 86    | ✅ (assets) | 80/20 plans with D2 dependency graphs; `allowed-tools: d2`                  |
+| Skill                      | Status                    | Lines | References  | Notes                                                                                                      |
+| -------------------------- | ------------------------- | ----- | ----------- | ---------------------------------------------------------------------------------------------------------- |
+| architecture-visualization | 🟢 `FULLY_FUNCTIONAL`     | 39    | —           | Generates D2 diagrams; focused, single-purpose                                                             |
+| data-model-review          | 🟢 `FULLY_FUNCTIONAL`     | 140   | ✅          | Go-native type system review with decision trees                                                           |
+| pareto-planning            | 🟢 `FULLY_FUNCTIONAL`     | 86    | ✅ (assets) | 80/20 plans with D2 dependency graphs; `allowed-tools: d2`                                                 |
 | architecture-review        | 🟡 `PARTIALLY_FUNCTIONAL` | 54    | ✅          | Assessment rubric + methodology references added 2026-08-04; not yet exercised against a real review since |
 
 ## Skill Collection — Code Quality & Review
 
-| Skill              | Status                    | Lines | References  | Notes                                                                   |
-| ------------------ | ------------------------- | ----- | ----------- | ----------------------------------------------------------------------- |
-| brutal-self-review | 🟢 `FULLY_FUNCTIONAL`     | 69    | ✅          | Brutally honest Go codebase self-review                                 |
-| full-code-review   | 🟢 `FULLY_FUNCTIONAL`     | 85    | ✅          | Visits every file; delegates planning to pareto-planning                |
-| naming-review      | 🟢 `FULLY_FUNCTIONAL`     | 260   | ✅          | Multi-language naming audit with automated detection scripts            |
+| Skill              | Status                    | Lines | References  | Notes                                                                                               |
+| ------------------ | ------------------------- | ----- | ----------- | --------------------------------------------------------------------------------------------------- |
+| brutal-self-review | 🟢 `FULLY_FUNCTIONAL`     | 69    | ✅          | Brutally honest Go codebase self-review                                                             |
+| full-code-review   | 🟢 `FULLY_FUNCTIONAL`     | 85    | ✅          | Visits every file; delegates planning to pareto-planning                                            |
+| naming-review      | 🟢 `FULLY_FUNCTIONAL`     | 260   | ✅          | Multi-language naming audit with automated detection scripts                                        |
 | code-quality-scan  | 🟡 `PARTIALLY_FUNCTIONAL` | 41    | ✅ (assets) | Build + lint + duplication → HTML dashboard; tool-guidance matrix added 2026-08-04, body still thin |
-| deduplicate-code   | 🟡 `PARTIALLY_FUNCTIONAL` | 71    | —           | Semantic duplication detection; relies on `art-dupl` CLI                 |
+| deduplicate-code   | 🟡 `PARTIALLY_FUNCTIONAL` | 71    | —           | Semantic duplication detection; relies on `art-dupl` CLI                                            |
 
 ## Skill Collection — Epistemic Hygiene
 
-| Skill                  | Status                | Lines | References | Notes                                                                         |
-| ---------------------- | --------------------- | ----- | ---------- | ----------------------------------------------------------------------------- |
+| Skill                  | Status                | Lines | References | Notes                                                                                                                                                                                  |
+| ---------------------- | --------------------- | ----- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | verify-external-claims | 🟢 `FULLY_FUNCTIONAL` | 119   | ✅         | Inbound claim verification. Proven 2026-08-16: gate caught 4 fabricated specifics (wrong golang/go issue, 404 URL, MaxIdleConns default, arena status) before they entered a reference |
-| verify-before-filing   | 🆕 `NEW`              | 209   | —          | Outbound: verify your diagnosis before filing issues/PRs to external projects |
+| verify-before-filing   | 🆕 `NEW`              | 209   | —          | Outbound: verify your diagnosis before filing issues/PRs to external projects                                                                                                          |
 
 ## Skill Collection — Go Ecosystem
 
-| Skill                    | Status                | Lines | References     | Notes                                                                                          |
-| ------------------------ | --------------------- | ----- | -------------- | ---------------------------------------------------------------------------------------------- |
-| go-modularize            | 🟢 `FULLY_FUNCTIONAL` | 249   | ✅             | Direction-neutral module split/merge; failure modes from 3 production projects                |
-| how-to-golang            | 🟢 `FULLY_FUNCTIONAL` | 103   | ✅ (10 files)  | Go decision guide; snippets corrected 2026-08-04; alias-vs-definition guidance 2026-08-14; `performance-tuning.md` reference 2026-08-16 |
-| go-ecosystem-upgrade     | 🟢 `FULLY_FUNCTIONAL` | 291   | ✅             | 18 failure modes from 14 self-reviews; Phase 6 is a thin pointer to `go-release`               |
-| go-release               | 🟢 `FULLY_FUNCTIONAL` | 499   | ✅ (5 files)   | Single-module/multi-module/binary releases; tag immutability; all external claims verified against GoReleaser/Go source 2026-08-12; subagent evals 74% vs 30% baseline; ships `scripts/pre-release-check.sh` |
-| bdd-testing              | 🟡 `PARTIALLY_FUNCTIONAL` | 50 | ✅ (assets)    | Ginkgo BDD tests; works but thin                                                               |
-| go-error-modernization   | 🆕 `NEW`              | 294   | ✅ (3 files)   | errors.As→AsType modernization; `erraudit` CLI not publicly findable                           |
-| samber-do-best-practices | 🆕 `NEW`              | 115   | ✅             | samber/do v2 DI; references private `doanalyzerv2` analyzer rules                              |
+| Skill                    | Status                    | Lines | References    | Notes                                                                                                                                                                                                        |
+| ------------------------ | ------------------------- | ----- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| go-modularize            | 🟢 `FULLY_FUNCTIONAL`     | 249   | ✅            | Direction-neutral module split/merge; failure modes from 3 production projects                                                                                                                               |
+| how-to-golang            | 🟢 `FULLY_FUNCTIONAL`     | 103   | ✅ (10 files) | Go decision guide; snippets corrected 2026-08-04; alias-vs-definition guidance 2026-08-14; `performance-tuning.md` reference 2026-08-16                                                                      |
+| go-ecosystem-upgrade     | 🟢 `FULLY_FUNCTIONAL`     | 291   | ✅            | 18 failure modes from 14 self-reviews; Phase 6 is a thin pointer to `go-release`                                                                                                                             |
+| go-release               | 🟢 `FULLY_FUNCTIONAL`     | 499   | ✅ (5 files)  | Single-module/multi-module/binary releases; tag immutability; all external claims verified against GoReleaser/Go source 2026-08-12; subagent evals 74% vs 30% baseline; ships `scripts/pre-release-check.sh` |
+| bdd-testing              | 🟡 `PARTIALLY_FUNCTIONAL` | 50    | ✅ (assets)   | Ginkgo BDD tests; works but thin                                                                                                                                                                             |
+| go-error-modernization   | 🆕 `NEW`                  | 294   | ✅ (3 files)  | errors.As→AsType modernization; `erraudit` CLI not publicly findable                                                                                                                                         |
+| samber-do-best-practices | 🆕 `NEW`                  | 115   | ✅            | samber/do v2 DI; references private `doanalyzerv2` analyzer rules                                                                                                                                            |
 
 ## Skill Collection — Nix & DevOps
 
-| Skill                | Status                | Lines | References   | Notes                                                                  |
-| -------------------- | --------------------- | ----- | ------------ | ---------------------------------------------------------------------- |
-| nix-review           | 🟢 `FULLY_FUNCTIONAL` | 294   | ✅           | 50+ problems, checklist-driven .nix review                             |
+| Skill                | Status                | Lines | References   | Notes                                                                                                                   |
+| -------------------- | --------------------- | ----- | ------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| nix-review           | 🟢 `FULLY_FUNCTIONAL` | 294   | ✅           | 50+ problems, checklist-driven .nix review                                                                              |
 | nix-private-go-repos | 🆕 `NEW`              | 166   | ✅ (scripts) | Private GitHub deps in Nix; `go-nix-helpers` API claims verified against local source 2026-08-14, no full build run yet |
 
 ## Skill Collection — Library & Dependency Research
@@ -73,33 +73,33 @@
 
 ## Skill Collection — Project Intelligence
 
-| Skill          | Status                    | Lines  | References    | Notes                                                                                               |
-| -------------- | ------------------------- | ------ | ------------- | --------------------------------------------------------------------------------------------------- |
-| docs-health    | 🟢 `FULLY_FUNCTIONAL`     | 175    | ✅ (10 files) | All docs: BUILD + HARVEST + VERIFY + ANNOTATE + AUDIT; batch annotation scripts (`annotate-rows.py`, `annotate-prose.py`) added 2026-08-18 |
-| website-launch | 🟢 `FULLY_FUNCTIONAL`     | 848    | ✅            | Astro + Starlight + Firebase; HyperFrames demo video as the launch's sales engine (2026-08-18/21); allowlisted over 500-line guideline |
-| status-report  | 🟡 `PARTIALLY_FUNCTIONAL` | 73     | ✅ (assets)   | HTML dashboards; section-quality guide added 2026-08-04; exercised every session but single reference |
+| Skill          | Status                    | Lines | References    | Notes                                                                                                                                      |
+| -------------- | ------------------------- | ----- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| docs-health    | 🟢 `FULLY_FUNCTIONAL`     | 175   | ✅ (10 files) | All docs: BUILD + HARVEST + VERIFY + ANNOTATE + AUDIT; batch annotation scripts (`annotate-rows.py`, `annotate-prose.py`) added 2026-08-18 |
+| website-launch | 🟢 `FULLY_FUNCTIONAL`     | 848   | ✅            | Astro + Starlight + Firebase; HyperFrames demo video as the launch's sales engine (2026-08-18/21); allowlisted over 500-line guideline     |
+| status-report  | 🟡 `PARTIALLY_FUNCTIONAL` | 73    | ✅ (assets)   | HTML dashboards; section-quality guide added 2026-08-04; exercised every session but single reference                                      |
 
 ## Shared Infrastructure
 
-| Feature                | Status                    | Evidence                                                                                                                                                    |
-| ---------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| html-report-kit        | 🟢 `FULLY_FUNCTIONAL`     | Shared Bauhaus design system; vendored into all consumers via sync script                                                                                   |
-| check-skills.sh        | 🟢 `FULLY_FUNCTIONAL`     | Structural validation: frontmatter, line count, name-dir match, `<--` guard, TOC integrity, marker-vocabulary contract                                       |
-| sync-html-kit.sh       | 🟢 `FULLY_FUNCTIONAL`     | Vendoring automation with `--check` (CI) and `--list` (consumer inventory)                                                                                   |
-| link-skills-to-agents.sh | 🟢 `FULLY_FUNCTIONAL`   | Runtime symlink manager: idempotent repair, `--check` (CI), `--list`, `--force` recovery; replaced rsync copying 2026-08-14                                  |
-| check-agents-md.sh     | 🟢 `FULLY_FUNCTIONAL`     | AGENTS.md quality scorer (temporal pollution, content misplacement, size budget) added 2026-08-04                                                            |
-| how-to-write-skills.md | 🟡 `PARTIALLY_FUNCTIONAL` | Authoritative guide; at repo root (not a skill dir); 11 patterns incl. the Artifact decision rule and the Primary Failure Mode rule                           |
+| Feature                  | Status                    | Evidence                                                                                                                            |
+| ------------------------ | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| html-report-kit          | 🟢 `FULLY_FUNCTIONAL`     | Shared Bauhaus design system; vendored into all consumers via sync script                                                           |
+| check-skills.sh          | 🟢 `FULLY_FUNCTIONAL`     | Structural validation: frontmatter, line count, name-dir match, `<--` guard, TOC integrity, marker-vocabulary contract              |
+| sync-html-kit.sh         | 🟢 `FULLY_FUNCTIONAL`     | Vendoring automation with `--check` (CI) and `--list` (consumer inventory)                                                          |
+| link-skills-to-agents.sh | 🟢 `FULLY_FUNCTIONAL`     | Runtime symlink manager: idempotent repair, `--check` (CI), `--list`, `--force` recovery; replaced rsync copying 2026-08-14         |
+| check-agents-md.sh       | 🟢 `FULLY_FUNCTIONAL`     | AGENTS.md quality scorer (temporal pollution, content misplacement, size budget) added 2026-08-04                                   |
+| how-to-write-skills.md   | 🟡 `PARTIALLY_FUNCTIONAL` | Authoritative guide; at repo root (not a skill dir); 11 patterns incl. the Artifact decision rule and the Primary Failure Mode rule |
 
 ## Verification Status (skills with unconfirmed external dependencies)
 
 Three skills carry **verification-status blocks** — their value rests on durable
 concepts, but specific external tooling is not publicly confirmable:
 
-| Skill                    | Unverified dependency      | Status                                                       |
-| ------------------------ | -------------------------- | ------------------------------------------------------------ |
-| go-error-modernization   | `erraudit` CLI             | Not publicly findable (GitHub, Sourcegraph, pkg.go.dev)      |
+| Skill                    | Unverified dependency      | Status                                                                        |
+| ------------------------ | -------------------------- | ----------------------------------------------------------------------------- |
+| go-error-modernization   | `erraudit` CLI             | Not publicly findable (GitHub, Sourcegraph, pkg.go.dev)                       |
 | nix-private-go-repos     | `go-nix-helpers` (private) | Private `git+ssh` repo; option names verified against local source 2026-08-14 |
-| samber-do-best-practices | `doanalyzerv2` (private)   | Private `git+ssh` repo; anti-patterns are durable principles |
+| samber-do-best-practices | `doanalyzerv2` (private)   | Private `git+ssh` repo; anti-patterns are durable principles                  |
 
 Related: `github.com/larsartmann/go-error-family` v0.10.0 is verified real
 (searched and confirmed 2026-08-02). See AGENTS.md §10 for the full external

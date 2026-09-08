@@ -9,20 +9,25 @@ When multiple tags point at the same commit, GoReleaser falls back to `git descr
 ## Checklist
 
 **Phase 0–1: Assess & version**
+
 - [ ] `git tag --sort=-v:refname | head -10`; review `git log <last-tag>..HEAD --oneline` — breaking changes → **v2.0.0** confirmed.
 
 **Phase 2: CHANGELOG**
+
 - [ ] Move `[Unreleased]` into `## [2.0.0] - YYYY-MM-DD` (Added/Changed/Removed/Fixed), breaking changes first; leave `[Unreleased]` empty.
 
 **Phase 3: go.mod**
+
 - [ ] `grep '^replace' go.mod` — no local-path replaces; `go mod tidy && go mod verify`. (Module path stays `github.com/myorg/tool` — no `/v2`.)
 
 **Phase 4: Pre-push verification**
+
 - [ ] `go build ./... && go vet ./... && go test -race -count=1 ./...`
 - [ ] `git status` clean — the tag must point at a commit containing all release changes.
 - [ ] `gh run list --limit=5` — CI green on the exact commit to be tagged.
 
 **Phase 5: Tag and push**
+
 - [ ] One tag only, annotated:
   ```bash
   git tag -a v2.0.0 -m "Release v2.0.0
@@ -35,6 +40,7 @@ When multiple tags point at the same commit, GoReleaser falls back to `git descr
   ```
 
 **Phase 6–7: Release with GoReleaser — the fix**
+
 - [ ] Set `GORELEASER_CURRENT_TAG` so the shared-commit ambiguity is eliminated:
   ```bash
   GITHUB_TOKEN="$(gh auth token)" \
@@ -45,9 +51,11 @@ When multiple tags point at the same commit, GoReleaser falls back to `git descr
 - [ ] Validate the config first without publishing: `goreleaser release --clean --snapshot --skip=publish`
 
 **Cleanup of the botched release**
+
 - [ ] Delete only the mistaken **GitHub Release** objects if they carry wrong-tag artifacts (`gh release delete <wrong-tag>`), never re-create a git tag. v2.0.0 is the permanent fix going forward.
 
 **Phase 8: Post-release**
+
 - [ ] Update README install instructions/badge; empty `[Unreleased]` placeholders; `gh run list --limit=3` green.
 
 ## `.goreleaser.yml`

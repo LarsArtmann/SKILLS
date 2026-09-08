@@ -20,28 +20,28 @@ Libraries banned from all Go projects with reasons and replacements.
 
 ## Moderate Severity (replace when touching code)
 
-| Banned                            | Reason                                      | Use Instead                                  |
-| --------------------------------- | ------------------------------------------- | -------------------------------------------- |
-| gorm                              | Magic behavior, N+1 queries                 | `sqlc-dev/sqlc`                              |
-| gorilla/mux                       | Deprecated                                  | `gin-gonic/gin`                              |
-| echo, chi, fiber, beego           | Slower / deprecated / monolithic            | `gin-gonic/gin`                              |
-| viper                             | Global state, complex, 4x larger binaries   | `knadh/koanf`                                |
-| urfave/cli                        | Less polished TUI                           | `charm.land/fang/v2`                         |
-| go-cache, ristretto, bigcache     | Stale APIs, lock contention, poor hit rates | `maypok86/otter/v2`                          |
-| pkg/errors                        | Unmaintained                                | `cockroachdb/errors`                         |
-| logrus, zerolog                   | Fragmented, slog is standard                | `log/slog` + `charm.land/log/v2`             |
-| swaggo                            | Annotations drift from code                 | `danielgtaylor/huma`                         |
-| go-playground/validator           | 5-44x slower than govalid                   | `sivchari/govalid`                           |
-| satori/uuid                       | 4.6x slower                                 | `google/uuid`                                |
-| matoous/go-nanoid                 | 13x slower, no FIPS                         | `sixafter/nanoid`                            |
-| avast/retry-go                    | High overhead, race conditions              | `failsafe-go/failsafe-go`                    |
-| prometheus/client, jaeger, zipkin | Use OpenTelemetry                           | `go.opentelemetry.io/otel`                   |
-| json-iterator, sonic, easyjson    | Superseded by stdlib v2                     | `encoding/json/v2`                           |
-| encoding/json v1                  | Slower, less flexible (Go 1.25+)            | `encoding/json/v2`                           |
-| fsnotify                          | Use go-filewatcher instead                  | `larsartmann/go-filewatcher`                 |
-| blackfriday                       | Unmaintained since 2020                     | `gomarkdown/markdown`                        |
-| math/rand                         | Insecure for crypto                         | `crypto/rand`                                |
-| tablewriter, go-pretty            | API instability vs lipgloss                 | `charm.land/lipgloss/v2`                     |
+| Banned                            | Reason                                      | Use Instead                      |
+| --------------------------------- | ------------------------------------------- | -------------------------------- |
+| gorm                              | Magic behavior, N+1 queries                 | `sqlc-dev/sqlc`                  |
+| gorilla/mux                       | Deprecated                                  | `gin-gonic/gin`                  |
+| echo, chi, fiber, beego           | Slower / deprecated / monolithic            | `gin-gonic/gin`                  |
+| viper                             | Global state, complex, 4x larger binaries   | `knadh/koanf`                    |
+| urfave/cli                        | Less polished TUI                           | `charm.land/fang/v2`             |
+| go-cache, ristretto, bigcache     | Stale APIs, lock contention, poor hit rates | `maypok86/otter/v2`              |
+| pkg/errors                        | Unmaintained                                | `cockroachdb/errors`             |
+| logrus, zerolog                   | Fragmented, slog is standard                | `log/slog` + `charm.land/log/v2` |
+| swaggo                            | Annotations drift from code                 | `danielgtaylor/huma`             |
+| go-playground/validator           | 5-44x slower than govalid                   | `sivchari/govalid`               |
+| satori/uuid                       | 4.6x slower                                 | `google/uuid`                    |
+| matoous/go-nanoid                 | 13x slower, no FIPS                         | `sixafter/nanoid`                |
+| avast/retry-go                    | High overhead, race conditions              | `failsafe-go/failsafe-go`        |
+| prometheus/client, jaeger, zipkin | Use OpenTelemetry                           | `go.opentelemetry.io/otel`       |
+| json-iterator, sonic, easyjson    | Superseded by stdlib v2                     | `encoding/json/v2`               |
+| encoding/json v1                  | Slower, less flexible (Go 1.25+)            | `encoding/json/v2`               |
+| fsnotify                          | Use go-filewatcher instead                  | `larsartmann/go-filewatcher`     |
+| blackfriday                       | Unmaintained since 2020                     | `gomarkdown/markdown`            |
+| math/rand                         | Insecure for crypto                         | `crypto/rand`                    |
+| tablewriter, go-pretty            | API instability vs lipgloss                 | `charm.land/lipgloss/v2`         |
 
 ## Charm v1 Libraries (upgrade to v2 vanity imports)
 

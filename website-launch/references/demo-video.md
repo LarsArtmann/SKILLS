@@ -232,11 +232,11 @@ say so in the figure caption — or better, retake when it can show real data.
 A video that only lives on the landing page sells only to people who already
 arrived. Ship in tiers — never let a tier block the launch:
 
-| Tier                   | Items                                                                                                                                             | When                               |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| 1 — Launch-blocking    | Hero embed + poster + `#demo` anchor + README link + `og:image` + JSON-LD + cache headers                                                         | Part of the launch commit sequence |
+| Tier                   | Items                                                                                                                                                                                             | When                               |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| 1 — Launch-blocking    | Hero embed + poster + `#demo` anchor + README link + `og:image` + JSON-LD + cache headers                                                                                                         | Part of the launch commit sequence |
 | 2 — Same-day follow-up | 9:16 vertical cut for Shorts/TikTok (adapt the committed composition to a resized variant — same narrative; not a render flag, see "Location") + launch post copy derived from the README summary | Immediately after the launch lands |
-| 3 — Optional later     | TTS voiceover + burned captions, animated GIF teaser for the README (≤6s, 480p, watch the size), YouTube version                                  | When the launch gets traction      |
+| 3 — Optional later     | TTS voiceover + burned captions, animated GIF teaser for the README (≤6s, 480p, watch the size), YouTube version                                                                                  | When the launch gets traction      |
 
 The launch post copy reuses the one narrative: hook sentence (the README
 "Why?" pain), the link, and one proof point. Do not write a fresh pitch.

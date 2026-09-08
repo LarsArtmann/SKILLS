@@ -71,8 +71,8 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ### Version Control & Open Source
 
-| Skill                 | What It Does                                                                                                  | Status |
-| --------------------- | ------------------------------------------------------------------------------------------------------------- | ------ |
+| Skill                   | What It Does                                                                                                                       | Status |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------ |
 | **jj-fork-pr-workflow** | Fork + multi-PR upstream workflow with jj — the sync loop (fetch + rebase + push) keeps every open PR current; charmbracelet-ready | 🆕 New |
 
 ### Project Intelligence

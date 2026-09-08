@@ -24,7 +24,7 @@ Audit and add any missing (these retrofit without a rebuild):
 
 - [ ] README: **"Who is this for?"** (3–5 named personas) and **"When NOT to use this"** (3–5 specific exclusions + the alternative to reach for)
 - [ ] At least one docs page repeats the **comparison table** with prose explaining the differentiator row
-- [ ] Every docs page ends with a curated **4–6 link "Where to go next"**, each link annotated with *why* you'd click it
+- [ ] Every docs page ends with a curated **4–6 link "Where to go next"**, each link annotated with _why_ you'd click it
 - [ ] `astro.config.mjs`: **`lastUpdated: true`** (git-based, zero maintenance) and **`editLink`** ("Edit this page" — #1 contributor lever), branch name matching the repo's default
 - [ ] Bold-text warnings/tips swapped for **`:::caution` / `:::tip` callouts** (one idea per callout; `:::danger` only for data-loss/security)
 

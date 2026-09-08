@@ -198,20 +198,20 @@ committed by the auto-commit daemon (`2fc1b46` tip).
 
 ## f) Up to 50 things we should get done next
 
-| #  | Task                                                                                                          | Impact | Effort |
-| -- | ------------------------------------------------------------------------------------------------------------- | ------ | ------ |
-| 1  | T21: retro-audit live sites (gogenfilter, go-atomic-write, emeet-pixyd, ...) against the demo-video DoD      | Medium | M/site |
-| 2  | T22: HyperFrames ground-truth render incl. one 9:16 resized-composition variant                              | High   | M      |
-| 3  | T23: govalid generator end-to-end run (`go generate` on a scratch struct)                                     | Medium | S      |
-| 4  | T24: website-launch eval-1 re-run with a fully fictional repo                                                 | Low    | S      |
-| 5  | T25: next website-launch trim — extract Phase 2 structure list into readme-template (target <700, then <500)  | Low    | S      |
-| 6  | T26: trigger-density lint mode for check-skills.sh                                                            | Low    | S      |
-| 7  | scratch.sh --adopt mode for pre-existing scratch dirs (e1 follow-up, d1)                                       | Low    | S      |
-| 8  | ROADMAP sync: route the 08-21 morning report's unanswered g1-g3 policy questions (autoplay, social-cut tier, API-library video) | Medium | S |
-| 9  | benchstat harness invariants as explicit rules in performance-tuning.md (d3)                                   | Low    | S      |
-| 10 | skills CLI: lockfile hash drift check — verify `skills update -g` bumps `skillFolderHash` for all 10 updated entries | Low | S |
-| 11 | how-to-write-skills.md: add the "new-linter triage" rule if one more session hits it (e2)                      | Low    | S      |
-| 12 | FEATURES.md: add rows for the two eval artifacts (go-release iteration-2, website-launch iteration-1)          | Low    | S      |
+| #  | Task                                                                                                                            | Impact | Effort |
+| -- | ------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ |
+| 1  | T21: retro-audit live sites (gogenfilter, go-atomic-write, emeet-pixyd, ...) against the demo-video DoD                         | Medium | M/site |
+| 2  | T22: HyperFrames ground-truth render incl. one 9:16 resized-composition variant                                                 | High   | M      |
+| 3  | T23: govalid generator end-to-end run (`go generate` on a scratch struct)                                                       | Medium | S      |
+| 4  | T24: website-launch eval-1 re-run with a fully fictional repo                                                                   | Low    | S      |
+| 5  | T25: next website-launch trim — extract Phase 2 structure list into readme-template (target <700, then <500)                    | Low    | S      |
+| 6  | T26: trigger-density lint mode for check-skills.sh                                                                              | Low    | S      |
+| 7  | scratch.sh --adopt mode for pre-existing scratch dirs (e1 follow-up, d1)                                                        | Low    | S      |
+| 8  | ROADMAP sync: route the 08-21 morning report's unanswered g1-g3 policy questions (autoplay, social-cut tier, API-library video) | Medium | S      |
+| 9  | benchstat harness invariants as explicit rules in performance-tuning.md (d3)                                                    | Low    | S      |
+| 10 | skills CLI: lockfile hash drift check — verify `skills update -g` bumps `skillFolderHash` for all 10 updated entries            | Low    | S      |
+| 11 | how-to-write-skills.md: add the "new-linter triage" rule if one more session hits it (e2)                                       | Low    | S      |
+| 12 | FEATURES.md: add rows for the two eval artifacts (go-release iteration-2, website-launch iteration-1)                           | Low    | S      |
 
 ---
 

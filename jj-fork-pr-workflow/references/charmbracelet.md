@@ -12,16 +12,16 @@ meta-repo; individual repos can override, so re-check the target repo's
 
 ## Convention summary
 
-| Concern              | charmbracelet convention                                                                 |
-| -------------------- | ---------------------------------------------------------------------------------------- |
-| Merge strategy       | **Squash and merge.** The PR title becomes the sole commit on `main`.                     |
-| Commit/PR title      | **Conventional Commits** required — `feat:`, `fix:`, `chore:`, `docs:`, `ci:` — explicitly requested "to make it easier to generate release notes". |
-| DCO / CLA            | **None.** Instead: by contributing you assert 100% authorship and agree the content may be provided under the project's MIT license. Do NOT add `Signed-off-by` trailers for their sake. |
-| PR template          | Sections: **1. Problem**, **2. Fix**, **3. Validation**, plus an agreement checkbox referencing CONTRIBUTING.md. |
-| Validation section   | List the commands you ran — typically `go test ./...`, `go vet ./...`, `golangci-lint run` (match the repo's CI). |
-| New features         | **Open a Discussion first.** Feature PRs without prior maintainer buy-in are discouraged. |
-| CI state             | Failing CI is read as work-in-progress. A PR with red CI stalls silently — keep every PR rebased and green (the sync loop in SKILL.md Phase 4 exists for exactly this). |
-| Language             | Go (core libs). Some tooling (`vhs`) mixes Go + TypeScript.                               |
+| Concern            | charmbracelet convention                                                                                                                                                                 |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Merge strategy     | **Squash and merge.** The PR title becomes the sole commit on `main`.                                                                                                                    |
+| Commit/PR title    | **Conventional Commits** required — `feat:`, `fix:`, `chore:`, `docs:`, `ci:` — explicitly requested "to make it easier to generate release notes".                                      |
+| DCO / CLA          | **None.** Instead: by contributing you assert 100% authorship and agree the content may be provided under the project's MIT license. Do NOT add `Signed-off-by` trailers for their sake. |
+| PR template        | Sections: **1. Problem**, **2. Fix**, **3. Validation**, plus an agreement checkbox referencing CONTRIBUTING.md.                                                                         |
+| Validation section | List the commands you ran — typically `go test ./...`, `go vet ./...`, `golangci-lint run` (match the repo's CI).                                                                        |
+| New features       | **Open a Discussion first.** Feature PRs without prior maintainer buy-in are discouraged.                                                                                                |
+| CI state           | Failing CI is read as work-in-progress. A PR with red CI stalls silently — keep every PR rebased and green (the sync loop in SKILL.md Phase 4 exists for exactly this).                  |
+| Language           | Go (core libs). Some tooling (`vhs`) mixes Go + TypeScript.                                                                                                                              |
 
 ## Applying the jj fork workflow here
 

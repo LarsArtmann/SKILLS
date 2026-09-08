@@ -10,21 +10,21 @@ Required for all new services. No primitive types for domain concepts.
 
 ## Core Types
 
-| Type                     | Package     | Use For                        |
-| ------------------------ | ----------- | ------------------------------ |
-| `id.ID[Brand, V]`        | `id` (`github.com/larsartmann/go-branded-id`) | Branded entity identifiers     |
-| `nanoid.ID`               | `nanoid` (`github.com/sixafter/nanoid`) | URL-safe unique IDs (21 chars by default) |
-| `types.Email`            | `types`     | Validated email                |
-| `types.URL`              | `types`     | Validated URL (http/https)     |
-| `types.Cents`            | `types`     | Money (int64, no float errors) |
-| `money.Money`            | `money`     | ISO 4217 currency              |
-| `types.Percentage`       | `types`     | 0-100 validated                |
-| `types.Timestamp`        | `types`     | Domain-wrapped time.Time       |
-| `types.Duration`         | `types`     | Domain-wrapped time.Duration   |
-| `bounded.BoundedString`  | `bounded`   | Length-validated string        |
-| `datapoint.DataPoint[T]` | `datapoint` | Data + complete audit trail    |
-| `actor.ActorChain[T]`    | `actor`     | Ordered actor chain for audit  |
-| `temporal.Bitemporal`    | `temporal`  | validFrom/Until + recorded     |
+| Type                     | Package                                       | Use For                                   |
+| ------------------------ | --------------------------------------------- | ----------------------------------------- |
+| `id.ID[Brand, V]`        | `id` (`github.com/larsartmann/go-branded-id`) | Branded entity identifiers                |
+| `nanoid.ID`              | `nanoid` (`github.com/sixafter/nanoid`)       | URL-safe unique IDs (21 chars by default) |
+| `types.Email`            | `types`                                       | Validated email                           |
+| `types.URL`              | `types`                                       | Validated URL (http/https)                |
+| `types.Cents`            | `types`                                       | Money (int64, no float errors)            |
+| `money.Money`            | `money`                                       | ISO 4217 currency                         |
+| `types.Percentage`       | `types`                                       | 0-100 validated                           |
+| `types.Timestamp`        | `types`                                       | Domain-wrapped time.Time                  |
+| `types.Duration`         | `types`                                       | Domain-wrapped time.Duration              |
+| `bounded.BoundedString`  | `bounded`                                     | Length-validated string                   |
+| `datapoint.DataPoint[T]` | `datapoint`                                   | Data + complete audit trail               |
+| `actor.ActorChain[T]`    | `actor`                                       | Ordered actor chain for audit             |
+| `temporal.Bitemporal`    | `temporal`                                    | validFrom/Until + recorded                |
 
 ## Branded ID Pattern (canonical)
 
@@ -155,11 +155,11 @@ identity will treat them differently.
 
 When you want to extend a type from another package:
 
-| Declaration                        | What you get      | Methods of the foreign type                                             |
-| ---------------------------------- | ----------------- | ----------------------------------------------------------------------- |
+| Declaration                        | What you get       | Methods of the foreign type                                                        |
+| ---------------------------------- | ------------------ | ---------------------------------------------------------------------------------- |
 | `type T = other.T` (alias)         | Same type, renamed | Kept — but you cannot add new ones (`cannot define new methods on non-local type`) |
-| `type T other.T` (definition)      | Distinct type      | All lost — `T` starts with an empty method set                            |
-| `type T struct{ other.T }` (embed) | New struct         | Promoted — callable on `T`, and you can add your own methods on top       |
+| `type T other.T` (definition)      | Distinct type      | All lost — `T` starts with an empty method set                                     |
+| `type T struct{ other.T }` (embed) | New struct         | Promoted — callable on `T`, and you can add your own methods on top                |
 
 Embedding is the only way to give a foreign type new behavior while keeping
 the old: embedded methods are promoted and the embedded value is a real

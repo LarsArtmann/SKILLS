@@ -51,8 +51,8 @@
      hyperframes-creative pair; §5.10 gains rule 6 (canonical-path discipline,
      hit by two prior sessions) and rule 7 (three one-off crush entries);
      §6 "9 reference files" → 10 + performance-tuning row; §10 + goreleaser/gh
-     + 6 verified performance tools; stale "known accuracy issues" note
-     corrected (fixed 2026-08-04).
+     - 6 verified performance tools; stale "known accuracy issues" note
+       corrected (fixed 2026-08-04).
    - `CHANGELOG.md` — six missing session waves backfilled (08-11 → 08-21)
      with commit hashes; this session's own entry.
    - `ROADMAP.md` — resolved ideas pruned, 2 new themes, 11 open questions
@@ -179,14 +179,14 @@ TODO_LIST (verified-open items live there with evidence — do not duplicate).
 15. T11 — trim website-launch SKILL.md <800 lines (extract Phase 2 blocks) (M)
 16. T12 — `scripts/check-skill-links.sh` CI-grade link checker (M)
 17. T13 — encode the three process lessons (Questions-tool limit,
-   verify-before-say, verification-table pattern) (S)
+    verify-before-say, verification-table pattern) (S)
 18. T14 — real measured examples in performance-tuning.md (M)
 19. T16 — safety checklist item in go-release quick-reference.md (S)
 20. T17 — httputil DOMAIN_LANGUAGE.md alias mislabel (S, external repo)
 21. T18 — link-script `AGENTS_DIR` doc + `--help` smoke test (S)
 22. T19 — og:image + launch-post templates in website-launch references (S)
 23. T20 — CONTRIBUTING.md add-a-skill flow incl. link step (S; evidence
-   verified this session: 27-line file, no add-skill flow)
+    verified this session: 27-line file, no add-skill flow)
 
 **Structural (decision-adjacent):**
 

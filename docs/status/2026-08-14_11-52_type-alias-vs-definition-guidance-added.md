@@ -98,28 +98,28 @@
 
 ## f) Next Tasks (Up to 50)
 
-| #  | Task                                                                                                       | Impact | Effort |
-| -- | ---------------------------------------------------------------------------------------------------------- | ------ | ------ |
-| 1  | Write a Go test program verifying every claim in the alias-vs-definition table                             | High   | Low    |
-| 2  | Add "interface satisfaction is NOT inherited" common-mistake example to `domain-types.md`                  | High   | Low    |
-| 3  | Add "underlying type operations ARE preserved" note to the table or surrounding text                       | High   | Low    |
-| 4  | Add "untyped constant assignability" note                                                                  | Medium | Low    |
-| 5  | Add `reflect` behavior differences note                                                                    | Medium | Low    |
-| 6  | Add a decision tree entry in `how-to-golang/SKILL.md` for alias-vs-definition                              | High   | Low    |
-| 7  | Add trigger phrases ("type alias", "type definition") to `how-to-golang/SKILL.md` description              | High   | Low    |
-| 8  | Fix `DOMAIN_LANGUAGE.md` in httputil — it calls a type definition an "alias"                               | High   | Low    |
-| ~~9~~  | ~~Decide on .agents sync strategy (script, docs, or hook)~~ done at `6efb022` | ~~High~~ | ~~Low~~ |
-| ~~10~~ | ~~Refresh `.agents/skills/` from project repo to eliminate current divergence~~ done at `6efb022` | ~~Medium~~ | ~~Medium~~ |
-| 11 | Cross-reference `go-error-modernization` skill — error types depend on alias-vs-definition                 | Medium | Low    |
-| 12 | Cross-reference `data-model-review` skill — type design decisions                                          | Low    | Low    |
-| 13 | Check `how-to-golang/references/architecture.md` for overlap or conflict with new section                  | Medium | Low    |
-| 14 | Check other Go skills (`go-modularize`, `samber-do-best-practices`) for alias/definition usage in examples | Low    | Low    |
-| 15 | Add embedding-vs-aliasing-vs-definition comparison to `domain-types.md`                                    | Medium | Medium |
-| 16 | Clarify that type definitions CAN have methods re-declared (just not inherited)                            | Low    | Low    |
-| 17 | Add anchor link (`#type-alias--vs-type-definition-no-`) to any cross-references                            | Low    | Low    |
-| 18 | Consider whether the `go-error-modernization` skill needs its own alias-vs-definition section              | Medium | Medium |
-| 19 | Run `go vet` / `golangci-lint` on the Go examples in the guidance to catch syntax errors                   | Medium | Low    |
-| 20 | Consider adding the alias-vs-definition distinction to the `how-to-write-skills.md` guide as a Go gotcha   | Low    | Low    |
+| #      | Task                                                                                                       | Impact     | Effort     |
+| ------ | ---------------------------------------------------------------------------------------------------------- | ---------- | ---------- |
+| 1      | Write a Go test program verifying every claim in the alias-vs-definition table                             | High       | Low        |
+| 2      | Add "interface satisfaction is NOT inherited" common-mistake example to `domain-types.md`                  | High       | Low        |
+| 3      | Add "underlying type operations ARE preserved" note to the table or surrounding text                       | High       | Low        |
+| 4      | Add "untyped constant assignability" note                                                                  | Medium     | Low        |
+| 5      | Add `reflect` behavior differences note                                                                    | Medium     | Low        |
+| 6      | Add a decision tree entry in `how-to-golang/SKILL.md` for alias-vs-definition                              | High       | Low        |
+| 7      | Add trigger phrases ("type alias", "type definition") to `how-to-golang/SKILL.md` description              | High       | Low        |
+| 8      | Fix `DOMAIN_LANGUAGE.md` in httputil — it calls a type definition an "alias"                               | High       | Low        |
+| ~~9~~  | ~~Decide on .agents sync strategy (script, docs, or hook)~~ done at `6efb022`                              | ~~High~~   | ~~Low~~    |
+| ~~10~~ | ~~Refresh `.agents/skills/` from project repo to eliminate current divergence~~ done at `6efb022`          | ~~Medium~~ | ~~Medium~~ |
+| 11     | Cross-reference `go-error-modernization` skill — error types depend on alias-vs-definition                 | Medium     | Low        |
+| 12     | Cross-reference `data-model-review` skill — type design decisions                                          | Low        | Low        |
+| 13     | Check `how-to-golang/references/architecture.md` for overlap or conflict with new section                  | Medium     | Low        |
+| 14     | Check other Go skills (`go-modularize`, `samber-do-best-practices`) for alias/definition usage in examples | Low        | Low        |
+| 15     | Add embedding-vs-aliasing-vs-definition comparison to `domain-types.md`                                    | Medium     | Medium     |
+| 16     | Clarify that type definitions CAN have methods re-declared (just not inherited)                            | Low        | Low        |
+| 17     | Add anchor link (`#type-alias--vs-type-definition-no-`) to any cross-references                            | Low        | Low        |
+| 18     | Consider whether the `go-error-modernization` skill needs its own alias-vs-definition section              | Medium     | Medium     |
+| 19     | Run `go vet` / `golangci-lint` on the Go examples in the guidance to catch syntax errors                   | Medium     | Low        |
+| 20     | Consider adding the alias-vs-definition distinction to the `how-to-write-skills.md` guide as a Go gotcha   | Low        | Low        |
 
 ---
 
@@ -185,9 +185,9 @@ and make the project-repo skills superb.
 
 ### Remaining quality gaps
 
-| # | Gap                                                                           | Priority |
-| - | ----------------------------------------------------------------------------- | -------- |
-| 1 | `website-launch/SKILL.md` is 797 lines (should be <500)                       | Medium   |
-| ~~2~~ | ~~`copywriting`, `find-skills`, `frontend-design`, etc. exist only in `.agents`~~ **Won't implement — resolved 15:04: third-party installs with lockfile sources, intentionally outside this repo.** | ~~Low~~      |
-| 3 | Several skills still duplicate the "READ, UNDERSTAND..." footer               | Low      |
-| 4 | No empirical trigger testing in Crush                                         | Medium   |
+| #     | Gap                                                                                                                                                                                                  | Priority |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| 1     | `website-launch/SKILL.md` is 797 lines (should be <500)                                                                                                                                              | Medium   |
+| ~~2~~ | ~~`copywriting`, `find-skills`, `frontend-design`, etc. exist only in `.agents`~~ **Won't implement — resolved 15:04: third-party installs with lockfile sources, intentionally outside this repo.** | ~~Low~~  |
+| 3     | Several skills still duplicate the "READ, UNDERSTAND..." footer                                                                                                                                      | Low      |
+| 4     | No empirical trigger testing in Crush                                                                                                                                                                | Medium   |
