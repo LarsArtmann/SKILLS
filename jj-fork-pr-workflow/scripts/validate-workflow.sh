@@ -33,9 +33,9 @@ scratch="$(mktemp -d /tmp/jj-fork-pr-validate.XXXXXX)"
 trap 'echo "scratch dir (kept for inspection): $scratch"' EXIT
 cd "$scratch"
 
-ALPHA='description("feat: add alpha")'
-BETA='description("fix: beta fix")'
-STACKED='description("chore: stacked on beta")'
+ALPHA='description(substring:"feat: add alpha")'
+BETA='description(substring:"fix: beta fix")'
+STACKED='description(substring:"chore: stacked on beta")'
 
 pass=0
 fail=0
@@ -77,7 +77,6 @@ echo "alpha" >>file.txt
 jj new >/dev/null
 jj new main@upstream -m "fix: beta fix" >/dev/null
 echo "beta" >beta.txt
-jj new >/dev/null
 jj new -m "chore: stacked on beta" >/dev/null
 echo "stacked" >stacked.txt
 jj new >/dev/null
@@ -135,7 +134,16 @@ others=$(jj log --no-pager --no-graph -r 'mine() & mutable() & ~empty()' -T 'des
 [[ "$others" -eq 2 ]]
 check "Phase 5: sibling + stacked changes survived the merge cleanup (still non-empty)" $?
 
-jj abandon "$ALPHA" >/dev/null 2>&1
+# Abandon guarded by mine() & mutable(). Squash-merge (simulated here by
+# cherry-pick; GitHub behaves the same) PRESERVES THE PR AUTHOR — the upstream
+# squash commit "feat: add alpha (#1)" carries your email AND your PR title,
+# so both mine() and description() match it too. Only mutable() separates your
+# local change from upstream's copy; jj rightly refuses: "Error: Commit ...
+# is immutable".
+rc=0
+jj abandon "mine() & mutable() & $ALPHA" >/dev/null 2>&1 || rc=$?
+check "Phase 5: abandon merged change via mine() & mutable() guard (squash commits keep your authorship, so mine() alone still matches upstream's copy)" $rc
+
 jj bookmark delete "$alpha_bm" >/dev/null 2>&1
 jj git push --deleted >/dev/null 2>&1
 still_there=$(git --git-dir="$scratch/fork.git" branch --format='%(refname:short)' | grep -c "^$alpha_bm\$" || true)
