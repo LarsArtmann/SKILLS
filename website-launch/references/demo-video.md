@@ -101,31 +101,47 @@ fallback.
 ### NixOS invocation (memorize this — nothing else works)
 
 ```bash
-# 1. Scaffold (website/video/ is the canonical location — see "Location" below)
+# 1. Install under a REAL node (verified 2026-09-08, hyperframes 0.8.31).
+#    The machine's `node` is a shim into bun; sharp refuses to load under
+#    bun, so bunx/pnpm-dlx fail at startup. nixpkgs node makes
+#    @img/sharp-linux-x64 load.
 cd {repo}/website/video
-nix shell nixpkgs#nodejs -c npm init -y
-nix shell nixpkgs#nodejs -c npm install hyperframes
-nix shell nixpkgs#nodejs -c node node_modules/hyperframes/dist/cli.js init
+nix shell nixpkgs#nodejs -c pnpm init
+nix shell nixpkgs#nodejs -c pnpm add hyperframes
 
-# 2. Quality gates (lint = composition rules; check = WCAG + layout)
-HYPERFRAMES_BROWSER_PATH=$(ls -d /nix/store/*-chromium-*/bin/chromium | head -1) \
-  nix shell nixpkgs#nodejs -c node node_modules/hyperframes/dist/cli.js lint
-HYPERFRAMES_BROWSER_PATH=<same> \
-  nix shell nixpkgs#nodejs -c node node_modules/hyperframes/dist/cli.js check
+# 2. Browser libs: the CLI insists on puppeteer's cached
+#    chrome-headless-shell (~/.cache/puppeteer/...), which needs ~25 NixOS
+#    shared libs. Build them once, join each store path's /lib with ':'
+#    into $HF_LIBS (see constraint below), then:
+HYPERFRAMES="nix shell nixpkgs#nodejs -c env LD_LIBRARY_PATH=$HF_LIBS node node_modules/hyperframes/bin/hyperframes.mjs"
 
-# 3. Render
-HYPERFRAMES_BROWSER_PATH=<same> \
-  nix shell nixpkgs#nodejs -c node node_modules/hyperframes/dist/cli.js render --output ../public/demo.mp4
+# 3. Quality gates (lint = composition rules; check = browser runtime audit,
+#    layout sampling, WCAG contrast). `check` takes a DIRECTORY — one
+#    composition per dir; a file argument errors out.
+eval $HYPERFRAMES check
+
+# 4. Render (a 5s 1080p draft rendered in ~7s; verify with ffprobe).
+eval $HYPERFRAMES render --quality draft --output ../public/demo.mp4
 ```
 
-Hard-won constraints:
+Hard-won constraints (execution-verified 2026-09-08):
 
-- **`HYPERFRAMES_BROWSER_PATH` only.** `PUPPETEER_EXECUTABLE_PATH` does NOT
-  work. The bundled chrome-headless-shell lacks NixOS shared libs.
-- **Invoke the CLI directly** (`node node_modules/hyperframes/dist/cli.js`).
-  `npx hyperframes` and `pnpm exec` wrappers fail in approve-builds prompt
-  loops.
-- Find a usable chromium once and reuse the store path within the session.
+- **Real node via nix only.** `PUPPETEER_EXECUTABLE_PATH` is ignored and a
+  chromium on PATH is ignored: the CLI always launches puppeteer's cached
+  chrome-headless-shell. Make THAT binary work via `LD_LIBRARY_PATH`.
+- **Browser-lib recipe:** `nix build nixpkgs#<pkg> --no-link
+  --print-out-paths` for glib.out, dbus.lib, systemd, nss, nspr, atk,
+  at-spi2-core, cups, alsa-lib, expat, libxkbcommon, libgbm, mesa.drivers,
+  xorg.libX11, xorg.libXcomposite, xorg.libXdamage, xorg.libXext,
+  xorg.libXfixes, xorg.libXrandr, xorg.libxcb, xorg.libXtst,
+  stdenv.cc.cc.lib — append `/lib` to each and join with `:`. Gate on zero
+  "not found" lines from `LD_LIBRARY_PATH=... ldd ~/.cache/puppeteer/
+  chrome-headless-shell/*/chrome-headless-shell-linux64/chrome-headless-shell`.
+  Note: `hyperframes browser clear` empties `~/.cache/hyperframes/chrome`,
+  NOT the puppeteer cache.
+- **Invoke the CLI directly** (`node node_modules/hyperframes/bin/
+  hyperframes.mjs`). `npx hyperframes` and `pnpm exec` wrappers fail in
+  approve-builds prompt loops.
 
 ### Seek-safe composition rules (violations silently corrupt renders)
 
@@ -166,7 +182,9 @@ every future edit (copy tweak, new scene) a one-command re-render. A 9:16
 social cut is more work than a render flag: the composition hardcodes its
 size on the root (`data-width`/`data-height`, per `hyperframes-core`'s
 "Root must be sized" rule) with px-authored layout, so a vertical variant
-needs a resized composition, not a CLI argument. Never stage HyperFrames work
+needs a resized composition, not a CLI argument. Execution-verified
+2026-09-08: a 1080x1920 root in its own project dir checked and rendered
+clean (5.0s, ffprobe-confirmed 1080x1920). Never stage HyperFrames work
 in `/tmp`.
 
 Add to `website/.gitignore`:
