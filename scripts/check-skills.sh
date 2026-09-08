@@ -32,6 +32,8 @@
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
 #   scripts/check-skills.sh --thin     # list thin skills only (always exit 0)
+#   scripts/check-skills.sh --triggers # trigger-density report, informational
+#                                      # (near-misses do NOT gate; always exit 0)
 
 set -euo pipefail
 
@@ -40,14 +42,41 @@ cd "$repo_root"
 
 mode="${1:-check}"
 thin_only=0
+triggers_only=0
 case "$mode" in
 --thin) thin_only=1 ;;
+--triggers) triggers_only=1 ;;
 check | "") ;;
 *)
-	echo "Usage: $0 [--thin]" >&2
+	echo "Usage: $0 [--thin|--triggers]" >&2
 	exit 2
 	;;
 esac
+
+# extract_desc FILE — print the description text (single-line or YAML block
+# scalar) with newlines folded to spaces. Shared by check 6 and the
+# trigger-density report.
+extract_desc() {
+	awk '
+    BEGIN { block=0; done=0; desc="" }
+    !done && /^description:[[:space:]]*[>|]/ {
+      line=$0; sub(/^description:[[:space:]]*[>|]-?[[:space:]]*/, "", line)
+      desc=line; block=1; next
+    }
+    !done && /^description:/ {
+      line=$0; sub(/^description:[[:space:]]*/, "", line)
+      sub(/[[:space:]]+$/, "", line)
+      desc=line; done=1; next
+    }
+    block && !done {
+      if ($0 !~ /^[[:space:]]/) { done=1; next }
+      line=$0; sub(/^[[:space:]]+/, "", line)
+      sub(/[[:space:]]+$/, "", line)
+      if (desc != "") desc = desc " " line; else desc = line
+    }
+    END { print desc }
+  ' "$1"
+}
 
 # Collect skill directories (any dir containing SKILL.md, excluding vendored kits
 # nested under assets/ and the originals/ legacy folder).
@@ -74,6 +103,52 @@ echo "Thin skills (<35 lines): $thin_count"
 echo
 
 if [[ "$thin_only" -eq 1 ]]; then exit 0; fi
+
+# --- Trigger-density report (informational) -------------------------------------
+# The structural trigger-first guard (check 6) hard-fails only the worst
+# anti-patterns. This report — requested as a follow-up to that guard
+# (docs/status/2026-08-21_21-57 e5) — scores every description's trigger
+# DENSITY so near-misses surface without gating. A description that carries
+# trigger context but scores low under-triggers: the agent never loads the
+# skill. Metrics: trigger-marker phrases (use when / says / asks / ...) plus
+# quoted trigger phrases ("..."). Advisory only; always exits 0. Re-run after
+# editing any description.
+if [[ "$triggers_only" -eq 1 ]]; then
+	echo
+	echo "Trigger-density report (informational — near-misses do not gate):"
+	results=""
+	for d in "${skill_dirs[@]}"; do
+		skill="${d#./}"
+		desc_text="$(extract_desc "$d/SKILL.md")"
+		lc="$(printf '%s' "$desc_text" | tr '[:upper:]' '[:lower:]')"
+		markers=0
+		for m in \
+			"use when" "use this" "use before" "use after" "whenever" \
+			"when the user" "if the user" "when working" "or when" \
+			"also trigger" "triggers on" "fires when" \
+			"the user says" "the user asks" "the user wants"; do
+			[[ "$lc" == *"$m"* ]] && markers=$((markers + 1))
+		done
+		quotes=$(awk '{ n += gsub(/"/, "x") } END { print int(n / 2) }' <<<"$desc_text")
+		markers=$((markers + quotes))
+		if [[ "$markers" -ge 5 ]]; then
+			verdict="STRONG"
+		elif [[ "$markers" -ge 3 ]]; then
+			verdict="OK"
+		elif [[ "$markers" -ge 1 ]]; then
+			verdict="NEAR-MISS"
+		else
+			verdict="WEAK"
+		fi
+		results+="${markers}|${verdict}|${skill}|${#desc_text}"$'\n'
+	done
+	while IFS='|' read -r markers verdict skill dlen; do
+		[[ -z "$skill" ]] && continue
+		printf "  %-28s markers=%-3s %-9s desc=%s chars\n" "$skill" "$markers" "$verdict" "$dlen"
+	done < <(sort -t'|' -k1,1n <<<"$results")
+	echo "WEAK/NEAR-MISS descriptions under-trigger — strengthen 'Use when...' phrasing (AGENTS.md §3.1)."
+	exit 0
+fi
 
 # --- Structural checks ---------------------------------------------------------
 failed=0
@@ -135,25 +210,7 @@ for d in "${skill_dirs[@]}"; do
 	# any trigger-less opening; accept-but-warn other phrasings so future
 	# valid openings are not blocked. If a new style is adopted on purpose,
 	# extend the patterns below — do not silence the guard.
-	desc_text=$(awk '
-    BEGIN { block=0; done=0; desc="" }
-    !done && /^description:[[:space:]]*[>|]/ {
-      line=$0; sub(/^description:[[:space:]]*[>|]-?[[:space:]]*/, "", line)
-      desc=line; block=1; next
-    }
-    !done && /^description:/ {
-      line=$0; sub(/^description:[[:space:]]*/, "", line)
-      sub(/[[:space:]]+$/, "", line)
-      desc=line; done=1; next
-    }
-    block && !done {
-      if ($0 !~ /^[[:space:]]/) { done=1; next }
-      line=$0; sub(/^[[:space:]]+/, "", line)
-      sub(/[[:space:]]+$/, "", line)
-      if (desc != "") desc = desc " " line; else desc = line
-    }
-    END { print desc }
-  ' "$f")
+	desc_text="$(extract_desc "$f")"
 	first_sentence="${desc_text%%.*}"
 	first_sentence="${first_sentence#"${first_sentence%%[![:space:]]*}"}"
 	[[ ${#first_sentence} -gt 200 ]] && first_sentence="${first_sentence:0:200}"

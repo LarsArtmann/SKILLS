@@ -238,6 +238,10 @@ When a new skill needs HTML reports: (1) reference `./assets/html-report-kit/...
 
 Before making changes:
 
+0. **Execute `SESSION-START.md`** (repo root) — the mandatory session-start
+   checklist: scan `docs/feedback/new/`, open the newest `docs/status/`
+   report, read `TODO_LIST.md`. Two sessions skipped these steps and only
+   luck made it moot; the checklist exists so they are executed, not recalled.
 1. Read `docs/status/2026-05-03_07-51_comprehensive-skills-audit.md` — it contains the authoritative backlog.
 2. If fleshing out a thin skill, study `how-to-golang` or `go-modularize` as the pattern.
 3. If adding cross-references, check the audit's "Inter-skill cross-references" section for the intended graph.
