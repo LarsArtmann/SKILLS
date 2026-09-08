@@ -556,3 +556,22 @@ Three separate traps, each costing real debugging time:
    without a TTY abort on pnpm's purge prompt — always run website
    installs as `CI=true nix shell nixpkgs#nodejs -c pnpm install
    --frozen-lockfile` (or `--no-frozen-lockfile` when regenerating).
+
+### 33. Edited `firebase.json` headers but the live site still serves the old ones
+
+**Symptom:** the repo's `firebase.json` promises
+`Cache-Control: public, max-age=31536000, immutable` for the asset glob,
+but `HEAD` on the live site returns
+`public, max-age=0, must-revalidate` — for the new file AND for every other
+static asset. Found in the 2026-09-08 demo-video retro-audit: emeet-pixyd's
+repo had the mp4 cache glob committed 2026-09-04, the live site served
+`max-age=0` for everything.
+
+**Root cause:** deploys are manual (`firebase deploy` from a local shell —
+no deploy workflow in the repo). Editing `firebase.json` changes nothing
+until the next deploy, and nothing in CI reminds you.
+
+**Fix:** redeploy after any `firebase.json` change, and verify with the DoD
+check — `HEAD /demo.mp4` (and one known-static asset like a JS file) must
+return `immutable`. If the check fails on ALL assets, the deploy is stale,
+not the glob.
