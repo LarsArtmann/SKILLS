@@ -253,10 +253,11 @@ stay intact after their parent PR merges.
 - **Long change-id prefixes do not resolve as revsets.** `change_id.short()`
   templates emit 12-24 hex chars, and longer hex strings parse as COMMIT-id
   prefixes. Use the short form `jj log` displays, or a guarded revset.
-- **Bare `jj git push` can skip PRs.** It only pushes tracking bookmarks
-  reachable from `@` (`remote_bookmarks(remote)..@`). Sibling PR chains are
-  not ancestors of `@`, so after a bulk rebase, push per change with
-  repeated `-c` flags (or by explicit bookmark pattern) instead.
+- **Bare `jj git push` can skip PRs** (execution-verified). It only pushes
+  tracking bookmarks reachable from `@` (`remote_bookmarks(remote)..@`).
+  Sibling PR chains are not ancestors of `@`, so after a bulk rebase, push
+  per change with repeated `-c` flags, or with the `-b 'push-*'` glob the
+  helper script uses.
 - **`--allow-new` does not exist** on current `jj git push` (older tutorials
   mention it). `-c` and `--named` create new bookmarks on the fly.
 - **There is no `--force`.** jj always pushes with force-with-lease
@@ -277,12 +278,13 @@ stay intact after their parent PR merges.
 Evidence levels for every claim in this skill (all 2026-09-08):
 
 - **Execution-verified** against jj 0.45.1 in hermetic two-remote scratch
-  repos — the full Phase 1-5 lifecycle, 10/10 assertions: colocated clone +
+  repos — the full Phase 1-5 lifecycle, 11/11 assertions: colocated clone +
   upstream remote, sibling + stacked changes, `push -c` bookmark creation,
   the bulk `roots(mine() & mutable())` rebase (stacks intact, siblings
-  parallel), same-`-c` re-push of rebased PRs (stable branch names),
-  squash-merge → `empty()`, `mine() & mutable()`-guarded abandon, bookmark
-  delete + `--deleted` push. Rerun anytime (e.g. after a jj upgrade):
+  parallel), same-`-c` re-push of rebased PRs (stable branch names), bare
+  push skipping true siblings (why `-b 'push-*'`), squash-merge →
+  `empty()`, `mine() & mutable()`-guarded abandon, bookmark delete +
+  `--deleted` push. Rerun anytime (e.g. after a jj upgrade):
   [./scripts/validate-workflow.sh](./scripts/validate-workflow.sh).
 - **Flag-verified** against jj 0.45.1 `--help`: all other commands and revset
   functions (`heads()`, `description()`, `author()`...).

@@ -140,9 +140,10 @@ These are blockers that need a human decision before they can become tasks:
   inside `how-to-golang`, or graduate to its own `go-performance-tuning` skill
   owning triggers like "profile my service", "why is p99 high", "GC tuning"?
   Splitting adds a trigger surface; keeping it adds depth.
-- **Status-report default format** (`2026-08-16` g2, `2026-08-21` e5): the
-  skill's canonical output is a styled HTML dashboard, but recent reports were
-  `.md` per explicit user request. One-off overrides, or change the default?
+- **Status-report default format** (`2026-08-16` g2, `2026-08-21` e5,
+  recurred again `2026-09-08`): the skill's canonical output is a styled
+  HTML dashboard, but recent reports were `.md` per explicit user request.
+  One-off overrides, or change the default?
 - **Alias-guidance home & type-design granularity** (`2026-08-14_11-52` g2/g3):
   should the alias-vs-definition guidance stay in `domain-types.md`, split
   across `rules.md`, or anchor a dedicated `go-type-design` skill absorbing
@@ -160,6 +161,14 @@ These are blockers that need a human decision before they can become tasks:
 - **website-launch video policy** (`2026-08-21` g1-g3): click-to-play vs
   muted autoplay+loop; is the 9:16 social cut Tier 1 (launch-blocking) or
   Tier 2 (same-day); mandatory video for pure-API libraries or stay Optional?
+- **`how-to-write-skills.md` location** (`2026-09-08` f18): still at the repo
+  root. Convert to a proper skill directory, move to `docs/`, or leave? Every
+  new contributor session has to discover it via AGENTS.md §4.
+- **Where did "jj mergemerge" come from?** (`2026-09-08` g1): verified
+  nonexistent in jj 0.45.1. If the user saw it in a real tool, alias file, or
+  another agent's output, a hunt task follows; if it was shorthand, the
+  `jj-fork-pr-workflow` Phase 4 sync loop already answers it. User-only
+  answer.
 
 ## Non-goals
 

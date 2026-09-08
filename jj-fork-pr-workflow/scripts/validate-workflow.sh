@@ -131,9 +131,9 @@ jj rebase -s 'roots(mine() & mutable())' -o main@upstream >/dev/null
 bare_out=$(jj git push --dry-run 2>&1 || true)
 gamma_bm="push-$(jj log --no-pager --no-graph -r "$GAMMA" -T 'change_id.short()')"
 beta_bm="push-$(jj log --no-pager --no-graph -r "$BETA" -T 'change_id.short()')"
-gamma_included=0; grep -q "$gamma_bm" <<<"$bare_out" || gamma_included=1
-beta_included=0; grep -q "$beta_bm" <<<"$bare_out" || beta_included=0
-[[ "$gamma_included" -eq 0 && "$beta_included" -ne 0 ]]
+if grep -q "$gamma_bm" <<<"$bare_out"; then gamma_rc=0; else gamma_rc=1; fi
+if grep -q "$beta_bm" <<<"$bare_out"; then beta_rc=1; else beta_rc=0; fi
+[[ "$gamma_rc" -eq 0 && "$beta_rc" -eq 0 ]]
 check "Phase 4b: bare jj git push covers only the @-reachable chain — true sibling skipped (use -b 'push-*')" $?
 jj git push -b 'push-*' >/dev/null 2>&1
 

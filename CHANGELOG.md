@@ -13,6 +13,40 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-09-08 — jj-fork-pr-workflow skill, execution-verified)
+
+- New skill `jj-fork-pr-workflow` (26th): fork-first jj workflow for upstream
+  contribution — the multi-PR sync loop (fetch + rebase + push), stacked and
+  parallel PRs, squash-merge cleanup, agent safety rules, and a
+  charmbracelet conventions reference (`references/charmbracelet.md`)
+- `scripts/validate-workflow.sh`: hermetic two-remote E2E harness — 11/11
+  assertions against jj 0.45.1 make the skill's Phase 1-5 lifecycle
+  execution-verified, not just flag-verified; rerunnable after jj upgrades
+- `scripts/sync-all-prs.sh`: the Phase 4 loop as an executable helper
+  (`-b 'push-*'` glob re-push; verified rebase carries bookmarks)
+- Four jj traps discovered by validation and encoded as pitfalls: squash
+  commits keep YOUR authorship (abandon needs a `& mutable()` guard),
+  `description("x")` is exact-match against `"x\n"`, stray undescribed
+  `jj new` commits block `push -c`, long change-id prefixes don't resolve
+- README "Version Control & Open Source" section (26 skills); AGENTS.md §5.5
+  pairing with `verify-before-filing` and §10 `jj`/`gh` dependency row
+- Status report `docs/status/2026-09-08_20-39_*` with same-day brutal
+  self-review; its defect findings fixed in the same session (below)
+
+### Fixed (2026-09-08 — same-day defects from the self-review)
+
+- Invalid `gh pr checks <owner/repo>` selector in the charmbracelet
+  reference (correct: bare `gh pr checks` in the clone — PR selector or
+  current branch, never `owner/repo`)
+- Phase 0 fork-existence check probed the upstream instead of the user's
+  fork (`gh repo view YOU/<repo>`, exit 1 = missing; `gh repo fork` is
+  idempotent)
+- Charmbracelet "Problem/Fix/Validation template" claim was summarizer
+  fabrication — raw API verification shows the org template is two
+  checkboxes; body structure is up to the contributor
+- Verification-status section rewritten with explicit evidence levels
+  (execution-verified / flag-verified / gh-verified / raw-source-verified)
+
 ### Added (2026-08-21 — TODO wave T1–T20 fully executed)
 
 - `scripts/check-skill-links.sh`: CI-grade broken-internal-link detector for
