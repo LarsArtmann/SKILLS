@@ -240,8 +240,9 @@ Before making changes:
 
 0. **Execute `SESSION-START.md`** (repo root) — the mandatory session-start
    checklist: scan `docs/feedback/new/`, open the newest `docs/status/`
-   report, read `TODO_LIST.md`. Two sessions skipped these steps and only
-   luck made it moot; the checklist exists so they are executed, not recalled.
+   report, read `TODO_LIST.md`. Skipping these steps is a documented
+   failure mode (see `docs/status/2026-09-08_20-39_*` d6); the checklist
+   exists so they are executed, not recalled.
 1. Read `docs/status/2026-05-03_07-51_comprehensive-skills-audit.md` — it contains the authoritative backlog.
 2. If fleshing out a thin skill, study `how-to-golang` or `go-modularize` as the pattern.
 3. If adding cross-references, check the audit's "Inter-skill cross-references" section for the intended graph.
@@ -285,7 +286,7 @@ These tools are referenced by skills but are **not** bundled in this repo. Agent
 | `benchstat`, `goleak`, `x/sys/cpu`, `klauspost/compress`, `automaxprocs`, `fieldalignment` | `how-to-golang` (performance-tuning.md) | Profiling/benchmark/cache tooling; verified public 2026-08-16 (see the reference's verification-status table).                                                                                                                                                                                                                                                                                             |
 | `jj` v0.45+ CLI, `gh` CLI                                                                  | `jj-fork-pr-workflow`                   | Jujutsu VCS for the fork + multi-PR upstream workflow (plus `gh` for fork creation and PRs). All commands verified against local jj 0.45.1 on 2026-09-08; `jj mergemerge` does **not** exist — the real sync loop is fetch + rebase + push.                                                                                                                                                                |
 
-**Note:** `how-to-golang` snippets were accuracy-corrected 2026-08-04 and **compile-checked 2026-08-21** (all 31 Go blocks in `references/` built in a scratch module; fixes: branded-ID imports moved to `go-branded-id` + `sixafter/nanoid`, koanf env via `providers/env/v2`, go-snaps `/snaps` package path + `GinkgoT()`, `db.ExecContext`, fabricated uniflow pipeline removed — uniflow is `github.com/LarsArtmann/uniflow`, uncompilable at @latest as of 2026-08-21). The `govalid` generator flow was **execution-verified 2026-09-08** against v1.9.0 (generate → build → validate/unvalidated runs all correct); that run caught the documented `min_len`/`max_len` markers being **silently ignored** — correct markers are `minlength`/`maxlength` (fixed in `key-patterns.md` + `key-patterns-08/main.go`).
+**Note:** `how-to-golang` snippets were accuracy-corrected 2026-08-04 and **compile-checked 2026-08-21** (all 31 Go blocks in `references/` built in a scratch module; fixes: branded-ID imports moved to `go-branded-id` + `sixafter/nanoid`, koanf env via `providers/env/v2`, go-snaps `/snaps` package path + `GinkgoT()`, `db.ExecContext`, fabricated uniflow pipeline removed — uniflow is `github.com/LarsArtmann/uniflow`, uncompilable at @latest as of 2026-08-21). The `govalid` generator flow is **execution-verified** (2026-09-08, v1.9.0: generate → build → validate/unvalidated runs all correct). Correct markers are `minlength`/`maxlength`; the `min_len`/`max_len` form is **silently ignored** by the generator (no error, no check) — the references use the correct form (fixes verified in `key-patterns.md` + `key-patterns-08/main.go`).
 
 ## 11. Feedback Loop — `docs/feedback/`
 

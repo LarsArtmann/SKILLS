@@ -13,6 +13,54 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Changed (2026-09-08 — TODO wave 2: T21–T32 executed)
+
+- **T23 — govalid generator execution-verified** (v1.9.0, scratch module:
+  generate → build → validate/unvalidated all correct). Caught a real defect:
+  the documented `min_len`/`max_len` markers are silently ignored by the
+  generator; fixed to `minlength`/`maxlength` in `how-to-golang` (reference +
+  fixture) and recorded in AGENTS.md §10
+- **T21 — demo-video retro-audit of all four live sites** (see
+  `docs/status/2026-09-08_23-15_demo-video-retro-audit.md`): only emeet-pixyd
+  has a video (4/9 DoD items); live cache headers stale on every asset
+  (manual-deploy trap) → new pitfall #33 in `website-launch` common-pitfalls;
+  site-repo follow-ups tracked as TODO_LIST T33
+- **T22 — HyperFrames ground truth achieved**: two real renders through the
+  corrected guidance (1920x1080 and 1080x1920 resized-composition variant,
+  ffprobe-verified); the 9:16-as-resized-composition claim is now
+  execution-verified; the NixOS invocation recipe in `demo-video.md` rewritten
+  to the verified pipeline (real nix node for sharp, LD_LIBRARY_PATH for
+  puppeteer's chrome-headless-shell, direct CLI invocation)
+- **T24 — website-launch eval-1 re-run on a fully fictional repo**
+  (`evals/iteration-1/eval-1-rerun/`): old 4/7 vs new 7/7 — same outcome as
+  the 08-21 run; the real-repo asymmetry did not affect scores
+- **T27 — jj-fork-pr-workflow behavioral trigger test passed both directions**
+  in fresh `crush run` sessions: realistic fork/multi-PR prompt routes to the
+  skill and quotes Phase 0; unrelated Go-benchmark prompt routes to
+  `how-to-golang`
+- **T28/T29 — verification-block canon**: `jj-fork-pr-workflow` (and the two
+  drifted skills `go-error-modernization`, `nix-private-go-repos`) converted
+  to the canonical `## Verification status` Claim/Status/Source table from
+  `verify-external-claims` §5; `how-to-write-skills.md` now names that
+  template as the only sanctioned format; "Prior art" note (Carbon-lang jj
+  skill) added to the jj skill
+- **T25 — website-launch/SKILL.md 799 → 781 lines**: Phase 2 structure list
+  deduplicated into `readme-template.md` §"Standard Section Order" (template
+  is the single source)
+- **T26 — `check-skills.sh --triggers`**: informational trigger-density
+  report (marker phrases + quoted-phrase count, WEAK→STRONG verdicts,
+  weakest first); non-gating by design
+- **T31 — thin-skill audit re-verified**: `architecture-review`,
+  `code-quality-scan`, and `bdd-testing` already satisfied the 2026-06-17
+  audit asks (rubric/methodology, tool-guidance, ginkgo syntax + template —
+  the TODO row was stale); the one real gap closed:
+  `architecture-visualization` gained a d2-availability gate and an
+  execution-verified `references/d2-syntax.md` (every snippet rendered on
+  local d2 v0.8.x, ELK included)
+- **T32 — session-start checklist**: new root `SESSION-START.md` (feedback
+  scan → newest status report → TODO_LIST → AGENTS §8/§9 → check-skills),
+  wired as AGENTS.md §8 step 0
+
 ### Added (2026-09-08 — jj-fork-pr-workflow skill, execution-verified)
 
 - New skill `jj-fork-pr-workflow` (26th): fork-first jj workflow for upstream

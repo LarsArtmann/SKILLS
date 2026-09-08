@@ -12,7 +12,14 @@ Generate D2 diagrams that capture the current and ideal architecture. D2 produce
 
 ## Process
 
-1. Research the codebase thoroughly before drawing
+0. **Verify `d2` is available** before drawing anything: `command -v d2`. If
+   it is missing, do not improvise a different diagram tool mid-task — the
+   output format and layout contract below assume D2. Install per
+   [./references/d2-syntax.md](./references/d2-syntax.md) → "Verify before
+   you draw" (NixOS: `nix shell nixpkgs#d2`; Go toolchain:
+   `go install oss.terrastruct.com/d2@latest`) and tell the user which
+   install path you used. Gate each render on the CLI's exit code.
+1. Research the codebase thoroughly before drawing. Use the shape, connection, and style vocabulary from [./references/d2-syntax.md](./references/d2-syntax.md) — every snippet there renders on d2 v0.8.x.
 2. Generate the CURRENT state diagram:
 
    Write D2 source to: `docs/architecture-understanding/<YYYY-MM-DD_HH_MM-SESSION_NAME>.d2`
