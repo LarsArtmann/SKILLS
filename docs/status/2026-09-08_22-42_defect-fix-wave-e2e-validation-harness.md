@@ -55,22 +55,22 @@
 
 ## f) Next tasks (ranked; feeds docs-health HARVEST)
 
-| #  | Task                                                                                    | Impact   | Effort | Category      |
-| -- | --------------------------------------------------------------------------------------- | -------- | ------ | ------------- |
-| 1  | Add `jj-fork-pr-workflow` to FEATURES.md (new "Version Control" section; honest status)  | Critical | S      | Bug           |
-| 2  | Add FEATURES.md + CHANGELOG steps to the AGENTS.md §4 authoring checklist               | High     | S      | Process       |
-| 3  | Add a check-skills.sh guard: every skill dir must have a FEATURES.md row                 | High     | S      | Quality       |
-| 4  | Identify the origin of the 2026-09-08 ~20:40 28-file staged batch (after g1 answer); if unknown-origin, audit the eval output.md rewrites for evidence integrity | High | M | Bug |
-| 5  | Add a conflict-injection assertion to `validate-workflow.sh` (touch same file upstream + PR, verify conflict survives rebase, resolve, re-push) | High | M | Quality |
-| 6  | Full end-to-end coherence read of `jj-fork-pr-workflow/SKILL.md` (306 lines, 8+ edits)  | Medium   | S      | Quality       |
-| 7  | Clean up `/tmp/jj-fork-pr-validate.*` scratch dirs; add trap-cleanup or reuse to the harness | Low   | S      | Cleanup       |
-| 8  | After Crush restart: behavioral trigger test (already T27)                               | High     | S      | Quality       |
-| 9  | Align verification block with `verify-external-claims` (already T28)                     | Medium   | S      | Quality       |
-| 10 | Carbon-lang upstream-skill note (already T29); README flip after first green PR (already T30) | Low | S  | Documentation |
-| 11 | Session-start checklist artifact (already T32) — this session's d1/d6 strengthen its case | Medium   | S      | Process       |
-| 12 | Thin-skill flesh-out wave (already T31 — should be split per-skill per the 06-17 audit before starting) | Medium | L | Quality |
-| 13 | Consider a `PIPESTATUS`/no-pipe-on-exit-checks convention note in AGENTS.md alongside the existing pipeline-masking lesson | Medium | S | Process |
-| 14 | Split T31 into four per-skill TODO rows citing the audit's per-skill findings (fixes my own d5) | Low | S | Cleanup |
+| #  | Task                                                                                                                                                             | Impact   | Effort | Category      |
+| -- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------ | ------------- |
+| 1  | Add `jj-fork-pr-workflow` to FEATURES.md (new "Version Control" section; honest status)                                                                          | Critical | S      | Bug           |
+| 2  | Add FEATURES.md + CHANGELOG steps to the AGENTS.md §4 authoring checklist                                                                                        | High     | S      | Process       |
+| 3  | Add a check-skills.sh guard: every skill dir must have a FEATURES.md row                                                                                         | High     | S      | Quality       |
+| 4  | Identify the origin of the 2026-09-08 ~20:40 28-file staged batch (after g1 answer); if unknown-origin, audit the eval output.md rewrites for evidence integrity | High     | M      | Bug           |
+| 5  | Add a conflict-injection assertion to `validate-workflow.sh` (touch same file upstream + PR, verify conflict survives rebase, resolve, re-push)                  | High     | M      | Quality       |
+| 6  | Full end-to-end coherence read of `jj-fork-pr-workflow/SKILL.md` (306 lines, 8+ edits)                                                                           | Medium   | S      | Quality       |
+| 7  | Clean up `/tmp/jj-fork-pr-validate.*` scratch dirs; add trap-cleanup or reuse to the harness                                                                     | Low      | S      | Cleanup       |
+| 8  | After Crush restart: behavioral trigger test (already T27)                                                                                                       | High     | S      | Quality       |
+| 9  | Align verification block with `verify-external-claims` (already T28)                                                                                             | Medium   | S      | Quality       |
+| 10 | Carbon-lang upstream-skill note (already T29); README flip after first green PR (already T30)                                                                    | Low      | S      | Documentation |
+| 11 | Session-start checklist artifact (already T32) — this session's d1/d6 strengthen its case                                                                        | Medium   | S      | Process       |
+| 12 | Thin-skill flesh-out wave (already T31 — should be split per-skill per the 06-17 audit before starting)                                                          | Medium   | L      | Quality       |
+| 13 | Consider a `PIPESTATUS`/no-pipe-on-exit-checks convention note in AGENTS.md alongside the existing pipeline-masking lesson                                       | Medium   | S      | Process       |
+| 14 | Split T31 into four per-skill TODO rows citing the audit's per-skill findings (fixes my own d5)                                                                  | Low      | S      | Cleanup       |
 
 Not re-listed (already routed, unchanged): ROADMAP open questions (status-report format, how-to-write-skills location, mergemerge origin, and the pre-existing seven).
 

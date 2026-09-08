@@ -26,8 +26,14 @@
 
 set -euo pipefail
 
-command -v jj >/dev/null || { echo "FAIL: jj not found"; exit 1; }
-command -v git >/dev/null || { echo "FAIL: git not found"; exit 1; }
+command -v jj >/dev/null || {
+	echo "FAIL: jj not found"
+	exit 1
+}
+command -v git >/dev/null || {
+	echo "FAIL: git not found"
+	exit 1
+}
 
 scratch="$(mktemp -d /tmp/jj-fork-pr-validate.XXXXXX)"
 trap 'echo "scratch dir (kept for inspection): $scratch"' EXIT

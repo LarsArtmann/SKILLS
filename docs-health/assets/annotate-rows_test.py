@@ -4,7 +4,6 @@ Run (the source file has a hyphen, so import via importlib):
 python3 -c "import importlib.util,sys; s=importlib.util.spec_from_file_location('ar','annotate-rows.py'); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); exec(open('annotate-rows_test.py').read().replace('from annotate_rows import marker_for','marker_for = m.marker_for'))"
 """
 
-
 from annotate_rows import marker_for
 
 

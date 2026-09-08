@@ -13,17 +13,17 @@ meta-repo; individual repos can override, so re-check the target repo's
 
 ## Convention summary
 
-| Concern            | charmbracelet convention                                                                                                                                                                 |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Merge strategy     | **Squash and merge.** The PR title becomes the sole commit on `main`.                                                                                                                    |
-| Commit/PR title    | **Conventional Commits** required — `feat:`, `fix:`, `chore:`, `docs:`, `ci:` — explicitly requested "to make it easier to generate release notes".                                      |
-| DCO / CLA          | **None.** Instead: by contributing you assert 100% authorship and agree the content may be provided under the project's MIT license. `Signed-off-by` trailers are not required. |
-| PR template        | Org-level template is **two checkboxes** (read CONTRIBUTING.md; maintainer-approved Discussion for new features). No enforced body sections; GitHub auto-inserts it in repos without their own template. |
-| Evidence bar       | CONTRIBUTING requires tests or a minimal reproducible example to review changes; bug PRs need before/after repro steps. Run the repo's CI commands (`go test ./...`, `go vet ./...`, lint) and show the output. |
-| Review readiness   | Only mark "Ready for Review" when complete; failing CI without a request for help is assumed to be WIP. |
-| New features       | **Open a Discussion first.** Feature PRs without prior maintainer buy-in are discouraged.                                                                                                |
-| CI state           | Failing CI is read as work-in-progress. A PR with red CI stalls silently — keep every PR rebased and green (the sync loop in SKILL.md Phase 4 exists for exactly this).                  |
-| Language           | Go (core libs). Some tooling (`vhs`) mixes Go + TypeScript.                                                                                                                              |
+| Concern          | charmbracelet convention                                                                                                                                                                                        |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Merge strategy   | **Squash and merge.** The PR title becomes the sole commit on `main`.                                                                                                                                           |
+| Commit/PR title  | **Conventional Commits** required — `feat:`, `fix:`, `chore:`, `docs:`, `ci:` — explicitly requested "to make it easier to generate release notes".                                                             |
+| DCO / CLA        | **None.** Instead: by contributing you assert 100% authorship and agree the content may be provided under the project's MIT license. `Signed-off-by` trailers are not required.                                 |
+| PR template      | Org-level template is **two checkboxes** (read CONTRIBUTING.md; maintainer-approved Discussion for new features). No enforced body sections; GitHub auto-inserts it in repos without their own template.        |
+| Evidence bar     | CONTRIBUTING requires tests or a minimal reproducible example to review changes; bug PRs need before/after repro steps. Run the repo's CI commands (`go test ./...`, `go vet ./...`, lint) and show the output. |
+| Review readiness | Only mark "Ready for Review" when complete; failing CI without a request for help is assumed to be WIP.                                                                                                         |
+| New features     | **Open a Discussion first.** Feature PRs without prior maintainer buy-in are discouraged.                                                                                                                       |
+| CI state         | Failing CI is read as work-in-progress. A PR with red CI stalls silently — keep every PR rebased and green (the sync loop in SKILL.md Phase 4 exists for exactly this).                                         |
+| Language         | Go (core libs). Some tooling (`vhs`) mixes Go + TypeScript.                                                                                                                                                     |
 
 ## Applying the jj fork workflow here
 

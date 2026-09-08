@@ -158,10 +158,10 @@ jj git push -b fix-tui-rerender
   the fork's parent as the PR target). In a non-colocated checkout, point gh
   at jj's underlying git dir first: `GIT_DIR="$(jj git root)" gh pr create`.
 - Write the PR body to the target repo's template (GitHub auto-inserts it
-   for empty bodies; an explicit `gh pr create --body` bypasses it). For
-   charmbracelet the template is just two checkboxes, so structure the body
-   yourself — see
-   [./references/charmbracelet.md](./references/charmbracelet.md).
+  for empty bodies; an explicit `gh pr create --body` bypasses it). For
+  charmbracelet the template is just two checkboxes, so structure the body
+  yourself — see
+  [./references/charmbracelet.md](./references/charmbracelet.md).
 - **Before filing, verify the diagnosis**: the `verify-before-filing` skill
   owns that step. A rebased, green, well-described PR whose premise is wrong
   still wastes a maintainer's time.
@@ -277,14 +277,14 @@ stay intact after their parent PR merges.
 
 Canonical block format per [verify-external-claims §5](../verify-external-claims/SKILL.md) ("Verification-Status Block Template"). All verification dated 2026-09-08.
 
-| Claim                                                                  | Status                 | Source                                                                                                                                       |
-| ---------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Full Phase 1-5 lifecycle, 11/11 assertions (colocated clone, sibling + stacked changes, `push -c`, bulk `roots(mine() & mutable())` rebase, re-push, bare-push skip, squash-merge → `empty()`, guarded abandon, bookmark delete + `--deleted`) | ✅ Execution-verified  | [./scripts/validate-workflow.sh](./scripts/validate-workflow.sh) in hermetic two-remote scratch repos; rerun after any jj upgrade            |
-| All other jj commands and revset functions (`heads()`, `description()`, `author()`, ...)     | ✅ Flag-verified       | jj 0.45.1 `--help` text                                                                                                                      |
-| `gh repo fork --clone=false`, `gh repo sync`, `gh repo view` exit codes, `gh pr checks` argument semantics   | ✅ gh-verified         | gh 2.99.0 (`gh pr checks` takes a PR selector or the current branch — not `owner/repo`; `gh repo view` exits 1 on a missing repo)            |
-| charmbracelet CONTRIBUTING.md, org PR template (two checkboxes), squash-merge history        | ✅ Raw-source-verified | GitHub API raw fetch; an earlier "Problem/Fix/Validation template" claim was summarizer fabrication, caught and corrected by this fetch      |
-| `jj mergemerge`                                                        | ❌ Does not exist      | Local jj 0.45.1 command list + official docs + source search; the intent maps to the Phase 4 sync loop                                       |
-| Official GitHub collaboration guide                                    | ✅ Reference           | <https://docs.jj-vcs.dev/latest/github/>                                                                                                     |
+| Claim                                                                                                                                                                                                                                          | Status                 | Source                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Full Phase 1-5 lifecycle, 11/11 assertions (colocated clone, sibling + stacked changes, `push -c`, bulk `roots(mine() & mutable())` rebase, re-push, bare-push skip, squash-merge → `empty()`, guarded abandon, bookmark delete + `--deleted`) | ✅ Execution-verified  | [./scripts/validate-workflow.sh](./scripts/validate-workflow.sh) in hermetic two-remote scratch repos; rerun after any jj upgrade       |
+| All other jj commands and revset functions (`heads()`, `description()`, `author()`, ...)                                                                                                                                                       | ✅ Flag-verified       | jj 0.45.1 `--help` text                                                                                                                 |
+| `gh repo fork --clone=false`, `gh repo sync`, `gh repo view` exit codes, `gh pr checks` argument semantics                                                                                                                                     | ✅ gh-verified         | gh 2.99.0 (`gh pr checks` takes a PR selector or the current branch — not `owner/repo`; `gh repo view` exits 1 on a missing repo)       |
+| charmbracelet CONTRIBUTING.md, org PR template (two checkboxes), squash-merge history                                                                                                                                                          | ✅ Raw-source-verified | GitHub API raw fetch; an earlier "Problem/Fix/Validation template" claim was summarizer fabrication, caught and corrected by this fetch |
+| `jj mergemerge`                                                                                                                                                                                                                                | ❌ Does not exist      | Local jj 0.45.1 command list + official docs + source search; the intent maps to the Phase 4 sync loop                                  |
+| Official GitHub collaboration guide                                                                                                                                                                                                            | ✅ Reference           | <https://docs.jj-vcs.dev/latest/github/>                                                                                                |
 
 ## Prior art
 

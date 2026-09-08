@@ -32,7 +32,10 @@
 
 set -euo pipefail
 
-command -v jj >/dev/null || { echo "FAIL: jj not found" >&2; exit 1; }
+command -v jj >/dev/null || {
+	echo "FAIL: jj not found" >&2
+	exit 1
+}
 
 trunk="${1:-main@upstream}"
 
