@@ -121,6 +121,7 @@ jj new main@upstream          # start work on fresh trunk
 # ... edit files (snapshots are automatic; no staging area exists) ...
 jj describe -m "feat: ..."    # describe the change
 jj new                        # finish it, start the next empty change
+# (equivalent one-step: jj commit -m "feat: ..." = describe + new)
 ```
 
 - **One PR = one change = one logical concern.** If a change grows two
@@ -134,6 +135,11 @@ jj new                        # finish it, start the next empty change
 - **Stacked PRs:** `jj new` on top of change 1, implement change 2. Open PR
   2 with PR 1's branch as its base on GitHub; when PR 1 merges, the sync
   loop drops it under PR 2 automatically.
+- **Describe every change as you go.** An undescribed stray `jj new` commit
+  that ends up BELOW a stacked change blocks `jj git push -c` for the whole
+  stack — jj refuses to push commits with empty descriptions. `jj commit
+  -m "..."` describes and starts the next change in one step, making strays
+  impossible.
 
 ## Phase 3 — Push and open the PR
 
@@ -197,6 +203,13 @@ Flag notes: `-o/--onto` is the current spelling (jj ≥ 0.44; older versions
 use `-d`). `-A/--insert-after` and `-B/--insert-before` exist for inserting
 between commits — you rarely need them for trunk syncs.
 
+The whole loop is encoded and execution-verified as
+[./scripts/sync-all-prs.sh](./scripts/sync-all-prs.sh) — run it instead of
+retyping. It re-pushes with `-b 'push-*'`, which works because rebase
+carries bookmarks to the rebased commits (verified: local push-* bookmarks
+already sit at the new tips after step 2, marked `*` = diverged from remote
+until pushed).
+
 ## Phase 5 — Post-merge cleanup
 
 Squash-merge repos (all of charmbracelet) make the local change _empty_
@@ -207,7 +220,7 @@ rebased change's diff vanishes while its description survives. Clean up:
 jj git fetch --all-remotes
 jj rebase -s 'roots(mine() & mutable())' -o main@upstream
 jj log -r 'mine() & mutable() & empty()' --no-pager   # REVIEW this list
-jj abandon <change-id>                                # abandon explicitly, per change
+jj abandon 'mine() & mutable() & <change-or-id>'     # the mutable() guard is REQUIRED — see pitfalls
 jj bookmark delete <branch-name>                      # named and push-<id> bookmarks alike
 jj git push --deleted                                 # propagate the branch deletion
 ```
@@ -224,6 +237,22 @@ stay intact after their parent PR merges.
   different email, the sync loop's revsets silently miss them. Set
   `user.email` correctly FIRST (Phase 0). Existing commits can be re-stamped
   from the corrected config with `jj metaedit --update-author`.
+- **Squash-merged commits keep YOUR authorship.** After your PR is
+  squash-merged (GitHub and cherry-pick both preserve the PR author), the
+  upstream commit carries your email AND your PR title — so `mine()` and
+  `description()` match it too. Guard every cleanup revset with
+  `& mutable()`; only that separates your local change from upstream's
+  copy. Verified: a bare `mine() & description(...)` abandon fails with
+  "Commit ... is immutable" — jj protecting shared history, correctly.
+- **`description("x")` is exact match against `"x\n"`.** Descriptions end
+  with a newline, so the intuitive form returns an empty revset ("Empty
+  revision set"). Use `description(substring:"x")`.
+- **Stray undescribed `jj new` commits block `push -c`** for anything
+  stacked above them (empty-description commits are unpushable by default).
+  Describe every change; `jj commit -m` does describe + new in one step.
+- **Long change-id prefixes do not resolve as revsets.** `change_id.short()`
+  templates emit 12-24 hex chars, and longer hex strings parse as COMMIT-id
+  prefixes. Use the short form `jj log` displays, or a guarded revset.
 - **Bare `jj git push` can skip PRs.** It only pushes tracking bookmarks
   reachable from `@` (`remote_bookmarks(remote)..@`). Sibling PR chains are
   not ancestors of `@`, so after a bulk rebase, push per change with
@@ -245,16 +274,28 @@ stay intact after their parent PR merges.
 
 ## Verification status
 
-- All jj commands and flags in this skill were verified against the local
-  **jj 0.45.1** binary on **2026-09-08** (`--help` output for rebase, git
-  push/fetch/clone/remote, abandon, bookmark; revset functions `mine()`,
-  `mutable()`, `roots()`, `heads()`, `empty()`, `description()`).
+Evidence levels for every claim in this skill (all 2026-09-08):
+
+- **Execution-verified** against jj 0.45.1 in hermetic two-remote scratch
+  repos — the full Phase 1-5 lifecycle, 10/10 assertions: colocated clone +
+  upstream remote, sibling + stacked changes, `push -c` bookmark creation,
+  the bulk `roots(mine() & mutable())` rebase (stacks intact, siblings
+  parallel), same-`-c` re-push of rebased PRs (stable branch names),
+  squash-merge → `empty()`, `mine() & mutable()`-guarded abandon, bookmark
+  delete + `--deleted` push. Rerun anytime (e.g. after a jj upgrade):
+  [./scripts/validate-workflow.sh](./scripts/validate-workflow.sh).
+- **Flag-verified** against jj 0.45.1 `--help`: all other commands and revset
+  functions (`heads()`, `description()`, `author()`...).
+- **gh-verified** against gh 2.99.0: `gh repo fork --clone=false`,
+  `gh repo sync`, `gh repo view` exit codes (1 = missing), `gh pr checks`
+  argument semantics (PR selector or current branch — not `owner/repo`).
+- **Raw-source-verified** via the GitHub API: charmbracelet CONTRIBUTING.md,
+  the org-level PR template (two checkboxes), and `bubbletea` merge history
+  (single-parent `(#NNNN)` commits ⇒ squash-merge). An earlier draft's
+  "Problem/Fix/Validation template" claim was summarizer fabrication,
+  caught and corrected by raw verification.
 - `jj mergemerge` confirmed nonexistent (local command list + official docs
-  - source search, 2026-09-08).
-- charmbracelet conventions researched 2026-09-08 from
-  `charmbracelet/.github` CONTRIBUTING.md and repo PR templates — see
-  [./references/charmbracelet.md](./references/charmbracelet.md). Re-verify
-  per target repo; templates vary.
+  - source search).
 - Official docs: <https://docs.jj-vcs.dev/latest/github/>
 
 ## Cross-skill handoffs

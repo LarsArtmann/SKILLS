@@ -36,6 +36,7 @@ cd "$scratch"
 ALPHA='description(substring:"feat: add alpha")'
 BETA='description(substring:"fix: beta fix")'
 STACKED='description(substring:"chore: stacked on beta")'
+GAMMA='description(substring:"feat: gamma true sibling")'
 
 pass=0
 fail=0
@@ -115,6 +116,26 @@ local_tip=$(jj log --no-pager --no-graph -r "$ALPHA" -T 'commit_id')
 remote_tip=$(git --git-dir="$scratch/fork.git" rev-parse "refs/heads/$alpha_bm")
 [[ "$local_tip" == "$remote_tip" ]]
 check "Phase 4: re-pushing rebased change with same -c moved fork branch $alpha_bm to the new commit" $?
+
+# --- Phase 4b: bare push skips true siblings (why the helper uses -b 'push-*') ---
+jj new main@upstream -m "feat: gamma true sibling" >/dev/null
+echo "gamma" >gamma.txt
+jj new >/dev/null
+jj git push -c "$GAMMA" >/dev/null 2>&1
+echo "upstream moved again" >>"$scratch/upstream-work/other.txt"
+git -C "$scratch/upstream-work" add other.txt
+git -C "$scratch/upstream-work" commit -qm "chore: upstream moves again"
+git -C "$scratch/upstream-work" push -q origin main
+jj git fetch --all-remotes >/dev/null 2>&1
+jj rebase -s 'roots(mine() & mutable())' -o main@upstream >/dev/null
+bare_out=$(jj git push --dry-run 2>&1 || true)
+gamma_bm="push-$(jj log --no-pager --no-graph -r "$GAMMA" -T 'change_id.short()')"
+beta_bm="push-$(jj log --no-pager --no-graph -r "$BETA" -T 'change_id.short()')"
+gamma_included=0; grep -q "$gamma_bm" <<<"$bare_out" || gamma_included=1
+beta_included=0; grep -q "$beta_bm" <<<"$bare_out" || beta_included=0
+[[ "$gamma_included" -eq 0 && "$beta_included" -ne 0 ]]
+check "Phase 4b: bare jj git push covers only the @-reachable chain — true sibling skipped (use -b 'push-*')" $?
+jj git push -b 'push-*' >/dev/null 2>&1
 
 # --- Squash-merge simulation: upstream absorbs alpha as ONE new commit -----------
 alpha_sha=$(git --git-dir="$scratch/fork.git" rev-parse "refs/heads/$alpha_bm")
