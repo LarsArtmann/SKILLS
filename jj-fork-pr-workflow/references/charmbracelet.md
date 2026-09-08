@@ -6,9 +6,10 @@ repository (`bubbletea`, `lipgloss`, `bubbles`, `wish`, `vhs`, `soft-serve`,
 meta-repo; individual repos can override, so re-check the target repo's
 `CONTRIBUTING.md` and `.github/PULL_REQUEST_TEMPLATE.md` before filing.
 
-> Researched 2026-09-08 from `charmbracelet/.github` CONTRIBUTING.md and
-> observed merge history on `bubbletea`. Treat per-repo specifics as
-> unverified until checked.
+> Raw-verified 2026-09-08 via the GitHub API against `charmbracelet/.github`
+> CONTRIBUTING.md, the org-level `.github/PULL_REQUEST_TEMPLATE.md`, and
+> `bubbletea` merge history. Individual repos can override the org defaults —
+> re-check the target repo before filing.
 
 ## Convention summary
 
@@ -16,9 +17,10 @@ meta-repo; individual repos can override, so re-check the target repo's
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Merge strategy     | **Squash and merge.** The PR title becomes the sole commit on `main`.                                                                                                                    |
 | Commit/PR title    | **Conventional Commits** required — `feat:`, `fix:`, `chore:`, `docs:`, `ci:` — explicitly requested "to make it easier to generate release notes".                                      |
-| DCO / CLA          | **None.** Instead: by contributing you assert 100% authorship and agree the content may be provided under the project's MIT license. Do NOT add `Signed-off-by` trailers for their sake. |
-| PR template        | Sections: **1. Problem**, **2. Fix**, **3. Validation**, plus an agreement checkbox referencing CONTRIBUTING.md.                                                                         |
-| Validation section | List the commands you ran — typically `go test ./...`, `go vet ./...`, `golangci-lint run` (match the repo's CI).                                                                        |
+| DCO / CLA          | **None.** Instead: by contributing you assert 100% authorship and agree the content may be provided under the project's MIT license. `Signed-off-by` trailers are not required. |
+| PR template        | Org-level template is **two checkboxes** (read CONTRIBUTING.md; maintainer-approved Discussion for new features). No enforced body sections; GitHub auto-inserts it in repos without their own template. |
+| Evidence bar       | CONTRIBUTING requires tests or a minimal reproducible example to review changes; bug PRs need before/after repro steps. Run the repo's CI commands (`go test ./...`, `go vet ./...`, lint) and show the output. |
+| Review readiness   | Only mark "Ready for Review" when complete; failing CI without a request for help is assumed to be WIP. |
 | New features       | **Open a Discussion first.** Feature PRs without prior maintainer buy-in are discouraged.                                                                                                |
 | CI state           | Failing CI is read as work-in-progress. A PR with red CI stalls silently — keep every PR rebased and green (the sync loop in SKILL.md Phase 4 exists for exactly this).                  |
 | Language           | Go (core libs). Some tooling (`vhs`) mixes Go + TypeScript.                                                                                                                              |
@@ -30,25 +32,26 @@ meta-repo; individual repos can override, so re-check the target repo's
    --colocate`, add `upstream`, `jj git fetch --all-remotes`).
 2. **Title the PR in Conventional Commits** — it will be squashed verbatim
    into history. One logical concern per PR; split with `jj split` if needed.
-3. **Fill the template** with concrete, runnable validation output:
+3. **Write the PR body** — the org template only contributes two
+   checkboxes, so structure the body yourself (problem → fix → evidence).
+   CONTRIBUTING asks for before/after repro steps on bug fixes. When
+   passing `gh pr create --body` explicitly, include the checkboxes
+   yourself — GitHub only auto-inserts the template for empty bodies:
 
    ```markdown
-   ## 1. Problem
-
    `bubbletea` re-renders the full view on every mouse move, causing visible
-   flicker at high report rates.
+   flicker at high report rates. Before: `go run examples/mouse/main.go`,
+   move the mouse, observe flicker. After this change: no flicker.
 
-   ## 2. Fix
-
-   Skip the repaint when the rendered frame is byte-identical to the previous
-   one. (`renderer.flush()` now early-returns on unchanged output.)
-
-   ## 3. Validation
+   Fix: skip the repaint when the rendered frame is byte-identical to the
+   previous one (`renderer.flush()` now early-returns on unchanged output).
 
    - `go test ./...` — pass
    - `go vet ./...` — pass
    - `golangci-lint run` — pass
-   - Manual: `go run examples/mouse/main.go`, moved mouse 500x, no flicker
+
+   - [x] I have read [`CONTRIBUTING.md`](https://github.com/charmbracelet/.github/blob/main/CONTRIBUTING.md).
+   - [ ] I have created a discussion that was approved by a maintainer (for new features).
    ```
 
 4. **Never merge main into the PR branch** to update it — under squash-merge
@@ -63,8 +66,10 @@ meta-repo; individual repos can override, so re-check the target repo's
   bubbletea", surface the Discussion requirement BEFORE writing code — the
   PR may be closed unread otherwise.
 - **Their CI is the arbiter.** Local green is necessary, not sufficient;
-  after every sync-loop push, check `gh pr checks charmbracelet/<repo>`.
+  after every sync-loop push, check `gh pr checks` (run it in the clone — it
+  selects the PR for the current branch; `owner/repo` is not a valid
+  argument to it).
 - **Rendering/TTY code needs manual evidence.** For TUI-affecting changes,
-  the Validation section should include a reproducible manual check (which
-  example program, what to observe) — automated tests rarely cover terminal
+  the PR body should include a reproducible manual check (which example
+  program, what to observe) — automated tests rarely cover terminal
   rendering.

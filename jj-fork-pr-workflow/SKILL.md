@@ -82,8 +82,12 @@ Run before touching anything:
    the GitHub account that pushes. `mine()` (used by the sync loop) matches
    on it, and GitHub attributes commits by it. A mismatch silently breaks
    both: revsets miss your PRs, and commits show the wrong author.
-4. Check whether a fork already exists: `gh repo view <owner>/<repo>` fails
-   → you need Phase 1; succeeds → skip to Phase 2.
+4. Check whether a fork already exists: `gh repo view YOU/<repo>` exits 1
+   → create the fork in Phase 1; exits 0 → skip `gh repo fork` and clone
+   directly. Do NOT probe the upstream (`gh repo view <owner>/<repo>`) — it
+   succeeds whether or not you have a fork and tells you nothing. `gh repo
+   fork` is also idempotent: run it with an existing fork and it just
+   reports the fork.
 
 ## Phase 1 — Fork-first setup (one time per repo)
 
@@ -147,9 +151,11 @@ jj git push -b fix-tui-rerender
 - Open the PR: in a colocated repo, plain `gh pr create` works (gh detects
   the fork's parent as the PR target). In a non-colocated checkout, point gh
   at jj's underlying git dir first: `GIT_DIR="$(jj git root)" gh pr create`.
-- Write the PR body to the target repo's template. For charmbracelet that is
-  Problem / Fix / Validation — see
-  [./references/charmbracelet.md](./references/charmbracelet.md).
+- Write the PR body to the target repo's template (GitHub auto-inserts it
+   for empty bodies; an explicit `gh pr create --body` bypasses it). For
+   charmbracelet the template is just two checkboxes, so structure the body
+   yourself — see
+   [./references/charmbracelet.md](./references/charmbracelet.md).
 - **Before filing, verify the diagnosis**: the `verify-before-filing` skill
   owns that step. A rebased, green, well-described PR whose premise is wrong
   still wastes a maintainer's time.
@@ -202,7 +208,7 @@ jj git fetch --all-remotes
 jj rebase -s 'roots(mine() & mutable())' -o main@upstream
 jj log -r 'mine() & mutable() & empty()' --no-pager   # REVIEW this list
 jj abandon <change-id>                                # abandon explicitly, per change
-jj bookmark delete <branch-name>                      # if a named bookmark was used
+jj bookmark delete <branch-name>                      # named and push-<id> bookmarks alike
 jj git push --deleted                                 # propagate the branch deletion
 ```
 
