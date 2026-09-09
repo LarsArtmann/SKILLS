@@ -106,22 +106,20 @@ fallback.
 #    bun, so bunx/pnpm-dlx fail at startup. nixpkgs node makes
 #    @img/sharp-linux-x64 load.
 cd {repo}/website/video
-nix shell nixpkgs#nodejs -c pnpm init
-nix shell nixpkgs#nodejs -c pnpm add hyperframes
+~/projects/SKILLS/scripts/hf-env.sh --install .
 
-# 2. Browser libs: the CLI insists on puppeteer's cached
-#    chrome-headless-shell (~/.cache/puppeteer/...), which needs ~25 NixOS
-#    shared libs. Build them once, join each store path's /lib with ':'
-#    into $HF_LIBS (see constraint below), then:
-HYPERFRAMES="nix shell nixpkgs#nodejs -c env LD_LIBRARY_PATH=$HF_LIBS node node_modules/hyperframes/bin/hyperframes.mjs"
-
+# 2. Every CLI invocation goes through the helper: it resolves the
+#    chrome-headless-shell lib paths from nixpkgs at runtime, gates on `ldd`
+#    (zero "not found"), and execs under the REAL nix node. See step 3's
+#    constraint notes for why each piece exists.
 # 3. Quality gates (lint = composition rules; check = browser runtime audit,
 #    layout sampling, WCAG contrast). `check` takes a DIRECTORY — one
 #    composition per dir; a file argument errors out.
-eval $HYPERFRAMES check
+~/projects/SKILLS/scripts/hf-env.sh -- node node_modules/hyperframes/bin/hyperframes.mjs check
 
 # 4. Render (a 5s 1080p draft rendered in ~7s; verify with ffprobe).
-eval $HYPERFRAMES render --quality draft --output ../public/demo.mp4
+~/projects/SKILLS/scripts/hf-env.sh -- node node_modules/hyperframes/bin/hyperframes.mjs \
+  render --quality draft --output ../public/demo.mp4
 ```
 
 Hard-won constraints (execution-verified 2026-09-08):
@@ -129,16 +127,17 @@ Hard-won constraints (execution-verified 2026-09-08):
 - **Real node via nix only.** `PUPPETEER_EXECUTABLE_PATH` is ignored and a
   chromium on PATH is ignored: the CLI always launches puppeteer's cached
   chrome-headless-shell. Make THAT binary work via `LD_LIBRARY_PATH`.
-- **Browser-lib recipe:** `nix build nixpkgs#<pkg> --no-link
-  --print-out-paths` for glib.out, dbus.lib, systemd, nss, nspr, atk,
-  at-spi2-core, cups, alsa-lib, expat, libxkbcommon, libgbm, mesa.drivers,
-  xorg.libX11, xorg.libXcomposite, xorg.libXdamage, xorg.libXext,
-  xorg.libXfixes, xorg.libXrandr, xorg.libxcb, xorg.libXtst,
-  stdenv.cc.cc.lib — append `/lib` to each and join with `:`. Gate on zero
-  "not found" lines from `LD_LIBRARY_PATH=... ldd ~/.cache/puppeteer/
-  chrome-headless-shell/*/chrome-headless-shell-linux64/chrome-headless-shell`.
-  Note: `hyperframes browser clear` empties `~/.cache/hyperframes/chrome`,
-  NOT the puppeteer cache.
+- **Browser-lib recipe:** the package list (glib.out, dbus.lib, systemd,
+  nss, nspr, atk, at-spi2-core, cups, alsa-lib, expat, libxkbcommon,
+  libgbm, mesa.drivers, nine xorg.* libs, stdenv.cc.cc.lib) lives in
+  `scripts/hf-env.sh` (`$pkgs` in the SKILLS repo); the script resolves
+  every store path at runtime via `nix build --print-out-paths` and joins
+  each `/lib` with `:`. Gate: zero "not found" lines from
+  `LD_LIBRARY_PATH=... ldd ~/.cache/puppeteer/chrome-headless-shell/*/`
+  `chrome-headless-shell-linux64/chrome-headless-shell`. If a lib goes
+  missing after a nixpkgs bump, extend `$pkgs` — never hardcode store
+  paths in docs. Note: `hyperframes browser clear` empties
+  `~/.cache/hyperframes/chrome`, NOT the puppeteer cache.
 - **Invoke the CLI directly** (`node node_modules/hyperframes/bin/
   hyperframes.mjs`). `npx hyperframes` and `pnpm exec` wrappers fail in
   approve-builds prompt loops.

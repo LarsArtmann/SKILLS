@@ -46,8 +46,8 @@ check 3 "value test + muted test self-checks" "$ok" "'value test' AND 'muted tes
 ok=0; grep -qiE '(written once|one sales narrative|narrative source|same README|README narrative|Why\? visualized|single narrative)' "$f" && ok=1
 check 4 "single README narrative reused" "$ok" "written once|one sales narrative|narrative source|README narrative|Why? visualized"
 
-# 5. Poster doubles as og:image cropped to 1200x630
-ok=0; grep -qi 'og:image' "$f" && grep -qiE '1200\s*x\s*630' "$f" && ok=1
+# 5. Poster doubles as og:image cropped to 1200x630 (ASCII x or Unicode ×)
+ok=0; grep -qi 'og:image' "$f" && grep -qiE '1200\s*[x×]\s*630' "$f" && ok=1
 check 5 "poster = og:image 1200x630" "$ok" "'og:image' AND '1200x630' co-occur"
 
 # 6. Final beat names the install command

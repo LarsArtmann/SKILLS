@@ -13,3 +13,9 @@ against the same 7 assertions as the original.
 **Result: old 4/7, new 7/7 — same outcome as 2026-08-21; scores were
 unaffected by the asymmetry (as the TODO predicted).** The original
 `eval-1/` artifacts are kept untouched (point-in-time).
+
+**Mechanical cross-check (2026-09-09):** `mechanical-grade.sh <output.md>`
+re-grades the regex-checkable assertions with no LLM in the loop; results in
+`mechanical-grading.txt` agree EXACTLY with the LLM verdicts above (old 4/7,
+new 7/7). Use it as the objective floor for future re-runs; fuzzy narrative
+judgments stay with the judge.

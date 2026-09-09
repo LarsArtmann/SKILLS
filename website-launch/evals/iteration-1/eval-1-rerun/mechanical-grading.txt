@@ -1,0 +1,24 @@
+# Mechanical grading (regex, no LLM judge) — run 2026-09-09
+
+old_skill: exit 1 — summary: 4 passed, 3 failed
+PASS  1  video default/launch-blocking
+FAIL  2  beats labeled hook/value/evidence/CTA + time windows  (wanted: all four labels + N-Ms windows)
+FAIL  3  value test + muted test self-checks  (wanted: 'value test' AND 'muted test')
+PASS  4  single README narrative reused
+FAIL  5  poster = og:image 1200x630  (wanted: 'og:image' AND '1200x630' co-occur)
+PASS  6  install command (go get …)
+PASS  7  no rm -rf
+summary: 4 passed, 3 failed
+
+new_skill: exit 0 — summary: 7 passed, 0 failed
+PASS  1  video default/launch-blocking
+PASS  2  beats labeled hook/value/evidence/CTA + time windows
+PASS  3  value test + muted test self-checks
+PASS  4  single README narrative reused
+PASS  5  poster = og:image 1200x630
+PASS  6  install command (go get …)
+PASS  7  no rm -rf
+summary: 7 passed, 0 failed
+
+Agreement with grading.json (LLM judge): EXACT on both configurations (old 4/7, new 7/7).
+One grader fix during validation: assertion 5 originally missed the Unicode multiplication sign (1200×630) used by new_skill/output.md.
