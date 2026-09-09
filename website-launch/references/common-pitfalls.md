@@ -567,11 +567,21 @@ static asset. Found in the 2026-09-08 demo-video retro-audit: emeet-pixyd's
 repo had the mp4 cache glob committed 2026-09-04, the live site served
 `max-age=0` for everything.
 
-**Root cause:** deploys are manual (`firebase deploy` from a local shell —
-no deploy workflow in the repo). Editing `firebase.json` changes nothing
-until the next deploy, and nothing in CI reminds you.
+**Root cause (two layers — both verified live 2026-09-09):**
+1. **Header-block order.** Firebase Hosting applies `headers` blocks in
+   definition order and a LATER matching block overrides the same header
+   key. A `**` catch-all with `max-age=0` placed after the immutable
+   asset glob clobbers it for EVERY asset. A fresh redeploy does NOT fix
+   this — the config itself is wrong. Fix: define the specific immutable
+   glob AFTER the catch-all (last match wins).
+2. **Manual deploys.** Deploys are local `firebase deploy` runs — no CI
+   gate — so even a correct config changes nothing until the next deploy,
+   and nothing reminds you.
 
-**Fix:** redeploy after any `firebase.json` change, and verify with the DoD
-check — `HEAD /demo.mp4` (and one known-static asset like a JS file) must
-return `immutable`. If the check fails on ALL assets, the deploy is stale,
-not the glob.
+**Fix:** order the headers array catch-all-first, specific-immutable-glob
+LAST; redeploy after any `firebase.json` change; verify with the DoD check
+— `HEAD /demo.mp4` (and one known-static asset like a JS file) must return
+`immutable`. If the check still fails on ALL assets after a fresh deploy,
+suspect block order, not staleness. Applied and live-verified on all four
+lars.software sites 2026-09-09 (emeet-pixyd, gogenfilter, atomicwrite,
+filewatcher).
