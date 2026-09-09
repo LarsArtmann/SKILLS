@@ -28,12 +28,17 @@
 #        warns on valid-but-non-canonical openings (AGENTS.md §3.1).
 #    12. Internal-link integrity across ALL skill .md files via the dedicated
 #        scripts/check-skill-links.sh (file links + in-file anchors).
+#    13. Verification-status canon guard (warn): block-shaped verification
+#        signals (blockquotes, wrong-shape headings, compound claims) without
+#        the canonical `## Verification status` table (verify-external-claims
+#        §5; the T28 wave eliminated the three-shapes drift).
 #
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
 #   scripts/check-skills.sh --thin     # list thin skills only (always exit 0)
 #   scripts/check-skills.sh --triggers # trigger-density report, informational
-#                                      # (near-misses do NOT gate; always exit 0)
+#                                      # (near-misses do NOT gate; always exit 0;
+#                                      #  prints WHICH phrases matched per skill)
 
 set -euo pipefail
 
@@ -113,6 +118,30 @@ if [[ "$thin_only" -eq 1 ]]; then exit 0; fi
 # skill. Metrics: trigger-marker phrases (use when / says / asks / ...) plus
 # quoted trigger phrases ("..."). Advisory only; always exits 0. Re-run after
 # editing any description.
+# desc_marker_report LC_TEXT TEXT — print "<count>\t<matched phrases, comma-joined>".
+# Counted: trigger-marker phrases plus quoted trigger phrases ("..."). The
+# matched list makes the score actionable: it shows WHICH phrases carry the
+# trigger weight, so an editor knows what to keep when rewriting.
+desc_marker_report() {
+	local lc="$1" text="$2" n=0 matched="" m q
+	for m in \
+		"use when" "use this" "use before" "use after" "whenever" \
+		"when the user" "if the user" "when working" "or when" \
+		"also trigger" "triggers on" "fires when" \
+		"the user says" "the user asks" "the user wants"; do
+		if [[ "$lc" == *"$m"* ]]; then
+			n=$((n + 1))
+			matched+=",$m"
+		fi
+	done
+	q=$(grep -oE '"[^"]+"' <<<"$text" | sed 's/"//g' | paste -sd ',' -)
+	if [[ -n "$q" ]]; then
+		n=$((n + $(grep -oE '"[^"]+"' <<<"$text" | wc -l)))
+		matched+=",$q"
+	fi
+	printf '%s\t%s\n' "$n" "${matched#,}"
+}
+
 if [[ "$triggers_only" -eq 1 ]]; then
 	echo
 	echo "Trigger-density report (informational — near-misses do not gate):"
@@ -121,16 +150,7 @@ if [[ "$triggers_only" -eq 1 ]]; then
 		skill="${d#./}"
 		desc_text="$(extract_desc "$d/SKILL.md")"
 		lc="$(printf '%s' "$desc_text" | tr '[:upper:]' '[:lower:]')"
-		markers=0
-		for m in \
-			"use when" "use this" "use before" "use after" "whenever" \
-			"when the user" "if the user" "when working" "or when" \
-			"also trigger" "triggers on" "fires when" \
-			"the user says" "the user asks" "the user wants"; do
-			[[ "$lc" == *"$m"* ]] && markers=$((markers + 1))
-		done
-		quotes=$(awk '{ n += gsub(/"/, "x") } END { print int(n / 2) }' <<<"$desc_text")
-		markers=$((markers + quotes))
+		IFS=$'\t' read -r markers matched <<<"$(desc_marker_report "$lc" "$desc_text")"
 		if [[ "$markers" -ge 5 ]]; then
 			verdict="STRONG"
 		elif [[ "$markers" -ge 3 ]]; then
@@ -140,11 +160,11 @@ if [[ "$triggers_only" -eq 1 ]]; then
 		else
 			verdict="WEAK"
 		fi
-		results+="${markers}|${verdict}|${skill}|${#desc_text}"$'\n'
+		results+="${markers}|${verdict}|${skill}|${#desc_text}|${matched}"$'\n'
 	done
-	while IFS='|' read -r markers verdict skill dlen; do
+	while IFS='|' read -r markers verdict skill dlen matched; do
 		[[ -z "$skill" ]] && continue
-		printf "  %-28s markers=%-3s %-9s desc=%s chars\n" "$skill" "$markers" "$verdict" "$dlen"
+		printf "  %-28s markers=%-3s %-9s desc=%-5s %s\n" "$skill" "$markers" "$verdict" "$dlen" "${matched:0:72}"
 	done < <(sort -t'|' -k1,1n <<<"$results")
 	echo "WEAK/NEAR-MISS descriptions under-trigger — strengthen 'Use when...' phrasing (AGENTS.md §3.1)."
 	exit 0
@@ -373,6 +393,25 @@ if [[ -f "$dh" ]]; then
 		fi
 	done
 fi
+
+# --- Verification-status canon guard (advisory) ---------------------------------
+# verify-external-claims §5 owns the only sanctioned verification-block format:
+# a `## Verification status` heading with a Claim/Status/Source table. The T28
+# wave converted three skills out of three different shapes; this guard warns
+# when the drift regrows (blockquote notes, stray headings, compound claims in
+# prose without the table). Warn-only: a genuine claim outside the canon needs
+# human judgment, not a hard gate.
+for d in "${skill_dirs[@]}"; do
+	skill="${d#./}"
+	f="$d/SKILL.md"
+	has_canon=$(grep -c '^## Verification status' "$f")
+	bad_heading=$(grep -E '^#{1,6} *[Vv]erification' "$f" | grep -vc '^## Verification status')
+	blockquote=$(grep -cE '^>[^ ]* ?\*?\*?(Verification|Verified)' "$f")
+	compound=$(grep -icE 'execution-verified|compile-checked|render-verified|verified [0-9]{4}-[0-9]{2}' "$f")
+	if [[ "$has_canon" -eq 0 ]] && [[ "$bad_heading" -gt 0 || "$blockquote" -gt 0 || "$compound" -ge 2 ]]; then
+		echo "WARN $skill: verification signals (headings=$bad_heading blockquotes=$blockquote claims=$compound) but no canonical '## Verification status' table — convert per verify-external-claims §5"
+	fi
+done
 
 # --- Internal-link integrity (delegated) -----------------------------------------
 # The dedicated checker covers ALL skill .md files (SKILL.md + references/),
