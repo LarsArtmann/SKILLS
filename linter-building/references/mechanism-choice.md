@@ -19,7 +19,7 @@ rule at all?").
 
 | # | Situation | Mechanism | Evidence / Why |
 | --- | --- | --- | --- |
-| 1 | Existing linter covers it (forbidden identifiers, complexity caps, style) | **Configure it.** golangci-lint settings, oxlint categories, depguard/forbidigo | `template-arch-lint` shows the ceiling empirically: forbidigo bans are global (no per-path allowlists), config cannot express multi-signal patterns or custom detection — those gaps are exactly when you graduate to a plugin or custom linter |
+| 1 | Existing linter covers it (forbidden identifiers, complexity caps, style) | **Configure it.** golangci-lint settings, oxlint categories, depguard/forbidigo | `template-arch-lint` shows the ceiling empirically: forbidigo bans are global (no per-path allowlists), config cannot express multi-signal patterns or custom detection — those gaps are exactly when you graduate to a plugin or custom linter. Version caveat: evidence pinned 2026-09-09; newer linter versions may add per-path scoping — re-check before citing the ceiling as absolute |
 | 2 | "Which of 800 rules matter for THIS repo?" | **Configurator layer** — profiles as data (category × severity matrix) over an embedded, versioned rule registry | `oxlint-auto-configure` (841 oxlint rules, profiles: minimal/recommended/strict/maximal-typesafe), `golangci-lint-auto-configure` (4-tier priorities + per-linter reasons). Both emit config, never findings about code |
 | 3 | Syntax pattern in code (hand-rolled idioms, naming shapes, suspicious literals) | **Custom AST walker**: `go/parser` + `token.FileSet` + `ast.Inspect`, per-function or per-file predicates | `go-humanize-linter` (9 rules H001–H009). Fast, zero build/type-check requirement, works on dirty trees. Cost: you own alias resolution (see pitfalls) and get NO type facts |
 | 4 | Type facts: interface satisfaction, method sets, `T` vs `*T`, cross-package resolution | **`go/analysis` with types** (`pass.TypesInfo`, `pass.Pkg`) | `samber-linter` spec is the canonical justification: "interface satisfaction cannot be decided from the AST alone." Also the golangci-lint plugin contract — the analyzer interface IS the plugin API |
@@ -44,6 +44,10 @@ The rule of thumb: **can you decide with the file's text and shape alone?**
   approximate type facts with string matching on the AST — identifier-text
   matching breaks on dot-imports and aliases and produces exactly the false
   positives that kill linters. Match by package path, never identifier text.
+  Boundary case (eval-1 iteration-1 finding): identifier SHADOWING
+  (`var log = fakeLog`) can fool a syntactic alias map while `TypesInfo`
+  resolves it — if the rule must survive hostile shadowing, that is a type
+  fact and the analysis path is strictly safer.
 - Both in one tool? Keep ONE detector core and expose it twice:
   go-humanize-linter's CLI uses the walker; its golangci plugin wraps the
   SAME detectors in an `analysis.Analyzer` with
