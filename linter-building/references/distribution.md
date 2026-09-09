@@ -22,10 +22,16 @@ golangci internals, or actions tooling.
 ## CLI contract
 
 - **Exit codes carry semantics** (go-linter-sdk, verified):
-  `0` clean, `1` findings at/above the confidence threshold (actionable),
-  `2` only low-confidence findings (triage list). Distinct from "crashed" —
-  tool errors use their own path (sysexits-style classification if the tool
-  is large; go-error-family → BSD exit codes is the house pattern).
+
+  | Code | Meaning |
+  | --- | --- |
+  | 0 | Clean — no findings at/above the confidence threshold |
+  | 1 | Findings at/above threshold (actionable; blocks) |
+  | 2 | Only low-confidence findings (triage list; does not block) |
+
+  Distinct from "crashed": tool errors use their own path (sysexits-style
+classification if the tool is large; go-error-family → BSD exit codes is
+the house pattern).
 - **Baseline/delta for adoption**: `--save-baseline` once,
   `--behavior-delta` in CI — pre-existing findings don't fail the build,
   new ones do. This is how a linter lands on a legacy codebase without a
@@ -75,6 +81,12 @@ path lives under `testdata/analysistest/` using
   your Validate would demand; filter invalid ones explicitly
   (`slices.DeleteFunc(findings, IsInvalid)`) instead of silently dropping
   partial-but-valid results.
+- **Round-trip via property-bag keys** (verified go-finding set, reserve
+  your own `<tool>/` prefix the same way): `go-finding/severity`
+  (SARIF has no `critical`), `-confidence`, `-category`, `-tags`,
+  `-suggestion`, `-snippet`, `-id`, `-start-offset`, `-end-offset`,
+  `-suppression-kind`, `-suppression-reason`, `-suppression-rule`,
+  `-suppression-expiry`.
 
 ## CI integration
 

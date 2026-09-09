@@ -154,10 +154,19 @@ rules stay tiny; special powers are mixins.
 
 Literal aliasing (old low/medium/high → new warning/error/critical) causes
 semantic distortion. The proven method (InboxClean's go-finding migration
-docs): write a semantic mapping TABLE with rationale per mapping
-("`low` in error-handling context means non-blocking but notable →
-warning"), adopt via aliases first to preserve API, then convert at
-boundaries for genuinely different domain meanings.
+docs): write a semantic mapping TABLE with rationale per mapping, adopt via
+aliases first to preserve API, then convert at boundaries for genuinely
+different domain meanings. Filled-in example (from that migration):
+
+| Legacy value | Context meaning | go-finding mapping | Rationale |
+| --- | --- | --- | --- |
+| `low` | Non-blocking but notable (error-handling findings) | `warning` | Not gate-worthy alone, must stay visible |
+| `medium` | Real defect, should fix soon | `error` | Gate-worthy in CI |
+| `high` | Data loss / correctness violation | `critical` | Merge-blocker, top of triage |
+
+Same-shape rule for domain concepts: `ThreatLevel` in InboxClean was NOT
+aliased — it is a domain meaning, converted explicitly at the boundary.
+Alias mechanics, convert semantics.
 
 ## Severity ≠ Confidence ≠ CorrelationScore
 

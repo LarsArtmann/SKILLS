@@ -2,14 +2,16 @@
 
 Lars already owns every layer of the linter stack. Reuse before building —
 check this map first. Paths are local checkouts; all LarsArtmann repos are
-public unless noted. (States verified 2026-09-09; re-check `git log` before
-relying on a repo's freshness.)
+public unless noted. (Claim provenance: the go-finding / go-linter-sdk /
+linter-autoconfigure-sdk rows are verified against source 2026-09-09; other
+states come from the research pass over each repo's docs — re-check `git log`
+before relying on a repo's freshness.)
 
 ## The stack, bottom-up
 
 | Layer | Repo | State | What to take from it |
 | --- | --- | --- | --- |
-| Finding data model | `~/projects/go-finding` | v1.9.x, API locked since v1.0, public | `finding.Finding`, Builder, Severity/Confidence, SARIF import/export, LSP, merge/correlate, filters, fix layer (FixEdit/FixOutcome), pipeline (detect→triage→fix→verify), 70+ golangci-linter→category registry, `analysis.FromDiagnostic` bridge |
+| Finding data model | `~/projects/go-finding` | v1.9.x, API locked since v1.0, public | `finding.Finding`, Builder, Severity/Confidence, SARIF import/export, LSP, merge/correlate, filters, fix layer (FixEdit/FixOutcome), pipeline (detect→triage→fix→verify), 70+ golangci-linter→category registry (measured ~84 entries), `analysis.FromDiagnostic` bridge |
 | Rule/registry scaffolding | `~/projects/go-linter-sdk` | v0.3.x, public | `Rule`/`RuleFunc{Meta,Run}`, `Registry` (panic-on-duplicate), `RuleError`, `ExitCodeByConfidence` (0/1/2), examples dir with minimal linters |
 | Config-tool plumbing | `~/projects/linter-autoconfigure-sdk` | seed-stage, public | `ReadConfig/LoadJSON/SaveJSON` with `Op`-typed `ConfigError`, `ConfigIssue → Finding`, atomic idempotent writes. Use only when a second configurator consumer exists (their own README says value is modest pre-consumer) |
 | Configurator (Go) | `~/projects/golangci-lint-auto-configure` | v0.6.0 mature, public | 4-tier linter priorities, governance maps (Disabled/NeverAutoEnable/PragmaticNoise with data-integrity tests), fixer anti-gaming (justified disables, audit ledger, loop detection), v1→v2 migration |

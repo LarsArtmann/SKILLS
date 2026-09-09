@@ -142,6 +142,8 @@ The `full-code-review` skill now delegates planning to `pareto-planning` (previo
 
 `jj-fork-pr-workflow` pairs with `verify-before-filing` on the outbound direction: it owns the VCS mechanics of upstream contribution (fork setup, the multi-PR sync loop, post-merge cleanup) and hands off to `verify-before-filing` for the diagnosis check before a PR is filed — link, do not restate the rationale.
 
+`linter-building` (added 2026-09-09) is the authoring counterpart to `code-quality-scan`: code-quality-scan RUNS existing linters over a codebase; linter-building AUTHORS new linters, rules, and configurators. Both descriptions disambiguate each other. It defers general Go stack decisions to `how-to-golang` (its description names it back) and its `references/ecosystem.md` is the authoritative map of the local linter repos (go-finding, go-linter-sdk, the auto-configure pair, reference linters) — edit that map, not scattered prose, when repo states change.
+
 ### 5.6 `how-to-write-skills.md` Location
 
 This file is currently at the repo root. The status report recommends either converting it to a proper skill directory (`skill-creator/` or `how-to-write-skills/`) or moving it to `docs/`. It is not currently installed as a skill.

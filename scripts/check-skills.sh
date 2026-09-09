@@ -183,7 +183,9 @@ for d in "${skill_dirs[@]}"; do
 		failed=1
 	fi
 	# Check 2: name field present and matches directory
-	name=$(grep -m1 '^name:' "$f" | sed -E 's/^name:[[:space:]]*//;s/[[:space:]]*$//')
+	# (|| true: grep exits 1 on no match — under pipefail a bare pipeline aborts
+	# the whole script instead of reaching the FAIL message below)
+	name=$(grep -m1 '^name:' "$f" | sed -E 's/^name:[[:space:]]*//;s/[[:space:]]*$//' || true)
 	if [[ -z "$name" ]]; then
 		echo "FAIL $skill: missing 'name:' in frontmatter"
 		failed=1
@@ -372,7 +374,9 @@ for f in \
 		}
 		END { print c + 0 }
 	' "$f")
-	toc_count=$(grep -cE '^\s*[-0-9].*\[.+\]\(#[^)]+\)' "$f" 2>/dev/null || echo 0)
+	# (|| true not || echo 0: grep -c already prints 0 before exiting 1, so
+	# "|| echo 0" would append a second line and corrupt the count)
+	toc_count=$(grep -cE '^\s*[-0-9].*\[.+\]\(#[^)]+\)' "$f" 2>/dev/null || true)
 	if [[ "$heading_count" -gt "$toc_count" ]]; then
 		echo "FAIL ${f#./}: TOC drift — $heading_count ## headings but only $toc_count TOC entries. Add missing headings to the TOC."
 		failed=1

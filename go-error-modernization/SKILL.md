@@ -289,3 +289,4 @@ Load on demand:
 - [./references/cli-and-flags.md](./references/cli-and-flags.md) — Full flag reliability table, the `--no-suppress` bug reproduction, the remove-and-restore verification technique, exit codes. Flag behaviors reflect the original feedback (2026-07-21, when the tool was called `hierarchical-errors`) and have not all been re-verified against the renamed `erraudit` binary — see verification status at the top of this file.
 - [./references/anti-patterns.md](./references/anti-patterns.md) — All four anti-patterns with full code, plus the agent-specific "fix-to-zero" trap guidance
 - [../how-to-golang/SKILL.md](../how-to-golang/SKILL.md) — Broader Go development decision guide (what libraries to use, what to avoid)
+- [../linter-building/references/ecosystem.md](../linter-building/references/ecosystem.md) — Map of the local linter-building stack, including the erraudit row and the go-finding finding model erraudit targets

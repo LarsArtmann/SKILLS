@@ -286,3 +286,21 @@ different mistakes.
 
 _Point-in-time snapshot; when stale, use docs-health ANNOTATE — never
 rewrite. Section (f) is HARVEST input on user instruction._
+
+---
+
+## ANNOTATION (2026-09-09 20:08, linter-building session)
+
+Claims in this report that depend on `check-skills.sh` completing cleanly
+(including item 5/f13's "immediately caught" — the verification-canon guard
+that caught `samber-do-best-practices`) are now known to be partially
+unreliable: the script's verification guard contained zero-count `grep -c`
+assignments that abort under `set -euo pipefail` (verified reproducible on
+untouched `architecture-review/SKILL.md` at HEAD~1, introduced via the
+heuristic auto-commit `3f3aa37`). Checks up to and including the marker
+guard still ran; the verification-canon guard, the internal-link checker
+delegation, and the final exit-status summary did not reliably complete.
+Fixed 2026-09-09 in `scripts/check-skills.sh` (`|| true` on the four count
+assignments); structural checks now pass with the real summary line.
+Non-destructive appendix per docs-health ANNOTATE; original text above
+unchanged.
