@@ -79,12 +79,37 @@
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
-      tl.from("#card-a .kicker", { autoAlpha: 0, y: 24, duration: 0.5, ease: "power2.out" }, 0.1)
-        .from("#card-a-title", { autoAlpha: 0, y: 48, duration: 0.7, ease: "power3.out" }, 0.25)
-        .from("#card-a .sub", { autoAlpha: 0, y: 24, duration: 0.5, ease: "power2.out" }, 0.55)
-        .fromTo("#card-b-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 2.7)
-        .from("#card-b-title", { autoAlpha: 0, y: 48, duration: 0.7, ease: "power3.out" }, 2.75)
-        .from("#card-b .sub", { autoAlpha: 0, y: 24, duration: 0.5, ease: "power2.out" }, 3.05);
+      tl.from(
+        "#card-a .kicker",
+        { autoAlpha: 0, y: 24, duration: 0.5, ease: "power2.out" },
+        0.1,
+      )
+        .from(
+          "#card-a-title",
+          { autoAlpha: 0, y: 48, duration: 0.7, ease: "power3.out" },
+          0.25,
+        )
+        .from(
+          "#card-a .sub",
+          { autoAlpha: 0, y: 24, duration: 0.5, ease: "power2.out" },
+          0.55,
+        )
+        .fromTo(
+          "#card-b-bar",
+          { scaleX: 0 },
+          { scaleX: 1, duration: 0.6, ease: "power2.inOut" },
+          2.7,
+        )
+        .from(
+          "#card-b-title",
+          { autoAlpha: 0, y: 48, duration: 0.7, ease: "power3.out" },
+          2.75,
+        )
+        .from(
+          "#card-b .sub",
+          { autoAlpha: 0, y: 24, duration: 0.5, ease: "power2.out" },
+          3.05,
+        );
       window.__timelines["gt-16x9"] = tl;
     </script>
   </body>

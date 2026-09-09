@@ -297,10 +297,10 @@ for d in "${skill_dirs[@]}"; do
 	while IFS= read -r link; do
 		[[ -z "$link" ]] && continue
 		# Strip #anchor suffixes before resolving: links like ](./x.md#section)
-	# target a real file plus a heading; only the file part must exist.
-	# (check-skill-links.sh validates heading existence; this loop only
-	# checks that the target file is present.)
-	resolved="$(realpath -m --relative-to=. "${d}/${link%\#*}" 2>/dev/null)"
+		# target a real file plus a heading; only the file part must exist.
+		# (check-skill-links.sh validates heading existence; this loop only
+		# checks that the target file is present.)
+		resolved="$(realpath -m --relative-to=. "${d}/${link%\#*}" 2>/dev/null)"
 		if [[ -n "$resolved" && ! -e "$resolved" ]]; then
 			echo "FAIL ${d#./}: dangling reference '$link' -> '$resolved'"
 			failed=1

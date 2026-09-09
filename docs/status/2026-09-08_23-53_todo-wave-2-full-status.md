@@ -138,10 +138,10 @@ can do: about 90%.
    kept green by the sync loop. Waiting on a real-world run to happen;
    nothing in this repo can start it except scheduling the PR itself (f37).
 2. **T33 site-repo work (all six items)** — emeet-pixyd redeploy + `id="demo"`
-   + README demo link + composition recreation; gogenfilter / go-atomic-
-   write / go-filewatcher video flows. Tracked in TODO_LIST but zero work
-   done in the site repos this session — this session only produced the
-   audit and the tracking row.
+   - README demo link + composition recreation; gogenfilter / go-atomic-
+     write / go-filewatcher video flows. Tracked in TODO_LIST but zero work
+     done in the site repos this session — this session only produced the
+     audit and the tracking row.
 3. **docs-health ANNOTATE pass over `2026-09-08_20-39_jj-fork-pr-workflow…`**
    — its open items f7/f8/f13 were completed by this wave, but the older
    report was not annotated (repo rule: annotate, never rewrite). Also the
@@ -263,58 +263,58 @@ can do: about 90%.
 
 ## f) Top 50 next tasks (HARVEST input — routed with rigor)
 
-| #  | Task                                                                                                                     | Impact | Effort | Category      |
-| -- | ------------------------------------------------------------------------------------------------------------------------ | ------ | ------ | ------------- |
-| 1  | Recreate the two T22 ground-truth compositions as committed fixtures (e.g. `website-launch/assets/demo-compositions/16x9/` + `9x16/`) so the wave report's evidence regains a durable home            | High   | S      | Documentation |
-| 2  | Extract the HF environment recipe into a runnable `scripts/hf-env.sh` (emits node wrapper + LD_LIBRARY_PATH) and point `demo-video.md` at it instead of prose                              | High   | S      | Feature       |
-| 3  | Write a mechanical demo-video DoD checker (`scripts/site-dod-check.sh <site>`: HEAD cache headers, mp4 size, id="demo", og:image presence) covering all four live sites                            | High   | M      | Feature       |
-| 4  | T33: redeploy emeet-pixyd hosting; verify `HEAD /demo.mp4` AND one JS asset return `immutable` (closes pitfall #33's live case)                      | High   | S      | Bug (site)    |
-| 5  | T33: add `id="demo"` to emeet-pixyd's video container (DoD placement item)                                            | Medium | S      | Bug (site)    |
-| 6  | T33: add "Watch the 25s demo" link with accurate runtime to emeet-pixyd README docs bar                                | Medium | S      | Bug (site)    |
-| 7  | T33: recreate emeet-pixyd's HyperFrames composition from the surviving MP4; commit under `website/video/`              | Medium | M      | Feature (site)|
-| 8  | T33: produce the first REAL 20-30s product video through the corrected guidance (gogenfilter is the natural baseline) — also closes T22's product-render gap                         | High   | L      | Feature (site)|
-| 9  | T33: video flows for go-atomic-write and go-filewatcher (after #8 proves the flow)                                     | Medium | L      | Feature (site)|
-| 10 | T33: emeet-pixyd og:image-from-poster upgrade (1200x630 from the selling frame, not the astro-og template)             | Medium | S      | Bug (site)    |
-| 11 | Add a CI deploy workflow to emeet-pixyd so firebase.json changes cannot silently go undeployed (kills pitfall #33's class)          | High   | M      | Bug (site)    |
-| 12 | Make the SKILL.md backlink loop anchor-aware (or delete it in favor of check-skill-links.sh) — one checker, one truth | Low    | S      | Cleanup       |
-| 13 | Add a check-skills guard: skills containing verification claims must use the canonical §5 Claim/Status/Source table (warn)          | Medium | S      | Quality       |
-| 14 | Mechanical grader for eval-1-rerun: regex-file assertions (beat labels, og:image+1200, go get line, rm -rf absence) committed next to grading.json          | Medium | S      | Quality       |
-| 15 | Write `run-eval.sh <eval-id>`: reproducible harness for skill evals (fresh sessions, fictional repo, output capture)   | Medium | M      | Feature       |
-| 16 | Re-verify `bdd-testing/references/ginkgo-syntax.md` against ginkgo v2.32 (API drift since "current as of Ginkgo v2")   | Medium | M      | Quality       |
-| 17 | Compile-check `bdd-testing/assets/spec-template.go` in a scratch module (never compiled)                                | Medium | S      | Quality       |
-| 18 | Adopt a `verified-against: <version>` header convention for tool-behavior references (ginkgo, d2, govalid, hyperframes) | Low    | S      | Documentation |
-| 19 | Run ANNOTATE on `2026-09-08_20-39_jj-fork-pr-workflow…` (f7/f8/f13 now done) and on the 08-21 reimagining report's resolved items     | Medium | S      | Documentation |
-| 20 | Run docs-health HARVEST on this report's (f) into TODO_LIST/ROADMAP after user instruction                            | Medium | S      | Process       |
-| 21 | Continue website-launch SKILL.md trim toward 500 (next: §3.11 length, per 08-21 report e4); goal: drop the allowlist entry | Medium | M      | Cleanup       |
-| 22 | Behavioral trigger tests for 2-3 more high-traffic skills (docs-health, how-to-golang, verify-external-claims) in fresh sessions      | Medium | M      | Quality       |
-| 23 | Build the mechanical trigger eval: prompt set × 46 descriptions, measure activation (T26's density report is the static half)        | Medium | L      | Feature       |
-| 24 | Extend `--triggers` to print WHICH phrases matched per skill (actionable output, not just counts)                      | Low    | S      | Feature       |
-| 25 | Re-run scripts/validate-workflow.sh against the latest jj release (skill promises rerunnability after jj upgrades)     | Medium | S      | Quality       |
-| 26 | Schedule the first real upstream PR through the jj workflow (unlocks T30's README status flip)                          | Medium | M      | Feature       |
-| 27 | Check eval-2/eval-3 for the same real-repo asymmetry; re-run on fictional repos if affected                            | Medium | M      | Quality       |
-| 28 | govalid: verify a second marker family end-to-end (enum, cel, or migrate subcommand) to widen the execution-verified surface          | Low    | M      | Quality       |
-| 29 | govalid: bench the zero-allocation claim (or relabel it permanently as upstream-only)                                   | Low    | M      | Quality       |
-| 30 | Add govalid marker correctness to the how-to-golang compile-check harness so the min_len regression class is caught mechanically      | Medium | S      | Quality       |
-| 31 | AGENTS.md size refactor: move historical verification records (§10 note lineage) to a references file; target < 30 KB (clears the standing check-agents-md advisory) | Low    | M      | Cleanup       |
-| 32 | Convert `how-to-write-skills.md` into a skill directory (audit item 10; surfaced again while editing it this session)  | Medium | M      | Architecture  |
-| 33 | Session-end checklist: add "no stale git worktrees" + "evidence artifacts committed or disclaimed" to SESSION-START.md | Low    | S      | Process       |
-| 34 | Make SESSION-START.md machine-executable: `check-skills.sh --session-start` prints/executes the five steps             | Medium | S      | Feature       |
-| 35 | code-quality-scan: document jscpd fallback install + invocation in tool-guidance.md (referenced, not detailed)          | Low    | S      | Documentation |
-| 36 | code-quality-scan: add per-language severity-classification examples (the "what is Critical vs High" gap)               | Medium | M      | Quality       |
-| 37 | architecture-visualization: add an Events & Commands flow style reference (the description promises it; no recipe exists)            | Medium | M      | Documentation |
-| 38 | architecture-visualization: verify d2-syntax.md claims on the next d2 upgrade (version-pin note in header)              | Low    | S      | Quality       |
-| 39 | Add `allowed-tools` entries per AGENTS §5.8 where skills depend on CLIs (art-dupl, d2 — d2 done; audit remaining)       | Low    | S      | Config        |
-| 40 | emeet-pixyd: check remaining placement rule (poster/frame above the fold) against a rendered 1440x900 viewport, not HTML position     | Low    | S      | Quality (site)|
-| 41 | Decide `#demo` anchor + "jump to demo" pattern as a shared component in gogenfilter's baseline (DoD placement made reusable)         | Low    | M      | Feature (site)|
-| 42 | Add a per-site DoD scorecard to each site repo's own TODO_LIST (audit evidence lives where the fix happens)             | Low    | S      | Documentation |
-| 43 | Consider `docs-health` VERIFY mode for live sites (are my sites still up/DoD-clean?) as a recurring audit               | Low    | M      | Feature       |
-| 44 | Fix the remaining pre-existing AGENTS.md advisory (§5.2 `<--` history note → point at the guard, drop the narrative)    | Low    | S      | Cleanup       |
-| 45 | Verify `ginkgo` CLI presence + `ginkgo unfocus` usage claim on this machine (bdd-testing SKILL.md references it)        | Low    | S      | Quality       |
-| 46 | Capture crush session logs as harder evidence for trigger tests (response text today; log-level skill-load events tomorrow)          | Low    | S      | Quality       |
-| 47 | HyperFrames: verify `--quality high` render + audio pipeline on NixOS (draft-only was exercised)                        | Medium | M      | Quality       |
-| 48 | HyperFrames: confirm `browser ensure` re-download path works after a puppeteer cache wipe (recipe resilience)           | Low    | S      | Quality       |
-| 49 | Add the retro-audit command sequence (gh api trees + bun HEAD checks) as a reusable reference next to pitfall #33       | Low    | S      | Documentation |
-| 50 | ROADMAP: encode the three standing policy questions (autoplay, social-cut tier, API-library video mandate) as DECISIONS.md entries so they stop resurfacing as unowned | Low | S | Process |
+| #  | Task                                                                                                                                                                                       | Impact | Effort | Category       |
+| -- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ------ | -------------- |
+| 1  | Recreate the two T22 ground-truth compositions as committed fixtures (e.g. `website-launch/assets/demo-compositions/16x9/` + `9x16/`) so the wave report's evidence regains a durable home | High   | S      | Documentation  |
+| 2  | Extract the HF environment recipe into a runnable `scripts/hf-env.sh` (emits node wrapper + LD_LIBRARY_PATH) and point `demo-video.md` at it instead of prose                              | High   | S      | Feature        |
+| 3  | Write a mechanical demo-video DoD checker (`scripts/site-dod-check.sh <site>`: HEAD cache headers, mp4 size, id="demo", og:image presence) covering all four live sites                    | High   | M      | Feature        |
+| 4  | T33: redeploy emeet-pixyd hosting; verify `HEAD /demo.mp4` AND one JS asset return `immutable` (closes pitfall #33's live case)                                                            | High   | S      | Bug (site)     |
+| 5  | T33: add `id="demo"` to emeet-pixyd's video container (DoD placement item)                                                                                                                 | Medium | S      | Bug (site)     |
+| 6  | T33: add "Watch the 25s demo" link with accurate runtime to emeet-pixyd README docs bar                                                                                                    | Medium | S      | Bug (site)     |
+| 7  | T33: recreate emeet-pixyd's HyperFrames composition from the surviving MP4; commit under `website/video/`                                                                                  | Medium | M      | Feature (site) |
+| 8  | T33: produce the first REAL 20-30s product video through the corrected guidance (gogenfilter is the natural baseline) — also closes T22's product-render gap                               | High   | L      | Feature (site) |
+| 9  | T33: video flows for go-atomic-write and go-filewatcher (after #8 proves the flow)                                                                                                         | Medium | L      | Feature (site) |
+| 10 | T33: emeet-pixyd og:image-from-poster upgrade (1200x630 from the selling frame, not the astro-og template)                                                                                 | Medium | S      | Bug (site)     |
+| 11 | Add a CI deploy workflow to emeet-pixyd so firebase.json changes cannot silently go undeployed (kills pitfall #33's class)                                                                 | High   | M      | Bug (site)     |
+| 12 | Make the SKILL.md backlink loop anchor-aware (or delete it in favor of check-skill-links.sh) — one checker, one truth                                                                      | Low    | S      | Cleanup        |
+| 13 | Add a check-skills guard: skills containing verification claims must use the canonical §5 Claim/Status/Source table (warn)                                                                 | Medium | S      | Quality        |
+| 14 | Mechanical grader for eval-1-rerun: regex-file assertions (beat labels, og:image+1200, go get line, rm -rf absence) committed next to grading.json                                         | Medium | S      | Quality        |
+| 15 | Write `run-eval.sh <eval-id>`: reproducible harness for skill evals (fresh sessions, fictional repo, output capture)                                                                       | Medium | M      | Feature        |
+| 16 | Re-verify `bdd-testing/references/ginkgo-syntax.md` against ginkgo v2.32 (API drift since "current as of Ginkgo v2")                                                                       | Medium | M      | Quality        |
+| 17 | Compile-check `bdd-testing/assets/spec-template.go` in a scratch module (never compiled)                                                                                                   | Medium | S      | Quality        |
+| 18 | Adopt a `verified-against: <version>` header convention for tool-behavior references (ginkgo, d2, govalid, hyperframes)                                                                    | Low    | S      | Documentation  |
+| 19 | Run ANNOTATE on `2026-09-08_20-39_jj-fork-pr-workflow…` (f7/f8/f13 now done) and on the 08-21 reimagining report's resolved items                                                          | Medium | S      | Documentation  |
+| 20 | Run docs-health HARVEST on this report's (f) into TODO_LIST/ROADMAP after user instruction                                                                                                 | Medium | S      | Process        |
+| 21 | Continue website-launch SKILL.md trim toward 500 (next: §3.11 length, per 08-21 report e4); goal: drop the allowlist entry                                                                 | Medium | M      | Cleanup        |
+| 22 | Behavioral trigger tests for 2-3 more high-traffic skills (docs-health, how-to-golang, verify-external-claims) in fresh sessions                                                           | Medium | M      | Quality        |
+| 23 | Build the mechanical trigger eval: prompt set × 46 descriptions, measure activation (T26's density report is the static half)                                                              | Medium | L      | Feature        |
+| 24 | Extend `--triggers` to print WHICH phrases matched per skill (actionable output, not just counts)                                                                                          | Low    | S      | Feature        |
+| 25 | Re-run scripts/validate-workflow.sh against the latest jj release (skill promises rerunnability after jj upgrades)                                                                         | Medium | S      | Quality        |
+| 26 | Schedule the first real upstream PR through the jj workflow (unlocks T30's README status flip)                                                                                             | Medium | M      | Feature        |
+| 27 | Check eval-2/eval-3 for the same real-repo asymmetry; re-run on fictional repos if affected                                                                                                | Medium | M      | Quality        |
+| 28 | govalid: verify a second marker family end-to-end (enum, cel, or migrate subcommand) to widen the execution-verified surface                                                               | Low    | M      | Quality        |
+| 29 | govalid: bench the zero-allocation claim (or relabel it permanently as upstream-only)                                                                                                      | Low    | M      | Quality        |
+| 30 | Add govalid marker correctness to the how-to-golang compile-check harness so the min_len regression class is caught mechanically                                                           | Medium | S      | Quality        |
+| 31 | AGENTS.md size refactor: move historical verification records (§10 note lineage) to a references file; target < 30 KB (clears the standing check-agents-md advisory)                       | Low    | M      | Cleanup        |
+| 32 | Convert `how-to-write-skills.md` into a skill directory (audit item 10; surfaced again while editing it this session)                                                                      | Medium | M      | Architecture   |
+| 33 | Session-end checklist: add "no stale git worktrees" + "evidence artifacts committed or disclaimed" to SESSION-START.md                                                                     | Low    | S      | Process        |
+| 34 | Make SESSION-START.md machine-executable: `check-skills.sh --session-start` prints/executes the five steps                                                                                 | Medium | S      | Feature        |
+| 35 | code-quality-scan: document jscpd fallback install + invocation in tool-guidance.md (referenced, not detailed)                                                                             | Low    | S      | Documentation  |
+| 36 | code-quality-scan: add per-language severity-classification examples (the "what is Critical vs High" gap)                                                                                  | Medium | M      | Quality        |
+| 37 | architecture-visualization: add an Events & Commands flow style reference (the description promises it; no recipe exists)                                                                  | Medium | M      | Documentation  |
+| 38 | architecture-visualization: verify d2-syntax.md claims on the next d2 upgrade (version-pin note in header)                                                                                 | Low    | S      | Quality        |
+| 39 | Add `allowed-tools` entries per AGENTS §5.8 where skills depend on CLIs (art-dupl, d2 — d2 done; audit remaining)                                                                          | Low    | S      | Config         |
+| 40 | emeet-pixyd: check remaining placement rule (poster/frame above the fold) against a rendered 1440x900 viewport, not HTML position                                                          | Low    | S      | Quality (site) |
+| 41 | Decide `#demo` anchor + "jump to demo" pattern as a shared component in gogenfilter's baseline (DoD placement made reusable)                                                               | Low    | M      | Feature (site) |
+| 42 | Add a per-site DoD scorecard to each site repo's own TODO_LIST (audit evidence lives where the fix happens)                                                                                | Low    | S      | Documentation  |
+| 43 | Consider `docs-health` VERIFY mode for live sites (are my sites still up/DoD-clean?) as a recurring audit                                                                                  | Low    | M      | Feature        |
+| 44 | Fix the remaining pre-existing AGENTS.md advisory (§5.2 `<--` history note → point at the guard, drop the narrative)                                                                       | Low    | S      | Cleanup        |
+| 45 | Verify `ginkgo` CLI presence + `ginkgo unfocus` usage claim on this machine (bdd-testing SKILL.md references it)                                                                           | Low    | S      | Quality        |
+| 46 | Capture crush session logs as harder evidence for trigger tests (response text today; log-level skill-load events tomorrow)                                                                | Low    | S      | Quality        |
+| 47 | HyperFrames: verify `--quality high` render + audio pipeline on NixOS (draft-only was exercised)                                                                                           | Medium | M      | Quality        |
+| 48 | HyperFrames: confirm `browser ensure` re-download path works after a puppeteer cache wipe (recipe resilience)                                                                              | Low    | S      | Quality        |
+| 49 | Add the retro-audit command sequence (gh api trees + bun HEAD checks) as a reusable reference next to pitfall #33                                                                          | Low    | S      | Documentation  |
+| 50 | ROADMAP: encode the three standing policy questions (autoplay, social-cut tier, API-library video mandate) as DECISIONS.md entries so they stop resurfacing as unowned                     | Low    | S      | Process        |
 
 ## g) Questions I cannot answer myself
 

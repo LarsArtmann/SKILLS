@@ -41,9 +41,9 @@ done
 Rendered and ffprobe-verified 2026-09-09 (hyperframes via
 `scripts/hf-env.sh`, draft quality, ~7s wall clock per render):
 
-| Fixture | Resolution | Codec | Duration | Frames | Size                           |
-| ------- | ---------- | ----- | -------- | ------ | ------------------------------ |
+| Fixture | Resolution | Codec | Duration | Frames | Size                            |
+| ------- | ---------- | ----- | -------- | ------ | ------------------------------- |
 | 16x9    | 1920x1080  | h264  | 5.0s     | 150    | 288901 B (byte-identical rerun) |
-| 9x16    | 1080x1920  | h264  | 5.0s     | 150    | ~184 KB                        |
+| 9x16    | 1080x1920  | h264  | 5.0s     | 150    | ~184 KB                         |
 
 Full command transcripts: `16x9/render-log.txt`, `9x16/render-log.txt`.

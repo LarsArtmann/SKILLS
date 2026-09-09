@@ -568,6 +568,7 @@ repo had the mp4 cache glob committed 2026-09-04, the live site served
 `max-age=0` for everything.
 
 **Root cause (two layers — both verified live 2026-09-09):**
+
 1. **Header-block order.** Firebase Hosting applies `headers` blocks in
    definition order and a LATER matching block overrides the same header
    key. A `**` catch-all with `max-age=0` placed after the immutable
