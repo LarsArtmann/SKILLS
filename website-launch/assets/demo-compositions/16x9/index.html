@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>HyperFrames ground truth — 16:9</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        background: #0b0f14;
+        color: #f5f7fa;
+        font-family: Inter, system-ui, sans-serif;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+      }
+      .card {
+        display: grid;
+        gap: 32px;
+        justify-items: center;
+        text-align: center;
+      }
+      .kicker {
+        margin: 0;
+        letter-spacing: 0.35em;
+        text-transform: uppercase;
+        font-size: 28px;
+        color: #7c8794;
+      }
+      h1 {
+        margin: 0;
+        font-size: 120px;
+      }
+      .sub {
+        margin: 0;
+        font-size: 40px;
+        color: #a8b3bf;
+      }
+      .bar {
+        width: 320px;
+        height: 8px;
+        background: #e8b31a;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="gt-16x9"
+      data-start="0"
+      data-width="1920"
+      data-height="1080"
+      data-duration="5"
+    >
+      <section id="card-a" class="clip" data-start="0" data-duration="2.5">
+        <div class="card">
+          <p class="kicker">Ground truth fixture</p>
+          <h1 id="card-a-title">16:9 master render</h1>
+          <p class="sub">two clips, one paused timeline</p>
+        </div>
+      </section>
+      <section id="card-b" class="clip" data-start="2.5" data-duration="2.5">
+        <div class="card">
+          <div class="bar" id="card-b-bar"></div>
+          <h1 id="card-b-title">Seek-safe by construction</h1>
+          <p class="sub">stacked layers, fromTo tweens only</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.from("#card-a .kicker", { autoAlpha: 0, y: 24, duration: 0.5, ease: "power2.out" }, 0.1)
+        .from("#card-a-title", { autoAlpha: 0, y: 48, duration: 0.7, ease: "power3.out" }, 0.25)
+        .from("#card-a .sub", { autoAlpha: 0, y: 24, duration: 0.5, ease: "power2.out" }, 0.55)
+        .fromTo("#card-b-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 2.7)
+        .from("#card-b-title", { autoAlpha: 0, y: 48, duration: 0.7, ease: "power3.out" }, 2.75)
+        .from("#card-b .sub", { autoAlpha: 0, y: 24, duration: 0.5, ease: "power2.out" }, 3.05);
+      window.__timelines["gt-16x9"] = tl;
+    </script>
+  </body>
+</html>
