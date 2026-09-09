@@ -3,11 +3,11 @@
 > Short-term, actionable, bounded work items. The 2026-08-21 harvest (T1–T20)
 > was fully executed on 2026-08-21 (see CHANGELOG and
 > `docs/status/2026-08-21_21-57_todo-execution-wave.md`); the T21–T32 wave
-> was executed 2026-09-08 (`docs/status/2026-09-08_23-40_todo-wave-2.md`) —
-> T22's ground truth covers a real pipeline render, not a full product video;
-> a 25s product render for a real site remains open as T33. This list holds
-> only what remains verified-open. For long-term vision and unrefined ideas,
-> see `ROADMAP.md`.
+> was executed 2026-09-08 (`docs/status/2026-09-08_23-40_todo-wave-2.md`);
+> the 2026-09-09 wave-3 session closed report-section-f items and T33's
+> quick site fixes (`docs/status/2026-09-09_02-31_wave-3-execution-
+> session.md`). This list holds only what remains verified-open. For
+> long-term vision and unrefined ideas, see `ROADMAP.md`.
 
 ## Status legend
 
@@ -25,7 +25,7 @@
 | ID  | Task                                                                                                                                                                                                         | Status     | Impact | Effort | Evidence                                                                                                    |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | ------ | ------ | ----------------------------------------------------------------------------------------------------------- |
 | T30 | After the first real PR kept green via the sync loop: flip README status 🆕→🟢 with a documented run note                                                                                                    | 🔵 BLOCKED | Low    | Low    | `docs/status/2026-09-08_20-39_*` c3/f15 — needs a real-world run to happen first                            |
-| T33 | Apply retro-audit follow-ups in the SITE repos (redeploy emeet-pixyd for cache headers, id="demo" + README demo link, recreate lost composition, video flows for gogenfilter/go-atomic-write/go-filewatcher) | 🔴 TODO    | Medium | M/site | `docs/status/2026-09-08_23-15_demo-video-retro-audit.md` — lives in site repos, tracked here for visibility |
+| T33 | Site-repo follow-ups REMAINING: recreate emeet-pixyd's HyperFrames composition from the surviving MP4 (commit under `website/video/`); first real 20-30s product video (site choice = open question g1); video flows for go-atomic-write/go-filewatcher; emeet og:image-from-poster upgrade; CI deploy workflow to kill the manual-deploy class | 🔴 TODO | Medium | M/site | 2026-09-09 wave-3 session CLOSED the quick items (headers fixed+live-verified on all four sites, `id="demo"`, README badge, redeploy): `docs/status/2026-09-09_02-31_wave-3-execution-session.md` |
 
 ---
 

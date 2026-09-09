@@ -13,6 +13,42 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Changed (2026-09-09 — wave 3: report-section f execution + T33 quick items)
+
+- **Demo ground-truth fixtures committed** (`website-launch/assets/demo-
+  compositions/{16x9,9x16}/`): the wave-2 T22 evidence that was trashed now
+  has a durable home — both compositions render-verified through the new
+  helper (h264, 5.0s, 150 frames; 16x9 byte-identical across runs); MP4s
+  intentionally excluded pending the binary-policy answer (g2).
+- **`scripts/hf-env.sh`** — the NixOS HyperFrames environment recipe
+  (~25 store paths) is now a runnable script with runtime nix resolution
+  and an `ldd` gate; `demo-video.md` points at it instead of rotting prose.
+- **Firebase header-order bug found and fixed on ALL FOUR live sites** —
+  pitfall #33's real root cause: a `**` → `max-age=0` catch-all defined
+  after the immutable asset glob overrides it (later blocks win), so every
+  asset served `max-age=0` despite a correct-looking config. Reordered
+  + redeployed emeet-pixyd, gogenfilter, atomicwrite, filewatcher; all
+  live-verified serving `immutable`. Pitfall #33 rewritten to the
+  two-layer truth; the T21 audit's "healthy baseline" claim corrected.
+- **emeet-pixyd DoD placement fixes live**: video container `id="demo"`,
+  README "Watch the 25s demo" badge (both deployed and HTTP-verified).
+- **samber-do-best-practices** — verification block converted to the
+  canonical `## Verification status` Claim/Status/Source table (drift the
+  new guard caught, missed by the T28 wave).
+- **check-skills.sh**: new verification-canon guard (warn); `--triggers`
+  now prints which phrases matched; backlink loop strips `#anchors`.
+- **SESSION-START.md** gained session-end rules (evidence triage before
+  trashing, worktree sweep, verify-TODO-rows-first).
+- **AGENTS.md** §5.2/§10 rewritten to current truth (advisories 2→1;
+  remaining = size, f31).
+- **bdd-testing**: `assets/spec-template.go` compile-verified (4/4 specs
+  pass against ginkgo v2 + gomega v1.43.0) and gained the
+  import-the-package-under-test note; ginkgo v2.32.1 + `unfocus` claims
+  verified on this machine.
+- **eval-1-rerun mechanical grader** (`mechanical-grade.sh` + results)
+  reproduces the LLM verdicts exactly (old 4/7, new 7/7).
+- Full evidence: `docs/status/2026-09-09_02-31_wave-3-execution-session.md`.
+
 ### Changed (2026-09-08 — TODO wave 2: T21–T32 executed)
 
 - **T23 — govalid generator execution-verified** (v1.9.0, scratch module:
