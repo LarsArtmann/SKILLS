@@ -23,7 +23,6 @@ render transcripts below are the committed evidence.
 
 ```bash
 for d in 16x9 9x16; do
-  rm scratch -rf 2>/dev/null || true   # scratch OUTSIDE this repo, e.g. /tmp
   mkdir -p /tmp/hf-fixture-$d
   cp $d/index.html /tmp/hf-fixture-$d/
   ~/projects/SKILLS/scripts/hf-env.sh --install /tmp/hf-fixture-$d
@@ -42,9 +41,9 @@ done
 Rendered and ffprobe-verified 2026-09-09 (hyperframes via
 `scripts/hf-env.sh`, draft quality, ~7s wall clock per render):
 
-| Fixture | Resolution | Codec | Duration | Frames | Size |
-| ------- | ---------- | ----- | -------- | ------ | ---- |
-| 16x9    | 1920x1080  | h264  | 5.0s     | 150    | see `16x9/render-log.txt` |
-| 9x16    | 1080x1920  | h264  | 5.0s     | 150    | see `9x16/render-log.txt` |
+| Fixture | Resolution | Codec | Duration | Frames | Size                           |
+| ------- | ---------- | ----- | -------- | ------ | ------------------------------ |
+| 16x9    | 1920x1080  | h264  | 5.0s     | 150    | 288901 B (byte-identical rerun) |
+| 9x16    | 1080x1920  | h264  | 5.0s     | 150    | ~184 KB                        |
 
 Full command transcripts: `16x9/render-log.txt`, `9x16/render-log.txt`.

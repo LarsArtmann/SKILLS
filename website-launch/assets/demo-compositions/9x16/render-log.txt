@@ -1,0 +1,43 @@
+# 9x16 render evidence — 2026-09-09
+
+## check.log (lint/layout/motion/contrast)
+◆  Checking hf-fixture-9x16
+[INFO] [Compiler] Fetched 11 font face(s) for "Inter" from Google Fonts (cached to /home/lars/.cache/hyperframes/fonts/inter)
+[INFO] [Compiler] Injected deterministic @font-face rules for 1 requested font families
+[hyperframes] browserGpuMode probe → software (WebGL unavailable)
+
+Lint
+  ◇ 0 errors, 0 warnings
+
+Runtime
+  ◇ 0 errors, 0 warnings
+
+Layout
+  ◇ 0 issues across 9 sample(s)
+
+Motion
+  ◇ 0 errors, 0 warnings
+
+Contrast
+  ◇ 9/9 text checks pass WCAG AA
+
+Snapshots
+  ◇ disabled
+
+◇  Check passed
+
+## render (draft quality)
+[INFO] [Render:trace] {"renderJobId":"428e5ddb-02c8-49d4-aceb-37e8ced1b524","phase":"pipeline","status":"checkpoint","elapsedMs":6076,"message":"artifact validated","totalElapsedMs":6075}
+  █████████████████████████  100%  Render complete
+
+◇  /tmp/hf-fixture-9x16/9x16.mp4
+   184.1 KB · 5.0s video · rendered in 6.1s
+exit=0 (first run hit a transient teardown 'assert(!this.paused)' after writing a ffprobe-valid artifact; clean rerun reproduced exit 0)
+
+## ffprobe
+codec_name=h264
+width=1080
+height=1920
+duration=5.000000
+nb_frames=150
+size=184.1 KB (render banner) / 188506 bytes first run
