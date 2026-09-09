@@ -7,6 +7,8 @@
 //   - Black-box package (package <pkg>_test) — exercise the public API only.
 //   - One spec file per subject: <subject>_test.go mirrors <subject>.go.
 //   - One bootstrap file per package: <pkg>_suite_test.go (see SKILL.md).
+//   - Add the import for the package under test: `Subject`, `NewSubject` are
+//     placeholders, so the import cannot be pre-written for you.
 package TEMPLATE_test
 
 import (
