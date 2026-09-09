@@ -404,10 +404,15 @@ fi
 for d in "${skill_dirs[@]}"; do
 	skill="${d#./}"
 	f="$d/SKILL.md"
-	has_canon=$(grep -c '^## Verification status' "$f")
-	bad_heading=$(grep -E '^#{1,6} *[Vv]erification' "$f" | grep -vc '^## Verification status')
-	blockquote=$(grep -cE '^>[^ ]* ?\*?\*?(Verification|Verified)' "$f")
-	compound=$(grep -icE 'execution-verified|compile-checked|render-verified|verified [0-9]{4}-[0-9]{2}' "$f")
+	# grep -c/-vc exit 1 on zero matches; under `set -euo pipefail` a bare
+	# $(grep -c ...) assignment would abort the whole script the first time
+	# a skill has no verification signals (silently, mid-guard — the 2026-09-09
+	# session caught check-skills.sh exiting 1 with no FAIL output). `|| true`
+	# keeps the zero count.
+	has_canon=$(grep -c '^## Verification status' "$f" || true)
+	bad_heading=$(grep -E '^#{1,6} *[Vv]erification' "$f" | grep -vc '^## Verification status' || true)
+	blockquote=$(grep -cE '^>[^ ]* ?\*?\*?(Verification|Verified)' "$f" || true)
+	compound=$(grep -icE 'execution-verified|compile-checked|render-verified|verified [0-9]{4}-[0-9]{2}' "$f" || true)
 	if [[ "$has_canon" -eq 0 ]] && [[ "$bad_heading" -gt 0 || "$blockquote" -gt 0 || "$compound" -ge 2 ]]; then
 		echo "WARN $skill: verification signals (headings=$bad_heading blockquotes=$blockquote claims=$compound) but no canonical '## Verification status' table — convert per verify-external-claims §5"
 	fi
