@@ -284,6 +284,7 @@ Canonical block format per [verify-external-claims §5](../verify-external-claim
 | `gh repo fork --clone=false`, `gh repo sync`, `gh repo view` exit codes, `gh pr checks` argument semantics                                                                                                                                     | ✅ gh-verified         | gh 2.99.0 (`gh pr checks` takes a PR selector or the current branch — not `owner/repo`; `gh repo view` exits 1 on a missing repo)       |
 | charmbracelet CONTRIBUTING.md, org PR template (two checkboxes), squash-merge history                                                                                                                                                          | ✅ Raw-source-verified | GitHub API raw fetch; an earlier "Problem/Fix/Validation template" claim was summarizer fabrication, caught and corrected by this fetch |
 | `jj mergemerge`                                                                                                                                                                                                                                | ❌ Does not exist      | Local jj 0.45.1 command list + official docs + source search; the intent maps to the Phase 4 sync loop                                  |
+| github/gh-stack: `gh stack link` targets jj/Sapling/git-town-managed branches and creates GitHub Stack objects; other commands are Git-branch-based; README advertises `gh skill install github/gh-stack`                                      | ✅ Raw-source-verified | GitHub API README fetch 2026-09-10 (repo pushed 2026-09-09)                                                                             |
 | Official GitHub collaboration guide                                                                                                                                                                                                            | ✅ Reference           | <https://docs.jj-vcs.dev/latest/github/>                                                                                                |
 
 ## Prior art
@@ -295,7 +296,21 @@ Known upstream jj agent skills, so future sessions do not redo the survey
   contributors. No fork + multi-PR sync coverage; complementary, not a rival.
 - A small `jj-commit` prompt snippet — single-commit message guidance only.
 - No public skill covers fork setup + the multi-PR sync loop; this skill
-  fills that gap.
+  fills that gap. (Claim scoped to the jj sync loop itself, re-checked
+  2026-09-10.)
+- **github/gh-stack** (checked 2026-09-10; repo pushed 2026-09-09) — GitHub's
+  official `gh` extension for stacked branches/PRs; its README advertises an
+  agent skill via `gh skill install github/gh-stack`. It is **Git-branch
+  based**: `init`/`add`/`rebase`/`modify`/`checkout` do git-side branch and
+  history writes, so those commands must never run in a `.jj` repo (see
+  Agent safety rules). The one compatible bridge is `gh stack link` —
+  explicitly designed for branches managed by other tools locally ("jj,
+  Sapling, git-town"): it pushes the named branches via git (no-op if `jj
+  git push` already landed them), creates/corrects chained PR bases, and
+  links them into a GitHub-native Stack object (per-layer diffs, `gh stack
+  merge` all-or-nothing) that jj alone cannot produce. Division of labor:
+  jj owns local VCS mechanics (Phases 0-5); `gh stack link` optionally owns
+  GitHub-side stack presentation.
 
 ## Cross-skill handoffs
 
