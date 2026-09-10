@@ -12,11 +12,25 @@ upgrade (8 consumers).
 
 | Location                  | What to grep                | Notes                                                                                                                            |
 | ------------------------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `go.mod` (every module)   | `^go 1.` or `module-path v` | The canonical declaration. Use `go mod edit`, never sed.                                                                         |
+| `go.mod` (every module)   | `^go 1.` or `module-path v` | The canonical declaration. Use `go mod edit`, never sed. The `go` value is major.minor only (`go 1.26`), never a patch — see the section below.  |
 | `go.work` / `go.work.sum` | `^go` and `toolchain`       | Workspace files carry their own `go` directive. If any exist, they must be aligned with the modules they cover. Often forgotten. |
 | `go.sum`                  | version hash lines          | Don't hand-edit. Run `go mod tidy` or `go mod verify`.                                                                           |
 | `vendor/modules.txt`      | `# module-path version`     | If vendor/ exists, this file must match. Run `go mod vendor`.                                                                    |
 | `vendor/` source trees    | actual vendored source      | Committed vendor dirs drift silently. A `go mod vendor` syncs the ENTIRE tree, not just one dep.                                 |
+
+### The `go` directive: major.minor only
+
+The `go` value in `go.mod` and `go.work` is a floor in **major.minor form** (`go 1.26`),
+never a patch version (`go 1.26.7` is wrong):
+
+- A patch floor forces the minimum toolchain to that exact patch. Environments that trail
+  the newest release then fail: nixpkgs `go_1_26` sits on one specific 1.26.x, so a
+  `go 1.26.7` floor breaks every Nix build until the flake's Go tarball is bumped.
+- `go get` copies a dependency's floor verbatim. One dependency declaring `go 1.26.7`
+  silently patches YOUR directive; after dependency sweeps, normalize with
+  `go mod edit -go=1.26`.
+- Need a specific toolchain? Use the separate `toolchain go1.26.7` directive or pin it
+  in flake.nix or CI. Those locations may carry patches; the directive may not.
 
 ### Tier 2 — Toolchain and environment (usually check)
 

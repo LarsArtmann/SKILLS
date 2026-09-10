@@ -21,15 +21,19 @@ Rules already covered in other reference files are linked, not duplicated.
 
 Always use the latest stable Go version. Security patches, performance, and language features (like `encoding/json/v2`, experimental in Go 1.25+ behind `GOEXPERIMENT=jsonv2`) require it.
 
-Check in CI:
+**The `go` directive is major.minor only** (`go 1.26`), never a patch version (`go 1.26.7` is wrong). The floor must not pin a patch: a patch floor raises the minimum toolchain to that exact patch, which breaks environments that legitimately trail the latest release (nixpkgs `go_1_2x` sits on one specific patch; a floor above it fails the build until the flake bumps its Go tarball). `go get` copies a dependency's floor verbatim, so normalize after dependency bumps: `go mod edit -go=1.26`. Need a specific toolchain? Use the separate `toolchain go1.26.7` directive or pin it in flake.nix, never the `go` floor.
+
+Check in CI. Compare major.minor floors: the endpoint serves `go1.26.7` while the directive holds `1.26`, so strip the patch before comparing:
 
 ```yaml
 - name: Check Go version
   run: |
-    latest_go=$(curl -s https://golang.org/VERSION?m=text)
-    current_go=$(grep "^go " go.mod | cut -d' ' -f2)
-    if [[ "$current_go" != "$latest_go" ]]; then
-      echo "Using Go $current_go, latest is $latest_go"
+    latest_go=$(curl -s https://golang.org/VERSION?m=text | head -n1)  # go1.26.7
+    latest_floor=${latest_go#go}                                       # 1.26.7
+    latest_floor=${latest_floor%.*}                                    # 1.26
+    current_go=$(grep "^go " go.mod | cut -d' ' -f2)                   # 1.26
+    if [[ "$current_go" != "$latest_floor" ]]; then
+      echo "go.mod floor $current_go != latest major.minor $latest_floor"
       exit 1
     fi
 ```

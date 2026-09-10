@@ -29,7 +29,8 @@ failure across every report: build-only verification — running `go build` inst
 You're about to change a version number in one or more Go projects. That covers:
 
 - **Single-library bump**: `go get github.com/foo/bar@v1.2.0` across N consumers
-- **Toolchain pin**: every `go.mod` declares `go 1.26` (or a specific patch)
+- **Toolchain pin**: every `go.mod` declares `go 1.26` — major.minor only, never a
+  patch version (`go 1.26.7` is wrong; the why and the normalize command: Phase 3 step 1)
 - **Major-version migration**: module path changes (`v2` → `v3`), breaking API migrations
 - **Ecosystem-wide sweep**: bump ALL dependencies in ALL repos
 - **Library release**: cut tags, push to the module proxy, verify consumers resolve them
@@ -114,7 +115,16 @@ For each consumer, apply the version change using the right tool:
 
 1. **Use `go mod edit` / `go get`, never manual edits** to dependency files. This is a
    hard rule from the project AGENTS.md. For the `go` directive specifically: `go mod
-edit -go=1.26` (not sed).
+   edit -go=1.26` (not sed). The directive value is **major.minor only** (`go 1.26`),
+   never a patch version (`go 1.26.7` is wrong): a patch floor raises the minimum
+   toolchain to that exact patch, which breaks environments that legitimately trail the
+   newest release (nixpkgs `go_1_26` sits on one specific 1.26.x — a floor above it
+   fails every Nix build until the flake bumps its Go tarball) and makes
+   `GOTOOLCHAIN=auto` machines silently download toolchains. `go get` copies a
+   dependency's floor verbatim, so one dependency declaring `go 1.26.7` rewrites YOUR
+   directive to a patch — normalize after dependency bumps: `go mod edit -go=1.26`.
+   Need a specific toolchain? Use the separate `toolchain go1.26.7` directive or pin it
+   in flake.nix, never the `go` floor.
 
 2. **Handle `go.work` interference explicitly.** `GOWORK=off go get` does NOT fully isolate
    the workspace — it can write to `go.work.sum` instead of `go.mod`, reporting success
@@ -277,6 +287,7 @@ Is the target version breaking (removed/renamed symbols)?
 Before declaring a consumer "done," confirm ALL of:
 
 - [ ] `go.mod` declares the target version (grep the file, don't trust `go get` output)
+- [ ] `go` directive is major.minor only (`go 1.26`, never a patch like `1.26.7`) — applies to toolchain-pin tasks
 - [ ] `go build ./...` passes
 - [ ] `go test ./...` passes (not just build!)
 - [ ] Delivering layer verified (generators run, CSS present, browser render if UI)

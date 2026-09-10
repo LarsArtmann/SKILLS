@@ -13,6 +13,20 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Changed (2026-09-10 — go.mod floor format rule)
+
+- **`go` directive = major.minor only, never a patch version** (`go 1.26`, never
+  `go 1.26.7`) encoded across the Go skills. A patch floor raises the minimum toolchain
+  to that exact patch and breaks environments that trail the newest release: nixpkgs
+  `go_1_26` pins one specific 1.26.x, so a floor above it fails every Nix build until
+  the flake's Go tarball is bumped. `go get` copies a dependency's floor verbatim, so
+  normalize with `go mod edit -go=1.26` after dependency bumps. Locations:
+  `go-ecosystem-upgrade/SKILL.md` (activation list, Phase 3 step 1, verification gate),
+  `go-ecosystem-upgrade/references/version-surface.md` (new section),
+  `how-to-golang/references/rules.md` (Rule 001; its CI snippet was also broken — it
+  compared `1.26` against raw `go1.26.7` and could never pass — now compares
+  major.minor floors).
+
 ### Changed (2026-09-09 — wave 3: report-section f execution + T33 quick items)
 
 - **Demo ground-truth fixtures committed** (`website-launch/assets/demo-
