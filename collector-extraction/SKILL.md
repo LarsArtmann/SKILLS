@@ -20,6 +20,14 @@ owner BEFORE writing code.** One collector (or one tight domain group) per
 repo. If you feel the urge to create a workspace with `crates/` inside the
 new repo — stop, that was already rejected once.
 
+**Family repos are PRIVATE on GitHub.** Create with
+`gh repo create <name> --private`, then verify with
+`gh repo view <name> --json visibility` — never trust docs about repo
+visibility (a stale "family is public" claim in monitor365's AGENTS.md made
+the ssh-key-monitor repo public on 2026-09-10; flipped same hour). Private
+repos mean Nix flake-input fetches need `access-tokens` (github.com) in the
+nix config on every building machine.
+
 ## The two moves
 
 1. **Extract a collector** → new sibling repo `~/projects/<name>-monitor/`,
@@ -130,15 +138,18 @@ warnings + test), `docs/` (status/, DOMAIN_LANGUAGE.md), `examples/`
    WireGuard/Ups/CertificateExpiry/ConfigTamper/DiskSerialChange/
    SshKeyDiscovery precedent). Baseline-diff collectors must override
    `collect_batch`, not just `collect`.
-7. **Wire the family** (monitor365 side, exact edit sites):
+7. **Wire the family** (monitor365 side, exact edit sites — SEVEN, the
+   eighth hand `uiPreparedSrc.siblingSrc` was missed by the first skill
+   draft and caught on the first live run):
    - Root `Cargo.toml`: workspace dep `name = { version = "0.1" }` with a
      comment; `[patch.crates-io]` entry `name = { path = "../name" }`;
-     update the `Tags:` comment block.
-   - `flake.nix` (SIX places): `flake = false` input with `?ref=<FULL rev>`;
-     `outputs` destructure; `familyFiltered.<name> = craneLib.cleanCargoSource <name>;`;
-     `siblingOrder` list; `pathRewrites` sed line
-     (`s|path = "../name"|path = "name"|`); the `extraDummyScript` `cp -rf`
-     block (~line 417).
+     update the `Tags:` comment block (and the revs list under it).
+   - `flake.nix`: (1) `flake = false` input with `?ref=<FULL rev>`;
+     (2) `outputs` destructure; (3) `familyFiltered.<name> =
+     craneLib.cleanCargoSource <name>;`; (4) `siblingOrder` list;
+     (5) `pathRewrites` sed line (`s|path = "../name"|path = "name"|`);
+     (6) the `extraDummyScript` `mkdir/cp/rm` block (~line 417);
+     (7) the `uiPreparedSrc.siblingSrc` map (`name = name;`).
    - `cargo update -p <name>` (lock entry must have NO `source` line).
 8. **Prove it end-to-end** (this order, all green before touching git):
    `cargo check --all --all-targets` (workspace-wide — single-crate check
@@ -151,6 +162,20 @@ warnings + test), `docs/` (status/, DOMAIN_LANGUAGE.md), `examples/`
    the new always-on/extracted collector + the family bullet; runbook rev
    table (`docs/development/family-bump-runbook.md`); status report in
    `docs/status/`.
+
+## Run record (battle-test log)
+
+- **2026-09-10 — ssh-key-monitor v0.1.0 (first live run, PASS).** 529-line
+  in-tree collector → 41-test sibling + ~90-line adapter. What the skill got
+  right: template invariants, gate order, family wiring checklist. What the
+  run added: SEVENTH flake edit site (above); private-repo default (above);
+  in-tree tests may NOT exist — port the AGENTS test-count claim with salt
+  and write the sibling suite fresh from behavior; verify parsing
+  assumptions empirically before porting (OpenSSH pubkey blobs are UNPADDED
+  base64 and the `base64` STANDARD engine accepts them — proven with a
+  scratch test); concurrent sessions may extend the sibling mid-extraction —
+  adapt to their committed API, never revert it, and let the flake pin trail
+  until their work lands.
 
 ## Family bump (consuming a new sibling version)
 

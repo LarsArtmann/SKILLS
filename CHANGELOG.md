@@ -13,6 +13,18 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Changed (2026-09-10 — collector-extraction ages 🆕→🟢 after first live run)
+
+- **`collector-extraction`** passed its first live run: extracted
+  `ssh-key-monitor` v0.1.0 end-to-end (529-line collector → 41-test sibling +
+  thin adapter + full ADR-041 family wiring, all gates green). Skill fixes
+  from the run: family repos are created PRIVATE by default (a stale
+  "public family" doc claim briefly made the new repo public), the flake
+  wiring checklist corrected from six to SEVEN edit sites
+  (`uiPreparedSrc.siblingSrc` was missing), and a battle-test log section
+  added (empirical verification of parsing assumptions, concurrent-session
+  protocol). README status flipped 🆕 New → 🟢 Solid.
+
 ### Added (2026-09-10 — collector-extraction skill)
 
 - **`collector-extraction`** — the proven procedure for extracting a monitor365
