@@ -13,6 +13,19 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-09-10 — collector-extraction skill)
+
+- **`collector-extraction`** — the proven procedure for extracting a monitor365
+  collector into a standalone sibling repo built on collector-utils (four
+  successful references: wireguard-collector, mic-monitor, clipboard-monitor,
+  storage-collector). Covers: decision criteria (when to extract / when not),
+  the sibling repo template invariants (manifest, strict lints, file
+  checklist), the 9-step extraction with ADR-041 family wiring (root
+  `Cargo.toml` + the six `flake.nix` edit sites), verification gates, the
+  bump runbook, and hard rules from past extraction mistakes (monorepo
+  rejection, sibling-path-only, trash-not-rm). Also documents the second
+  move: promoting shared plumbing into collector-utils itself.
+
 ### Changed (2026-09-10 — go.mod floor format rule)
 
 - **`go` directive = major.minor only, never a patch version** (`go 1.26`, never

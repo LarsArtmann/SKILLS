@@ -8,7 +8,7 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 ## The Collection
 
-**27 skills** organized by domain. Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out), **🆕 New** (structurally valid, never yet triggered against real work — ages into 🟢 after a documented successful run).
+Skills organized by domain — live count via `scripts/check-skills.sh` (never hardcoded; the checker enforces this). Quality indicators reflect current state: **🟢 Solid** (comprehensive, production-ready), **🟡 Functional** (works but thin), **🔴 Draft** (needs fleshing out), **🆕 New** (structurally valid, never yet triggered against real work — ages into 🟢 after a documented successful run).
 
 ### Shared Assets
 
@@ -61,8 +61,9 @@ An Agent Skill is a self-contained directory with a `SKILL.md` entrypoint. Crush
 
 | Skill                    | What It Does                                                                         | Status           |
 | ------------------------ | ------------------------------------------------------------------------------------ | ---------------- |
-| **nix-private-go-repos** | Build Go projects with private GitHub deps in Nix — `mkPreparedSource` + `GOPRIVATE` | 🆕 New           |
-| **nix-review**           | Reviews and improves `.nix` files — 50+ problems, checklist-driven                   | 🟢 Comprehensive |
+| **nix-private-go-repos** | Build Go projects with private GitHub deps in Nix — `mkPreparedSource` + `GOPRIVATE`                         | 🆕 New           |
+| **nix-review**           | Reviews and improves `.nix` files — 50+ problems, checklist-driven                                                   | 🟢 Comprehensive |
+| **collector-extraction** | Extracts monitor365 collectors into standalone sibling repos on collector-utils — decision criteria, repo template, ADR-041 wiring (six flake.nix edit sites), bump runbook | 🆕 New           |
 
 ### Library & Dependency Research
 
@@ -129,7 +130,7 @@ New skills should follow the pattern of [`how-to-golang/`](how-to-golang/) (lean
 
 ## Quality & Status
 
-This repository is honest about its state. **22 of 27 skills are solid, comprehensive, or functional** — every established skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). Five are still **functional** (`architecture-review`, `bdd-testing`, `code-quality-scan`, `deduplicate-code`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. **Six skills are 🆕 New** (`go-error-modernization`, `jj-fork-pr-workflow`, `linter-building`, `nix-private-go-repos`, `samber-do-best-practices`, `verify-before-filing`) — structurally valid and based on real concepts, but not yet triggered against real work. Three of these carry verification-status blocks (`go-error-modernization` for its `erraudit` CLI that is not publicly findable, `nix-private-go-repos` for its private `go-nix-helpers` dependency, `samber-do-best-practices` for its private `branching-flow/pkg/doanalyzerv2` reference) — the skills' value rests on durable concepts, not on the specific private tooling. Validate the repo anytime with `scripts/check-skills.sh`.
+This repository is honest about its state. Most skills are solid, comprehensive, or functional (live counts: `scripts/check-skills.sh`) — every established skill has either rich references and templates (the comprehensive ones) or a focused, complete procedure (the solid ones). Five are still **functional** (`architecture-review`, `bdd-testing`, `code-quality-scan`, `deduplicate-code`, `status-report`) — they work and trigger correctly but would benefit from deeper reference material. **Seven skills are 🆕 New** (`collector-extraction`, `go-error-modernization`, `jj-fork-pr-workflow`, `linter-building`, `nix-private-go-repos`, `samber-do-best-practices`, `verify-before-filing`) — structurally valid and based on real concepts, but not yet triggered against real work. Three of these carry verification-status blocks (`go-error-modernization` for its `erraudit` CLI that is not publicly findable, `nix-private-go-repos` for its private `go-nix-helpers` dependency, `samber-do-best-practices` for its private `branching-flow/pkg/doanalyzerv2` reference) — the skills' value rests on durable concepts, not on the specific private tooling. Validate the repo anytime with `scripts/check-skills.sh`.
 
 See [`docs/status/`](docs/status/) for detailed audit reports, including a comprehensive breakdown of every skill's strengths, gaps, and recommended next steps.
 
