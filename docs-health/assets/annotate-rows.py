@@ -34,7 +34,7 @@ spec matched (atomic in-memory then single write + read-back check).
 
 import re
 import sys
-from datetime import date
+from datetime import UTC, datetime
 from pathlib import Path
 
 
@@ -46,7 +46,7 @@ def marker_for(kind: str, value: str) -> str:
         evidence = re.sub(r"^done\b[\s:—-]*", "", value.strip())
         return f"done — {evidence}" if evidence else "done"
     if kind == "p":
-        return f"done (docs-health pass {value if value != '-' else date.today().isoformat()})"
+        return f"done (docs-health pass {value if value != '-' else datetime.now(tz=UTC).date().isoformat()})"
     if kind == "w":
         return f"**Won't implement — {value}.**"
     raise SystemExit(f"bad kind {kind!r} (use h/v/p/w)")

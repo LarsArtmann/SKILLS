@@ -21,7 +21,7 @@ in-memory then single write).
 
 import re
 import sys
-from datetime import date
+from datetime import UTC, datetime
 from pathlib import Path
 
 
@@ -31,7 +31,7 @@ def marker_for(kind: str, value: str) -> str:
     if kind == "v":
         return f"done ({value})"
     if kind == "p":
-        return f"done (docs-health pass {value if value != '-' else date.today().isoformat()})"
+        return f"done (docs-health pass {value if value != '-' else datetime.now(tz=UTC).date().isoformat()})"
     if kind == "w":
         return f"**Won't implement — {value}.**"
     raise SystemExit(f"bad kind {kind!r} (use h/v/p/w)")
