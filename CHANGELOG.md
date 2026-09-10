@@ -27,6 +27,19 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   compared `1.26` against raw `go1.26.7` and could never pass — now compares
   major.minor floors).
 
+### Fixed (2026-09-10 — docs-health annotation scripts buildflow-lint clean)
+
+- **`docs-health/assets/annotate-{prose,rows}.py` now pass buildflow's ruff
+  step** (a repair run had failed with 4 findings): EXE001 — both files
+  carried shebangs but shipped mode 644, against the repo convention of 755
+  for every script; and DTZ011 — the `p`-kind pass-date default used naive
+  `date.today()`, now `datetime.now(tz=UTC).date()`. Marker output is
+  byte-identical for explicit dates and renders the UTC date for `-`.
+  Verified by py_compile, the `annotate-rows_test.py` self-test, dry-run +
+  live-write fixtures (shape guard intact), and
+  `buildflow -s ruff-check-fix --format finding` (0 findings, exit 0);
+  full `buildflow format` then ran 18 success / 0 failed.
+
 ### Changed (2026-09-09 — wave 3: report-section f execution + T33 quick items)
 
 - **Demo ground-truth fixtures committed** (`website-launch/assets/demo-

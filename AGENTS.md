@@ -211,6 +211,31 @@ When a new skill needs HTML reports: (1) reference `./assets/html-report-kit/...
 6. Always read AND edit skill files through the repo path. Edit tools track paths, not symlink identity — reading via `~/.agents/...` or `~/.config/crush/...` then editing via the repo path fails with "file modified since last read" (hit 2026-08-14 and again 2026-08-21).
 7. `~/.config/crush/skills/` also holds three one-off entries that are neither repo skills nor drift: `font-design` (→ a project-local skill), `go-cqrs-lite` (→ nix store), `templ-components` (real directory). Do not "repair" them.
 
+### 5.11 buildflow Runs Over This Repo (external tool)
+
+Lars runs buildflow (a build-automation tool, nix-provisioned) against this
+repo even though the repo has no committed build config (§1 still holds: no
+`.buildflow.yml`, no CI, no package manager). What agents must know:
+
+- **Python assets are ruff-linted** (ruff itself fetched via
+  `nix run nixpkgs#ruff` when absent from PATH). Rules observed firing:
+  EXE001 (a shebang makes the exec bit mandatory — repo convention is 755
+  for all scripts) and DTZ011 (`date.today()` banned; use
+  `datetime.now(tz=UTC)`). ruff `--fix` auto-applies what it can, then
+  exits 1 listing the rest — a green-looking output tail can still be a
+  failure (same lesson as SESSION-START step 5).
+- **Full-pipeline runs may skip ruff** ("language mismatch: project: go"
+  from buildflow's language detection). The reliable verification is
+  `buildflow -s ruff-check-fix --format finding` — expect exit 0 and
+  `"findings": []`.
+- Green-but-noisy steps: markdownlint lists hundreds of MD013/MD010
+  advisories and still exits ✔; shellcheck warns (SC2319, SC2089/SC2090)
+  on `jj-fork-pr-workflow` and `naming-review` scripts and still exits ✔.
+  Read exit codes, not output tails.
+- `docs-health/assets/annotate-rows_test.py` self-tests
+  `annotate-rows.py`; the importlib invocation one-liner is in its
+  docstring (the hyphenated filename blocks a plain import).
+
 ---
 
 ## 6. High-Value Reference Files
