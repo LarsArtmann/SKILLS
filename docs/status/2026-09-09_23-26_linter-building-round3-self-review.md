@@ -57,28 +57,28 @@
 
 ## f) Next tasks (ranked; HARVEST-ready — T-items below extend TODO_LIST)
 
-| # | Task | Impact | Effort | Category |
-| --- | --- | --- | --- | --- |
-| 1 | Run the negative-prompt eval actually promised in round 2 ("lint my project"/"code quality" → must hit code-quality-scan, not linter-building); append to `evals/iteration-1` as eval-4 or open iteration-2 | High | S | Quality |
-| 2 | Write CHANGELOG.md wave entry for today (skill + check-skills fixes + evals) | Medium | S | Documentation |
-| 3 | Verify-or-mark the ~10 inline reference specifics (b1 list) — either source-verify or add per-claim provenance marks in the six references | Medium | M | Documentation |
-| 4 | Add linter-building to AGENTS §10 "Referenced By" rows (golangci-lint, oxlint, gogenfilter, go-atomic-write, go-error-family, go-arch-lint) | Medium | S | Documentation |
-| 5 | Fresh-session trigger test: "write a linter" must activate linter-building (needs a new session) | High | S | Quality |
-| 6 | `scripts/session-end.sh`: check-skills + exit code, worktree list, git status, CHANGELOG freshness probe | High | S | Cleanup |
-| 7 | Exact parse of go-finding's category registry count; fix "~84" in ecosystem.md | Low | S | Cleanup |
-| 8 | Re-word round-2 report's "zero unverified claims" line via non-destructive annotation | Medium | S | Documentation |
-| 9 | Answer g1-g3 (T34) — unblocks reference scope, aging, commit ownership | High | S | Decision |
-| 10 | Execute T35: sweep docs/status for pre-fix green check-skills claims, annotate | Low | M | Documentation |
-| 11 | Cross-model eval run (iteration 2, different model) for the with-skill prompts | Low | M | Quality |
-| 12 | Dogfood on the next real linter request; run note; age 🆕→🟢 | High | M | Feature |
-| 13 | linter-building assets/: minimal starter rule (RuleFunc + fixture pair layout) | Medium | M | Feature |
-| 14 | mechanism-choice.md worked example: one rule traced through all 10 rows | Medium | M | Documentation |
-| 15 | Decide originals/ seed convention for new skills (check whether go-release/jj-fork-pr-workflow have originals entries) | Low | S | Documentation |
-| 16 | Encode or reject status-report `.md`-for-this-repo precedent (3rd occurrence) | Low | S | Documentation |
-| 17 | Per-reference verification tables in all six references (upgrade from SKILL.md-only) | Medium | M | Documentation |
-| 18 | README §6: consider linter-building as a "best example" row once aged | Low | S | Documentation |
-| 19 | Negative-trigger eval for ecosystem.md's "reuse before building" (a golangci-config question should NOT route to authoring) | Low | S | Quality |
-| 20 | Sweep reference files for any remaining "verified 2026-09-09" style headers that overstate (ecosystem.md fixed; check others) | Low | S | Documentation |
+| #  | Task                                                                                                                                                                                                        | Impact | Effort | Category      |
+| -- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | ------------- |
+| 1  | Run the negative-prompt eval actually promised in round 2 ("lint my project"/"code quality" → must hit code-quality-scan, not linter-building); append to `evals/iteration-1` as eval-4 or open iteration-2 | High   | S      | Quality       |
+| 2  | Write CHANGELOG.md wave entry for today (skill + check-skills fixes + evals)                                                                                                                                | Medium | S      | Documentation |
+| 3  | Verify-or-mark the ~10 inline reference specifics (b1 list) — either source-verify or add per-claim provenance marks in the six references                                                                  | Medium | M      | Documentation |
+| 4  | Add linter-building to AGENTS §10 "Referenced By" rows (golangci-lint, oxlint, gogenfilter, go-atomic-write, go-error-family, go-arch-lint)                                                                 | Medium | S      | Documentation |
+| 5  | Fresh-session trigger test: "write a linter" must activate linter-building (needs a new session)                                                                                                            | High   | S      | Quality       |
+| 6  | `scripts/session-end.sh`: check-skills + exit code, worktree list, git status, CHANGELOG freshness probe                                                                                                    | High   | S      | Cleanup       |
+| 7  | Exact parse of go-finding's category registry count; fix "~84" in ecosystem.md                                                                                                                              | Low    | S      | Cleanup       |
+| 8  | Re-word round-2 report's "zero unverified claims" line via non-destructive annotation                                                                                                                       | Medium | S      | Documentation |
+| 9  | Answer g1-g3 (T34) — unblocks reference scope, aging, commit ownership                                                                                                                                      | High   | S      | Decision      |
+| 10 | Execute T35: sweep docs/status for pre-fix green check-skills claims, annotate                                                                                                                              | Low    | M      | Documentation |
+| 11 | Cross-model eval run (iteration 2, different model) for the with-skill prompts                                                                                                                              | Low    | M      | Quality       |
+| 12 | Dogfood on the next real linter request; run note; age 🆕→🟢                                                                                                                                                | High   | M      | Feature       |
+| 13 | linter-building assets/: minimal starter rule (RuleFunc + fixture pair layout)                                                                                                                              | Medium | M      | Feature       |
+| 14 | mechanism-choice.md worked example: one rule traced through all 10 rows                                                                                                                                     | Medium | M      | Documentation |
+| 15 | Decide originals/ seed convention for new skills (check whether go-release/jj-fork-pr-workflow have originals entries)                                                                                      | Low    | S      | Documentation |
+| 16 | Encode or reject status-report `.md`-for-this-repo precedent (3rd occurrence)                                                                                                                               | Low    | S      | Documentation |
+| 17 | Per-reference verification tables in all six references (upgrade from SKILL.md-only)                                                                                                                        | Medium | M      | Documentation |
+| 18 | README §6: consider linter-building as a "best example" row once aged                                                                                                                                       | Low    | S      | Documentation |
+| 19 | Negative-trigger eval for ecosystem.md's "reuse before building" (a golangci-config question should NOT route to authoring)                                                                                 | Low    | S      | Quality       |
+| 20 | Sweep reference files for any remaining "verified 2026-09-09" style headers that overstate (ecosystem.md fixed; check others)                                                                               | Low    | S      | Documentation |
 
 Handoff: items 1-4, 6-8 are TODO_LIST-shaped (extend T34/T35 wave); 12-14 are ROADMAP-shaped until g-decisions land. Feed via docs-health HARVEST.
 

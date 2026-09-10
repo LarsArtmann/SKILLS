@@ -23,15 +23,15 @@ golangci internals, or actions tooling.
 
 - **Exit codes carry semantics** (go-linter-sdk, verified):
 
-  | Code | Meaning |
-  | --- | --- |
-  | 0 | Clean — no findings at/above the confidence threshold |
-  | 1 | Findings at/above threshold (actionable; blocks) |
-  | 2 | Only low-confidence findings (triage list; does not block) |
+  | Code | Meaning                                                    |
+  | ---- | ---------------------------------------------------------- |
+  | 0    | Clean — no findings at/above the confidence threshold      |
+  | 1    | Findings at/above threshold (actionable; blocks)           |
+  | 2    | Only low-confidence findings (triage list; does not block) |
 
   Distinct from "crashed": tool errors use their own path (sysexits-style
-classification if the tool is large; go-error-family → BSD exit codes is
-the house pattern).
+  classification if the tool is large; go-error-family → BSD exit codes is
+  the house pattern).
 - **Baseline/delta for adoption**: `--save-baseline` once,
   `--behavior-delta` in CI — pre-existing findings don't fail the build,
   new ones do. This is how a linter lands on a legacy codebase without a

@@ -9,45 +9,85 @@
       "id": "A1-mechanism-first",
       "assertion": "Agent decides configure/delegate/walker/analysis/filesystem BEFORE writing detection code, citing the skill's decision criteria",
       "evals": {
-        "eval-1-with-skill": {"pass": true, "evidence": "Applied the skill's three questions in order; rejected forbidigo config, go/analysis, filesystem engine, archtest with quotes"},
-        "eval-2-fp-remediation": {"pass": true, "evidence": "N/A to prompt (remediation task); diagnosis framework cited before plan", "note": "assertion scoped to build prompts"},
-        "eval-3-without-skill": {"pass": false, "evidence": "Jumped straight to go/analysis construction; no decision-tree reasoning; alternatives only considered after the plan was fixed"}
+        "eval-1-with-skill": {
+          "pass": true,
+          "evidence": "Applied the skill's three questions in order; rejected forbidigo config, go/analysis, filesystem engine, archtest with quotes"
+        },
+        "eval-2-fp-remediation": {
+          "pass": true,
+          "evidence": "N/A to prompt (remediation task); diagnosis framework cited before plan",
+          "note": "assertion scoped to build prompts"
+        },
+        "eval-3-without-skill": {
+          "pass": false,
+          "evidence": "Jumped straight to go/analysis construction; no decision-tree reasoning; alternatives only considered after the plan was fixed"
+        }
       }
     },
     {
       "id": "A2-shared-finding-model",
       "assertion": "Agent emits a shared finding type (go-finding / alias) and rejects native-issue-type+converter",
       "evals": {
-        "eval-1-with-skill": {"pass": true, "evidence": "'Native issue type + converter: rejected — 1,200-1,900 LOC of glue'; plan emits finding.Finding via Template"},
-        "eval-2-fp-remediation": {"pass": true, "evidence": "ExitCodeByConfidence + per-finding confidence adopted"},
-        "eval-3-without-skill": {"pass": false, "evidence": "Plain p.Reportf; no finding model, no confidence axis, no fix strategy"}
+        "eval-1-with-skill": {
+          "pass": true,
+          "evidence": "'Native issue type + converter: rejected — 1,200-1,900 LOC of glue'; plan emits finding.Finding via Template"
+        },
+        "eval-2-fp-remediation": { "pass": true, "evidence": "ExitCodeByConfidence + per-finding confidence adopted" },
+        "eval-3-without-skill": {
+          "pass": false,
+          "evidence": "Plain p.Reportf; no finding model, no confidence axis, no fix strategy"
+        }
       }
     },
     {
       "id": "A3-fp-control",
       "assertion": "Agent plans multi-signal/negative-filter/confidence/corpus machinery, not just 'add tests'",
       "evals": {
-        "eval-1-with-skill": {"pass": true, "evidence": "Multi-signal (path scope + import-path-resolved call), must-not-flag text-match trap fixtures, corpus sweep with measured FP, mutant discrimination proof"},
-        "eval-2-fp-remediation": {"pass": true, "evidence": "Ordered plan mirrors trust-engineering.md; corpus first, second signal, negative filters, confidence tiers, gate restore last"},
-        "eval-3-without-skill": {"pass": false, "evidence": "Quality concerns = alias handling, skips, host suppressions; no measurement, no discrimination proof, no confidence"}
+        "eval-1-with-skill": {
+          "pass": true,
+          "evidence": "Multi-signal (path scope + import-path-resolved call), must-not-flag text-match trap fixtures, corpus sweep with measured FP, mutant discrimination proof"
+        },
+        "eval-2-fp-remediation": {
+          "pass": true,
+          "evidence": "Ordered plan mirrors trust-engineering.md; corpus first, second signal, negative filters, confidence tiers, gate restore last"
+        },
+        "eval-3-without-skill": {
+          "pass": false,
+          "evidence": "Quality concerns = alias handling, skips, host suppressions; no measurement, no discrimination proof, no confidence"
+        }
       }
     },
     {
       "id": "A4-suppressions-and-testing",
       "assertion": "Agent engineers suppressions (rule-scoped, verified) and tests positive+negative fixtures with discrimination proof",
       "evals": {
-        "eval-1-with-skill": {"pass": true, "evidence": "Day-one //nolint:logfatal:LF001 <reason>, --verify-suppressions, fixture pairs incl. dot-import trap, host-nolint interplay test"},
-        "eval-2-fp-remediation": {"pass": true, "evidence": "Step 5 + suppression checklist; placement-form fixtures"},
-        "eval-3-without-skill": {"pass": false, "evidence": "Defers to staticcheck //lint:ignore + host nolint; no verification/staleness machinery"}
+        "eval-1-with-skill": {
+          "pass": true,
+          "evidence": "Day-one //nolint:logfatal:LF001 <reason>, --verify-suppressions, fixture pairs incl. dot-import trap, host-nolint interplay test"
+        },
+        "eval-2-fp-remediation": {
+          "pass": true,
+          "evidence": "Step 5 + suppression checklist; placement-form fixtures"
+        },
+        "eval-3-without-skill": {
+          "pass": false,
+          "evidence": "Defers to staticcheck //lint:ignore + host nolint; no verification/staleness machinery"
+        }
       }
     },
     {
       "id": "A5-honest-gaps",
       "assertion": "Agent states what the skill does NOT cover instead of inventing",
       "evals": {
-        "eval-1-with-skill": {"pass": true, "evidence": "forbidigo version caveat; _test.go unspecified; module-vs-rule undecided — flagged explicitly"},
-        "eval-2-fp-remediation": {"pass": true, "evidence": "Four stated gaps incl. no generic acceptable-FP-rate number"},
-        "eval-3-without-skill": {"pass": true, "evidence": "N/A (no skill to gap-check)"}
+        "eval-1-with-skill": {
+          "pass": true,
+          "evidence": "forbidigo version caveat; _test.go unspecified; module-vs-rule undecided — flagged explicitly"
+        },
+        "eval-2-fp-remediation": {
+          "pass": true,
+          "evidence": "Four stated gaps incl. no generic acceptable-FP-rate number"
+        },
+        "eval-3-without-skill": { "pass": true, "evidence": "N/A (no skill to gap-check)" }
       }
     }
   ],

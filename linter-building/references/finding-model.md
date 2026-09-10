@@ -158,11 +158,11 @@ docs): write a semantic mapping TABLE with rationale per mapping, adopt via
 aliases first to preserve API, then convert at boundaries for genuinely
 different domain meanings. Filled-in example (from that migration):
 
-| Legacy value | Context meaning | go-finding mapping | Rationale |
-| --- | --- | --- | --- |
-| `low` | Non-blocking but notable (error-handling findings) | `warning` | Not gate-worthy alone, must stay visible |
-| `medium` | Real defect, should fix soon | `error` | Gate-worthy in CI |
-| `high` | Data loss / correctness violation | `critical` | Merge-blocker, top of triage |
+| Legacy value | Context meaning                                    | go-finding mapping | Rationale                                |
+| ------------ | -------------------------------------------------- | ------------------ | ---------------------------------------- |
+| `low`        | Non-blocking but notable (error-handling findings) | `warning`          | Not gate-worthy alone, must stay visible |
+| `medium`     | Real defect, should fix soon                       | `error`            | Gate-worthy in CI                        |
+| `high`       | Data loss / correctness violation                  | `critical`         | Merge-blocker, top of triage             |
 
 Same-shape rule for domain concepts: `ThreatLevel` in InboxClean was NOT
 aliased — it is a domain meaning, converted explicitly at the boundary.
@@ -172,11 +172,11 @@ Alias mechanics, convert semantics.
 
 Three orthogonal axes, routinely conflated:
 
-| Axis | Question it answers | Consumer |
-| --- | --- | --- |
-| Severity | If real, how bad? | Gate policy (error blocks merge) |
-| Confidence | How sure is the rule it is real? | Triage (`--min-confidence`), exit codes |
-| CorrelationScore | How strongly do TWO findings relate? | Merge/dedup |
+| Axis             | Question it answers                  | Consumer                                |
+| ---------------- | ------------------------------------ | --------------------------------------- |
+| Severity         | If real, how bad?                    | Gate policy (error blocks merge)        |
+| Confidence       | How sure is the rule it is real?     | Triage (`--min-confidence`), exit codes |
+| CorrelationScore | How strongly do TWO findings relate? | Merge/dedup                             |
 
 A critical-severity low-confidence finding is the norm for heuristic rules —
 only separated axes can express it.
