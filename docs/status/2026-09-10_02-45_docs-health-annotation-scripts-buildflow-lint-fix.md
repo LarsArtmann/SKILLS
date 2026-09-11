@@ -52,19 +52,19 @@ ruff-check-fix
 
 ## Verification (each step executed, not assumed)
 
-| Check | Result |
-| --- | --- |
-| `python3 -m py_compile` both files | OK |
-| `annotate-rows_test.py` self-test (docstring's importlib one-liner) | "all passed" (incl. `p default` case) |
-| Direct shebang execution (exec bit effective) | usage printed |
-| Dry-run fixture, rows `1:p:-` | `done (docs-health pass 2026-09-10)` — UTC date rendered |
-| Live write, rows `2:p:2026-08-01` | annotated, "(shape verified)" — read-back guard intact |
-| Dry-run fixture, prose `1:p:-` | `1. ~~alpha~~ done (docs-health pass 2026-09-10)` |
-| `buildflow -s ruff-check-fix --format finding` | exit 0, `"findings": []`, `ruff> All checks passed!` |
-| Full `buildflow format` | `FORMAT_EXIT=0`, `18 success, 0 failed, 0 skipped (+25 via config)` |
-| Repo-wide exec-bit audit (`git ls-files -s` on all `*.py`/`*.sh`) | no further 644-with-shebang files |
-| `scripts/check-skills.sh` | exit 0, 27/27 skills pass, 140 files link-clean |
-| `git status` / `git worktree list` | clean / master only (buildflow fsprobe temp file self-cleaned) |
+| Check                                                               | Result                                                              |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `python3 -m py_compile` both files                                  | OK                                                                  |
+| `annotate-rows_test.py` self-test (docstring's importlib one-liner) | "all passed" (incl. `p default` case)                               |
+| Direct shebang execution (exec bit effective)                       | usage printed                                                       |
+| Dry-run fixture, rows `1:p:-`                                       | `done (docs-health pass 2026-09-10)` — UTC date rendered            |
+| Live write, rows `2:p:2026-08-01`                                   | annotated, "(shape verified)" — read-back guard intact              |
+| Dry-run fixture, prose `1:p:-`                                      | `1. ~~alpha~~ done (docs-health pass 2026-09-10)`                   |
+| `buildflow -s ruff-check-fix --format finding`                      | exit 0, `"findings": []`, `ruff> All checks passed!`                |
+| Full `buildflow format`                                             | `FORMAT_EXIT=0`, `18 success, 0 failed, 0 skipped (+25 via config)` |
+| Repo-wide exec-bit audit (`git ls-files -s` on all `*.py`/`*.sh`)   | no further 644-with-shebang files                                   |
+| `scripts/check-skills.sh`                                           | exit 0, 27/27 skills pass, 140 files link-clean                     |
+| `git status` / `git worktree list`                                  | clean / master only (buildflow fsprobe temp file self-cleaned)      |
 
 ## Knowledge encoded
 

@@ -10,12 +10,12 @@ All GitHub constraints below were verified against docs.github.com
 
 ## Verified constraints
 
-| Constraint  | Value                                             |
-| ----------- | ------------------------------------------------- |
-| Formats     | PNG, JPG, GIF                                     |
-| Size limit  | under 1 MB                                        |
-| Minimum     | 640 x 320 px                                      |
-| Recommended | 1280 x 640 px (2x minimum, renders crispest)      |
+| Constraint  | Value                                                                                    |
+| ----------- | ---------------------------------------------------------------------------------------- |
+| Formats     | PNG, JPG, GIF                                                                            |
+| Size limit  | under 1 MB                                                                               |
+| Minimum     | 640 x 320 px                                                                             |
+| Recommended | 1280 x 640 px (2x minimum, renders crispest)                                             |
 | Background  | solid recommended; transparency works but looks unpredictable across light/dark surfaces |
 
 ## Upload path (manual; no API exists)

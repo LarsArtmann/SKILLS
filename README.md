@@ -59,10 +59,10 @@ Skills organized by domain — live count via `scripts/check-skills.sh` (never h
 
 ### Nix & DevOps
 
-| Skill                    | What It Does                                                                         | Status           |
-| ------------------------ | ------------------------------------------------------------------------------------ | ---------------- |
-| **nix-private-go-repos** | Build Go projects with private GitHub deps in Nix — `mkPreparedSource` + `GOPRIVATE`                         | 🆕 New           |
-| **nix-review**           | Reviews and improves `.nix` files — 50+ problems, checklist-driven                                                   | 🟢 Comprehensive |
+| Skill                    | What It Does                                                                                                                                                                                   | Status           |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **nix-private-go-repos** | Build Go projects with private GitHub deps in Nix — `mkPreparedSource` + `GOPRIVATE`                                                                                                           | 🆕 New           |
+| **nix-review**           | Reviews and improves `.nix` files — 50+ problems, checklist-driven                                                                                                                             | 🟢 Comprehensive |
 | **collector-extraction** | Extracts monitor365 collectors into standalone sibling repos on collector-utils — decision criteria, repo template, ADR-041 wiring (seven flake.nix edit sites), bump runbook, battle-test log | 🟢 Solid         |
 
 ### Library & Dependency Research

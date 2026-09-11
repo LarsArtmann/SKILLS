@@ -10,9 +10,9 @@
 
 ## Headline counts
 
-| a) Fully done | b) Partially done | c) Not started | d) Fucked up | e) Improvements | f) Next | g) Questions |
-| --- | --- | --- | --- | --- | --- | --- |
-| 7 | 6 | 8 | 7 | 7 | 30 (no padding) | 3 |
+| a) Fully done | b) Partially done | c) Not started | d) Fucked up | e) Improvements | f) Next         | g) Questions |
+| ------------- | ----------------- | -------------- | ------------ | --------------- | --------------- | ------------ |
+| 7             | 6                 | 8              | 7            | 7               | 30 (no padding) | 3            |
 
 ---
 
@@ -28,7 +28,7 @@
 
 ## b) PARTIALLY DONE
 
-1. **"Full pipeline" verification was NOT the full mode.** `buildflow format` ran in build mode **fast** (log: 25 tools "skipped by build mode 'fast'", incl. gitleaks, todo-check, erraudit, jscpd) — while the user's failing paste ran mode **full** ("gitleaks … skipped by build mode 'full'"). Additionally ruff was skipped in my run entirely ("language mismatch (project: go)"). So the end-to-end parity with the failing run was never established; the ruff claim rests solely on the single-step run (which is the *right* check for ruff, but it is one step, not "the pipeline").
+1. **"Full pipeline" verification was NOT the full mode.** `buildflow format` ran in build mode **fast** (log: 25 tools "skipped by build mode 'fast'", incl. gitleaks, todo-check, erraudit, jscpd) — while the user's failing paste ran mode **full** ("gitleaks … skipped by build mode 'full'"). Additionally ruff was skipped in my run entirely ("language mismatch (project: go)"). So the end-to-end parity with the failing run was never established; the ruff claim rests solely on the single-step run (which is the _right_ check for ruff, but it is one step, not "the pipeline").
 2. **The paste's "⚠ 9 tools unavailable (health check failed)" was never reconciled.** My run's taxonomy differs (doctor: 14 ok / 3 warn / 0 fail; 70 not-applicable; 25 mode-skipped; `interrogate` not in PATH). Unknown whether those 9 are nix-fallback-covered, mode artifacts, or stale-binary artifacts. Opened as curiosity mid-session, dropped un-closed.
 3. **Exec-bit smoke test measured the wrong thing and I labeled it wrong twice.** `docs-health/assets/annotate-prose.py 2>&1 | head -3; echo "prose-bare-exit=$?"` — `$?` is `head`'s exit (0), not the script's; and "(usage expected)" is itself wrong because `raise SystemExit(__doc__)` exits **1**. So the live claim read `prose-bare-exit=0 (usage expected)` — wrong value, wrong expectation. The 02-45 report quietly downgraded this row to "usage printed" (true, exec bit + interpreter resolution proven) without ever flagging the mislabel. See d2.
 4. **Fixture evidence disclaimers skipped.** SESSION-START end-duties: artifacts a report cites as evidence must be "committed as fixtures or explicitly disclaim[ed]" (the 2026-09-08 trashed-ground-truth incident). My fixtures were trashed and the 02-45 report quotes their outputs without the disclaimer line. Mitigation: every cited output is trivially re-runnable, and the authoritative evidence (buildflow runs) doesn't depend on the fixtures — but the letter of the rule was skipped.
@@ -38,7 +38,7 @@
 ## c) NOT STARTED (consciously deferred or forgotten — listed honestly)
 
 1. **dprint-format never ran over this session's new markdown** (AGENTS §5.11 block, CHANGELOG entry, 02-45 report, this report). The daemon carries them; the next repair run may reformat them (cosmetic churn only — check-skills link-check already passed).
-2. **shellcheck SC2319 ×6 in `jj-fork-pr-workflow/scripts/validate-workflow.sh`** — every `check "…" $?` after a condition asserts the *condition's* status, not the phase's. Real latent wrong-assertions in a validation harness. Untouched (correctly — a fix without a real jj run is unprovable).
+2. **shellcheck SC2319 ×6 in `jj-fork-pr-workflow/scripts/validate-workflow.sh`** — every `check "…" $?` after a condition asserts the _condition's_ status, not the phase's. Real latent wrong-assertions in a validation harness. Untouched (correctly — a fix without a real jj run is unprovable).
 3. **SC2089/SC2090 in `naming-review/scripts/naming-smells.sh`** (quoted variable used as word-split opts). Untouched.
 4. **markdownlint advisory sweep** (hundreds of MD013/MD010/MD031, incl. hard tabs in `website-launch/references/*`). Step exits ✔ by config. Untouched.
 5. **buildflow environment warnings** — binary stale (a3168a2 vs HEAD), redundant `GOEXPERIMENT=jsonv2` in a `.buildflow.yml` that is NOT in this repo (global tool config), `go-licenses` not in PATH. All user-env actions; correctly not done unasked.
@@ -64,7 +64,7 @@
 
 1. **Exit-code discipline as a personal hard rule:** never `echo $?` after a pipeline; use `set -o pipefail` (the repo's own lessons file already calls this out — I even read it in AGENTS and still did it), or `PIPESTATUS`, or run the command bare first and capture. Verification tables may only quote exit codes from dedicated, un-piped runs.
 2. **Verification claims must name command + mode.** "Verified end-to-end" is not a claim; "`buildflow -s ruff-check-fix --format finding` → exit 0, 0 findings; `buildflow format` (fast mode) → 18/0, ruff n/a" is. Write the audit trail, not the vibe.
-3. **Checklist compliance must be *reported*, not just performed.** If a step is skipped, the status report's checklist section should say so in those words. Silent omissions are how d3-class rot compounds.
+3. **Checklist compliance must be _reported_, not just performed.** If a step is skipped, the status report's checklist section should say so in those words. Silent omissions are how d3-class rot compounds.
 4. **Fixtures policy:** add the one-line disclaimer (trashed + re-runnable + not load-bearing) whenever a status report quotes scratch output. Ten seconds of honesty now vs. the 2026-08 incident class.
 5. **Kill the `marker_for` duplication** — extract to a shared helper or add a loud "keep in sync with annotate-prose.py" banner to both. Two copies already proved the cost: the fix had to be applied twice, identically, by hand.
 6. **Automate the invariant I audited by hand:** `check-skills.sh` (or a buildflow step) should flag any tracked file with a shebang and mode ≠ 755. I ran that audit manually this session; manual audits don't survive sessions.
@@ -72,9 +72,10 @@
 
 ## f) NEXT — 30 things (no padding: items 31–50 would be fiction)
 
-*Grouped by source; ★ = do first (small, high-signal, zero risk).*
+_Grouped by source; ★ = do first (small, high-signal, zero risk)._
 
 **From this session's own residue:**
+
 1. ★ Annotate the 02-45 report: correct the "prose-bare-exit" line, add the fixture disclaimer, re-label "full `buildflow format`" as fast-mode with ruff n/a, disclose the skipped ROADMAP grep. (This is the d1–d5 cleanup, one edit.)
 2. ★ Correct the CHANGELOG sentence: "full" → "fast-mode, ruff n/a (verified separately, 0 findings)".
 3. ★ Add one-line pointer in AGENTS §1 → §5.11 ("external tooling lints this repo; see §5.11").

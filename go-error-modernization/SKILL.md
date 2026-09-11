@@ -177,23 +177,23 @@ The flag table below combines the original source feedback (2026-07-21, when the
 
 ### Flags that WORK
 
-| Flag                        | Subcommand  | Behavior                                                                                                                              |
-| --------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `--type-aware`              | both        | Uses type information to reduce `errors.Is` false positives on sentinel matches. **Recommended on every invocation.**                 |
-| `--type legacy_as`          | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **Reliable CI filter (fallback if `--type-aware` is insufficient).**           |
-| `--enforce-go-error-family` | both        | **Unverified.** Reported to enforce errors conform to the `go-error-family` library pattern. Behavior not confirmed against a binary. |
-| `--violations-only`         | `lint`      | Shows only violations, no summary. Cosmetic but works.                                                                                |
+| Flag                        | Subcommand  | Behavior                                                                                                                                                                                                                                                                                                                                  |
+| --------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--type-aware`              | both        | Uses type information to reduce `errors.Is` false positives on sentinel matches. **Recommended on every invocation.**                                                                                                                                                                                                                     |
+| `--type legacy_as`          | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **Reliable CI filter (fallback if `--type-aware` is insufficient).**                                                                                                                                                                                                               |
+| `--enforce-go-error-family` | both        | **Unverified.** Reported to enforce errors conform to the `go-error-family` library pattern. Behavior not confirmed against a binary.                                                                                                                                                                                                     |
+| `--violations-only`         | `lint`      | Shows only violations, no summary. Cosmetic but works.                                                                                                                                                                                                                                                                                    |
 | `--no-suppress`             | root        | **Verified 2026-09-11.** Bypasses nolint suppression and surfaces suppressed findings (A/B on a real repo: default run 0 violations, `--no-suppress` run surfaced the exact nolint'd findings at their lines). Audit mode by design: expect documented suppressions to appear. The `lint` subcommand path is separately still unverified. |
-| `//nolint:legacyerrors`     | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.                                                             |
+| `//nolint:legacyerrors`     | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.                                                                                                                                                                                                                                                                 |
 
 ### Flags reported BROKEN or INEFFECTIVE (verify before relying on)
 
-| Flag                                      | Reported behavior                                                     | Use instead                          |
-| ----------------------------------------- | --------------------------------------------------------------------- | ------------------------------------ |
-| `-o <file>`                               | File never created. Output always goes to stdout.                     | Shell redirection (`> file`)         |
-| `-f <format>`                             | Ignored. Always outputs text format.                                  | Parse text output, or fork the tool  |
-| `--severity-threshold error`              | Shows `errors.Is` advisories regardless of threshold value            | `--type-aware` or `--type legacy_as` |
-| `--severity error` / `--severity warning` | Both produce identical output                                         | `--type-aware` or `--type legacy_as` |
+| Flag                                      | Reported behavior                                          | Use instead                          |
+| ----------------------------------------- | ---------------------------------------------------------- | ------------------------------------ |
+| `-o <file>`                               | File never created. Output always goes to stdout.          | Shell redirection (`> file`)         |
+| `-f <format>`                             | Ignored. Always outputs text format.                       | Parse text output, or fork the tool  |
+| `--severity-threshold error`              | Shows `errors.Is` advisories regardless of threshold value | `--type-aware` or `--type legacy_as` |
+| `--severity error` / `--severity warning` | Both produce identical output                              | `--type-aware` or `--type legacy_as` |
 
 ## Exit code reference (unverified — see verification status above)
 
