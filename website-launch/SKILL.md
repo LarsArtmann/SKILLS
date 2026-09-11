@@ -639,11 +639,23 @@ or Go Report Card — those are for importable packages only).
 
 ### Social preview
 
-Upload `assets/branding/social-preview.png` so repo cards render a designed
-card instead of a README screenshot. Load the
+Generate the card with the bundled
+[generate.sh](./scripts/social-preview/generate.sh) (writes the SVG source +
+the 1280x640 PNG into `assets/branding/`, computes font sizes to fit the
+canvas, and machine-checks GitHub's limits):
+
+```bash
+website-launch/scripts/social-preview/generate.sh \
+  --title "linter-autoconfigure-sdk" \
+  --tagline "Shared foundation for linter auto-configuration tools" \
+  --install "github.com/larsartmann/linter-autoconfigure-sdk"
+```
+
+Then upload it (manual; no API) so repo cards render a designed card instead
+of a README screenshot. Load the
 [social preview reference](./references/social-preview.md) for the verified
 constraints (1280x640, < 1 MB), the no-deep-URL upload gotcha (Settings ->
-General -> Social preview; no API), and the SVG-source + card-size
+General -> Social preview; no API), and the design rules + card-size
 legibility workflow.
 
 ### Documentation link bar

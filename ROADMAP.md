@@ -113,6 +113,27 @@ Raw ideas:
 - HTML eval report via `html-report-kit` + `eval-viewer/generate_review.py`
 - A `go-release-check` CI gate wrapping `pre-release-check.sh`
 
+### 7. Social-preview tooling extraction
+
+`website-launch/scripts/social-preview/generate.sh` (added 2026-09-11)
+renders the 1280x640 GitHub card from flags with computed font-fit and
+limit-checking baked in; the design knowledge lives in
+`website-launch/references/social-preview.md`. One validated run exists
+(linter-autoconfigure-sdk, 0.06% pixel diff vs the hand-authored original,
+plus short-title and long-path stress renders).
+
+Raw ideas:
+
+- If the script survives 2-3 real repo launches (the 🆕→🟢 criterion),
+  consider extracting it into a dedicated public repo: parameterized themes,
+  multi-layout support (terminal chip / minimal / product shot), auto-fit
+  beyond the monospace-width heuristic, optional post-upload og:image
+  verification
+- Rejected for now (2026-09-11): a dedicated repo on day one — one data
+  point, and the hidden complexity (auto-fit for arbitrary titles, tagline
+  wrapping, theme variants) makes it a product, not a script; premature
+  generalization
+
 ## Open Questions
 
 These are blockers that need a human decision before they can become tasks:

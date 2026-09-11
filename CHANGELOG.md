@@ -13,6 +13,19 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-09-11 — social-preview generator)
+
+- **`website-launch`**: `scripts/social-preview/generate.sh` — renders the
+  1280x640 GitHub social-preview card from `--title/--tagline/--install/
+  --kicker/--output-dir`, computes title/install font sizes from the
+  monospace 0.6em advance (auto-shrink with an honest failure past the
+  one-line floor), machine-checks GitHub's limits (1280x640, < 1 MB), and
+  prints the manual upload click path (no API, no deep URL). Validated
+  against the hand-authored linter-autoconfigure-sdk card (0.06% pixel diff)
+  plus short-title and long-path stress renders. Design knowledge stays in
+  `references/social-preview.md`; dedicated-repo extraction is a ROADMAP
+  theme (§7), not a now-decision.
+
 ### Changed (2026-09-11 — session-grounded fixes from the linter-autoconfigure-sdk TODO sweep)
 
 - **`website-launch`**: new `references/social-preview.md` — GitHub social

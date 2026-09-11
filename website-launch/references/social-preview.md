@@ -33,6 +33,13 @@ After upload, verify the loop closed: fetch the repo page and confirm the
 
 ## Design workflow (validated 2026-09-11 on linter-autoconfigure-sdk)
 
+The bundled generator automates everything in this section:
+[generate.sh](../scripts/social-preview/generate.sh) with
+`--title/--tagline/--install/--kicker/--output-dir`. It computes the font-fit
+math below (monospace advance is exactly 0.6em), renders, and machine-checks
+GitHub's limits. The steps document what it does — and are the manual
+fallback when working outside the script.
+
 1. **Keep the source versioned next to the PNG.** Author an SVG
    (`assets/branding/social-preview.svg`), render to
    `assets/branding/social-preview.png`. Git preserves every revision; the
