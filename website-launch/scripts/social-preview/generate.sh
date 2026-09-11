@@ -213,7 +213,7 @@ if [ -n "$audit_owner" ]; then
 			printf '%-45s %-8s %-10s %s\n' "$repo" "NO-OG" "-" "-"
 			continue
 		fi
-		info="$(curl -fsSI "$og_url" 2>/dev/null)"
+		info="$(curl -fsSI "$og_url" 2>/dev/null || true)"
 		ctype="$(printf '%s' "$info" | grep -i '^content-type:' | tail -1 | tr -d '\r' | awk '{print $2}')"
 		cbytes="$(printf '%s' "$info" | grep -i '^content-length:' | tail -1 | tr -d '\r' | awk '{print $2}')"
 		[ -z "$cbytes" ] && cbytes=0
