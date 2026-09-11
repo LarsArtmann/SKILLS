@@ -38,16 +38,16 @@ not the browser: crawlers fetch og:image, re-process it, and serve their own
 copy — so format support below is what the crawler accepts, and animation
 survives only where the platform plays motion in the card.
 
-| Platform   | Formats                     | Recommended size / ratio | Max size | Animated GIF in card? |
-| ---------- | --------------------------- | ------------------------ | -------- | --------------------- |
-| GitHub     | PNG, JPG, GIF               | 1280x640 (2:1)           | 1 MB     | unverified            |
-| X/Twitter  | JPG, PNG, WEBP, GIF         | 1200x628+ (2:1)          | 5 MB     | No — official: "Only the first frame of an animated GIF will be used" |
-| LinkedIn   | JPG, PNG, GIF (no WebP)     | 1200x627 (1.91:1)        | 5 MB     | No — static first frame |
-| Discord    | JPG, PNG, WebP, GIF         | 1200x630 works           | —        | **Yes** (official `IS_ANIMATED` embed flag) |
-| Slack      | GIF, JPEG, PNG, WebP        | ~1200x630 works          | —        | **Yes** (media unfurl behavior) |
-| Telegram   | JPG, PNG, WEBP, GIF         | 1.91:1; downscales >2560px | —      | **Yes** — converts GIF to looping MP4 (Instant View manual: "GIF would be converted into Video type"); autoplay per user setting |
-| Mastodon   | JPG, PNG, WEBP, static GIF  | 1.91:1, min ~400x210     | —        | No — static thumbnail (source-level: FetchLinkCardService) |
-| Reddit     | JPG, PNG, WEBP              | n/a (140x140 thumbs)     | —        | No — static thumbnail (community-observed) |
+| Platform  | Formats                    | Recommended size / ratio   | Max size | Animated GIF in card?                                                                                                            |
+| --------- | -------------------------- | -------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| GitHub    | PNG, JPG, GIF              | 1280x640 (2:1)             | 1 MB     | unverified                                                                                                                       |
+| X/Twitter | JPG, PNG, WEBP, GIF        | 1200x628+ (2:1)            | 5 MB     | No — official: "Only the first frame of an animated GIF will be used"                                                            |
+| LinkedIn  | JPG, PNG, GIF (no WebP)    | 1200x627 (1.91:1)          | 5 MB     | No — static first frame                                                                                                          |
+| Discord   | JPG, PNG, WebP, GIF        | 1200x630 works             | —        | **Yes** (official `IS_ANIMATED` embed flag)                                                                                      |
+| Slack     | GIF, JPEG, PNG, WebP       | ~1200x630 works            | —        | **Yes** (media unfurl behavior)                                                                                                  |
+| Telegram  | JPG, PNG, WEBP, GIF        | 1.91:1; downscales >2560px | —        | **Yes** — converts GIF to looping MP4 (Instant View manual: "GIF would be converted into Video type"); autoplay per user setting |
+| Mastodon  | JPG, PNG, WEBP, static GIF | 1.91:1, min ~400x210       | —        | No — static thumbnail (source-level: FetchLinkCardService)                                                                       |
+| Reddit    | JPG, PNG, WEBP             | n/a (140x140 thumbs)       | —        | No — static thumbnail (community-observed)                                                                                       |
 
 Mastodon/Reddit behavior is community/source-observed, not officially
 documented; Slack animation is documented media behavior but untested with
@@ -129,7 +129,7 @@ construction: one SVG builder emits both artifacts.
 Engineering notes from the experiment, each a real bug that visual
 frame-review caught after the size check passed:
 
-- The typing text is segment-aware (white ` go get `, then blue path). A
+- The typing text is segment-aware (white `go get`, then blue path). A
   naive single-string loop rendered a double `$$` prompt.
 - The character counter must span BOTH segments (`len(" go get ") +
   len(path)`). Bounding the loop by the path length alone truncated the

@@ -179,7 +179,7 @@ i_adv=$((6 * i_size / 10))
 # drift apart. The typed text has two color segments — " go get " (white,
 # bold) then the module path (blue) — matching the static design.
 W_SEG=" go get "
-total_chars=$(( ${#W_SEG} + ${#install_path} ))
+total_chars=$((${#W_SEG} + ${#install_path}))
 emit_frame() {
 	local k=$1 cursor=$2 out=$3
 	local vis_w="" vis_p="" cur_rect="" install_text="" tsvg
@@ -187,7 +187,7 @@ emit_frame() {
 		vis_w="${W_SEG:0:k}"
 		if [ "$k" -gt ${#W_SEG} ]; then
 			vis_w="$W_SEG"
-			vis_p="${esc_install:0:k - ${#W_SEG}}"
+			vis_p="${esc_install:0:k-${#W_SEG}}"
 		fi
 		if [ "$cursor" = "1" ]; then
 			local cx=$((214 + i_adv * k))

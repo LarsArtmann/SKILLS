@@ -25,6 +25,15 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   plus short-title and long-path stress renders. Design knowledge stays in
   `references/social-preview.md`; dedicated-repo extraction is a ROADMAP
   theme (§7), not a now-decision.
+- **`website-launch`**: `--animate typing` on the same script — a
+  delta-optimized typing-loop GIF (measured: 32 frames, ~37 KB at
+  1280x640, under 4% of the 1 MB budget) whose final frame IS the static
+  card by construction (one SVG builder emits both). Plays on
+  Discord/Slack/Telegram; degrades to its brand-complete first frame on
+  X/LinkedIn/Mastodon/Reddit. The experiment also produced the platform
+  matrix in `references/social-preview.md` (crawler support, not browser
+  support, is the gate; verified per-platform 2026-09-11) and three
+  frame-review-caught bugs documented as engineering notes.
 
 ### Changed (2026-09-11 — session-grounded fixes from the linter-autoconfigure-sdk TODO sweep)
 
