@@ -652,7 +652,8 @@ website-launch/scripts/social-preview/generate.sh \
 ```
 
 Then upload it (manual; no API) so repo cards render a designed card instead
-of a README screenshot. Load the
+of a README screenshot. Add `--animate typing` for a ~37 KB typing-loop GIF
+(README embeds, Discord/Slack/Telegram). Load the
 [social preview reference](./references/social-preview.md) for the verified
 constraints (1280x640, < 1 MB), the no-deep-URL upload gotcha (Settings ->
 General -> Social preview; no API), and the design rules + card-size

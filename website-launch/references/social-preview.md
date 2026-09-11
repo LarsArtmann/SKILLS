@@ -111,3 +111,41 @@ fallback when working outside the script.
 elements disappear (`$ go get` renders as `$go get`). Set
 `xml:space="preserve"` on text elements that mix tspans with spaces, or the
 prompt spacing silently breaks.
+
+## Motion variant (`--animate typing`, experiment 2026-09-11)
+
+`generate.sh --animate typing` renders the card as a delta-optimized GIF:
+the terminal command types itself, the cursor blinks, loop. Measured on the
+reference card: 32 frames, ~37 KB at 1280x640 — under 4% of GitHub's 1 MB
+budget — because `-layers optimize` collapses unchanged regions and only the
+command tail plus cursor change between frames.
+
+Where it plays (platform matrix above): Discord, Slack, Telegram. Everywhere
+else the first frame shows, so the loop starts from the brand-complete
+chrome (never a blank canvas) and ends one cursor-blink from the static
+card — the animation's final frame IS the static design, enforced by
+construction: one SVG builder emits both artifacts.
+
+Engineering notes from the experiment, each a real bug that visual
+frame-review caught after the size check passed:
+
+- The typing text is segment-aware (white ` go get `, then blue path). A
+  naive single-string loop rendered a double `$$` prompt.
+- The character counter must span BOTH segments (`len(" go get ") +
+  len(path)`). Bounding the loop by the path length alone truncated the
+  final frame, and hold frames keyed to the wrong length regressed the text
+  mid-loop.
+- Verify animations frame-by-frame: optimized GIFs store sub-regions, so
+  `magick gif[N]` yields tiny crops — coalesce first
+  (`magick gif -coalesce f-%02d.png`), then compare the final frame against
+  the static card (`-metric AE` should be near-zero).
+- VHS (v0.12.0 + ttyd via nix) was evaluated and failed with an opaque
+  exit-2 during session start on the NixOS host (2026-09-11, time-boxed at
+  three attempts). It was also the wrong instrument: full-frame terminal
+  motion explodes the 1 MB budget, while the typing loop moves only a small
+  region.
+
+Upload guidance: the static PNG stays the social-preview upload candidate
+(GitHub's slot animation behavior is unverified); the GIF's guaranteed homes
+are README embeds — GitHub serves raw bytes, so they animate — plus
+Discord/Slack/Telegram link and chat sharing.

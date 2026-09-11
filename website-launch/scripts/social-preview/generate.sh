@@ -20,12 +20,16 @@
 #   generate.sh --title "linter-autoconfigure-sdk" \
 #     [--tagline "Shared foundation for ..."] \
 #     [--install "github.com/larsartmann/linter-autoconfigure-sdk"] \
-#     [--kicker "GO SDK"] [--output-dir assets/branding]
+#     [--kicker "GO SDK"] [--output-dir assets/branding] [--animate typing]
 #
 #   All flags except --title are optional; empty tagline/install/kicker skip
 #   their block. Writes <output-dir>/social-preview.svg and .png, renders a
 #   card-size thumbnail to a temp path for the eyeball check, and prints the
 #   manual upload click path (GitHub has no API for social previews).
+#   --animate typing additionally writes social-preview-animated.gif: a
+#   delta-optimized typing loop that plays on Discord/Slack/Telegram and
+#   degrades to its first frame everywhere else. The static card stays the
+#   upload candidate; the static design is the animation's final frame.
 #
 # DEPENDENCIES
 #   rsvg-convert (librsvg) or ImageMagick 7 with the RSVG delegate; both are
@@ -40,16 +44,17 @@ generate.sh — Render a GitHub social preview card (1280x640 PNG).
   generate.sh --title "linter-autoconfigure-sdk"
     [--tagline "Shared foundation for ..."]
     [--install "github.com/larsartmann/linter-autoconfigure-sdk"]
-    [--kicker "GO SDK"] [--output-dir assets/branding]
+    [--kicker "GO SDK"] [--output-dir assets/branding] [--animate typing]
 
 All flags except --title are optional; empty tagline/install/kicker skip
 their block. Writes social-preview.svg + .png into --output-dir, renders a
 card-size thumbnail for the eyeball check, and machine-checks GitHub's
-documented limits (1280x640, under 1 MB).
+documented limits (1280x640, under 1 MB). --animate typing adds a
+delta-optimized typing-loop GIF.
 USAGE
 }
 
-title="" tagline="" install_path="" kicker="GO SDK" outdir="assets/branding"
+title="" tagline="" install_path="" kicker="GO SDK" outdir="assets/branding" animate=""
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -73,6 +78,10 @@ while [ $# -gt 0 ]; do
 		outdir="$2"
 		shift 2
 		;;
+	--animate)
+		animate="$2"
+		shift 2
+		;;
 	-h | --help)
 		usage
 		exit 0
@@ -87,6 +96,14 @@ done
 
 if [ -z "$title" ]; then
 	echo "error: --title is required" >&2
+	exit 2
+fi
+if [ -n "$animate" ] && [ "$animate" != "typing" ]; then
+	echo "error: --animate supports only 'typing' (got: $animate)" >&2
+	exit 2
+fi
+if [ -n "$animate" ] && [ -z "$install_path" ]; then
+	echo "error: --animate typing requires --install" >&2
 	exit 2
 fi
 
@@ -140,33 +157,51 @@ EOF
 	)
 fi
 
-# Terminal chip: "$ go get <path>" = 9 + len(path) mono chars at x=214,
-# 36px right padding; shrink font when the path is long (floor 16px).
-install_block=""
+# Terminal chip geometry: "$" + " go get " + <path> = 9 + len(path) mono
+# chars at x=214, 36px right padding; shrink font when the path is long
+# (floor 16px).
+i_size=26 i_chars=9
 if [ -n "$install_path" ]; then
 	i_chars=$((9 + ${#install_path}))
 	i_size=$((958 * 10 / (6 * i_chars)))
 	[ "$i_size" -gt 26 ] && i_size=26
 	[ "$i_size" -lt 16 ] && i_size=16
-	i_text_w=$((6 * i_size * i_chars / 10))
-	chip_w=$((154 + i_text_w))
-	i_baseline=$((502 + i_size * 36 / 100))
-	install_block=$(
-		cat <<EOF
-  <rect x="96" y="458" width="${chip_w}" height="88" rx="16" fill="#010409" stroke="#30363d" stroke-width="2"/>
-  <circle cx="130" cy="502" r="6.5" fill="#ff5f56"/>
-  <circle cx="157" cy="502" r="6.5" fill="#ffbd2e"/>
-  <circle cx="184" cy="502" r="6.5" fill="#27c93f"/>
-  <text x="214" y="${i_baseline}" xml:space="preserve" font-family="JetBrainsMono Nerd Font" font-size="${i_size}"><tspan fill="#3fb950">\$</tspan><tspan fill="#f0f6fc" font-weight="600"> go get </tspan><tspan fill="#79c0ff">${esc_install}</tspan></text>
-EOF
-	)
 fi
+i_text_w=$((6 * i_size * i_chars / 10))
+chip_w=$((154 + i_text_w))
+i_baseline=$((502 + i_size * 36 / 100))
+i_adv=$((6 * i_size / 10))
 
-mkdir -p "$outdir"
-svg_path="$outdir/social-preview.svg"
-png_path="$outdir/social-preview.png"
-
-cat >"$svg_path" <<EOF
+# emit_frame <typed-chars> <cursor 0|1> <png-out>
+#
+# Single source of truth for the card: the static card IS the final
+# animation frame (full text, cursor off), so the two artifacts can never
+# drift apart. The typed text has two color segments — " go get " (white,
+# bold) then the module path (blue) — matching the static design.
+W_SEG=" go get "
+total_chars=$(( ${#W_SEG} + ${#install_path} ))
+emit_frame() {
+	local k=$1 cursor=$2 out=$3
+	local vis_w="" vis_p="" cur_rect="" install_text="" tsvg
+	if [ -n "$install_path" ]; then
+		vis_w="${W_SEG:0:k}"
+		if [ "$k" -gt ${#W_SEG} ]; then
+			vis_w="$W_SEG"
+			vis_p="${esc_install:0:k - ${#W_SEG}}"
+		fi
+		if [ "$cursor" = "1" ]; then
+			local cx=$((214 + i_adv * k))
+			cur_rect="<rect x=\"${cx}\" y=\"$((i_baseline - i_size * 73 / 100))\" width=\"$((i_size * 14 / 26))\" height=\"${i_size}\" fill=\"#f0f6fc\" opacity=\"0.85\"/>"
+		fi
+		install_text="  <rect x=\"96\" y=\"458\" width=\"${chip_w}\" height=\"88\" rx=\"16\" fill=\"#010409\" stroke=\"#30363d\" stroke-width=\"2\"/>
+  <circle cx=\"130\" cy=\"502\" r=\"6.5\" fill=\"#ff5f56\"/>
+  <circle cx=\"157\" cy=\"502\" r=\"6.5\" fill=\"#ffbd2e\"/>
+  <circle cx=\"184\" cy=\"502\" r=\"6.5\" fill=\"#27c93f\"/>
+  <text x=\"214\" y=\"${i_baseline}\" xml:space=\"preserve\" font-family=\"JetBrainsMono Nerd Font\" font-size=\"${i_size}\"><tspan fill=\"#3fb950\">\$</tspan><tspan fill=\"#f0f6fc\" font-weight=\"600\">${vis_w}</tspan><tspan fill=\"#79c0ff\">${vis_p}</tspan></text>
+  ${cur_rect}"
+	fi
+	tsvg="${out%.png}.svg"
+	cat >"$tsvg" <<EOF
 <svg width="1280" height="640" viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc_title}">
   <defs>
     <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
@@ -184,18 +219,62 @@ ${kicker_block}
   <text x="96" y="330" font-family="JetBrainsMono Nerd Font" font-weight="800" font-size="${title_size}" fill="#f0f6fc">${title_tspans}</text>
 ${tag_block}
 
-${install_block}
+${install_text}
 </svg>
 EOF
+	render_svg "$tsvg" "$out"
+}
 
-# Render: librsvg directly when available, else ImageMagick's RSVG delegate.
-if command -v rsvg-convert >/dev/null 2>&1; then
-	rsvg-convert -w 1280 -h 640 "$svg_path" -o "$png_path"
-elif command -v magick >/dev/null 2>&1; then
-	magick "$svg_path" "$png_path"
-else
-	echo "error: need rsvg-convert or magick (librsvg) to render" >&2
-	exit 1
+render_svg() {
+	if command -v rsvg-convert >/dev/null 2>&1; then
+		rsvg-convert -w 1280 -h 640 "$1" -o "$2"
+	elif command -v magick >/dev/null 2>&1; then
+		magick "$1" "$2"
+	else
+		echo "error: need rsvg-convert or magick (librsvg) to render" >&2
+		exit 1
+	fi
+}
+
+mkdir -p "$outdir"
+svg_path="$outdir/social-preview.svg"
+png_path="$outdir/social-preview.png"
+
+# The static card is the completed animation frame: full text, cursor off.
+emit_frame "$total_chars" 0 "$png_path"
+if [ "${png_path%.png}.svg" != "$svg_path" ]; then
+	mv "${png_path%.png}.svg" "$svg_path"
+fi
+
+# Motion variant: typing loop as delta-optimized GIF (validated 2026-09-11:
+# 32 frames, ~37 KB at 1280x640 — under 4% of GitHub's 1 MB budget).
+animated_gif=""
+if [ -n "$animate" ]; then
+	frames_dir="$(mktemp -d)"
+	trap 'rm -rf "$frames_dir"' EXIT
+	n=0
+	for ((k = 1; k <= total_chars; k += 2)); do
+		printf -v f "%s/t%03d.png" "$frames_dir" $n
+		emit_frame "$k" 1 "$f"
+		n=$((n + 1))
+	done
+	for blink in 1 0 1 0; do
+		printf -v f "%s/t%03d.png" "$frames_dir" $n
+		emit_frame "$total_chars" $blink "$f"
+		n=$((n + 1))
+	done
+	typing=()
+	for ((i = 0; i < n - 4; i++)); do
+		printf -v f "%s/t%03d.png" "$frames_dir" $i
+		typing+=("$f")
+	done
+	hold=()
+	for ((i = n - 4; i < n; i++)); do
+		printf -v f "%s/t%03d.png" "$frames_dir" $i
+		hold+=("$f")
+	done
+	animated_gif="$outdir/social-preview-animated.gif"
+	magick -loop 0 -delay 4 "${typing[@]}" -delay 70 "${hold[@]}" -layers optimize -colors 64 "$animated_gif"
 fi
 
 # Machine-check GitHub's documented limits before handing this to the user.
@@ -216,5 +295,14 @@ magick "$png_path" -resize 320x160 "$card_png"
 echo "OK $png_path (${bytes} bytes, 1280x640, under GitHub's 1 MB limit)"
 echo "   source: $svg_path"
 echo "   eyeball check (real card size): $card_png"
+if [ -n "$animated_gif" ]; then
+	gif_bytes=$(wc -c <"$animated_gif" | tr -d ' ')
+	gif_frames=$(magick identify "$animated_gif" 2>/dev/null | wc -l | tr -d ' ')
+	if [ "$gif_bytes" -ge 1048576 ]; then
+		echo "error: $animated_gif is ${gif_bytes} bytes; GitHub rejects previews of 1 MB or more" >&2
+		exit 1
+	fi
+	echo "   motion: $animated_gif (${gif_bytes} bytes, ${gif_frames} frames) — plays on Discord/Slack/Telegram; first frame elsewhere"
+fi
 echo "   upload (manual, no API, no deep URL):"
 echo "     https://github.com/<owner>/<repo>/settings -> Social preview -> Edit -> Upload an image..."
