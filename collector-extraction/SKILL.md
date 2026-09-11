@@ -165,6 +165,23 @@ warnings + test), `docs/` (status/, DOMAIN_LANGUAGE.md), `examples/`
 
 ## Run record (battle-test log)
 
+- **2026-09-11 — collector-utils 0.5.0 promotion + five family ports
+  (PASS, with process lessons).** Promoted the four commonality-audit
+  candidates (Debouncer, HysteresisGate, IdentityBaselineStore,
+  NoopBackend) into the SDK, then ported storage/wireguard/mic/ssh/
+  clipboard onto them (13-28 report). What the run added:
+  (1) **Port checklist** — sweep ALL cfg-gated code for old identifiers
+  after a rename (a `grep -v` that excluded the primary file hid the one
+  surviving `#[cfg(feature = "persist")]` call site and broke the feature
+  for ~40 min); gate every port with `--all-features`, never default
+  features (the persist breakage was invisible to the default gate); never
+  exclude the primary file from a rename sweep. (2) Type re-exports of
+  generic types break bare-constructor call forms (E0423, tried twice for
+  `NoopBackend`) — scratch-verify the documented call form BEFORE editing.
+  (3) Sibling releases stay atomic: bump + tag together or not at all;
+  `[Unreleased]` CHANGELOG entries are fine parked. (4) Perf changes need
+  docs + a measurement even when semantics don't change (the gating port
+  introduced per-cycle String allocations that no test could see).
 - **2026-09-10 — ssh-key-monitor v0.1.0 (first live run, PASS).** 529-line
   in-tree collector → 41-test sibling + ~90-line adapter. What the skill got
   right: template invariants, gate order, family wiring checklist. What the

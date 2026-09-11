@@ -13,6 +13,37 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-09-11 second session — generator hardening + T23 verified closed)
+
+- **`website-launch`**: `generate.sh --check-env` — verifies the renderer
+  (rsvg-convert or magick), magick identify, and both fonts via fc-list
+  before a card render trusts the 0.6em advance math.
+- **`website-launch`**: `generate.sh --verify <owner/repo>` — post-upload
+  check: extracts the live og:image, verifies content-type + dimensions, and
+  byte-compares against the local card. Used to verify T23 the same day:
+  the uploaded linter-autoconfigure-sdk card is LIVE byte-identical
+  (57,801 bytes via repository-images.githubusercontent.com).
+- **`website-launch`**: `generate.sh --audit <owner>` — og:image status table
+  for an owner's public repos with the verified CUSTOM-vs-auto verdict
+  (repository-images.githubusercontent.com = uploaded preview;
+  opengraph.githubassets.com = GitHub-generated).
+- **`website-launch`**: `references/social-preview.md` upload-verification
+  section with the domain discriminator (verified by byte-compare, after an
+  AI-agent fetch misreported the og:image URLs — see the new feedback file).
+- **repo meta**: AGENTS.md now flags the shfmt-before-commit convention and
+  `scripts/check-skills.sh` near the top, where agents actually read.
+- **`docs/feedback/new/`**: `2026-09-11_quality-session-four-failure-modes.md`
+  — agent-summarized-fetch hallucination, `grep -q`+pipefail SIGPIPE,
+  stale result-cache verdicts after tool upgrades, string-index script
+  surgery dropping lines.
+
+### Changed (2026-09-11 second session)
+
+- **`scripts/check-skills.sh`**: new shell gate — `bash -n` over every `*.sh`
+  (hard fail), shellcheck at warning severity when installed (advisory).
+  Motivated by generate.sh growing to ~440 lines and two shell bug classes
+  (SIGPIPE, API-format assumptions) found the hard way the same day.
+
 ### Added (2026-09-11 — social-preview generator)
 
 - **`website-launch`**: `scripts/social-preview/generate.sh` — renders the
