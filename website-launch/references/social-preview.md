@@ -29,7 +29,16 @@ and failed). GitHub has no API for this setting, so this step is always
 manual — hand the user the exact click path, never a constructed deep link.
 
 After upload, verify the loop closed: fetch the repo page and confirm the
-`og:image` meta tag points at the new asset.
+`og:image` meta tag. Verified 2026-09-11 (linter-autoconfigure-sdk upload):
+
+- A **custom** upload is served from `repository-images.githubusercontent.com`
+  (the og:image URL swaps to that domain; byte-compare against the local PNG
+  confirmed the served file is the uploaded bytes verbatim).
+- The **auto-generated** card comes from `opengraph.githubassets.com`.
+- `generate.sh --verify <owner>/<repo>` automates this check (byte-compare
+  verdict included); `--audit <owner>` classifies CUSTOM vs auto per repo.
+- Tooling note: AI-agent fetches (agentic summarization) misreported og:image
+  URLs during research — raw extraction (curl + grep) is the reliable path.
 
 ## Platform matrix (link previews outside GitHub)
 

@@ -422,6 +422,33 @@ for d in "${skill_dirs[@]}"; do
 	fi
 done
 
+# --- Shell gate (bash -n always; shellcheck when available) ----------------------
+# The scripts surface keeps growing (website-launch/social-preview generate.sh
+# alone is ~440 lines). bash -n catches syntax errors; shellcheck catches the
+# quoting/pipefail classes that already bit twice (grep -q SIGPIPE under
+# `set -o pipefail`; API JSON with no space after the colon). shellcheck is
+# WARN-only so the gate stays green on machines without it installed.
+sh_failed=0
+while IFS= read -r script; do
+	if ! bash -n "$script" 2>/tmp/check-skills-bashn.$$; then
+		echo "FAIL $script: bash -n syntax error"
+		cat /tmp/check-skills-bashn.$$ >&2
+		sh_failed=1
+	fi
+	if command -v shellcheck >/dev/null 2>&1; then
+		if ! shellcheck --severity=warning "$script" 2>/dev/null; then
+			echo "WARN $script: shellcheck findings above (advisory)"
+		fi
+	fi
+done < <(find . -name "*.sh" -not -path "./originals/*" -not -path "./.git/*")
+rm -f /tmp/check-skills-bashn.$$
+if [[ "$sh_failed" -ne 0 ]]; then
+	failed=1
+fi
+if ! command -v shellcheck >/dev/null 2>&1; then
+	echo "NOTE: shellcheck not on PATH — shell gate ran bash -n only (install shellcheck for the advisory pass)"
+fi
+
 # --- Internal-link integrity (delegated) -----------------------------------------
 # The dedicated checker covers ALL skill .md files (SKILL.md + references/),
 # file links AND in-file anchors, with GitHub-style slug rules. It supersedes

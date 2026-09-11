@@ -251,6 +251,12 @@ if [ -n "$animate" ] && [ -z "$install_path" ]; then
 	exit 2
 fi
 
+xml_escape() { sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' -e 's/"/\&quot;/g'; }
+esc_title="$(printf '%s' "$title" | xml_escape)"
+esc_tagline="$(printf '%s' "$tagline" | xml_escape)"
+esc_install="$(printf '%s' "$install_path" | xml_escape)"
+esc_kicker="$(printf '%s' "$kicker" | xml_escape)"
+
 # Title: usable width 1088px (96px margins); mono advance = 0.6em.
 # Cap at 72px for consistent branding; floor at 44px, then fail honestly —
 # a two-line layout is deliberately not supported (untested design).
