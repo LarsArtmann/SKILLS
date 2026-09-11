@@ -31,6 +31,42 @@ manual — hand the user the exact click path, never a constructed deep link.
 After upload, verify the loop closed: fetch the repo page and confirm the
 `og:image` meta tag points at the new asset.
 
+## Platform matrix (link previews outside GitHub)
+
+Verified 2026-09-11 unless noted. The gatekeeper is each platform's crawler,
+not the browser: crawlers fetch og:image, re-process it, and serve their own
+copy — so format support below is what the crawler accepts, and animation
+survives only where the platform plays motion in the card.
+
+| Platform   | Formats                     | Recommended size / ratio | Max size | Animated GIF in card? |
+| ---------- | --------------------------- | ------------------------ | -------- | --------------------- |
+| GitHub     | PNG, JPG, GIF               | 1280x640 (2:1)           | 1 MB     | unverified            |
+| X/Twitter  | JPG, PNG, WEBP, GIF         | 1200x628+ (2:1)          | 5 MB     | No — official: "Only the first frame of an animated GIF will be used" |
+| LinkedIn   | JPG, PNG, GIF (no WebP)     | 1200x627 (1.91:1)        | 5 MB     | No — static first frame |
+| Discord    | JPG, PNG, WebP, GIF         | 1200x630 works           | —        | **Yes** (official `IS_ANIMATED` embed flag) |
+| Slack      | GIF, JPEG, PNG, WebP        | ~1200x630 works          | —        | **Yes** (media unfurl behavior) |
+| Telegram   | JPG, PNG, WEBP, GIF         | 1.91:1; downscales >2560px | —      | **Yes** — converts GIF to looping MP4 (Instant View manual: "GIF would be converted into Video type"); autoplay per user setting |
+| Mastodon   | JPG, PNG, WEBP, static GIF  | 1.91:1, min ~400x210     | —        | No — static thumbnail (source-level: FetchLinkCardService) |
+| Reddit     | JPG, PNG, WEBP              | n/a (140x140 thumbs)     | —        | No — static thumbnail (community-observed) |
+
+Mastodon/Reddit behavior is community/source-observed, not officially
+documented; Slack animation is documented media behavior but untested with
+our cards.
+
+**Format verdicts:** animated SVG — no platform accepts it as og:image (and
+SVGs do not rasterize in crawler pipelines at all); WebP/APNG/animated AVIF —
+universally supported by browsers (~90-97%, caniuse 2026-09-11) but rejected
+or unaccepted by most crawlers; LinkedIn notably lacks WebP. **Animated GIF
+is the only format that carries motion, and only Discord/Slack/Telegram play
+it.** Everywhere else the first frame shows — which is why the animation
+design rule is "first frame pixel-identical to the static card".
+
+**Size strategy:** GitHub wants 2:1 (1280x640); the OG standard and
+LinkedIn/Mastodon want 1.91:1 (1200x630). The two are within ~5% — design
+with safe margins (keep content ~60px inside every edge) and a single
+1280x640 card survives center-crop everywhere; generate a separate 1200x630
+only for pixel-perfect LinkedIn/OG cards.
+
 ## Design workflow (validated 2026-09-11 on linter-autoconfigure-sdk)
 
 The bundled generator automates everything in this section:
