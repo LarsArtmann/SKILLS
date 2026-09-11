@@ -12,6 +12,8 @@ This is a **documentation-only content repository**. There is no build system, n
 
 If you are looking for source code to build, test, or lint: **there is none**. The "product" is the markdown content itself.
 
+**Shell scripts:** format every `.sh` with shfmt (tab indentation) BEFORE writing/committing; the repo owner reformats non-conforming scripts (see `b6163c2`), which trips "modified since read" guards. Quality gate: `scripts/check-skills.sh` (run after every change).
+
 ---
 
 ## 2. Directory Structure
