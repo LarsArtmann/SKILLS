@@ -1,6 +1,6 @@
 # CLI Workflow, Flag Reliability, and Verification
 
-> Loaded on demand from [../SKILL.md](../SKILL.md). Covers every CLI flag's reported behavior, the `--no-suppress` bug reproduction, the remove-and-restore verification technique, and exit codes.
+> Loaded on demand from [../SKILL.md](../SKILL.md). Covers every CLI flag's reported behavior, the `--no-suppress` history (broken 2026-07-21, re-verified working on the root invocation 2026-09-11), the remove-and-restore verification technique, and exit codes.
 
 ## ⚠ Verification status — read before trusting any claim below
 
@@ -128,12 +128,13 @@ Every flag below was originally tested on 2026-07-21 against the tool (then call
 | `--enforce-go-error-family` | both        | Optional stricter mode: enforces that all errors belong to a structured error family.                                                      | New (2026-08-02) |
 | `--violations-only`         | `lint`      | Shows only violations, no summary. Cosmetic but works.                                                                                     | Yes              |
 | `//nolint:legacyerrors`     | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.                                                                  | Yes              |
+| `--no-suppress`             | root       | Bypasses nolint suppression; surfaces suppressed findings at their lines. Audit mode by design — documented suppressions appear.             | Yes (2026-09-11, root invocation A/B on a real repo; the `lint` subcommand path is still unverified) |
 
 ### Flags that are BROKEN or INEFFECTIVE
 
 | Flag                                      | Subcommand | Expected                                                   | Actual                                                                                                                        | Impact                                                                                         |
 | ----------------------------------------- | ---------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `--no-suppress`                           | `lint`     | Show violations that `//nolint` is hiding                  | Returns 0 even when nolint directives are active and suppressing real violations                                              | You cannot audit your suppression list with this flag. Must manually remove nolints to verify. |
+| `-o <file>`                               | `lint`     | Write output to file                                       | File never created. Output always goes to stdout.                                                                             | Cannot redirect lint output for CI artifact collection.                                        |
 | `-o <file>`                               | `lint`     | Write output to file                                       | File never created. Output always goes to stdout.                                                                             | Cannot redirect lint output for CI artifact collection.                                        |
 | `-f <format>`                             | `lint`     | Output in json/sarif/jsonl/etc.                            | Ignored. Always outputs text format. (The main `erraudit` analysis command supports formats; the `lint` subcommand does not.) | Cannot get structured output for editor/CI integration.                                        |
 | `--severity-threshold error`              | `lint`     | Show only `error`-severity findings (the `errors.As` ones) | Shows `errors.Is` advisories regardless of threshold value                                                                    | Cannot use severity to filter. Use `--type-aware` or `--type legacy_as` instead.               |
@@ -142,6 +143,8 @@ Every flag below was originally tested on 2026-07-21 against the tool (then call
 ---
 
 ## Verification method for `--no-suppress`
+
+> **Re-verified 2026-09-11 against the current binary: the flag WORKS on the root invocation.** A/B on a real repo with two `//nolint:erraudit` directives: the default run reported 0 violations; the `--no-suppress` run surfaced exactly those two findings at their lines. Source confirms the wiring (`if !cfg.NoSuppress { SuppressViolations }`). The reproduction below (2026-07-21, `hierarchical-errors`, `lint` subcommand) **no longer fires its underlying violation on the current binary at all** — the repro is retired, not confirmed. Prefer `erraudit nolint-audit <path>` (takes a filesystem path, not `./...`) to audit directive staleness; the remove-and-restore technique below remains valid as a manual fallback and for the `lint` subcommand.
 
 ```bash
 # 1. Create a file with a known violation
@@ -171,7 +174,7 @@ This proves `--no-suppress` does not disable suppression filtering.
 
 ## How to verify `//nolint:legacyerrors` actually works
 
-Since `--no-suppress` is broken, you cannot audit your suppressions by running the linter. Instead, use the **remove-and-restore technique**:
+Historically `--no-suppress` was broken (2026-07-21), so suppressions could not be audited by running the linter. As of 2026-09-11 the flag works on the root invocation, and `erraudit nolint-audit <path>` audits directive staleness directly. The **remove-and-restore technique** below remains the manual fallback (and the only option for the `lint` subcommand):
 
 ```bash
 # 1. Temporarily comment out one nolint directive
@@ -283,7 +286,7 @@ GOEXPERIMENT=jsonv2 go test ./...                    # all pass
 1. **Every `errors.Is` finding was a false positive.** This matches the prediction: in mature Go codebases, `errors.Is` calls are dominated by sentinel matches.
 2. **The `fix` subcommand saved time and prevented regressions.** It handled all 4 real migrations correctly and refused to touch the 8 sentinel matches.
 3. **The `//nolint:legacyerrors` suppression works reliably.** The linter name is undocumented but correct.
-4. **`--no-suppress` could not be used to audit suppressions** because the flag is broken. The remove-and-restore technique was used instead.
+4. **`--no-suppress` could not be used to audit suppressions** because the flag was broken at the time (re-verified working 2026-09-11 on the root invocation). The remove-and-restore technique was used instead.
 
 ---
 

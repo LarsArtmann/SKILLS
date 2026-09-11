@@ -173,7 +173,7 @@ These are real regressions from blindly driving a linter to zero. For full code 
 
 ## Flag reliability
 
-The flag table below combines the original source feedback (2026-07-21, when the tool was called `hierarchical-errors`) with updated information (2026-08-02, after the rename to `erraudit`). The `--type-aware` flag was previously reported broken but is now recommended — the tool has been updated. Other flags have not been re-verified against the renamed binary. Full reproduction methodology and the `--no-suppress` reproduction are in [./references/cli-and-flags.md](./references/cli-and-flags.md).
+The flag table below combines the original source feedback (2026-07-21, when the tool was called `hierarchical-errors`) with updated information (2026-08-02, after the rename to `erraudit`). The `--type-aware` flag was previously reported broken but is now recommended — the tool has been updated. `--no-suppress` was re-verified 2026-09-11 against the current binary and WORKS on the root invocation (see its row). Other flags have not been re-verified against the renamed binary. Full reproduction methodology and the `--no-suppress` history are in [./references/cli-and-flags.md](./references/cli-and-flags.md).
 
 ### Flags that WORK
 
@@ -183,13 +183,13 @@ The flag table below combines the original source feedback (2026-07-21, when the
 | `--type legacy_as`          | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **Reliable CI filter (fallback if `--type-aware` is insufficient).**           |
 | `--enforce-go-error-family` | both        | **Unverified.** Reported to enforce errors conform to the `go-error-family` library pattern. Behavior not confirmed against a binary. |
 | `--violations-only`         | `lint`      | Shows only violations, no summary. Cosmetic but works.                                                                                |
+| `--no-suppress`             | root        | **Verified 2026-09-11.** Bypasses nolint suppression and surfaces suppressed findings (A/B on a real repo: default run 0 violations, `--no-suppress` run surfaced the exact nolint'd findings at their lines). Audit mode by design: expect documented suppressions to appear. The `lint` subcommand path is separately still unverified. |
 | `//nolint:legacyerrors`     | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.                                                             |
 
 ### Flags reported BROKEN or INEFFECTIVE (verify before relying on)
 
 | Flag                                      | Reported behavior                                                     | Use instead                          |
 | ----------------------------------------- | --------------------------------------------------------------------- | ------------------------------------ |
-| `--no-suppress`                           | Returns 0 even when nolint directives are suppressing real violations | Remove-and-restore technique         |
 | `-o <file>`                               | File never created. Output always goes to stdout.                     | Shell redirection (`> file`)         |
 | `-f <format>`                             | Ignored. Always outputs text format.                                  | Parse text output, or fork the tool  |
 | `--severity-threshold error`              | Shows `errors.Is` advisories regardless of threshold value            | `--type-aware` or `--type legacy_as` |
@@ -286,7 +286,7 @@ If you don't need the fields, `errors.Is` is still fine — the linter is then a
 Load on demand:
 
 - [./references/decision-tree.md](./references/decision-tree.md) — Background on Go's three error-matching APIs, the full decision tree with code examples, and how to suppress correctly
-- [./references/cli-and-flags.md](./references/cli-and-flags.md) — Full flag reliability table, the `--no-suppress` bug reproduction, the remove-and-restore verification technique, exit codes. Flag behaviors reflect the original feedback (2026-07-21, when the tool was called `hierarchical-errors`) and have not all been re-verified against the renamed `erraudit` binary — see verification status at the top of this file.
+- [./references/cli-and-flags.md](./references/cli-and-flags.md) — Full flag reliability table, the `--no-suppress` history (broken 2026-07-21, re-verified working on the root invocation 2026-09-11), the remove-and-restore verification technique, exit codes. Flag behaviors reflect the original feedback (2026-07-21, when the tool was called `hierarchical-errors`) and have not all been re-verified against the renamed `erraudit` binary — see verification status at the top of this file.
 - [./references/anti-patterns.md](./references/anti-patterns.md) — All four anti-patterns with full code, plus the agent-specific "fix-to-zero" trap guidance
 - [../how-to-golang/SKILL.md](../how-to-golang/SKILL.md) — Broader Go development decision guide (what libraries to use, what to avoid)
 - [../linter-building/references/ecosystem.md](../linter-building/references/ecosystem.md) — Map of the local linter-building stack, including the erraudit row and the go-finding finding model erraudit targets
