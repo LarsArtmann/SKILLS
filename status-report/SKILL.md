@@ -56,7 +56,11 @@ treatment: stat cards, severity badges, color-coded sections.
 
 1. Run: `date` (cli) to get the current date-time
 2. Write a full status report at `docs/status/<YYYY-MM-DD_HH-MM_WELL-NAMED>.html`
-3. Run `git status`, then commit the report with a very detailed message.
+3. Run `git status`, then commit the report with a very detailed message —
+   UNLESS the harness forbids commits without an explicit user request
+   (Crush: "NEVER COMMIT unless the user says commit"). In that case skip
+   the manual commit: the auto-commit daemon picks the file up within
+   seconds, and forcing a commit here would violate the harness contract.
 4. WAIT FOR FURTHER INSTRUCTIONS!
 
 > Status reports are point-in-time snapshots that go stale. When a later task

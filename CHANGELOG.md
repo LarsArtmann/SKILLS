@@ -13,6 +13,25 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Changed (2026-09-11 — session-grounded fixes from the linter-autoconfigure-sdk TODO sweep)
+
+- **`website-launch`**: new `references/social-preview.md` — GitHub social
+  preview constraints verified against docs.github.com (PNG/JPG/GIF, < 1 MB,
+  min 640x320, recommended 1280x640, solid background recommended), the
+  no-deep-URL upload gotcha (Settings -> General -> Social preview; a guessed
+  `/settings/social-preview` deep link 404'd live; no API exists), and the
+  SVG-source + card-size legibility workflow validated end-to-end the same
+  day (authored SVG, librsvg render, 320x160 thumbnail check, dimension and
+  size machine-checks). Phase 6 (GitHub Metadata) gained the pointer.
+- **`verify-external-claims`**: the chat-time gate (§0) now names constructed
+  URLs as the highest-frequency fabrication class, citing the 2026-09-11
+  social-preview deep-link incident; rule: copy URLs from primary sources,
+  never compose them from pattern intuition.
+- **`status-report`**: the commit step now defers to the harness commit
+  policy — when the harness forbids commits without an explicit user request
+  (Crush), the auto-commit daemon covers the report instead of a forced
+  commit that would violate the harness contract.
+
 ### Changed (2026-09-10 — collector-extraction ages 🆕→🟢 after first live run)
 
 - **`collector-extraction`** passed its first live run: extracted

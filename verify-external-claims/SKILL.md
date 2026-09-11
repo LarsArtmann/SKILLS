@@ -17,6 +17,8 @@ This skill covers **inbound** verification — claims entering your work from ou
 
 This skill is not only for skill-creation time. It applies **the moment you write any sentence about an external tool's behavior** — into a skill, a reference file, a review, a status report, even a chat answer. Rule of thumb: any new sentence about an external tool's behavior, CLI flag, limit, or failure mode gets `verified: <how, date>` or gets hedged ("plausible, untested"). Writing unverified claims while this skill sits loaded is the documented failure mode (2026-08-21 website-launch report, b4/e2) — loading the skill is not the same as applying it.
 
+**Constructed URLs are the highest-frequency fabrication class.** Assembling a deep link by guessing a path pattern is fabrication, not recall. 2026-09-11 incident: guessed `github.com/<owner>/<repo>/settings/social-preview` for GitHub's social-preview upload; the repo owner hit a 404. Docs-verified truth: the section lives on the General settings page and no deep URL exists. Copy URLs from primary sources; never compose them from pattern intuition.
+
 ## 1. What Counts as an External Claim
 
 Treat these as claims that need verification:
