@@ -140,7 +140,7 @@ if [ "$check_env" = 1 ]; then
 		fail=1
 	fi
 	for font in "JetBrainsMono Nerd Font" "Noto Sans"; do
-		if fc-list 2>/dev/null | grep -qi "$font"; then
+		if fc-list 2>/dev/null | grep -i "$font" >/dev/null; then
 			echo "ok   font: $font"
 		else
 			echo "MISS font: $font — fontconfig substitutes a fallback and the 0.6em advance math goes silently wrong" >&2
@@ -164,7 +164,8 @@ if [ -n "$verify_repo" ]; then
 	esac
 	local_png="$outdir/social-preview.png"
 	page_url="https://github.com/$verify_repo"
-	og_url="$(curl -fsSL "$page_url" 2>/dev/null | grep -o '<meta property="og:image" content="[^"]*"' | head -1 | sed 's/.*content="//;s/"$//')"
+	page_html="$(curl -fsSL "$page_url" 2>/dev/null || true)"
+	og_url="$(printf '%s' "$page_html" | grep -o '<meta property="og:image" content="[^"]*"' | sed 's/.*content="//;s/"$//')"
 	if [ -z "$og_url" ]; then
 		echo "error: could not read og:image from $page_url (repo exists? network up?)" >&2
 		exit 1
@@ -202,28 +203,38 @@ if [ -n "$audit_owner" ]; then
 		echo "error: GitHub API request failed for owner $audit_owner (unauthenticated limit: 60 req/h)" >&2
 		exit 1
 	fi
-	printf '%-45s %-8s %-10s %s
-' "REPO" "STATUS" "BYTES" "CONTENT-TYPE"
-	total=0
-	for repo in $(grep -o '"full_name": "[^"]*"' "$audit_tmp" | sed 's/"full_name": "//;s/"$//'); do
+	printf '%-45s %-8s %-10s %s\n' "REPO" "STATUS" "BYTES" "CONTENT-TYPE"
+	total=0 custom_hint=0
+	for repo in $(grep -o '"full_name": *"[^"]*"' "$audit_tmp" | sed 's/"full_name": *"//;s/"$//'); do
 		total=$((total + 1))
-		og_url="$(curl -fsSL "https://github.com/$repo" 2>/dev/null | grep -o '<meta property="og:image" content="[^"]*"' | head -1 | sed 's/.*content="//;s/"$//')"
+		repo_html="$(curl -fsSL "https://github.com/$repo" 2>/dev/null || true)"
+		og_url="$(printf '%s' "$repo_html" | grep -o '<meta property="og:image" content="[^"]*"' | sed 's/.*content="//;s/"$//')"
 		if [ -z "$og_url" ]; then
-			printf '%-45s %-8s %-10s %s
-' "$repo" "NO-OG" "-" "-"
+			printf '%-45s %-8s %-10s %s\n' "$repo" "NO-OG" "-" "-"
 			continue
 		fi
 		info="$(curl -fsSI "$og_url" 2>/dev/null)"
-		ctype="$(printf '%s' "$info" | grep -i '^content-type:' | tail -1 | tr -d '' | awk '{print $2}')"
-		cbytes="$(printf '%s' "$info" | grep -i '^content-length:' | tail -1 | tr -d '' | awk '{print $2}')"
+		ctype="$(printf '%s' "$info" | grep -i '^content-type:' | tail -1 | tr -d '\r' | awk '{print $2}')"
+		cbytes="$(printf '%s' "$info" | grep -i '^content-length:' | tail -1 | tr -d '\r' | awk '{print $2}')"
 		[ -z "$cbytes" ] && cbytes=0
-		printf '%-45s %-8s %-10s %s
-' "$repo" "ok" "$cbytes" "${ctype:-?}"
+		# Verified 2026-09-11 (linter-autoconfigure-sdk, byte-compare): a
+		# CUSTOM uploaded preview is served from
+		# repository-images.githubusercontent.com; the auto-generated card
+		# comes from opengraph.githubassets.com.
+		case "$og_url" in
+		repository-images.githubusercontent.com/*)
+			verdict="CUSTOM"
+			custom_hint=$((custom_hint + 1))
+			;;
+		opengraph.githubassets.com/*) verdict="auto" ;;
+		*) verdict="other" ;;
+		esac
+		printf '%-45s %-8s %-10s %s\n' "$repo" "$verdict" "$cbytes" "${ctype:-?}"
 	done
 	echo >&2
-	echo "$total repos audited for $audit_owner. GitHub exposes no custom-preview API" >&2
-	echo "(verified 2026-09-11 against 3 repos: URL shape does not distinguish" >&2
-	echo "custom uploads from auto-generated cards) — eyeball each og:image URL." >&2
+	echo "$total repos audited for $audit_owner ($custom_hint with a custom upload)." >&2
+	echo "CUSTOM = repository-images.githubusercontent.com (uploaded preview);" >&2
+	echo "auto = opengraph.githubassets.com (GitHub-generated card)." >&2
 	exit 0
 fi
 
