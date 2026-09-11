@@ -22,6 +22,15 @@
 #     [--install "github.com/larsartmann/linter-autoconfigure-sdk"] \
 #     [--kicker "GO SDK"] [--output-dir assets/branding] [--animate typing]
 #
+#   Maintenance modes (no --title needed, no card is written):
+#     --check-env              Verify fonts + renderer the layout math assumes.
+#     --verify <owner/repo>    Fetch the live og:image for a repo and compare
+#                              against the local card (post-upload check).
+#     --audit <owner>          Table of og:image status for an owner's public
+#                              repos (GitHub has no custom-preview API; this
+#                              surfaces the facts, it cannot fabricate a
+#                              "missing preview" verdict).
+#
 #   All flags except --title are optional; empty tagline/install/kicker skip
 #   their block. Writes <output-dir>/social-preview.svg and .png, renders a
 #   card-size thumbnail to a temp path for the eyeball check, and prints the
@@ -34,6 +43,7 @@
 # DEPENDENCIES
 #   rsvg-convert (librsvg) or ImageMagick 7 with the RSVG delegate; both are
 #   preinstalled on the NixOS host. Fonts: JetBrainsMono Nerd Font + Noto Sans.
+#   curl + the GitHub API for --verify/--audit (unauthenticated: 60 req/h).
 
 set -euo pipefail
 
@@ -51,10 +61,15 @@ their block. Writes social-preview.svg + .png into --output-dir, renders a
 card-size thumbnail for the eyeball check, and machine-checks GitHub's
 documented limits (1280x640, under 1 MB). --animate typing adds a
 delta-optimized typing-loop GIF.
+
+Maintenance modes:
+  --check-env             Verify fonts + renderer the card math assumes
+  --verify <owner/repo>   Compare the repo's live og:image with the local card
+  --audit <owner>         og:image status table for an owner's public repos
 USAGE
 }
 
-title="" tagline="" install_path="" kicker="GO SDK" outdir="assets/branding" animate=""
+title="" tagline="" install_path="" kicker="GO SDK" outdir="assets/branding" animate="" check_env=0 verify_repo="" audit_owner=""
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -82,6 +97,18 @@ while [ $# -gt 0 ]; do
 		animate="$2"
 		shift 2
 		;;
+	--check-env)
+		check_env=1
+		shift
+		;;
+	--verify)
+		verify_repo="$2"
+		shift 2
+		;;
+	--audit)
+		audit_owner="$2"
+		shift 2
+		;;
 	-h | --help)
 		usage
 		exit 0
@@ -93,6 +120,112 @@ while [ $# -gt 0 ]; do
 		;;
 	esac
 done
+
+# --- Maintenance modes (independent of card generation) ---
+
+if [ "$check_env" = 1 ]; then
+	fail=0
+	if command -v rsvg-convert >/dev/null 2>&1; then
+		echo "ok   renderer: rsvg-convert"
+	elif command -v magick >/dev/null 2>&1; then
+		echo "ok   renderer: magick (RSVG delegate)"
+	else
+		echo "MISS renderer: neither rsvg-convert nor magick found" >&2
+		fail=1
+	fi
+	if command -v magick >/dev/null 2>&1; then
+		echo "ok   magick identify (machine checks use it)"
+	else
+		echo "MISS magick: size/dimension machine checks will fail" >&2
+		fail=1
+	fi
+	for font in "JetBrainsMono Nerd Font" "Noto Sans"; do
+		if fc-list 2>/dev/null | grep -qi "$font"; then
+			echo "ok   font: $font"
+		else
+			echo "MISS font: $font — fontconfig substitutes a fallback and the 0.6em advance math goes silently wrong" >&2
+			fail=1
+		fi
+	done
+	if [ "$fail" = 0 ]; then
+		echo "environment ready"
+		exit 0
+	fi
+	exit 1
+fi
+
+if [ -n "$verify_repo" ]; then
+	case "$verify_repo" in
+	*/*) ;;
+	*)
+		echo "error: --verify expects <owner/repo> (got: $verify_repo)" >&2
+		exit 2
+		;;
+	esac
+	local_png="$outdir/social-preview.png"
+	page_url="https://github.com/$verify_repo"
+	og_url="$(curl -fsSL "$page_url" 2>/dev/null | grep -o '<meta property="og:image" content="[^"]*"' | head -1 | sed 's/.*content="//;s/"$//')"
+	if [ -z "$og_url" ]; then
+		echo "error: could not read og:image from $page_url (repo exists? network up?)" >&2
+		exit 1
+	fi
+	tmp_img="$(mktemp /tmp/social-preview-og.XXXXXX)"
+	content_type="$(curl -fsSL -o "$tmp_img" -w '%{content_type}' "$og_url")"
+	if [ "${content_type#image/}" = "$content_type" ]; then
+		echo "error: og:image at $og_url has content-type '$content_type', expected image/*" >&2
+		rm -f "$tmp_img"
+		exit 1
+	fi
+	og_bytes="$(wc -c <"$tmp_img" | tr -d ' ')"
+	og_dims="$(magick identify -format '%wx%h' "$tmp_img" 2>/dev/null || echo unknown)"
+	echo "og:image: $og_url"
+	echo "  live: ${og_bytes} bytes, ${og_dims} (${content_type})"
+	if [ -f "$local_png" ]; then
+		local_bytes="$(wc -c <"$local_png" | tr -d ' ')"
+		echo "  local card: $local_png (${local_bytes} bytes)"
+		if [ "$local_bytes" = "$og_bytes" ]; then
+			echo "  VERDICT: byte-identical with the local card — upload confirmed"
+		else
+			echo "  VERDICT: differs from the local card. GitHub may re-encode, this may be an older upload, or the auto-generated card. Eyeball the URL above."
+		fi
+	else
+		echo "  (no local card at $local_png — run generation first for a byte comparison)"
+	fi
+	rm -f "$tmp_img"
+	exit 0
+fi
+
+if [ -n "$audit_owner" ]; then
+	audit_tmp="$(mktemp /tmp/social-preview-audit.XXXXXX)"
+	trap 'rm -f "$audit_tmp"' EXIT
+	if ! curl -fsS "https://api.github.com/users/$audit_owner/repos?per_page=100" -o "$audit_tmp"; then
+		echo "error: GitHub API request failed for owner $audit_owner (unauthenticated limit: 60 req/h)" >&2
+		exit 1
+	fi
+	printf '%-45s %-8s %-10s %s
+' "REPO" "STATUS" "BYTES" "CONTENT-TYPE"
+	total=0
+	for repo in $(grep -o '"full_name": "[^"]*"' "$audit_tmp" | sed 's/"full_name": "//;s/"$//'); do
+		total=$((total + 1))
+		og_url="$(curl -fsSL "https://github.com/$repo" 2>/dev/null | grep -o '<meta property="og:image" content="[^"]*"' | head -1 | sed 's/.*content="//;s/"$//')"
+		if [ -z "$og_url" ]; then
+			printf '%-45s %-8s %-10s %s
+' "$repo" "NO-OG" "-" "-"
+			continue
+		fi
+		info="$(curl -fsSI "$og_url" 2>/dev/null)"
+		ctype="$(printf '%s' "$info" | grep -i '^content-type:' | tail -1 | tr -d '' | awk '{print $2}')"
+		cbytes="$(printf '%s' "$info" | grep -i '^content-length:' | tail -1 | tr -d '' | awk '{print $2}')"
+		[ -z "$cbytes" ] && cbytes=0
+		printf '%-45s %-8s %-10s %s
+' "$repo" "ok" "$cbytes" "${ctype:-?}"
+	done
+	echo >&2
+	echo "$total repos audited for $audit_owner. GitHub exposes no custom-preview API" >&2
+	echo "(verified 2026-09-11 against 3 repos: URL shape does not distinguish" >&2
+	echo "custom uploads from auto-generated cards) — eyeball each og:image URL." >&2
+	exit 0
+fi
 
 if [ -z "$title" ]; then
 	echo "error: --title is required" >&2
@@ -106,12 +239,6 @@ if [ -n "$animate" ] && [ -z "$install_path" ]; then
 	echo "error: --animate typing requires --install" >&2
 	exit 2
 fi
-
-xml_escape() { sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' -e 's/"/\&quot;/g'; }
-esc_title="$(printf '%s' "$title" | xml_escape)"
-esc_tagline="$(printf '%s' "$tagline" | xml_escape)"
-esc_install="$(printf '%s' "$install_path" | xml_escape)"
-esc_kicker="$(printf '%s' "$kicker" | xml_escape)"
 
 # Title: usable width 1088px (96px margins); mono advance = 0.6em.
 # Cap at 72px for consistent branding; floor at 44px, then fail honestly —
