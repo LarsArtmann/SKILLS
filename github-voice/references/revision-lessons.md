@@ -109,12 +109,26 @@ body changes each time, e.g. the Mermaid-diagram iterations). Not a
 human editing pattern — do not imitate "edit by regenerate" for external
 repos; there he edits surgically.
 
+## 9. The modern workflow is: AI drafts, he cuts
+
+Since 2025H2 the corpus shows bodies routinely AI-drafted (footers on
+~19-20% of external bodies, stable) — and his subsequent edits are
+consistently REMOVALS: tightening perfect tense, deleting
+forward-looking paragraphs, replacing roadmaps with proof (pattern 4).
+The division of labor is: the AI produces the long structured draft; his
+pass is the cut plus precision.
+
 ## Applying this when drafting
 
-1. Write the first draft fast, in his register (terse, evidence-first).
-2. Do ONE revision pass applying patterns 3–5: add status word, add
+1. Pick the register first: bodies may start from an AI draft; comments
+   should be typed as if fast and human.
+2. If starting from an AI draft, expect it to be too long — your one
+   pass is the CUT: delete restatements, tighten tense, swap promises
+   for existing proof.
+3. Do ONE revision pass applying patterns 3–5: add status word, add
    file:line precision, swap any promise for existing proof, bold the
    recommendation.
-3. Skip the grammar pass entirely.
-4. If it is a follow-up to your own comment, consider `Edit:` appending
+4. Skip the grammar pass in comments; bodies may be fully polished
+   (that is their register).
+5. If it is a follow-up to your own comment, consider `Edit:` appending
    instead of a new comment or a rewrite.
