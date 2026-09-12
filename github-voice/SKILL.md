@@ -104,9 +104,9 @@ new corpus — the profile is data-derived and must stay that way.
 
 ## Verification status
 
-| Claim | Status | Source |
-|---|---|---|
-| Corpus size 10,682 items / 4,158 comments / 271 edited | ✅ verified | `~/.cache/github-voice-corpus/summary.json`, generated 2026-09-12 |
-| REST `.../versions` endpoints unusable | ✅ verified | 404 on `issues/comments/{id}/versions` and `issues/{n}/versions`, 2026-09-12 |
-| GraphQL `userContentEdits` returns revision snapshots | ✅ verified | live query against comment `IC_kwDOOt6mSM8AAAABTopgeQ` + 271 edited items, 2026-09-12 |
-| Search 1000-result cap requires date windowing | ✅ verified | author query returns 9,397 total; windowed retrieval succeeded |
+| Claim                                                  | Status      | Source                                                                                |
+| ------------------------------------------------------ | ----------- | ------------------------------------------------------------------------------------- |
+| Corpus size 10,682 items / 4,158 comments / 271 edited | ✅ verified | `~/.cache/github-voice-corpus/summary.json`, generated 2026-09-12                     |
+| REST `.../versions` endpoints unusable                 | ✅ verified | 404 on `issues/comments/{id}/versions` and `issues/{n}/versions`, 2026-09-12          |
+| GraphQL `userContentEdits` returns revision snapshots  | ✅ verified | live query against comment `IC_kwDOOt6mSM8AAAABTopgeQ` + 271 edited items, 2026-09-12 |
+| Search 1000-result cap requires date windowing         | ✅ verified | author query returns 9,397 total; windowed retrieval succeeded                        |

@@ -21,13 +21,13 @@
 
 ## 1. Corpus basis and weighting
 
-| Segment | n | Median length | Notes |
-|---|---|---|---|
-| External bodies (issues+PRs) | 372 | 241 chars | **highest voice weight** |
-| External comments | 979 | 44 chars | **highest voice weight** |
-| Own-repo bodies | ~8,700 | 2,355 chars | heavily structured; much is agent-templated — secondary weight only |
-| Own-repo comments | 3,179 | 668 chars | mix of natural voice and automation formulas |
-| Items with 2+ revisions | 271 | — | revision diffs analyzed separately |
+| Segment                      | n      | Median length | Notes                                                               |
+| ---------------------------- | ------ | ------------- | ------------------------------------------------------------------- |
+| External bodies (issues+PRs) | 372    | 241 chars     | **highest voice weight**                                            |
+| External comments            | 979    | 44 chars      | **highest voice weight**                                            |
+| Own-repo bodies              | ~8,700 | 2,355 chars   | heavily structured; much is agent-templated — secondary weight only |
+| Own-repo comments            | 3,179  | 668 chars     | mix of natural voice and automation formulas                        |
+| Items with 2+ revisions      | 271    | —             | revision diffs analyzed separately                                  |
 
 **Why external-repo writing is the gold standard:** in other people's
 projects Lars writes fast, unpolished, evidence-first — no template pulls
@@ -54,7 +54,7 @@ criteria" sections) and are **not** his natural voice.
 5. **Em-dashes for asides** — "— the truest fit for goal #2", "— same
    underlying request (...)". One per sentence max.
 6. **Backticks for anything technical**: keys, flags, commands, file
-   paths, symbols: `ctrl+A`, `⌘ + `, `provider add flm --type fastflowlm`.
+   paths, symbols: `ctrl+A`, `⌘ +`, `provider add flm --type fastflowlm`.
 7. **Emoji: sparingly, one at a time, usually at the end.** `:)`, `👀`,
    `😄`, `❤️`, `👍`. Never emoji bullets in external repos (the 🚨🎯
    style appears only in own-repo agent-filed issues — avoid).
@@ -72,13 +72,13 @@ criteria" sections) and are **not** his natural voice.
 Skeleton (recent, representative):
 
 ```markdown
-## Problem          (or **Problem** — 2-4 sentences, what breaks for the user)
+## Problem (or **Problem** — 2-4 sentences, what breaks for the user)
 
 <quoted source with file:line, or command output, as a code fence>
 
-## Impact           (optional — quantified: "re-reads 200MB every 2s")
+## Impact (optional — quantified: "re-reads 200MB every 2s")
 
-## Fix / Proposal   (smallest correct change, steps numbered)
+## Fix / Proposal (smallest correct change, steps numbered)
 ```
 
 - Opens with `## Problem` or a one-line summary, never with "Hi" or
@@ -94,7 +94,7 @@ Skeleton (recent, representative):
 - Length: usually 150–800 chars of prose plus code. Not a wall.
 
 Real opener: `` `loadPromptHistory` runs at UI init, on every session
-switch, and after every message send (`internal/ui/model/ui.go:521,795,1313`).``
+switch, and after every message send (`internal/ui/model/ui.go:521,795,1313`). ``
 
 ## 4. External feature request
 
@@ -106,9 +106,9 @@ switch, and after every message send (`internal/ui/model/ui.go:521,795,1313`).``
 - A **today-vs-desired table** when the delta is feature-shaped:
 
   ```markdown
-  |                     | `openai-compat` today | desired |
-  |---------------------|-----------------------|---------|
-  | Chat/streaming      | ✅                    | same    |
+  |                | `openai-compat` today | desired |
+  | -------------- | --------------------- | ------- |
+  | Chat/streaming | ✅                    | same    |
   ```
 
 - Feature checklists `- [ ] Detect rate-limit errors...` when asking for
@@ -133,21 +133,22 @@ switch, and after every message send (`internal/ui/model/ui.go:521,795,1313`).``
 
 The dominant genre. Median 44 chars. Buckets with real examples:
 
-| Intent | Example |
-|---|---|
-| Appreciation | `Thx @andreynering!` / `Nice :)` / `Same here.` |
-| Own mistake | `Sorry my mistake.` |
-| Status pointer | `This got resolved in <commit-url> and can be closed.` / `Link/Related to: #1511` |
-| Verified answer | `If you run Crush 0.36.0 with CRUSH_NEW_UI=1 this is already resolved.` |
-| Question | `Is this issue done and can it be closed?` / `Why did you close this?` |
-| Request | `Can we get a new release? @fdaines` |
-| Merge nudge | `Does anybody this care about this PR? Or is this already done?` |
-| Suggestion | `we should make that more obvious or provide a option in the TUI.` |
-| Housekeeping | `Closing as a duplicate of #2651 — same underlying request (...). Commenting there with the specific blocker instead.` |
-| Asking to engage | `I really like the idea of showing the last used models. @alewtschuk are you planning to add this to the PR?` |
-| Asking deeper | `Pretty big change. Did you tested it? How does it compare from your experience?` |
+| Intent           | Example                                                                                                                |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Appreciation     | `Thx @andreynering!` / `Nice :)` / `Same here.`                                                                        |
+| Own mistake      | `Sorry my mistake.`                                                                                                    |
+| Status pointer   | `This got resolved in <commit-url> and can be closed.` / `Link/Related to: #1511`                                      |
+| Verified answer  | `If you run Crush 0.36.0 with CRUSH_NEW_UI=1 this is already resolved.`                                                |
+| Question         | `Is this issue done and can it be closed?` / `Why did you close this?`                                                 |
+| Request          | `Can we get a new release? @fdaines`                                                                                   |
+| Merge nudge      | `Does anybody this care about this PR? Or is this already done?`                                                       |
+| Suggestion       | `we should make that more obvious or provide a option in the TUI.`                                                     |
+| Housekeeping     | `Closing as a duplicate of #2651 — same underlying request (...). Commenting there with the specific blocker instead.` |
+| Asking to engage | `I really like the idea of showing the last used models. @alewtschuk are you planning to add this to the PR?`          |
+| Asking deeper    | `Pretty big change. Did you tested it? How does it compare from your experience?`                                      |
 
 Rules:
+
 - One comment = one point. No multi-topic essays.
 - If the answer needs evidence, give ONE file:line or ONE link, not both
   plus a paragraph.
@@ -183,15 +184,19 @@ status sections for his workflow tools:
 
 ```markdown
 ## Why / ## Symptom / ## What breaks
+
 <context + evidence: file:line, version, command output>
 
-## Root cause (source)   or   ## Source-level cause
+## Root cause (source) or ## Source-level cause
+
 <quoted code with // file:line comments>
 
 ## Design / ## Operator steps (human) / ## Automation steps (repo)
+
 - [ ] actionable checklist items
 
 ## To verify
+
 <how completion will be proven>
 ```
 
@@ -243,18 +248,18 @@ world changed → name the one specific valuable part → thank.
 
 ## 10. Do / Never table
 
-| Do | Never |
-|---|---|
-| `## Problem` / `## Why` headers | "Dear maintainers", "First of all, thanks for this amazing project" |
-| `file:line` in backticks | Screenshots of text, paraphrased errors |
-| Version + verification provenance | "I think maybe this might be..." (hedging twice) |
-| Median 44-char comments | Five-paragraph comment essays |
-| Keep typos if drafting quickly | Grammar-polishing every sentence |
-| `Edit:` append lines | Rewriting a comment others already replied to |
-| One emoji max, at the end | 🚨💥✨ emoji headers (own-repo agent style) |
-| `Closing as obsolete: <reason>` | `Closing.`, `wontfix`, lock-and-leave |
-| "I am only worried about: X" | "This is unacceptable / broken by design" |
-| `Fixes: #N`, `Link/Related to: #N` | "see my other issue" without a number |
+| Do                                 | Never                                                               |
+| ---------------------------------- | ------------------------------------------------------------------- |
+| `## Problem` / `## Why` headers    | "Dear maintainers", "First of all, thanks for this amazing project" |
+| `file:line` in backticks           | Screenshots of text, paraphrased errors                             |
+| Version + verification provenance  | "I think maybe this might be..." (hedging twice)                    |
+| Median 44-char comments            | Five-paragraph comment essays                                       |
+| Keep typos if drafting quickly     | Grammar-polishing every sentence                                    |
+| `Edit:` append lines               | Rewriting a comment others already replied to                       |
+| One emoji max, at the end          | 🚨💥✨ emoji headers (own-repo agent style)                         |
+| `Closing as obsolete: <reason>`    | `Closing.`, `wontfix`, lock-and-leave                               |
+| "I am only worried about: X"       | "This is unacceptable / broken by design"                           |
+| `Fixes: #N`, `Link/Related to: #N` | "see my other issue" without a number                               |
 
 ## 11. Era note
 

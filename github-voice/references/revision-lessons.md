@@ -43,7 +43,7 @@ start with the `@mention` on the first try.
 
 - `Added <url>` → `In progress (<url>)`
 - `#35` → `#35 help wanted`
-- `PR #3319 fixes this ... ` → `PR #3319 fixes this ... If merged:
+- `PR #3319 fixes this ...` → `PR #3319 fixes this ... If merged:
   DiscoverWithStates resolves symlinks ...`
 
 The arrow always points toward **more precise state**: not just what,
@@ -97,7 +97,7 @@ recommendation is a separate bolded line.
 - "Does anybody this care about this PR?" — kept, and the edit ADDED
   more words around it, not fixes.
 - "Atmosphere is an Interface..." → edited to "a Interface" — a rewrite
-  that made grammar *worse* and stayed.
+  that made grammar _worse_ and stayed.
 
 **Draft rule:** never spend an edit on grammar. Spend it on precision,
 state, or structure (patterns 3–5).

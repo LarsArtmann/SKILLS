@@ -39,11 +39,11 @@ Skills organized by domain — live count via `scripts/check-skills.sh` (never h
 
 ### Skill Authoring & Verification
 
-| Skill                      | What It Does                                                                        | Status   |
-| -------------------------- | ----------------------------------------------------------------------------------- | -------- |
+| Skill                      | What It Does                                                                                                                            | Status   |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | **github-voice**           | Draft GitHub issues/PRs/comments/reviews in Lars's own voice — corpus-derived patterns, per-genre skeletons, revision-informed drafting | 🆕 New   |
-| **verify-before-filing**   | Verify your diagnosis before filing issues/PRs to external projects                 | 🆕 New   |
-| **verify-external-claims** | Verify external tool/library claims before encoding them into skills, code, or docs | 🟢 Solid |
+| **verify-before-filing**   | Verify your diagnosis before filing issues/PRs to external projects                                                                     | 🆕 New   |
+| **verify-external-claims** | Verify external tool/library claims before encoding them into skills, code, or docs                                                     | 🟢 Solid |
 
 ### Go Ecosystem
 

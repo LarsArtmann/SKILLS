@@ -9,18 +9,19 @@ in his voice/tone, including lessons from his issue/comment revisions.
 2016, 4,158 of his comments/reviews across all repos, 271 items with full
 edit history) in 46 minutes via `gh`, analyzed it quantitatively +
 qualitatively, and shipped the `github-voice` skill (SKILL.md + 2 references
-+ 2 scripts). All gates green: check-skills EXIT=0 (29 skills), triggers
-STRONG, link-skills ok, ruff clean on both scripts. The #1 distilled
-lesson: his real voice (external repos) is terse, evidence-first, and
-grammatically imperfect — the opposite of AI-polished assistant prose.
+
+- 2 scripts). All gates green: check-skills EXIT=0 (29 skills), triggers
+  STRONG, link-skills ok, ruff clean on both scripts. The #1 distilled
+  lesson: his real voice (external repos) is terse, evidence-first, and
+  grammatically imperfect — the opposite of AI-polished assistant prose.
 
 ---
 
 ## Headline counts
 
 | a) Fully done | b) Partially done | c) Not started | d) Fucked up | e) Improvements | f) Next | g) Questions |
-| --- | --- | --- | --- | --- | --- | --- |
-| 8 | 2 | 3 | 2 | 3 | 4 | 1 |
+| ------------- | ----------------- | -------------- | ------------ | --------------- | ------- | ------------ |
+| 8             | 2                 | 3              | 2            | 3               | 4       | 1            |
 
 ## a) FULLY DONE
 
