@@ -25,9 +25,6 @@ EMOJI_RE = re.compile(
 	"[\U0001F300-\U0001FAFF\u2700-\u27BF\u2600-\u26FF\u2B00-\u2BFF"
 	"\U0001F000-\U0001F02F\u2139\uFE0F]"
 )
-GREETING_RE = re.compile(
-	r"^(hey|hi|hello|thanks|thank you|sorry|+1|agree)", re.IGNORECASE
-)
 
 
 def pct(part: int, whole: int) -> float:
@@ -191,7 +188,7 @@ def main() -> None:
 
 	lines = [f"# Corpus analysis — {analysis['generated']}", ""]
 	for key, seg in analysis["segments"].items():
-		if "count" not in seg:
+		if "label" not in seg:
 			lines += [f"## {key}: {seg['count']} ({seg['note']})", ""]
 			continue
 		lines += [
