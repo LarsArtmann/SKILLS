@@ -450,11 +450,12 @@ class Collector:
 				conn = node.get("userContentEdits")
 				if not conn or node["url"] not in self.edits:
 					continue
-				self.edits[node["url"]]["versions"] = [
-					{"editedAt": v.get("editedAt"),
-					 "diff": v.get("diff")}
-					for v in conn.get("nodes", [])
-				]
+				self.edits[node["url"]]["versions"] = sorted(
+					({"editedAt": v.get("editedAt"),
+					  "diff": v.get("diff")}
+					 for v in conn.get("nodes", [])),
+					key=lambda v: v["editedAt"] or "",
+				)
 				self.edits[node["url"]]["truncated"] = (
 					conn.get("totalCount", 0) > 10)
 
