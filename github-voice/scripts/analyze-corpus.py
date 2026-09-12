@@ -17,7 +17,6 @@ import argparse
 import json
 import re
 import statistics
-import subprocess
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -54,8 +53,9 @@ def feats(body: str) -> dict:
 		"code_fence": "```" in body,
 		"inline_code": "`" in body,
 		"link": "](" in body or "http" in body,
-		"bullets": bool(re.search(r"^(\*|-|\d+\.) ", body, re.M)),
-		"header": bool(re.search(r"^#+ ", body, re.M)),
+		"bullets": bool(re.search(r"^(\*|-|\d+\.) ", body,
+		                       re.MULTILINE)),
+		"header": bool(re.search(r"^#+ ", body, re.MULTILINE)),
 		"bold": "**" in body,
 		"emoji": bool(EMOJI_RE.search(body)),
 		"mention": "@" in body,
@@ -76,7 +76,6 @@ def opening_bucket(body: str) -> str:
 	if first.startswith(("#", "##")):
 		return "header-first"
 	return "direct"
-}
 
 
 def ngrams(texts: list[str], n: int, top: int = 25) -> list:
@@ -197,15 +196,23 @@ def main() -> None:
 			continue
 		lines += [
 			f"## {key} — {seg['label']} (n={seg['count']})",
-			f"- length p10/p50/p90: "
-			f"{seg['length'].get('p10')}/{seg['length'].get('p50')}"
-			f"/{seg['length'].get('p90')} chars",
-			f"- code fence {seg['code_fence_pct']}% | inline code "
-			f"{seg['inline_code_pct']}% | links {seg['link_pct']}% | "
-			f"bullets {seg['bullets_pct']}% | headers "
-			f"{seg['header_pct']}% | bold {seg['bold_pct']}% | "
-			f"emoji {seg['emoji_pct']}% | mentions "
-			f"{seg['mention_pct']}% | question {seg['question_pct']}%",
+			(
+				f"- length p10/p50/p90: "
+				f"{seg['length'].get('p10')}/"
+				f"{seg['length'].get('p50')}/"
+				f"{seg['length'].get('p90')} chars"
+			),
+			(
+				f"- code fence {seg['code_fence_pct']}% | "
+				f"inline code {seg['inline_code_pct']}% | "
+				f"links {seg['link_pct']}% | "
+				f"bullets {seg['bullets_pct']}% | "
+				f"headers {seg['header_pct']}% | "
+				f"bold {seg['bold_pct']}% | "
+				f"emoji {seg['emoji_pct']}% | "
+				f"mentions {seg['mention_pct']}% | "
+				f"question {seg['question_pct']}%"
+			),
 			f"- openings: {seg['openings']}",
 			f"- top bigrams: {seg['bigrams']}",
 			"",
