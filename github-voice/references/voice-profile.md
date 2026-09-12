@@ -23,11 +23,38 @@
 
 | Segment                      | n      | Median length | Notes                                                               |
 | ---------------------------- | ------ | ------------- | ------------------------------------------------------------------- |
-| External bodies (issues+PRs) | 372    | 241 chars     | **highest voice weight**                                            |
-| External comments            | 979    | 44 chars      | **highest voice weight**                                            |
+| External bodies (issues+PRs) | 372    | 241 chars all-time / **1,062 since 2025-09** | **highest voice weight** — lengthening fast, see registers below |
+| External comments            | 979    | 44 chars all-time / **85 since 2025-09** | **highest voice weight** — stayed terse                             |
 | Own-repo bodies              | ~8,700 | 2,355 chars   | heavily structured; much is agent-templated — secondary weight only |
 | Own-repo comments            | 3,179  | 668 chars     | mix of natural voice and automation formulas                        |
 | Items with 2+ revisions      | 271    | —             | revision diffs analyzed separately                                  |
+
+Era-split medians are reproducible: `scripts/analyze-corpus.py --since
+2025-09-01` → `analysis-since-*.json` in the corpus dir.
+
+### The two registers (the 2025→2026 shift)
+
+The corpus shows one clear trend in the last 12 months: **issue/PR bodies
+and comments have diverged into two registers, split by stakes.**
+
+| | External bodies | External comments |
+|---|---|---|
+| Median length (since 2025-09) | **1,062 chars** (was 173 in 2025H1) | **85 chars** (stable for years) |
+| Headers (`## X`) | **69%** (was 36%) | 5% — never |
+| Emoji | 23% | 9% |
+| Questions | 14% | 28% (rising: he asks maintainers more) |
+| AI attribution footer | **~19-20%** since 2025H2 (was 0%) | ~0-1% — never on one-liners |
+
+What happened: AI drafting got adopted for **bodies** (long, structured,
+`## Problem`/tables, Crush footer when Crush drafted) while **comments**
+stayed handwritten — terse, imperfect, one point. Meanwhile the own-repo
+agent-filing experiment peaked in 2025H2 (6,092 issues, 97% headers, 76%
+emoji) and collapsed in 2026 (99 issues, 2% emoji) — mass delegation was
+tried and abandoned; human-scale own-repo writing is the current mode.
+
+**Drafting consequence (the actual policy):** a long structured body is
+NOT over-polished AI voice — it is the 2026 norm. Polishing a *comment*
+into that register IS the failure. Never apply one register to both.
 
 **Why external-repo writing is the gold standard:** in other people's
 projects Lars writes fast, unpolished, evidence-first — no template pulls
@@ -41,8 +68,11 @@ criteria" sections) and are **not** his natural voice.
    `file:line` references, version pins, command output, measured numbers.
    "Measured on an 8-month-old 2.1 GB crush.db: 10,945 user messages /
    23 MB of `parts` parsed on every sessionless launch."
-2. **Terse.** Say the thing, stop. Median external comment is 44 chars.
-   No "I hope this helps", no "Please let me know if", no sign-offs.
+2. **Terse in comments, structured in bodies.** Comments: say the thing,
+   stop (median 85 chars). Bodies: since 2025-09 the median is ~1,050
+   chars with headers and tables — that length is his, not padding. No
+   "I hope this helps", no "Please let me know if", no sign-offs — in
+   either register.
 3. **Imperfect grammar stays.** Real examples that shipped and stayed:
    "Does anybody this care about this PR?", "Did you tested it?",
    "that's should be keeped", "between to two modes", "I just flew over
@@ -63,9 +93,14 @@ criteria" sections) and are **not** his natural voice.
 9. **@mention to address a person** — often the edit he makes when a
    comment lacked one ("What do you men with?" → "@DevSnox What do you
    men with?").
-10. **Attribute AI assistance.** When Crush/tooling drafted it, the body
-    carries "💘 Generated with Crush" or "Generated with an internal code
-    quality tool + Crush" at the bottom. Never claim unaided work.
+10. **Attribute AI assistance — in bodies, never in quick comments.**
+    Since 2025H2, ~19-20% of his external bodies end with an attribution
+    footer: "💘 Generated with Crush", "Generated with an internal code
+    quality tool + Crush (GLM-5.2)". Rule: whenever AI drafted or
+    materially shaped a body/PR, carry the footer. For AI-assisted
+    reviews he discloses in-line: "> [!NOTE] PR review done with Crush
+    and GLM-4.6 after looking at the diff inside of GitHub." One-line
+    comments carry no footer (~0-1% ever).
 
 ## 3. External bug report
 
@@ -91,7 +126,9 @@ Skeleton (recent, representative):
   blocks when the bug is a transformation.
 - States verification provenance: "verified on v1.0.1, same for every
   tag", "fails identically at v1.6.0 and v1.8.0 — NOT a regression".
-- Length: usually 150–800 chars of prose plus code. Not a wall.
+- Length: the 2026 norm is ~800–1,400 chars of prose plus code (median
+  1,062 since 2025-09; it was ~170 in early 2025). Long and structured
+  is correct; padding and restating the same point is not.
 
 Real opener: `` `loadPromptHistory` runs at UI init, on every session
 switch, and after every message send (`internal/ui/model/ui.go:521,795,1313`). ``
@@ -253,7 +290,9 @@ world changed → name the one specific valuable part → thank.
 | `## Problem` / `## Why` headers    | "Dear maintainers", "First of all, thanks for this amazing project" |
 | `file:line` in backticks           | Screenshots of text, paraphrased errors                             |
 | Version + verification provenance  | "I think maybe this might be..." (hedging twice)                    |
-| Median 44-char comments            | Five-paragraph comment essays                                       |
+| Body: long, structured, attributed if AI-drafted | One register everywhere: essay-comments or one-liner bodies |
+| Median 85-char comments            | Five-paragraph comment essays                                       |
+| Comments: plain text, no headers   | `## headers` or a Crush footer on a one-line comment                |
 | Keep typos if drafting quickly     | Grammar-polishing every sentence                                    |
 | `Edit:` append lines               | Rewriting a comment others already replied to                       |
 | One emoji max, at the end          | 🚨💥✨ emoji headers (own-repo agent style)                         |
@@ -265,7 +304,17 @@ world changed → name the one specific valuable part → thank.
 
 - **2016–2019 (Minecraft era):** German comments, title-only issues,
   "ok, von mir aus". Cute archaeology, NOT the target voice.
-- **2024–now:** English, structured-but-terse, heavy evidence. This is
-  the voice to reproduce.
-- The corpus keeps both; always check `created:` in frontmatter before
-  imitating an example.
+- **2024–mid-2025:** English, terse everywhere, unstructured bodies
+  (median ~170 chars), no AI attribution yet.
+- **2025H2 — the delegation peak:** AI-assist adopted at scale. Own
+  repos: 6,092 issues filed in half a year, 97% header-structured, 76%
+  emoji, 25% attributed. External bodies start carrying Crush footers
+  (~19-20%, stable since). 
+- **2026 — the pullback + two registers:** own-repo mass-filing
+  collapsed (99 issues in 2026H2, emoji 2%, comments back to median
+  ~420 chars — human scale). External bodies settled long+structured
+  (median ~1,062); external comments stayed terse. **This is the voice
+  to reproduce.**
+- The corpus keeps all eras; always check `created:` in frontmatter
+  before imitating an example, and prefer `--since 2025-09` stats for
+  length expectations.

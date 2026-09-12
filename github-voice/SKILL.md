@@ -26,11 +26,15 @@ writes them — derived from a corpus of 10,682 of his real items
 (every issue/PR since 2016, every comment across all repos, plus his
 edit histories), not from generic "good issue" advice.
 
-**The #1 failure mode is AI-polished assistant voice**: formal greeting,
-hedged requests, triple-polished grammar, sign-off, emoji decoration.
-Lars's real voice is the opposite — terse, evidence-first, imperfect,
-done. When a draft reads like a helpful support agent, it is wrong even
-when its content is right.
+**The #1 failure mode is applying one register everywhere.** Since
+2025 Lars writes GitHub in two registers, split by stakes (see profile
+§1 "The two registers"): **bodies** (issues/PR descriptions) are long,
+structured, evidence-heavy, often AI-drafted-then-cut (~1,050-char
+median, `## Problem`/tables, Crush footer when Crush drafted) — while
+**comments** are handwritten-terse (~85-char median, one point, no
+headers, imperfect grammar, no footer). Polish a comment into assistant
+prose, or write a body as a casual one-liner, and it is wrong even when
+its content is right.
 
 ## Procedure
 
@@ -45,9 +49,11 @@ when its content is right.
    [./references/voice-profile.md](./references/voice-profile.md) — pick
    the matching genre section; its skeleton + real examples are the
    template.
-4. **Draft** using the genre skeleton and the quick rules below. Prefer
-   one evidence artifact (file:line, version pin, command output, link)
-   over adjectives.
+4. **Draft** using the genre skeleton and the quick rules below, in the
+   right register: bodies long+structured (AI-drafting fine — then cut),
+   comments terse+human (draft as if typing fast). Prefer one evidence
+   artifact (file:line, version pin, command output, link) over
+   adjectives in both.
 5. **Revise once, his way**:
    [./references/revision-lessons.md](./references/revision-lessons.md)
    — add status word, add `file:line` precision, swap promises for
@@ -58,17 +64,26 @@ when its content is right.
 
 ## Quick rules (full detail in the profile)
 
+- Two registers, split by stakes: bodies long+structured (median ~1,050
+  chars since 2025-09, 69% headers); comments terse and plain (median
+  ~85 chars, 5% headers, never a report).
 - Open with the problem, never with a greeting. 5 greetings in 372
   external bodies.
-- `## Problem` / `## Why` / `## What changed` headers; backticked
-  `file:line` evidence; versions pinned ("do v2.1.0, Go 1.26").
-- Comments are one point, often one line. Median real comment: 44 chars.
-- Keep grammar imperfect on purpose ("Did you tested it?" shipped).
+- `## Problem` / `## Why` / `## What changed` headers in bodies;
+  backticked `file:line` evidence; versions pinned ("do v2.1.0,
+  Go 1.26").
+- Comments are one point, often one line. No headers, no sign-offs,
+  no AI footer on a one-liner.
+- Keep grammar imperfect on purpose in comments ("Did you tested it?"
+  shipped); bodies may be fully polished (they are AI-drafted and cut).
   "I am" over "I'm" in careful comments.
 - Emoji: max one, at the end. `:)` `👀` `❤️` only.
 - Closing formula: `Closing as <obsolete|not planned|duplicate of #N>:
   <specific technical reason>`.
-- Attribute AI drafting: "💘 Generated with Crush" footer.
+- Attribute AI drafting where it happened: "💘 Generated with Crush"
+  footer on bodies; in-line disclosure for AI-assisted reviews
+  ("> [!NOTE] PR review done with Crush and GLM-4.6 ..."). Never on
+  quick comments.
 - Quote-reply with `>` when answering a specific point; `@mention` the
   addressee at the start.
 

@@ -90,6 +90,11 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="~/.cache/github-voice-corpus")
     ap.add_argument("--own-owners", default="LarsArtmann,Artmann-Games")
+    ap.add_argument(
+        "--since",
+        help="only analyze items/comments created on or after this date "
+        "(YYYY-MM-DD) — use for era splits",
+    )
     args = ap.parse_args()
     out = Path(args.out).expanduser()
     own = {o.strip() for o in args.own_owners.split(",")}
@@ -97,6 +102,14 @@ def main() -> None:
     items = json.loads((out / "raw" / "items.json").read_text())
     comments = json.loads((out / "raw" / "comments.json").read_text())
     edits = json.loads((out / "raw" / "edits.json").read_text())
+
+    if args.since:
+        items = [i for i in items if i["created"] >= args.since]
+        comments = [c for c in comments if c["created"] >= args.since]
+        print(
+            f"[since] filtering to created >= {args.since}: "
+            f"{len(items)} items, {len(comments)} comments"
+        )
 
     AGENT = [
         "Task ID:",
@@ -204,7 +217,8 @@ def main() -> None:
             ),
         },
     }
-    (out / "analysis.json").write_text(
+    suffix = "" if not args.since else f"-since-{args.since}"
+    (out / f"analysis{suffix}.json").write_text(
         json.dumps(analysis, ensure_ascii=False, indent=1, default=str)
     )
 
@@ -236,9 +250,9 @@ def main() -> None:
             f"- top bigrams: {seg['bigrams']}",
             "",
         ]
-    (out / "ANALYSIS.md").write_text("\n".join(lines))
+    (out / f"ANALYSIS{suffix}.md").write_text("\n".join(lines))
     print(
-        f"[done] {out / 'analysis.json'} and ANALYSIS.md "
+        f"[done] analysis{suffix}.json and ANALYSIS{suffix}.md "
         f"({len(items)} items, {len(comments)} comments, "
         f"{len(edits)} edited)"
     )
