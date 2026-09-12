@@ -22,13 +22,13 @@
 
 ## 1. Corpus basis and weighting
 
-| Segment                      | n      | Median length | Notes                                                               |
-| ---------------------------- | ------ | ------------- | ------------------------------------------------------------------- |
-| External bodies (issues+PRs) | 372    | 241 chars all-time / **1,062 since 2025-09** | **highest voice weight** — lengthening fast, see registers below |
-| External comments            | 979    | 44 chars all-time / **85 since 2025-09** | **highest voice weight** — stayed terse                             |
-| Own-repo bodies              | ~8,700 | 2,355 chars   | heavily structured; much is agent-templated — secondary weight only |
-| Own-repo comments            | 3,179  | 668 chars     | mix of natural voice and automation formulas                        |
-| Items with 2+ revisions      | 271    | —             | revision diffs analyzed separately                                  |
+| Segment                      | n      | Median length                                | Notes                                                               |
+| ---------------------------- | ------ | -------------------------------------------- | ------------------------------------------------------------------- |
+| External bodies (issues+PRs) | 372    | 241 chars all-time / **1,062 since 2025-09** | **highest voice weight** — lengthening fast, see registers below    |
+| External comments            | 979    | 44 chars all-time / **85 since 2025-09**     | **highest voice weight** — stayed terse                             |
+| Own-repo bodies              | ~8,700 | 2,355 chars                                  | heavily structured; much is agent-templated — secondary weight only |
+| Own-repo comments            | 3,179  | 668 chars                                    | mix of natural voice and automation formulas                        |
+| Items with 2+ revisions      | 271    | —                                            | revision diffs analyzed separately                                  |
 
 Era-split medians are reproducible: `scripts/analyze-corpus.py --since
 2025-09-01` → `analysis-since-*.json` in the corpus dir.
@@ -38,13 +38,13 @@ Era-split medians are reproducible: `scripts/analyze-corpus.py --since
 The corpus shows one clear trend in the last 12 months: **issue/PR bodies
 and comments have diverged into two registers, split by stakes.**
 
-| | External bodies | External comments |
-|---|---|---|
-| Median length (since 2025-09) | **1,062 chars** (was 173 in 2025H1) | **85 chars** (stable for years) |
-| Headers (`## X`) | **69%** (was 36%) | 5% — never |
-| Emoji | 23% | 9% |
-| Questions | 14% | 28% (rising: he asks maintainers more) |
-| AI attribution footer | **~19-20%** since 2025H2 (was 0%) | ~0-1% — never on one-liners |
+|                               | External bodies                     | External comments                      |
+| ----------------------------- | ----------------------------------- | -------------------------------------- |
+| Median length (since 2025-09) | **1,062 chars** (was 173 in 2025H1) | **85 chars** (stable for years)        |
+| Headers (`## X`)              | **69%** (was 36%)                   | 5% — never                             |
+| Emoji                         | 23%                                 | 9%                                     |
+| Questions                     | 14%                                 | 28% (rising: he asks maintainers more) |
+| AI attribution footer         | **~19-20%** since 2025H2 (was 0%)   | ~0-1% — never on one-liners            |
 
 What happened: AI drafting got adopted for **bodies** (long, structured,
 `## Problem`/tables, Crush footer when Crush drafted) while **comments**
@@ -54,7 +54,7 @@ emoji) and collapsed in 2026 (99 issues, 2% emoji) — mass delegation was
 tried and abandoned; human-scale own-repo writing is the current mode.
 
 **Drafting consequence (the actual policy):** a long structured body is
-NOT over-polished AI voice — it is the 2026 norm. Polishing a *comment*
+NOT over-polished AI voice — it is the 2026 norm. Polishing a _comment_
 into that register IS the failure. Never apply one register to both.
 
 **Why external-repo writing is the gold standard:** in other people's
@@ -200,7 +200,7 @@ Rules:
 deep-debug thread needs data, the comment runs long (700+ chars) but
 stays **plain text with artifacts** — code fences with measured output,
 tables, links — never `## headers`, never essay prose, never hedging.
-Long because of *what is pasted*, not what is said. A long comment with
+Long because of _what is pasted_, not what is said. A long comment with
 no fence/link/table is not his.
 
 **Sub-genre: the announcement comment** (~2-5% of comments). Release
@@ -306,20 +306,20 @@ world changed → name the one specific valuable part → thank.
 
 ## 10. Do / Never table
 
-| Do                                 | Never                                                               |
-| ---------------------------------- | ------------------------------------------------------------------- |
-| `## Problem` / `## Why` headers    | "Dear maintainers", "First of all, thanks for this amazing project" |
-| `file:line` in backticks           | Screenshots of text, paraphrased errors                             |
-| Version + verification provenance  | "I think maybe this might be..." (hedging twice)                    |
-| Body: long, structured, attributed if AI-drafted | One register everywhere: essay-comments or one-liner bodies |
-| Median 85-char comments            | Five-paragraph comment essays                                       |
-| Comments: plain text, no headers   | `## headers` or a Crush footer on a one-line comment                |
-| Keep typos if drafting quickly     | Grammar-polishing every sentence                                    |
-| `Edit:` append lines               | Rewriting a comment others already replied to                       |
-| One emoji max, at the end          | 🚨💥✨ emoji headers (own-repo agent style)                         |
-| `Closing as obsolete: <reason>`    | `Closing.`, `wontfix`, lock-and-leave                               |
-| "I am only worried about: X"       | "This is unacceptable / broken by design"                           |
-| `Fixes: #N`, `Link/Related to: #N` | "see my other issue" without a number                               |
+| Do                                               | Never                                                               |
+| ------------------------------------------------ | ------------------------------------------------------------------- |
+| `## Problem` / `## Why` headers                  | "Dear maintainers", "First of all, thanks for this amazing project" |
+| `file:line` in backticks                         | Screenshots of text, paraphrased errors                             |
+| Version + verification provenance                | "I think maybe this might be..." (hedging twice)                    |
+| Body: long, structured, attributed if AI-drafted | One register everywhere: essay-comments or one-liner bodies         |
+| Median 85-char comments                          | Five-paragraph comment essays                                       |
+| Comments: plain text, no headers                 | `## headers` or a Crush footer on a one-line comment                |
+| Keep typos if drafting quickly                   | Grammar-polishing every sentence                                    |
+| `Edit:` append lines                             | Rewriting a comment others already replied to                       |
+| One emoji max, at the end                        | 🚨💥✨ emoji headers (own-repo agent style)                         |
+| `Closing as obsolete: <reason>`                  | `Closing.`, `wontfix`, lock-and-leave                               |
+| "I am only worried about: X"                     | "This is unacceptable / broken by design"                           |
+| `Fixes: #N`, `Link/Related to: #N`               | "see my other issue" without a number                               |
 
 ## 11. Era note
 
@@ -330,7 +330,7 @@ world changed → name the one specific valuable part → thank.
 - **2025H2 — the delegation peak:** AI-assist adopted at scale. Own
   repos: 6,092 issues filed in half a year, 97% header-structured, 76%
   emoji, 25% attributed. External bodies start carrying Crush footers
-  (~19-20%, stable since). 
+  (~19-20%, stable since).
 - **2026 — the pullback + two registers:** own-repo mass-filing
   collapsed (99 issues in 2026H2, emoji 2%, comments back to median
   ~420 chars — human scale). External bodies settled long+structured
@@ -350,15 +350,15 @@ not Lars. The machine-checkable list lives canonically in
 lists) — this section documents the classes; do not maintain a second
 copy of the full list here.
 
-| Class | Banned examples | What he writes instead |
-|---|---|---|
-| Closer boilerplate | "I hope this helps", "Please let me know if...", "Don't hesitate" | nothing — the comment just ends |
-| Servility | "Great question", "Thank you for bringing this to our attention", "amazing/great project" | the technical answer, or `Thx @name!` |
-| Sign-offs | "Best regards", "Cheers,", "Sincerely", "Thanks in advance" | none — 1 sign-off in 555 texts |
-| Greeting openers | "Hi team", "Dear maintainers", "First of all" | the problem, or `Hey @name ...` (mention-greetings ARE his) |
-| Softeners | "Unfortunately,", "Furthermore,", "Moreover,", "I'd be happy to" | plain statements; "I am only worried about: X" |
-| AI-speak | "delve into", "kindly", "please note that", "going forward," | "look at", "run", the thing itself |
-| Double-hedging | "I think maybe this might be" | one hedge max — 0 double-hedges in corpus |
+| Class              | Banned examples                                                                           | What he writes instead                                      |
+| ------------------ | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Closer boilerplate | "I hope this helps", "Please let me know if...", "Don't hesitate"                         | nothing — the comment just ends                             |
+| Servility          | "Great question", "Thank you for bringing this to our attention", "amazing/great project" | the technical answer, or `Thx @name!`                       |
+| Sign-offs          | "Best regards", "Cheers,", "Sincerely", "Thanks in advance"                               | none — 1 sign-off in 555 texts                              |
+| Greeting openers   | "Hi team", "Dear maintainers", "First of all"                                             | the problem, or `Hey @name ...` (mention-greetings ARE his) |
+| Softeners          | "Unfortunately,", "Furthermore,", "Moreover,", "I'd be happy to"                          | plain statements; "I am only worried about: X"              |
+| AI-speak           | "delve into", "kindly", "please note that", "going forward,"                              | "look at", "run", the thing itself                          |
+| Double-hedging     | "I think maybe this might be"                                                             | one hedge max — 0 double-hedges in corpus                   |
 
 **Not banned (he uses them):** "comprehensive" (15 hits), "robust" (3),
 "leverage"/"utilize"/"seamless" (2 each), "not only" (2), "Feel free
