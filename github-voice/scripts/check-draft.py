@@ -141,34 +141,53 @@ def check(kind: str, text: str, ai_drafted: bool) -> list[tuple[str, str, str]]:
 
     if lines:
         first = lines[0]
-        if GREETING_RE.match(first) and "@" not in first:
-            findings.append(
-                ("FAIL", "greeting opener",
-                 ("greetings without @mention: 10/555 corpus "
-                  "texts — open with the problem instead"))
-            )
+        if kind != "announcement" and "@" not in first:
+            if re.match(r"(?i)^\s*(dear|greetings)\b", first):
+                findings.append(
+                    ("FAIL", "greeting opener",
+                     ('"Dear/Greetings" openers: 0 hits in corpus — '
+                      "open with the problem instead"))
+                )
+            elif GREETING_RE.match(first):
+                findings.append(
+                    ("WARN", "greeting opener",
+                     ("hi/hey openers are rare (10/555 corpus texts) "
+                      "and real when addressed: 'Hey guys,' / "
+                      "'Hi @name' — otherwise open with the problem"))
+                )
         last = lines[-1]
         if SIGNOFF_RE.match(last):
             findings.append(
-                ("FAIL", "sign-off", f'"{last}" — never signs off')
+                ("FAIL", "sign-off",
+                 f'"{last}" — never signs off')
             )
 
     emoji_count = len(EMOJI_RE.findall(text))
-    if EMOJI_HEADER_RE.search(text):
+    if kind != "announcement" and EMOJI_HEADER_RE.search(text):
         findings.append(
-            ("FAIL", "emoji header", "emoji in headers is agent-era style")
+            ("FAIL", "emoji header",
+             ("emoji in headers is agent-era style "
+              "(allowed only in announcement kind)"))
         )
 
     if kind in ("comment", "review"):
         if HEADER_RE.search(text):
             findings.append(
                 ("FAIL", "headers in comment",
-                 "comments are plain text — 5% header rate, all edge cases")
+                 ("comments are plain text — if this is a release "
+                  "announcement or an AI-assisted review report, use "
+                  "--kind announcement"))
             )
-        if emoji_count > 1:
+        if emoji_count >= 3:
             findings.append(
                 ("FAIL", "emoji overuse",
-                 f"{emoji_count} emoji — max 1 in comments")
+                 (f"{emoji_count} emoji — quick comments carry 0-1 "
+                  "(2+ only in the announcement genre)"))
+            )
+        elif emoji_count == 2:
+            findings.append(
+                ("WARN", "emoji count",
+                 "2 emoji — quick comments carry 0-1")
             )
         if len(text) > 600 and not EVIDENCE_RE.search(text):
             findings.append(
@@ -182,10 +201,12 @@ def check(kind: str, text: str, ai_drafted: bool) -> list[tuple[str, str, str]]:
                  "AI-attribution footers never appear on quick comments")
             )
     else:
-        if emoji_count > 4:
+        emoji_cap = 24 if kind == "announcement" else 4
+        if emoji_count > emoji_cap:
             findings.append(
                 ("WARN", "emoji overuse",
-                 f"{emoji_count} emoji in a body — corpus p90 is ~3")
+                 (f"{emoji_count} emoji — beyond anything in the "
+                  "corpus for this kind"))
             )
         if len(text) < 200:
             findings.append(
@@ -214,7 +235,11 @@ def main() -> int:
     ap.add_argument(
         "--kind",
         required=True,
-        choices=["body-issue", "body-pr", "comment", "review"],
+        choices=["body-issue", "body-pr", "comment", "review",
+                 "announcement"],
+        help="announcement = release posts / AI-assisted review "
+        "reports: headers, emoji headers, 'Hi,' openers, and AI "
+        "footers are allowed there",
     )
     ap.add_argument(
         "--ai-drafted",

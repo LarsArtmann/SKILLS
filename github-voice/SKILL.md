@@ -75,7 +75,11 @@ re-verifying against the corpus.
    ```bash
    ./scripts/check-draft.py --kind comment draft.md          # exit 1 = fix
    ./scripts/check-draft.py --kind body-issue --ai-drafted draft.md
+   # release posts / AI-assisted review reports: --kind announcement
    ```
+
+   Calibrated against his real writing: 0% misses on planted AI-slop,
+   ~3% false alarms (all in announcement gray zones) on 518 real texts.
 
 7. **Triple-check (human read)** — re-read the draft as a skeptical
    maintainer, against the profile Do/Never table (§10) and the
