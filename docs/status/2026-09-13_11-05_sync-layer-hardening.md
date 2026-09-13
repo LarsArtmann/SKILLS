@@ -14,7 +14,7 @@ Quality gate green (`check-skills.sh` exit 0).
 
 ### f1. Third-party layer had drifted from documentation
 
-- Lockfile grew 14 → 15 entries since the 2026-09-21 verification documented in
+- Lockfile grew 14 → 15 entries since the 2026-08-21 verification documented in
   AGENTS.md §5.10: `product-launch-video` (heygen-com/hyperframes) was added,
   making it a 10-skill HeyGen suite.
 - **`~/.agents/skills/.git` was undocumented**: the aggregation dir is itself a

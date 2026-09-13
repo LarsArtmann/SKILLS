@@ -36,7 +36,7 @@ fi
 mapfile -t repo_skills < <(find "$REPO_DIR" -maxdepth 2 -name 'SKILL.md' -printf '%h\n' | sort)
 
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
-	sed -n '2,23p' "$0"
+	sed -n '2,24p' "$0"
 	exit 0
 fi
 
