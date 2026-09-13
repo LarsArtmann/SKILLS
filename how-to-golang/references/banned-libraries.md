@@ -13,7 +13,7 @@ Libraries banned from all Go projects with reasons and replacements.
 | go-ozzo/ozzo-validation | Abandoned since Oct 2020                   | `sivchari/govalid`                |
 | mitchellh/mapstructure  | Archived July 2024                         | `encoding/json`                   |
 | mitchellh/go-homedir    | Archived July 2024                         | `os.UserHomeDir()`                |
-| libgit2/git2go          | CVEs, CGO complexity, deprecated by FluxCD | `go-git/go-git/v5`                |
+| libgit2/git2go          | CVEs, CGO complexity, deprecated by FluxCD | `os/exec` git subprocess         |
 | crypto/md5              | Broken hash, trivial collisions            | `crypto/sha256` or `zeebo/blake3` |
 | crypto/sha1             | Cryptographically broken                   | `crypto/sha256` or `zeebo/blake3` |
 | samber/do v1            | Deprecated, use v2                         | `samber/do/v2`                    |
@@ -23,8 +23,8 @@ Libraries banned from all Go projects with reasons and replacements.
 | Banned                            | Reason                                      | Use Instead                      |
 | --------------------------------- | ------------------------------------------- | -------------------------------- |
 | gorm                              | Magic behavior, N+1 queries                 | `sqlc-dev/sqlc`                  |
-| gorilla/mux                       | Deprecated                                  | `gin-gonic/gin`                  |
-| echo, chi, fiber, beego           | Slower / deprecated / monolithic            | `gin-gonic/gin`                  |
+| gorilla/mux                       | Deprecated                                  | `net/http.ServeMux` (Go 1.22+)   |
+| echo, chi, fiber, gin, beego      | Slower / deprecated / monolithic            | `net/http.ServeMux` + `huma/v2`   |
 | viper                             | Global state, complex, 4x larger binaries   | `knadh/koanf`                    |
 | urfave/cli                        | Less polished TUI                           | `charm.land/fang/v2`             |
 | go-cache, ristretto, bigcache     | Stale APIs, lock contention, poor hit rates | `maypok86/otter/v2`              |
