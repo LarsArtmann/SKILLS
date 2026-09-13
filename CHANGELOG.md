@@ -13,6 +13,31 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-09-13 — sync-layer hardening + 2026-09-11 feedback encoded)
+
+- **`scripts/link-skills-to-agents.sh`**: three new guards —
+  `--check`/`--list` now run a reverse orphan sweep (runtime symlinks
+  pointing into the repo whose skill is gone, i.e. rule-5 leftovers);
+  `--check` fails if an own skill appears in the skills-CLI lockfile
+  (rule-2 precondition: the next `skills update` would rm -rf its
+  symlink; override via `SKILLS_LOCKFILE`); repair mode prints a commit
+  hint when the runtime dir is a git repo (the previously undocumented
+  `~/.agents/skills/.git` aggregation layer, remote
+  `LarsArtmann/agent-skills`). All sandbox-tested with `AGENTS_DIR`.
+- **AGENTS.md §5.10**: lockfile facts refreshed (15 entries; HeyGen
+  suite grew to 10 with `product-launch-video`) and the aggregation git
+  repo documented.
+- **`verify-external-claims` §0**: new fabrication class "agent-summarized
+  fetch is not extraction" — exact strings need raw fetch + mechanical
+  extraction (2026-09-11 feedback incident 1).
+- **`code-quality-scan` step 5**: cached-green-verdict rule — after any
+  tool upgrade, run the gate once with caching disabled and quote the
+  exit code (incident 3).
+- **`how-to-write-skills.md` Hard-Won Lessons**: pipefail + early-exit
+  consumer pattern (`grep -q` SIGPIPE trap) and scripted-edit diff
+  accountability + shellcheck-before-done (incidents 2 and 4). Feedback
+  archived to `docs/feedback/processed/`.
+
 ### Added (2026-09-11 second session — generator hardening + T23 verified closed)
 
 - **`website-launch`**: `generate.sh --check-env` — verifies the renderer

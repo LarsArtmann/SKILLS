@@ -26,6 +26,8 @@ allowed-tools: bash view edit grep
 
 4. **Collect and classify all findings** by severity (Critical / High / Medium / Low).
 
+5. **Distrust cached green verdicts.** Build/lint gates that cache results (buildflow result cache, golangci-lint cache, nix store hits) can serve a stale green produced before a tool upgrade — 2026-09-11 incident: a 168h-TTL cache masked 58 lint errors that only `BUILDFLOW_NO_RESULT_CACHE=1` revealed, with only a docs commit in between. After any tool upgrade, and before attributing a green gate to current code, run the gate once with caching disabled, quote the exit code (not the output tail), and note cache age alongside any green verdict.
+
 ## Output
 
 Write a **self-contained styled HTML report** — a sorted issue dashboard.
