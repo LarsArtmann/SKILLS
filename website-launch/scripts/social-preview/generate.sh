@@ -301,12 +301,20 @@ EOF
 	)
 fi
 
-# Terminal chip geometry: "$" + " go get " + <path> = 9 + len(path) mono
-# chars at x=214, 36px right padding; shrink font when the path is long
-# (floor 16px).
-i_size=26 i_chars=9
+# Terminal chip geometry: "$" + <verb segment> + <path> mono chars at
+# x=214, 36px right padding; shrink font when the path is long (floor 16px).
+# The verb segment is " go get " only for Go module paths; a --install that
+# is already a full command (e.g. "nix run github:owner/repo") gets a bare
+# space — prefixing it produced "$ go get nix run ..." nonsense (caught on
+# dnsblockd 2026-09-13).
+W_SEG=" go get "
+case "$install_path" in
+github.com/*) ;;
+*) W_SEG=" " ;;
+esac
+i_size=26 i_chars=0
 if [ -n "$install_path" ]; then
-	i_chars=$((9 + ${#install_path}))
+	i_chars=$((1 + ${#W_SEG} + ${#install_path}))
 	i_size=$((958 * 10 / (6 * i_chars)))
 	[ "$i_size" -gt 26 ] && i_size=26
 	[ "$i_size" -lt 16 ] && i_size=16
@@ -320,9 +328,8 @@ i_adv=$((6 * i_size / 10))
 #
 # Single source of truth for the card: the static card IS the final
 # animation frame (full text, cursor off), so the two artifacts can never
-# drift apart. The typed text has two color segments — " go get " (white,
-# bold) then the module path (blue) — matching the static design.
-W_SEG=" go get "
+# drift apart. The typed text has the verb segment (white, bold) then the
+# module path (blue) — matching the static design.
 total_chars=$((${#W_SEG} + ${#install_path}))
 emit_frame() {
 	local k=$1 cursor=$2 out=$3
