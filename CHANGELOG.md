@@ -27,6 +27,10 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 - **AGENTS.md §5.10**: lockfile facts refreshed (15 entries; HeyGen
   suite grew to 10 with `product-launch-video`) and the aggregation git
   repo documented.
+- **Aggregation repo integrated** (`agent-skills` `1d897b7`): the
+  2026-09-13 `skills update -g` (11 third-party skills, run over SSH)
+  plus the 4 own-skill symlinks added since 2026-09-05 committed;
+  own symlinks verified untouched by the update.
 - **`verify-external-claims` §0**: new fabrication class "agent-summarized
   fetch is not extraction" — exact strings need raw fetch + mechanical
   extraction (2026-09-11 feedback incident 1).
