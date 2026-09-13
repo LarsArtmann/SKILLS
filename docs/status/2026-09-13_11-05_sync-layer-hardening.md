@@ -29,11 +29,11 @@ Quality gate green (`check-skills.sh` exit 0).
 
 It verified repo → runtime only. Three failure modes were unguarded:
 
-| Guard | Failure mode it closes | Evidence |
-| --- | --- | --- |
-| Reverse orphan sweep (`--check` exit 1, `--list` ORPHAN) | Rule-5 leftover: skill `git rm`'d from repo but symlink left in runtime | sandbox: aliased + dangling symlinks both caught |
-| Lockfile collision guard (`--check` exit 1) | Rule-2 precondition: an own skill tracked by the skills CLI gets its symlink `rm -rf`'d by the next `skills update` | sandbox: fake lockfile with `code-quality-scan` detected; override via `SKILLS_LOCKFILE` |
-| Aggregation-repo hint (repair mode) | New/changed symlinks silently untracked in the `agent-skills` repo | sandbox: NOTE printed only when `.git` present AND something changed |
+| Guard                                                    | Failure mode it closes                                                                                              | Evidence                                                                                 |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Reverse orphan sweep (`--check` exit 1, `--list` ORPHAN) | Rule-5 leftover: skill `git rm`'d from repo but symlink left in runtime                                             | sandbox: aliased + dangling symlinks both caught                                         |
+| Lockfile collision guard (`--check` exit 1)              | Rule-2 precondition: an own skill tracked by the skills CLI gets its symlink `rm -rf`'d by the next `skills update` | sandbox: fake lockfile with `code-quality-scan` detected; override via `SKILLS_LOCKFILE` |
+| Aggregation-repo hint (repair mode)                      | New/changed symlinks silently untracked in the `agent-skills` repo                                                  | sandbox: NOTE printed only when `.git` present AND something changed                     |
 
 All sandbox-tested via `AGENTS_DIR=/tmp/lk-test`; live `--check` against the real
 runtime dir still exits 0. Test sandbox discarded (disposable state, no evidence
@@ -43,12 +43,12 @@ cited from it beyond the behaviors above).
 
 All four incidents encoded, file archived to `docs/feedback/processed/`:
 
-| Incident | Encoded in |
-| --- | --- |
-| 1 — agent-summarized fetch hallucinated exact URLs | `verify-external-claims` §0 (new fabrication class, alongside constructed URLs) |
-| 2 — `grep -q` + pipefail SIGPIPE trap | `how-to-write-skills.md` → Hard-Won Process Lessons |
-| 3 — stale cache served green after tool upgrade | `code-quality-scan` step 5 |
-| 4 — scripted edit silently deleted code | `how-to-write-skills.md` → Hard-Won Process Lessons (diff accountability + shellcheck-before-done) |
+| Incident                                           | Encoded in                                                                                         |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| 1 — agent-summarized fetch hallucinated exact URLs | `verify-external-claims` §0 (new fabrication class, alongside constructed URLs)                    |
+| 2 — `grep -q` + pipefail SIGPIPE trap              | `how-to-write-skills.md` → Hard-Won Process Lessons                                                |
+| 3 — stale cache served green after tool upgrade    | `code-quality-scan` step 5                                                                         |
+| 4 — scripted edit silently deleted code            | `how-to-write-skills.md` → Hard-Won Process Lessons (diff accountability + shellcheck-before-done) |
 
 ## Verification
 
