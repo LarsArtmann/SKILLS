@@ -10,13 +10,18 @@
 #
 # Usage:
 #   scripts/link-skills-to-agents.sh            # create/repair symlinks (idempotent)
-#   scripts/link-skills-to-agents.sh --check    # exit 1 if a link is missing or wrong
+#   scripts/link-skills-to-agents.sh --check    # exit 1 if a link is missing, wrong,
+#                                               # orphaned, or an own skill is tracked
+#                                               # by the skills-CLI lockfile
 #   scripts/link-skills-to-agents.sh --list     # show repo skills and their link state
 #   scripts/link-skills-to-agents.sh --force    # replace a conflicting real dir (DANGEROUS)
 #
 # Environment:
-#   AGENTS_DIR  target runtime dir (default: ~/.agents/skills). Override for
-#               isolated testing, e.g. AGENTS_DIR=/tmp/test-agents scripts/...
+#   AGENTS_DIR      target runtime dir (default: ~/.agents/skills). Override for
+#                   isolated testing, e.g. AGENTS_DIR=/tmp/test-agents scripts/...
+#   SKILLS_LOCKFILE skills-CLI lockfile to guard against (default:
+#                   ~/.local/state/skills/.skill-lock.json). A repo skill tracked
+#                   there would be rm -rf'd by the next `skills update`.
 
 set -euo pipefail
 
@@ -31,13 +36,30 @@ fi
 mapfile -t repo_skills < <(find "$REPO_DIR" -maxdepth 2 -name 'SKILL.md' -printf '%h\n' | sort)
 
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
-	sed -n '2,19p' "$0"
+	sed -n '2,23p' "$0"
 	exit 0
 fi
+
+declare -A repo_skill_names=()
+for skill_dir in "${repo_skills[@]}"; do
+	repo_skill_names["$(basename "$skill_dir")"]=1
+done
 
 link_target_for() {
 	local skill_name="$1"
 	realpath --relative-to="$AGENTS_DIR" "$REPO_DIR/$skill_name"
+}
+
+# True when a runtime symlink resolves (textually, so dangling links count)
+# to a path inside this repo — those are ours to report as orphans.
+link_points_into_repo() {
+	local link="$1" target target_abs
+	target=$(readlink "$link")
+	case "$target" in
+	/*) target_abs=$target ;;
+	*) target_abs=$(realpath -m "$AGENTS_DIR/$target") ;;
+	esac
+	[[ "$target_abs" == "$REPO_DIR"/* ]]
 }
 
 if [[ "${1:-}" == "--list" ]]; then
@@ -55,6 +77,12 @@ if [[ "${1:-}" == "--list" ]]; then
 			echo "  missing  $skill_name"
 		fi
 	done
+	while IFS= read -r -d '' link; do
+		link_name=$(basename "$link")
+		if [[ ! -v "repo_skill_names[$link_name]" ]] && link_points_into_repo "$link"; then
+			echo "  ORPHAN   $link_name (points into repo, skill no longer exists)"
+		fi
+	done < <(find "$AGENTS_DIR" -maxdepth 1 -type l -print0)
 	exit 0
 fi
 
@@ -81,6 +109,28 @@ if [[ "${1:-}" == "--check" ]]; then
 			drift=1
 		fi
 	done
+	# Reverse sweep: runtime symlinks pointing into this repo whose skill is
+	# gone from the repo (AGENTS.md rule 5 leftovers). Never touches third-party
+	# real dirs or symlinks that point elsewhere.
+	while IFS= read -r -d '' link; do
+		link_name=$(basename "$link")
+		if [[ ! -v "repo_skill_names[$link_name]" ]] && link_points_into_repo "$link"; then
+			echo "orphaned link: $link_name (points into repo but skill no longer exists; remove it)"
+			drift=1
+		fi
+	done < <(find "$AGENTS_DIR" -maxdepth 1 -type l -print0)
+	# Lockfile guard: an own skill tracked by the skills CLI will have its
+	# symlink rm -rf'd by the next `skills update` (AGENTS.md rule 2).
+	lockfile="${SKILLS_LOCKFILE:-$HOME/.local/state/skills/.skill-lock.json}"
+	if [[ -f "$lockfile" ]]; then
+		mapfile -t lock_names < <(jq -r 'if type == "object" then keys[] else empty end' "$lockfile" 2>/dev/null || true)
+		for lock_name in "${lock_names[@]}"; do
+			if [[ -n "$lock_name" && -v "repo_skill_names[$lock_name]" ]]; then
+				echo "own skill tracked by skills-CLI lockfile: $lock_name (next 'skills update' will rm -rf its symlink; AGENTS.md rule 2)"
+				drift=1
+			fi
+		done
+	fi
 	if [[ $drift -eq 0 ]]; then
 		echo "OK: all repo skills symlinked into $AGENTS_DIR"
 		exit 0
@@ -94,6 +144,7 @@ if [[ "${1:-}" == "--force" ]]; then
 fi
 
 echo "Linking repo skills from $REPO_DIR into $AGENTS_DIR ..."
+changed=0
 for skill_dir in "${repo_skills[@]}"; do
 	skill_name=$(basename "$skill_dir")
 	runtime="$AGENTS_DIR/$skill_name"
@@ -105,6 +156,7 @@ for skill_dir in "${repo_skills[@]}"; do
 			echo "  ok $skill_name"
 		else
 			ln -sfn "$target" "$runtime"
+			changed=1
 			echo "  repaired $skill_name -> $target"
 		fi
 	elif [[ -e "$runtime" ]]; then
@@ -118,8 +170,16 @@ for skill_dir in "${repo_skills[@]}"; do
 		fi
 	else
 		ln -s "$target" "$runtime"
+		changed=1
 		echo "  created $skill_name -> $target"
 	fi
 done
+
+# The runtime dir doubles as a git repo (aggregation layer, AGENTS.md 5.10).
+# New/changed symlinks show up untracked there until the owner commits them.
+if [[ $changed -eq 1 && -d "$AGENTS_DIR/.git" ]]; then
+	echo "NOTE: $AGENTS_DIR is a git repo (aggregation layer); review and commit the changed links:"
+	echo "  git -C $AGENTS_DIR status --short"
+fi
 
 echo "Done."
