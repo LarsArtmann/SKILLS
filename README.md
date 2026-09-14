@@ -37,6 +37,12 @@ Skills organized by domain — live count via `scripts/check-skills.sh` (never h
 | **full-code-review**   | Comprehensive review visiting every code and test file                | 🟢 Comprehensive |
 | **naming-review**      | Audits and improves naming for types, functions, and identifiers      | 🟢 Comprehensive |
 
+### Build Automation
+
+| Skill         | What It Does                                                                                                                                  | Status   |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| **buildflow** | Use (don't duplicate) the BuildFlow quality pipeline in covered projects — responsibility delegation, run/fix/verify loop, failure triage      | 🆕 New   |
+
 ### Skill Authoring & Verification
 
 | Skill                      | What It Does                                                                                                                            | Status   |
