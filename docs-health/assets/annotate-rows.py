@@ -64,19 +64,53 @@ def strike_row(line: str, row: str, marker: str) -> str:
     return m.group(1) + f"~~{m.group(2)}~~" + m.group(3) + "|".join(struck) + m.group(5)
 
 
+def heading_level(line: str) -> int:
+    """ATX heading level of line, 0 when the line is not a heading."""
+    m = re.match(r"^(#{1,6})\s", line)
+    return len(m.group(1)) if m else 0
+
+
 def scoped_lines(lines: list[str], section: str | None) -> tuple[int, int]:
-    """(start, end) index range of the section; whole file when unscoped."""
+    """(start, end) index range of the section; whole file when unscoped.
+
+    The end boundary is the next heading of the SAME OR HIGHER level than the
+    section heading, so a `### a)` sub-section stays scoped inside its `## f)`
+    parent instead of bleeding past sibling `###` blocks (level-aware scoping,
+    upstreamed 2026-09-14 after two `###`-table reports needed a custom
+    variant). `section` may carry a 1-based occurrence suffix (`### a)#2`) to
+    pick among repeated headings whose row numbers collide.
+    """
     auto = "## f)"
     prefix = section
     if prefix is None and any(l.startswith(auto) for l in lines):
         prefix = auto
     if prefix is None:
         return 0, len(lines)
-    start = next((i for i, l in enumerate(lines) if l.startswith(prefix)), None)
-    if start is None:
-        raise SystemExit(f"section {prefix!r} not found")
+
+    occurrence = 1
+    suffix = re.search(r"#(\d+)$", prefix)
+    if suffix:
+        occurrence = int(suffix.group(1))
+        prefix = prefix[: suffix.start()]
+
+    matches = [i for i, l in enumerate(lines) if l.startswith(prefix)]
+    if len(matches) < occurrence:
+        raise SystemExit(
+            f"section {prefix!r} occurrence {occurrence} not found "
+            f"(found {len(matches)})"
+        )
+
+    start = matches[occurrence - 1]
+    level = heading_level(lines[start])
+    if level == 0:
+        raise SystemExit(f"section start {lines[start]!r} is not a heading")
+
     end = next(
-        (i for i, l in enumerate(lines[start + 1 :], start + 1) if l.startswith("## ")),
+        (
+            i
+            for i, l in enumerate(lines[start + 1 :], start + 1)
+            if 0 < heading_level(l) <= level
+        ),
         len(lines),
     )
     return start, end

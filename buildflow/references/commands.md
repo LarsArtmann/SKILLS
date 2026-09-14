@@ -33,33 +33,33 @@ Command surface verified against `buildflow --help` (2026-09-14). When this file
 
 ## Key flags
 
-| Flag                          | Meaning                                                                                                                                |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `--build-mode`                | `full` (default) / `fast` / `pre-commit` / `dev` / `lightning`; `ci` is a deprecated alias for `full`                                  |
-| `--fix`                       | Enable auto-fix (detect → repair → verify topology)                                                                                    |
-| `-s, --step <name>`           | Run ONE step; does NOT accumulate (last `-s` wins). Module qualifier: `"tool [module]"` or `tool@module`                               |
-| `-d, --dry-run`               | Preview what would execute (includes `skip_steps`)                                                                                     |
-| `-v, --verbose`               | Debug-level logging (NOT "show findings" — use `--format finding` for that)                                                            |
-| `--staged-only`               | Only process git-staged files (what the pre-commit hook uses)                                                                          |
-| `--failed-only`               | Rerun ONLY the steps that failed in the last recorded run                                                                              |
-| `--resume`                    | Skip steps that succeeded in the previous run                                                                                          |
-| `--format`                    | `console` / `json` / `silent` / `sarif` / `finding` / `html` / `ci`                                                                    |
-| `--fail-on`                   | Remaining-finding severity gate: `info`/`warning`/`error`/`critical`/`none`. Empty = error (default)                                   |
-| `--strict`                    | Shorthand for `--fail-on=warning`                                                                                                      |
-| `--fail-on-findings`          | Exit non-zero when findings remain after auto-fix (CI catch-all)                                                                       |
-| `--lint-priority`             | golangci-lint-auto-configure depth: `critical`/`high`/`medium`/`optional` (higher = fewer linters)                                     |
-| `--step-timeout`              | Per-tool timeout override, repeatable: `golangci-lint=5m`                                                                              |
-| `--budget` / `--max-time`     | Soft warn / hard terminate limits (e.g. `30s`, `2m`)                                                                                   |
-| `--max-concurrency`           | Parallel steps (0 = CPU count; default caps at min(NumCPU, 4))                                                                         |
-| `--exclude`                   | Exclude patterns (repeatable)                                                                                                          |
-| `--semantic`                  | Semantic mode for art-dupl (renamed-variable clones)                                                                                   |
-| `--result-cache`              | Content-addressed detector cache, default on (`--no-result-cache-for <tool>` per tool; env `BUILDFLOW_NO_RESULT_CACHE=1` disables all) |
-| `--live-dashboard`            | SSE HTTP dashboard during execution (`--live-dashboard-addr`, `--live-dashboard-open`)                                                 |
-| `--flight-recorder`           | Go execution trace snapshot on step failure (`.buildflow-traces/`, `buildflow trace`)                                                  |
-| `--progress`                  | `auto` / `plain` / `scroll` / `inline` / `tui` (scroll for SSH/CI)                                                                     |
-| `--no-tui`                    | Full-screen TUI off, scroll mode on                                                                                                    |
-| `--circuit-breaker-action`    | `warn` (default) or `skip` for chronically failing steps                                                                               |
-| `--failed-only` + `--profile` | Performance profile: `lightning`/`balanced`/`thorough`/`ci`/`full`                                                                     |
+| Flag                       | Meaning                                                                                                                                |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `--build-mode`             | `full` (default) / `fast` / `pre-commit` / `dev` / `lightning`; `ci` is a deprecated alias for `full`                                  |
+| `--fix`                    | Enable auto-fix (detect → repair → verify topology)                                                                                    |
+| `-s, --step <name>`        | Run ONE step; does NOT accumulate (last `-s` wins). Module qualifier: `"tool [module]"` or `tool@module`                               |
+| `-d, --dry-run`            | Preview what would execute (includes `skip_steps`)                                                                                     |
+| `-v, --verbose`            | Debug-level logging (NOT "show findings" — use `--format finding` for that)                                                            |
+| `--staged-only`            | Only process git-staged files (what the pre-commit hook uses)                                                                          |
+| `--failed-only`            | Rerun ONLY the steps that failed in the last recorded run                                                                              |
+| `--resume`                 | Skip steps that succeeded in the previous run                                                                                          |
+| `--format`                 | `console` / `json` / `silent` / `sarif` / `finding` / `html` / `ci`                                                                    |
+| `--fail-on`                | Remaining-finding severity gate: `info`/`warning`/`error`/`critical`/`none`. Empty = error (default)                                   |
+| `--strict`                 | Shorthand for `--fail-on=warning`                                                                                                      |
+| `--fail-on-findings`       | Exit non-zero when findings remain after auto-fix (CI catch-all)                                                                       |
+| `--lint-priority`          | golangci-lint-auto-configure depth: `critical`/`high`/`medium`/`optional` (higher = fewer linters)                                     |
+| `--step-timeout`           | Per-tool timeout override, repeatable: `golangci-lint=5m`                                                                              |
+| `--budget` / `--max-time`  | Soft warn / hard terminate limits (e.g. `30s`, `2m`)                                                                                   |
+| `--max-concurrency`        | Parallel steps (0 = CPU count; default caps at min(NumCPU, 4))                                                                         |
+| `--exclude`                | Exclude patterns (repeatable)                                                                                                          |
+| `--semantic`               | Semantic mode for art-dupl (renamed-variable clones)                                                                                   |
+| `--result-cache`           | Content-addressed detector cache, default on (`--no-result-cache-for <tool>` per tool; env `BUILDFLOW_NO_RESULT_CACHE=1` disables all) |
+| `--live-dashboard`         | SSE HTTP dashboard during execution (`--live-dashboard-addr`, `--live-dashboard-open`)                                                 |
+| `--flight-recorder`        | Go execution trace snapshot on step failure (`.buildflow-traces/`, `buildflow trace`)                                                  |
+| `--progress`               | `auto` / `plain` / `scroll` / `inline` / `tui` (scroll for SSH/CI)                                                                     |
+| `--no-tui`                 | Full-screen TUI off, scroll mode on                                                                                                    |
+| `--circuit-breaker-action` | `warn` (default) or `skip` for chronically failing steps                                                                               |
+| `--profile`                | Performance profile: `lightning`/`balanced`/`thorough`/`ci`/`full`                                                                     |
 
 All flags also work as `BUILDFLOW_*` environment variables (`BUILDFLOW_BUILD_MODE`, `BUILDFLOW_VERBOSE`, …).
 
