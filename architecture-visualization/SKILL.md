@@ -1,6 +1,6 @@
 ---
 name: architecture-visualization
-description: Use when the user wants architecture diagrams, D2 diagrams, Events & Commands flow visualization, or wants to see how the system IS vs how it SHOULD BE architected. Also triggers when the user asks about system architecture, component relationships, service dependencies, or any visual representation of codebase structure. Generates D2 architecture diagrams for the current system and/or the ideal target architecture.
+description: Use when the user wants architecture diagrams, D2 diagrams, Events & Commands flow visualization, or wants to see how the system IS vs how it SHOULD BE architected. Also triggers when the user asks about system architecture, component relationships, service dependencies, or any visual representation of codebase structure. Generates D2 architecture diagrams for the current system and/or the ideal target architecture. Distinct from architecture-review (scored structural assessment and action roadmap — judgment, not diagrams); the two share the docs/architecture-understanding/ output directory.
 metadata:
   tags: architecture, d2, visualization, diagram, events, commands
 allowed-tools: d2
@@ -44,3 +44,11 @@ Generate D2 diagrams that capture the current and ideal architecture. D2 produce
 - **Label connections** with descriptive verbs (e.g., `emits`, `handles`, `queries`)
 - **Use `style` blocks** sparingly — prefer semantic shape names over visual overrides
 - **For large diagrams**, set ELK layout for better automatic positioning
+
+## Related Skills
+
+- **architecture-review** — scored structural assessment (coupling, cohesion,
+  modularity rubric) plus an action roadmap, written into the same
+  `docs/architecture-understanding/` directory. Use it when the user wants
+  judgment rather than diagrams; diagrams and reviews are companion artifacts
+  of one investigation.

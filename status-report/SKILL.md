@@ -1,6 +1,6 @@
 ---
 name: status-report
-description: Use when the user asks for a status update, progress report, project status, "STATUS UPDATE", "WHAT'S THE STATUS", "where are we", "what's the state of the project", "project health", "progress check", "what's done", "what's left", or wants a snapshot of current project state. Also fires when the user wants to know what's fucked up or what to prioritize next. Generates a full comprehensive status update of the project — what's done, what's broken, what's partially complete, and what to do next. Distinct from docs-health (maintains TODO_LIST/FEATURES/CHANGELOG/ROADMAP — use status-report for a point-in-time snapshot, docs-health for ongoing doc maintenance).
+description: Use when the user asks for a status update, progress report, project status, "STATUS UPDATE", "WHAT'S THE STATUS", "where are we", "what's the state of the project", "project health", "progress check", "what's done", "what's left", or wants a snapshot of current project state. Also fires when the user wants to know what's fucked up or what to prioritize next. Generates a full comprehensive status update of the project — what's done, what's broken, what's partially complete, and what to do next. Distinct from docs-health (maintains TODO_LIST/FEATURES/CHANGELOG/ROADMAP — use status-report for a point-in-time snapshot, docs-health for ongoing doc maintenance) and from brutal-self-review (critique of recent work quality — ghost systems, split brains, improvement plan; this skill inventories work-item state).
 metadata:
   tags: status, report, progress, tracking
 ---
@@ -75,3 +75,10 @@ treatment: stat cards, severity badges, color-coded sections.
 > report, run HARVEST now:
 > [`docs-health`](../docs-health/SKILL.md) → **HARVEST** (the canonical rule
 > for why and how lives there — do not restate it here).
+
+## Related Skills
+
+- **brutal-self-review** — critique of recent work quality (what was forgotten,
+  ghost systems, split brains, improvement plan), not a state inventory. Sessions
+  often run both: this report answers "where are we", the self-review answers
+  "what did we get wrong". Their output sections do not overlap.

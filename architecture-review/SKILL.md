@@ -1,6 +1,6 @@
 ---
 name: architecture-review
-description: Use when the user asks about architecture quality, scalability, modularity, coupling and cohesion, service orientation, composability, or says "architecture review", "review my architecture", "architecture audit", "architecture quality", "how modular is this", "coupling analysis", or wants to assess the structural health of a codebase. Reviews the current architecture and gives a structural assessment. Distinct from full-code-review (covers all issue types file-by-file, not just architecture) and code-quality-scan (automated tools only, no architectural judgment).
+description: Use when the user asks about architecture quality, scalability, modularity, coupling and cohesion, service orientation, composability, or says "architecture review", "review my architecture", "architecture audit", "architecture quality", "how modular is this", "coupling analysis", or wants to assess the structural health of a codebase. Reviews the current architecture and gives a structural assessment. Distinct from full-code-review (covers all issue types file-by-file, not just architecture) and code-quality-scan (automated tools only, no architectural judgment). Also distinct from architecture-visualization (renders D2 diagrams of current vs ideal structure — pictures, not judgment).
 metadata:
   tags: architecture, scalability, modularity, service-oriented, composable
 ---
@@ -52,3 +52,10 @@ Map the review to visual components:
 4. **Identify pain points** — change ripple analysis, god modules, dead code, testing pain. See [./references/review-methodology.md](./references/review-methodology.md) → Pain point identification.
 5. **Score each dimension** — Coupling, Cohesion, Modularity, Composability, Scalability, Service Orientation, Dependency Direction. See [./references/assessment-rubric.md](./references/assessment-rubric.md) for the 1-5 rubric.
 6. **Write the action roadmap** — concrete recommendations with priority levels (P0-P3), impact, effort, and ordering constraints. See [./references/review-methodology.md](./references/review-methodology.md) → Recommendation framework.
+
+## Related Skills
+
+- **architecture-visualization** — renders D2 `.d2`/`.svg` diagram pairs into the
+  same `docs/architecture-understanding/` directory. When the user wants pictures
+  of the current vs. ideal structure rather than a scored assessment, use it; the
+  two compose — visualize the structure first, then review it.

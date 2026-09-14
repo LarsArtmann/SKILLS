@@ -1,6 +1,6 @@
 ---
 name: brutal-self-review
-description: Use when the user asks for self-reflection, self-critique, wants to know what was forgotten, what's stupid, what could be better, wants to find ghost systems, split brains, or wants a comprehensive improvement plan. Triggers a brutally honest self-review of recent work and the current codebase state (Go projects) with Go ecosystem library awareness.
+description: Use when the user asks for self-reflection, self-critique, wants to know what was forgotten, what's stupid, what could be better, wants to find ghost systems, split brains, or wants a comprehensive improvement plan. Triggers a brutally honest self-review of recent work and the current codebase state (Go projects) with Go ecosystem library awareness. Distinct from status-report (work-item state inventory, done/partial/broken plus Top-N next tasks — that skill answers "where are we", this one answers "what did we get wrong").
 metadata:
   tags: review, self-critique, honesty, go, architecture, improvement
 ---
@@ -67,3 +67,9 @@ For Go ecosystem libraries, architecture patterns, banned libraries, and require
 Report back and ask questions if necessary aka. have a hard time to figure something out!
 Run "git status & git commit ..." after each smallest self-contained change.
 Do not push unless the user explicitly requests it.
+
+## Related Skills
+
+- **status-report** — work-item state inventory (a–g sections: done / partial /
+  broken / Top-N next tasks). Use it when the user asks "where are we" rather
+  than "what did we get wrong"; sessions frequently run both.
