@@ -33,7 +33,7 @@
 
 | Skill              | Status                    | Lines | References  | Notes                                                                                               |
 | ------------------ | ------------------------- | ----- | ----------- | --------------------------------------------------------------------------------------------------- |
-| brutal-self-review | 🟢 `FULLY_FUNCTIONAL`     | 69    | ✅          | Brutally honest Go codebase self-review                                                             |
+| brutal-self-review | 🟢 `FULLY_FUNCTIONAL`     | 75    | ✅          | Brutally honest Go codebase self-review                                                             |
 | full-code-review   | 🟢 `FULLY_FUNCTIONAL`     | 85    | ✅          | Visits every file; delegates planning to pareto-planning                                            |
 | naming-review      | 🟢 `FULLY_FUNCTIONAL`     | 260   | ✅          | Multi-language naming audit with automated detection scripts                                        |
 | code-quality-scan  | 🟡 `PARTIALLY_FUNCTIONAL` | 41    | ✅ (assets) | Build + lint + duplication → HTML dashboard; tool-guidance matrix added 2026-08-04, body still thin |
