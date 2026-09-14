@@ -39,9 +39,9 @@ Skills organized by domain — live count via `scripts/check-skills.sh` (never h
 
 ### Build Automation
 
-| Skill         | What It Does                                                                                                                                  | Status   |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| **buildflow** | Use (don't duplicate) the BuildFlow quality pipeline in covered projects — responsibility delegation, run/fix/verify loop, failure triage      | 🆕 New   |
+| Skill         | What It Does                                                                                                                              | Status |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| **buildflow** | Use (don't duplicate) the BuildFlow quality pipeline in covered projects — responsibility delegation, run/fix/verify loop, failure triage | 🆕 New |
 
 ### Skill Authoring & Verification
 

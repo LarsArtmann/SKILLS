@@ -21,23 +21,23 @@ Before manually running a quality tool in a covered project, check whether Build
 
 ## What BuildFlow takes over from covered projects
 
-| Responsibility                                                                 | Don't do this by hand                                                                 | Run instead                                              |
-| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| Formatting (oxfmt, prettier, dprint, ruff/black/isort, templ-fmt, nix-fmt, shfmt) | Formatter wrapper scripts, `nix fmt` for quality runs, per-repo format CI jobs        | `buildflow format` (all formatting + fix + modernize)    |
-| Linter configuration (`.golangci.yml`, `.oxlintrc.json`, clippy lints)         | Curating linter lists from scratch each repo                                          | `buildflow -s golangci-lint-auto-configure --fix`        |
-| Linting itself (golangci-lint, shellcheck, hadolint, markdownlint, oxlint, …)   | `golangci-lint run --fix` directly (bypasses verify; exit 1 on unfixable is normal)   | `buildflow -s golangci-lint` / plain `buildflow`          |
-| go.mod/go.work hygiene (tidy, sync, normalize, replace directives, require floors) | Manual `go mod tidy`, hand-normalizing pseudo-versions, hunting obsolete replaces | `buildflow -s gomod-check --fix`, `go-mod-normalize`      |
-| Nix hash repair (vendorHash FOD mismatches)                                     | Pasting `got: sha256-…` hashes by hand                                                | `buildflow -s nix-hash-fix --fix`                         |
-| Nix builds & checks in the pipeline (nix-build, deadnix, statix, flake check)   | Running each nix lint separately for quality verdicts                                 | `buildflow` (nix tools trigger on `flake.nix`)            |
-| Dependency updates (Go, Rust, npm/pnpm)                                         | Per-ecosystem update commands                                                          | `buildflow update`                                        |
-| Dependabot config (`.github/dependabot.yml` sync with real modules)            | Hand-editing dependabot entries when modules are added/removed                        | `buildflow -s dependabot-auto-configure --fix`            |
-| Code generation (templ, sqlc, govalid, tailwind, go generate)                   | Remembering which generators exist and in what order                                  | `buildflow` (they trigger on their config files)          |
-| Modernization (`go fix`, go-auto-upgrade, pyupgrade)                            | One-off migration scripts                                                             | `buildflow --fix`                                         |
-| Security scans (pip-audit, pnpm-audit, cargo-audit, vulnix)                     | Ad-hoc audit commands with inconsistent flags                                         | `buildflow` (gitleaks/codespell are on-demand: `-s <t>`)  |
-| Tests (test-race, test-coverage, pytest, jest, vitest) per build mode           | Hand-picking when tests run                                                           | `buildflow --build-mode full`                             |
-| Pre-commit quality gate                                                        | Hand-written hook scripts                                                             | `buildflow precommit install`                             |
-| Environment diagnosis (19 doctor checks: env, workspace, vendor, disk, network) | Debugging tool availability yourself                                                  | `buildflow doctor`                                        |
-| Timing/regression analytics                                                    | Guessing why the build got slower                                                     | `buildflow timings --regressions`, `buildflow history`    |
+| Responsibility                                                                     | Don't do this by hand                                                               | Run instead                                              |
+| ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Formatting (oxfmt, prettier, dprint, ruff/black/isort, templ-fmt, nix-fmt, shfmt)  | Formatter wrapper scripts, `nix fmt` for quality runs, per-repo format CI jobs      | `buildflow format` (all formatting + fix + modernize)    |
+| Linter configuration (`.golangci.yml`, `.oxlintrc.json`, clippy lints)             | Curating linter lists from scratch each repo                                        | `buildflow -s golangci-lint-auto-configure --fix`        |
+| Linting itself (golangci-lint, shellcheck, hadolint, markdownlint, oxlint, …)      | `golangci-lint run --fix` directly (bypasses verify; exit 1 on unfixable is normal) | `buildflow -s golangci-lint` / plain `buildflow`         |
+| go.mod/go.work hygiene (tidy, sync, normalize, replace directives, require floors) | Manual `go mod tidy`, hand-normalizing pseudo-versions, hunting obsolete replaces   | `buildflow -s gomod-check --fix`, `go-mod-normalize`     |
+| Nix hash repair (vendorHash FOD mismatches)                                        | Pasting `got: sha256-…` hashes by hand                                              | `buildflow -s nix-hash-fix --fix`                        |
+| Nix builds & checks in the pipeline (nix-build, deadnix, statix, flake check)      | Running each nix lint separately for quality verdicts                               | `buildflow` (nix tools trigger on `flake.nix`)           |
+| Dependency updates (Go, Rust, npm/pnpm)                                            | Per-ecosystem update commands                                                       | `buildflow update`                                       |
+| Dependabot config (`.github/dependabot.yml` sync with real modules)                | Hand-editing dependabot entries when modules are added/removed                      | `buildflow -s dependabot-auto-configure --fix`           |
+| Code generation (templ, sqlc, govalid, tailwind, go generate)                      | Remembering which generators exist and in what order                                | `buildflow` (they trigger on their config files)         |
+| Modernization (`go fix`, go-auto-upgrade, pyupgrade)                               | One-off migration scripts                                                           | `buildflow --fix`                                        |
+| Security scans (pip-audit, pnpm-audit, cargo-audit, vulnix)                        | Ad-hoc audit commands with inconsistent flags                                       | `buildflow` (gitleaks/codespell are on-demand: `-s <t>`) |
+| Tests (test-race, test-coverage, pytest, jest, vitest) per build mode              | Hand-picking when tests run                                                         | `buildflow --build-mode full`                            |
+| Pre-commit quality gate                                                            | Hand-written hook scripts                                                           | `buildflow precommit install`                            |
+| Environment diagnosis (19 doctor checks: env, workspace, vendor, disk, network)    | Debugging tool availability yourself                                                | `buildflow doctor`                                       |
+| Timing/regression analytics                                                        | Guessing why the build got slower                                                   | `buildflow timings --regressions`, `buildflow history`   |
 
 The full per-ecosystem step catalog and the "what the project still owns" split live in [./references/responsibilities.md](./references/responsibilities.md) — read it when deciding whether a new task belongs in the project or in BuildFlow.
 
@@ -54,13 +54,13 @@ Imperative workflow for any quality task in a covered project:
 
 ### Build modes
 
-| Mode         | Duration   | Use for                          | test-race / coverage |
-| ------------ | ---------- | -------------------------------- | -------------------- |
-| `full`       | ~5-10 min  | CI, releases, nightly            | run / run            |
-| `fast`       | ~5-30 sec  | Quick local iteration            | skip                 |
-| `pre-commit` | ~5-10 sec  | Git hook (nix builds blocklisted) | skip                |
-| `dev`        | ~5-30 sec  | Local development                | run / run            |
-| `lightning`  | ~1-2 sec   | Active coding, essentials only   | skip                 |
+| Mode         | Duration  | Use for                           | test-race / coverage |
+| ------------ | --------- | --------------------------------- | -------------------- |
+| `full`       | ~5-10 min | CI, releases, nightly             | run / run            |
+| `fast`       | ~5-30 sec | Quick local iteration             | skip                 |
+| `pre-commit` | ~5-10 sec | Git hook (nix builds blocklisted) | skip                 |
+| `dev`        | ~5-30 sec | Local development                 | run / run            |
+| `lightning`  | ~1-2 sec  | Active coding, essentials only    | skip                 |
 
 `dev` is a build MODE, not a command: `buildflow --build-mode dev`.
 
@@ -82,14 +82,14 @@ A green run can still exit non-zero: by default BuildFlow **fails when findings 
 
 ## Failure triage (short form)
 
-| Symptom                                                        | First move                                                                                      |
-| -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Step failed in summary                                         | Re-run `buildflow -s <tool> -v`; summary prints the exact re-run command per failure             |
-| Finding looks wrong                                            | Check project AGENTS.md for a known-tool-bug entry; then suspect a stale binary (`buildflow doctor`) |
-| `nix build` hash mismatch (`got: sha256-…`)                    | `buildflow -s nix-hash-fix --fix` — never paste hashes by hand                                   |
-| Tool behaves like an old version                               | `buildflow doctor` (binary-freshness check); update with `buildflow upgrade`                     |
-| Finding replays after its cause was deleted                    | Result cache keys cover matched files only; bypass with `BUILDFLOW_NO_RESULT_CACHE=1` (details in references) |
-| Commit blocked by pre-commit hook                              | It ran `buildflow --build-mode pre-commit --staged-only` and re-staged formatted files; fix the findings, re-stage |
+| Symptom                                     | First move                                                                                                         |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Step failed in summary                      | Re-run `buildflow -s <tool> -v`; summary prints the exact re-run command per failure                               |
+| Finding looks wrong                         | Check project AGENTS.md for a known-tool-bug entry; then suspect a stale binary (`buildflow doctor`)               |
+| `nix build` hash mismatch (`got: sha256-…`) | `buildflow -s nix-hash-fix --fix` — never paste hashes by hand                                                     |
+| Tool behaves like an old version            | `buildflow doctor` (binary-freshness check); update with `buildflow upgrade`                                       |
+| Finding replays after its cause was deleted | Result cache keys cover matched files only; bypass with `BUILDFLOW_NO_RESULT_CACHE=1` (details in references)      |
+| Commit blocked by pre-commit hook           | It ran `buildflow --build-mode pre-commit --staged-only` and re-staged formatted files; fix the findings, re-stage |
 
 Deep triage (stale-binary update paths, result-cache purge, pre-commit edge cases, daemon interactions) is in [./references/failure-triage.md](./references/failure-triage.md) — read it before improvising a workaround.
 
