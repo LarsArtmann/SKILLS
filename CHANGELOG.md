@@ -13,6 +13,28 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Changed (2026-09-14 — merge assessment: three gaps closed, no directory merges)
+
+- **Merge assessment across all 29 skills**: no further skill-directory
+  merges warranted — remaining separations are intent-distinct and
+  documented in AGENTS.md §5.5 (prior merges already executed: docs-health
+  absorbed 4 skills, html-report-kit absorbed nix-flake-migration,
+  execution-mode split into brutal-self-review + pareto-planning).
+- **Removed `brutal-self-review/references/go-ecosystem.md`** — orphaned
+  stale fork of `how-to-golang`'s library domain; it still recommended
+  `LarsArtmann/uniflow` for errors after how-to-golang's 2026-08-21
+  correction marked it uncompilable at @latest. SKILL.md already delegates
+  to how-to-golang; nothing linked the file.
+- **Two-way disambiguation added** to `architecture-review` ↔
+  `architecture-visualization` (companion pair sharing the
+  `docs/architecture-understanding/` output dir; judgment vs diagrams) and
+  `status-report` ↔ `brutal-self-review` (trigger-collision zone "what's
+  fucked up"; empirically blended in 16 of 66 session reports; state
+  inventory vs quality critique kept separate) — description notes plus
+  Related Skills sections in all four bodies.
+- **AGENTS.md §5.5**: graph entries for both pairs + the go-ecosystem.md
+  removal, with the directory-merge vs content-split-brain distinction.
+
 ### Added (2026-09-13 — sync-layer hardening + 2026-09-11 feedback encoded)
 
 - **`scripts/link-skills-to-agents.sh`**: three new guards —
