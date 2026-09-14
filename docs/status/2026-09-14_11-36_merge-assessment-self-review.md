@@ -78,4 +78,6 @@ Pattern across d1–d5: **gates ≠ verification.** I quoted exit codes diligent
 
 ---
 
+**Postscript (11:38):** the post-report gate re-run exited **1** — a `buildflow/` skill directory appeared mid-session (not present in the 11:25 inventory of 29; auto-committed by the daemon as `250bc98`/`c59a6d1`) with 3 dangling `./references/*.md` links. NOT authored by this session; left untouched per the never-revert-others'-changes rule. All failures are in `buildflow/`; every file this session touched remains green. Likely in-flight authoring by a parallel session or the owner — the next session should re-check rather than assume drift from this session's edits. (Live demo of this repo's "status reports are point-in-time" lesson.)
+
 **Report written. WAITING FOR INSTRUCTIONS.**
