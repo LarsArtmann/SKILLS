@@ -5,7 +5,9 @@ Usage: check-rows.py <markdown-file>...
 Verifies, per markdown table, that every data row is uniformly struck or
 uniformly untouched:
 
-  COMPLETE  every data row has ALL its cells wrapped in ~~...~~
+  COMPLETE  every cell of every data row carries strikethrough (the
+            annotate-rows.py marker format — marker inside the first
+            struck cell — counts as struck)
   UNTOUCHED no data row carries any ~~
   PARTIAL   a row mixes struck and unstruck cells, or some rows of the
             table are struck while others are not — the planted-miss class
@@ -39,13 +41,15 @@ def is_separator(line: str) -> bool:
 
 
 def classify_row(line: str) -> str:
-    """STRUCK / CLEAN / PARTIAL for one table data row."""
+    """STRUCK / CLEAN / PARTIAL for one table data row.
+
+    A cell counts as struck when it carries strikethrough outside code
+    spans — the annotator's format wraps every cell and appends the marker
+    INSIDE the first cell (`~~task~~ done at `hash``), so first cells don't
+    end with ~~; requiring containment, not full wrapping, accepts both the
+    marker format and plain `~~cell~~` wrapping."""
     cells = [c.strip() for c in line.strip().strip("|").split("|")]
-    states = []
-    for cell in cells:
-        bare = outside_code_spans(cell).strip()
-        struck = bare.startswith("~~") and bare.endswith("~~")
-        states.append(struck)
+    states = ["~~" in outside_code_spans(cell) for cell in cells]
 
     if all(states):
         return "STRUCK"

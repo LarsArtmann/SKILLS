@@ -60,8 +60,9 @@ def marker_for(kind: str, value: str) -> str:
 def outside_code_spans(line: str) -> str:
     """Line with inline code spans removed, so tildes inside backticks (a
     literal `~~...~~` example) don't false-trip the already-annotated guard.
-    Handles doubled-backtick spans containing single backticks first."""
-    without_double = re.sub(r"``[^`]+``", "", line)
+    Doubled-backtick spans (which may contain single backticks) are stripped
+    first, then single-backtick spans."""
+    without_double = re.sub(r"``.+?``", "", line)
 
     return re.sub(r"`[^`]*`", "", without_double)
 
