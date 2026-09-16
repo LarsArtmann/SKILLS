@@ -122,9 +122,10 @@ Is it actionable with a clear scope?
 
 ```
 Can you point to the code that implements it?
-├── NO → PLANNED (if documented) or missing from FEATURES.md entirely
+├── NO → PLANNED (if genuinely next on the build path) or missing from FEATURES.md entirely
 └── YES → Can you confirm it actually works?
-    ├── NO (tests fail, endpoint 500s, disabled) → BROKEN
+    ├── NO, it fails → BROKEN
+    ├── NO, but the code is correct — a flag, credential, or switch is off → DISABLED
     └── YES → Are there known gaps or edge cases?
         ├── YES → PARTIALLY_FUNCTIONAL (cite the gap)
         └── NO → FULLY_FUNCTIONAL

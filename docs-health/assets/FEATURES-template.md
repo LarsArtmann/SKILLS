@@ -10,39 +10,60 @@
 
 ## Status legend
 
-| Status                    | Meaning                                                      |
-| ------------------------- | ------------------------------------------------------------ |
-| 🟢 `FULLY_FUNCTIONAL`     | Works as intended, exercised by tests or daily use.          |
-| 🟡 `PARTIALLY_FUNCTIONAL` | Ships but has known gaps, edge-case bugs, or missing pieces. |
-| 🔴 `BROKEN`               | Present in code but not working / disabled / failing.        |
-| ⚪ `PLANNED`              | Designed or documented but **not yet implemented** in code.  |
+Every label answers ONE question: does working code exist — and if not, why
+not?
+
+| Status                    | Meaning                                                                                                       |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| 🟢 `FULLY_FUNCTIONAL`     | Works as intended, exercised by tests or daily use.                                                           |
+| 🟡 `PARTIALLY_FUNCTIONAL` | Ships but has known gaps, edge-case bugs, or missing pieces.                                                  |
+| 🔴 `BROKEN`               | Present in code but failing. Keep BROKEN nameable — "zero BROKEN rows" is itself information.                |
+| 🔵 `DISABLED`             | Code exists and is correct, but execution is externally switched off (flag, missing credentials, CI off). A switch, not a fix — never fold into BROKEN. |
+| ⚪ `PLANNED`              | No code yet; genuinely next on the build path.                                                                |
 
 > A feature earns `FULLY_FUNCTIONAL` only when you can point to the code that
 > delivers it AND confirm it works. If you're unsure, it's `PARTIALLY_FUNCTIONAL`
 > at best, never round up.
+>
+> Large surfaces (SDK endpoints, API families) may split the no-code cases by
+> blocker instead of dumping them all into `PLANNED`: `DEMAND_GATED` (whole
+> family unshipped; built only on a real consumer demand signal), `ON_HOLD` (a
+> pending scope/design decision blocks it), `OUT_OF_SCOPE` (intentionally
+> excluded; revisit only on a demand signal).
 
 ## <!-- Domain area, e.g. Authentication -->
 
-| Feature              | Status                    | Notes                                                      |
-| -------------------- | ------------------------- | ---------------------------------------------------------- |
-| Email/password login | 🟢 `FULLY_FUNCTIONAL`     | JWT in `auth/login.go`; covered by `auth_test`             |
-| Password reset email | 🟡 `PARTIALLY_FUNCTIONAL` | Sends but retry logic is missing (`auth/reset.go:42`)      |
-| OAuth (Google)       | ⚪ `PLANNED`              | Referenced in README; no code yet                          |
-| Session revocation   | 🔴 `BROKEN`               | Endpoint exists (`auth/revoke.go`) but 500s on valid token |
+| Feature              | Status                    | Evidence                                  | Notes                                                      |
+| -------------------- | ------------------------- | ----------------------------------------- | ---------------------------------------------------------- |
+| Email/password login | 🟢 `FULLY_FUNCTIONAL`     | `auth/login.go`; `auth_test` passes       | JWT-based                                                  |
+| Password reset email | 🟡 `PARTIALLY_FUNCTIONAL` | `auth/reset.go:42`                        | Retry logic missing                                         |
+| Session revocation   | 🔴 `BROKEN`               | `auth/revoke.go`                          | 500s on valid token                                        |
+| OAuth (Google)       | ⚪ `PLANNED`              | README mentions it; no code found         | Completes the auth family                                   |
+| Weekly digest emails | 🔵 `DISABLED`             | `digest/worker.go` (correct, tested)      | Gated on `DIGEST_ENABLED`; flip flag to ship               |
 
 ## <!-- Next domain area, group features by domain for readability -->
 
-| Feature | Status | Notes |
-| ------- | ------ | ----- |
-| ...     | ...    | ...   |
+| Feature | Status | Evidence | Notes |
+| ------- | ------ | -------- | ----- |
+| ...     | ...    | ...      | ...   |
 
 ---
 
 <!-- Guidance for the auditor filling this in:
   - Source of truth is the CODE, not docs or commit messages. Open the file.
   - One row per user-visible feature, not per function or endpoint.
+  - Evidence column is mandatory: cite `file:line` or the test that proves the
+    status. A status without evidence is a guess.
   - If a feature spans multiple files, name the entry point and note the spread.
   - "PLANNED" is a claim that something is missing, verify there is truly no code.
-  - Keep Notes actionable: cite the file/line and the specific gap.
+  - BROKEN vs DISABLED: BROKEN needs a fix, DISABLED needs an unblock (flag,
+    credential, enable-switch). Different remedies, different rows.
+  - If the inventory was diffed against an external source of truth (upstream
+    API reference, spec), date-stamp the sweep in the doc so readers know the
+    freshness horizon.
+  - Counts in this doc must be verifiable: compute from the repo at write time,
+    and prefer a standing gate (script/flake app) that re-derives them — numbers
+    maintained by hand in two places always drift.
+  - Keep Notes actionable: cite the specific gap.
   - When a feature ships, remove it from TODO_LIST.md to avoid split brains.
 -->

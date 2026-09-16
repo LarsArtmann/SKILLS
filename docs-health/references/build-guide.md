@@ -145,19 +145,31 @@ function or endpoint).
 
 ### Status vocabulary
 
-| Status               | When it applies                                              |
-| -------------------- | ------------------------------------------------------------ |
-| FULLY_FUNCTIONAL     | Code present AND working (tests pass or you exercised it).   |
-| PARTIALLY_FUNCTIONAL | Ships but has known gaps, edge-case bugs, or missing pieces. |
-| BROKEN               | Code exists but does not work / is disabled / fails.         |
-| PLANNED              | Designed or documented but **no code exists yet**.           |
+Every label answers ONE question: does working code exist — and if not, why
+not? (Canon table lives in [../SKILL.md](../SKILL.md); keep this copy in sync.)
+
+| Status               | When it applies                                                                                                                       |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| FULLY_FUNCTIONAL     | Code present AND working (tests pass or you exercised it).                                                                             |
+| PARTIALLY_FUNCTIONAL | Ships but has known gaps, edge-case bugs, or missing pieces.                                                                           |
+| BROKEN               | Code exists but fails. Keep BROKEN nameable — "zero BROKEN rows" is itself information.                                               |
+| DISABLED             | Code exists and is correct, but execution is externally switched off (flag, missing credentials, workflow off). Unblock flips it to FULLY_FUNCTIONAL — a switch, not a fix; never fold into BROKEN. |
+| PLANNED              | No code yet; genuinely next on the build path (completes an already-shipped family).                                                   |
+
+Large surfaces (SDK endpoints, API families) may split the no-code cases by
+blocker: `DEMAND_GATED` (whole family unshipped; built only on a real consumer
+demand signal), `ON_HOLD` (pending scope/design decision blocks it),
+`OUT_OF_SCOPE` (intentionally excluded; revisit only on a demand signal) —
+otherwise PLANNED becomes a dumping ground that hides all four futures.
 
 ### Quality checklist
 
 - [ ] Never round up: if you cannot confirm, it is `PARTIALLY_FUNCTIONAL` at best
 - [ ] `PLANNED` items have genuinely no code (verified)
 - [ ] `FULLY_FUNCTIONAL` items have been exercised or tested
-- [ ] Notes cite evidence (`file:line`)
+- [ ] Every row has evidence (`file:line` or test) — dedicated Evidence column, not buried in Notes
+- [ ] `DISABLED` is not folded into `BROKEN` (switch vs fix have different remedies)
+- [ ] Counts computed from the repo; external-source sweeps date-stamped
 - [ ] If `README.md` or `TODO_LIST.md` claim features that the code contradicts,
       flag the discrepancy
 

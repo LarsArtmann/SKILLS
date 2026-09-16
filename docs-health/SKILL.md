@@ -80,18 +80,21 @@ Code is the source of truth. Docs are leads, not evidence.
 - `CHANGELOG.md` — **Append-only.** Never edit prior entries.
 - `ROADMAP.md` — **Update in place.** Raw ideas graduate to TODO_LIST when actionable.
 
-**Status vocabulary (FEATURES.md):**
+**Status vocabulary (FEATURES.md):** every label answers ONE question — _does working code exist, and if not, why not?_
 
-| Status               | When it applies                                              |
-| -------------------- | ------------------------------------------------------------ |
-| FULLY_FUNCTIONAL     | Code present AND working (tests pass or you exercised it).   |
-| PARTIALLY_FUNCTIONAL | Ships but has known gaps, edge-case bugs, or missing pieces. |
-| BROKEN               | Code exists but does not work / is disabled / fails.         |
-| PLANNED              | Documented but no code exists yet.                           |
+| Status               | When it applies                                                                                                                       |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| FULLY_FUNCTIONAL     | Code present AND working (tests pass or you exercised it).                                                                             |
+| PARTIALLY_FUNCTIONAL | Ships but has known gaps, edge-case bugs, or missing pieces.                                                                           |
+| BROKEN               | Code exists but fails. Keep BROKEN nameable — "zero BROKEN rows" is itself information about the project's health.                     |
+| DISABLED             | Code exists and is correct, but execution is externally switched off (feature flag, missing credentials, workflow turned off). Unblock it and the row flips to FULLY_FUNCTIONAL — a switch, not a fix. Never fold into BROKEN: the remedy differs. |
+| PLANNED              | No code yet; genuinely next on the build path (completes an already-shipped family).                                                   |
+
+When the surface is large (SDK endpoints, API families), split the no-code cases by blocker instead of letting PLANNED become a dumping ground: **DEMAND_GATED** (whole family unshipped; built only on a real consumer demand signal), **ON_HOLD** (a pending scope/design decision — not demand — blocks it), **OUT_OF_SCOPE** (intentionally not targeted; revisit only on a demand signal).
 
 Never round up. If you cannot confirm a feature works, it is PARTIALLY_FUNCTIONAL at best.
 
-**Rules:** Code wins when doc and code disagree. Cite evidence (`path/to/file:NN`). Verify each claim — many documented TODOs are already done. Detect project type and adapt which docs are needed.
+**Rules:** Code wins when doc and code disagree. Cite evidence (`path/to/file:NN`) — a dedicated Evidence column beats burying it in Notes. Verify each claim — many documented TODOs are already done. Compute counts from the repo, date-stamp any sweep against an external source of truth (e.g. "audited 2026-09-16 against the upstream API reference"), and prefer a standing gate that re-derives doc numbers over hand-maintained ones — duplicated counts rot. Detect project type and adapt which docs are needed.
 
 For BUILD procedures, examples, quality checklists, and AGENTS.md scoring, load [./references/build-guide.md](./references/build-guide.md) and [./references/agents-quality-guide.md](./references/agents-quality-guide.md). Templates: [./assets/](./assets/) — one per doc type.
 
