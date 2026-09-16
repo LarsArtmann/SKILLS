@@ -1,10 +1,21 @@
-"""Self-tests for annotate-rows.marker_for.
+"""Self-tests for annotate-rows.
 
-Run (the source file has a hyphen, so import via importlib):
-python3 -c "import importlib.util,sys; s=importlib.util.spec_from_file_location('ar','annotate-rows.py'); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); exec(open('annotate-rows_test.py').read().replace('from annotate_rows import marker_for','marker_for = m.marker_for'))"
+Run: python3 annotate-rows_test.py
+(The source file has a hyphen, so it is loaded via importlib below.)
 """
 
-from annotate_rows import already_annotated, marker_for, outside_code_spans
+import importlib.util
+from pathlib import Path
+
+_spec = importlib.util.spec_from_file_location(
+    "annotate_rows", Path(__file__).with_name("annotate-rows.py")
+)
+_mod = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_mod)
+
+marker_for = _mod.marker_for
+already_annotated = _mod.already_annotated
+outside_code_spans = _mod.outside_code_spans
 
 
 def main() -> int:

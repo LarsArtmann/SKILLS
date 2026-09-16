@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Annotate numbered (or M1/B1-style) table rows in a report with done-at markers.
+"""Annotate numbered (or M1/B1/F1.1-style) table rows in a report with done-at markers.
 
 Usage: annotate-rows.py [--dry-run] [--section <heading-prefix>] <file> <spec>...
-  spec = <row-id>:<kind>:<value>          (row-id: digits or M1/B1-style IDs)
+  spec = <row-id>:<kind>:<value>          (row-id: digits, M1/B1-style, or dotted F1.1-style IDs)
     kind h -> done at `value` (comma-separated hashes in value, split on ,)
     kind v -> done (<value>)          (verified evidence, no commit)
     kind p -> done (docs-health pass <value-or-today>)
@@ -72,7 +72,7 @@ def already_annotated(line: str) -> bool:
 
 
 def strike_row(line: str, row: str, marker: str) -> str:
-    m = re.match(r"^(\|\s*)([A-Za-z]?[A-Za-z0-9]*)(\s*\|)(.*)(\|)\s*$", line)
+    m = re.match(r"^(\|\s*)([A-Za-z]?[A-Za-z0-9.]*)(\s*\|)(.*)(\|)\s*$", line)
     if not m or m.group(2) != row:
         raise SystemExit(
             f"row {row}: line does not match table-row shape: {line[:80]!r}"
@@ -161,8 +161,10 @@ def main() -> None:
                 f"bad spec {spec!r} — expected <row-id>:<kind>:<value>; "
                 "quote values containing spaces"
             )
-        if not re.fullmatch(r"[A-Za-z]?[A-Za-z0-9]*", row):
-            raise SystemExit(f"bad row id {row!r} (digits or M1/B1-style)")
+        if not re.fullmatch(r"[A-Za-z]?[A-Za-z0-9.]*", row):
+            raise SystemExit(
+                f"bad row id {row!r} (digits, M1/B1-style, or dotted F1.1-style)"
+            )
         marker = marker_for(kind, value)
         pat = re.compile(rf"^\|\s*{re.escape(row)}\s*\|")
         hits = [i for i, l in enumerate(lines) if start <= i < end and pat.match(l)]
