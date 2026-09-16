@@ -4,7 +4,7 @@ Run (the source file has a hyphen, so import via importlib):
 python3 -c "import importlib.util,sys; s=importlib.util.spec_from_file_location('ar','annotate-rows.py'); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); exec(open('annotate-rows_test.py').read().replace('from annotate_rows import marker_for','marker_for = m.marker_for'))"
 """
 
-from annotate_rows import marker_for
+from annotate_rows import already_annotated, marker_for, outside_code_spans
 
 
 def main() -> int:
@@ -13,6 +13,32 @@ def main() -> int:
     def check(name, got, want):
         if got != want:
             failures.append(f"{name}: got {got!r}, want {want!r}")
+
+    # outside_code_spans: tildes inside code spans are not strikethrough...
+    check(
+        "code-span tildes stripped",
+        outside_code_spans("| x | skip guard when `~~...~~` occurs |"),
+        "| x | skip guard when  occurs |",
+    )
+    check("plain text kept", outside_code_spans("a ~~b~~ c"), "a ~~b~~ c")
+    check(
+        "doubled-backtick span stripped",
+        outside_code_spans("x ``a`b`` y"),
+        "x  y",
+    )
+
+    # already_annotated: the 2026-09-16 F12.1-class false trip — a row whose
+    # task text QUOTES the marker syntax must count as unannotated...
+    check(
+        "code-span tildes are not annotation",
+        already_annotated(
+            "| F12.1 | skip already-annotated guard when `~~` occurs in code spans | High |"
+        ),
+        False,
+    )
+    # ...while real markers still trip it
+    check("struck row trips", already_annotated("| M1 | ~~task~~ done at `abc` |"), True)
+    check("clean row passes", already_annotated("| M1 | task | High |"), False)
 
     # v-kind renders "done — <evidence>" with no nested parens...
     check(

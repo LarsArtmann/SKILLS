@@ -18,6 +18,11 @@ behaviour of the 2026-08 resolving-items pattern).
 new file class first — the 2026-08-16 marker-placement bug shipped because
 the first live run mutated without a scratch check).
 
+The already-annotated guard ignores tildes inside inline code spans: a row
+describing strikethrough syntax (a literal `~~...~~` example in a cell)
+must not look like an annotated row. The 2026-09-16 F12.1-class false trip
+blocked annotating exactly the rows that talk about the marker syntax.
+
 After a real write the file is READ BACK and shape-checked (same line
 count, every annotated line still carries its marker). This is the guard
 against the 2026-08-27 newline-collapse class of bug, where a custom
@@ -50,6 +55,20 @@ def marker_for(kind: str, value: str) -> str:
     if kind == "w":
         return f"**Won't implement — {value}.**"
     raise SystemExit(f"bad kind {kind!r} (use h/v/p/w)")
+
+
+def outside_code_spans(line: str) -> str:
+    """Line with inline code spans removed, so tildes inside backticks (a
+    literal `~~...~~` example) don't false-trip the already-annotated guard.
+    Handles doubled-backtick spans containing single backticks first."""
+    without_double = re.sub(r"``[^`]+``", "", line)
+
+    return re.sub(r"`[^`]*`", "", without_double)
+
+
+def already_annotated(line: str) -> bool:
+    """True when the line carries strikethrough outside inline code spans."""
+    return "~~" in outside_code_spans(line)
 
 
 def strike_row(line: str, row: str, marker: str) -> str:
@@ -151,7 +170,7 @@ def main() -> None:
             where = f" in section {section!r}" if section else ""
             raise SystemExit(f"row {row}: expected 1 match{where}, found {len(hits)}")
         i = hits[0]
-        if "~~" in lines[i]:
+        if already_annotated(lines[i]):
             raise SystemExit(f"row {row}: already annotated")
         edits[i] = strike_row(lines[i].rstrip("\n"), row, marker) + (
             "\n" if lines[i].endswith("\n") else ""
