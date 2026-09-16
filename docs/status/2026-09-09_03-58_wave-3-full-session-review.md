@@ -219,12 +219,12 @@ different mistakes.
 | 3  | f7: recreate emeet-pixyd's HyperFrames composition from the surviving MP4; commit under `website/video/` (NOT g1-gated — deferrable but unblocked)                                                                       | Medium | M      | Feature (site) |
 | 4  | f11: CI deploy workflow for emeet-pixyd so firebase.json changes cannot silently go undeployed (today: right config, wrong order, stale live site for 5 days)                                                            | High   | M      | Bug (site)     |
 | 5  | Re-run the T21 DoD audit to rescore emeet-pixyd (expect ~7/9 now) and document the remaining red rows with evidence                                                                                                      | Medium | S      | Quality (site) |
-| 6  | ANNOTATE `2026-09-08_23-15_demo-video-retro-audit.md`: correct finding 1 (deploy staleness was NOT sufficient cause) and finding 2 (filewatcher was not a healthy baseline)                                              | Medium | S      | Documentation  |
-| 7  | ANNOTATE `2026-09-08_23-53_todo-wave-2-full-status.md` — its f1/f2/f12/f13/f14/f17/f24/f33/f44/f45 are now done                                                                                                          | Medium | S      | Documentation  |
-| 8  | ANNOTATE `2026-09-08_20-39_jj-fork-pr-workflow…` (f7/f8/f13 closed by wave 2) and the 08-21 reimagining report's resolved items                                                                                          | Medium | S      | Documentation  |
+| ~~6~~  | ~~ANNOTATE `2026-09-08_23-15_demo-video-retro-audit.md`: correct finding 1 (deploy staleness was NOT sufficient cause) and finding 2 (filewatcher was not a healthy baseline)~~ done (docs-health pass 2026-09-16) | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
+| ~~7~~  | ~~ANNOTATE `2026-09-08_23-53_todo-wave-2-full-status.md` — its f1/f2/f12/f13/f14/f17/f24/f33/f44/f45 are now done~~ done (docs-health pass 2026-09-16) | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
+| ~~8~~  | ~~ANNOTATE `2026-09-08_20-39_jj-fork-pr-workflow…` (f7/f8/f13 closed by wave 2) and the 08-21 reimagining report's resolved items~~ done (docs-health pass 2026-09-16) | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
 | 9  | g2 decision → if "commit binaries": add the ffprobe-verified MP4s to the demo-compositions fixtures (completes f1's evidence)                                                                                            | High   | S      | Decision-gated |
 | 10 | f10: emeet-pixyd og:image-from-poster upgrade (1200x630 from the selling frame, not the astro template)                                                                                                                  | Medium | S      | Bug (site)     |
-| 11 | Audit website-launch's firebase.json authoring guidance: the skill must TEACH catch-all-first, immutable-glob-last (fix the source, not just pitfall #33)                                                                | Medium | S      | Documentation  |
+| ~~11~~ | ~~Audit website-launch's firebase.json authoring guidance: the skill must TEACH catch-all-first, immutable-glob-last (fix the source, not just pitfall #33)~~ done at `46d73b0` | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
 | 12 | f9: video flows for go-atomic-write and go-filewatcher (after f8 proves the flow)                                                                                                                                        | Medium | L      | Feature (site) |
 | 13 | g3 decision → scope the 9:16 social cut into the f8 session (or explicitly defer to same-day follow-up)                                                                                                                  | Medium | S      | Decision-gated |
 | 14 | f34: `check-skills.sh --session-start` prints/executes the five SESSION-START steps                                                                                                                                      | Medium | S      | Feature        |
@@ -304,3 +304,8 @@ Fixed 2026-09-09 in `scripts/check-skills.sh` (`|| true` on the four count
 assignments); structural checks now pass with the real summary line.
 Non-destructive appendix per docs-health ANNOTATE; original text above
 unchanged.
+
+2026-09-16 addendum: section (f) rows are now resolved inline (rows 6–8 by
+the 2026-09-16 docs-health pass, row 11 at `46d73b0`); this appendix is
+supplementary context only. Row 28 remains open — pitfall #33 documents
+same-key override but not yet the different-keys-merge semantics.
