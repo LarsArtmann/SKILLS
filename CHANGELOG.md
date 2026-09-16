@@ -30,7 +30,7 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   jj-fork-pr-workflow, linter-building) had shipped 2026-09-08..09-14 with
   no row. Per-skill line counts are deliberately NOT gated — derivable from
   the script — and the `Lines` column was removed from FEATURES.md as a rot
-  surface (it had drifted on 12 of 24 rows).
+  surface (it had drifted on 13 of 24 rows).
 - **AGENTS.md §4 step 4**: the authoring checklist now includes the
   `FEATURES.md` row (gated).
 
