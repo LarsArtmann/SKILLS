@@ -148,13 +148,13 @@ function or endpoint).
 Every label answers ONE question: does working code exist — and if not, why
 not? (Canon table lives in [../SKILL.md](../SKILL.md); keep this copy in sync.)
 
-| Status               | When it applies                                                                                                                       |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| FULLY_FUNCTIONAL     | Code present AND working (tests pass or you exercised it).                                                                             |
-| PARTIALLY_FUNCTIONAL | Ships but has known gaps, edge-case bugs, or missing pieces.                                                                           |
-| BROKEN               | Code exists but fails. Keep BROKEN nameable — "zero BROKEN rows" is itself information.                                               |
+| Status               | When it applies                                                                                                                                                                                     |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FULLY_FUNCTIONAL     | Code present AND working (tests pass or you exercised it).                                                                                                                                          |
+| PARTIALLY_FUNCTIONAL | Ships but has known gaps, edge-case bugs, or missing pieces.                                                                                                                                        |
+| BROKEN               | Code exists but fails. Keep BROKEN nameable — "zero BROKEN rows" is itself information.                                                                                                             |
 | DISABLED             | Code exists and is correct, but execution is externally switched off (flag, missing credentials, workflow off). Unblock flips it to FULLY_FUNCTIONAL — a switch, not a fix; never fold into BROKEN. |
-| PLANNED              | No code yet; genuinely next on the build path (completes an already-shipped family).                                                   |
+| PLANNED              | No code yet; genuinely next on the build path (completes an already-shipped family).                                                                                                                |
 
 Large surfaces (SDK endpoints, API families) may split the no-code cases by
 blocker: `DEMAND_GATED` (whole family unshipped; built only on a real consumer

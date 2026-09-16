@@ -13,6 +13,27 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Changed (2026-09-16 — wise-go FEATURES.md lessons transplanted)
+
+- **docs-health status vocabulary refined** (from studying
+  `/home/lars/projects/wise-go/FEATURES.md`): every label now answers ONE
+  question — _does working code exist, and if not, why not?_ `DISABLED` is
+  split out of `BROKEN` (externally switched off vs failing — unblocking is a
+  switch, not a fix), optional absent-why extensions are documented
+  (`DEMAND_GATED`, `ON_HOLD`, `OUT_OF_SCOPE`) so `PLANNED` cannot become a
+  dumping ground, evidence is promoted to a dedicated column, external-source
+  sweeps are date-stamped, and counts must be verifiable. Updated: SKILL.md,
+  FEATURES-template, build-guide, verify-checklist, common-mistakes.
+- **FEATURES.md coverage gate** (`scripts/check-skills.sh` check 14): every
+  skill directory must have a row in `FEATURES.md`. First run found real
+  drift: five skills (buildflow, collector-extraction, github-voice,
+  jj-fork-pr-workflow, linter-building) had shipped 2026-09-08..09-14 with
+  no row. Per-skill line counts are deliberately NOT gated — derivable from
+  the script — and the `Lines` column was removed from FEATURES.md as a rot
+  surface (it had drifted on 12 of 24 rows).
+- **AGENTS.md §4 step 4**: the authoring checklist now includes the
+  `FEATURES.md` row (gated).
+
 ### Changed (2026-09-14 — merge assessment: three gaps closed, no directory merges)
 
 - **Merge assessment across all 29 skills**: no further skill-directory

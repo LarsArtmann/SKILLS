@@ -55,17 +55,17 @@ because it's 80 KB of stale changelog entries and code dumps.
 
 ## FEATURES.md
 
-| Check                            | How to verify                                      | Severity if failed |
-| -------------------------------- | -------------------------------------------------- | ------------------ |
-| FULLY_FUNCTIONAL items work      | Open the code; does it actually work?              | Critical           |
-| BROKEN items are actually broken | Verify the break still exists                      | Medium             |
-| DISABLED rows truly disabled     | Verify the external switch (flag/credential/CI) is the only blocker — code itself correct | Medium             |
-| PLANNED items have no code       | Grep for any implementation                        | Medium             |
-| PARTIALLY_FUNCTIONAL gaps cited  | Open the cited file:line; is the gap still there?  | Medium             |
-| Missing shipped features         | Are there new features in code not in FEATURES.md? | Medium             |
+| Check                            | How to verify                                                                                                                       | Severity if failed |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| FULLY_FUNCTIONAL items work      | Open the code; does it actually work?                                                                                               | Critical           |
+| BROKEN items are actually broken | Verify the break still exists                                                                                                       | Medium             |
+| DISABLED rows truly disabled     | Verify the external switch (flag/credential/CI) is the only blocker — code itself correct                                           | Medium             |
+| PLANNED items have no code       | Grep for any implementation                                                                                                         | Medium             |
+| PARTIALLY_FUNCTIONAL gaps cited  | Open the cited file:line; is the gap still there?                                                                                   | Medium             |
+| Missing shipped features         | Are there new features in code not in FEATURES.md?                                                                                  | Medium             |
 | Counts verifiable                | Compute any count from the repo; prefer a standing gate (script/flake app) that re-derives doc numbers — hand-maintained counts rot | Medium             |
-| External sweeps date-stamped     | Coverage diffed against an external reference carries the audit date | Low                |
-| Status vocabulary used correctly | Only the 5 core statuses (+ the absent-why extensions where adopted), no synonyms | Low                |
+| External sweeps date-stamped     | Coverage diffed against an external reference carries the audit date                                                                | Low                |
+| Status vocabulary used correctly | Only the 5 core statuses (+ the absent-why extensions where adopted), no synonyms                                                   | Low                |
 
 ## TODO_LIST.md
 

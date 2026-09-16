@@ -82,13 +82,13 @@ Code is the source of truth. Docs are leads, not evidence.
 
 **Status vocabulary (FEATURES.md):** every label answers ONE question — _does working code exist, and if not, why not?_
 
-| Status               | When it applies                                                                                                                       |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| FULLY_FUNCTIONAL     | Code present AND working (tests pass or you exercised it).                                                                             |
-| PARTIALLY_FUNCTIONAL | Ships but has known gaps, edge-case bugs, or missing pieces.                                                                           |
-| BROKEN               | Code exists but fails. Keep BROKEN nameable — "zero BROKEN rows" is itself information about the project's health.                     |
+| Status               | When it applies                                                                                                                                                                                                                                    |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FULLY_FUNCTIONAL     | Code present AND working (tests pass or you exercised it).                                                                                                                                                                                         |
+| PARTIALLY_FUNCTIONAL | Ships but has known gaps, edge-case bugs, or missing pieces.                                                                                                                                                                                       |
+| BROKEN               | Code exists but fails. Keep BROKEN nameable — "zero BROKEN rows" is itself information about the project's health.                                                                                                                                 |
 | DISABLED             | Code exists and is correct, but execution is externally switched off (feature flag, missing credentials, workflow turned off). Unblock it and the row flips to FULLY_FUNCTIONAL — a switch, not a fix. Never fold into BROKEN: the remedy differs. |
-| PLANNED              | No code yet; genuinely next on the build path (completes an already-shipped family).                                                   |
+| PLANNED              | No code yet; genuinely next on the build path (completes an already-shipped family).                                                                                                                                                               |
 
 When the surface is large (SDK endpoints, API families), split the no-code cases by blocker instead of letting PLANNED become a dumping ground: **DEMAND_GATED** (whole family unshipped; built only on a real consumer demand signal), **ON_HOLD** (a pending scope/design decision — not demand — blocks it), **OUT_OF_SCOPE** (intentionally not targeted; revisit only on a demand signal).
 

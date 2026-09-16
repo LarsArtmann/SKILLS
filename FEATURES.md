@@ -24,24 +24,24 @@
 
 ## Skill Collection — Architecture & Design
 
-| Skill                      | Status                | References  | Notes                                                                                                      |
-| -------------------------- | --------------------- | ----------- | ---------------------------------------------------------------------------------------------------------- |
-| architecture-visualization | 🟢 `FULLY_FUNCTIONAL` | —           | Generates D2 diagrams; focused, single-purpose                                                             |
-| data-model-review          | 🟢 `FULLY_FUNCTIONAL` | ✅          | Go-native type system review with decision trees                                                           |
-| pareto-planning            | 🟢 `FULLY_FUNCTIONAL` | ✅ (assets) | 80/20 plans with D2 dependency graphs; `allowed-tools: d2`                                                 |
-| architecture-review        | 🟡 `PARTIALLY_FUNCTIONAL` | ✅       | Assessment rubric + methodology references added 2026-08-04; not yet exercised against a real review since |
-| collector-extraction       | 🆕 `NEW`              | ✅          | monitor365 → standalone sibling repos; encodes four completed extractions (wireguard-collector et al.); no documented run since creation (2026-09-10) |
+| Skill                      | Status                    | References  | Notes                                                                                                                                                 |
+| -------------------------- | ------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| architecture-visualization | 🟢 `FULLY_FUNCTIONAL`     | —           | Generates D2 diagrams; focused, single-purpose                                                                                                        |
+| data-model-review          | 🟢 `FULLY_FUNCTIONAL`     | ✅          | Go-native type system review with decision trees                                                                                                      |
+| pareto-planning            | 🟢 `FULLY_FUNCTIONAL`     | ✅ (assets) | 80/20 plans with D2 dependency graphs; `allowed-tools: d2`                                                                                            |
+| architecture-review        | 🟡 `PARTIALLY_FUNCTIONAL` | ✅          | Assessment rubric + methodology references added 2026-08-04; not yet exercised against a real review since                                            |
+| collector-extraction       | 🆕 `NEW`                  | ✅          | monitor365 → standalone sibling repos; encodes four completed extractions (wireguard-collector et al.); no documented run since creation (2026-09-10) |
 
 ## Skill Collection — Code Quality & Review
 
-| Skill              | Status                    | References  | Notes                                                                                               |
-| ------------------ | ------------------------- | ----------- | --------------------------------------------------------------------------------------------------- |
-| brutal-self-review | 🟢 `FULLY_FUNCTIONAL`     | ✅          | Brutally honest Go codebase self-review                                                             |
-| full-code-review   | 🟢 `FULLY_FUNCTIONAL`     | ✅          | Visits every file; delegates planning to pareto-planning                                            |
-| naming-review      | 🟢 `FULLY_FUNCTIONAL`     | ✅          | Multi-language naming audit with automated detection scripts                                        |
-| code-quality-scan  | 🟡 `PARTIALLY_FUNCTIONAL` | ✅ (assets) | Build + lint + duplication → HTML dashboard; tool-guidance matrix added 2026-08-04, body still thin |
-| deduplicate-code   | 🟡 `PARTIALLY_FUNCTIONAL` | —           | Semantic duplication detection; relies on `art-dupl` CLI                                            |
-| linter-building    | 🆕 `NEW`                 | ✅          | Authors linters/rules/configurators (counterpart to code-quality-scan); eval iteration-1 ran (`linter-building/evals/`); real-work trigger + open questions pending (T34) |
+| Skill              | Status                    | References  | Notes                                                                                                                                                                     |
+| ------------------ | ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| brutal-self-review | 🟢 `FULLY_FUNCTIONAL`     | ✅          | Brutally honest Go codebase self-review                                                                                                                                   |
+| full-code-review   | 🟢 `FULLY_FUNCTIONAL`     | ✅          | Visits every file; delegates planning to pareto-planning                                                                                                                  |
+| naming-review      | 🟢 `FULLY_FUNCTIONAL`     | ✅          | Multi-language naming audit with automated detection scripts                                                                                                              |
+| code-quality-scan  | 🟡 `PARTIALLY_FUNCTIONAL` | ✅ (assets) | Build + lint + duplication → HTML dashboard; tool-guidance matrix added 2026-08-04, body still thin                                                                       |
+| deduplicate-code   | 🟡 `PARTIALLY_FUNCTIONAL` | —           | Semantic duplication detection; relies on `art-dupl` CLI                                                                                                                  |
+| linter-building    | 🆕 `NEW`                  | ✅          | Authors linters/rules/configurators (counterpart to code-quality-scan); eval iteration-1 ran (`linter-building/evals/`); real-work trigger + open questions pending (T34) |
 
 ## Skill Collection — Epistemic Hygiene
 
@@ -52,10 +52,10 @@
 
 ## Skill Collection — GitHub & Open Source
 
-| Skill                | Status    | References | Notes                                                                                                                                                     |
-| -------------------- | --------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| jj-fork-pr-workflow  | 🆕 `NEW`  | ✅         | Fork + multi-PR jj sync loop; all commands verified against local jj 0.45.1 (2026-09-08); first real upstream PR still pending — ages 🟢 after a documented green sync run (T30) |
-| github-voice         | 🆕 `NEW`  | ✅         | Lars's GitHub prose profile derived from a 10k-item corpus (2026-09-12); prose layer over verify-before-filing; no documented real-work trigger yet        |
+| Skill               | Status   | References | Notes                                                                                                                                                                            |
+| ------------------- | -------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| jj-fork-pr-workflow | 🆕 `NEW` | ✅         | Fork + multi-PR jj sync loop; all commands verified against local jj 0.45.1 (2026-09-08); first real upstream PR still pending — ages 🟢 after a documented green sync run (T30) |
+| github-voice        | 🆕 `NEW` | ✅         | Lars's GitHub prose profile derived from a 10k-item corpus (2026-09-12); prose layer over verify-before-filing; no documented real-work trigger yet                              |
 
 ## Skill Collection — Go Ecosystem
 
@@ -66,15 +66,15 @@
 | go-ecosystem-upgrade     | 🟢 `FULLY_FUNCTIONAL`     | ✅            | 18 failure modes from 14 self-reviews; Phase 6 is a thin pointer to `go-release`                                                                                                                             |
 | go-release               | 🟢 `FULLY_FUNCTIONAL`     | ✅ (5 files)  | Single-module/multi-module/binary releases; tag immutability; all external claims verified against GoReleaser/Go source 2026-08-12; subagent evals 74% vs 30% baseline; ships `scripts/pre-release-check.sh` |
 | bdd-testing              | 🟡 `PARTIALLY_FUNCTIONAL` | ✅ (assets)   | Ginkgo BDD tests; works but thin                                                                                                                                                                             |
-| go-error-modernization   | 🆕 `NEW`                 | ✅ (3 files)  | errors.As→AsType modernization; `erraudit` CLI not publicly findable                                                                                                                                         |
-| samber-do-best-practices | 🆕 `NEW`                 | ✅            | samber/do v2 DI; references private `doanalyzerv2` analyzer rules                                                                                                                                            |
+| go-error-modernization   | 🆕 `NEW`                  | ✅ (3 files)  | errors.As→AsType modernization; `erraudit` CLI not publicly findable                                                                                                                                         |
+| samber-do-best-practices | 🆕 `NEW`                  | ✅            | samber/do v2 DI; references private `doanalyzerv2` analyzer rules                                                                                                                                            |
 
 ## Skill Collection — Nix & DevOps
 
-| Skill                | Status                | References   | Notes                                                                                                                   |
-| -------------------- | --------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| nix-review           | 🟢 `FULLY_FUNCTIONAL` | ✅           | 50+ problems, checklist-driven .nix review                                                                              |
-| nix-private-go-repos | 🆕 `NEW`              | ✅ (scripts) | Private GitHub deps in Nix; `go-nix-helpers` API claims verified against local source 2026-08-14, no full build run yet |
+| Skill                | Status                | References   | Notes                                                                                                                                    |
+| -------------------- | --------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| nix-review           | 🟢 `FULLY_FUNCTIONAL` | ✅           | 50+ problems, checklist-driven .nix review                                                                                               |
+| nix-private-go-repos | 🆕 `NEW`              | ✅ (scripts) | Private GitHub deps in Nix; `go-nix-helpers` API claims verified against local source 2026-08-14, no full build run yet                  |
 | buildflow            | 🆕 `NEW`              | ✅ (3 files) | BuildFlow delegation skill created 2026-09-14 from live `--help` output + 4 covered projects' AGENTS.md; trigger validation not yet done |
 
 ## Skill Collection — Library & Dependency Research
@@ -89,18 +89,18 @@
 | -------------- | ------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | docs-health    | 🟢 `FULLY_FUNCTIONAL`     | ✅ (10 files) | All docs: BUILD + HARVEST + VERIFY + ANNOTATE + AUDIT; batch annotation scripts (`annotate-rows.py`, `annotate-prose.py`) added 2026-08-18 |
 | website-launch | 🟢 `FULLY_FUNCTIONAL`     | ✅            | Astro + Starlight + Firebase; HyperFrames demo video as the launch's sales engine (2026-08-18/21); allowlisted over 500-line guideline     |
-| status-report  | 🟡 `PARTIALLY_FUNCTIONAL` | ✅ (assets)   | HTML dashboards; section-quality guide added 2026-08-04; exercised every session but single reference                                     |
+| status-report  | 🟡 `PARTIALLY_FUNCTIONAL` | ✅ (assets)   | HTML dashboards; section-quality guide added 2026-08-04; exercised every session but single reference                                      |
 
 ## Shared Infrastructure
 
-| Feature                  | Status                    | Evidence                                                                                                                            |
-| ------------------------ | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| html-report-kit          | 🟢 `FULLY_FUNCTIONAL`     | Shared Bauhaus design system; vendored into all consumers via sync script                                                           |
+| Feature                  | Status                    | Evidence                                                                                                                                                       |
+| ------------------------ | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| html-report-kit          | 🟢 `FULLY_FUNCTIONAL`     | Shared Bauhaus design system; vendored into all consumers via sync script                                                                                      |
 | check-skills.sh          | 🟢 `FULLY_FUNCTIONAL`     | Structural validation (14 checks): frontmatter, line gates, `<--` guard, TOC integrity, marker-vocabulary contract, FEATURES coverage guard (added 2026-09-16) |
-| sync-html-kit.sh         | 🟢 `FULLY_FUNCTIONAL`     | Vendoring automation with `--check` (CI) and `--list` (consumer inventory)                                                          |
-| link-skills-to-agents.sh | 🟢 `FULLY_FUNCTIONAL`     | Runtime symlink manager: idempotent repair, `--check` (CI), `--list`, `--force` recovery; replaced rsync copying 2026-08-14         |
-| check-agents-md.sh       | 🟢 `FULLY_FUNCTIONAL`     | AGENTS.md quality scorer (temporal pollution, content misplacement, size budget) added 2026-08-04                                   |
-| how-to-write-skills.md   | 🟡 `PARTIALLY_FUNCTIONAL` | Authoritative guide; at repo root (not a skill dir); 11 patterns incl. the Artifact decision rule and the Primary Failure Mode rule |
+| sync-html-kit.sh         | 🟢 `FULLY_FUNCTIONAL`     | Vendoring automation with `--check` (CI) and `--list` (consumer inventory)                                                                                     |
+| link-skills-to-agents.sh | 🟢 `FULLY_FUNCTIONAL`     | Runtime symlink manager: idempotent repair, `--check` (CI), `--list`, `--force` recovery; replaced rsync copying 2026-08-14                                    |
+| check-agents-md.sh       | 🟢 `FULLY_FUNCTIONAL`     | AGENTS.md quality scorer (temporal pollution, content misplacement, size budget) added 2026-08-04                                                              |
+| how-to-write-skills.md   | 🟡 `PARTIALLY_FUNCTIONAL` | Authoritative guide; at repo root (not a skill dir); 11 patterns incl. the Artifact decision rule and the Primary Failure Mode rule                            |
 
 ## Verification Status (skills with unconfirmed external dependencies)
 

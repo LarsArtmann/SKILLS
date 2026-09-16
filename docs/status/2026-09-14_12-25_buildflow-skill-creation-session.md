@@ -24,7 +24,7 @@
 1. **Session bootstrap protocol:** read AGENTS.md only through §5.5 — **§8 ("When Improving This Repo") and §9 ("What NOT to Do") were never read**. `SESSION-START.md` (the repo's mandatory checklist) was **not executed at session start** — discovered and read during this self-review. Retro-verification closed the gaps with zero impact: `docs/feedback/new/` is empty; ROADMAP.md/TODO_LIST.md contain zero buildflow mentions (no pre-existing idea to reconcile — checked now, not then).
 2. **Two-way description disambiguation:** the buildflow → code-quality-scan reference exists in my skill, but the **back-reference (code-quality-scan naming buildflow) was not added** — the repo convention for skill pairs is two-way (verify-external-claims ↔ verify-before-filing pattern).
 3. **Fact provenance:** `--help`-derived content verified today; README-derived numbers ("19 doctor checks", "43 gomod-check checks", "110 linters", mode durations, `-s` last-one-wins semantics — sourced from httputil's verified investigation, grep of BuildFlow source inconclusive since flags are cmdguard-defined) are **date-stamped claims, not re-verified against binary behavior**.
-4. **Skill-creator eval loop:** not run; only the repo's heuristic trigger-density check. The skill-creator flow says to *offer* test prompts and let the user decide — I never offered (see g1).
+4. **Skill-creator eval loop:** not run; only the repo's heuristic trigger-density check. The skill-creator flow says to _offer_ test prompts and let the user decide — I never offered (see g1).
 5. **Commits:** every change landed via pma daemon auto-commits with junk messages (`chore: auto-commit N changed file(s) (heuristic)`) — expected per repo norms, but no curated commit documents the skill's rationale. Two mid-session edit attempts raced the daemon ("file modified since read"); both recovered correctly by re-reading.
 
 ## c) NOT STARTED
@@ -44,7 +44,7 @@ Nothing catastrophic shipped. Honest failures and near-misses:
 1. **Ignored `SESSION-START.md` entirely** — the repo's own mandatory pre-task checklist, written precisely because "memory of 'I know the rules' is not execution". Biggest process failure of the session. Impact luckily zero (retro-verified: empty feedback dir, no roadmap collision), but that is luck, not discipline.
 2. **Consumed `check-skills.sh` through `| tail` without quoting exit status** on the first run — the exact anti-pattern SESSION-START step 5 documents from the 2026-09-09 silent-fail incident. Later runs quoted `exit: 0` properly.
 3. **Shipped a malformed table row** (`--failed-only` + `--profile` merged into one row), and the first fix introduced a duplicate row. Both caught in self-review, fixed, re-gated.
-4. **Raced the daemon twice** with edits after stale reads — predictable (I had *just documented* the daemon's behavior in the skill I was writing).
+4. **Raced the daemon twice** with edits after stale reads — predictable (I had _just documented_ the daemon's behavior in the skill I was writing).
 
 ## e) WHAT WE SHOULD IMPROVE
 
@@ -58,33 +58,33 @@ Nothing catastrophic shipped. Honest failures and near-misses:
 
 ## f) Next tasks (prioritized)
 
-| #   | Task                                                                                                       | Why / size                                     |
-| --- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| 1   | Add back-reference: `code-quality-scan` description/SKILL.md names `buildflow` for covered projects        | Two-way pair convention (P0, 2 lines)          |
-| 2   | Add `## Verification status` table to `buildflow/SKILL.md` (claim → status → source, canon format)         | Repo canon guard nudged a WARN-adjacent shape  |
-| 3   | Re-verify README-derived numbers against live binary (doctor check count, gomod-check check count, linters) | Kill date-stamped uncertainty (15 min)         |
-| 4   | Run skill-creator eval loop: 2-3 realistic test prompts, with/without-skill baselines, eval viewer          | Await user decision (g1)                       |
-| 5   | Trigger-description optimization loop (`run_loop.py`, 20 trigger evals)                                     | After evals, if user wants (g1)                |
-| 6   | Fresh-session trigger validation (user opens new Crush session in a covered project, asks a lint question) | Only real proof the skill fires                |
-| 7   | Add a regen note + freshness hint to `commands.md` (regenerate from `buildflow --help`; date-stamp)         | Drift defense (5 min)                          |
-| 8   | Consider `evals/evals.json` skeleton with the 2-3 prompts from #4                                           | Makes iteration cheap later                    |
-| 9   | docs-health HARVEST: route section (f) items into TODO_LIST.md / ROADMAP.md                                 | Close the loop this report opened              |
-| 10  | Add ROADMAP entry for the buildflow skill (status, future directions: per-project tuning, drift guard)      | Reconciliation (5 min)                         |
-| 11  | Split SKILLS `AGENTS.md` history from living context (docs-health pass, target <30 KB)                      | check-agents-md WARN                          |
-| 12  | Fix or delete BuildFlow `docs/HOW_TO_USE.md` (justfile-era, removed steps) — it misleads agents             | Upstream doc rot (g3)                          |
-| 13  | Correct BuildFlow README "auto-installs required tools" claim if wrong vs doctor behavior                    | Same rot class                                 |
-| 14  | Verify `-s` last-one-wins semantics in BuildFlow source (cmdguard flag def) and cite precisely               | Provenance hardening (10 min)                  |
-| 15  | Consider `references/step-catalog.md` generated from `buildflow list steps --json`                          | Auto-derived, no hand-maintained list          |
-| 16  | Document the skill in BuildFlow's AGENTS.md (session agents there could point covered-project work at it)   | Cross-repo discoverability                     |
-| 17  | Age the README status marker 🆕 New → 🟢 after first documented successful trigger                          | Repo convention                                 |
-| 18  | Re-run `check-skill-links.sh` + `--triggers` after any description back-reference (#1)                      | Gate discipline                                 |
-| 19  | Curated commit for the skill (if authorized) replacing the daemon's heuristic message                       | History tells the story (g2)                   |
-| 20  | Session-end checklist from SESSION-START.md: `git worktree list`, scratch-artifact disclaimer               | Was not run this session                       |
-| 21  | Add a "when the binary surface changes" note to the skill's Related Skills section pointing at regen (#7)   | Cheap reminder                                  |
-| 22  | If evals run (#4): benchmark.md + analyst pass per skill-creator                                             | Quantitative evidence                           |
-| 23  | Consider pre-approving `allowed-tools: buildflow` frontmatter for the skill                                 | One less permission round-trip                 |
-| 24  | Review whether `--semantic` (art-dupl) and other niche flags deserve their commands.md rows                 | Trim to load-bearing flags                      |
-| 25  | Post-first-trigger: prune any reference content the evals show agents never open                            | Progressive-disclosure hygiene                  |
+| #  | Task                                                                                                        | Why / size                                    |
+| -- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| 1  | Add back-reference: `code-quality-scan` description/SKILL.md names `buildflow` for covered projects         | Two-way pair convention (P0, 2 lines)         |
+| 2  | Add `## Verification status` table to `buildflow/SKILL.md` (claim → status → source, canon format)          | Repo canon guard nudged a WARN-adjacent shape |
+| 3  | Re-verify README-derived numbers against live binary (doctor check count, gomod-check check count, linters) | Kill date-stamped uncertainty (15 min)        |
+| 4  | Run skill-creator eval loop: 2-3 realistic test prompts, with/without-skill baselines, eval viewer          | Await user decision (g1)                      |
+| 5  | Trigger-description optimization loop (`run_loop.py`, 20 trigger evals)                                     | After evals, if user wants (g1)               |
+| 6  | Fresh-session trigger validation (user opens new Crush session in a covered project, asks a lint question)  | Only real proof the skill fires               |
+| 7  | Add a regen note + freshness hint to `commands.md` (regenerate from `buildflow --help`; date-stamp)         | Drift defense (5 min)                         |
+| 8  | Consider `evals/evals.json` skeleton with the 2-3 prompts from #4                                           | Makes iteration cheap later                   |
+| 9  | docs-health HARVEST: route section (f) items into TODO_LIST.md / ROADMAP.md                                 | Close the loop this report opened             |
+| 10 | Add ROADMAP entry for the buildflow skill (status, future directions: per-project tuning, drift guard)      | Reconciliation (5 min)                        |
+| 11 | Split SKILLS `AGENTS.md` history from living context (docs-health pass, target <30 KB)                      | check-agents-md WARN                          |
+| 12 | Fix or delete BuildFlow `docs/HOW_TO_USE.md` (justfile-era, removed steps) — it misleads agents             | Upstream doc rot (g3)                         |
+| 13 | Correct BuildFlow README "auto-installs required tools" claim if wrong vs doctor behavior                   | Same rot class                                |
+| 14 | Verify `-s` last-one-wins semantics in BuildFlow source (cmdguard flag def) and cite precisely              | Provenance hardening (10 min)                 |
+| 15 | Consider `references/step-catalog.md` generated from `buildflow list steps --json`                          | Auto-derived, no hand-maintained list         |
+| 16 | Document the skill in BuildFlow's AGENTS.md (session agents there could point covered-project work at it)   | Cross-repo discoverability                    |
+| 17 | Age the README status marker 🆕 New → 🟢 after first documented successful trigger                          | Repo convention                               |
+| 18 | Re-run `check-skill-links.sh` + `--triggers` after any description back-reference (#1)                      | Gate discipline                               |
+| 19 | Curated commit for the skill (if authorized) replacing the daemon's heuristic message                       | History tells the story (g2)                  |
+| 20 | Session-end checklist from SESSION-START.md: `git worktree list`, scratch-artifact disclaimer               | Was not run this session                      |
+| 21 | Add a "when the binary surface changes" note to the skill's Related Skills section pointing at regen (#7)   | Cheap reminder                                |
+| 22 | If evals run (#4): benchmark.md + analyst pass per skill-creator                                            | Quantitative evidence                         |
+| 23 | Consider pre-approving `allowed-tools: buildflow` frontmatter for the skill                                 | One less permission round-trip                |
+| 24 | Review whether `--semantic` (art-dupl) and other niche flags deserve their commands.md rows                 | Trim to load-bearing flags                    |
+| 25 | Post-first-trigger: prune any reference content the evals show agents never open                            | Progressive-disclosure hygiene                |
 
 ## g) Questions I cannot figure out myself
 

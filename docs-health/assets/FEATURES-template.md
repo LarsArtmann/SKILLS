@@ -13,13 +13,13 @@
 Every label answers ONE question: does working code exist — and if not, why
 not?
 
-| Status                    | Meaning                                                                                                       |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| 🟢 `FULLY_FUNCTIONAL`     | Works as intended, exercised by tests or daily use.                                                           |
-| 🟡 `PARTIALLY_FUNCTIONAL` | Ships but has known gaps, edge-case bugs, or missing pieces.                                                  |
-| 🔴 `BROKEN`               | Present in code but failing. Keep BROKEN nameable — "zero BROKEN rows" is itself information.                |
+| Status                    | Meaning                                                                                                                                                 |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🟢 `FULLY_FUNCTIONAL`     | Works as intended, exercised by tests or daily use.                                                                                                     |
+| 🟡 `PARTIALLY_FUNCTIONAL` | Ships but has known gaps, edge-case bugs, or missing pieces.                                                                                            |
+| 🔴 `BROKEN`               | Present in code but failing. Keep BROKEN nameable — "zero BROKEN rows" is itself information.                                                           |
 | 🔵 `DISABLED`             | Code exists and is correct, but execution is externally switched off (flag, missing credentials, CI off). A switch, not a fix — never fold into BROKEN. |
-| ⚪ `PLANNED`              | No code yet; genuinely next on the build path.                                                                |
+| ⚪ `PLANNED`              | No code yet; genuinely next on the build path.                                                                                                          |
 
 > A feature earns `FULLY_FUNCTIONAL` only when you can point to the code that
 > delivers it AND confirm it works. If you're unsure, it's `PARTIALLY_FUNCTIONAL`
@@ -33,13 +33,13 @@ not?
 
 ## <!-- Domain area, e.g. Authentication -->
 
-| Feature              | Status                    | Evidence                                  | Notes                                                      |
-| -------------------- | ------------------------- | ----------------------------------------- | ---------------------------------------------------------- |
-| Email/password login | 🟢 `FULLY_FUNCTIONAL`     | `auth/login.go`; `auth_test` passes       | JWT-based                                                  |
-| Password reset email | 🟡 `PARTIALLY_FUNCTIONAL` | `auth/reset.go:42`                        | Retry logic missing                                         |
-| Session revocation   | 🔴 `BROKEN`               | `auth/revoke.go`                          | 500s on valid token                                        |
-| OAuth (Google)       | ⚪ `PLANNED`              | README mentions it; no code found         | Completes the auth family                                   |
-| Weekly digest emails | 🔵 `DISABLED`             | `digest/worker.go` (correct, tested)      | Gated on `DIGEST_ENABLED`; flip flag to ship               |
+| Feature              | Status                    | Evidence                             | Notes                                        |
+| -------------------- | ------------------------- | ------------------------------------ | -------------------------------------------- |
+| Email/password login | 🟢 `FULLY_FUNCTIONAL`     | `auth/login.go`; `auth_test` passes  | JWT-based                                    |
+| Password reset email | 🟡 `PARTIALLY_FUNCTIONAL` | `auth/reset.go:42`                   | Retry logic missing                          |
+| Session revocation   | 🔴 `BROKEN`               | `auth/revoke.go`                     | 500s on valid token                          |
+| OAuth (Google)       | ⚪ `PLANNED`              | README mentions it; no code found    | Completes the auth family                    |
+| Weekly digest emails | 🔵 `DISABLED`             | `digest/worker.go` (correct, tested) | Gated on `DIGEST_ENABLED`; flip flag to ship |
 
 ## <!-- Next domain area, group features by domain for readability -->
 
