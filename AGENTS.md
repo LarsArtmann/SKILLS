@@ -99,7 +99,7 @@ Large reference files (>300 lines) should include a table of contents at the top
 1. Read `how-to-write-skills.md` at repo root — the authoritative guide.
 2. Create `my-skill/SKILL.md` with valid YAML frontmatter.
 3. Add optional `references/`, `scripts/`, `rules/`, `assets/` subdirectories as needed.
-4. Update `README.md` to include the new skill in the inventory table.
+4. Update `README.md` to include the new skill in the inventory table, and add a row to `FEATURES.md` — coverage is gated (`scripts/check-skills.sh` check 14; an undocumented skill fails the check).
 5. Follow the pattern of `how-to-golang` for rich skills (lean SKILL.md + dense references) or `architecture-visualization` for focused skills (short, single-purpose).
 
 ---

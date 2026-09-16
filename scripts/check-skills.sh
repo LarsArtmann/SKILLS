@@ -32,6 +32,12 @@
 #        signals (blockquotes, wrong-shape headings, compound claims) without
 #        the canonical `## Verification status` table (verify-external-claims
 #        §5; the T28 wave eliminated the three-shapes drift).
+#    14. FEATURES.md coverage guard: every skill directory must have a row in
+#        FEATURES.md — inventories drift silently without a gate (2026-09-16:
+#        five skills shipped 09-08..09-14 with no row, stale counts too).
+#        Line counts are deliberately NOT gated: they are derivable from this
+#        script's output — gate what is load-bearing, derive what is
+#        incidental (the wise-go doc-verify lesson, transplanted).
 #
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
@@ -268,6 +274,26 @@ while IFS= read -r line; do
 		fi
 	fi
 done < <(grep -rnE '[0-9]+[[:space:]]+(skills|total)' README.md AGENTS.md 2>/dev/null)
+
+# --- FEATURES.md coverage guard --------------------------------------------------
+# FEATURES.md is the honest skill inventory; skills that ship without their row
+# rot there silently. Coverage is a load-bearing claim ("every skill is
+# inventoried"), so it gates; per-skill line counts are incidental and
+# derivable from this script, so they do NOT — maintaining the same numbers in
+# two places is a drift factory.
+feat="FEATURES.md"
+if [[ -f "$feat" ]]; then
+	for d in "${skill_dirs[@]}"; do
+		skill="${d#./}"
+		if ! grep -qF "$skill" "$feat"; then
+			echo "FAIL: $feat has no row for '$skill' — an undocumented skill is a drift seed (AGENTS.md §4 step 4)"
+			failed=1
+		fi
+	done
+else
+	echo "FAIL: FEATURES.md missing from repo root — the honest inventory is required"
+	failed=1
+fi
 
 # --- Line-count gate ------------------------------------------------------------
 # SKILL.md files should stay under ~500 lines (AGENTS.md §3.2): push detail to
