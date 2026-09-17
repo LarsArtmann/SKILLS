@@ -46,9 +46,9 @@ tildes, checker format) that THIS session would have hit.
    - `link-skills-to-agents.sh` has **no `--selftest`**; `--check` is **not
      wired into check-skills.sh** (14-29 f4/f5 open). `buildflow/SKILL.md`
      has **no Verification-status table** (12-25 f2 open).
-   `code-quality-scan` → buildflow back-reference: present (12-25 f1 done).
-   SESSION-START hardening steps: present (20-08 f15–f17 done). Pitfall #33
-   header-order: documented (03-58 f11/f28 done, `46d73b0`).
+     `code-quality-scan` → buildflow back-reference: present (12-25 f1 done).
+     SESSION-START hardening steps: present (20-08 f15–f17 done). Pitfall #33
+     header-order: documented (03-58 f11/f28 done, `46d73b0`).
 7. **Evidence hashes collected** for the closed-item citations — dated git
    log 09-08 → 09-16 mapped to sessions; `git log -S` located: header-order
    rewrite `46d73b0`, `hf-env.sh` `a067a44`, FEATURES coverage guard
@@ -157,34 +157,34 @@ tildes, checker format) that THIS session would have hit.
 
 ## f) Next tasks (prioritized — resume point for the next session/turn)
 
-| #  | Task                                                                                                                          | Impact | Effort |
-| -- | ----------------------------------------------------------------------------------------------------------------------------- | ------ | ------ |
-| 1  | Dry-run `docs-health/assets/annotate-rows.py` against 03-58's `## f)` table (first spec, `--dry-run`, mandatory)              | High   | XS     |
-| 2  | Inline-annotate 03-58 f-rows (fix appendix-only trap): closed set f6/f7/f8 (this pass), f11+f28 (`46d73b0`), f12/f13/f14/f17/f24/f33/f44/f45 (`01b8ad3`, `36628f5`, `1ec3244`); T33/T30-routed rows stay untouched | High   | M      |
-| 3  | Inline-annotate 23-53 f1–f50 (same closed set: f1/f2/f4/f5/f6/f12/f13/f14/f17/f19/f20/f24/f33/f44/f45)                        | High   | M      |
-| 4  | Inline-correct 23-15 findings 1–2 (root cause = header ORDER; wave-3 evidence) + T35 appendix for its green claim             | Medium | S      |
-| 5  | Annotate 22-42 f1–f14 (f1 `5479784`, f2/f3 done, f8–f12 → T27/T28/T29/T30/T31/T32 routed; f4/f5/g1 stay open)                 | Medium | S      |
-| 6  | Annotate 20-08 f1–f30 + 23-26 f1–f25 (f2/evals DONE `1ec3244`-era, f15–f17 SESSION-START done, f11 graph entry done; f1 selftest, f3/f5 fresh-trigger stay open) | Medium | M  |
-| 7  | Annotate 02-45 residuals + 02-55 f1–f30 (f9/f10 done, f1–f3 = this pass, 17–19 carried linter items per 23-26, items 24–27 = T35/T33/T30/T34) | Medium | S |
-| 8  | Annotate 09-12 ×3 (10-51 f1–f4, 10-55 f1–f25, 11-25 f1–f20; f1-of-10-55 is OPEN — harvest; f1-of-11-25 feedback DONE `0f70bdb`) | Medium | M      |
-| 9  | Annotate 11-05 (open items → ROADMAP questions already there) + 14-29 f1–f22 (f1 done, f7 README done, f4/f5/f12/f13 open) + 11-25 open item (naming-review cap → TODO) | Medium | S |
-| 10 | Annotate 11-36 f1–f8 (f2 moot — Lines column removed `5dd75e2`; f5 done; f1/f7 open) + 12-25 f1–f25 (f1 done; f2 open → TODO)  | Medium | S      |
-| 11 | Annotate 18-17 f1–f18 + 18-07 f1–f3 (f14 = the HARVEST in #25; most stay open — 1 day old)                                      | Low    | S      |
-| 12 | Annotate 08-21_12-06 b1–b5 (verify b1 Phase-6 bar + b2 retrofit checklist against current skill; b3 CHANGELOG 08-21 entry; b5 README row done) | Medium | S |
-| 13 | Annotate 08-04 ×4 (00-35 f1–f7: f2 `check-agents-md.sh` DONE, f3 global pointer, f4 worst offenders — external; 01-27 a/b; 01-47 b; 04-16 a/b tables) | Medium | M |
-| 14 | Annotate the July set (07-11 B-items, 07-14 a/b, 07-17 B1/B2, 07-19 b1–b3, 07-20 ×2 f1–f8, 07-21 ×4, 07-23 ×3, 07-25 f1–f2, 07-26 ×2) — most closed by 07-26/08-04 waves | Medium | M |
-| 15 | Annotate 06-17_20-02 (4 recs done via html-report-kit), 06-17_23-22 (findings table superseded by 06-28 audit), 06-28 items 1–8 (routed) | Low    | S      |
-| 16 | Annotate 05-02 ×2, 05-03_07-52, 05-06 (items long-closed or routed; how-to-nix → Won't implement)                              | Low    | S      |
-| 17 | Annotate planning/archived/2026-08-02_03-11 rows 1–11 (rename `08-02`, desc rewrites `08-11`) — archived-dir completeness gate | Low    | S      |
-| 18 | Retry the 6 failed `git log -S` probes with file-derived strings (b1)                                                          | Medium | XS     |
-| 19 | Measure naming-review description length (b2)                                                                                  | Low    | XS     |
-| 20 | T35 sweep: append green-claim appendices to 23-15/23-40/23-53/02-31/22-42 (check-skills pre-fix window)                        | Medium | S      |
+| #  | Task                                                                                                                                                                                                                                                                                        | Impact | Effort |
+| -- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ |
+| 1  | Dry-run `docs-health/assets/annotate-rows.py` against 03-58's `## f)` table (first spec, `--dry-run`, mandatory)                                                                                                                                                                            | High   | XS     |
+| 2  | Inline-annotate 03-58 f-rows (fix appendix-only trap): closed set f6/f7/f8 (this pass), f11+f28 (`46d73b0`), f12/f13/f14/f17/f24/f33/f44/f45 (`01b8ad3`, `36628f5`, `1ec3244`); T33/T30-routed rows stay untouched                                                                          | High   | M      |
+| 3  | Inline-annotate 23-53 f1–f50 (same closed set: f1/f2/f4/f5/f6/f12/f13/f14/f17/f19/f20/f24/f33/f44/f45)                                                                                                                                                                                      | High   | M      |
+| 4  | Inline-correct 23-15 findings 1–2 (root cause = header ORDER; wave-3 evidence) + T35 appendix for its green claim                                                                                                                                                                           | Medium | S      |
+| 5  | Annotate 22-42 f1–f14 (f1 `5479784`, f2/f3 done, f8–f12 → T27/T28/T29/T30/T31/T32 routed; f4/f5/g1 stay open)                                                                                                                                                                               | Medium | S      |
+| 6  | Annotate 20-08 f1–f30 + 23-26 f1–f25 (f2/evals DONE `1ec3244`-era, f15–f17 SESSION-START done, f11 graph entry done; f1 selftest, f3/f5 fresh-trigger stay open)                                                                                                                            | Medium | M      |
+| 7  | Annotate 02-45 residuals + 02-55 f1–f30 (f9/f10 done, f1–f3 = this pass, 17–19 carried linter items per 23-26, items 24–27 = T35/T33/T30/T34)                                                                                                                                               | Medium | S      |
+| 8  | Annotate 09-12 ×3 (10-51 f1–f4, 10-55 f1–f25, 11-25 f1–f20; f1-of-10-55 is OPEN — harvest; f1-of-11-25 feedback DONE `0f70bdb`)                                                                                                                                                             | Medium | M      |
+| 9  | Annotate 11-05 (open items → ROADMAP questions already there) + 14-29 f1–f22 (f1 done, f7 README done, f4/f5/f12/f13 open) + 11-25 open item (naming-review cap → TODO)                                                                                                                     | Medium | S      |
+| 10 | Annotate 11-36 f1–f8 (f2 moot — Lines column removed `5dd75e2`; f5 done; f1/f7 open) + 12-25 f1–f25 (f1 done; f2 open → TODO)                                                                                                                                                               | Medium | S      |
+| 11 | Annotate 18-17 f1–f18 + 18-07 f1–f3 (f14 = the HARVEST in #25; most stay open — 1 day old)                                                                                                                                                                                                  | Low    | S      |
+| 12 | Annotate 08-21_12-06 b1–b5 (verify b1 Phase-6 bar + b2 retrofit checklist against current skill; b3 CHANGELOG 08-21 entry; b5 README row done)                                                                                                                                              | Medium | S      |
+| 13 | Annotate 08-04 ×4 (00-35 f1–f7: f2 `check-agents-md.sh` DONE, f3 global pointer, f4 worst offenders — external; 01-27 a/b; 01-47 b; 04-16 a/b tables)                                                                                                                                       | Medium | M      |
+| 14 | Annotate the July set (07-11 B-items, 07-14 a/b, 07-17 B1/B2, 07-19 b1–b3, 07-20 ×2 f1–f8, 07-21 ×4, 07-23 ×3, 07-25 f1–f2, 07-26 ×2) — most closed by 07-26/08-04 waves                                                                                                                    | Medium | M      |
+| 15 | Annotate 06-17_20-02 (4 recs done via html-report-kit), 06-17_23-22 (findings table superseded by 06-28 audit), 06-28 items 1–8 (routed)                                                                                                                                                    | Low    | S      |
+| 16 | Annotate 05-02 ×2, 05-03_07-52, 05-06 (items long-closed or routed; how-to-nix → Won't implement)                                                                                                                                                                                           | Low    | S      |
+| 17 | Annotate planning/archived/2026-08-02_03-11 rows 1–11 (rename `08-02`, desc rewrites `08-11`) — archived-dir completeness gate                                                                                                                                                              | Low    | S      |
+| 18 | Retry the 6 failed `git log -S` probes with file-derived strings (b1)                                                                                                                                                                                                                       | Medium | XS     |
+| 19 | Measure naming-review description length (b2)                                                                                                                                                                                                                                               | Low    | XS     |
+| 20 | T35 sweep: append green-claim appendices to 23-15/23-40/23-53/02-31/22-42 (check-skills pre-fix window)                                                                                                                                                                                     | Medium | S      |
 | 21 | ARCHIVE: create `docs/status/archived/`, `git mv` the ~27 fully-resolved files (both 05-02s, 05-03_07-52, 05-06, 06-17 ×2 md, 06-28, 07-11, 07-14, 07-17, 07-19, 07-20 ×2, 07-21 ×4, 07-23 ×3, 07-25, 07-26 ×2, 08-04 ×4, 08-21_12-06?, 23-40, 02-31) — each only AFTER every item resolved | High   | M      |
-| 22 | Completeness gate: `grep -rLn '~~' docs/status/archived/` prints NOTHING                                                       | High   | XS     |
-| 23 | HARVEST: rebuild TODO_LIST.md — keep T30/T33/T34; T35 closes with #20; add github-voice "every comment" fix, naming-review desc rewrite, buildflow verification table, link selftest+wiring, check-14 hardening, README marker audit; every row with evidence | High   | M      |
-| 24 | VERIFY: living docs vs repo (README markers ↔ FEATURES ↔ check-skills output; no PLANNED-vs-shipped contradictions; links resolve) | High   | S      |
-| 25 | Living-doc updates: CHANGELOG wave entry; ROADMAP += 18-17 g1–g3 (cross-repo aging policy, legend canon, formatter scope); FEATURES notes refresh; AGENTS §5 archived-dir convention if created | High   | S      |
-| 26 | Health report inline (Accuracy + Fitness, visible math) + final gates (`check-skills.sh` exit quoted, `link-skills-to-agents.sh --check`, git status, worktree list) | High   | S      |
+| 22 | Completeness gate: `grep -rLn '~~' docs/status/archived/` prints NOTHING                                                                                                                                                                                                                    | High   | XS     |
+| 23 | HARVEST: rebuild TODO_LIST.md — keep T30/T33/T34; T35 closes with #20; add github-voice "every comment" fix, naming-review desc rewrite, buildflow verification table, link selftest+wiring, check-14 hardening, README marker audit; every row with evidence                               | High   | M      |
+| 24 | VERIFY: living docs vs repo (README markers ↔ FEATURES ↔ check-skills output; no PLANNED-vs-shipped contradictions; links resolve)                                                                                                                                                          | High   | S      |
+| 25 | Living-doc updates: CHANGELOG wave entry; ROADMAP += 18-17 g1–g3 (cross-repo aging policy, legend canon, formatter scope); FEATURES notes refresh; AGENTS §5 archived-dir convention if created                                                                                             | High   | S      |
+| 26 | Health report inline (Accuracy + Fitness, visible math) + final gates (`check-skills.sh` exit quoted, `link-skills-to-agents.sh --check`, git status, worktree list)                                                                                                                        | High   | S      |
 
 Items beyond this are already routed (T33/T34/T30 unchanged; 18-17's own f-list rides along in #11).
 

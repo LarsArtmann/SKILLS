@@ -48,7 +48,9 @@ def main() -> int:
         False,
     )
     # ...while real markers still trip it
-    check("struck row trips", already_annotated("| M1 | ~~task~~ done at `abc` |"), True)
+    check(
+        "struck row trips", already_annotated("| M1 | ~~task~~ done at `abc` |"), True
+    )
     check("clean row passes", already_annotated("| M1 | task | High |"), False)
 
     # v-kind renders "done — <evidence>" with no nested parens...

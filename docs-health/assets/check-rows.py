@@ -78,11 +78,7 @@ def check_file(path: Path) -> int:
     problems: list[str] = []
 
     for block in tables(lines):
-        data = [
-            (no, line)
-            for no, line in block
-            if not is_separator(line)
-        ]
+        data = [(no, line) for no, line in block if not is_separator(line)]
         if len(data) < 2:  # header + nothing to check
             continue
 
