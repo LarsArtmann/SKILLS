@@ -191,6 +191,66 @@ and `./assets/html-report-kit/assets/report-template.html`. Edit the canonical
 `html-report-kit/` at the repo root, then run `./scripts/sync-html-kit.sh` to
 propagate to all consumers (use `--check` in CI). See `AGENTS.md` §5.9.
 
+### 7. Signal density: every line must map to a physical action.
+
+A skill exists to change what the agent does. Before any line stays in a
+`SKILL.md`, answer one question:
+
+> **What tool call, file read, command, or decision branch does this line produce?**
+
+If the answer is "none — it explains the skill to itself," delete it. Four
+consequences:
+
+| Rule                  | Cut                                                                        | Keep                                                                     |
+| --------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **Lead with signal**  | "This skill encodes lessons from 6 prior sessions…" self-justification      | the first step the agent executes                                        |
+| **Physical action**   | an abstract principle with no corresponding step                           | the exact command, file, or branch the principle implies                 |
+| **Behavior change**   | prose that reads well but flips no decision                                | the reason behind a rule, compressed into one clause next to that rule   |
+| **Clear over clever** | invented jargon left undefined                                             | the packaged name **plus a plain gloss on first use** (Pattern 9)        |
+
+**Keep the why, drop the essay.** A compressed reason changes behavior ("run
+`go test`, not `go build` — compilation proves nothing about behavior"); a
+proud paragraph does not. Attach the reason to its rule, never leave it as a
+standalone essay. This is the boundary against Pattern 10: signal density
+cuts self-narration and decoration, not teaching weight.
+
+**Review checklist** — run `scripts/check-skills.sh --signal` to surface
+candidates (advisory: it points at lines, you make the call):
+
+- [ ] The first screen after the title carries the procedure entry point or the #1 failure mode — not a preamble.
+- [ ] Every paragraph implies an action. Paragraphs that only describe the skill are deleted.
+- [ ] Every named failure mode carries a plain-language gloss at first use.
+- [ ] No sentence survives only because it sounds good.
+
+**Before / After**
+
+Bad — self-justification, zero actions:
+
+> This skill encodes lessons from 6+ prior sessions that each wasted 45–90
+> minutes rediscovering the same pattern. Following this skill turns a
+> 90-minute multi-agent exploration into a 25-minute scaffold task.
+
+Good — deleted. It told the agent nothing to do. The steps below were already
+signal; the paragraph was the noise.
+
+#### House jargon — the canonical glossary
+
+Named failure modes are load-bearing (Pattern 9), but a name the reader cannot
+decode is noise. Gloss every one at first use; keep the wording identical to
+this table so the same term never gets two definitions (a split brain about
+split brains).
+
+| Term                    | Plain meaning                                                                          |
+| ----------------------- | -------------------------------------------------------------------------------------- |
+| **split brain**         | the same concept defined or configured in two places, so the two drift apart           |
+| **ghost system**        | a capability that exists in the repo but was never wired into the product              |
+| **cargo-cult**          | copying a fix or pattern without checking whether its original reason applies here     |
+| **trophy-case**         | marking work done to look finished without verifying it works                          |
+| **Verschlimmbesserung** | a well-intentioned edit that makes things worse (the docs-health ANNOTATE incident)    |
+| **entombed**            | written into a timestamped file that no later session reads                            |
+| **epistemic hygiene**   | verifying a claim before acting on it or repeating it                                  |
+| **false green**         | a check that reports success without having measured anything                          |
+
 ## Organizing Multi-Domain Skills
 
 When a skill covers multiple frameworks or variants, organize by domain so the agent loads only what's relevant:
@@ -508,6 +568,8 @@ Example pairs (as of 2026-08-04):
 - **No file references** — cramming everything into one file instead of using progressive disclosure
 - **Heavy-handed MUSTs** — overusing ALL CAPS directives instead of explaining reasoning
 - **No examples** — describing output formats without showing concrete examples
+- **Self-justifying preamble** — "this skill exists because…" paragraphs that change no action; see Principle 7
+- **Undefined house jargon** — "ghost system", "split brain", "trophy-case" used with no plain gloss; see the glossary in Principle 7
 
 ## Testing Your Skill
 

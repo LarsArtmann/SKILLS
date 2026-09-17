@@ -38,6 +38,10 @@
 #        Line counts are deliberately NOT gated: they are derivable from this
 #        script's output — gate what is load-bearing, derive what is
 #        incidental (the wise-go doc-verify lesson, transplanted).
+#    15. Signal-density guard: hard-fail pure throat-clearing ("it is important
+#        to note") that can never change an agent action; everything else is
+#        the advisory --signal report (long code-free prose blocks, undefined
+#        house jargon). Rule: how-to-write-skills.md Principle 7.
 #
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
@@ -45,6 +49,9 @@
 #   scripts/check-skills.sh --triggers # trigger-density report, informational
 #                                      # (near-misses do NOT gate; always exit 0;
 #                                      #  prints WHICH phrases matched per skill)
+#   scripts/check-skills.sh --signal   # signal-density report, informational
+#                                      # (always exit 0; prints line numbers so
+#                                      #  an editor can judge each candidate)
 
 set -euo pipefail
 
@@ -54,12 +61,14 @@ cd "$repo_root"
 mode="${1:-check}"
 thin_only=0
 triggers_only=0
+signal_only=0
 case "$mode" in
 --thin) thin_only=1 ;;
 --triggers) triggers_only=1 ;;
+--signal) signal_only=1 ;;
 check | "") ;;
 *)
-	echo "Usage: $0 [--thin|--triggers]" >&2
+	echo "Usage: $0 [--thin|--triggers|--signal]" >&2
 	exit 2
 	;;
 esac
