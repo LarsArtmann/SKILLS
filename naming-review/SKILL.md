@@ -28,7 +28,7 @@ Run the appropriate linters for the project's language:
 | **Java**       | `checkstyle`                                      | `TypeName`, `MethodName`, `ParameterName`, `ConstantName`                |
 | **C#**         | `.NET analyzers`                                  | CA1707, IDE1006 naming styles                                            |
 
-Then run `scripts/naming-smells.sh` for deeper pattern detection that linters miss (vague nouns, Manager/Handler classes, Impl suffixes, split-brain terminology). This surfaces issues that require human judgment.
+Then run `scripts/naming-smells.sh` for deeper pattern detection that linters miss (vague nouns, Manager/Handler classes, Impl suffixes, split-brain terminology — the same concept named two ways, drifting apart). This surfaces issues that require human judgment.
 
 Quick grep for the most common smells:
 

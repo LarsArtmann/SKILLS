@@ -202,7 +202,7 @@ in {
 custom derivation needed. The point is: the binary comes from the Nix store,
 resolvable offline, not from `@latest` at run time.)
 
-**Scope boundary (avoid a split brain):** this invariant governs impurity in
+**Scope boundary (avoid a split brain — the same rule maintained in two places, so the two drift apart):** this invariant governs impurity in
 `apps.*` / devShell / `shellHook` **scripts** (run at `nix run`/shell-entry
 time). Two adjacent cases live in the catalogue and are NOT repeated here:
 problem **#2** covers the same anti-patterns **inside build derivations**

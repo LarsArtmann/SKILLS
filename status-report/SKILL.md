@@ -70,7 +70,8 @@ treatment: stat cards, severity badges, color-coded sections.
 
 > **After the report is written, the loop is not closed.** Section **(f) Top N
 > things to get done next** is the primary input for `docs-health` HARVEST — it
-> belongs in `TODO_LIST.md` / `ROADMAP.md`, not entombed in this timestamped
+> belongs in `TODO_LIST.md` / `ROADMAP.md`, not entombed (written into a
+> timestamped file no later session reads) in this timestamped
 > file. If the session continues and `TODO_LIST.md` was not updated from this
 > report, run HARVEST now:
 > [`docs-health`](../docs-health/SKILL.md) → **HARVEST** (the canonical rule
@@ -79,6 +80,8 @@ treatment: stat cards, severity badges, color-coded sections.
 ## Related Skills
 
 - **brutal-self-review** — critique of recent work quality (what was forgotten,
-  ghost systems, split brains, improvement plan), not a state inventory. Sessions
+  ghost systems (code in the repo never wired into the product), split brains
+  (the same concept maintained in two places, so the two drift apart),
+  improvement plan), not a state inventory. Sessions
   often run both: this report answers "where are we", the self-review answers
   "what did we get wrong". Their output sections do not overlap.

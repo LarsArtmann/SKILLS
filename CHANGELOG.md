@@ -13,6 +13,29 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Changed (2026-09-17 — signal-only prose pass over skill bodies)
+
+- **Applied Principle 7 (signal density) to the skill bodies.** A
+  communication-doctrine audit ("every sentence must change what the agent
+  does") swept all 30 `SKILL.md` bodies via `check-skills.sh --signal` plus a
+  read-only sub-agent audit; 18 files were already clean. Fixes to the rest:
+  deleted self-justifying preamble (website-launch session-history pitch,
+  full-code-review Mindset section, credentials prose in nix-review and
+  naming-review), replaced the two undefined
+  "VERSCHLIMMBESSER ... cut off your balls" threats with the glossed
+  guardrail, rewrote pareto-planning's caps directives (magic numbers kept,
+  shouting and "UNDERSTAND????!" dropped), compressed "Why This Matters"
+  philosophy into detection criteria (library-deep-dive, data-model-review,
+  go-modularize, verify-before-filing), extracted jj-fork-pr-workflow's
+  prior-art survey to `references/prior-art.md` (keeping the operationally
+  load-bearing gh-stack rules inline), and glossed house jargon (split brain,
+  ghost system, entombed, cargo-cult, Verschlimmbesserung, epistemic error)
+  at first body use with the canonical Principle 7 glossary wording.
+  Every removed line was diffed and accounted for; no behavioral guidance
+  lost. website-launch 803 → 797 lines (still allowlisted).
+- How-to-write-skills.md Principle 7 and the `--signal` advisory flag were
+  added by a concurrent session (`5116703`) and are cross-referenced here.
+
 ### Changed (2026-09-16 — wise-go FEATURES.md lessons transplanted)
 
 - **docs-health status vocabulary refined** (from studying

@@ -36,7 +36,7 @@ Go 1.26+ has three complementary error-matching primitives. Knowing which one yo
 | `errors.Is(err, sentinel)` | Compare against a known error **value**              | **Current.** Not legacy. The correct API for sentinels like `io.EOF`.       |
 | `errors.As(err, &target)`  | Custom predicate matching via pointer (rare)         | Legacy in spirit — `AsType` covers 99% of cases                             |
 
-**The cargo-cult trap:** any linter that flags both `errors.As` (real modernization) and `errors.Is` (frequently a false positive) at the same severity trains agents under "fix everything to zero" prompts to migrate `errors.Is` calls that should have stayed put. Sentinel value matching regresses. Wrapped errors stop matching. This skill exists to prevent that regression.
+**The cargo-cult trap** (copying a fix without checking whether its original reason applies here): any linter that flags both `errors.As` (real modernization) and `errors.Is` (frequently a false positive) at the same severity trains agents under "fix everything to zero" prompts to migrate `errors.Is` calls that should have stayed put. Sentinel value matching regresses. Wrapped errors stop matching. This skill exists to prevent that regression.
 
 ### Two diagnostics, two safety profiles
 

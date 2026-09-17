@@ -26,7 +26,7 @@ This is the sequence that produces bad upstream issues:
 6. File it → the workaround was a no-op; the issue is wrong
 ```
 
-**The epistemic error:** Reasoning outward from "I have a workaround" to "upstream must be deficient," without ever verifying that the workaround addresses a real gap. The workaround's existence becomes its own justification.
+**The epistemic error** (a failure of evidence handling — claiming without verifying): Reasoning outward from "I have a workaround" to "upstream must be deficient," without ever verifying that the workaround addresses a real gap. The workaround's existence becomes its own justification.
 
 **Why agents are especially vulnerable:** a perfectly formatted issue with clean code examples can still be completely wrong if the underlying premise was never verified — formatting quality is not evidence of correctness.
 

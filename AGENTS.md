@@ -77,6 +77,7 @@ metadata:
 ### 3.2 Body Style
 
 - **Imperative steps**, not essays. The agent follows instructions literally.
+- **Signal density**: every line must map to a tool call, file read, command, or decision branch. Delete self-justifying preamble and decoration; keep the *why* that flips a decision. Jargon (split brain, ghost system, ...) needs a plain gloss at first use. Canonical rule + glossary: `how-to-write-skills.md` Principle 7. Machine help: `scripts/check-skills.sh --signal` (advisory) and check 15 (hard-fails throat-clearing).
 - **Keep under ~500 lines**. Move detailed material to `references/` or `rules/`.
 - **Reference sibling files** with relative links: `[./references/details.md](./references/details.md)` — the agent will `view` them on demand.
 - **Explain the why**, not just the what. Agents follow reasoned instructions more reliably than rigid `ALWAYS`/`MUST`/`NEVER` directives.
