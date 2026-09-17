@@ -35,6 +35,16 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   lost. website-launch 803 → 797 lines (still allowlisted).
 - How-to-write-skills.md Principle 7 and the `--signal` advisory flag were
   added by a concurrent session (`5116703`) and are cross-referenced here.
+- **Signal-density machinery completed by that concurrent session**: check 15
+  hard-fails pure throat-clearing ("it is important to note", "needless to
+  say") — the unambiguous subset, since a sentence that only announces a
+  sentence cannot change an action; the judgment-dependent cases stay in the
+  advisory `--signal` report so no grep deletes load-bearing rationale
+  (Pattern 10). `AGENTS.md` §3.2 now states the rule and both aids. Verified:
+  all modes exit as documented (`check`/`--thin`/`--triggers`/`--signal` → 0,
+  bad flag → 2), a seeded fixture fails check 15 with the offending lines,
+  `bash -n`, `shfmt -d`, and `shellcheck -S warning` clean apart from the
+  pre-existing SC2044.
 
 ### Changed (2026-09-16 — wise-go FEATURES.md lessons transplanted)
 

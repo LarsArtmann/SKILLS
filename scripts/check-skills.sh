@@ -341,7 +341,7 @@ for d in "${skill_dirs[@]}"; do
 	filler_hits="$(grep -inE "$filler_re" "$f" || true)"
 	if [[ -n "$filler_hits" ]]; then
 		echo "FAIL $skill: throat-clearing prose (delete it — it changes no action):"
-		echo "$filler_hits" | sed 's/^/  /'
+		while IFS= read -r hit; do echo "  $hit"; done <<<"$filler_hits"
 		failed=1
 	fi
 done
