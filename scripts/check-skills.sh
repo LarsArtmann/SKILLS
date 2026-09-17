@@ -185,6 +185,73 @@ if [[ "$triggers_only" -eq 1 ]]; then
 	exit 0
 fi
 
+# --- Signal-density report (informational) --------------------------------------
+# Principle 7 of how-to-write-skills.md: every line of a SKILL.md must map to a
+# tool call, file read, command, or decision branch. This report surfaces the
+# three mechanical candidates so an editor can judge them — it cannot decide,
+# because a "why" paragraph that flips a decision is signal and a proud
+# paragraph that does not is noise (the Pattern 10 boundary). Advisory only:
+# always exits 0, like --triggers. Signals printed per skill:
+#   preamble  — non-heading lines before the first '##' (is the entry point on
+#               the first screen, or is it self-narration?)
+#   prose     — paragraphs >=35 words with no inline code (candidate essays)
+#   filler    — throat-clearing phrases (the hard-gated set, check 15)
+#   jargon    — house terms that need a plain gloss on first use
+signal_awk() {
+	awk '
+    BEGIN { c=0; body=0; start=0; words=0; codes=0; fence=0; sindent=0 }
+    /^---[[:space:]]*$/ { c++; if (c==2) { body=1; next } }
+    !body { next }
+    function flush() {
+      if (words >= 35 && codes == 0 && sindent < 2)
+        printf "    prose  %d-%d (%d words, no code): %.70s\n", start, NR-1, words, snippet
+      words=0; codes=0; start=0; snippet=""; sindent=0
+    }
+    /^[[:space:]]*```/ { flush(); fence=!fence; next }
+    fence { next }
+    /^[[:space:]]*$/ { flush(); next }
+    /^[[:space:]]*(#|[-*] |[0-9]+[.)] |\||>)/ { flush(); next }
+    {
+      if (start == 0) { start=NR; match($0, /^[[:space:]]*/); sindent=RLENGTH }
+      words += split($0, tmp, " ")
+      if (index($0, "`") > 0) codes++
+      if (snippet == "") snippet=$0
+    }
+    END { flush() }
+  ' "$1"
+}
+preamble_lines() {
+	awk '
+    BEGIN { c=0; body=0; n=0 }
+    /^---[[:space:]]*$/ { c++; if (c==2) { body=1; next } }
+    !body { next }
+    /^## / { print n; exit }
+    { n++ }
+  ' "$1"
+}
+filler_re='^(It is|It.s) (important|worth) (to note|noting)|^[[:space:]]*(Please note|Needless to say|As we all know|In conclusion)[, ]'
+jargon_re='split[- ]brain|ghost system|trophy-case|cargo-cult|Verschlimmbesserung|entombed|epistemic|false green'
+if [[ "$signal_only" -eq 1 ]]; then
+	echo "Signal-density report (advisory — Principle 7, how-to-write-skills.md):"
+	for d in "${skill_dirs[@]}"; do
+		skill="${d#./}"
+		f="$d/SKILL.md"
+		pre="$(preamble_lines "$f")"
+		fill="$(grep -icE "$filler_re" "$f" || true)"
+		jarg="$(grep -icE "$jargon_re" "$f" || true)"
+		prose_n="$(grep -c 'prose ' <(signal_awk "$f") || true)"
+		printf "  %-28s preamble=%-3s prose=%-3s filler=%-2s jargon=%-3s\n" \
+			"$skill" "$pre" "${prose_n:-0}" "${fill:-0}" "${jarg:-0}"
+		[[ "${prose_n:-0}" -gt 0 ]] && signal_awk "$f"
+		[[ "${fill:-0}" -gt 0 ]] && grep -inE "$filler_re" "$f" | sed 's/^/    filler /'
+		[[ "${jarg:-0}" -gt 0 ]] && grep -inEo "$jargon_re" "$f" | sort -t: -k1,1n -u | sed 's/^/    jargon /'
+	done
+	echo
+	echo "Judgment call: delete self-narration and decoration; keep the why that flips a decision (Pattern 10)."
+	echo "Gloss every jargon hit at first use using the table in how-to-write-skills.md Principle 7."
+	exit 0
+fi
+
 # --- Structural checks ---------------------------------------------------------
 failed=0
 
@@ -264,6 +331,18 @@ for d in "${skill_dirs[@]}"; do
 		failed=1
 	else
 		echo "WARN $skill: description carries trigger context but does not open with the canonical 'Use ...' form — consider aligning (AGENTS.md §3.1)"
+	fi
+	# Check 15: signal-density hard gate — pure throat-clearing only. This is
+	# the unambiguous subset of Principle 7: a sentence whose only function is
+	# to announce that a sentence is coming can never change an agent action.
+	# Everything judgment-dependent (long prose, house jargon) is the advisory
+	# --signal report instead, because a "why" paragraph is often load-bearing
+	# and must not be deleted by a grep (Pattern 10).
+	filler_hits="$(grep -inE "$filler_re" "$f" || true)"
+	if [[ -n "$filler_hits" ]]; then
+		echo "FAIL $skill: throat-clearing prose (delete it — it changes no action):"
+		echo "$filler_hits" | sed 's/^/  /'
+		failed=1
 	fi
 done
 

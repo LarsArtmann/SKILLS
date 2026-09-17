@@ -23,9 +23,14 @@ Determines whether a project uses a **single specific library** to its full pote
 
 ## Why This Matters
 
-Most projects adopt a library for one or two features and never explore the rest. A team pulls in `zod` for simple validation and misses schema composition, discriminated unions, and branded types. They add `gorm` for basic CRUD and miss hooks, custom datatypes, batch operations, and the session API. Every library ships a far larger feature surface than anyone discovers by accident.
-
-Underutilization has real costs: hand-rolled code that duplicates built-in functionality, worse performance because the library's optimized path was never used, and a stale version because nobody knows what newer features would unlock. This skill closes that gap by systematically comparing what the project _does_ with everything the library _offers_.
+Most projects use a fraction of a library's surface — `zod` pulled in for
+simple validation while schema composition, discriminated unions, and branded
+types go unused; `gorm` for basic CRUD while hooks, custom datatypes, batch
+operations, and the session API go unnoticed. Hunt for exactly that gap:
+hand-rolled code duplicating built-in functionality, slower paths where the
+library's optimized one was never used, and stale versions whose newer
+features would unlock simplifications. The audit compares what the project
+_does_ against everything the library _offers_.
 
 The deliverable is a point-in-time research report — a snapshot read by humans, never edited again — so it gets the full HTML treatment, not Markdown.
 

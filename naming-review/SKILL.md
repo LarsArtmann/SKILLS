@@ -7,7 +7,7 @@ metadata:
 
 # Naming Review
 
-A comprehensive review skill for making identifiers — especially data model names and function names — honest, clear, and domain-aligned. Based on Clean Code principles, Domain-Driven Design, and analysis of naming anti-patterns across production codebases.
+A review skill that makes identifiers — especially data model names and function names — honest, clear, and domain-aligned.
 
 ## Process
 

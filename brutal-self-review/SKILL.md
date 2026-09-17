@@ -19,10 +19,10 @@ Answer every question with full honesty:
 4. What could you still improve?
 5. Did you lie to me?
 6. How can we be less stupid?
-7. Is everything correctly integrated or are we building ghost systems? IF you find a 'ghost system' ALWAYS ask yourself should this be integrated? What value is in it? FIRST!
+7. Is everything correctly integrated or are we building ghost systems (code that exists in the repo but was never wired into the product)? IF you find a 'ghost system' ALWAYS ask yourself should this be integrated? What value is in it? FIRST!
 8. Are we focusing on the scope creep trap?
 9. Did we remove something that was actually useful?
-10. Did we create ANY split brains? Even small things that could be considered split brain!
+10. Did we create ANY split brains (the same concept maintained in two places, so the two drift apart)? Even small things that could be considered split brain!
 11. How are we doing on tests? What can we do better, regarding automated testing?
 
 ## Execution Plan

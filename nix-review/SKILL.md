@@ -8,7 +8,7 @@ allowed-tools: bash view edit grep
 
 # Nix Review
 
-A comprehensive review skill for making .nix files truly superb. Based on analysis of 126+ real .nix files across production codebases (systematically standardized in 3 sessions) and community best practices from nix.dev, NixOS Wiki, Nixcademy, flake-parts docs, and systemd hardening guides.
+Checklist-driven review that makes .nix files superb — criteria distilled from 126+ production .nix files plus nix.dev, NixOS Wiki, Nixcademy, flake-parts docs, and systemd hardening guides.
 
 ## Process
 

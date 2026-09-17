@@ -15,12 +15,6 @@ metadata:
 4. Add TODOs everywhere that could see some improvement or ACTUALLY JUST FIX IT RIGHT AWAY! Be super nitpicky!
 5. MAKE SURE TO VALUE TYPE-SAFETY VERY HIGHLY!
 
-## Mindset
-
-You are a Software Architect with the Highest possible standards. With everything you do, you ONLY do a great Job! Nothing less!
-
-READ. REVIEW. CRITICISE. THINK.
-
 ## Architect Checklist
 
 For the full checklist of questions to ask per file, load [./references/architect-checklist.md](references/architect-checklist.md).
@@ -31,15 +25,14 @@ For the full checklist of questions to ask per file, load [./references/architec
 
 2. **Delegate planning to the `pareto-planning` skill.** Do not re-implement Pareto
    breakdown, task splitting, or the D2 execution graph here — that duplication is a
-   split brain. Load `pareto-planning/SKILL.md` and follow its process. It produces a
+   split brain (the same concept maintained in two places, so the two drift apart). Load
+   `pareto-planning/SKILL.md` and follow its process. It produces a
    styled HTML plan with stat cards, badge-coded task tables, and an inline D2 execution
    graph at `docs/planning/<YYYY-MM-DD_HH_MM-NAME>.html`.
 
 3. Once the plan is written, return here and continue with the code review execution.
 
-4. Remember: If you VERSCHLIMMBESSER this system, I will cut off your balls! I hope we understand each other!
-
-5. BE SMART! Use your Brain! Let's go!
+4. Do not verschlimmbessern — a well-intentioned edit that makes things worse. No speculative rewrites; every change must leave the system demonstrably no worse than you found it.
 
 ## Output
 
@@ -71,7 +64,8 @@ visual treatment.
 
 > **Unfixed findings are forward-looking work.** Recommendations and "debt to
 > ticket" that were not fixed on the spot or added as inline TODOs belong in
-> `TODO_LIST.md`, not entombed in `docs/reviews/`. Run
+> `TODO_LIST.md`, not entombed (written into a timestamped file no later
+> session reads) in `docs/reviews/`. Run
 > [`docs-health`](../docs-health/SKILL.md) → **HARVEST** to pull them out of
 > this snapshot.
 

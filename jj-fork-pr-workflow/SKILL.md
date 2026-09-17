@@ -289,15 +289,11 @@ Canonical block format per [verify-external-claims §5](../verify-external-claim
 
 ## Prior art
 
-Known upstream jj agent skills, so future sessions do not redo the survey
-(checked 2026-09-08 via Sourcegraph + web search):
+The full survey of existing jj agent skills (Carbon Language's, a jj-commit
+snippet, the no-public-rival claim) lives in
+[./references/prior-art.md](./references/prior-art.md). The one operationally
+load-bearing finding stays here:
 
-- **Carbon Language's** `.agents/skills/jj/SKILL.md` — jj basics for Carbon
-  contributors. No fork + multi-PR sync coverage; complementary, not a rival.
-- A small `jj-commit` prompt snippet — single-commit message guidance only.
-- No public skill covers fork setup + the multi-PR sync loop; this skill
-  fills that gap. (Claim scoped to the jj sync loop itself, re-checked
-  2026-09-10.)
 - **github/gh-stack** (checked 2026-09-10; repo pushed 2026-09-09) — GitHub's
   official `gh` extension for stacked branches/PRs; its README advertises an
   agent skill via `gh skill install github/gh-stack`. It is **Git-branch

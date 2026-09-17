@@ -156,7 +156,7 @@ Old reports contain numbered items (lists `1. 2. 3.` or table rows). **You must 
 
 Correct stale claims **in place**: `~~Nothing committed.~~ Committed as a7b8159.` If the opening/TL;DR has stale claims, inline-correct them — a reader forms their impression from the opening. An end-of-file `## Resolution (date)` appendix is supplementary context, **never the only annotation. Appendix-only on a file with numbered items = the #1 failure mode.**
 
-For placement examples, scope-asking, HTML edge cases, and undo procedures, load [./references/annotation-placement.md](./references/annotation-placement.md). For the Verschlimmbesserung origin incident, load [./references/case-study.md](./references/case-study.md).
+For placement examples, scope-asking, HTML edge cases, and undo procedures, load [./references/annotation-placement.md](./references/annotation-placement.md). For the Verschlimmbesserung (a well-intentioned edit that makes things worse) origin incident, load [./references/case-study.md](./references/case-study.md).
 
 ### "So what?" test
 

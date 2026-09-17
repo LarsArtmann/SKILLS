@@ -31,11 +31,6 @@ Firebase Hosting pattern shared across all LarsArtmann projects.
 > commands means the target repo name, not a shell variable — replace it before
 > running.
 
-This skill encodes lessons from 6+ prior sessions that each wasted 45-90
-minutes rediscovering the same pattern, making the same mistakes, and writing
-the same feedback. Following this skill turns a 90-minute multi-agent
-exploration into a 25-minute scaffold-and-customize task.
-
 ## Environment: Nix + Crush Constraints
 
 All commands below assume a **Nix-based environment** and **Crush CLI tool
@@ -382,10 +377,9 @@ links → one-paragraph summary → `## Why?` → audience → comparison → ho
 works → when-NOT-to-use → install → usage → API tables → benchmarks →
 license) lives in the
 [README template](./references/readme-template.md) §"Standard Section
-Order" — and only there. Earlier drafts of this SKILL.md restated the full
-list; every restatement drifted from the template, so the template is the
-single source of truth for structure, badge markup, and the documentation
-link bar.
+Order" — and only there. Restating the list here has drifted from the
+template before; the template is the single source of truth for structure,
+badge markup, and the documentation link bar.
 
 **Why "Who is this for?" and "When NOT to use this"?** They are the two
 highest-leverage trust signals in technical docs: the first tells a

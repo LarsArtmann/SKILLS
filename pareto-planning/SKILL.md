@@ -15,8 +15,6 @@ allowed-tools: d2
 
 ### Step 1: Pareto Breakdown
 
-Let's figure out what we should really do!
-
 - What are the 20% that deliver 80% of the result??! — BREAK IT DOWN!
 - What are the 4% that deliver 64% of the result??! — BREAK IT DOWN!
 - What are the 1% that deliver 51% of the result??! — BREAK IT DOWN!
@@ -24,15 +22,16 @@ Let's figure out what we should really do!
 
 ### Step 2: Comprehensive Plan (Medium granularity)
 
-MAKE SURE TO CREATE A VERY COMPREHENSIVE PLAN FIRST!
-Split the TODOs into small tasks 100min to 30min each (up to 27 tasks total)! It should include ALL TODOS! UNDERSTAND???!
+Create the comprehensive plan FIRST, before any fine breakdown:
+split the TODOs into tasks of 30–100 minutes each, up to 27 tasks total.
+Include ALL TODOs.
 Sort all by importance/impact/effort/customer-value.
 REPORT BACK WITH A TABLE VIEW WHEN DONE!
 
 ### Step 3: Detailed Breakdown (Fine granularity)
 
-THEN BREAK DOWN THE VERY COMPREHENSIVE & DETAILED PLAN INTO EVEN SMALLER TODOs!
-EACH tasks max 15min each (up to 150 tasks total)! It should include ALL TODOS! UNDERSTAND???!
+Then break the comprehensive plan into even smaller TODOs:
+each task at most 15 minutes, up to 150 tasks total. Include ALL TODOs.
 Sort all by importance/impact/effort/customer-value.
 REPORT BACK WITH A TABLE VIEW WHEN DONE!
 
@@ -56,8 +55,6 @@ NOTE: Use the cli to get the current date.
 
 ## Execution
 
-BE SMART! Use your Brain! Let's go!
-
 > Plans are point-in-time artifacts that go stale. When a later task asks to
 > bring old plans current, use [`docs-health`](../docs-health/SKILL.md) →
 > **ANNOTATE** mode — annotate non-destructively, never rewrite the original plan.
@@ -67,7 +64,9 @@ BE SMART! Use your Brain! Let's go!
 > items out of this plan in bulk, run [`docs-health`](../docs-health/SKILL.md)
 > → **HARVEST**.
 
-Remember: If you VERSCHLIMMBESSER this system, I will cut off your balls! I hope we understand each other!
+Do not verschlimmbessern — a well-intentioned edit that makes things worse.
+No speculative rewrites; every change must leave the plan and the repo
+verifiably no worse than you found them.
 
 ## Git Workflow
 

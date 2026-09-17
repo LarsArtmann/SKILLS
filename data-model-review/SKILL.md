@@ -12,7 +12,10 @@ A first-principles review and redesign skill for data models. Reviews what exist
 
 ## Why This Matters
 
-Most data models grow organically. They start as a few structs, accumulate pointer fields, sprout string-typed enums, and eventually become a minefield of nil-pointer dereferences and runtime validation masquerading as type-safe code. This skill stops that rot and replaces it with intentional design.
+Hunt for organically-grown rot: accumulated pointer fields, string-typed
+enums, nil-pointer minefields, and runtime validation masquerading as
+type-safe code. The review stops that rot and replaces it with intentional
+design.
 
 The output is not just a list of problems. It is a complete redesign — using branded types, interface-based unions, generics, composition via embedding and interfaces, and zero-value discipline — delivered as a self-contained HTML presentation that the team can read, bookmark, and reference.
 

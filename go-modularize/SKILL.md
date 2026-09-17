@@ -36,15 +36,12 @@ error architecture, test infrastructure), see
 
 ## Why This Matters
 
-A Go project with a single go.mod accumulates coupling — every package can depend on
-every other package. Splitting into sub-modules creates hard boundaries: compile-time
-enforced interfaces, independent versioning, faster CI, and clearer ownership. The
-challenge is finding the right seams without breaking what works.
-
-The converse problem also exists: a partially modularized project with god-packages,
-circular replace directives, or test-only dependencies leaking into production go.mod
-files. This skill handles both cases — greenfield splits and refinement of existing
-multi-module setups.
+A single go.mod lets every package depend on every other package; sub-modules
+turn soft coupling into compile-time boundaries (enforced interfaces,
+independent versioning, faster CI, clearer ownership). This skill handles
+both directions: greenfield splits at the right seams, and refining existing
+multi-module setups plagued by god-packages, circular replace directives, or
+test-only dependencies leaking into production go.mod files.
 
 ---
 
