@@ -3,8 +3,8 @@
 **Date:** 2026-09-17 ~21:45 (Thursday, CEST)
 **Session scope:** User pasted a communication doctrine ("SHUT UP AND
 COMMUNICATE": delete the first 90%, physical-world test, communication is
-behavioral control, clear over clever) and asked: *how would you apply this
-to our SKILLS?* — with explicit instruction to break down, execute, and
+behavioral control, clear over clever) and asked: _how would you apply this
+to our SKILLS?_ — with explicit instruction to break down, execute, and
 verify step by step.
 **Format:** markdown (7-session streak of HTML-default overrides made
 explicit in reports; this session was not asked for a report format at all —
@@ -109,3 +109,31 @@ all checks green (exit 0). 18 of 30 skills needed nothing.
 
 None — no new tasks surfaced beyond the optional long-tail pass above (too
 small for a TODO row; if it recurs, promote it then).
+
+## Addendum — infrastructure half (writer of Principle 7)
+
+This report's author and the session that added Principle 7 +
+`check-skills.sh --signal` ran concurrently on the same paste; the two halves
+complement each other and neither was duplicated. The infrastructure half is
+complete and verified (committed while the body pass was in flight):
+
+- `how-to-write-skills.md` Principle 7 (rule + before/after + the canonical
+  house-jargon glossary) and Common-Mistakes rows.
+- `scripts/check-skills.sh --signal`: advisory, always exit 0, prints per
+  skill the preamble size before the first `##`, code-free prose blocks ≥35
+  words (fence- and list-continuation-aware), throat-clearing hits, and
+  jargon hits with line numbers.
+- `scripts/check-skills.sh` check 15: hard-fails the unambiguous
+  throat-clearing set only; everything judgment-dependent stays advisory so a
+  grep never deletes load-bearing rationale (Pattern 10).
+- `AGENTS.md` §3.2 documents the rule and both aids.
+
+Verification: mode matrix `check`/`--thin`/`--triggers`/`--signal` → exit 0,
+unknown flag → 2; a seeded fixture SKILL.md with two filler lines fails check
+15 and prints both offending line numbers; `bash -n`, `shfmt -d`, and
+`shellcheck -S warning` clean apart from the pre-existing SC2044; full run
+exit 0 with 30 skills and 150 linked markdown files.
+
+The advisory's known limit: it surfaces candidates, it cannot judge them —
+the remaining `--signal` long tail (section b) needs a reader, which is
+exactly why check 15 is scoped to throat-clearing only.

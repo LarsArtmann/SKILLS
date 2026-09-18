@@ -201,12 +201,12 @@ A skill exists to change what the agent does. Before any line stays in a
 If the answer is "none — it explains the skill to itself," delete it. Four
 consequences:
 
-| Rule                  | Cut                                                                        | Keep                                                                     |
-| --------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| **Lead with signal**  | "This skill encodes lessons from 6 prior sessions…" self-justification      | the first step the agent executes                                        |
-| **Physical action**   | an abstract principle with no corresponding step                           | the exact command, file, or branch the principle implies                 |
-| **Behavior change**   | prose that reads well but flips no decision                                | the reason behind a rule, compressed into one clause next to that rule   |
-| **Clear over clever** | invented jargon left undefined                                             | the packaged name **plus a plain gloss on first use** (Pattern 9)        |
+| Rule                  | Cut                                                                    | Keep                                                                   |
+| --------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| **Lead with signal**  | "This skill encodes lessons from 6 prior sessions…" self-justification | the first step the agent executes                                      |
+| **Physical action**   | an abstract principle with no corresponding step                       | the exact command, file, or branch the principle implies               |
+| **Behavior change**   | prose that reads well but flips no decision                            | the reason behind a rule, compressed into one clause next to that rule |
+| **Clear over clever** | invented jargon left undefined                                         | the packaged name **plus a plain gloss on first use** (Pattern 9)      |
 
 **Keep the why, drop the essay.** A compressed reason changes behavior ("run
 `go test`, not `go build` — compilation proves nothing about behavior"); a
@@ -240,16 +240,16 @@ decode is noise. Gloss every one at first use; keep the wording identical to
 this table so the same term never gets two definitions (a split brain about
 split brains).
 
-| Term                    | Plain meaning                                                                          |
-| ----------------------- | -------------------------------------------------------------------------------------- |
-| **split brain**         | the same concept defined or configured in two places, so the two drift apart           |
-| **ghost system**        | a capability that exists in the repo but was never wired into the product              |
-| **cargo-cult**          | copying a fix or pattern without checking whether its original reason applies here     |
-| **trophy-case**         | marking work done to look finished without verifying it works                          |
-| **Verschlimmbesserung** | a well-intentioned edit that makes things worse (the docs-health ANNOTATE incident)    |
-| **entombed**            | written into a timestamped file that no later session reads                            |
-| **epistemic hygiene**   | verifying a claim before acting on it or repeating it                                  |
-| **false green**         | a check that reports success without having measured anything                          |
+| Term                    | Plain meaning                                                                       |
+| ----------------------- | ----------------------------------------------------------------------------------- |
+| **split brain**         | the same concept defined or configured in two places, so the two drift apart        |
+| **ghost system**        | a capability that exists in the repo but was never wired into the product           |
+| **cargo-cult**          | copying a fix or pattern without checking whether its original reason applies here  |
+| **trophy-case**         | marking work done to look finished without verifying it works                       |
+| **Verschlimmbesserung** | a well-intentioned edit that makes things worse (the docs-health ANNOTATE incident) |
+| **entombed**            | written into a timestamped file that no later session reads                         |
+| **epistemic hygiene**   | verifying a claim before acting on it or repeating it                               |
+| **false green**         | a check that reports success without having measured anything                       |
 
 ## Organizing Multi-Domain Skills
 
