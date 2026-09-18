@@ -119,13 +119,13 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
 | #  | Task                                                                                                        | Impact | Effort | Cat  |
 | -- | ----------------------------------------------------------------------------------------------------------- | ------ | ------ | ---- |
 | 1  | Align all 7 shipped glosses verbatim to the Principle 7 table (or amend rule per g2, then skip)              | High   | S      | Bug  |
-| 2  | ANNOTATE the 09-17 report's two false claims inline (canonical-wording claim; "18 of 30")                     | High   | S      | Doc  |
+| ~~2~~  | ~~ANNOTATE the 09-17 report's two false claims inline (canonical-wording claim; "18 of 30")~~ done — this pass, 2026-09-18 — both claims corrected inline in the 09-17 report | ~~High~~ | ~~S~~ | ~~Doc~~ |
 | 3  | Audit github-voice's preamble=28 lines (largest unexamined `--signal` number)                                 | High   | S      | Qual |
 | 4  | Fold "what you get / why worth effort" from the doctrine into the description quick-test table                | Med    | S      | Doc  |
 | 5  | SESSION-START.md step 5: mention `--signal` + check 15 alongside `--triggers`                                 | Med    | S      | Doc  |
 | 6  | README.md: document `--signal` / check 15 (grep-verified absent)                                              | Med    | S      | Doc  |
-| 7  | Run `sync-html-kit.sh --check` (missed this session; near-certainly green)                                    | Low    | S      | Verif|
-| 8  | Run `link-skills-to-agents.sh --check` (missed this session)                                                 | Low    | S      | Verif|
+| ~~7~~  | ~~Run `sync-html-kit.sh --check` (missed this session; near-certainly green)~~ done — run this pass — exit 0 | ~~Low~~ | ~~S~~ | ~~Verif~~ |
+| ~~8~~  | ~~Run `link-skills-to-agents.sh --check` (missed this session)~~ done — run this pass — exit 0 | ~~Low~~ | ~~S~~ | ~~Verif~~ |
 | 9  | website-launch long tail: 9 remaining prose blocks in the 797-line allowlisted WARN file                      | Med    | M      | Qual |
 | 10 | verify-before-filing: 4 remaining prose hits, spot-check                                                     | Low    | S      | Qual |
 | 11 | docs-health / buildflow / go-ecosystem-upgrade / go-release prose hits — one restraint-disciplined pass        | Low    | M      | Qual |
