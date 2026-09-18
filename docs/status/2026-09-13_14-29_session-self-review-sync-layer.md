@@ -70,14 +70,14 @@ Pattern across d2–d7: **recall without execution** — the rules existed, I ev
 
 ## f) THINGS TO GET DONE NEXT (prioritized; items beyond ~15 are brainstorm-grade, ROADMAP fuel — not commitments)
 
-1. **[USER]** Decide `--check` enforcement level: manual / pre-commit hook (SKILLS) / hook (agent-skills) / CI — ROADMAP explicitly defers to you
-2. **[USER]** Approve push of `agent-skills` `1d897b7` to origin (never push unasked)
-3. Run `docs-health` HARVEST on this report + 11-05 (route f-items into TODO_LIST/ROADMAP; skip items already there)
-4. `link-skills-to-agents.sh --selftest` subcommand automating the sandbox matrix
-5. Wire link `--check` into `check-skills.sh` (one gate covers structure + links)
+1. ~~**[USER]** Decide `--check` enforcement level: manual / pre-commit hook (SKILLS) / hook (agent-skills) / CI — ROADMAP explicitly defers to you~~ done (routed — ROADMAP Open Questions (enforcement level, pre-existing))
+2. ~~**[USER]** Approve push of `agent-skills` `1d897b7` to origin (never push unasked)~~ **Won't implement — user decision — push approval stays with the owner; unpushed by design.**
+3. ~~Run `docs-health` HARVEST on this report + 11-05 (route f-items into TODO_LIST/ROADMAP; skip items already there)~~ done (docs-health pass 2026-09-18)
+4. ~~`link-skills-to-agents.sh --selftest` subcommand automating the sandbox matrix~~ routed - TODO T41
+5. ~~Wire link `--check` into `check-skills.sh` (one gate covers structure + links)~~ routed - TODO T41
 6. Install shellcheck (nix) and add advisory pass to the script gate
 7. README.md inventory/count refresh check (4 skills added since 2026-09-05)
-8. T35 (pre-existing): annotate status reports predating the check-skills zero-count fix
+8. ~~T35 (pre-existing): annotate status reports predating the check-skills zero-count fix~~ done (docs-health pass 2026-09-18 — T35 executed by this pass (green-claim appendices))
 9. crush-layer chain verification or documented exclusion
 10. `.gitignore` for `.replaced-*` in the aggregation repo
 11. `agent-skills` repo README explaining the symlink+snapshot model (it has none — future agents on fresh clones will be confused)
@@ -86,8 +86,8 @@ Pattern across d2–d7: **recall without execution** — the rules existed, I ev
 14. Sweep all scripts/ for unverified sed/line ranges (same class as d5)
 15. T33 (pre-existing): website video follow-ups
 16. T34, T30 (pre-existing, blocked on user decisions)
-17. ROADMAP 149-150: decide deletion of `~/.agents/.backup-skills-20260814/` + lockfile `.bak`
-18. `how-to-write-skills.md` location decision (§5.6, pre-existing)
+17. ~~ROADMAP 149-150: decide deletion of `~/.agents/.backup-skills-20260814/` + lockfile `.bak`~~ done (routed — ROADMAP Open Questions (backup retention, pre-existing))
+18. ~~`how-to-write-skills.md` location decision (§5.6, pre-existing)~~ done (routed — ROADMAP Open Questions (how-to-write-skills location, pre-existing))
 19. `website-launch` 803-line trim (allowlisted WARN)
 20. Verify updated HeyGen suite (11 skills) still behaves in a real composition — outside this repo's gates
 21. Consider feedback file for "review-time-caught defects" (d5/d6 class) — or fold into e1/e3 which already encode it

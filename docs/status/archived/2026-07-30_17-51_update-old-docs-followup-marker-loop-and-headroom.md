@@ -99,7 +99,7 @@ skill preaches.
 
 ## b) PARTIALLY DONE
 
-### 1. Feedback file correctly stays in `processed/` — but only because I finished the work
+### ~~1. Feedback file correctly stays in `processed/` — but only because I finished the work~~ — done - resolved by the 2026-08-04 Resolution
 
 Last session's mistake was moving it prematurely. This session I
 implemented the missing suggestion #6, so all 7 suggestions are now
@@ -108,7 +108,7 @@ workflow (#7). It is _now_ legitimately fully processed. But the fix
 was reactive — the premature move happened first, the work second. The
 correct sequence would have been: do the work, then move the file.
 
-### 2. docs-health marker-respect rule is in SKILL.md, not in the verify-checklist
+### ~~2. docs-health marker-respect rule is in SKILL.md, not in the verify-checklist~~ — done - resolved by the 2026-08-04 Resolution
 
 I added the HARVEST process rule + an anti-pattern. But docs-health has
 a separate `references/verify-checklist.md` with failure-mode rows, and
@@ -120,7 +120,7 @@ lens that would catch its violation does not. See §d.
 
 ## c) NOT STARTED
 
-### 1. docs-health `verify-checklist.md` — no re-harvest failure-mode row
+### ~~1. docs-health `verify-checklist.md` — no re-harvest failure-mode row~~ — done - resolved by the 2026-08-04 Resolution
 
 `verify-checklist.md` has rows like "Unharvested report" (forwards
 forgotten). It has no row for the inverse: "Re-harvested resolved items"
@@ -128,7 +128,7 @@ forgotten). It has no row for the inverse: "Re-harvested resolved items"
 that a failure mode, but the checklist that an agent runs to catch
 failures doesn't know about it.
 
-### 2. status-report skill — no awareness of marker format
+### ~~2. status-report skill — no awareness of marker format~~ — done - resolved by the 2026-08-04 Resolution
 
 `status-report` produces the "next tasks" section that update-old-docs
 later resolves and HARVEST later harvests. The marker vocabulary (`done
@@ -140,7 +140,7 @@ easy (e.g., numbered items, not prose paragraphs). Not investigated.
 
 ## d) TOTALLY FUCKED UP
 
-### 1. Repeated my own mistake: edited SKILL.md without checking the sibling references — AGAIN
+### ~~1. Repeated my own mistake: edited SKILL.md without checking the sibling references — AGAIN~~ — done - resolved by the 2026-08-04 Resolution
 
 The #1 lesson from last session's status report (§e.2): "When I changed
 `DONE:` to `done at`, I should have immediately grepped `references/*.md`
@@ -158,7 +158,7 @@ rule, trace it to every place that enforces or illustrates it.** I
 traced the marker format (and it was clean). I did not trace the new
 failure mode to the verify-checklist. Half-diligent.
 
-### 2. update-old-docs is at EXACTLY 500 lines — zero headroom
+### ~~2. update-old-docs is at EXACTLY 500 lines — zero headroom~~ — done - resolved by the 2026-08-04 Resolution
 
 `check-skills.sh` enforces a 500-line hard limit. My edits landed the
 file at exactly 500. The next edit — any edit, even a one-line fix —
@@ -204,18 +204,18 @@ done, leave it in `new/`.
 
 | # | Priority   | Task                                                                                                                                                                   |
 | - | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1 | **HIGH**   | Add a "Re-harvested resolved items" failure-mode row to `docs-health/references/verify-checklist.md` — closes the gap from §d.1                                        |
-| 2 | **HIGH**   | Compress `update-old-docs/SKILL.md` to ≤495 lines to restore maintenance headroom (currently 500/500)                                                                  |
-| 3 | **MEDIUM** | Audit `status-report/SKILL.md` — does its "next tasks" output format (numbered vs prose) make future `done at` resolution easy? Adjust if marker-unfriendly            |
-| 4 | **MEDIUM** | Verify the docs-health HARVEST Step 2/Step 3 ordering reads cleanly to a fresh reader (marker-drop in Step 2 vs code-verify in Step 3 — make the distinction explicit) |
-| 5 | **LOW**    | Consider whether `update-old-docs/references/` needs a short "annotate vs resolve" reference doc, or whether the inline gloss is sufficient                            |
-| 6 | **LOW**    | Review whether the `done at` marker format should be documented once in a shared location (not just update-old-docs) since HARVEST now depends on it                   |
+| ~~1~~ | HIGH | ~~Re-harvest guard row~~ done - marker rule in HARVEST + verify-checklist (01-00 resolution) |
+| ~~2~~ | HIGH | ~~Compress to 495~~ done - 477 after the structural refactor |
+| ~~3~~ | MEDIUM | ~~Audit status-report format~~ done - handles both prose and tables (resolving-items) |
+| ~~4~~ | MEDIUM | ~~Verify ordering~~ done - distinct and documented |
+| ~~5~~ | LOW | ~~annotate-vs-resolve doc~~ w:covered - inline gloss suffices |
+| ~~6~~ | LOW | ~~Marker-format home~~ done - owned by docs-health ANNOTATE (5.5 contract) |
 
 ---
 
 ## g) QUESTIONS (I cannot figure these out myself)
 
-### Q1: Should `status-report` emit numbered "next tasks" items to make future resolution mechanical?
+### ~~Q1: Numbered next-tasks for mechanical resolution?~~ RESOLVED - yes; resolving-items handles both shapes (Pattern A+B).
 
 The marker vocabulary (`done at <hash>` struck through the original
 line) only works cleanly on numbered list items. If `status-report`
@@ -225,13 +225,13 @@ don't know if you want status-report's output shaped by the needs of a
 _downstream_ skill. Is that a coupling you accept, or should
 update-old-docs handle whatever format it receives?
 
-### Q2: Is "leave 5 lines of headroom" a rule I should encode, or is landing at 500 acceptable?
+### ~~Q2: Headroom rule?~~ RESOLVED - references-first refactor made headroom structural (178-line body).
 
 I treated 500 as the target. You may consider exact-max acceptable
 (ships more content). I consider it fragile (next edit breaks). Which
 posture should I take as default across all skills?
 
-### Q3: Should the docs-health verify-checklist live as a reference file, or be inlined into SKILL.md?
+### ~~Q3: Verify-checklist location?~~ RESOLVED - progressive disclosure kept (SKILL.md rules + reference detail).
 
 The verify-checklist is a separate reference that an agent loads on
 demand. But the HARVEST failure modes I'm adding need to be visible

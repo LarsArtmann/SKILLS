@@ -21,16 +21,21 @@
       NOT to Do") before editing anything.
 - [ ] **5. Run `scripts/check-skills.sh`** for the current structural state
       (skill count, thin skills, warnings). `--triggers` for the advisory
-      trigger-density report if today's work touches descriptions.
+      trigger-density report if today's work touches descriptions;
+      `--signal` for the advisory signal-density report (Principle 7) if
+      today's work touches skill bodies — check 15 hard-fails pure
+      throat-clearing either way.
       **Quote the exit status (`echo $?`), never just the output tail** —
       on 2026-09-09 the script exited 1 silently (zero-count grep aborts
       under pipefail) while a session read its output as green. A
       green-looking run with a non-zero exit is a FAIL.
 - [ ] **6.** If today's work creates a new skill, follow the new-skill
       wiring checklist in `how-to-write-skills.md` (README row + counts,
+      FEATURES.md row — gated by `check-skills.sh` check 14, CHANGELOG entry,
       two-way description disambiguation, AGENTS §5.5 graph entry, ROADMAP
       reconciliation, `link-skills-to-agents.sh`, structural + trigger
-      checks).
+      checks). After editing ANY existing `SKILL.md`, re-check its FEATURES.md
+      row in the same turn — nothing else cross-checks it.
 
 Then start the task. A TODO row (or an old audit) is a claim, not a state:
 `find <skill-dir> -type f` + `wc -l` before trusting its framing. At session

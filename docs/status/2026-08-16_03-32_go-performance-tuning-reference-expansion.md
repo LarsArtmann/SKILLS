@@ -56,7 +56,7 @@ Session-scoped, sorted by impact. 1–7 are direct cleanup of this session; 8+ a
 
 1. ~~Update repo `AGENTS.md` §6 — reference count 9→10 + add `performance-tuning.md` row (5 min).~~ done (docs-health pass 2026-08-21)
 2. ~~Update repo `AGENTS.md` §10 — add the 6 newly referenced, verified tools (benchstat, goleak, fieldalignment, x/sys/cpu, klauspost/compress, automaxprocs).~~ done (docs-health pass 2026-08-21)
-3. Compile-check `performance-tuning.md` snippets in a scratch module; fix anything that doesn't build.
+3. ~~Compile-check `performance-tuning.md` snippets in a scratch module; fix anything that doesn't build.~~ done (done — snippets compile-checked in the 2026-08-21 pass (31 reference blocks built))
 4. ~~Run `scripts/link-skills-to-agents.sh --check` to confirm runtime symlink integrity.~~ done (link-skills-to-agents.sh --check green (2026-08-21))
 5. ~~Verify `README.md` how-to-golang inventory row is still accurate.~~ done (row accurate — verified 2026-08-21)
 6. ~~Commit the session work (`how-to-golang` changes) if the daemon hasn't when you next look.~~ done at `60c799c`
@@ -64,16 +64,16 @@ Session-scoped, sorted by impact. 1–7 are direct cleanup of this session; 8+ a
 
 **Content hardening of the new reference:**
 
-8. Add a real (run, not invented) `-cpu` sweep example with output + knee annotation to the file — the current example is command-only.
-9. Add a real `benchstat` before/after example with actual output.
-10. Add a short "false sharing" before/after benchmark example with measured numbers (would make the `CacheLinePad` advice concrete).
-11. Cross-link `bdd-testing`/testing-strategy's benchmark lens to performance-tuning's methodology section (one-way link, no duplication).
+8. ~~Add a real (run, not invented) `-cpu` sweep example with output + knee annotation to the file — the current example is command-only.~~ done (done — T14: real -cpu sweep with knee annotation (16 workers, worse at 32))
+9. ~~Add a real `benchstat` before/after example with actual output.~~ done (done — T14: real benchstat before/after (-80.21%, p=0.002, n=6))
+10. ~~Add a short "false sharing" before/after benchmark example with measured numbers (would make the `CacheLinePad` advice concrete).~~ done (done — T14: false-sharing before/after with the 56-byte pad)
+11. ~~Cross-link `bdd-testing`/testing-strategy's benchmark lens to performance-tuning's methodology section (one-way link, no duplication).~~ done (done — T15: bdd-testing cross-link ("Benchmarks are not specs"))
 12. Consider a tiny `how-to-golang/scripts/check-snippets.sh` that compiles all fenced Go snippets in references (would pay down the §10 caveat repo-wide).
 
 **Generalize the session's lessons:**
 
-13. Add the "verify before you say" rule (e1) to `verify-external-claims` as a chat-time gate, not just encode-time.
-14. Document the verification-status-table-in-references pattern in `how-to-write-skills.md`.
+13. ~~Add the "verify before you say" rule (e1) to `verify-external-claims` as a chat-time gate, not just encode-time.~~ done (done — T13: verify-external-claims §0 chat-time gate)
+14. ~~Document the verification-status-table-in-references pattern in `how-to-write-skills.md`.~~ done (done — T13: verification-status-table pattern documented in how-to-write-skills lessons)
 15. ~~`status-report` skill: consider an explicit `.md` override note is already present — verify it renders correctly (it does, per this file) — no action beyond confirming the override flag protocol worked.~~ done (override protocol confirmed working — this report renders as .md with the flag)
 
 **Observed during the session (repo health, not researched further):**

@@ -128,5 +128,5 @@ dependencies table.
 - **Legacy `how-to-golang` snippet issues fixed 2026-08-04** (gopter, json/v2,
   E2E HTTP, Rule 002). The newer `performance-tuning.md` (2026-08-16) snippets
   are idiomatic but not compile-tested.
-- **website-launch is 803 lines** (allowlisted; trim path: extract Phase 2
-  badge/link-bar blocks).
+- **website-launch is 797 lines** (allowlisted; trim path: extract §3.11
+  next — the Phase 2 badge/link-bar blocks were already extracted).

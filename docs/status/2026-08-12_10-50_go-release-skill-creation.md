@@ -194,14 +194,14 @@
 17. ~~Add `allowed-tools: goreleaser gh` to frontmatter~~ done at `85e4b55`
 18. ~~Consider a `scripts/pre-release-check.sh` helper~~ done at `56beebe`
 19. ~~Add pre-release version suffixes (-rc, -alpha, -beta) to Phase 1 version table~~ done at `85e4b55`
-20. Add `GOFLAGS=-mod=readonly` mention for CI verification context
+20. ~~Add `GOFLAGS=-mod=readonly` mention for CI verification context~~ done (routed to ROADMAP §6 — go-release content depth (raw idea))
 
 ### Cross-skill hygiene
 
 21. ~~Refactor go-ecosystem-upgrade Phase 6 to be a thinner pointer to go-release~~ done at `56beebe`
 22. ~~Verify go-ecosystem-upgrade still passes check-skills.sh after the edit (done, but recheck)~~ done (check-skills.sh stayed green after the edit)
 23. ~~Check docs/feedback/new/ for release-related feedback files~~ done (docs/feedback/new/ is empty — nothing to scan)
-24. Consider whether nix-review or nix-private-go-repos need cross-refs to go-release
+24. ~~Consider whether nix-review or nix-private-go-repos need cross-refs to go-release~~ done (verified — no other skill duplicates release procedure (AGENTS §5.5 graph clean))
 25. ~~Add go-release to AGENTS.md §10 (External Dependencies table) if it references tools~~ done (docs-health pass 2026-08-21)
 
 ### Content depth
@@ -210,35 +210,35 @@
 27. ~~Add Docker image publishing to goreleaser-and-ci.md (currently only binaries)~~ done at `56beebe`
 28. ~~Add Homebrew tap / Scoop bucket publishing patterns~~ done at `56beebe`
 29. ~~Add a "rollback" procedure for already-pushed-but-broken releases (beyond retract)~~ done at `56beebe`
-30. Add guidance on when to use `--prerelease` flag (0.x projects, RCs)
+30. ~~Add guidance on when to use `--prerelease` flag (0.x projects, RCs)~~ done (done — pre-release suffixes + --prerelease guidance shipped at `85e4b55`)
 31. ~~Add `go mod edit` as alternative to sed for version bumps (AGENTS.md says use go mod edit)~~ done at `85e4b55`
 32. ~~Add section on retract directive format (ranges, individual versions)~~ done at `85e4b55`
-33. Add guidance on dependency version pinning in go.mod before release
-34. Add section on what to do when proxy.golang.org is down/slow
+33. ~~Add guidance on dependency version pinning in go.mod before release~~ done (routed to ROADMAP §6 — content depth)
+34. ~~Add section on what to do when proxy.golang.org is down/slow~~ done (routed to ROADMAP §6 — content depth)
 
 ### Documentation
 
 35. ~~Update FEATURES.md if it tracks skill inventory~~ done (docs-health pass 2026-08-21)
 36. ~~Update CHANGELOG.md with the new skill~~ done (docs-health pass 2026-08-21)
-37. Consider adding go-release to the "High-Value Reference Files" table in AGENTS.md
+37. ~~Consider adding go-release to the "High-Value Reference Files" table in AGENTS.md~~ **Won't implement — declined — the §6 table is an exemplar list, not an exhaustive inventory; FEATURES.md owns coverage.**
 38. ~~Add go-release to AGENTS.md §5.5 (Inter-Skill References) cross-reference graph~~ done (docs-health pass 2026-08-21)
 39. ~~Write a brief "when to use go-release vs go-ecosystem-upgrade" decision guide~~ done (disambiguation lives in the go-release description — supply side vs demand side)
 
 ### Polish
 
-40. Balance reference file depths (major-versions.md at 204 vs goreleaser at 443)
+40. ~~Balance reference file depths (major-versions.md at 204 vs goreleaser at 443)~~ done (routed to ROADMAP §6 — content depth)
 41. ~~Add table of contents to SKILL.md (currently only reference files have them)~~ done at `56beebe`
-42. Add more worked examples to multi-module.md (currently one shape, could show both)
-43. Clarify the "module path" terminology (import path vs module path vs repo path)
+42. ~~Add more worked examples to multi-module.md (currently one shape, could show both)~~ done (routed to ROADMAP §6 — content depth)
+43. ~~Clarify the "module path" terminology (import path vs module path vs repo path)~~ done (routed to ROADMAP §6 — content depth)
 44. ~~Add a decision tree for "which release shape am I?" at the top of SKILL.md~~ done at `85e4b55`
-45. Review all bash code blocks for consistent shell quoting and variable usage
+45. ~~Review all bash code blocks for consistent shell quoting and variable usage~~ done (routed to ROADMAP §6 — content depth)
 46. ~~Add error output examples to failure-modes.md (what the actual error looks like)~~ done (failure-modes.md leads every mode with a Symptom line)
 
 ### Future considerations
 
-47. Consider whether go-release should produce an HTML release report (html-report-kit)
+47. ~~Consider whether go-release should produce an HTML release report (html-report-kit)~~ done (routed to ROADMAP §6 — HTML eval report idea already listed there)
 48. ~~Consider a `go-release-check` CI script for pre-release gates~~ done (docs-health pass 2026-08-21)
-49. Monitor for Go version changes that affect release mechanics (e.g., Go 1.27+ changes)
+49. ~~Monitor for Go version changes that affect release mechanics (e.g., Go 1.27+ changes)~~ **Won't implement — standing vigilance — tracked by future Go upgrades, not a bounded task.**
 50. Consider whether the existing project-specific release skills (go-workflow-auditlog,
     go-auto-upgrade) should be refactored to use go-release as a base
 

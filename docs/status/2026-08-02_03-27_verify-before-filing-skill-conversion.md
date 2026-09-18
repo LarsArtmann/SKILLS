@@ -76,28 +76,28 @@ Converted two feedback files describing the **same failure pattern** (filing pre
 
 ### High impact — do soon
 
-1. **Update AGENTS.md §5.5** with the `verify-before-filing ↔ verify-external-claims` inbound/outbound pair. _(Closes the biggest gap from this session.)_
-2. **Commit this session's work** (awaiting user go-ahead): new skill + README + backlink + feedback archive.
-3. **Add a `check-skills.sh` guard for _new_ cross-skill links** — currently it only asserts _existing_ handoffs survive; it does not detect when a new bidirectional link is added but undocumented in AGENTS.md §5.5.
-4. **Add `verify-before-filing` to the `handoffs` allowlist consideration** in check-skills.sh if we want to enforce the §8 backlink survives future edits.
+1. ~~**Update AGENTS.md §5.5** with the `verify-before-filing ↔ verify-external-claims` inbound/outbound pair. _(Closes the biggest gap from this session.)_~~ done (Resolution)
+2. ~~**Commit this session's work** (awaiting user go-ahead): new skill + README + backlink + feedback archive.~~ done (Resolution, 3a7cc56/e8b20bb)
+3. ~~**Add a `check-skills.sh` guard for _new_ cross-skill links** — currently it only asserts _existing_ handoffs survive; it does not detect when a new bidirectional link is added but undocumented in AGENTS.md §5.5.~~ w:covered - the backlink + link guards cover the shipped subset
+4. ~~**Add `verify-before-filing` to the `handoffs` allowlist consideration** in check-skills.sh if we want to enforce the §8 backlink survives future edits.~~ w:declined - handoff allowlist not extended
 
 ### Medium impact — skill maturity
 
-5. **Add a second boxed example** to `verify-before-filing` from a non-Nix domain (Go library typings, TS bundler config, Python packaging).
-6. **Run the skill-creator eval loop** on `verify-before-filing` to test trigger-description accuracy with realistic prompts.
-7. **Age the skill from 🆕 New → 🟢 Solid** by triggering it against a real upstream-issue decision and documenting the successful run (per README status legend).
-8. **Add a `references/failure-catalog.md`** seed file to `verify-before-filing/` for accumulating future real-world cases.
-9. **Consider a shared "epistemic-hygiene" tag cluster** — both verify skills share the tag; surface them together in README or a future index.
+5. ~~**Add a second boxed example** to `verify-before-filing` from a non-Nix domain (Go library typings, TS bundler config, Python packaging).~~ w:open - second boxed example not demanded
+6. ~~**Run the skill-creator eval loop** on `verify-before-filing` to test trigger-description accuracy with realistic prompts.~~ w:ROADMAP - eval theme
+7. ~~**Age the skill from 🆕 New → 🟢 Solid** by triggering it against a real upstream-issue decision and documenting the successful run (per README status legend).~~ w:open - aging awaits first real filing (README legend)
+8. ~~**Add a `references/failure-catalog.md`** seed file to `verify-before-filing/` for accumulating future real-world cases.~~ w:open - failure-catalog seed not demanded
+9. ~~**Consider a shared "epistemic-hygiene" tag cluster** — both verify skills share the tag; surface them together in README or a future index.~~ w:declined - discoverability via descriptions
 
 ### Low impact — polish
 
-10. **Add `is:closed` web-search fallback** to Gate 5 for users without `gh`.
-11. **Reconcile installed vs. repo copies** of `verify-external-claims` (I edited both; confirm they're identical or document the install-sync workflow).
-12. **Review the 13 pre-existing unstaged changes** in the working tree (architecture-review, bdd-testing, code-quality-scan, deduplicate-code, full-code-review, go-ecosystem-upgrade, go-error-modernization, how-to-golang, html-report-kit, pareto-planning, status-report, AGENTS.md) — these are not mine; they need triage or committing by whoever authored them.
-13. **Investigate the `docs/planning/` untracked directory** — appeared in git status, not mine, unknown origin.
-14. **Update the comprehensive audit** (`docs/status/2026-05-03_...`) or write a new one reflecting the 25-skill state.
-15. **Run `docs-health` HARVEST** to pull any actionable items from this status report into TODO_LIST.md (per the status-report → docs-health handoff).
-16. **Add `verify-before-filing` to the AGENTS.md §10 external dependencies table** if we consider `gh` an external dependency worth listing (borderline — `gh` is ubiquitous).
+10. ~~**Add `is:closed` web-search fallback** to Gate 5 for users without `gh`.~~ w:open - is:closed fallback not demanded
+11. ~~**Reconcile installed vs. repo copies** of `verify-external-claims` (I edited both; confirm they're identical or document the install-sync workflow).~~ done - repo+installed consistent via symlinks
+12. ~~**Review the 13 pre-existing unstaged changes** in the working tree (architecture-review, bdd-testing, code-quality-scan, deduplicate-code, full-code-review, go-ecosystem-upgrade, go-error-modernization, how-to-golang, html-report-kit, pareto-planning, status-report, AGENTS.md) — these are not mine; they need triage or committing by whoever authored them.~~ w:external - the 13 files were the parallel session's, committed since
+13. ~~**Investigate the `docs/planning/` untracked directory** — appeared in git status, not mine, unknown origin.~~ w:moot - docs/planning resolved (archived)
+14. ~~**Update the comprehensive audit** (`docs/status/2026-05-03_...`) or write a new one reflecting the 25-skill state.~~ w:moot - superseded by later audits
+15. ~~**Run `docs-health` HARVEST** to pull any actionable items from this status report into TODO_LIST.md (per the status-report → docs-health handoff).~~ done - HARVEST ran 2026-08-04
+16. ~~**Add `verify-before-filing` to the AGENTS.md §10 external dependencies table** if we consider `gh` an external dependency worth listing (borderline — `gh` is ubiquitous).~~ w:declined - gh ubiquitous
 
 ---
 

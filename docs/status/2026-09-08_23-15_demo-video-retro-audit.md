@@ -39,11 +39,15 @@ are manual and the 2026-09-04 config never shipped.
 
 ## Cross-cutting findings
 
-1. **Stale manual deploy (new pitfall #33).** emeet-pixyd's repo config
+1. ~~**Stale manual deploy (new pitfall #33).** emeet-pixyd's repo config
    promises immutable caching; the live site honors it for nothing. Deploys
-   are manual; no CI gate exists. The DoD's `HEAD /demo.mp4` check exists
-   precisely for this — run it after every config change, not just at
-   launch. Encoded in `website-launch/references/common-pitfalls.md` §33.
+   are manual; no CI gate exists.~~ **Corrected 2026-09-09 (wave-3):** stale
+   deploy was necessary but NOT sufficient — the deeper root cause was
+   Firebase **header-block ORDER** (the `**` catch-all defined after the
+   immutable glob clobbers same-key Cache-Control), affecting ALL FOUR sites
+   incl. filewatcher (the implicit "healthy" baseline below was itself
+   broken). Fixed + live-verified on all four sites; pitfall #33 rewritten to
+   the two-layer cause at `46d73b0`. The `HEAD /demo.mp4` advice stands.
 2. **The two "reference baseline" repos fail the video bar they teach.**
    gogenfilter is the skill's recommended baseline and has no demo video;
    next session that touches either site should add the full video flow,
@@ -55,8 +59,8 @@ are manual and the 2026-09-04 config never shipped.
 
 | # | Task                                                                                          | Repo                            | Effort |
 | - | --------------------------------------------------------------------------------------------- | ------------------------------- | ------ |
-| 1 | Redeploy hosting; verify `HEAD /demo.mp4` + one JS asset return immutable                     | emeet-pixyd                     | S      |
-| 2 | Add `id="demo"` to the video container; add "Watch the 25s demo" to README docs bar           | emeet-pixyd                     | S      |
+| ~~1~~ | ~~Redeploy hosting; verify `HEAD /demo.mp4` + one JS asset return immutable~~ done — wave-3 f4 (immutable live) | ~~emeet-pixyd~~ | ~~S~~ |
+| ~~2~~ | ~~Add `id="demo"` to the video container; add "Watch the 25s demo" to README docs bar~~ done — wave-3 f5/f6 (live-verified) | ~~emeet-pixyd~~ | ~~S~~ |
 | 3 | Recreate the HyperFrames composition from the surviving MP4 and commit under `website/video/` | emeet-pixyd                     | M      |
 | 4 | Full demo-video flow (first implementation of T22's corrected guidance)                       | gogenfilter                     | L      |
 | 5 | Video flow + og:image upgrade                                                                 | go-atomic-write, go-filewatcher | L      |

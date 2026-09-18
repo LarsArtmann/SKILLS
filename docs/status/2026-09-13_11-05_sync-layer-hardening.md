@@ -62,5 +62,6 @@ All four incidents encoded, file archived to `docs/feedback/processed/`:
 
 - ROADMAP g-lines about `--check` enforcement level (manual vs CI) remain user
   decisions — untouched.
-- The `agent-skills` aggregation repo has 4 untracked symlinks; owner action
-  (commit there) — the script now hints at this whenever it changes links.
+- ~~The `agent-skills` aggregation repo has 4 untracked symlinks; owner action
+  (commit there)~~ done — committed at `1d897b7` (2026-09-13, per the 14-29
+  report a8). The script's change-hint remains.

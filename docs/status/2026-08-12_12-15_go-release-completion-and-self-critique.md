@@ -212,65 +212,65 @@
 
 ### Verification & testing
 
-1. Re-run the 3 evals with the fixed SKILL.md and compare pass rates.
-2. Add a safety assertion to evals: output must not contain `rm -rf`.
+1. ~~Re-run the 3 evals with the fixed SKILL.md and compare pass rates.~~ done (done — iteration-2 evals on disk (pass-rate improvement measured))
+2. ~~Add a safety assertion to evals: output must not contain `rm -rf`.~~ done (done — safety assertion in iteration-2 grading (rm -rf check present))
 3. Test `pre-release-check.sh --race` against a project with real tests.
 4. Test `pre-release-check.sh --lint` against a project with `golangci-lint`.
 5. Test `pre-release-check.sh` in a multi-module `go.work` repo.
 6. Test `pre-release-check.sh` when `go.mod` contains a valid remote `replace` (not local).
-7. Render SKILL.md and verify all ToC anchor links resolve.
+7. ~~Render SKILL.md and verify all ToC anchor links resolve.~~ done (done — ToC anchors validated by check 12 (anchor-aware link checker))
 8. ~~Run `dprint check` on all changed files when `dprint` is available.~~ done (dprint adopted repo-wide (dprint.json))
 9. Run spell-check on `go-release/` files.
 10. Validate the new GoReleaser publishing examples by running `goreleaser check`.
 
 ### Skill content
 
-11. Add a "Safety notes" section to SKILL.md (temp dirs, `trash`, no `rm -rf`).
+11. ~~Add a "Safety notes" section to SKILL.md (temp dirs, `trash`, no `rm -rf`).~~ done (done — T16: trash safety item in quick-reference.md Phase 6 checklist)
 12. ~~Add a decision gate at the top of SKILL.md responses: library vs binary vs multi-module.~~ done at `85e4b55`
-13. Add a CI workflow example that runs `pre-release-check.sh` before allowing a tag push.
-14. Add a note about `GOWORK=off` and multi-module verification to the script and skill.
+13. ~~Add a CI workflow example that runs `pre-release-check.sh` before allowing a tag push.~~ done (routed to ROADMAP §6 — CI gate idea already listed there)
+14. ~~Add a note about `GOWORK=off` and multi-module verification to the script and skill.~~ done (routed to ROADMAP §6 — content depth)
 15. ~~Add a section on release retraction to SKILL.md or failure-modes.md.~~ done at `f8baf43`
 16. ~~Add a section on private-dependency release failures to failure-modes.md.~~ done at `f8baf43`
 17. ~~Add a section on checksum mismatch recovery to failure-modes.md.~~ done at `f8baf43`
 18. ~~Add a note about `+incompatible` avoidance in quick-reference.md.~~ done at `56beebe`
-19. Add a note about GoReleaser Pro features vs OSS limits.
-20. Add a section on release asset naming conventions.
-21. Add a section on handling generated code in releases.
-22. Add a section on test fixtures and vendored dependencies in releases.
-23. Add a section on release incident response.
-24. Add a section on release announcement / communication checklist.
-25. Add a section on nightly/snapshot release cadence.
-26. Add a section on release branch naming conventions.
-27. Add a section on long-term support (LTS) releases.
-28. Add a section on CVE handling in releases.
-29. Add a section on reproducible builds and supply-chain verification.
-30. Add a section on release health metrics (adoption, failure rate, recovery time).
+19. ~~Add a note about GoReleaser Pro features vs OSS limits.~~ done (routed to ROADMAP §6 — content depth)
+20. ~~Add a section on release asset naming conventions.~~ done (routed to ROADMAP §6 — content depth)
+21. ~~Add a section on handling generated code in releases.~~ done (routed to ROADMAP §6 — content depth)
+22. ~~Add a section on test fixtures and vendored dependencies in releases.~~ done (routed to ROADMAP §6 — content depth)
+23. ~~Add a section on release incident response.~~ done (routed to ROADMAP §6 — release incident response listed there)
+24. ~~Add a section on release announcement / communication checklist.~~ done (routed to ROADMAP §6 — announcement checklist listed there)
+25. ~~Add a section on nightly/snapshot release cadence.~~ done (routed to ROADMAP §6 — nightly cadence listed there)
+26. ~~Add a section on release branch naming conventions.~~ done (routed to ROADMAP §6 — branch strategies shipped at `56beebe`)
+27. ~~Add a section on long-term support (LTS) releases.~~ done (routed to ROADMAP §6 — LTS listed there)
+28. ~~Add a section on CVE handling in releases.~~ done (routed to ROADMAP §6 — CVE handling listed there)
+29. ~~Add a section on reproducible builds and supply-chain verification.~~ done (routed to ROADMAP §6 — reproducible builds listed there)
+30. ~~Add a section on release health metrics (adoption, failure rate, recovery time).~~ done (routed to ROADMAP §6 — health metrics listed there)
 
 ### Evals & quality
 
-31. Add an eval for version retraction (`go mod edit -retract`).
-32. Add an eval for private-dependency release.
-33. Add an eval for v2+ module migration.
-34. Add an eval for multi-module GoReleaser binary release.
-35. Add an eval for release-branch hotfix workflow.
-36. Add an eval for "my tag is on the wrong commit" recovery.
-37. Add an eval for "consumer sees checksum mismatch".
-38. Add an eval for pre-release version (`v1.0.0-rc.1`) handling.
-39. Run the proper skill-creator evaluation loop when `claude -p` is available.
-40. Generate an HTML eval report with `html-report-kit` and `eval-viewer/generate_review.py`.
-41. Add variance analysis (multiple runs per prompt) to evals.
-42. Add a blind comparator evaluation (with-skill vs old-skill vs baseline).
-43. Add trigger-description accuracy tests using `run_eval.py`.
-44. Improve eval prompts to be more ambiguous and realistic.
+31. ~~Add an eval for version retraction (`go mod edit -retract`).~~ **Won't implement — duplicate — eval-expansion matrix already in ROADMAP §1.**
+32. ~~Add an eval for private-dependency release.~~ **Won't implement — duplicate — ROADMAP §1.**
+33. ~~Add an eval for v2+ module migration.~~ **Won't implement — duplicate — ROADMAP §1.**
+34. ~~Add an eval for multi-module GoReleaser binary release.~~ **Won't implement — duplicate — ROADMAP §1.**
+35. ~~Add an eval for release-branch hotfix workflow.~~ **Won't implement — duplicate — ROADMAP §1.**
+36. ~~Add an eval for "my tag is on the wrong commit" recovery.~~ **Won't implement — duplicate — ROADMAP §1.**
+37. ~~Add an eval for "consumer sees checksum mismatch".~~ **Won't implement — duplicate — ROADMAP §1.**
+38. ~~Add an eval for pre-release version (`v1.0.0-rc.1`) handling.~~ **Won't implement — duplicate — ROADMAP §1.**
+39. ~~Run the proper skill-creator evaluation loop when `claude -p` is available.~~ **Won't implement — duplicate — ROADMAP §1.**
+40. ~~Generate an HTML eval report with `html-report-kit` and `eval-viewer/generate_review.py`.~~ done (routed to ROADMAP §6 — HTML eval report idea)
+41. ~~Add variance analysis (multiple runs per prompt) to evals.~~ **Won't implement — duplicate — ROADMAP §1.**
+42. ~~Add a blind comparator evaluation (with-skill vs old-skill vs baseline).~~ **Won't implement — duplicate — ROADMAP §1.**
+43. ~~Add trigger-description accuracy tests using `run_eval.py`.~~ **Won't implement — duplicate — ROADMAP §1.**
+44. ~~Improve eval prompts to be more ambiguous and realistic.~~ **Won't implement — duplicate — ROADMAP §1.**
 45. Add grading evidence screenshots or exact line references.
 
 ### Repository & maintenance
 
 46. ~~Update the `website-launch` allowlist if it remains over 500 lines.~~ **Won't implement — allowlist still covers it — trim tracked as TODO_LIST T11.**
-47. Add a CONTRIBUTING note about evals for new skills.
-48. Consider moving `how-to-write-skills.md` to a proper skill directory per the audit.
-49. Add a script to auto-run evals for all skills in the repo.
-50. Archive or process the round-1 and round-2 status reports once their items are complete.
+47. ~~Add a CONTRIBUTING note about evals for new skills.~~ done (routed to ROADMAP §1 — eval convention idea)
+48. ~~Consider moving `how-to-write-skills.md` to a proper skill directory per the audit.~~ done (routed to ROADMAP Open Questions — location decision)
+49. ~~Add a script to auto-run evals for all skills in the repo.~~ **Won't implement — superseded — scripts/scratch.sh shipped (22-51 e1).**
+50. ~~Archive or process the round-1 and round-2 status reports once their items are complete.~~ done (docs-health pass 2026-09-18 — round-1/round-2 reports resolved by this pass)
 
 ---
 

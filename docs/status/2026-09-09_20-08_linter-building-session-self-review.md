@@ -55,35 +55,35 @@
 | #  | Task                                                                                                                                                                           | Impact | Effort               | Category      |
 | -- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ | -------------------- | ------------- |
 | 1  | Guard the guard: check-skills.sh self-test in a subshell asserting exit 0 AND final "OK: all" line; wire into a smoke invocation docs mention                                  | High   | S                    | Bug           |
-| 2  | Run eval iteration 1 for linter-building: 3 realistic prompts, with/without skill, persisted to `linter-building/evals/iteration-1/…` + `grading.json` with evidence quotes    | High   | M                    | Quality       |
-| 3  | Live trigger test from a fresh session ("write a linter", "reduce my linter's false positives", "lint my project" → must hit linter-building / code-quality-scan respectively) | High   | S                    | Quality       |
-| 4  | Verify research-pass claims in references: golangci-lint-auto-configure governance maps, audit-ledger actions, 4-tier priorities                                               | Medium | S                    | Documentation |
-| 5  | Verify claims: go-structure-linter ADR-003 adapter boundary, fix mixins, ExternalToolRule no-op semantics                                                                      | Medium | S                    | Documentation |
-| 6  | Verify claims: oxlint-auto-configure embedded rule registry (841), profile specs, exit-1 normalization                                                                         | Medium | S                    | Documentation |
-| 7  | Verify claims: go-finding Suppression fields, FixOutcome statuses, MergeOption/dedup names, pipeline CompletionReason, v1.7.0 tag incident                                     | Medium | M                    | Documentation |
-| 8  | Verify claims: linter-autoconfigure-sdk single-file shape, Op-typed ConfigError; samber-linter HW-1..6 + ledger quotes; go-humanize-linter 158-project corpus + FP numbers     | Medium | S                    | Documentation |
+| ~~2~~  | ~~Run eval iteration 1 for linter-building: 3 realistic prompts, with/without skill, persisted to `linter-building/evals/iteration-1/…` + `grading.json` with evidence quotes~~ done — evals/iteration-1 persisted (round 2, `1ec3244` era) | ~~High~~ | ~~M~~ | ~~Quality~~ |
+| ~~3~~  | ~~Live trigger test from a fresh session ("write a linter", "reduce my linter's false positives", "lint my project" → must hit linter-building / code-quality-scan respectively)~~ done — wave-2 T27 trigger test passed both directions (2026-09-08/09) | ~~High~~ | ~~S~~ | ~~Quality~~ |
+| ~~4~~  | ~~Verify research-pass claims in references: golangci-lint-auto-configure governance maps, audit-ledger actions, 4-tier priorities~~ done — all research-pass claims source-verified in round 2 (see 23-26 a2) | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
+| ~~5~~  | ~~Verify claims: go-structure-linter ADR-003 adapter boundary, fix mixins, ExternalToolRule no-op semantics~~ done — round 2 (ADR-003, mixins verified against source) | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
+| ~~6~~  | ~~Verify claims: oxlint-auto-configure embedded rule registry (841), profile specs, exit-1 normalization~~ done — round 2 (oxlint 841/7/15/113 + exit-1 verified) | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
+| ~~7~~  | ~~Verify claims: go-finding Suppression fields, FixOutcome statuses, MergeOption/dedup names, pipeline CompletionReason, v1.7.0 tag incident~~ done — round 2 (go-finding internals verified) | ~~Medium~~ | ~~M~~ | ~~Documentation~~ |
+| ~~8~~  | ~~Verify claims: linter-autoconfigure-sdk single-file shape, Op-typed ConfigError; samber-linter HW-1..6 + ledger quotes; go-humanize-linter 158-project corpus + FP numbers~~ done — round 2 (samber HW-1/5/6, converter LOC, H004 FP verified) | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
 | 9  | Add per-reference `## Verification status` tables to all 6 linter-building references                                                                                          | Medium | M                    | Documentation |
-| 10 | Reword ecosystem.md "verified" header to accurate provenance split                                                                                                             | Medium | S                    | Documentation |
-| 11 | Add linter-building node to AGENTS.md §5.5 inter-skill graph (↔ code-quality-scan, → how-to-golang, → go-error-modernization)                                                  | Medium | S                    | Documentation |
-| 12 | Back-disambiguation: how-to-golang description names linter-building                                                                                                           | Medium | S                    | Documentation |
-| 13 | Annotate wave-3 (and any earlier) reports whose "check-skills passed" claims predate the script fix (docs-health ANNOTATE)                                                     | Medium | S                    | Documentation |
-| 14 | Audit check-skills.sh for remaining unguarded zero-count aborts (`name=$(grep -m1 …)` under missing name, `toc_count` `                                                        |        | echo 0` double-zero) | Medium        |
-| 15 | Add "quote exit codes, not output tails" step to SESSION-START.md checklist (the d1 lesson, mechanized)                                                                        | High   | S                    | Cleanup       |
-| 16 | Add ROADMAP.md read to SESSION-START.md checklist                                                                                                                              | Low    | S                    | Cleanup       |
-| 17 | Add a "new-skill wiring checklist" section to how-to-write-skills.md (README/counts, both-way disambiguation, §5.5 graph, ROADMAP, link script, checks)                        | Medium | S                    | Documentation |
-| 18 | Check ROADMAP.md for a pre-existing linter-skill idea; reconcile                                                                                                               | Low    | S                    | Documentation |
-| 19 | Trim linter-building description to ≤850 chars headroom                                                                                                                        | Low    | S                    | Cleanup       |
-| 20 | Add trigger phrases to description: "architecture test", "archtest", "lint rule for golangci"                                                                                  | Medium | S                    | Quality       |
+| ~~10~~ | ~~Reword ecosystem.md "verified" header to accurate provenance split~~ done — ecosystem.md header reworded, then refreshed at `4d62542` (2026-09-17) | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
+| ~~11~~ | ~~Add linter-building node to AGENTS.md §5.5 inter-skill graph (↔ code-quality-scan, → how-to-golang, → go-error-modernization)~~ done — round 2 wiring (AGENTS §5.5 entry) | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
+| ~~12~~ | ~~Back-disambiguation: how-to-golang description names linter-building~~ done — round 2 (how-to-golang names linter-building back) | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
+| ~~13~~ | ~~Annotate wave-3 (and any earlier) reports whose "check-skills passed" claims predate the script fix (docs-health ANNOTATE)~~ done — wave-3 03-58 report annotated (2026-09-16 pass) | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
+| ~~14~~ | ~~Audit check-skills.sh for remaining unguarded zero-count aborts (`name=$(grep -m1 …)` under missing name, `toc_count` `~~ done — round 2 (missing-name + TOC double-count fixed, loud-fail proven) | ~~~~ | ~~echo 0` double-zero)~~ | ~~Medium~~ |
+| ~~15~~ | ~~Add "quote exit codes, not output tails" step to SESSION-START.md checklist (the d1 lesson, mechanized)~~ done — round 2 (SESSION-START quotes exit codes) | ~~High~~ | ~~S~~ | ~~Cleanup~~ |
+| ~~16~~ | ~~Add ROADMAP.md read to SESSION-START.md checklist~~ done — round 2 (ROADMAP grep step added) | ~~Low~~ | ~~S~~ | ~~Cleanup~~ |
+| ~~17~~ | ~~Add a "new-skill wiring checklist" section to how-to-write-skills.md (README/counts, both-way disambiguation, §5.5 graph, ROADMAP, link script, checks)~~ done — round 2 (new-skill wiring checklist = SESSION-START step 6) | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
+| ~~18~~ | ~~Check ROADMAP.md for a pre-existing linter-skill idea; reconcile~~ done — round 2 (ROADMAP checked, no duplicate) | ~~Low~~ | ~~S~~ | ~~Documentation~~ |
+| ~~19~~ | ~~Trim linter-building description to ≤850 chars headroom~~ done — round 2 (950→868 chars) | ~~Low~~ | ~~S~~ | ~~Cleanup~~ |
+| ~~20~~ | ~~Add trigger phrases to description: "architecture test", "archtest", "lint rule for golangci"~~ done — round 2 (archtest triggers added, 19 markers) | ~~Medium~~ | ~~S~~ | ~~Quality~~ |
 | 21 | Dogfood: route the next real linter request through the skill; record run note; age 🆕→🟢                                                                                      | High   | M                    | Feature       |
 | 22 | linter-building `assets/`: minimal starter rule template (RuleFunc + testdata fixture pair layout)                                                                             | Medium | M                    | Feature       |
 | 23 | mechanism-choice.md: trace ONE example rule through all 10 matrix rows as a worked walkthrough                                                                                 | Medium | M                    | Documentation |
-| 24 | finding-model.md: embed the InboxClean semantic-mapping table as a concrete filled-in example                                                                                  | Medium | S                    | Documentation |
-| 25 | distribution.md: add exit-code table (0/1/2 + sysexits) and SARIF property-bag key mini-reference                                                                              | Low    | S                    | Documentation |
+| ~~24~~ | ~~finding-model.md: embed the InboxClean semantic-mapping table as a concrete filled-in example~~ done — round 2 (severity-mapping table added) | ~~Medium~~ | ~~S~~ | ~~Documentation~~ |
+| ~~25~~ | ~~distribution.md: add exit-code table (0/1/2 + sysexits) and SARIF property-bag key mini-reference~~ done — round 2 (exit-code table + SARIF keys) | ~~Low~~ | ~~S~~ | ~~Documentation~~ |
 | 26 | Add "When NOT to build" case from template-arch-lint's WHAT-I-MISSED (structure linting ≠ data-model linting)                                                                  | Low    | S                    | Documentation |
-| 27 | Cross-link go-error-modernization skill ↔ ecosystem.md erraudit row                                                                                                            | Low    | S                    | Documentation |
-| 28 | Verify `~/.config/crush/skills` chain resolves linter-building end-to-end (double indirection)                                                                                 | Low    | S                    | Cleanup       |
+| ~~27~~ | ~~Cross-link go-error-modernization skill ↔ ecosystem.md erraudit row~~ done — round 2 (go-error-modernization ↔ ecosystem.md linked) | ~~Low~~ | ~~S~~ | ~~Documentation~~ |
+| ~~28~~ | ~~Verify `~/.config/crush/skills` chain resolves linter-building end-to-end (double indirection)~~ done — round 2 f28 (verified LIVE through the symlink) | ~~Low~~ | ~~S~~ | ~~Cleanup~~ |
 | 29 | Negative-trigger eval: "code quality", "lint my project" must NOT pull linter-building over code-quality-scan                                                                  | Medium | S                    | Quality       |
-| 30 | Decide (g1) Go-first vs multi-language depth; if multi, add oxlint-plugin-authoring reference                                                                                  | Medium | M                    | Feature       |
+| ~~30~~ | ~~Decide (g1) Go-first vs multi-language depth; if multi, add oxlint-plugin-authoring reference~~ done — routed to TODO_LIST T34 (BLOCKED on user decisions) | ~~Medium~~ | ~~M~~ | ~~Feature~~ |
 
 Handoff: section (f) is the primary input for `docs-health` HARVEST — items 1-3, 15 belong in TODO_LIST; 22-26, 30 are ROADMAP-shaped until decided.
 
@@ -150,7 +150,9 @@ shaped), f22/f23-style worked example (ROADMAP shaped).
 
 **Self-grade round 2:** the round-1 fuckup (d1) is now mechanized against
 recurrence (SESSION-START exit-status step + script hardening), not just
-prosed. Verification debt: zero known unverified load-bearing claims remain
-in the skill. The one rule violated this round: used `rm -rf` on my own
+prosed. ~~Verification debt: zero known unverified load-bearing claims remain
+in the skill.~~ _(corrected by the 23-26 round-3 review d2: true for the
+SKILL.md table only — ~10 inline reference specifics were still
+research-sourced then; tracked as 23-26 f3)_ The one rule violated this round: used `rm -rf` on my own
 seconds-old temp test dir instead of `trash` — no data at risk, but the rule
 has no size exemption; noted, using `trash` from here on.

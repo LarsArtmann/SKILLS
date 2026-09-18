@@ -96,13 +96,13 @@
 
 | Item                                                                              | Impact | Effort |
 | --------------------------------------------------------------------------------- | ------ | ------ |
-| Eval test cases (evals/evals.json) — no test prompts to verify skill quality      | HIGH   | MED    |
-| Description optimization via skill-creator's run_loop.py                          | MED    | LOW    |
-| Linter auto-detection script — detect project language and run appropriate linter | MED    | MED    |
-| Split-brain detection for TypeScript/Python/Rust                                  | MED    | MED    |
-| Integration with full-code-review skill — naming-review as a sub-step             | LOW    | LOW    |
-| Naming glossary auto-generation script — extract identifiers and group by domain  | HIGH   | MED    |
-| CI/CD integration — run naming-smells.sh as a pre-commit hook or CI step          | MED    | LOW    |
+| ~~Eval test cases~~ — w:ROADMAP §1 empirical-validation | HIGH | MED |
+| ~~Description optimization~~ done — trigger-first 2026-08-11, STRONG | MED | LOW |
+| ~~Linter auto-detection~~ w:open — no demand signal | MED | MED |
+| ~~Split-brain for TS/Python/Rust~~ w:open — no demand signal | MED | MED |
+| ~~Integration with full-code-review~~ w:declined — separate skills, disambiguated descriptions | LOW | LOW |
+| ~~Naming glossary auto-generation~~ w:open — no demand signal | HIGH | MED |
+| ~~CI/CD integration~~ w:ROADMAP — enforcement-level question | MED | LOW |
 
 ---
 
@@ -124,21 +124,21 @@
 
 ### High Priority
 
-1. **Test against real codebases** — The script and skill have only been tested on the SKILLS repo itself. Run against a real Go project (e.g., one of Lars's projects) to find real issues
-2. **Naming glossary auto-generation** — Step 2 says "build a glossary" but provides no script. A script that extracts all type/function names and clusters them would be extremely valuable
-3. **Split-brain for more languages** — Current split-brain detection only works for Go structs. TypeScript interfaces/classes and Python classes need the same treatment
+1. ~~**Test against real codebases**~~ w:ROADMAP §1 — empirical validation — The script and skill have only been tested on the SKILLS repo itself. Run against a real Go project (e.g., one of Lars's projects) to find real issues
+2. ~~**Naming glossary auto-generation**~~ w:open — no demand signal — Step 2 says "build a glossary" but provides no script. A script that extracts all type/function names and clusters them would be extremely valuable
+3. ~~**Split-brain for more languages**~~ w:open — no demand signal — Current split-brain detection only works for Go structs. TypeScript interfaces/classes and Python classes need the same treatment
 
 ### Medium Priority
 
-4. **Linter auto-detection** — Instead of just listing linters in a table, detect the project language from file extensions and run the appropriate tool automatically
-5. **Eval test cases** — Use skill-creator's eval system to create test prompts and verify the skill produces good reviews
-6. **How-to-golang NOT synced to installed** — This skill exists in source but not in `~/.config/crush/skills/`
+4. ~~**Linter auto-detection**~~ w:open — no demand signal — Instead of just listing linters in a table, detect the project language from file extensions and run the appropriate tool automatically
+5. ~~**Eval test cases**~~ w:ROADMAP §1 — Use skill-creator's eval system to create test prompts and verify the skill produces good reviews
+6. ~~**How-to-golang NOT synced to installed**~~ done — symlink model (AGENTS §5.10) — This skill exists in source but not in `~/.config/crush/skills/`
 
 ### Low Priority
 
-7. **3 skills in installed but not in source** — `copywriting`, `improve-codebase-architecture`, `remotion-best-practices` exist in `~/.config/crush/skills/` but not in `~/projects/SKILLS/`
-8. **More Rust examples in common-naming-problems.md** — Rust examples exist in best practices but anti-patterns are still Go/TS/Python heavy
-9. **GraphQL/gRPC naming conventions** — Protobuf field naming, GraphQL schema naming not covered
+7. ~~**3 skills in installed but not in source**~~ resolved — third-party installs tracked by the skills CLI lockfile (AGENTS §5.10) — `copywriting`, `improve-codebase-architecture`, `remotion-best-practices` exist in `~/.config/crush/skills/` but not in `~/projects/SKILLS/`
+8. ~~**More Rust examples**~~ w:open — no demand signal — Rust examples exist in best practices but anti-patterns are still Go/TS/Python heavy
+9. ~~**GraphQL/gRPC conventions**~~ w:open — no demand signal — Protobuf field naming, GraphQL schema naming not covered
 
 ---
 
@@ -146,37 +146,37 @@
 
 | #  | Task                                                                                          | Impact | Effort | Category    |
 | -- | --------------------------------------------------------------------------------------------- | ------ | ------ | ----------- |
-| 1  | Test naming-smells.sh against a real production Go codebase                                   | HIGH   | LOW    | Validation  |
-| 2  | Test naming-smells.sh against a real TypeScript codebase                                      | HIGH   | LOW    | Validation  |
-| 3  | Create naming glossary auto-generation script                                                 | HIGH   | MED    | Feature     |
-| 4  | Sync how-to-golang to installed location                                                      | MED    | LOW    | Sync        |
-| 5  | Add eval test cases via skill-creator                                                         | HIGH   | MED    | Quality     |
-| 6  | Add linter auto-detection to naming-smells.sh                                                 | MED    | MED    | Feature     |
-| 7  | Split-brain detection for TypeScript classes/interfaces                                       | MED    | MED    | Feature     |
-| 8  | Split-brain detection for Python classes                                                      | MED    | MED    | Feature     |
-| 9  | Run description optimization via run_loop.py                                                  | MED    | LOW    | Quality     |
-| 10 | Migrate 3 orphan skills to source repo (copywriting, improve-codebase-architecture, remotion) | MED    | LOW    | Sync        |
-| 11 | Add GraphQL schema naming conventions                                                         | LOW    | LOW    | Content     |
-| 12 | Add gRPC/Protobuf field naming conventions                                                    | LOW    | LOW    | Content     |
-| 13 | Add more Rust anti-pattern examples                                                           | LOW    | LOW    | Content     |
-| 14 | Add Java anti-pattern examples                                                                | LOW    | LOW    | Content     |
-| 15 | Add C# anti-pattern examples                                                                  | LOW    | LOW    | Content     |
-| 16 | CI/CD pre-commit hook for naming-smells.sh                                                    | MED    | LOW    | Integration |
-| 17 | Integrate naming-review as sub-step of full-code-review                                       | LOW    | LOW    | Integration |
-| 18 | Add naming "quick fix" mode — just list rename suggestions, no full report                    | MED    | LOW    | Feature     |
-| 19 | Add naming consistency score (0-100) to reports                                               | MED    | LOW    | Feature     |
-| 20 | Add "naming migration" mode — apply a canonical glossary across codebase                      | MED    | MED    | Feature     |
-| 21 | Add naming-smells.sh to how-to-golang as recommended tool                                     | LOW    | LOW    | Integration |
-| 22 | Add Protocol Buffers naming (snake_case fields, PascalCase messages)                          | LOW    | LOW    | Content     |
-| 23 | Add Kubernetes resource naming conventions                                                    | LOW    | LOW    | Content     |
-| 24 | Add Terraform/Infrastructure-as-Code naming conventions                                       | LOW    | LOW    | Content     |
-| 25 | Create a naming-review README.md with quickstart guide                                        | MED    | LOW    | Docs        |
+| ~~1~~  | ~~Test naming-smells.sh against a real production Go codebase~~ **Won't implement — ROADMAP §1 — empirical validation (real-codebase testing).** | ~~HIGH~~ | ~~LOW~~ | ~~Validation~~ |
+| ~~2~~  | ~~Test naming-smells.sh against a real TypeScript codebase~~ **Won't implement — ROADMAP §1 — same theme.** | ~~HIGH~~ | ~~LOW~~ | ~~Validation~~ |
+| ~~3~~  | ~~Create naming glossary auto-generation script~~ **Won't implement — open — no demand signal.** | ~~HIGH~~ | ~~MED~~ | ~~Feature~~ |
+| ~~4~~  | ~~Sync how-to-golang to installed location~~ done — symlink model resolved sync (AGENTS §5.10) | ~~MED~~ | ~~LOW~~ | ~~Sync~~ |
+| ~~5~~  | ~~Add eval test cases via skill-creator~~ **Won't implement — ROADMAP §1 — eval theme.** | ~~HIGH~~ | ~~MED~~ | ~~Quality~~ |
+| ~~6~~  | ~~Add linter auto-detection to naming-smells.sh~~ **Won't implement — open — no demand signal.** | ~~MED~~ | ~~MED~~ | ~~Feature~~ |
+| ~~7~~  | ~~Split-brain detection for TypeScript classes/interfaces~~ **Won't implement — open — no demand signal.** | ~~MED~~ | ~~MED~~ | ~~Feature~~ |
+| ~~8~~  | ~~Split-brain detection for Python classes~~ **Won't implement — open — no demand signal.** | ~~MED~~ | ~~MED~~ | ~~Feature~~ |
+| ~~9~~  | ~~Run description optimization via run_loop.py~~ done — trigger-first rewrite + --triggers STRONG | ~~MED~~ | ~~LOW~~ | ~~Quality~~ |
+| ~~10~~ | ~~Migrate 3 orphan skills to source repo (copywriting, improve-codebase-architecture, remotion)~~ **Won't implement — resolved by decision — third-party installs stay upstream (AGENTS §5.10).** | ~~MED~~ | ~~LOW~~ | ~~Sync~~ |
+| ~~11~~ | ~~Add GraphQL schema naming conventions~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
+| ~~12~~ | ~~Add gRPC/Protobuf field naming conventions~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
+| ~~13~~ | ~~Add more Rust anti-pattern examples~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
+| ~~14~~ | ~~Add Java anti-pattern examples~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
+| ~~15~~ | ~~Add C# anti-pattern examples~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
+| ~~16~~ | ~~CI/CD pre-commit hook for naming-smells.sh~~ **Won't implement — open — no demand signal (CI integration is a ROADMAP enforcement question).** | ~~MED~~ | ~~LOW~~ | ~~Integration~~ |
+| ~~17~~ | ~~Integrate naming-review as sub-step of full-code-review~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Integration~~ |
+| ~~18~~ | ~~Add naming "quick fix" mode — just list rename suggestions, no full report~~ **Won't implement — open — no demand signal.** | ~~MED~~ | ~~LOW~~ | ~~Feature~~ |
+| ~~19~~ | ~~Add naming consistency score (0-100) to reports~~ **Won't implement — open — no demand signal.** | ~~MED~~ | ~~LOW~~ | ~~Feature~~ |
+| ~~20~~ | ~~Add "naming migration" mode — apply a canonical glossary across codebase~~ **Won't implement — open — no demand signal.** | ~~MED~~ | ~~MED~~ | ~~Feature~~ |
+| ~~21~~ | ~~Add naming-smells.sh to how-to-golang as recommended tool~~ done — naming-smells documented in the skill | ~~LOW~~ | ~~LOW~~ | ~~Integration~~ |
+| ~~22~~ | ~~Add Protocol Buffers naming (snake_case fields, PascalCase messages)~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
+| ~~23~~ | ~~Add Kubernetes resource naming conventions~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
+| ~~24~~ | ~~Add Terraform/Infrastructure-as-Code naming conventions~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
+| ~~25~~ | ~~Create a naming-review README.md with quickstart guide~~ done — the repo README covers quickstart; per-skill README declined | ~~MED~~ | ~~LOW~~ | ~~Docs~~ |
 
 ---
 
 ## g) Top #1 Question I Cannot Figure Out Myself
 
-**Should naming-review be a standalone skill or a sub-component of full-code-review?**
+**~~Should naming-review be a standalone skill or a sub-component of full-code-review?~~** RESOLVED — kept standalone with two-way disambiguation (deep-dive vs broad review); the 2026-09-14 merge assessment reaffirmed it.
 
 Currently both skills exist independently and the naming-review description says "Use naming-review when you want focused, deep naming analysis." But in practice, every full-code-review should include a naming pass. The question is:
 

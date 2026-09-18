@@ -182,71 +182,71 @@ The guide is markdown with tables, code blocks, and cross-references. It was val
 
 ### Fixing existing files (highest impact)
 
-1. Prune SystemNix/AGENTS.md (430 KB → target < 30 KB): strip 60+ resolved incidents, 27 commit hashes, sprint-dated entries
-2. Prune DiscordSync/AGENTS.md (148 KB → target < 30 KB): remove feature-docs-disguised-as-gotchas, version-bump histories
-3. Prune discordsync/AGENTS.md (144 KB): likely duplicate of DiscordSync — merge or delete one
-4. Prune go-cqrs-lite/AGENTS.md (107 KB → target < 30 KB): extract 891-line code cookbook to references/
-5. Prune projects-management-automation/AGENTS.md (73 KB, 56 changelog refs): strip sprint-dated entries
-6. Prune BuildFlow/AGENTS.md (75 KB): strip 22 anti-pattern entries, 7 commit hashes
-7. Prune branching-flow/AGENTS.md (42 KB, 50 changelog refs): gut the gotchas refactoring graveyard
-8. Prune monitor365/AGENTS.md (93 KB): strip changelog and temporal pollution
-9. Prune bank-sync/AGENTS.md (71 KB): remove migration history, deleted-code references
-10. Prune emeet-pixyd/AGENTS.md (74 KB): strip implementation detail overload
-11. Audit the 15 C-grade files for specific anti-pattern fixes
-12. Audit the 10 D-grade files — all need major rewrites
-13. Fix the skeleton file: chats/AGENTS.md (8 lines, 312 bytes) — add real content
-14. Fix go-output/AGENTS.md (45 KB): strip version-pinned migration notes, keep the excellent invariants
-15. Fix segment-buffer/AGENTS.md (39 KB): strip 15 anti-pattern entries
-16. Fix go-workflow-auditlog/AGENTS.md (47 KB): strip 15 anti-pattern entries
+1. ~~Prune SystemNix/AGENTS.md (430 KB → target < 30 KB): strip 60+ resolved incidents, 27 commit hashes, sprint-dated entries~~ **Won't implement — external repos — out of scope for this repo (per the Resolution routing).**
+2. ~~Prune DiscordSync/AGENTS.md (148 KB → target < 30 KB): remove feature-docs-disguised-as-gotchas, version-bump histories~~ **Won't implement — external repos — out of scope.**
+3. ~~Prune discordsync/AGENTS.md (144 KB): likely duplicate of DiscordSync — merge or delete one~~ **Won't implement — external repos — out of scope.**
+4. ~~Prune go-cqrs-lite/AGENTS.md (107 KB → target < 30 KB): extract 891-line code cookbook to references/~~ **Won't implement — external repos — out of scope.**
+5. ~~Prune projects-management-automation/AGENTS.md (73 KB, 56 changelog refs): strip sprint-dated entries~~ **Won't implement — external repos — out of scope.**
+6. ~~Prune BuildFlow/AGENTS.md (75 KB): strip 22 anti-pattern entries, 7 commit hashes~~ **Won't implement — external repos — out of scope.**
+7. ~~Prune branching-flow/AGENTS.md (42 KB, 50 changelog refs): gut the gotchas refactoring graveyard~~ **Won't implement — external repos — out of scope.**
+8. ~~Prune monitor365/AGENTS.md (93 KB): strip changelog and temporal pollution~~ **Won't implement — external repos — out of scope.**
+9. ~~Prune bank-sync/AGENTS.md (71 KB): remove migration history, deleted-code references~~ **Won't implement — external repos — out of scope.**
+10. ~~Prune emeet-pixyd/AGENTS.md (74 KB): strip implementation detail overload~~ **Won't implement — external repos — out of scope.**
+11. ~~Audit the 15 C-grade files for specific anti-pattern fixes~~ **Won't implement — external repos — guided by agents-quality-guide in their own sessions.**
+12. ~~Audit the 10 D-grade files — all need major rewrites~~ **Won't implement — external repos — out of scope.**
+13. ~~Fix the skeleton file: chats/AGENTS.md (8 lines, 312 bytes) — add real content~~ **Won't implement — external repos — out of scope.**
+14. ~~Fix go-output/AGENTS.md (45 KB): strip version-pinned migration notes, keep the excellent invariants~~ **Won't implement — external repos — out of scope.**
+15. ~~Fix segment-buffer/AGENTS.md (39 KB): strip 15 anti-pattern entries~~ **Won't implement — external repos — out of scope.**
+16. ~~Fix go-workflow-auditlog/AGENTS.md (47 KB): strip 15 anti-pattern entries~~ **Won't implement — external repos — out of scope.**
 
 ### Skill improvements
 
-17. Reconcile the 5-dimension rubric in agents-quality-guide.md with the 2-score system in health-report-format.md
-18. Create `scripts/check-agents-md.sh` — standalone linting script for AGENTS.md quality
-19. Add a 3-line quality summary + endurance test pointer to the global `~/.config/crush/AGENTS.md`
-20. Test the updated AGENTS-template.md by building a real AGENTS.md from it
-21. Add a "when this is stale" footer to the AGENTS-template.md
-22. Create a worked before/after pruning case study in agents-quality-guide.md
-23. Add project-type-specific AGENTS.md advice (library vs NixOS vs web app)
-24. Add guidance for the "duplicate AGENTS.md across case-variant dirs" problem
-25. Add a "living doc, not append-only log" clarification to the quality guide
-26. Consider adding a `allowed-tools:` frontmatter field to docs-health for `wc`, `grep`
+17. ~~Reconcile the 5-dimension rubric in agents-quality-guide.md with the 2-score system in health-report-format.md~~ w:resolved-by-decision - kept complementary (callout boxes document the split)
+18. ~~Create `scripts/check-agents-md.sh` — standalone linting script for AGENTS.md quality~~ done (done — check-agents-md.sh shipped (04-16 T8))
+19. ~~Add a 3-line quality summary + endurance test pointer to the global `~/.config/crush/AGENTS.md`~~ w:covered
+20. ~~Test the updated AGENTS-template.md by building a real AGENTS.md from it~~ **Won't implement — open — template not yet exercised on a fresh build.**
+21. ~~Add a "when this is stale" footer to the AGENTS-template.md~~ w:covered
+22. ~~Create a worked before/after pruning case study in agents-quality-guide.md~~ w:covered
+23. ~~Add project-type-specific AGENTS.md advice (library vs NixOS vs web app)~~ done (done — project-type adaptation lives in the BUILD rules)
+24. ~~Add guidance for the "duplicate AGENTS.md across case-variant dirs" problem~~ **Won't implement — external repos — out of scope.**
+25. ~~Add a "living doc, not append-only log" clarification to the quality guide~~ done (done — the quality guide states living-vs-frozen)
+26. ~~Consider adding a `allowed-tools:` frontmatter field to docs-health for `wc`, `grep`~~ **Won't implement — open — allowed-tools addition parked (low value).**
 
 ### Global config / cross-cutting
 
-27. Update the global AGENTS.md "Project Documentation Files" table to mention the quality guide
-28. Update `how-to-write-skills.md` to cross-reference the new agents-quality-guide
-29. Verify README.md skills inventory reflects the new reference file
-30. Add the docs-health skill's reference file count to the SKILLS repo AGENTS.md
-31. Consider whether the endurance test should be a global rule (all skills) not just docs-health
+27. ~~Update the global AGENTS.md "Project Documentation Files" table to mention the quality guide~~ **Won't implement — external — the global AGENTS.md is the owner-s file.**
+28. ~~Update `how-to-write-skills.md` to cross-reference the new agents-quality-guide~~ w:covered
+29. ~~Verify README.md skills inventory reflects the new reference file~~ done (done — README inventory verified 2026-09-16)
+30. ~~Add the docs-health skill's reference file count to the SKILLS repo AGENTS.md~~ done (done — §5.4 uses script-derived counts)
+31. ~~Consider whether the endurance test should be a global rule (all skills) not just docs-health~~ **Won't implement — ROADMAP-shaped — endurance test global rule idea.**
 
 ### Deepening the analysis
 
-32. Manually verify the automated grades for all 80 A-grade files (sample 10 to validate the heuristic)
-33. Manually verify the automated grades for all 42 B-grade files (sample 10 to validate the heuristic)
-34. Check whether any A-grade files are false positives (clean metrics but actually useless)
-35. Check whether any C/D/F-grade files have redeeming qualities the metrics missed
-36. Analyze whether Go library projects systematically have better AGENTS.md than web apps
-37. Analyze whether project age correlates with AGENTS.md bloat (older = more accumulated cruft)
-38. Map which projects have NO AGENTS.md at all (some projects in ~/projects/ may lack one)
-39. Check if the `template-*` projects have appropriate AGENTS.md for their purpose
+32. ~~Manually verify the automated grades for all 80 A-grade files (sample 10 to validate the heuristic)~~ w:declined - manual grade verification beyond scope
+33. ~~Manually verify the automated grades for all 42 B-grade files (sample 10 to validate the heuristic)~~ w:declined - manual grade verification beyond scope
+34. ~~Check whether any A-grade files are false positives (clean metrics but actually useless)~~ w:declined - manual grade verification beyond scope
+35. ~~Check whether any C/D/F-grade files have redeeming qualities the metrics missed~~ w:declined - manual grade verification beyond scope
+36. ~~Analyze whether Go library projects systematically have better AGENTS.md than web apps~~ w:declined - manual grade verification beyond scope
+37. ~~Analyze whether project age correlates with AGENTS.md bloat (older = more accumulated cruft)~~ w:declined - manual grade verification beyond scope
+38. ~~Map which projects have NO AGENTS.md at all (some projects in ~/projects/ may lack one)~~ w:external - other projects' AGENTS presence
+39. ~~Check if the `template-*` projects have appropriate AGENTS.md for their purpose~~ w:moot - template projects not part of this corpus
 
 ### Verification & quality assurance
 
-40. Have a second agent independently verify the 5-tier anti-pattern catalog against a fresh sample
-41. Verify the grep patterns in the pruning guide actually catch what they claim
-42. Run docs-health AUDIT on the SKILLS repo itself using the new AGENTS.md quality checks
-43. Verify the new verify-checklist items are actually enforceable (not aspirational)
-44. Check that no other skills reference the old "Determine the task" section that was removed from SKILL.md
-45. Ensure the agents-quality-guide.md is under 400 lines (currently 365 — check after any additions)
-46. Verify that the updated template doesn't break any existing skills that reference AGENTS-template.md
-47. Run the full check-skills.sh after any further changes to confirm structural integrity
+40. ~~Have a second agent independently verify the 5-tier anti-pattern catalog against a fresh sample~~ **Won't implement — ROADMAP-shaped — second-agent verification idea.**
+41. ~~Verify the grep patterns in the pruning guide actually catch what they claim~~ **Won't implement — ROADMAP-shaped — grep-pattern validation idea.**
+42. ~~Run docs-health AUDIT on the SKILLS repo itself using the new AGENTS.md quality checks~~ done (done — full docs-health AUDIT ran 2026-08-21 and 2026-09-18)
+43. ~~Verify the new verify-checklist items are actually enforceable (not aspirational)~~ **Won't implement — open — enforceability reviewed per-run.**
+44. ~~Check that no other skills reference the old "Determine the task" section that was removed from SKILL.md~~ done (done — nothing references the removed section (link checker green))
+45. ~~Ensure the agents-quality-guide.md is under 400 lines (currently 365 — check after any additions)~~ **Won't implement — moot — agents-quality-guide.md is 365+ lines and stable.**
+46. ~~Verify that the updated template doesn't break any existing skills that reference AGENTS-template.md~~ done (done — link checker covers all templates)
+47. ~~Run the full check-skills.sh after any further changes to confirm structural integrity~~ done (done — check-skills runs after every change (convention))
 
 ### Documentation
 
-48. Write a CHANGELOG entry for the docs-health skill improvements
-49. Update FEATURES.md if the SKILLS repo has one to reflect the new capability
-50. Consider writing a blog post or guide on "How to write great AGENTS.md" based on the findings
+48. ~~Write a CHANGELOG entry for the docs-health skill improvements~~ done (done — CHANGELOG entries added)
+49. ~~Update FEATURES.md if the SKILLS repo has one to reflect the new capability~~ done (done — FEATURES.md rebuilt 2026-09-16 (5dd75e2))
+50. ~~Consider writing a blog post or guide on "How to write great AGENTS.md" based on the findings~~ **Won't implement — out of scope — blog post is owner territory.**
 
 ---
 

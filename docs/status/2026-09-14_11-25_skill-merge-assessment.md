@@ -50,9 +50,11 @@
 
 ## Open items from this session
 
-- data-model-review ↔ naming-review mutual disambiguation blocked by
+- ~~data-model-review ↔ naming-review mutual disambiguation blocked by
   naming-review's description being at the ~1024-char cap (needs a tightening
-  rewrite first). Minor; no trigger confusion observed in practice.
+  rewrite first). Minor; no trigger confusion observed in practice.~~ done —
+  routed to TODO_LIST (T38, 2026-09-18 pass): measured 1021/1024 chars,
+  rewrite + mutual disambiguation pending.
 
 ## Process notes (honesty section)
 

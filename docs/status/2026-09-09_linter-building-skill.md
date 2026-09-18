@@ -22,9 +22,9 @@
 
 ## b) PARTIALLY DONE / NOTES
 
-- Two description-embedded claims rest on sub-agent research passes rather than direct source reads (converter LOC numbers; oxlint exit-1/841-rules) — marked as such in the skill's verification table; re-verify before citing exact numbers externally.
+- ~~Two description-embedded claims rest on sub-agent research passes rather than direct source reads (converter LOC numbers; oxlint exit-1/841-rules)~~ done — all claims source-verified in the round-2 pass (see 20-08 appendix).
 - `samber-linter` is spec-only; the skill cites its METHOD (verification ledger, discrimination proof), not an implementation.
-- Trigger-eval harness (with/without-skill runs per how-to-write-skills.md) not executed — skill is 🆕 New until first real-work trigger, consistent with repo convention.
+- ~~Trigger-eval harness (with/without-skill runs per how-to-write-skills.md) not executed~~ done — evals/iteration-1 persisted in round 2 (5/5 with-skill).
 
 ## c) VERIFICATION
 
@@ -35,4 +35,4 @@
 ## d) NEXT (optional)
 
 - First real linter request should validate the skill end-to-end; then age 🆕→🟢 with a run note.
-- Consider `allowed-tools: art-dupl d2` style pre-approvals — none needed here (skill references bash/view/grep only).
+- ~~Consider `allowed-tools: art-dupl d2` style pre-approvals~~ Won't implement — none needed (skill references bash/view/grep only); resolved as stated.

@@ -44,14 +44,14 @@ The SKILLS repo has **15 skills** (14 original + 1 new `how-to-golang`), all wit
 
 | # | Item                                       | Status                                                     | What's Missing                                                                                                       |
 | - | ------------------------------------------ | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| 1 | **Legacy file cleanup**                    | 17 raw `.md` files still in repo root                      | Need deletion after user confirmation                                                                                |
-| 2 | **Skill depth/content**                    | 9/15 skills are "thin" (<35 lines)                         | Concrete examples, output templates, tool-specific guidance                                                          |
-| 3 | **`how-to-write-skills.md` location**      | Still raw file at repo root                                | Should become a skill directory OR move to `docs/`                                                                   |
-| 4 | **Inter-skill cross-references**           | Only `brutal-self-review` references `how-to-golang`       | Most skills should reference relevant sibling skills                                                                 |
-| 5 | **Go ecosystem reference coverage**        | `go-ecosystem.md` exists but only in `brutal-self-review/` | Other Go skills (bdd-testing, code-quality-scan) don't reference it                                                  |
-| 6 | **`how-to-golang` code accuracy**          | Reference files written but contain API inaccuracies       | `gopter` signature wrong, `encoding/json/v2` assumes Go 1.26+, E2E HTTP API mismatch, Rule 002 CI command misleading |
-| 7 | **`architecture-visualization` D2 change** | Externally modified to D2 instead of Mermaid               | Never verified as intentional                                                                                        |
-| 8 | **Trigger description testing**            | All skills have descriptions                               | None tested empirically in Crush for trigger accuracy                                                                |
+| ~~1~~ | ~~**Legacy file cleanup**~~ done — relocated to originals/ at `c822b9d` | ~~17 raw `.md` files still in repo root~~ | ~~Need deletion after user confirmation~~ |
+| ~~2~~ | ~~**Skill depth/content**~~ done — zero thin skills since 2026-06 (35-line floor guarded) | ~~9/15 skills are "thin" (<35 lines)~~ | ~~Concrete examples, output templates, tool-specific guidance~~ |
+| ~~3~~ | ~~**`how-to-write-skills.md` location**~~ done — routed to ROADMAP Open Questions — location decision | ~~Still raw file at repo root~~ | ~~Should become a skill directory OR move to `docs/`~~ |
+| ~~4~~ | ~~**Inter-skill cross-references**~~ done — inter-skill graph documented (AGENTS §5.5) + handoff guard | ~~Only `brutal-self-review` references `how-to-golang`~~ | ~~Most skills should reference relevant sibling skills~~ |
+| ~~5~~ | ~~**Go ecosystem reference coverage**~~ done — absorbed by how-to-golang + go-ecosystem-upgrade | ~~`go-ecosystem.md` exists but only in `brutal-self-review/`~~ | ~~Other Go skills (bdd-testing, code-quality-scan) don't reference it~~ |
+| ~~6~~ | ~~**`how-to-golang` code accuracy**~~ done — 4 inaccuracies fixed 2026-08-04 (T4); compile-checked 2026-08-21 | ~~Reference files written but contain API inaccuracies~~ | ~~`gopter` signature wrong, `encoding/json/v2` assumes Go 1.26+, E2E HTTP API mismatch, Rule 002 CI command misleading~~ |
+| ~~7~~ | ~~**`architecture-visualization` D2 change**~~ done — D2 canonical | ~~Externally modified to D2 instead of Mermaid~~ | ~~Never verified as intentional~~ |
+| ~~8~~ | ~~**Trigger description testing**~~ done — in part — jj behavioral test (T27) + --triggers; full loop ROADMAP §1 | ~~All skills have descriptions~~ | ~~None tested empirically in Crush for trigger accuracy~~ |
 
 ---
 
@@ -59,20 +59,20 @@ The SKILLS repo has **15 skills** (14 original + 1 new `how-to-golang`), all wit
 
 | #  | Item                                         | Impact                                                           |
 | -- | -------------------------------------------- | ---------------------------------------------------------------- |
-| 1  | **Delete legacy `1.md`–`17.md` files**       | High — repo root is cluttered with dead files                    |
-| 2  | **Empirical skill testing in Crush**         | Critical — no evidence skills work as intended                   |
-| 3  | **Integrate LIBRARY_GUIDE.md**               | High — 13 Lars libraries unmapped from any skill                 |
-| 4  | **Create `crush.json` for the repo**         | Medium — enables `skills_paths` auto-discovery                   |
-| 5  | **Add `allowed-tools` to skill frontmatter** | Medium — reduces permission prompts during skill execution       |
-| 6  | **Flesh out thin skills** (9 of 15)          | High — thin skills produce thin output                           |
-| 7  | **Add output templates/examples to skills**  | High — most skills lack concrete output format                   |
-| 8  | **Fix `git commit <--` syntax in 4 skills**  | Medium — LLMs may interpret `<--` as literal git flag            |
-| 9  | **Remove duplicated execution boilerplate**  | Medium — 6+ skills repeat identical "READ, UNDERSTAND..." footer |
-| 10 | **Version/timestamp skills**                 | Low — no way to track when a skill was last updated              |
-| 11 | **Add error handling guidance to skills**    | Medium — what happens when tools are missing?                    |
-| 12 | **Validate `how-to-golang` code snippets**   | High — wrong code in references = broken output                  |
-| 13 | **Create `library-guide` skill**             | High — LIBRARY_GUIDE.md content needs a proper skill home        |
-| 14 | **Add domain-types examples**                | Medium — `domain-types.md` has zero code samples for 7+ types    |
+| ~~1~~  | ~~**Delete legacy `1.md`–`17.md` files**~~ done — relocated to originals/ (kept as frozen source) | ~~High — repo root is cluttered with dead files~~ |
+| ~~2~~  | ~~**Empirical skill testing in Crush**~~ done — in part — behavioral + density checks; full loop ROADMAP §1 | ~~Critical — no evidence skills work as intended~~ |
+| ~~3~~  | ~~**Integrate LIBRARY_GUIDE.md**~~ **Won't implement — Won-t implement — how-to-golang absorbed the role; see ROADMAP §5.** | ~~High — 13 Lars libraries unmapped from any skill~~ |
+| ~~4~~  | ~~**Create `crush.json` for the repo**~~ **Won't implement — NOT-DO — deliberate (AGENTS §5.7).** | ~~Medium — enables `skills_paths` auto-discovery~~ |
+| ~~5~~  | ~~**Add `allowed-tools` to skill frontmatter**~~ done — AGENTS §5.8 | ~~Medium — reduces permission prompts during skill execution~~ |
+| ~~6~~  | ~~**Flesh out thin skills** (9 of 15)~~ done — zero thin skills | ~~High — thin skills produce thin output~~ |
+| ~~7~~  | ~~**Add output templates/examples to skills**~~ done — templates ship via html-report-kit + per-skill assets | ~~High — most skills lack concrete output format~~ |
+| ~~8~~  | ~~**Fix `git commit <--` syntax in 4 skills**~~ done — guard in check-skills.sh (check 4) | ~~Medium — LLMs may interpret `<--` as literal git flag~~ |
+| ~~9~~  | ~~**Remove duplicated execution boilerplate**~~ done — execution-mode deleted; boilerplate cleaned | ~~Medium — 6+ skills repeat identical "READ, UNDERSTAND..." footer~~ |
+| ~~10~~ | ~~**Version/timestamp skills**~~ **Won't implement — NOT-DO — versionless content repo; CHANGELOG uses date-based milestones.** | ~~Low — no way to track when a skill was last updated~~ |
+| ~~11~~ | ~~**Add error handling guidance to skills**~~ done — tool-missing guidance added across skills (e.g. d2 error handling) | ~~Medium — what happens when tools are missing?~~ |
+| ~~12~~ | ~~**Validate `how-to-golang` code snippets**~~ done — fixed 2026-08-04; compile-checked 2026-08-21 | ~~High — wrong code in references = broken output~~ |
+| ~~13~~ | ~~**Create `library-guide` skill**~~ **Won't implement — Won-t implement — absorbed by how-to-golang (ROADMAP §5).** | ~~High — LIBRARY_GUIDE.md content needs a proper skill home~~ |
+| ~~14~~ | ~~**Add domain-types examples**~~ done — domain-types examples + branded-ID imports; compile-checked | ~~Medium — `domain-types.md` has zero code samples for 7+ types~~ |
 
 ---
 
@@ -80,16 +80,16 @@ The SKILLS repo has **15 skills** (14 original + 1 new `how-to-golang`), all wit
 
 | #  | Item                                                      | Why It's Fucked                                                                                                                                                                                 | Severity    |
 | -- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 1  | **`nix-flake-migration` skill**                           | 21 lines. Creates a "proposal" but doesn't say what goes in it. Almost useless as-is. Agent will improvise wildly.                                                                              | 🔴 Critical |
-| 2  | **`architecture-review` skill**                           | 30 lines. Two questions + 5 generic steps. No methodology, no assessment criteria, no rubric. Agent will produce generic fluff.                                                                 | 🔴 Critical |
-| 3  | **`bdd-testing` skill**                                   | 23 lines. Says "use ginkgo" but provides zero ginkgo syntax, no test structure, no file naming conventions. Agent will write bad BDD tests.                                                     | 🔴 Critical |
-| 4  | **`features-audit` skill**                                | 24 lines. Lists status indicators but no FEATURES.md template. Agent will produce inconsistent output. Also has `PARTIALLY_FUNTIONAL` typo.                                                     | 🔴 Critical |
-| 5  | **`docs-freshness-check` skill**                          | 30 lines. Only checks 4 hardcoded files. No definition of "stale". No configurable file list.                                                                                                   | 🟡 High     |
-| 6  | **`code-quality-scan` skill**                             | 34 lines. Hardcodes `just fd` and `art-dupl` without installation guidance. Tells agent to "RESEARCH the best golang code duplication finder" — the skill should already know this.             | 🟡 High     |
-| 7  | **`deduplicate-code` skill**                              | 27 lines. Hardcodes `art-dupl` CLI with no explanation of what it is or how to install it. "Don't write a file" contradicts normal workflow.                                                    | 🟡 High     |
-| 8  | **`how-to-golang` reference inaccuracies**                | `gopter` property-based testing has wrong function signature, `encoding/json/v2` references Go 1.26+ (unreleased), E2E test references non-standard HTTP API, Rule 002 CI command is misleading | 🟡 High     |
-| 9  | **`brutal-self-review` ↔ `execution-mode` contradiction** | brutal-self-review says "1 Sub Agent per file, ONLY 1 at a time"; execution-mode Mode 2 says "Use MULTIPLE Tasks". Agent gets conflicting instructions.                                         | 🟡 High     |
-| 10 | **Duplicated content across skills**                      | Pareto planning logic in both `full-code-review` and `pareto-planning`. Execution boilerplate duplicated in 6+ skills. If one is updated, others become stale.                                  | 🟡 High     |
+| ~~1~~  | ~~**`nix-flake-migration` skill**~~ done — nix-flake-migration consolidated into html-report-kit | ~~21 lines. Creates a "proposal" but doesn't say what goes in it. Almost useless as-is. Agent will improvise wildly.~~ | ~~🔴 Critical~~ |
+| ~~2~~  | ~~**`architecture-review` skill**~~ done — rubric + methodology references added 2026-08-04 | ~~30 lines. Two questions + 5 generic steps. No methodology, no assessment criteria, no rubric. Agent will produce generic fluff.~~ | ~~🔴 Critical~~ |
+| ~~3~~  | ~~**`bdd-testing` skill**~~ done — ginkgo-syntax reference + compile-verified spec template | ~~23 lines. Says "use ginkgo" but provides zero ginkgo syntax, no test structure, no file naming conventions. Agent will write bad BDD tests.~~ | ~~🔴 Critical~~ |
+| ~~4~~  | ~~**`features-audit` skill**~~ done — features-audit merged into docs-health BUILD (0eb74a8) | ~~24 lines. Lists status indicators but no FEATURES.md template. Agent will produce inconsistent output. Also has `PARTIALLY_FUNTIONAL` typo.~~ | ~~🔴 Critical~~ |
+| ~~5~~  | ~~**`docs-freshness-check` skill**~~ done — docs-freshness-check merged into docs-health VERIFY (0eb74a8) | ~~30 lines. Only checks 4 hardcoded files. No definition of "stale". No configurable file list.~~ | ~~🟡 High~~ |
+| ~~6~~  | ~~**`code-quality-scan` skill**~~ done — tool-guidance matrix added 2026-08-04 | ~~34 lines. Hardcodes `just fd` and `art-dupl` without installation guidance. Tells agent to "RESEARCH the best golang code duplication finder" — the skill should already know this.~~ | ~~🟡 High~~ |
+| ~~7~~  | ~~**`deduplicate-code` skill**~~ done — synced to art-dupl with judgment framework (bd9de94) | ~~27 lines. Hardcodes `art-dupl` CLI with no explanation of what it is or how to install it. "Don't write a file" contradicts normal workflow.~~ | ~~🟡 High~~ |
+| ~~8~~  | ~~**`how-to-golang` reference inaccuracies**~~ done — inaccuracies fixed 2026-08-04 | ~~`gopter` property-based testing has wrong function signature, `encoding/json/v2` references Go 1.26+ (unreleased), E2E test references non-standard HTTP API, Rule 002 CI command is misleading~~ | ~~🟡 High~~ |
+| ~~9~~  | ~~**`brutal-self-review` ↔ `execution-mode` contradiction**~~ done — execution-mode deleted at `afb6181` | ~~brutal-self-review says "1 Sub Agent per file, ONLY 1 at a time"; execution-mode Mode 2 says "Use MULTIPLE Tasks". Agent gets conflicting instructions.~~ | ~~🟡 High~~ |
+| ~~10~~ | ~~**Duplicated content across skills**~~ done — delegation replaced duplication; signal pass cleaned residue | ~~Pareto planning logic in both `full-code-review` and `pareto-planning`. Execution boilerplate duplicated in 6+ skills. If one is updated, others become stale.~~ | ~~🟡 High~~ |
 
 ---
 
@@ -97,29 +97,29 @@ The SKILLS repo has **15 skills** (14 original + 1 new `how-to-golang`), all wit
 
 ### Architecture & Structure
 
-1. **Kill the legacy files.** `1.md`–`17.md` are dead weight. They were the source material, now fully converted. Their presence confuses navigation and implies the repo is half-done.
+1. ~~**Kill the legacy files.** `1.md`–`17.md` are dead weight. They were the source material, now fully converted. Their presence confuses navigation and implies the repo is half-done.~~ done (done — originals/ relocation closed it)
 
-2. **Create the `library-guide` skill.** The `LIBRARY_GUIDE.md` at `/home/lars/projects/LIBRARY_GUIDE.md` contains 13 Lars-authored libraries with decision matrices, architecture layer maps, combination patterns, key abstractions, and "start reading" file guides. This is gold. Currently no skill references any of these libraries. The `how-to-golang` skill references `go-composable-business-types` in `domain-types.md` but that's it. The `brutal-self-review` skill says "don't reinvent the wheel" but doesn't know about most of these libs.
+2. ~~**Create the `library-guide` skill.** The `LIBRARY_GUIDE.md` at `/home/lars/projects/LIBRARY_GUIDE.md` contains 13 Lars-authored libraries with decision matrices, architecture layer maps, combination patterns, key abstractions, and "start reading" file guides. This is gold. Currently no skill references any of these libraries. The `how-to-golang` skill references `go-composable-business-types` in `domain-types.md` but that's it. The `brutal-self-review` skill says "don't reinvent the wheel" but doesn't know about most of these libs.~~ **Won't implement — Won-t implement — how-to-golang absorbed the role.**
 
-3. **Merge or cross-reference `go-ecosystem.md` with `library-guide`.** The `brutal-self-review/references/go-ecosystem.md` covers third-party/community Go libs. The `LIBRARY_GUIDE.md` covers Lars's own libraries. Together they form the complete "what to reach for" picture. Currently siloed.
+3. ~~**Merge or cross-reference `go-ecosystem.md` with `library-guide`.** The `brutal-self-review/references/go-ecosystem.md` covers third-party/community Go libs. The `LIBRARY_GUIDE.md` covers Lars's own libraries. Together they form the complete "what to reach for" picture. Currently siloed.~~ **Won't implement — superseded — how-to-golang owns the complete library picture.**
 
-4. **De-duplicate execution boilerplate.** 6+ skills end with the same "READ, UNDERSTAND, RESEARCH, REFLECT" paragraph. This should reference `execution-mode` instead of copying it. Same with Pareto planning logic — reference `pareto-planning` instead of inlining it.
+4. ~~**De-duplicate execution boilerplate.** 6+ skills end with the same "READ, UNDERSTAND, RESEARCH, REFLECT" paragraph. This should reference `execution-mode` instead of copying it. Same with Pareto planning logic — reference `pareto-planning` instead of inlining it.~~ done (done — boilerplate removed; delegation replaced duplication)
 
 ### Content Quality
 
-5. **Flesh out thin skills with reference files.** The `how-to-golang` skill shows the pattern perfectly: lean SKILL.md (93 lines) + rich references (9 files, ~1005 lines). Apply this pattern to the 9 thin skills. Each needs at minimum a `references/` directory with concrete templates, examples, and tooling guidance.
+5. ~~**Flesh out thin skills with reference files.** The `how-to-golang` skill shows the pattern perfectly: lean SKILL.md (93 lines) + rich references (9 files, ~1005 lines). Apply this pattern to the 9 thin skills. Each needs at minimum a `references/` directory with concrete templates, examples, and tooling guidance.~~ done (done — reference-heavy pattern applied across skills)
 
-6. **Fix `git commit <--` syntax.** Four skills (`brutal-self-review`, `full-code-review`, `pareto-planning`, `status-report`) use `git commit <-- with VERY DETAILED commit message(s)`. An LLM agent may interpret `<--` as a literal git flag. Replace with clear prose: "Then commit with a very detailed message."
+6. ~~**Fix `git commit <--` syntax.** Four skills (`brutal-self-review`, `full-code-review`, `pareto-planning`, `status-report`) use `git commit <-- with VERY DETAILED commit message(s)`. An LLM agent may interpret `<--` as a literal git flag. Replace with clear prose: "Then commit with a very detailed message."~~ done (done — check 4 guard + all occurrences replaced)
 
-7. **Validate all code snippets in `how-to-golang`.** At least 4 reference files contain API inaccuracies. Wrong code in a reference is worse than no code — it teaches the wrong pattern.
+7. ~~**Validate all code snippets in `how-to-golang`.** At least 4 reference files contain API inaccuracies. Wrong code in a reference is worse than no code — it teaches the wrong pattern.~~ done (done — fixed 2026-08-04; compile-checked 2026-08-21)
 
-8. **Add output templates to every skill.** Skills that produce structured output (FEATURES.md, TODO_LIST.md, status reports, architecture diagrams) need exact templates with examples. Currently only `pareto-planning` and `todo-list-builder` have any structure definition.
+8. ~~**Add output templates to every skill.** Skills that produce structured output (FEATURES.md, TODO_LIST.md, status reports, architecture diagrams) need exact templates with examples. Currently only `pareto-planning` and `todo-list-builder` have any structure definition.~~ done (done — templates via html-report-kit + per-skill assets)
 
 ### Discoverability & Integration
 
-9. **Test trigger descriptions empirically.** Every skill's description is an educated guess. None have been tested with Crush's actual triggering mechanism. The `skill-creator` skill has a full description optimization loop — use it.
+9. ~~**Test trigger descriptions empirically.** Every skill's description is an educated guess. None have been tested with Crush's actual triggering mechanism. The `skill-creator` skill has a full description optimization loop — use it.~~ done (done in part — behavioral + density checks; full loop ROADMAP §1)
 
-10. **Add inter-skill references.** When `full-code-review` finds duplications, it should reference `deduplicate-code`. When `brutal-self-review` finds architectural issues, it should reference `architecture-review`. When any Go skill needs library guidance, it should reference `how-to-golang` + `library-guide`. Currently almost no cross-references exist.
+10. ~~**Add inter-skill references.** When `full-code-review` finds duplications, it should reference `deduplicate-code`. When `brutal-self-review` finds architectural issues, it should reference `architecture-review`. When any Go skill needs library guidance, it should reference `how-to-golang` + `library-guide`. Currently almost no cross-references exist.~~ done (done — graph documented (§5.5) + handoff guard)
 
 ---
 
@@ -129,11 +129,11 @@ Ranked by impact × urgency. Pareto-optimal ordering — doing #1–#8 covers ~8
 
 | #      | Task                                                                                                                                                                    | Impact | Effort | Category     |
 | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | ------------ |
-| ~~1~~  | ~~**Delete legacy `1.md`–`17.md` + `how-to-write-skills.md`**~~ done at `c822b9d` (moved to `originals/`)                                                               | 🔴     | 5min   | Cleanup      |
+| ~~1~~  | ~~**Delete legacy `1.md`–`17.md` + `how-to-write-skills.md`**~~ Won't implement — relocated to `originals/` at `c822b9d` instead of deleted (frozen source material; citation corrected per 04-16 d2)                                                               | 🔴     | 5min   | Cleanup      |
 | ~~2~~  | ~~**Create `library-guide` skill** from `LIBRARY_GUIDE.md`~~ Won't implement — `how-to-golang` absorbed the role; see ROADMAP §5                                        | 🔴     | 30min  | New skill    |
-| 3      | **Fix `how-to-golang` code inaccuracies** (gopter, json/v2, E2E HTTP, Rule 002)                                                                                         | 🔴     | 30min  | Quality      |
-| 4      | **Flesh out `architecture-review`** — add assessment rubric, criteria, methodology, reference file                                                                      | 🔴     | 45min  | Content      |
-| 5      | **Flesh out `bdd-testing`** — add ginkgo syntax reference, test structure template, file naming                                                                         | 🔴     | 45min  | Content      |
+| ~~3~~      | ~~**Fix `how-to-golang` code inaccuracies** (gopter, json/v2, E2E HTTP, Rule 002)~~ done — fixed 2026-08-04 (T4); compile-checked 2026-08-21 | ~~🔴~~ | ~~30min~~ | ~~Quality~~ |
+| ~~4~~      | ~~**Flesh out `architecture-review`** — add assessment rubric, criteria, methodology, reference file~~ done — rubric + methodology references added 2026-08-04 | ~~🔴~~ | ~~45min~~ | ~~Content~~ |
+| ~~5~~      | ~~**Flesh out `bdd-testing`** — add ginkgo syntax reference, test structure template, file naming~~ done — ginkgo syntax ref + naming table + compile-verified spec template | ~~🔴~~ | ~~45min~~ | ~~Content~~ |
 | ~~6~~  | ~~**Flesh out `nix-flake-migration`**~~ Won't implement — consolidated into `html-report-kit` ecosystem                                                                 | 🔴     | 30min  | Content      |
 | ~~7~~  | ~~**Flesh out `features-audit`**~~ done at `0eb74a8` (merged into `docs-health` BUILD mode)                                                                             | 🔴     | 20min  | Content      |
 | ~~8~~  | ~~**Fix `git commit <--` syntax** in 4 skills~~ done at — all occurrences replaced with prose; guard in `check-skills.sh`                                               | 🟡     | 5min   | Quality      |
@@ -141,25 +141,25 @@ Ranked by impact × urgency. Pareto-optimal ordering — doing #1–#8 covers ~8
 | ~~10~~ | ~~**Add cross-references between skills**~~ done — inter-skill graph documented in AGENTS.md §5.5; handoff guard in `check-skills.sh`                                   | 🟡     | 20min  | Integration  |
 | ~~11~~ | ~~**Merge `go-ecosystem.md` content into `how-to-golang`**~~ done — `go-ecosystem-upgrade` skill created separately; `how-to-golang` references its own libs            | 🟡     | 15min  | Integration  |
 | ~~12~~ | ~~**Flesh out `docs-freshness-check`**~~ done at `0eb74a8` (merged into `docs-health` VERIFY mode)                                                                      | 🟡     | 20min  | Content      |
-| 13     | **Flesh out `code-quality-scan`** — document `art-dupl`, remove "RESEARCH" instruction, add tool list                                                                   | 🟡     | 20min  | Content      |
+| ~~13~~     | ~~**Flesh out `code-quality-scan`** — document `art-dupl`, remove "RESEARCH" instruction, add tool list~~ done — tool-guidance matrix added 2026-08-04 | ~~🟡~~ | ~~20min~~ | ~~Content~~ |
 | ~~14~~ | ~~**Flesh out `deduplicate-code`**~~ done — synced to art-dupl, 70 lines with judgment framework (`bd9de94`)                                                            | 🟡     | 15min  | Content      |
 | ~~15~~ | ~~**Add output templates** to `status-report`, etc.~~ done at — `docs-health` has templates; `status-report` has HTML dashboard format; `pareto-planning` has D2 graphs | 🟡     | 30min  | Quality      |
-| 16     | **Add `domain-types.md` code examples** for DataPoint, ActorChain, Bitemporal, Cents, Money, etc.                                                                       | 🟡     | 30min  | Content      |
+| ~~16~~     | ~~**Add `domain-types.md` code examples** for DataPoint, ActorChain, Bitemporal, Cents, Money, etc.~~ done — domain-types examples + compile pass 2026-08-21 | ~~🟡~~ | ~~30min~~ | ~~Content~~ |
 | ~~17~~ | ~~**Resolve `brutal-self-review` ↔ `execution-mode` contradiction**~~ done — `execution-mode` deleted at `afb6181`                                                      | 🟡     | 10min  | Consistency  |
-| 18     | **Test trigger descriptions** with skill-creator's optimization loop                                                                                                    | 🟠     | 60min  | Validation   |
+| ~~18~~     | ~~**Test trigger descriptions** with skill-creator's optimization loop~~ done — in part — jj behavioral test + --triggers; full loop ROADMAP §1 | ~~🟠~~ | ~~60min~~ | ~~Validation~~ |
 | 19     | ~~**Create `crush.json`** for the repo~~ NOT-DO — intentional: skills installed via `skills_paths` or `pnpm dlx skills add` (AGENTS.md §5.7)                            | 🟠     | 10min  | Config       |
 | ~~20~~ | ~~**Add `allowed-tools`** to skill frontmatter~~ done — `code-quality-scan`, `deduplicate-code`, `pareto-planning` have it; others added as needed (AGENTS.md §5.8)     | 🟠     | 15min  | Config       |
 | ~~21~~ | ~~**Verify `architecture-visualization` D2 change**~~ done — D2 is the canonical choice; `allowed-tools: d2` added                                                      | 🟠     | 5min   | Verification |
-| 22     | **Add error handling guidance** to skills (what if `d2` CLI isn't installed? `art-dupl` missing?)                                                                       | 🟠     | 30min  | Robustness   |
+| ~~22~~     | ~~**Add error handling guidance** to skills (what if `d2` CLI isn't installed? `art-dupl` missing?)~~ done — d2 error-handling reference added (wave-2 T31) | ~~🟠~~ | ~~30min~~ | ~~Robustness~~ |
 | 23     | ~~**Add version/timestamp** to each SKILL.md frontmatter~~ NOT-DO — versionless content repo; CHANGELOG uses date-based milestones (ROADMAP non-goals)                  | ⚪     | 10min  | Maintenance  |
 | ~~24~~ | ~~**Remove `how-to-write-skills.md`** or convert to skill~~ partially done — still at repo root; updated with 11 patterns (AGENTS.md §5.6)                              | ⚪     | 15min  | Cleanup      |
-| 25     | **Build eval test suite** — at least 2 test prompts per skill, automated grading                                                                                        | ⚪     | 2hr    | Validation   |
+| ~~25~~     | ~~**Build eval test suite** — at least 2 test prompts per skill, automated grading~~ **Won't implement — ROADMAP §1 — eval matrix lives there as raw ideas.** | ~~⚪~~ | ~~2hr~~ | ~~Validation~~ |
 
 ---
 
 ## G) TOP #1 QUESTION I CANNOT FIGURE OUT MYSELF
 
-**Where should the `library-guide` skill live and how should it relate to `how-to-golang`?**
+**~~Where should the `library-guide` skill live and how should it relate to `how-to-golang`?~~** RESOLVED — Won't implement: how-to-golang absorbed the role (ROADMAP §5 records the decision; F2 above).
 
 The `LIBRARY_GUIDE.md` contains 13 Lars-authored Go libraries (`go-cqrs-lite`, `cmdguard`, `go-composable-business-types`, `ActaFlow`, `universal-workflow`, etc.). The `how-to-golang` skill contains Go policy, banned/required libraries, and architecture patterns. These overlap in two critical places:
 

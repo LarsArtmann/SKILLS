@@ -200,18 +200,18 @@ committed by the auto-commit daemon (`2fc1b46` tip).
 
 | #  | Task                                                                                                                            | Impact | Effort |
 | -- | ------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ |
-| 1  | T21: retro-audit live sites (gogenfilter, go-atomic-write, emeet-pixyd, ...) against the demo-video DoD                         | Medium | M/site |
-| 2  | T22: HyperFrames ground-truth render incl. one 9:16 resized-composition variant                                                 | High   | M      |
-| 3  | T23: govalid generator end-to-end run (`go generate` on a scratch struct)                                                       | Medium | S      |
-| 4  | T24: website-launch eval-1 re-run with a fully fictional repo                                                                   | Low    | S      |
-| 5  | T25: next website-launch trim — extract Phase 2 structure list into readme-template (target <700, then <500)                    | Low    | S      |
-| 6  | T26: trigger-density lint mode for check-skills.sh                                                                              | Low    | S      |
+| ~~1~~  | ~~T21: retro-audit live sites (gogenfilter, go-atomic-write, emeet-pixyd, ...) against the demo-video DoD~~ done — T21 executed 2026-09-08 (23-15 report) | ~~Medium~~ | ~~M/site~~ |
+| ~~2~~  | ~~T22: HyperFrames ground-truth render incl. one 9:16 resized-composition variant~~ done — T22 executed in wave-2 (renders + 9:16 ffprobe-verified; fixtures committed wave-3 f1) | ~~High~~ | ~~M~~ |
+| ~~3~~  | ~~T23: govalid generator end-to-end run (`go generate` on a scratch struct)~~ done — T23 executed in wave-2 (generate→build→validate; marker fix) | ~~Medium~~ | ~~S~~ |
+| ~~4~~  | ~~T24: website-launch eval-1 re-run with a fully fictional repo~~ done — T24 executed in wave-2 (go-pixelwand, old 4/7 vs new 7/7) | ~~Low~~ | ~~S~~ |
+| ~~5~~  | ~~T25: next website-launch trim — extract Phase 2 structure list into readme-template (target <700, then <500)~~ done — T25 executed in wave-2 (799→781 lines) | ~~Low~~ | ~~S~~ |
+| ~~6~~  | ~~T26: trigger-density lint mode for check-skills.sh~~ done — T26 executed in wave-2 (--triggers mode + WEAK unit test) | ~~Low~~ | ~~S~~ |
 | 7  | scratch.sh --adopt mode for pre-existing scratch dirs (e1 follow-up, d1)                                                        | Low    | S      |
-| 8  | ROADMAP sync: route the 08-21 morning report's unanswered g1-g3 policy questions (autoplay, social-cut tier, API-library video) | Medium | S      |
+| ~~8~~  | ~~ROADMAP sync: route the 08-21 morning report's unanswered g1-g3 policy questions (autoplay, social-cut tier, API-library video)~~ done — g1-g3 routed to ROADMAP Open Questions (video-policy entry) | ~~Medium~~ | ~~S~~ |
 | 9  | benchstat harness invariants as explicit rules in performance-tuning.md (d3)                                                    | Low    | S      |
 | 10 | skills CLI: lockfile hash drift check — verify `skills update -g` bumps `skillFolderHash` for all 10 updated entries            | Low    | S      |
 | 11 | how-to-write-skills.md: add the "new-linter triage" rule if one more session hits it (e2)                                       | Low    | S      |
-| 12 | FEATURES.md: add rows for the two eval artifacts (go-release iteration-2, website-launch iteration-1)                           | Low    | S      |
+| ~~12~~ | ~~FEATURES.md: add rows for the two eval artifacts (go-release iteration-2, website-launch iteration-1)~~ done — FEATURES rows added for both eval-bearing skills (2026-09-16 rewrite `5dd75e2`) | ~~Low~~ | ~~S~~ |
 
 ---
 

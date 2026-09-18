@@ -10,7 +10,8 @@ carried shebangs without the exec bit (EXE001) and used naive
 `date.today()` for the `p`-kind pass-date default (DTZ011). Fixed with
 `chmod +x` and `datetime.now(tz=UTC).date()`; verified by the step itself
 (0 findings, exit 0), the script's self-test, dry-run/live fixtures, and a
-full `buildflow format` (18 success / 0 failed). Knowledge encoded as
+`buildflow format` (18 success / 0 failed — ~~full~~ _fast build mode, ruff
+skipped there; corrected per the 02-55 self-review d5/b1_). Knowledge encoded as
 AGENTS §5.11 + CHANGELOG entry. Residuals (shellcheck/markdownlint
 advisories, three buildflow environment warnings) are pre-existing,
 green-exit noise — documented, not actioned.
@@ -61,7 +62,7 @@ ruff-check-fix
 | Live write, rows `2:p:2026-08-01`                                   | annotated, "(shape verified)" — read-back guard intact              |
 | Dry-run fixture, prose `1:p:-`                                      | `1. ~~alpha~~ done (docs-health pass 2026-09-10)`                   |
 | `buildflow -s ruff-check-fix --format finding`                      | exit 0, `"findings": []`, `ruff> All checks passed!`                |
-| Full `buildflow format`                                             | `FORMAT_EXIT=0`, `18 success, 0 failed, 0 skipped (+25 via config)` |
+| `buildflow format` (~~full~~ _fast mode; ruff n/a — corrected 02-55 d1_) | `FORMAT_EXIT=0`, `18 success, 0 failed, 0 skipped (+25 via config)` |
 | Repo-wide exec-bit audit (`git ls-files -s` on all `*.py`/`*.sh`)   | no further 644-with-shebang files                                   |
 | `scripts/check-skills.sh`                                           | exit 0, 27/27 skills pass, 140 files link-clean                     |
 | `git status` / `git worktree list`                                  | clean / master only (buildflow fsprobe temp file self-cleaned)      |
@@ -106,3 +107,19 @@ feedback/new empty · newest status report (round-3 self-review) TL;DR read
 check-skills.sh exit 0 · AGENTS §8/§9 followed. This task adds no TODO
 items (it is closed) and touches no skill descriptions or inter-skill
 graph edges.
+
+---
+
+## Correction (2026-09-18 — docs-health pass, per the 02-55 self-review)
+
+- The "`full` buildflow format" claims above ran in **fast build mode** (25
+  tools mode-skipped; ruff skipped via language detection — the decisive ruff
+  evidence is the single-step run, also above).
+- The `prose-bare-exit` smoke test printed `head`'s exit, not the script's,
+  and "(usage expected)" was wrong (`SystemExit(__doc__)` exits 1); the exec
+  bit itself was independently proven by `ls -l` + git mode diff.
+- The dry-run/live fixtures cited above were trashed after the run — every
+  quoted output is re-derivable from the commands in the 02-55 transcript
+  (not load-bearing evidence).
+- SESSION-START step 3's ROADMAP grep was skipped that session and not
+  disclosed in the checklist section below (02-55 d3).

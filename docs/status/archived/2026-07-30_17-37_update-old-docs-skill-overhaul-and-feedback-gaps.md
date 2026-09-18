@@ -84,7 +84,7 @@ changes:
 
 ## b) PARTIALLY DONE
 
-### 1. Feedback processing — docs-health portion UNTOUCHED
+### ~~1. Feedback processing — docs-health portion UNTOUCHED~~ — done - resolved by the same-session Resolution
 
 The feedback file is titled **"update-old-docs + docs-health"** and contains 7
 suggestions. Suggestion #6 targets `docs-health` specifically:
@@ -99,7 +99,7 @@ looked at docs-health at all**. I don't even know if docs-health has a HARVEST
 section or what it currently says. The feedback was moved to `processed/` even
 though the docs-health half was not acted upon.
 
-### 2. Archiving not integrated into the numbered workflow
+### ~~2. Archiving not integrated into the numbered workflow~~ — done - resolved by the same-session Resolution
 
 The workflow has Steps 1-5. Archiving is a separate section AFTER the workflow.
 An agent following the numbered steps sequentially might not realize archiving
@@ -110,25 +110,25 @@ is the final step that happens after annotation. The connection exists in prose
 
 ## c) NOT STARTED
 
-### 1. docs-health HARVEST improvement (suggestion #6)
+### ~~1. docs-health HARVEST improvement (suggestion #6)~~ — done - resolved by the same-session Resolution
 
 Not investigated. I never opened `docs-health/SKILL.md` this session.
 
-### 2. `annotation-placement.md` consistency check
+### ~~2. `annotation-placement.md` consistency check~~ — done - resolved by the same-session Resolution
 
 The reference file `update-old-docs/references/annotation-placement.md` may
 still reference the old `DONE:` format or have examples inconsistent with the
 new `done at` / `Won't implement` / `NOT-DO/DUPLICATE` vocabulary. I never
 checked.
 
-### 3. Terminology consistency: "resolve" vs "annotate"
+### ~~3. Terminology consistency: "resolve" vs "annotate"~~ — done - resolved by the same-session Resolution
 
 The feedback's addendum proposes a distinction: "annotate" = file-level context,
 "resolve" = item-level verdicts. I introduced "resolve" in the list-item section
 but didn't propagate the distinction through the rest of the skill. The tl;dr
 and decision table still use "annotate" as the universal verb.
 
-### 4. AGENTS.md inter-skill reference update
+### ~~4. AGENTS.md inter-skill reference update~~ — done - resolved by the same-session Resolution
 
 AGENTS.md §5.5 documents inter-skill references. The new archiving concept and
 the (unstarted) docs-health HARVEST change may warrant a cross-reference entry.
@@ -137,7 +137,7 @@ the (unstarted) docs-health HARVEST change may warrant a cross-reference entry.
 
 ## d) TOTALLY FUCKED UP
 
-### 1. Moved feedback to `processed/` before fully processing it
+### ~~1. Moved feedback to `processed/` before fully processing it~~ — done - resolved by the same-session Resolution
 
 **This is the biggest mistake of the session.** The feedback file covers two
 skills. I only acted on the `update-old-docs` half. Then I moved it to
@@ -156,7 +156,7 @@ won't find it.
 leave it in `processed/` but create an explicit TODO/next-task entry for the
 docs-health HARVEST change so it's not lost.
 
-### 2. Subtle contradiction: "resolve every item" vs "leave open items untouched"
+### ~~2. Subtle contradiction: "resolve every item" vs "leave open items untouched"~~ — done - resolved by the same-session Resolution
 
 The list-item section now says "You must RESOLVE every numbered item" (mandatory)
 but the rules say "Leave open items untouched — do not mark them." These are in
@@ -211,16 +211,16 @@ resolution."
 
 | #  | Priority     | Task                                                                                                                                                                                       |
 | -- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1  | **CRITICAL** | Fix the feedback/processed mistake — move feedback back to `new/` OR create explicit TODO for docs-health HARVEST change so it's not lost                                                  |
-| 2  | **HIGH**     | Investigate docs-health HARVEST section — read `docs-health/SKILL.md`, find HARVEST, assess suggestion #6, implement if valid                                                              |
-| 3  | **HIGH**     | Check `update-old-docs/references/annotation-placement.md` for old `DONE:` format references — update to `done at` vocabulary                                                              |
-| 4  | **HIGH**     | Reconcile "resolve every item" vs "leave open items untouched" tension in SKILL.md prose — make explicit that checking IS resolving                                                        |
-| 5  | **MEDIUM**   | Integrate archiving into the numbered workflow (Step 6) rather than a standalone section                                                                                                   |
-| 6  | **MEDIUM**   | Check `update-old-docs/references/case-study.md` for old format references                                                                                                                 |
-| 7  | **MEDIUM**   | Propagate "resolve" terminology through tl;dr and decision table (currently only in list-item section)                                                                                     |
-| 8  | **LOW**      | Update AGENTS.md §5.5 inter-skill references if docs-health HARVEST change is implemented                                                                                                  |
-| 9  | **LOW**      | Consider whether the completeness gate needs a concrete verification command (the feedback suggested `sed`/`grep` — rejected as brittle, but a lighter heuristic might help)               |
-| 10 | **LOW**      | Review whether `OPEN:` cross-references (`OPEN: tracked in TODO_LIST "<section>"`) should be allowed for genuinely-open items that a reader would want to find — currently banned entirely |
+| ~~1~~ | CRITICAL | ~~Fix the feedback mistake~~ done - work completed; file legitimately processed (Resolution Q1) |
+| ~~2~~ | HIGH | ~~Investigate HARVEST~~ done - implemented (Resolution Q2) |
+| ~~3~~ | HIGH | ~~Check annotation-placement~~ done - updated in the structural refactor |
+| ~~4~~ | HIGH | ~~Reconcile resolve-vs-untouched~~ done - gloss added (Resolution Q3) |
+| ~~5~~ | MEDIUM | ~~Archive as Step 6~~ done (Resolution) |
+| ~~6~~ | MEDIUM | ~~Check case-study~~ done - updated |
+| ~~7~~ | MEDIUM | ~~Propagate terminology~~ done (Resolution) |
+| ~~8~~ | LOW | ~~Update 5.5~~ done (Resolution) |
+| ~~9~~ | LOW | ~~Concrete verification command~~ w:declined - brittle by design; the grep -rLn completeness gate is the accepted form |
+| ~~10~~ | LOW | ~~OPEN cross-references~~ done - tables use Still open |
 
 ---
 

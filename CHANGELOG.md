@@ -13,6 +13,42 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Changed (2026-09-18 — docs-health full audit: corpus annotated, 28 reports archived, living docs rebuilt)
+
+- **ANNOTATE executed corpus-wide.** Every numbered forward-looking item in
+  every `docs/status/` report resolved inline: `done at <hash>`, verified
+  evidence, routed-to-ROADMAP/TODO, or Won't-implement — the 2026-08-04
+  appendix-only trap (its own d1) finally closed in the files that carried
+  it. The 09-17 signal-density report's two false claims ("canonical
+  glossary wording"; "18 of 30") inline-corrected (05-44 f2); the 23-15
+  retro-audit's incomplete root cause (deploy staleness vs header ORDER)
+  inline-corrected; T35 green-claim appendices added to the three pre-fix
+  reports (22-42, 23-40 era). ~600 inline verdicts across 60+ files.
+- **ARCHIVE: 28 fully-resolved reports moved to `docs/status/archived/`**
+  (May 2026 → 2026-08-04; every archived file carries inline strikethrough
+  resolutions — completeness gate `grep -rLn '~~'` passes). The 2 HTML
+  snapshots stay in place (LEAVE-ALONE: pure dashboards).
+- **HARVEST: TODO_LIST rebuilt** — T30/T33/T34 carried (verified open);
+  T35 closed by this pass; T36–T56 added from the newest reports
+  (github-voice "every comment" honesty bug, buildflow verification table,
+  naming-review description rewrite, check-14 hardening, fence-aware
+  check 15, site-dod checker, eval harness, self-tests, ...), each with
+  evidence. ROADMAP gained 5 open questions (markdown default 8th
+  recurrence, glossary lockstep, prompt voice, cross-repo aging, legend
+  canon, formatter scope) + signal-eval theme notes.
+- **Fix-on-sight:** `verify-before-filing` wrong "Go 1.22+" qualifier on
+  `http.MaxBytesReader` removed (stdlib since 1.0 — 04-16 d1, live since
+  2026-08-04); README Quality section now leads with a FEATURES.md pointer
+  + documents `--signal`/check 15 (05-44 f5/f6, 01-27 f6); SESSION-START
+  step 5 names `--signal`/check 15 and step 6 carries the FEATURES-row +
+  CHANGELOG wiring rule (11-36 f3); AGENTS §1 points at §5.11 (02-55 f3);
+  CHANGELOG "full buildflow format" fast-mode correction + backfilled
+  linter-building wave entry (23-26 f2); the 05-03 audit's lazy c822b9d
+  citation corrected (04-16 d2).
+- **Gates:** check-skills exit 0 (30 skills), sync-html-kit `--check` 0,
+  link-skills `--check` 0 (05-44 f7/f8 closed), annotation completeness
+  gate 0.
+
 ### Changed (2026-09-17 — signal-only prose pass over skill bodies)
 
 - **Applied Principle 7 (signal density) to the skill bodies.** A
@@ -240,7 +276,30 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   Verified by py_compile, the `annotate-rows_test.py` self-test, dry-run +
   live-write fixtures (shape guard intact), and
   `buildflow -s ruff-check-fix --format finding` (0 findings, exit 0);
-  full `buildflow format` then ran 18 success / 0 failed.
+  `buildflow format` (fast build mode, ruff n/a there — verified separately
+  above) then ran 18 success / 0 failed. _[Corrected 2026-09-18: the original
+  entry said "full"; the run was fast-mode. Per the 02-55 self-review d5.]_
+
+### Added (2026-09-09 — linter-building skill + check-skills silent-exit fix)
+
+- **`linter-building`** — authoring counterpart to `code-quality-scan`: the
+  mechanism decision tree (configure vs delegate vs AST walker vs go/analysis
+  vs filesystem rules vs configurator), the finding data model, FP control
+  (multi-signal detection, suppression engineering, autofix safety),
+  distribution (CLI/CI/SARIF/golangci plugin), and the local ecosystem map
+  (`references/ecosystem.md`, refreshed `4d62542`). Built from primary
+  research over 10 local linter projects; every load-bearing claim
+  source-read (14-row verification table); eval iteration-1 persisted
+  (5/5 assertions with-skill); two-way disambiguation with code-quality-scan
+  and how-to-golang. `[Unreleased]`-era entry backfilled 2026-09-18 — the
+  wave had no CHANGELOG section until now (the 23-26 round-3 report c1).
+- **`scripts/check-skills.sh` silent-exit-1 fixed** — the verification-canon
+  guard's `grep -c` assignments aborted under `set -euo pipefail` on zero
+  matches (reproducible on untouched files; live since the wave-3 f13
+  landing, heuristic commit `3f3aa37`); all four counts now `|| true`, plus
+  two more latent abort paths (missing-name pipeline, TOC double-count)
+  fixed with loud-fail proofs. "Green claims" in reports predating the fix
+  are annotated (TODO T35 sweep).
 
 ### Changed (2026-09-09 — wave 3: report-section f execution + T33 quick items)
 

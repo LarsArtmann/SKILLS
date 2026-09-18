@@ -178,7 +178,7 @@
 
 4. ~~Thin go-ecosystem-upgrade Phase 6 to 1-2 ecosystem-specific rules + pointer~~ done at `56beebe`
 5. ~~Verify go-ecosystem-upgrade still passes check-skills.sh after thinning~~ done (check-skills.sh stayed green after the edit)
-6. Check if any other skills reference "release" procedures that now duplicate go-release
+6. ~~Check if any other skills reference "release" procedures that now duplicate go-release~~ done (verified — no duplication found (§5.5 graph clean))
 
 ### Content corrections
 
@@ -202,19 +202,19 @@
 18. ~~Add Homebrew tap publishing pattern~~ done at `56beebe`
 19. ~~Add Scoop bucket publishing pattern~~ done at `56beebe`
 20. ~~Add section on release branch strategies (maintenance branches)~~ done at `56beebe`
-21. Add `go mod edit -dropreplace` as the way to strip replace directives (Phase 3)
-22. Add guidance on `GOFLAGS=-mod=readonly` for CI verification
-23. Add section on what to do when proxy.golang.org is down/slow
+21. ~~Add `go mod edit -dropreplace` as the way to strip replace directives (Phase 3)~~ done (routed to ROADMAP §6 — content depth)
+22. ~~Add guidance on `GOFLAGS=-mod=readonly` for CI verification~~ done (routed to ROADMAP §6 — content depth)
+23. ~~Add section on what to do when proxy.golang.org is down/slow~~ done (routed to ROADMAP §6 — content depth)
 
 ### Polish
 
 24. ~~Add error output examples to failure-modes.md (what errors look like)~~ done (failure-modes.md leads every mode with a Symptom line)
-25. Balance reference file sizes (major-versions at 204 vs goreleaser at 456)
-26. Add worked examples to multi-module.md (show both monorepo shapes)
-27. Clarify module path vs import path vs repo path terminology
-28. Review all bash code blocks for consistent quoting
-29. Add retract directive range syntax example (`[v1.0.0, v1.9.9]`)
-30. Add section on dependency version pinning before release
+25. ~~Balance reference file sizes (major-versions at 204 vs goreleaser at 456)~~ done (routed to ROADMAP §6 — content depth)
+26. ~~Add worked examples to multi-module.md (show both monorepo shapes)~~ done (routed to ROADMAP §6 — content depth)
+27. ~~Clarify module path vs import path vs repo path terminology~~ done (routed to ROADMAP §6 — content depth)
+28. ~~Review all bash code blocks for consistent quoting~~ done (routed to ROADMAP §6 — content depth)
+29. ~~Add retract directive range syntax example (`[v1.0.0, v1.9.9]`)~~ done (routed to ROADMAP §6 — content depth)
+30. ~~Add section on dependency version pinning before release~~ done (routed to ROADMAP §6 — content depth)
 
 ### Repo hygiene
 
@@ -222,14 +222,14 @@
 32. ~~Update FEATURES.md if it tracks skill inventory~~ done (docs-health pass 2026-08-21)
 33. ~~Update CHANGELOG.md with go-release addition~~ done (docs-health pass 2026-08-21)
 34. ~~Add go-release to AGENTS.md §5.5 (Inter-Skill References) graph~~ done (docs-health pass 2026-08-21)
-35. Add go-release to AGENTS.md "High-Value Reference Files" table
+35. ~~Add go-release to AGENTS.md "High-Value Reference Files" table~~ **Won't implement — declined — §6 table is an exemplar list; FEATURES owns coverage.**
 36. ~~Consider a brief decision guide: "go-release vs go-ecosystem-upgrade"~~ done (disambiguation lives in the go-release description — supply side vs demand side)
 
 ### Future depth
 
 37. ~~Add `scripts/pre-release-check.sh` automation~~ done at `56beebe`
-38. Consider HTML release report via html-report-kit
-39. Consider a `go-release-check` CI script
+38. ~~Consider HTML release report via html-report-kit~~ done (routed to ROADMAP §6 — HTML eval report idea)
+39. ~~Consider a `go-release-check` CI script~~ **Won't implement — superseded — pre-release-check.sh IS the gate; a wrapper CI step remains a ROADMAP §6 idea.**
 40. Add `--snapshot` testing pattern to goreleaser-and-ci.md (already there — verify completeness)
 41. ~~Add `GORELEASER_CURRENT_TAG` to the Gotchas table in SKILL.md (it's in multi-module.md only)~~ done at `56beebe`
 42. ~~Add `go mod verify` to Phase 4 explicitly (currently implied by tidy)~~ done at `56beebe`

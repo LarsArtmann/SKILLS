@@ -76,19 +76,19 @@ _Grouped by source; ★ = do first (small, high-signal, zero risk)._
 
 **From this session's own residue:**
 
-1. ★ Annotate the 02-45 report: correct the "prose-bare-exit" line, add the fixture disclaimer, re-label "full `buildflow format`" as fast-mode with ruff n/a, disclose the skipped ROADMAP grep. (This is the d1–d5 cleanup, one edit.)
-2. ★ Correct the CHANGELOG sentence: "full" → "fast-mode, ruff n/a (verified separately, 0 findings)".
-3. ★ Add one-line pointer in AGENTS §1 → §5.11 ("external tooling lints this repo; see §5.11").
-4. Fix SC2319 ×6 in `jj-fork-pr-workflow/scripts/validate-workflow.sh` (assign `$?` to a variable); then prove with one real jj sync-loop run against a scratch fork.
-5. Fix SC2089/SC2090 in `naming-review/scripts/naming-smells.sh` (bash array for ripgrep opts); re-run against a fixture tree to confirm unchanged results.
+1. ~~★ Annotate the 02-45 report: correct the "prose-bare-exit" line, add the fixture disclaimer, re-label "full `buildflow format`" as fast-mode with ruff n/a, disclose the skipped ROADMAP grep. (This is the d1–d5 cleanup, one edit.)~~ done (docs-health pass 2026-09-18 — corrections appended to the 02-45 report)
+2. ~~★ Correct the CHANGELOG sentence: "full" → "fast-mode, ruff n/a (verified separately, 0 findings)".~~ done (docs-health pass 2026-09-18 — CHANGELOG sentence corrected in place with a dated bracket)
+3. ~~★ Add one-line pointer in AGENTS §1 → §5.11 ("external tooling lints this repo; see §5.11").~~ done (docs-health pass 2026-09-18 — AGENTS §1 now points at §5.11)
+4. ~~Fix SC2319 ×6 in `jj-fork-pr-workflow/scripts/validate-workflow.sh` (assign `$?` to a variable); then prove with one real jj sync-loop run against a scratch fork.~~ routed - TODO T55
+5. ~~Fix SC2089/SC2090 in `naming-review/scripts/naming-smells.sh` (bash array for ripgrep opts); re-run against a fixture tree to confirm unchanged results.~~ routed - TODO T55
 6. Add "shebang ⇒ mode 755" structural check to `scripts/check-skills.sh` (and fix the historical zero-count-abort class it must not repeat — quote exit codes).
-7. Add a self-test for `annotate-prose.py` mirroring the rows test (assert `h/v/p/w` markers incl. the UTC default).
-8. Deduplicate `marker_for` across the two annotate scripts (shared helper or sync-banner in both).
+7. ~~Add a self-test for `annotate-prose.py` mirroring the rows test (assert `h/v/p/w` markers incl. the UTC default).~~ routed - TODO T56
+8. ~~Deduplicate `marker_for` across the two annotate scripts (shared helper or sync-banner in both).~~ routed - TODO T56
 9. Decide + document `p:-` date semantics: UTC (current behavior) vs Europe/Berlin — markers are documentation; today the two differ 02:00–04:00. (User decision — see g3.)
 10. Note in `docs-health/SKILL.md` §"Tooling" that the two assets are 755 and must stay tz-aware (so the convention lives where the scripts live, not only in AGENTS §5.11).
 11. After your binary refresh: reconcile the paste's "9 tools unavailable" against a current run; either close it as mode/stale-binary artifact or fix what's actually missing.
 12. Investigate ruff's full-pipeline skip ("language mismatch: project: go") in buildflow — or decide single-step invocation is canonical and encode that decision in AGENTS §5.11.
-13. Run `buildflow -s dprint-format` once over this session's four new/edited docs to pre-empt daemon-churn reformatting.
+13. ~~Run `buildflow -s dprint-format` once over this session's four new/edited docs to pre-empt daemon-churn reformatting.~~ **Won't implement — moot — daemon normalizes formatting; check-skills link gate green.**
 
 **Your tooling environment (needs your hands or your go-ahead):**
 14. Rebuild/reinstall buildflow (`nix build . && nix run .#reinstall`) — binary is `a3168a2`, HEAD has moved twice since.
@@ -98,17 +98,17 @@ _Grouped by source; ★ = do first (small, high-signal, zero risk)._
 **Carried from round-3 self-review (re-verify before acting — status reports are point-in-time):**
 17. Verify-or-mark the ~10 research-sourced specifics still unmarked in `linter-building/references/*` (round-3 b1).
 18. Run eval f29 — the negative-prompt disambiguation eval that was marked CLOSED without running (round-3 d1; re-listed as not-started c? in that report).
-19. Write the linter-building CHANGELOG wave entry if the 2026-09-10 entries don't already cover it (round-3 c1; CHANGELOG has since gained 09-10 entries — verify, don't duplicate).
+19. ~~Write the linter-building CHANGELOG wave entry if the 2026-09-10 entries don't already cover it (round-3 c1; CHANGELOG has since gained 09-10 entries — verify, don't duplicate).~~ done (done — a dated linter-building wave entry was backfilled into CHANGELOG 2026-09-18)
 20. Extend AGENTS §10 "Referenced By" column for linter-building's tools (round-3 c2).
 21. Fresh-session trigger test for linter-building (round-3 c3 — needs a real "write a linter" ask, cannot be done from inside these sessions).
-22. Encode-or-reject the status-report `.md` override (g3b — see e7; now 4 occurrences).
+22. ~~Encode-or-reject the status-report `.md` override (g3b — see e7; now 4 occurrences).~~ done (routed to ROADMAP Open Questions — 8th recurrence logged 2026-09-18)
 23. Round-3 b2: broaden eval validity (real activation path, cross-model run) once g1–g3 are decided.
 
 **Carried from TODO_LIST (verified-open there; re-verify before starting):**
-24. T35: annotate status reports predating the check-skills zero-count fix (green-claims sweep).
-25. T33: site-repo follow-ups (HyperFrames composition from surviving MP4, first real 20–30s video, og:image upgrade, CI deploy workflow).
-26. T30 (BLOCKED): flip README 🆕→🟢 after the first real PR kept green by the sync loop.
-27. T34 (BLOCKED on you): linter-building g1–g3 decisions.
+24. ~~T35: annotate status reports predating the check-skills zero-count fix (green-claims sweep).~~ done (docs-health pass 2026-09-18 — T35 green-claim appendices written by this pass)
+25. ~~T33: site-repo follow-ups (HyperFrames composition from surviving MP4, first real 20–30s video, og:image upgrade, CI deploy workflow).~~ **Won't implement — duplicate — T33 rows live in TODO_LIST with site-repo evidence.**
+26. ~~T30 (BLOCKED): flip README 🆕→🟢 after the first real PR kept green by the sync loop.~~ **Won't implement — duplicate — T30 lives in TODO_LIST (BLOCKED).**
+27. ~~T34 (BLOCKED on you): linter-building g1–g3 decisions.~~ **Won't implement — duplicate — T34 lives in TODO_LIST (BLOCKED on user decisions).**
 
 **Advisory-noise policy decisions (currently exit-✔-despite-output; either exempt in config or sweep):**
 28. markdownlint MD010 hard tabs in `website-launch/references/*` (mechanical, ~40 lines).

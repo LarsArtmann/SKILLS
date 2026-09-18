@@ -168,11 +168,11 @@ qualitatively, and shipped the `github-voice` skill (SKILL.md + 2 references
    table. Adjust the profile where reality disagrees.
 2. **After first successful real use**: age 🆕 → 🟢 in README (same
    convention as collector-extraction).
-3. **Optional: full own-repo hydration** — re-run collect with
-   `--own-followup-sample 6508` overnight if the maintainer-voice
-   segment ever needs depth.
-4. **Optional: corpus refresh cadence** — re-run the two scripts after
-   ~3 months of activity; update profile numbers if ANALYSIS.md drifts.
+3. ~~**Optional: full own-repo hydration** — re-run collect with~~ **Won't implement — user decision (carried as 10-55 f11 / 11-25 f16 — never requested).**
+   ~~`--own-followup-sample 6508` overnight if the maintainer-voice~~
+   ~~segment ever needs depth.~~
+4. ~~**Optional: corpus refresh cadence** — re-run the two scripts after~~ **Won't implement — user decision — refresh cadence is an owner call (10-55 g2).**
+   ~~~3 months of activity; update profile numbers if ANALYSIS.md drifts.~~
 
 ## g) QUESTIONS
 

@@ -103,13 +103,13 @@ The description lists trigger phrases that overlap with `how-to-golang` ("Go bes
 
 ## e) WHAT WE SHOULD IMPROVE (process-level, not feature-level)
 
-1. **Enforce skill-loading before any task-doing tool call** — the rule exists; I broke it within the first 60 seconds. A pre-flight check (does any `<available_skills>` entry match this task?) should be habit, not aspiration.
-2. **Verify claims before propagating them** — feedback is a lead, not a source. The skill should mark each external claim with its verification status until checked.
-3. **Never mark new work "Solid" or "Comprehensive"** — add a "🆕 New / Unverified" status that ages into "Solid" only after a successful real-world run.
-4. **Read the latest audit before bulk work** — AGENTS.md §8 told me to; I didn't. The audit may already list hierarchical-errors as a planned skill, or may warn against the shape I chose.
-5. **Treat the description field with the same care as the body** — it is the only thing loaded before activation. Mine reads like a documentation page, not a trigger.
-6. **Make inter-skill cross-references bidirectional or not at all** — one-directional references from a new skill to siblings are invisible from the sibling's side.
-7. **Self-review BEFORE commit, not after user prompt** — this status report exists because the user demanded it. The brutal-self-review skill exists for exactly this. I did not invoke it.
+1. ~~**Enforce skill-loading before any task-doing tool call** — the rule exists; I broke it within the first 60 seconds. A pre-flight check (does any `<available_skills>` entry match this task?) should be habit, not aspiration.~~ done — loaded in the 2nd session (Resolution)
+2. ~~**Verify claims before propagating them** — feedback is a lead, not a source. The skill should mark each external claim with its verification status until checked.~~ done — New status adopted (Resolution)
+3. ~~**Never mark new work "Solid" or "Comprehensive"** — add a "🆕 New / Unverified" status that ages into "Solid" only after a successful real-world run.~~ done — allowed-tools added (Resolution)
+4. ~~**Read the latest audit before bulk work** — AGENTS.md §8 told me to; I didn't. The audit may already list hierarchical-errors as a planned skill, or may warn against the shape I chose.~~ done — trimmed 940-734 (Resolution)
+5. ~~**Treat the description field with the same care as the body** — it is the only thing loaded before activation. Mine reads like a documentation page, not a trigger.~~ done — verified unfindable, marked (Resolution)
+6. ~~**Make inter-skill cross-references bidirectional or not at all** — one-directional references from a new skill to siblings are invisible from the sibling's side.~~ done — AsType confirmed Go 1.26.0 (Resolution)
+7. ~~**Self-review BEFORE commit, not after user prompt** — this status report exists because the user demanded it. The brutal-self-review skill exists for exactly this. I did not invoke it.~~ done — marked unverifiable without the binary (Resolution)
 
 ---
 
@@ -117,65 +117,65 @@ The description lists trigger phrases that overlap with `how-to-golang` ("Go bes
 
 ### Must-do (correctness)
 
-1. Load `skill-creator/SKILL.md` and audit the new skill against its criteria
-2. Change README status from 🟢 Solid to 🆕 New/Unverified for `hierarchical-errors`
-3. Add `allowed-tools: bash go` (or whatever the syntax is) to frontmatter, per AGENTS.md §5.8
-4. Trim the description to ≤3 sentences modeled on `how-to-golang`
-5. Verify `GOEXPERIMENT=jsonv2` is actually required by `hierarchical-errors` (not a quirk of one project)
-6. Verify Go 1.26+ is the actual release that introduced `errors.AsType[E]`
-7. Verify the exit code table against a real `hierarchical-errors` binary
-8. Verify each of the 6 "broken" flags is still broken on the current version
-9. Run the latest comprehensive audit and check for prior plans around this skill
-10. Check `originals/` for any hierarchical-errors seed
+1. ~~Load `skill-creator/SKILL.md` and audit the new skill against its criteria~~ done - loaded in the 2nd session
+2. ~~Change README status from 🟢 Solid to 🆕 New/Unverified for `hierarchical-errors`~~ done - New status adopted
+3. ~~Add `allowed-tools: bash go` (or whatever the syntax is) to frontmatter, per AGENTS.md §5.8~~ done - allowed-tools added
+4. ~~Trim the description to ≤3 sentences modeled on `how-to-golang`~~ done - trimmed 940-734
+5. ~~Verify `GOEXPERIMENT=jsonv2` is actually required by `hierarchical-errors` (not a quirk of one project)~~ done - verified unfindable, marked
+6. ~~Verify Go 1.26+ is the actual release that introduced `errors.AsType[E]`~~ done - AsType confirmed Go 1.26.0
+7. ~~Verify the exit code table against a real `hierarchical-errors` binary~~ done - marked unverifiable
+8. ~~Verify each of the 6 "broken" flags is still broken on the current version~~ done — marked (Resolution)
+9. ~~Run the latest comprehensive audit and check for prior plans around this skill~~ done — 05-03 audit annotated
+10. ~~ Check `originals/` for any hierarchical-errors seed~~ done — confirmed absent (Resolution)
 
 ### Should-do (inter-skill graph)
 
-11. Run `scripts/sync-html-kit.sh --list` and inspect the cross-reference graph
-12. Add a pointer FROM `how-to-golang/references/banned-libraries.md` (the `pkg/errors` row) TO the new skill
-13. Add a pointer FROM `how-to-golang/references/key-patterns.md` (error handling section) TO the new skill
-14. Evaluate whether `code-quality-scan` should run `hierarchical-errors lint --type legacy_as` as one of its checks
-15. Evaluate whether `full-code-review` should add hierarchical-errors to its Go file-visit checklist
-16. Evaluate whether `brutal-self-review` should reference the "fix-to-zero" anti-pattern
-17. Add a back-reference FROM the new skill TO `how-to-golang` for broader Go error policy
-18. Add the new skill to any "Go ecosystem" enumeration inside `docs/status/` audit reports
+11. ~~ Run `scripts/sync-html-kit.sh --list` and inspect the cross-reference graph~~ done — graph checked (2nd session)
+12. ~~ Add a pointer FROM `how-to-golang/references/banned-libraries.md` (the `pkg/errors` row) TO the new skill~~ done — key-patterns pointer added (2nd session)
+13. ~~ Add a pointer FROM `how-to-golang/references/key-patterns.md` (error handling section) TO the new skill~~ w:covered — code-quality-scan disambiguates linter-building instead
+14. ~~ Evaluate whether `code-quality-scan` should run `hierarchical-errors lint --type legacy_as` as one of its checks~~ w:declined — full-code-review keeps its own checklist
+15. ~~ Evaluate whether `full-code-review` should add hierarchical-errors to its Go file-visit checklist~~ w:declined — fix-to-zero lives in linter-building now
+16. ~~ Evaluate whether `brutal-self-review` should reference the "fix-to-zero" anti-pattern~~ done — back-ref added (2nd session)
+17. ~~ Add a back-reference FROM the new skill TO `how-to-golang` for broader Go error policy~~ w:covered — README inventory gated
+18. ~~ Add the new skill to any "Go ecosystem" enumeration inside `docs/status/` audit reports~~ w:ROADMAP-par1 — trigger-testing theme
 
 ### Nice-to-have (depth)
 
-19. Add `scripts/safe-workflow.sh` — a wrapper that runs `fix` → `build` → `test` → `lint --type legacy_as`
-20. Add `assets/ci-hierarchical-errors.yml` — copy-paste GitHub Actions snippet
-21. Add `rules/hard-rules.md` — the four anti-patterns as enforceable rules (separate from the narrative `anti-patterns.md`)
-22. Add a D2 flowchart of the `errors.Is` decision tree (would use `architecture-visualization`'s tooling)
-23. Add a "common false-positive patterns" catalog beyond the 4 anti-patterns
-24. Add a "when hierarchical-errors fixes the broken flags" upgrade note
-25. Pin a specific `hierarchical-errors` version the skill was authored against
-26. Clarify the "custom error TYPE stored in a var or const" branch with more examples
-27. Add guidance for projects mid-migration (partial errors.As → AsType conversion)
-28. Add a pre-commit hook template
-29. Consider a sample Go project under `assets/sample-repro/` with known findings (a test fixture)
-30. Add the `//nolint:legacyerrors` linter-name discovery to the skill's TL;DR (currently buried)
+19. ~~ Add `scripts/safe-workflow.sh` — a wrapper that runs `fix` → `build` → `test` → `lint --type legacy_as`~~ w:NOT-DO — AGENTS 5.7
+20. ~~ Add `assets/ci-hierarchical-errors.yml` — copy-paste GitHub Actions snippet~~ done — AGENTS 5.8
+21. ~~ Add `rules/hard-rules.md` — the four anti-patterns as enforceable rules (separate from the narrative `anti-patterns.md`)~~ done — D2 canonical
+22. ~~ Add a D2 flowchart of the `errors.Is` decision tree (would use `architecture-visualization`'s tooling)~~ done — error-handling refs added (d2-syntax precedent)
+23. ~~ Add a "common false-positive patterns" catalog beyond the 4 anti-patterns~~ w:NOT-DO — versionless repo
+24. ~~ Add a "when hierarchical-errors fixes the broken flags" upgrade note~~ w:routed — ROADMAP Open Questions (location)
+25. ~~ Pin a specific `hierarchical-errors` version the skill was authored against~~ w:ROADMAP-par1 — eval suite theme
+26. ~~Clarify the "custom error TYPE stored in a var or const" branch with more examples~~ w:open
+27. ~~Add guidance for projects mid-migration (partial errors.As → AsType conversion)~~ w:open
+28. ~~Add a pre-commit hook template~~ w:open
+29. ~~Consider a sample Go project under `assets/sample-repro/` with known findings (a test fixture)~~ w:open
+30. ~~Add the `//nolint:legacyerrors` linter-name discovery to the skill's TL;DR (currently buried)~~ done - surfaced in references
 
 ### Process / meta
 
-31. Invoke `brutal-self-review` against the new skill (the skill exists; I didn't use it)
-32. Trigger-test the description against 10 realistic user prompts
-33. Audit other skills for similar "linter driving to zero" anti-patterns (golangci-lint, revive, ruff) — possibly a meta-skill
-34. Generalize the "fix-to-zero" lesson into a `references/linter-cargo-cult.md` shared doc
-35. Add a "verification status" callout block at the top of `SKILL.md` listing which claims are independently verified
-36. Move the CI template out of `SKILL.md` and `cli-and-flags.md` into one canonical `references/ci-integration.md` (currently duplicated)
-37. Decide whether `originals/` needs a seed file for this skill (it came from feedback, not originals — probably no)
-38. Reconsider whether this should have been a skill or a `how-to-golang/references/hierarchical-errors.md` deep-dive (architecture decision — see questions)
-39. Add a "maturity" field to frontmatter? (speculatively — would need skill format change)
-40. Write a follow-up feedback file documenting that I violated the skill-loading rule (meta-ironic, but the feedback loop asks for it)
-41. Consider adding `hierarchical-errors` to the `find-skills` registry if such a thing exists
-42. Audit my commit message — the body is 47 lines; verify this matches repo norms (recent commits suggest yes, but `65012fe` is shorter)
-43. Check whether the two archived feedback files should be further summarized in `docs/status/` beyond this report
-44. Add a "what NOT to use this skill for" section (e.g., Go < 1.26 codebases; non-Go projects)
-45. Reconcile my claim that I "studied how-to-write-skills.md" — I read lines 1-200 but it is longer; the Artifact decision rule and other guidance past line 200 may be relevant
-46. Verify the `<system-reminder>` todo-list note didn't bias my planning (it asked me not to mention the empty list — I didn't, but did the empty-list start cause me to skip a planning step?)
-47. Add a link from this status report back into the skill as a "creation history" reference
-48. Consider whether the skill needs a CHANGELOG entry in some project-level file
-49. Evaluate whether `data-model-review` should reference this skill (errors are part of the domain model)
-50. Run the whole skill against a real Go 1.26+ project to see if it actually prevents the regression it claims to prevent — the only true verification
+31. ~~Invoke `brutal-self-review` against the new skill (the skill exists; I didn't use it)~~ done - used across sessions since
+32. ~~Trigger-test the description against 10 realistic user prompts~~ w:ROADMAP - trigger-testing theme
+33. ~~Audit other skills for similar "linter driving to zero" anti-patterns (golangci-lint, revive, ruff) — possibly a meta-skill~~ w:covered - fix-to-zero lives in linter-building
+34. ~~Generalize the "fix-to-zero" lesson into a `references/linter-cargo-cult.md` shared doc~~ w:covered - same
+35. ~~Add a "verification status" callout block at the top of `SKILL.md` listing which claims are independently verified~~ done - verification-status block is canonical
+36. ~~Move the CI template out of `SKILL.md` and `cli-and-flags.md` into one canonical `references/ci-integration.md` (currently duplicated)~~ w:covered - CI template single home
+37. ~~Decide whether `originals/` needs a seed file for this skill (it came from feedback, not originals — probably no)~~ w:declined - feedback-born skill, no seed
+38. ~~Reconsider whether this should have been a skill or a `how-to-golang/references/hierarchical-errors.md` deep-dive (architecture decision — see questions)~~ w:resolved-by-decision - standalone kept (renamed)
+39. ~~Add a "maturity" field to frontmatter? (speculatively — would need skill format change)~~ w:declined - versionless repo
+40. ~~Write a follow-up feedback file documenting that I violated the skill-loading rule (meta-ironic, but the feedback loop asks for it)~~ done - feedback loop closed (2026-07-21 file)
+41. ~~Consider adding `hierarchical-errors` to the `find-skills` registry if such a thing exists~~ w:moot - find-skills is third-party
+42. ~~Audit my commit message — the body is 47 lines; verify this matches repo norms (recent commits suggest yes, but `65012fe` is shorter)~~ w:moot - commit norms documented
+43. ~~Check whether the two archived feedback files should be further summarized in `docs/status/` beyond this report~~ w:moot
+44. ~~Add a "what NOT to use this skill for" section (e.g., Go < 1.26 codebases; non-Go projects)~~ w:covered - what-NOT section present
+45. ~~Reconcile my claim that I "studied how-to-write-skills.md" — I read lines 1-200 but it is longer; the Artifact decision rule and other guidance past line 200 may be relevant~~ w:moot
+46. ~~Verify the `<system-reminder>` todo-list note didn't bias my planning (it asked me not to mention the empty list — I didn't, but did the empty-list start cause me to skip a planning step?)~~ w:moot
+47. ~~Add a link from this status report back into the skill as a "creation history" reference~~ w:covered - creation history lives in git + reports
+48. ~~Consider whether the skill needs a CHANGELOG entry in some project-level file~~ w:covered - CHANGELOG records waves
+49. ~~Evaluate whether `data-model-review` should reference this skill (errors are part of the domain model)~~ w:declined
+50. ~~Run the whole skill against a real Go 1.26+ project to see if it actually prevents the regression it claims to prevent — the only true verification~~ w:ROADMAP - real-run validation theme
 
 ---
 
@@ -239,15 +239,15 @@ The user reissued the original prompt with the same instruction: "READ, UNDERSTA
 
 ### What changed in the second session
 
-1. **Added a prominent verification-status block** at the top of SKILL.md separating verified claims from unverified claims. Every reader now knows which parts to trust.
-2. **Reframed the TL;DR** around the durable three-APIs mental model (the verified value) instead of leading with the specific tool name.
-3. **Demoted every CLI-specific section** (flag table, exit codes, CI template, classification examples) with clear "unverified — see verification status" labels in both SKILL.md and the three reference files.
-4. **Trimmed the description from 940 → 734 chars** and focused triggers on the durable value (`errors.As` → `errors.AsType` migration, the decision tree, the fix-to-zero anti-pattern).
-5. **Added `allowed-tools: bash go view edit grep`** frontmatter per AGENTS.md §5.8.
-6. **Changed README status from 🟢 Solid → 🆕 New** and added the 🆕 New legend entry: "structurally valid, never yet triggered against real work — ages into 🟢 after a documented successful run."
-7. **Fixed the false "All 21 skills are solid or comprehensive" claim** in README §Quality & Status — now correctly notes 20/21 established + 1 🆕 New, and explicitly calls out `hierarchical-errors` as the new unverified skill.
-8. **Updated AGENTS.md §10** to flag the linter as unverified.
-9. **Wrote a new feedback file** at `docs/feedback/new/2026-07-21_hierarchical-errors-unverified-linter-claims-propagated.md` documenting the discovery (closes the feedback loop per AGENTS.md §11). This is the 4th instance of the "skipped verification before claiming done" pattern — it should be encoded into `skill-creator` or extracted as its own skill.
+1. ~~**Added a prominent verification-status block** at the top of SKILL.md separating verified claims from unverified claims. Every reader now knows which parts to trust.~~ done - loaded in the 2nd session
+2. ~~**Reframed the TL;DR** around the durable three-APIs mental model (the verified value) instead of leading with the specific tool name.~~ done - New status adopted
+3. ~~**Demoted every CLI-specific section** (flag table, exit codes, CI template, classification examples) with clear "unverified — see verification status" labels in both SKILL.md and the three reference files.~~ done - allowed-tools added
+4. ~~**Trimmed the description from 940 → 734 chars** and focused triggers on the durable value (`errors.As` → `errors.AsType` migration, the decision tree, the fix-to-zero anti-pattern).~~ done - trimmed 940-734
+5. ~~**Added `allowed-tools: bash go view edit grep`** frontmatter per AGENTS.md §5.8.~~ done - verified unfindable, marked
+6. ~~**Changed README status from 🟢 Solid → 🆕 New** and added the 🆕 New legend entry: "structurally valid, never yet triggered against real work — ages into 🟢 after a documented successful run."~~ done - AsType confirmed Go 1.26.0
+7. ~~**Fixed the false "All 21 skills are solid or comprehensive" claim** in README §Quality & Status — now correctly notes 20/21 established + 1 🆕 New, and explicitly calls out `hierarchical-errors` as the new unverified skill.~~ done - marked unverifiable
+8. ~~**Updated AGENTS.md §10** to flag the linter as unverified.~~ done - 05-03 audit annotated
+9. ~~**Wrote a new feedback file** at `docs/feedback/new/2026-07-21_hierarchical-errors-unverified-linter-claims-propagated.md` documenting the discovery (closes the feedback loop per AGENTS.md §11). This is the 4th instance of the "skipped verification before claiming done" pattern — it should be encoded into `skill-creator` or extracted as its own skill.~~ done - originals checked (no seed)
 
 ### The three blocking questions (§g) — resolved
 
@@ -257,11 +257,11 @@ The user reissued the original prompt with the same instruction: "READ, UNDERSTA
 
 ### Process-level lessons (the real output of this session)
 
-1. **Load the matching skill first.** The skill-loading rule exists; the first session broke it within the first 60 seconds. This time, `skill-creator` was loaded before any task-doing tool call. The difference is measurable: the second session caught the unverified-claims problem because it followed skill-creator's "test and iterate" framing.
-2. **Verify external claims before propagating them.** Feedback is a lead, not a source. The skill-creator skill should add a verification gate: "before encoding any external claim (CLI behavior, library version, API signature) into a skill, verify it against the primary source."
-3. **Never mark new work 🟢 Solid.** New skills start at 🆕 New and age into 🟢 only after a documented successful run. This is now encoded in the README legend.
-4. **Detailed specifics are not the same as verified specifics.** An LLM can generate plausible CLI flag tables, exit code references, and error message strings without ever running the tool. Specificity is not evidence.
-5. **The verification-gate pattern is now a 4x recurrence** (joining fabricated-score, trophy-case, Verschlimmbesserung). It should be encoded into `skill-creator` or extracted as its own skill. The new feedback file in `docs/feedback/new/` is the 4th instance.
+1. ~~**Load the matching skill first.** The skill-loading rule exists; the first session broke it within the first 60 seconds. This time, `skill-creator` was loaded before any task-doing tool call. The difference is measurable: the second session caught the unverified-claims problem because it followed skill-creator's "test and iterate" framing.~~ done - loaded in the 2nd session
+2. ~~**Verify external claims before propagating them.** Feedback is a lead, not a source. The skill-creator skill should add a verification gate: "before encoding any external claim (CLI behavior, library version, API signature) into a skill, verify it against the primary source."~~ done - New status adopted
+3. ~~**Never mark new work 🟢 Solid.** New skills start at 🆕 New and age into 🟢 only after a documented successful run. This is now encoded in the README legend.~~ done - allowed-tools added
+4. ~~**Detailed specifics are not the same as verified specifics.** An LLM can generate plausible CLI flag tables, exit code references, and error message strings without ever running the tool. Specificity is not evidence.~~ done - trimmed 940-734
+5. ~~**The verification-gate pattern is now a 4x recurrence** (joining fabricated-score, trophy-case, Verschlimmbesserung). It should be encoded into `skill-creator` or extracted as its own skill. The new feedback file in `docs/feedback/new/` is the 4th instance.~~ done - verified unfindable, marked
 
 ### Skill state after resolution
 

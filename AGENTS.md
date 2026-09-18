@@ -12,7 +12,7 @@ This is a **documentation-only content repository**. There is no build system, n
 
 If you are looking for source code to build, test, or lint: **there is none**. The "product" is the markdown content itself.
 
-**Shell scripts:** format every `.sh` with shfmt (tab indentation) BEFORE writing/committing; the repo owner reformats non-conforming scripts (see `b6163c2`), which trips "modified since read" guards. Quality gate: `scripts/check-skills.sh` (run after every change).
+**Shell scripts:** format every `.sh` with shfmt (tab indentation) BEFORE writing/committing; the repo owner reformats non-conforming scripts (see `b6163c2`), which trips "modified since read" guards. Quality gate: `scripts/check-skills.sh` (run after every change). An external tool (buildflow) also lints this repo — see §5.11 for what it covers and which invocation is reliable.
 
 ---
 
@@ -37,7 +37,10 @@ SKILLS/
 │   └── assets/                  # Optional: templates, images, sample data
 │
 └── docs/
-    └── status/                  # Comprehensive audit reports (high-value historical context)
+    └── status/                  # Point-in-time session reports (living set)
+        └── archived/            # Fully-resolved reports (every item carries an
+                                 #   inline strikethrough verdict; moved via git mv
+                                 #   per docs-health ANNOTATE)
 ```
 
 ### Which files to edit

@@ -63,7 +63,7 @@ Pattern across d1–d5: **gates ≠ verification.** I quoted exit codes diligent
 | - | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ------ |
 | ~~1~~ | ~~HARVEST c1 into TODO_LIST.md (naming-review description cap → rewrite to make room for data-model disambiguation)~~ done (docs-health pass 2026-09-18 — routed to TODO_LIST as T38) | ~~Med~~ | ~~15min~~ |
 | ~~2~~ | ~~Verify FEATURES.md line-count column for the other 3 edited skills (architecture-review, architecture-visualization, status-report) — and fix any drift~~ done — moot — the Lines column was removed entirely (`5dd75e2`) | ~~Low~~ | ~~5min~~ |
-| 3 | e1: add "grep FEATURES.md row after SKILL.md edits" to how-to-write-skills.md checklist                                                                      | Med    | 10min  |
+| ~~3~~ | ~~e1: add "grep FEATURES.md row after SKILL.md edits" to how-to-write-skills.md checklist~~ done (docs-health pass 2026-09-18 — SESSION-START step 6 now carries the FEATURES-row re-check rule) | ~~Med~~ | ~~10min~~ |
 | 4 | e2: bare-count detector advisory in check-skills.sh                                                                                                          | Med    | 30min  |
 | ~~5~~ | ~~e5: `--features` recompute mode or drop the Lines column~~ done — resolved by removing the Lines column (`5dd75e2`) | ~~Low~~ | ~~20min~~ |
 | 6 | Verify the blending claim properly: sample ~5 "self-review"-named reports for actual format blend (b3) — strengthens or corrects the AGENTS §5.5 sentence    | Low    | 10min  |

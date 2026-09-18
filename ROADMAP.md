@@ -29,6 +29,10 @@ Raw ideas:
   inspection
 - Spot-check that Crush loads the right skill for representative user prompts
   (top-5 most-used skills first)
+- Measure the 2026-09-17 signal-density rewrite (old-vs-new bodies) — the
+  guide's own rule says an unmeasured rewrite is "reasoned, not measured"
+- Fixture-test the `--signal` advisory and the check-15 gate (negative
+  fixture: quoting a filler phrase inside a fence must NOT fail)
 
 ### 2. Automated quality gates beyond structural checks
 
@@ -162,9 +166,28 @@ These are blockers that need a human decision before they can become tasks:
   owning triggers like "profile my service", "why is p99 high", "GC tuning"?
   Splitting adds a trigger surface; keeping it adds depth.
 - **Status-report default format** (`2026-08-16` g2, `2026-08-21` e5,
-  recurred again `2026-09-08`): the skill's canonical output is a styled
-  HTML dashboard, but recent reports were `.md` per explicit user request.
-  One-off overrides, or change the default?
+  recurred `2026-09-08`, `2026-09-16`, **8 documented recurrences by
+  2026-09-18**): the skill's canonical output is a styled HTML dashboard,
+  but recent reports were `.md` per explicit user request. One-off
+  overrides, or change the default?
+- **Glossary lockstep: verbatim or semantic?** (`2026-09-18` g2): Principle 7
+  demands "wording identical" to the house-jargon table; the seven shipped
+  first-use glosses paraphrase. (a) verbatim lockstep + align all 7, or
+  (b) amend the rule to "meaning identical, table canonical"? Gates TODO T51.
+- **Aggressive prompt-voice boundary** (`2026-09-18` g3): energy lines that
+  name a real instruction survived the signal pass; pure noise was deleted.
+  Confirm the boundary (energy welcome where it names an instruction,
+  delete elsewhere) or restore anything.
+- **Cross-repo aging policy** (`2026-09-16` g1): may session reports living
+  in OTHER repos count as "documented successful run" evidence to age
+  github-voice / jj-fork-pr-workflow out of 🆕, or is SKILLS-repo-local
+  evidence the only accepted source?
+- **FEATURES legend canon** (`2026-09-16` g2): keep the skill-maturity legend
+  (🟢/🟡/🆕/⚪) with a documented divergence note, or adopt the docs-health
+  canon labels?
+- **Formatter scope** (`2026-09-16` g3): full-repo `dprint fmt` (once
+  whitespace-touched two historical reports) or scoped runs over changed
+  files only?
 - **Alias-guidance home & type-design granularity** (`2026-08-14_11-52` g2/g3):
   should the alias-vs-definition guidance stay in `domain-types.md`, split
   across `rules.md`, or anchor a dedicated `go-type-design` skill absorbing

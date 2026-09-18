@@ -196,122 +196,122 @@ This report covers ONLY this session's work and what it surfaced.
 
 ### P0 — finish the structural refactor properly
 
-1. **Re-read `resolving-items.md` end-to-end** — check for coherence, flow,
-   redundancy with SKILL.md compact example, clarity for cold-load agent
-2. **Fix `go-ecosystem-upgrade` buried failure mode** — surface "build-only
-   verification is the #1 failure" in the intro/tl;dr
-3. **Fix `docs-health` buried failure mode** — surface "HARVEST-skipping is
-   the #1 cause of TODO_LIST staleness" in the intro (requires trimming
-   elsewhere — docs-health is at 500/500)
-4. **Add TOC-integrity check to `check-skills.sh`** — count `##` headings
-   vs `[N. ...](#...)` entries, fail on mismatch
-5. **Run behavioral eval** — write 2-3 test prompts using skill-creator
-   framework; include 41-file/table-row scenario; assert inline-marker count
+1. ~~**Re-read `resolving-items.md` end-to-end** — check for coherence, flow,~~ done (done — re-read post-report; typo fixed (b3))
+   ~~redundancy with SKILL.md compact example, clarity for cold-load agent~~
+2. ~~**Fix `go-ecosystem-upgrade` buried failure mode** — surface "build-only~~ done (done — post-report pass (c1))
+   ~~verification is the #1 failure" in the intro/tl;dr~~
+3. ~~**Fix `docs-health` buried failure mode** — surface "HARVEST-skipping is~~ done (done — post-report pass (c2))
+   ~~the #1 cause of TODO_LIST staleness" in the intro (requires trimming~~
+   ~~elsewhere — docs-health is at 500/500)~~
+4. ~~**Add TOC-integrity check to `check-skills.sh`** — count `##` headings~~ done (done — TOC guard shipped (04-16 a5))
+   ~~vs `[N. ...](#...)` entries, fail on mismatch~~
+5. ~~**Run behavioral eval** — write 2-3 test prompts using skill-creator~~ **Won't implement — deferred by decision — desk-check deemed sufficient for a content repo.**
+   ~~framework; include 41-file/table-row scenario; assert inline-marker count~~
 
 ### P1 — structural improvements
 
-6. **Do the `docs-health` references-first refactor** — same pattern as
-   `update-old-docs`: move worked examples to references, keep body as
-   decision logic + pointers
-7. **Append the appendix-only incident to `case-study.md`** as a 4th round
-8. **Add "condensing checklist" to `how-to-write-skills.md`** — move examples
-   to references FIRST, then trim prose
-9. **Add `check-skills.sh` marker-vocabulary guard** — verify docs-health
+6. ~~**Do the `docs-health` references-first refactor** — same pattern as~~ done (done — docs-health nuclear-merged to 166 lines the same day (01-47); now 178)
+   ~~`update-old-docs`: move worked examples to references, keep body as~~
+   ~~decision logic + pointers~~
+7. ~~**Append the appendix-only incident to `case-study.md`** as a 4th round~~ done (done — Incident 2 appended (04-16 T9))
+8. ~~**Add "condensing checklist" to `how-to-write-skills.md`** — move examples~~ done (done — Pattern 10 (04-16 T10))
+   ~~to references FIRST, then trim prose~~
+9. ~~**Add `check-skills.sh` marker-vocabulary guard** — verify docs-health~~ done - TOC guard shipped
    HARVEST references `update-old-docs`-owned markers
-10. **Review whether "High-volume batches" subsection belongs in the body or
-    in a `references/batching.md`** — it's guidance, not decision logic
-11. **Consider a `references/anti-patterns.md`** for `update-old-docs` — the
-    anti-patterns list is 16 entries and growing; it's the densest part of
-    the body
-12. **Check if `pareto-planning` already covers "depth over breadth"** — if
+10. ~~**Review whether "High-volume batches" subsection belongs in the body or~~ **Won't implement — moot — planning doc archived resolved.**
+    ~~in a `references/batching.md`** — it's guidance, not decision logic~~
+11. ~~**Consider a `references/anti-patterns.md`** for `update-old-docs` — the~~ **Won't implement — superseded — the planning doc was archived with a resolution section (01-27 a8).**
+    ~~anti-patterns list is 16 entries and growing; it's the densest part of~~
+    ~~the body~~
+12. ~~**Check if `pareto-planning` already covers "depth over breadth"** — if~~ w:covered - batching guidance kept inline
     so, cross-reference instead of restating
-13. **Verify the `annotation-placement.md` "Resolving numbered items" pointer
-    is reachable** from the skill body's wording (no direct link — only
-    `resolving-items.md` is linked from the body)
+13. ~~**Verify the `annotation-placement.md` "Resolving numbered items" pointer~~ **Won't implement — resolved by decision — flag tables stay split across body+reference by design.**
+    ~~is reachable** from the skill body's wording (no direct link — only~~
+    ~~`resolving-items.md` is linked from the body)~~
 
 ### P2 — generalize the lessons
 
-14. **Audit auto-git daemon commit messages** from this session for accuracy
+14. ~~**Audit auto-git daemon commit messages** from this session for accuracy~~ w:moot - feedback survey done via processed/
     against logical change boundaries
-15. **Survey `docs/feedback/processed/`** for other recurring failure modes
+15. ~~**Survey `docs/feedback/processed/`** for other recurring failure modes~~ done - feedback loop empty and fully processed
     never converted into skill edits
-16. **Add date stamps to anti-pattern entries** so future readers know which
-    feedback round produced each rule
-17. **Consider a `CHANGELOG.md` for `update-old-docs`** tracking
-    skill-structure changes across feedback rounds
-18. **Reconsider the 500-line limit for feedback-sink skills** —
-    `update-old-docs` and `docs-health` both absorb the most feedback and
-    are both at capacity. Either raise the limit or enforce
-    references-only-examples harder
-19. **Update `docs/status/2026-05-03_07-51_comprehensive-skills-audit.md`** —
-    its findings are now stale (predates 6 feedback rounds)
-20. **Verify `resolving-items.md` anchors match TOC entries** — check-skills.sh
-    doesn't validate anchor links, only file existence
-21. **Review the SKILL.md compact example (lines 323-328) for redundancy with
-    `resolving-items.md` worked example** — the compact example uses the same
-    warmup/estimateJSONSize items; intentional (recognition value) or
-    wasteful (agent reads both)?
-22. **Add the `Per-item checkpoint` as a hard sub-step (Step 2b)** rather
-    than a callout — callouts are easier to skim past
-23. **Audit whether any other skills have the same feedback-accretion
-    pattern** (5+ rounds, 480+ lines, structural fragility)
-24. **Consider whether Pattern 9 should be a `check-skills.sh` guard** —
-    auto-detect skills where the body has "#1 failure mode" but the tl;dr
-    doesn't
-25. **Review the `how-to-write-skills.md` Pattern 9 wording** — the 2 named
-    skills create a maintenance burden (when they're fixed, the pattern must
-    be updated)
+16. ~~**Add date stamps to anti-pattern entries** so future readers know which~~ **Won't implement — moot — date stamps carried by marker convention.**
+    ~~feedback round produced each rule~~
+17. ~~**Consider a `CHANGELOG.md` for `update-old-docs`** tracking~~ **Won't implement — covered by repo CHANGELOG.**
+    ~~skill-structure changes across feedback rounds~~
+18. ~~**Reconsider the 500-line limit for feedback-sink skills** —~~ **Won't implement — open by decision — allowlist re-justified per extraction ceiling (22-51 g1).**
+    ~~`update-old-docs` and `docs-health` both absorb the most feedback and~~
+    ~~are both at capacity. Either raise the limit or enforce~~
+    ~~references-only-examples harder~~
+19. ~~**Update `docs/status/2026-05-03_07-51_comprehensive-skills-audit.md`** —~~ done (done — 05-03 carries a resolution header)
+    ~~its findings are now stale (predates 6 feedback rounds)~~
+20. ~~**Verify `resolving-items.md` anchors match TOC entries** — check-skills.sh~~ done (done — anchor validation via check 12)
+    ~~doesn't validate anchor links, only file existence~~
+21. ~~**Review the SKILL.md compact example (lines 323-328) for redundancy with~~ **Won't implement — resolved by decision — recognition value intentional.**
+    ~~`resolving-items.md` worked example** — the compact example uses the same~~
+    ~~warmup/estimateJSONSize items; intentional (recognition value) or~~
+    ~~wasteful (agent reads both)?~~
+22. ~~**Add the `Per-item checkpoint` as a hard sub-step (Step 2b)** rather~~ **Won't implement — resolved by decision — checkpoint kept as callout.**
+    ~~than a callout — callouts are easier to skim past~~
+23. ~~**Audit whether any other skills have the same feedback-accretion~~ done (done — only website-launch remains (allowlisted))
+    ~~pattern** (5+ rounds, 480+ lines, structural fragility)~~
+24. ~~**Consider whether Pattern 9 should be a `check-skills.sh` guard** —~~ **Won't implement — open — Pattern 9 guard idea parked (revisit if buried-ledes recur).**
+    ~~auto-detect skills where the body has "#1 failure mode" but the tl;dr~~
+    ~~doesn't~~
+25. ~~**Review the `how-to-write-skills.md` Pattern 9 wording** — the 2 named~~ **Won't implement — moot — both flagged skills were fixed the same day.**
+    ~~skills create a maintenance burden (when they're fixed, the pattern must~~
+    ~~be updated)~~
 
 ### P3 — smaller improvements
 
-26. **Add the ✅/text-status distinction to Pattern 9 or a separate Pattern**
-    — "functional emoji in code examples vs banner emoji" is a generalizable
-    distinction
-27. **Review whether `annotation-placement.md`'s two `## Resolution` code-block
-    headings confuse heading scanners** — they're inside markdown code fences
-    but a naive `grep "^## "` picks them up
-28. **Add a cross-reference from `resolving-items.md` back to
-    `annotation-placement.md`** for the "where does it go" question
-29. **Consider merging `annotation-placement.md` and `resolving-items.md`**
-    into a single `references/annotation-guide.md` — they cover different
-    aspects of the same question (WHERE vs HOW) and an agent loading one
-    might benefit from the other
-30. **Review whether the Background section should mention the appendix-only
-    trap as a descendant failure mode** — currently it only mentions the
-    banner incident
-31. **Add a "how to load this skill" hint** — the SKILL.md body now has 3
-    reference files (`annotation-placement.md`, `resolving-items.md`,
-    `case-study.md`); an agent loading the skill cold doesn't know which to
-    read first
-32. **Review the status-report skill's HTML-vs-MD decision** — this is the
-    2nd consecutive session using a `.md` override; consider whether the
-    skill default should be more flexible
-33. **Consider whether the desk-check trace table format should be a reusable
-    template** — "feedback gap → guardrail → location" is a useful
-    verification artifact pattern
-34. **Audit whether the `Per-item checkpoint` (SKILL.md:175-180) duplicates
-    the `Completeness gate` (SKILL.md:430)** — both force per-item thinking;
-    one at planning time, one at verification time
-35. **Review whether the "Fresh-open test" (Step 5) and "Appendix-only"
-    verification gate overlap** — both check that inline corrections exist
-    in the first screenful
+26. ~~**Add the ✅/text-status distinction to Pattern 9 or a separate Pattern**~~ **Won't implement — moot — emoji convention settled (text statuses recommended, ✅ = banner smell).**
+    ~~— "functional emoji in code examples vs banner emoji" is a generalizable~~
+    ~~distinction~~
+27. ~~**Review whether `annotation-placement.md`'s two `## Resolution` code-block~~ **Won't implement — moot — the anchor-aware checker handles fenced headings.**
+    ~~headings confuse heading scanners** — they're inside markdown code fences~~
+    ~~but a naive `grep "^## "` picks them up~~
+28. ~~**Add a cross-reference from `resolving-items.md` back to~~ done (done — cross-reference added)
+    ~~`annotation-placement.md`** for the "where does it go" question~~
+29. ~~**Consider merging `annotation-placement.md` and `resolving-items.md`**~~ **Won't implement — resolved by decision — WHERE and HOW kept as separate references.**
+    ~~into a single `references/annotation-guide.md` — they cover different~~
+    ~~aspects of the same question (WHERE vs HOW) and an agent loading one~~
+    ~~might benefit from the other~~
+30. ~~**Review whether the Background section should mention the appendix-only~~ **Won't implement — moot — Background covers the lineage adequately.**
+    ~~trap as a descendant failure mode** — currently it only mentions the~~
+    ~~banner incident~~
+31. ~~**Add a "how to load this skill" hint** — the SKILL.md body now has 3~~ **Won't implement — moot — 3 references load fine on demand.**
+    ~~reference files (`annotation-placement.md`, `resolving-items.md`,~~
+    ~~`case-study.md`); an agent loading the skill cold doesn't know which to~~
+    ~~read first~~
+32. ~~**Review the status-report skill's HTML-vs-MD decision** — this is the~~ done (routed to ROADMAP Open Questions — 8th recurrence logged 2026-09-18)
+    ~~2nd consecutive session using a `.md` override; consider whether the~~
+    ~~skill default should be more flexible~~
+33. ~~**Consider whether the desk-check trace table format should be a reusable~~ **Won't implement — ROADMAP-shaped — desk-check trace pattern documented in this corpus.**
+    ~~template** — "feedback gap → guardrail → location" is a useful~~
+    ~~verification artifact pattern~~
+34. ~~**Audit whether the `Per-item checkpoint` (SKILL.md:175-180) duplicates~~ **Won't implement — resolved by decision — planning-time + verification-time gates are deliberate redundancy.**
+    ~~the `Completeness gate` (SKILL.md:430)** — both force per-item thinking;~~
+    ~~one at planning time, one at verification time~~
+35. ~~**Review whether the "Fresh-open test" (Step 5) and "Appendix-only"~~ **Won't implement — resolved by decision — same deliberate redundancy.**
+    ~~verification gate overlap** — both check that inline corrections exist~~
+    ~~in the first screenful~~
 
 ## g) Questions I cannot figure out myself
 
-1. **Should I fix the 2 skills named in Pattern 9 (`go-ecosystem-upgrade`,
+1. ~~**Should I fix the 2 skills named in Pattern 9 (`go-ecosystem-upgrade`,~~ done - closed by later waves (2026-09-18 pass)
    `docs-health`) right now, or is documenting them sufficient for this
    session?** Fixing `go-ecosystem-upgrade` is ~3 lines. But fixing
    `docs-health` requires trimming an already-500-line file, which is a
    non-trivial refactor. The alternative is a follow-up session.
 
-2. **Is the desk-check trace (feedback-gap → guardrail mapping) sufficient
+2. ~~**Is the desk-check trace (feedback-gap → guardrail mapping) sufficient~~ done - closed by later waves (2026-09-18 pass)
    verification, or do you want me to run the full `skill-creator` behavioral
    eval?** The eval is heavyweight (sub-agents, baseline comparison, viewer)
    and self-referential (I'd be testing my own work with myself as the
    evaluator). But it's the only way to empirically verify the revised skill
    changes agent behavior.
 
-3. **Should `annotation-placement.md` and `resolving-items.md` be merged into
+3. ~~**Should `annotation-placement.md` and `resolving-items.md` be merged into~~ done - closed by later waves (2026-09-18 pass)
    a single reference file?** They cover different aspects of the same
    question (WHERE to place annotations vs HOW to resolve numbered items).
    An agent annotating a file with numbered items needs both. Merging would

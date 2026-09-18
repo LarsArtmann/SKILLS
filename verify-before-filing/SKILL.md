@@ -198,7 +198,7 @@ Both share the same root discipline: specificity is not evidence, and plausibili
 >
 > **Red flag triage:** Nobody has confirmed the patch is actually needed — it was vendored years ago by a developer who left.
 >
-> **Gate 1 (Does the override do anything?):** Check whether `net/http` already provides this. Go 1.22+ `http.MaxBytesReader` wraps any `ResponseWriter` and works with any router — including mux. The vendored patch duplicates stdlib. **FAIL.**
+> **Gate 1 (Does the override do anything?):** Check whether `net/http` already provides this. stdlib `http.MaxBytesReader` (available since Go 1.0) wraps any `ResponseWriter` and works with any router — including mux. The vendored patch duplicates stdlib. **FAIL.**
 >
 > **Gate 2 (Is it already the default upstream?):** Not applicable (a feature, not a default), but the **stdlib already covers it** — which is stronger than an upstream default. The gap isn't in mux; it's that the team never checked stdlib. **FAIL.**
 >

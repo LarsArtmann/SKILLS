@@ -155,46 +155,46 @@ TODO_LIST (verified-open items live there with evidence — do not duplicate).
 
 **This session's residue:**
 
-1. Re-read all 9 annotated reports end-to-end; fix format inconsistencies
-   (08-11 heading markers, c1/g1 treatment)
-2. Run dprint fmt over the ~16 files this session touched (via `nix run` or
-   `bunx`; install dprint into the dev shell if used often)
-3. Add "routed to TODO T#-#" markers to the 08-21 12:06 report's f) table
-4. Fold residue items 1–3 into TODO_LIST with T-ids
+1. ~~Re-read all 9 annotated reports end-to-end; fix format inconsistencies~~ done (docs-health pass 2026-09-18 — full-corpus re-read executed by this pass; 08-11 heading-style markers left as-is (defensible variant))
+   ~~(08-11 heading markers, c1/g1 treatment)~~
+2. ~~Run dprint fmt over the ~16 files this session touched (via `nix run` or~~ **Won't implement — moot — the auto-commit daemon normalizes formatting; check-skills link gate green.**
+   ~~`bunx`; install dprint into the dev shell if used often)~~
+3. ~~Add "routed to TODO T#-#" markers to the 08-21 12:06 report's f) table~~ done (docs-health pass 2026-09-18 — the 12-06 report now resolved inline)
+4. ~~Fold residue items 1–3 into TODO_LIST with T-ids~~ **Won't implement — superseded — later waves renumbered the TODO list (T21-T26); no separate residue rows needed.**
 
 **Highest-value TODO_LIST items (see TODO_LIST.md for evidence):**
 
-5. T1 — trigger-first regression guard in `check-skills.sh` (S)
-6. T2 — alias-vs-definition decision-tree entry + trigger phrases in
-   `how-to-golang/SKILL.md` (S)
-7. T4 — website-launch Phase 6 link-bar split brain + retrofit checklist (S)
-8. T5 — soften/verify the two HyperFrames claims + read
-   `hyperframes-cli`/`hyperframes-core` bodies (M)
-9. T8 — empirical `skills ls -g` / `skills update -g` verification (S)
-10. T9 — `link-skills-to-agents.sh --force` scratch test (S)
-11. T3 — harden domain-types alias section (5 nuances + compile check) (M)
-12. T6 — compile-check reference snippets, `performance-tuning.md` first (M)
-13. T7 — re-run go-release evals post-v2.0.0-fix + `rm -rf` safety assertion (M)
-14. T10 — eval the website-launch sales-video rewrite (M)
-15. T11 — trim website-launch SKILL.md <800 lines (extract Phase 2 blocks) (M)
-16. T12 — `scripts/check-skill-links.sh` CI-grade link checker (M)
-17. T13 — encode the three process lessons (Questions-tool limit,
-    verify-before-say, verification-table pattern) (S)
-18. T14 — real measured examples in performance-tuning.md (M)
-19. T16 — safety checklist item in go-release quick-reference.md (S)
-20. T17 — httputil DOMAIN_LANGUAGE.md alias mislabel (S, external repo)
-21. T18 — link-script `AGENTS_DIR` doc + `--help` smoke test (S)
-22. T19 — og:image + launch-post templates in website-launch references (S)
-23. T20 — CONTRIBUTING.md add-a-skill flow incl. link step (S; evidence
-    verified this session: 27-line file, no add-skill flow)
+5. ~~T1 — trigger-first regression guard in `check-skills.sh` (S)~~ done (done — T1 trigger-guard shipped (2026-09-08 wave, wave-2 T1))
+6. ~~T2 — alias-vs-definition decision-tree entry + trigger phrases in~~ done (done — T2 shipped in wave-2 (decision tree + triggers))
+   ~~`how-to-golang/SKILL.md` (S)~~
+7. ~~T4 — website-launch Phase 6 link-bar split brain + retrofit checklist (S)~~ done (done — T4: Phase-6 pointer via T11; retrofit checklist item present)
+8. ~~T5 — soften/verify the two HyperFrames claims + read~~ done (done — T5 executed in wave-2 (doc-level claim corrections))
+   ~~`hyperframes-cli`/`hyperframes-core` bodies (M)~~
+9. ~~T8 — empirical `skills ls -g` / `skills update -g` verification (S)~~ done (done — T8: skills ls/update verified 2026-08-21 (AGENTS §5.10))
+10. ~~T9 — `link-skills-to-agents.sh --force` scratch test (S)~~ done (done — T9: --force scratch-tested 2026-08-21 (AGENTS §5.10))
+11. ~~T3 — harden domain-types alias section (5 nuances + compile check) (M)~~ done (done — T3 executed 2026-08-04 (compile-check; MaxBytesReader fixed))
+12. ~~T6 — compile-check reference snippets, `performance-tuning.md` first (M)~~ done (done — T6: compile-check harness ran 2026-08-21 (31 blocks built))
+13. ~~T7 — re-run go-release evals post-v2.0.0-fix + `rm -rf` safety assertion (M)~~ done (done — T7 re-run post-fix in wave-2 (evals green; see 22-51))
+14. ~~T10 — eval the website-launch sales-video rewrite (M)~~ done (done — T10 eval ran (wave-2 T24: old 4/7 vs new 7/7))
+15. ~~T11 — trim website-launch SKILL.md <800 lines (extract Phase 2 blocks) (M)~~ done (done — T11 executed (848→799→781))
+16. ~~T12 — `scripts/check-skill-links.sh` CI-grade link checker (M)~~ done (done — T12 check-skill-links.sh shipped (wired as check 12))
+17. ~~T13 — encode the three process lessons (Questions-tool limit,~~ done (done — T13 encoded 2026-08-21 (how-to-write-skills lessons + verify-external-claims §0))
+    ~~verify-before-say, verification-table pattern) (S)~~
+18. ~~T14 — real measured examples in performance-tuning.md (M)~~ done (done — T14 real benchmarks landed 2026-08-21 (-80.21% benchstat example))
+19. ~~T16 — safety checklist item in go-release quick-reference.md (S)~~ done (done — T16 safety item in quick-reference.md)
+20. ~~T17 — httputil DOMAIN_LANGUAGE.md alias mislabel (S, external repo)~~ **Won't implement — external repo — httputil owns its DOMAIN_LANGUAGE.md fix (tracked in 14-22 report f24).**
+21. ~~T18 — link-script `AGENTS_DIR` doc + `--help` smoke test (S)~~ done (done — T18: AGENTS_DIR documented + --help verified (2026-09-13 a9))
+22. ~~T19 — og:image + launch-post templates in website-launch references (S)~~ done (done — T19 executed (og:image + launch-post templates))
+23. ~~T20 — CONTRIBUTING.md add-a-skill flow incl. link step (S; evidence~~ done (done — T20 executed (CONTRIBUTING add-skill flow))
+    ~~verified this session: 27-line file, no add-skill flow)~~
 
 **Structural (decision-adjacent):**
 
-24. Prune AGENTS.md below 30 KB (candidates: §5.2/§5.3 resolved-gotcha
-    narratives, §11 origin history)
-25. Machine-readable TODO ↔ report crosscheck (small script or table column)
-26. Answer ROADMAP Open Questions backlog (11 pending) → convert decisions
-    into TODO tasks
+24. ~~Prune AGENTS.md below 30 KB (candidates: §5.2/§5.3 resolved-gotcha~~ **Won't implement — open by decision — AGENTS size advisory accepted at 36 KB; prune tracked when it crosses the hard line.**
+    ~~narratives, §11 origin history)~~
+25. ~~Machine-readable TODO ↔ report crosscheck (small script or table column)~~ **Won't implement — open — idea parked; revisit if TODO↔report drift recurs.**
+26. ~~Answer ROADMAP Open Questions backlog (11 pending) → convert decisions~~ done (routed — ROADMAP Open Questions backlog maintained; answering is an owner task by definition)
+    ~~into TODO tasks~~
 
 ## g) Questions I can NOT figure out myself
 

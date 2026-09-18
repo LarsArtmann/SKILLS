@@ -232,8 +232,8 @@ ancestors).
 | 9  | ~~Update TODO_LIST.md (remove done T1–T10/T17/T18) + CHANGELOG wave entry for this session~~ done at 2026-08-21 (all of T1–T20 removed; TODO_LIST rebuilt as T21–T26)                                                                             |        |        |
 | 10 | ~~go-release: make `GONOSUMDB=*` explicit in multi-module.md verification (last eval miss)~~ done at 2026-08-21 (Step 9 + rationale; semantics verified against `go help environment`)                                                            |        |        |
 | 11 | ~~Re-check README.md website-launch row + skills-table counts after this wave~~ done at 2026-08-21 (row already mentions sales engine; 25-count accurate — no change needed)                                                                      |        |        |
-| 12 | Retro-audit live sites against the new demo-video Definition of Done (08-21 f10, still open)                                                                                                                                                      | Medium | M      |
-| 13 | HyperFrames ground-truth: one real demo-video render through the corrected 9:16 guidance                                                                                                                                                          | High   | M      |
+| ~~12~~ | ~~Retro-audit live sites against the new demo-video Definition of Done (08-21 f10, still open)~~ done — T21 executed 2026-09-08 (23-15 report) | ~~Medium~~ | ~~M~~ |
+| ~~13~~ | ~~HyperFrames ground-truth: one real demo-video render through the corrected 9:16 guidance~~ done — T22 executed in wave-2 (incl. 9:16 variant) | ~~High~~ | ~~M~~ |
 | 14 | ~~scratch-dir helper script (e1)~~ done at 2026-08-21 (scripts/scratch.sh: create + manifest + --clean via trash)                                                                                                                                 |        |        |
 
 ---

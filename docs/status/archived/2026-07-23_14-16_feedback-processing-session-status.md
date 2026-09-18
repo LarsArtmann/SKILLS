@@ -53,79 +53,79 @@
 
 ## e) WHAT WE SHOULD IMPROVE
 
-1. **Check git history before starting work.** Running `git log --oneline -10` at the start would have revealed the three recent commits and saved significant time re-creating identical files.
-2. **Verify external tool provenance.** `mkPreparedSource` is a private LarsArtmann tool. The skill should note that it requires SSH access to the `LarsArtmann/go-nix-helpers` repo and is not publicly available.
-3. **Add verification-status blocks** to `nix-private-go-repos` (for `mkPreparedSource`) and `samber-do-best-practices` (for `branching-flow/pkg/doanalyzerv2` static analyzer).
-4. **Cross-reference new skills** from `how-to-golang` (DI section) and `nix-review` (private deps).
-5. **Consult `how-to-write-skills.md`** before creating any new skill — it may have conventions not captured in AGENTS.md.
-6. **Commit the README changes** — they are a legitimate formatting improvement.
-7. **Update AGENTS.md §10** with the new external dependencies.
-8. **Make the verification-sources.md reference consistent** — the existing file in `verify-external-claims/references/` was committed in 633616f but my version may differ slightly.
+1. ~~**Check git history before starting work.** Running `git log --oneline -10` at the start would have revealed the three recent commits and saved significant time re-creating identical files.~~ done — committed ac7336d (appendix)
+2. ~~**Verify external tool provenance.** `mkPreparedSource` is a private LarsArtmann tool. The skill should note that it requires SSH access to the `LarsArtmann/go-nix-helpers` repo and is not publicly available.~~ done — verification-status block added (follow-up)
+3. ~~**Add verification-status blocks** to `nix-private-go-repos` (for `mkPreparedSource`) and `samber-do-best-practices` (for `branching-flow/pkg/doanalyzerv2` static analyzer).~~ done — same
+4. ~~**Cross-reference new skills** from `how-to-golang` (DI section) and `nix-review` (private deps).~~ done — key-patterns DI pointer added (follow-up)
+5. ~~**Consult `how-to-write-skills.md`** before creating any new skill — it may have conventions not captured in AGENTS.md.~~ done — best-practices pointer added (follow-up)
+6. ~~**Commit the README changes** — they are a legitimate formatting improvement.~~ done — 3 rows added (follow-up)
+7. ~~**Update AGENTS.md §10** with the new external dependencies.~~ done — verified (follow-up)
+8. ~~**Make the verification-sources.md reference consistent** — the existing file in `verify-external-claims/references/` was committed in 633616f but my version may differ slightly.~~ done — bug fixed (follow-up)
 
 ---
 
 ## f) Up to 50 Things We Should Get Done Next
 
-1. Commit README.md table-formatting changes
-2. Add verification-status block to `nix-private-go-repos` for `mkPreparedSource` provenance
-3. Add verification-status block to `samber-do-best-practices` for `doanalyzerv2`
-4. Cross-reference `samber-do-best-practices` from `how-to-golang` Go DI decision tree
-5. Cross-reference `nix-private-go-repos` from `nix-review` checklist
-6. Update AGENTS.md §10 external dependencies table with new tools
-7. Verify `samber-do-best-practices` references exist at `/home/lars/projects/samber-do-auditlog/docs/research/`
-8. Verify `nix-private-go-repos` references are accurate for `go-nix-helpers`
-9. Test that `scripts/audit-do.sh` runs correctly on a real project
-10. Test that `scripts/list-private-deps.sh` runs correctly on a real project
-11. Flesh out `architecture-review` (currently 🟡 Thin) with richer references
-12. Flesh out `code-quality-scan` (currently 🟡 Thin) with output templates
-13. Flesh out `deduplicate-code` (currently 🟡 Thin) with reference material
-14. Flesh out `nix-flake-migration` (currently 🟡 Thin) with more examples
-15. Flesh out `status-report` (currently 🟡 Functional) with output templates
-16. Audit all 24 skills for unverified external claims using the new `verify-external-claims` skill
-17. Add `allowed-tools` frontmatter to skills that rely on specific CLIs (`art-dupl`, `d2`)
-18. Update `website-launch` (1098 lines) — consider splitting into SKILL.md + references
-19. Add a "Skill Authoring & Verification" section to `how-to-write-skills.md`
-20. Verify the `hierarchical-errors` skill's `errors.AsType` API claims against `pkg.go.dev/errors`
-21. Check if the feedback loop in AGENTS.md §11 needs updating after today's work
-22. Run the comprehensive audit from `docs/status/2026-06-17_23-22_comprehensive-status.md` to see what's still open
-23. Update `docs/status/2026-06-17_23-22_comprehensive-status.md` with today's findings (non-destructive annotation per `update-old-docs`)
-24. Verify that `html-report-kit` vendored copies are current (run `scripts/sync-html-kit.sh --check`)
-25. Check if any new skills need HTML report integration (they don't currently, but confirm)
-26. Add a "Known gotchas" section to `samber-do-best-practices` referencing samber/do issue #219
-27. Add a "Quick start" example to `nix-private-go-repos` for a minimal project
-28. Consider extracting a `samber-do-migration-v1-to-v2` mini-guide if v1 projects are still active
-29. Audit the `go-modularize` skill for accuracy (255 lines — well-structured but could drift)
-30. Verify `naming-review`'s `scripts/naming-smells.sh` still works
-31. Check if `brutal-self-review` references `verify-external-claims` for its own claims
-32. Add `verify-external-claims` to the `skill-creator` workflow (external dependency, may need a Crush issue)
-33. Create a `docs/feedback/README.md` explaining the feedback loop to new contributors
-34. Verify that `git commit <--` guard in `scripts/check-skills.sh` still catches regressions
-35. Check if `full-code-review` delegates planning to `pareto-planning` correctly
-36. Audit `html-report-kit/references/bauhaus-tokens.md` for consistency with actual template CSS
-37. Review if `docs-health` absorbs too many responsibilities (TODO, features, docs)
-38. Consider adding a `SkillHealth` metric: how recently was each skill triggered successfully?
-39. Add a `GOVERNANCE.md` or similar for the repo's maintenance model
-40. Verify that the `AGENTS.md` project-level file is loaded by Crush when working in this repo
-41. Check if the `find-skills` skill knows about the new skills in this collection
-42. Audit `how-to-golang/references/` code snippets for accuracy (flagged in status report)
-43. Verify `architecture-visualization` D2 rendering still works with current D2 version
-44. Check if `data-model-review`'s Go-focused approach is clear in its description
-45. Add a "Common mistakes" section to `verify-external-claims` with real examples from this repo
-46. Verify `pareto-planning` D2 graph rendering (`allowed-tools: d2`) works
-47. Update the README Quick Start to mention `skills_paths` as the primary discovery method
-48. Check if any skills reference deleted or moved files
-49. Verify that the `scripts/check-skills.sh` script is up to date with all 24 skills
-50. Create a CHANGELOG.md entry for today's skill additions
+1. ~~Commit README.md table-formatting changes~~ done - committed ac7336d
+2. ~~Add verification-status block to `nix-private-go-repos` for `mkPreparedSource` provenance~~ done - verification block added
+3. ~~Add verification-status block to `samber-do-best-practices` for `doanalyzerv2`~~ done - same
+4. ~~Cross-reference `samber-do-best-practices` from `how-to-golang` Go DI decision tree~~ done - DI pointer added
+5. ~~Cross-reference `nix-private-go-repos` from `nix-review` checklist~~ done - best-practices pointer added
+6. ~~Update AGENTS.md §10 external dependencies table with new tools~~ done - 3 rows added
+7. ~~Verify `samber-do-best-practices` references exist at `/home/lars/projects/samber-do-auditlog/docs/research/`~~ done - verified
+8. ~~Verify `nix-private-go-repos` references are accurate for `go-nix-helpers`~~ done - verified
+9. ~~Test that `scripts/audit-do.sh` runs correctly on a real project~~ done — works (follow-up)
+10. ~~ Test that `scripts/list-private-deps.sh` runs correctly on a real project~~ done — works (follow-up)
+11. ~~ Flesh out `architecture-review` (currently 🟡 Thin) with richer references~~ w:open — architecture-review still functional-tier (honest FEATURES row)
+12. ~~ Flesh out `code-quality-scan` (currently 🟡 Thin) with output templates~~ w:open — code-quality-scan still functional-tier
+13. ~~ Flesh out `deduplicate-code` (currently 🟡 Thin) with reference material~~ v:done — deduplicate-code deepened (bd9de94)
+14. ~~ Flesh out `nix-flake-migration` (currently 🟡 Thin) with more examples~~ w:moot — nix-flake-migration consolidated into html-report-kit
+15. ~~ Flesh out `status-report` (currently 🟡 Functional) with output templates~~ w:open — status-report still functional-tier
+16. ~~ Audit all 24 skills for unverified external claims using the new `verify-external-claims` skill~~ w:covered — verify-external-claims waves audited claims
+17. ~~ Add `allowed-tools` frontmatter to skills that rely on specific CLIs (`art-dupl`, `d2`)~~ done — allowed-tools adopted
+18. ~~ Update `website-launch` (1098 lines) — consider splitting into SKILL.md + references~~ w:open — website-launch trim tracked (allowlisted)
+19. ~~ Add a "Skill Authoring & Verification" section to `how-to-write-skills.md`~~ w:covered — the guide owns authoring guidance
+20. ~~ Verify the `hierarchical-errors` skill's `errors.AsType` API claims against `pkg.go.dev/errors`~~ done — AsType verified 2026-07-21
+21. ~~ Check if the feedback loop in AGENTS.md §11 needs updating after today's work~~ done — loop verified current 2026-08
+22. ~~ Run the comprehensive audit from `docs/status/2026-06-17_23-22_comprehensive-status.md` to see what's still open~~ done — 06-17 audit superseded by 06-28 update
+23. ~~ Update `docs/status/2026-06-17_23-22_comprehensive-status.md` with today's findings (non-destructive annotation per `update-old-docs`)~~ w:moot — 06-17-23-22 resolved corpus-wide 2026-09-18
+24. ~~ Verify that `html-report-kit` vendored copies are current (run `scripts/sync-html-kit.sh --check`)~~ done — kit checks green
+25. ~~ Check if any new skills need HTML report integration (they don't currently, but confirm)~~ done — no new skills need kit integration
+26. ~~ Add a "Known gotchas" section to `samber-do-best-practices` referencing samber/do issue #219~~ done — gotchas section present
+27. ~~ Add a "Quick start" example to `nix-private-go-repos` for a minimal project~~ done — quick-start present
+28. ~~ Consider extracting a `samber-do-migration-v1-to-v2` mini-guide if v1 projects are still active~~ w:declined — no v1 activity
+29. ~~ Audit the `go-modularize` skill for accuracy (255 lines — well-structured but could drift)~~ w:moot — drift-checked via audits
+30. ~~ Verify `naming-review`'s `scripts/naming-smells.sh` still works~~ v:done — naming-smells maintained
+31. ~~ Check if `brutal-self-review` references `verify-external-claims` for its own claims~~ done — verify-external-claims references it
+32. ~~ Add `verify-external-claims` to the `skill-creator` workflow (external dependency, may need a Crush issue)~~ w:declined — skill-creator is third-party (ROADMAP open question)
+33. ~~ Create a `docs/feedback/README.md` explaining the feedback loop to new contributors~~ w:covered — feedback README not demanded
+34. ~~ Verify that `git commit <--` guard in `scripts/check-skills.sh` still catches regressions~~ done — guard still enforced
+35. ~~ Check if `full-code-review` delegates planning to `pareto-planning` correctly~~ done — delegation verified
+36. ~~ Audit `html-report-kit/references/bauhaus-tokens.md` for consistency with actual template CSS~~ done — bauhaus-tokens is canonical (5.9)
+37. ~~ Review if `docs-health` absorbs too many responsibilities (TODO, features, docs)~~ w:resolved-by-decision — docs-health absorbed them by design
+38. ~~ Consider adding a `SkillHealth` metric: how recently was each skill triggered successfully?~~ w:declined — trigger health not mechanically tracked
+39. ~~ Add a `GOVERNANCE.md` or similar for the repo's maintenance model~~ w:declined — governance doc not demanded
+40. ~~ Verify that the `AGENTS.md` project-level file is loaded by Crush when working in this repo~~ done — project AGENTS.md loads (proven by sessions)
+41. ~~ Check if the `find-skills` skill knows about the new skills in this collection~~ w:moot — find-skills is third-party
+42. ~~ Audit `how-to-golang/references/` code snippets for accuracy (flagged in status report)~~ done — snippets fixed 2026-08-04 + compile-checked 2026-08-21
+43. ~~ Verify `architecture-visualization` D2 rendering still works with current D2 version~~ done — d2-syntax verified (wave-2 T31)
+44. ~~ Check if `data-model-review`'s Go-focused approach is clear in its description~~ done — description is Go-native + clear
+45. ~~ Add a "Common mistakes" section to `verify-external-claims` with real examples from this repo~~ w:covered — common-mistakes carries real examples
+46. ~~ Verify `pareto-planning` D2 graph rendering (`allowed-tools: d2`) works~~ done — D2 rendering verified (wave-2 T31 renders)
+47. ~~ Update the README Quick Start to mention `skills_paths` as the primary discovery method~~ done — README Quick Start documents skills_paths
+48. ~~ Check if any skills reference deleted or moved files~~ done — link checker green
+49. ~~ Verify that the `scripts/check-skills.sh` script is up to date with all 24 skills~~ done — script current
+50. ~~ Create a CHANGELOG.md entry for today's skill additions~~ done — CHANGELOG records all waves
 
 ---
 
 ## g) Questions I Cannot Figure Out Myself
 
-1. **Should `mkPreparedSource` skills note that it requires SSH access to the private `LarsArtmann/go-nix-helpers` repo?** The skill is useful only if you have SSH keys for that repo. Should the skill description or verification-status block explicitly state this prerequisite?
+~~1. **Should `mkPreparedSource` skills note that it requires SSH access to the private `LarsArtmann/go-nix-helpers` repo?**~~ RESOLVED - yes; verification-status blocks note it. The skill is useful only if you have SSH keys for that repo. Should the skill description or verification-status block explicitly state this prerequisite?
 
-2. **Should the three new skills be committed as separate commits or one combined commit?** Previous work was committed as separate commits per skill. Is that the preferred pattern, or should today's work be a single commit?
+~~2. **Should the three new skills be committed as separate commits or one combined commit?**~~ RESOLVED - daemon-owned history accepted. Previous work was committed as separate commits per skill. Is that the preferred pattern, or should today's work be a single commit?
 
-3. **Should `verify-external-claims` be marked 🟢 Solid after this session, or remain 🆕 New?** The skill was created but never triggered against real work. Per AGENTS.md rules, it should stay 🆕 New — but it was verified against real patterns (the hierarchical-errors case). Does a single successful design session count as a "documented successful run"?
+~~3. **Should `verify-external-claims` be marked 🟢 Solid after this session, or remain 🆕 New?**~~ RESOLVED - stayed New until its documented real run; aged to FULLY_FUNCTIONAL 2026-08-16 (FEATURES). The skill was created but never triggered against real work. Per AGENTS.md rules, it should stay 🆕 New — but it was verified against real patterns (the hierarchical-errors case). Does a single successful design session count as a "documented successful run"?
 
 ---
 

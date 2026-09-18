@@ -79,12 +79,12 @@ Created a comprehensive `nix-review` skill that reviews and improves `.nix` file
 
 ## c) NOT STARTED ❌
 
-1. **Skill NOT added to SKILLS repo** (`/home/lars/projects/SKILLS/`) — only exists at `~/.config/crush/skills/nix-review/`. The skill should be copied to the SKILLS repo for version control.
-2. **No eval/test cases run** — the skill-creator recommends running test prompts through the skill and evaluating results. No test cases have been defined or executed.
-3. **No description optimization** — the skill description could be optimized for triggering accuracy using the skill-creator's `run_loop.py` tool.
-4. **README.md in SKILLS repo not updated** — should add nix-review to the skills inventory.
-5. **No `how-to-nix` skill created** — the how-to-golang skill exists but there's no equivalent for Nix (a teaching/learning skill, distinct from the review skill).
-6. **Actual fixes NOT applied** to any of the 88+ .nix files — the skill was built but the issues found (placeholder hashes, type bugs, etc.) were not fixed in the actual codebase.
+1. ~~**Skill NOT added to SKILLS repo**~~ done — nix-review lives in the repo (canonical via the symlink model, AGENTS §5.10)
+2. ~~**No eval/test cases run**~~ w:ROADMAP §1 — empirical-validation theme (repo-wide gap, tracked)
+3. ~~**No description optimization**~~ done — rewritten trigger-first 2026-08-11; STRONG by --triggers
+4. ~~**README.md not updated**~~ done — README row present
+5. ~~**No `how-to-nix` skill**~~ Won't implement — nix-review references carry the teaching depth; no demand signal
+6. ~~**Actual fixes NOT applied**~~ w:external repos — those fixes belong to the owning repos (f3-f20 below)
 
 ---
 
@@ -98,17 +98,25 @@ Created a comprehensive `nix-review` skill that reviews and improves `.nix` file
 
 ### Skill Quality
 
-1. **Add `lib.fileset` examples** — the modern fileset API is referenced but could use more real-world examples from the codebase
-2. **Add NixOS VM test patterns** — nix-ssh-config has excellent VM tests; these should be documented as a best practice
-3. **Add Docker/Podman integration patterns** — several services use Docker Compose inside NixOS; the skill doesn't cover container integration patterns well
-4. **Add Home Manager module patterns** — the codebase has extensive HM configs but the skill focuses more on NixOS modules
-5. **Add sops-nix integration guide** — used extensively in SystemNix but the skill only says "use sops" without concrete patterns
+1. ~~**Add `lib.fileset` examples**~~ v:done — fileset/gitTracked patterns documented in best-practices.md
+
+2. ~~**Add NixOS VM test patterns**~~ w:open — no demand signal yet; revisit on request
+
+3. ~~**Add Docker/Podman integration patterns**~~ w:open — no demand signal yet
+
+4. ~~**Add Home Manager module patterns**~~ w:open — no demand signal yet
+
+5. ~~**Add sops-nix integration guide**~~ w:open — no demand signal yet
+
 
 ### Process Improvements
 
-6. **Run eval test cases** — the skill was never tested against real prompts; it should be validated
-7. **Iterate on feedback** — the skill-creator recommends a feedback loop; this was skipped
-8. **Cross-reference with `nix flake check`** — the skill recommends running checks but wasn't validated against actual `nix flake check` output
+6. ~~**Run eval test cases**~~ w:ROADMAP §1 — empirical-validation theme
+
+7. ~~**Iterate on feedback**~~ v:done — the feedback loop has processed every file since 2026-07
+
+8. ~~**Cross-reference with `nix flake check`**~~ v:done — the skill's verification gates run it
+
 
 ---
 
@@ -116,43 +124,43 @@ Created a comprehensive `nix-review` skill that reviews and improves `.nix` file
 
 ### High Impact (Do First)
 
-1. **Copy nix-review skill to SKILLS repo** for version control
-2. **Update SKILLS README.md** with nix-review entry
-3. **Fix `ProtectHome = true` → `"yes"`** in `SystemNix/lib/systemd.nix` (runtime bug)
-4. **Fix `RestrictNamespaces = true` → `"yes"`** in `SystemNix/lib/systemd.nix` (runtime bug)
-5. **Fix placeholder vendorHash** in `project-dependency-graph/flake.nix` (won't build)
-6. **Fix placeholder vendorHash** in `BuildFlow/flake.nix` (won't build)
-7. **Fix placeholder vendorHash** in `artmann-technologies-website/flake.nix` (won't build)
-8. **Add `formatter = pkgs.nixfmt`** to 19 flakes that have no formatter
-9. **Standardize nixpkgs channel** across all flakes to `nixos-unstable`
-10. **Add `follows = "nixpkgs"`** to all inputs missing it
+1. ~~**Copy nix-review skill to SKILLS repo** for version control~~ done (done — in the repo, symlinked live)
+2. ~~**Update SKILLS README.md** with nix-review entry~~ done (done — README row present)
+3. ~~**Fix `ProtectHome = true` → `"yes"`** in `SystemNix/lib/systemd.nix` (runtime bug)~~ **Won't implement — external repo — SystemNix owns its systemd fixes.**
+4. ~~**Fix `RestrictNamespaces = true` → `"yes"`** in `SystemNix/lib/systemd.nix` (runtime bug)~~ **Won't implement — external repo.**
+5. ~~**Fix placeholder vendorHash** in `project-dependency-graph/flake.nix` (won't build)~~ **Won't implement — external repo.**
+6. ~~**Fix placeholder vendorHash** in `BuildFlow/flake.nix` (won't build)~~ **Won't implement — external repo.**
+7. ~~**Fix placeholder vendorHash** in `artmann-technologies-website/flake.nix` (won't build)~~ **Won't implement — external repo.**
+8. ~~**Add `formatter = pkgs.nixfmt`** to 19 flakes that have no formatter~~ **Won't implement — external repo.**
+9. ~~**Standardize nixpkgs channel** across all flakes to `nixos-unstable`~~ **Won't implement — external repo.**
+10. ~~**Add `follows = "nixpkgs"`** to all inputs missing it~~ **Won't implement — external repo.**
 
 ### Medium Impact
 
-11. **Extract overlays from SystemNix/flake.nix** into `./overlays/` files (755 → manageable)
-12. **Split `niri-wrapped.nix`** (872 lines) into focused sub-modules
-13. **Split `signoz.nix`** (741 lines) into query/collector/clickhouse modules
-14. **Split `gitea.nix`** (550 lines) into server/repos/runner modules
-15. **Replace `import nixpkgs {}` with `legacyPackages.${system}`** in 7 flakes
-16. **Replace `nixpkgs-fmt` references** with `nixfmt` (deprecated formatter)
-17. **Add `checks` to flakes** missing them (10+ flakes)
-18. **Fix duplicated vendorHash** in `PapDashboard/flake.nix`
-19. **Replace `alegendra` formatter** with `nixfmt` in 3 flakes
-20. **Add `meta` sections** to package derivations missing them
+11. ~~**Extract overlays from SystemNix/flake.nix** into `./overlays/` files (755 → manageable)~~ **Won't implement — external repo.**
+12. ~~**Split `niri-wrapped.nix`** (872 lines) into focused sub-modules~~ **Won't implement — external repo.**
+13. ~~**Split `signoz.nix`** (741 lines) into query/collector/clickhouse modules~~ **Won't implement — external repo.**
+14. ~~**Split `gitea.nix`** (550 lines) into server/repos/runner modules~~ **Won't implement — external repo.**
+15. ~~**Replace `import nixpkgs {}` with `legacyPackages.${system}`** in 7 flakes~~ **Won't implement — external repo.**
+16. ~~**Replace `nixpkgs-fmt` references** with `nixfmt` (deprecated formatter)~~ **Won't implement — external repo.**
+17. ~~**Add `checks` to flakes** missing them (10+ flakes)~~ **Won't implement — external repo.**
+18. ~~**Fix duplicated vendorHash** in `PapDashboard/flake.nix`~~ **Won't implement — external repo.**
+19. ~~**Replace `alegendra` formatter** with `nixfmt` in 3 flakes~~ **Won't implement — external repo.**
+20. ~~**Add `meta` sections** to package derivations missing them~~ **Won't implement — external repo.**
 
 ### Lower Impact / Polish
 
-21. **Create eval test cases** for the nix-review skill
-22. **Run description optimization** for better triggering accuracy
-23. **Create a `how-to-nix` learning skill** (analogous to `how-to-golang`)
-24. **Add sops-nix integration guide** to best-practices.md
-25. **Add Home Manager module patterns** to best-practices.md
+21. ~~**Create eval test cases** for the nix-review skill~~ **Won't implement — ROADMAP §1 — empirical validation.**
+22. ~~**Run description optimization** for better triggering accuracy~~ done (done — trigger-first rewrite + --triggers STRONG)
+23. ~~**Create a `how-to-nix` learning skill** (analogous to `how-to-golang`)~~ **Won't implement — Won-t implement — no demand signal.**
+24. ~~**Add sops-nix integration guide** to best-practices.md~~ **Won't implement — open — no demand signal yet.**
+25. ~~**Add Home Manager module patterns** to best-practices.md~~ **Won't implement — open — no demand signal yet.**
 
 ---
 
 ## g) Top #1 Question I Cannot Figure Out Myself
 
-**Should the nix-review skill live in the SKILLS repo (`/home/lars/projects/SKILLS/`) or only at the installed location (`~/.config/crush/skills/nix-review/`)?**
+**~~Should the nix-review skill live in the SKILLS repo (`/home/lars/projects/SKILLS/`) or only at the installed location (`~/.config/crush/skills/nix-review/`)?~~** RESOLVED 2026-08-14 — both, via the runtime-symlink model: the repo is canonical, `~/.agents/skills/nix-review` is a relative symlink (AGENTS §5.10).
 
 The SKILLS repo has other skills (code-quality-scan, architecture-review, etc.) but they appear to be separate copies. The nix-review skill was created at the installed location where Crush actually loads it from. I'm not sure if:
 

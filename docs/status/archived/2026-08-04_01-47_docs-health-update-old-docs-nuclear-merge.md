@@ -79,37 +79,37 @@
 
 ### P0 — Fix breakage from this session
 
-1. **Fix stale companion descriptions in 3 moved reference files.** `resolving-items.md` line 3: "Numbered action items section" → "The primary work subsection under ANNOTATE." `annotation-placement.md` line 3: "Annotation placement section" → "Placement: inline before appendix under ANNOTATE." `case-study.md` lines 44, 134: references to body content that was cut.
-2. **VERIFY docs-health on itself.** Open the new body fresh. Does it give enough guidance for an agent to BUILD a TODO_LIST? Run HARVEST? Resolve items inline? Identify anything lost in the nuclear cut.
-3. **Check `harvest-guide.md` for duplication.** Does it restate body content? If yes, either fold the unique parts into the body or trim the guide to only the anti-patterns.
+1. ~~**Fix stale companion descriptions in 3 moved reference files.** `resolving-items.md` line 3: "Numbered action items section" → "The primary work subsection under ANNOTATE." `annotation-placement.md` line 3: "Annotation placement section" → "Placement: inline before appendix under ANNOTATE." `case-study.md` lines 44, 134: references to body content that was cut.~~ done (done — companion descriptions updated (resolving-items header references "The primary work" subsection))
+2. ~~**VERIFY docs-health on itself.** Open the new body fresh. Does it give enough guidance for an agent to BUILD a TODO_LIST? Run HARVEST? Resolve items inline? Identify anything lost in the nuclear cut.~~ done (done — docs-health exercised on itself by the 21-25 audit + this pass)
+3. ~~**Check `harvest-guide.md` for duplication.** Does it restate body content? If yes, either fold the unique parts into the body or trim the guide to only the anti-patterns.~~ **Won't implement — resolved by decision — harvest-guide kept for anti-patterns detail; body states rules once.**
 
 ### P1 — Strengthen the merge
 
-4. **Add a general dangling-reference guard to `check-skills.sh`.** Grep every `](../<name>/` link in every SKILL.md; fail if target doesn't exist. Would have caught all 5 misses from this session.
-5. **Update Pattern 7 and Pattern 8 in `how-to-write-skills.md`** to reflect single-skill-with-modes architecture instead of cross-skill pairs.
-6. **Test the description trigger coverage.** Does Crush select docs-health for "update old docs" / "mark these done"? If not, the merged description needs tuning.
-7. **Reconcile how-to-golang status** (README 🟢 vs FEATURES 🟡) — carried over from prior session.
-8. **Verify `build-guide.md` still contains the "Adapt to project type" table** that was cut from the body. If not, add it.
+4. ~~**Add a general dangling-reference guard to `check-skills.sh`.** Grep every `](../<name>/` link in every SKILL.md; fail if target doesn't exist. Would have caught all 5 misses from this session.~~ done (done — link guard shipped (check 12, 2026-08-21))
+5. ~~**Update Pattern 7 and Pattern 8 in `how-to-write-skills.md`** to reflect single-skill-with-modes architecture instead of cross-skill pairs.~~ done (done — Patterns 7/8 reflect the single-skill architecture)
+6. ~~**Test the description trigger coverage.** Does Crush select docs-health for "update old docs" / "mark these done"? If not, the merged description needs tuning.~~ done (done — --triggers STRONG; behavioral selection proven by later sessions)
+7. ~~**Reconcile how-to-golang status** (README 🟢 vs FEATURES 🟡) — carried over from prior session.~~ done (done — T11 aligned README+FEATURES (04-16 a1))
+8. ~~**Verify `build-guide.md` still contains the "Adapt to project type" table** that was cut from the body. If not, add it.~~ done (done — adaptation table present in build rules ("Detect project type"))
 
 ### P2 — Deepen and polish
 
-9. **Add TOC-integrity guard to `check-skills.sh`** (TODO T6) — count `##` headings vs TOC entries.
-10. **Add marker-vocabulary guard to `check-skills.sh`** (TODO T7) — verify HARVEST references ANNOTATE-owned markers.
-11. **Reconcile scoring systems** (TODO T8) — `agents-quality-guide.md` has 5-dimension rubric; `health-report-format.md` has 2-score. Split brain.
-12. **Create `scripts/check-agents-md.sh`** (TODO T9) — package temporal-pollution grep patterns.
-13. **Append appendix-only incident to `case-study.md`** (TODO T10) — 4th failure-mode round.
-14. **Add condensing checklist to `how-to-write-skills.md`** (TODO T11).
-15. **Classify the ~20 older status reports** (pre-2027-07-30) — ANNOTATE/ARCHIVE/SKIP/LEAVE ALONE.
+9. ~~**Add TOC-integrity guard to `check-skills.sh`** (TODO T6) — count `##` headings vs TOC entries.~~ done (done — TOC guard (04-16 a5))
+10. ~~**Add marker-vocabulary guard to `check-skills.sh`** (TODO T7) — verify HARVEST references ANNOTATE-owned markers.~~ done (done — marker guard (04-16 a6))
+11. ~~**Reconcile scoring systems** (TODO T8) — `agents-quality-guide.md` has 5-dimension rubric; `health-report-format.md` has 2-score. Split brain.~~ **Won't implement — open — scoring systems documented as complementary, not unified.**
+12. ~~**Create `scripts/check-agents-md.sh`** (TODO T9) — package temporal-pollution grep patterns.~~ done (done — check-agents-md.sh shipped (04-16 T8))
+13. ~~**Append appendix-only incident to `case-study.md`** (TODO T10) — 4th failure-mode round.~~ done (done — Incident 2 (04-16 T9))
+14. ~~**Add condensing checklist to `how-to-write-skills.md`** (TODO T11).~~ done (done — Pattern 10 (04-16 T10))
+15. ~~**Classify the ~20 older status reports** (pre-2027-07-30) — ANNOTATE/ARCHIVE/SKIP/LEAVE ALONE.~~ done (docs-health pass 2026-09-18 — full-corpus classification + archive executed by this pass)
 
 ### P3 — Strategic improvements
 
-16. **Consider a "mode dispatch" pattern for other multi-mode skills.** docs-health now has 5 modes in 166 lines. If this works well, apply the pattern to other skills that are really multiple skills stuffed together.
-17. **Document the "each rule once" principle in `how-to-write-skills.md`** as a first-class pattern, with the docs-health merge as the worked example.
-18. **Consider whether the AUDIT mode is necessary.** It's just BUILD + HARVEST + VERIFY. An agent can be told to run those three in sequence without a named AUDIT mode. Removing it would simplify the mode table.
-19. **Audit all other skills for the 3× repetition disease.** If docs-health and update-old-docs had it, others might too. Run `wc -l` on all SKILL.md files; anything over 200 lines is a candidate for the nuclear treatment.
-20. **Consider whether `website-launch` (1106 lines) needs the nuclear treatment.** It's allowlisted but it's 6.6× the guideline.
-21. **Run a full docs-health AUDIT** on the entire repo now that the living docs exist (TODO_LIST, FEATURES, ROADMAP, CHANGELOG). Verify cross-file consistency.
-22. **Consider whether the description is too long** (1031 chars). It merges two skills' worth of trigger phrases. Test whether a shorter description with fewer triggers actually improves selection accuracy (less dilution).
+16. ~~**Consider a "mode dispatch" pattern for other multi-mode skills.** docs-health now has 5 modes in 166 lines. If this works well, apply the pattern to other skills that are really multiple skills stuffed together.~~ **Won't implement — ROADMAP-shaped — mode-dispatch pattern idea.**
+17. ~~**Document the "each rule once" principle in `how-to-write-skills.md`** as a first-class pattern, with the docs-health merge as the worked example.~~ **Won't implement — ROADMAP-shaped — each-rule-once as first-class pattern.**
+18. ~~**Consider whether the AUDIT mode is necessary.** It's just BUILD + HARVEST + VERIFY. An agent can be told to run those three in sequence without a named AUDIT mode. Removing it would simplify the mode table.~~ **Won't implement — resolved by decision — AUDIT kept as the mode dispatcher.**
+19. ~~**Audit all other skills for the 3× repetition disease.** If docs-health and update-old-docs had it, others might too. Run `wc -l` on all SKILL.md files; anything over 200 lines is a candidate for the nuclear treatment.~~ done (done — docs-health was the worst case; merged at 166→178 lines)
+20. ~~**Consider whether `website-launch` (1106 lines) needs the nuclear treatment.** It's allowlisted but it's 6.6× the guideline.~~ **Won't implement — open — website-launch allowlisted (797 lines; ROADMAP open question).**
+21. ~~**Run a full docs-health AUDIT** on the entire repo now that the living docs exist (TODO_LIST, FEATURES, ROADMAP, CHANGELOG). Verify cross-file consistency.~~ done (done — full docs-health AUDIT ran 2026-08-21 and 2026-09-18)
+22. ~~**Consider whether the description is too long** (1031 chars). It merges two skills' worth of trigger phrases. Test whether a shorter description with fewer triggers actually improves selection accuracy (less dilution).~~ **Won't implement — resolved by decision — description validated STRONG by --triggers every run.**
 
 ---
 

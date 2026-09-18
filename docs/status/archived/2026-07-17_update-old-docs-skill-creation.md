@@ -104,13 +104,13 @@ The most instructive failure of the session. Told once, completely:
 
 ## Open items
 
-### B1. The trigger test script is an orphan in `/tmp`
+### ~~B1.~~ **The trigger test script is an orphan in `/tmp`** — ~~open~~ superseded: the 2026-08-11 trigger-first migration + check 6 guard replaced ad-hoc trigger testing
 
 The "9-case trigger-coverage test" lives at `/tmp/trigger-test.sh` — outside the repo, untracked. It passes, but it will vanish on reboot and no one else can run it. Claiming test coverage without shipping the test is verification theater.
 
 **Fix:** Move to `update-old-docs/scripts/trigger-test.sh` (or `scripts/` repo-root if generalized), chmod +x, commit. ~5 min.
 
-### B2. README hardcodes "20 skills" — same class of bug as D1, one layer up
+### ~~B2.~~ **README hardcodes "20 skills"** — ~~open~~ done — the hardcoded-count guard (check 8) makes counts script-derived
 
 The new count guard lets README's "20 skills" pass because 20 happens to be correct today. But the principle I enforced in AGENTS.md (pointer to command, not hardcoded number) is violated in README.md:11 and :120. The moment a 21st skill lands, README silently rots.
 
@@ -120,13 +120,13 @@ The new count guard lets README's "20 skills" pass because 20 happens to be corr
 
 ## Open questions (still unanswered)
 
-**Q1 — Where does the trigger test script live?**
+**~~Q1 — Where does the trigger test script live?~~** RESOLVED — superseded by the check 6 trigger-first guard + --triggers mode
 Skill-local (`update-old-docs/scripts/`) or repo-root (`scripts/`)? If repo-root, should it be generalized to test any skill's description, not just `update-old-docs`? The keyword-coverage logic is generic to all skills.
 
-**Q2 — Should `brutal-self-review` and `code-quality-scan` also link to `update-old-docs`?**
+**~~Q2 — Should brutal-self-review and code-quality-scan also link?~~** RESOLVED — update-old-docs merged into docs-health ANNOTATE; handoffs wired via the §5.5 graph
 They touch many files but are more scan-than-edit. The 3 genuine batch-editors (`full-code-review`, `naming-review`, `deduplicate-code`) are already linked. Adding 2 more maximizes safety but risks over-linking.
 
-**Q3 — Push the 4 commits?**
+**~~Q3 — Push the 4 commits?~~** RESOLVED — daemon-owned history accepted (AGENTS §7)
 All work is local. Per rules, not pushed (user didn't ask). Push now, or wait until B1/B2 fixes land for one clean push?
 
 ---

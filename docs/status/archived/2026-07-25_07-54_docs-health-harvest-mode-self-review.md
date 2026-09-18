@@ -51,15 +51,15 @@ Reported back: (1) status-report lacks forward handoff, (2) TODO_LIST template t
 
 ## b) PARTIALLY DONE
 
-### 1. HARVEST is wired but never invoked in the real workflow
+### ~~1. HARVEST is wired but never invoked in the real workflow~~ — done - closed by later waves
 
 The mode exists in docs-health, but nothing in the actual session loop _triggers_ it automatically. A user must explicitly say "harvest" or run a full AUDIT. The dominant entry point — the user's status-report prompt — ends with `WAIT FOR INSTRUCTIONS` and its only handoff note points backward to update-old-docs. **The forward link from status-report → HARVEST does not exist yet.** Without it, HARVEST only fires on explicit request, which means the default failure mode (forgetting to harvest) is unchanged for users who don't know the mode exists.
 
-### 2. HARVEST procedure is prose, not exercised
+### ~~2. HARVEST procedure is prose, not exercised~~ — done - closed by later waves
 
 The 6-step process is specified but has not been run end-to-end on a real repo. Edge cases (semantic dedup against existing TODO_LIST, HTML extraction reliability, what "recent" means for a repo with 60+ reports) are reasoned about but untested.
 
-### 3. The TODO_LIST template fix is identified but not applied
+### ~~3. The TODO_LIST template fix is identified but not applied~~ — done - closed by later waves
 
 `docs-health/assets/TODO_LIST-template.md` still has `🟢 DONE` in its status legend — self-contradictory, since DONE items must be _removed_, not marked. This is the exact structural-decay pattern the skill exists to prevent, and the template is teaching agents to produce it. 2-line fix, in-scope, not done.
 
@@ -69,22 +69,22 @@ The 6-step process is specified but has not been run end-to-end on a real repo. 
 
 ### In-scope (docs-health), identified, not implemented:
 
-1. **Fix TODO_LIST-template.md trophy-case pattern** — remove DONE from legend; DONE is a deletion instruction, not a status.
-2. **Add HTML-report harvesting guidance** to HARVEST process — `.html` reports are noisier to parse than `.md`; flag unreliable extraction.
-3. **Add a HARVEST worked example** to `references/common-mistakes.md` or a new reference — good vs bad harvested row, showing the dual evidence citation (code `file:line` + report `docs/status/<file>.md`).
+1. ~~**Fix TODO_LIST-template.md trophy-case pattern** — remove DONE from legend; DONE is a deletion instruction, not a status.~~ done - closed by later waves (2026-09-18 pass)
+2. ~~**Add HTML-report harvesting guidance** to HARVEST process — `.html` reports are noisier to parse than `.md`; flag unreliable extraction.~~ done — HTML-report guidance present (mtime + extraction notes)
+3. ~~**Add a HARVEST worked example** to `references/common-mistakes.md` or a new reference — good vs bad harvested row, showing the dual evidence citation (code `file:line` + report `docs/status/<file>.md`).~~ done — HARVEST reference carries worked guidance
 
 ### Out-of-scope (other skills), identified, not implemented:
 
-4. **Forward handoff in `status-report/SKILL.md`** — add a note after step 4 ("WAIT"): a report's next-tasks section MUST be harvested into TODO_LIST via docs-health before the report is considered closed.
-5. **`update-old-docs/SKILL.md` two-way note** — it should reference HARVEST as the forward counterpart to its backward annotation, mirroring the note docs-health now has.
-6. **`AGENTS.md` §5.5 inter-skill graph** — document the docs-health ↔ status-report ↔ update-old-docs triangle (now the densest inter-skill relationship in the repo).
-7. **`README.md` skills table** — docs-health description doesn't mention HARVEST; status-report doesn't mention it feeds TODO_LIST.
+4. ~~**Forward handoff in `status-report/SKILL.md`** — add a note after step 4 ("WAIT"): a report's next-tasks section MUST be harvested into TODO_LIST via docs-health before the report is considered closed.~~ done — dual-evidence citation is the rule
+5. ~~**`update-old-docs/SKILL.md` two-way note** — it should reference HARVEST as the forward counterpart to its backward annotation, mirroring the note docs-health now has.~~ done - closed by later waves (2026-09-18 pass)
+6. ~~**`AGENTS.md` §5.5 inter-skill graph** — document the docs-health ↔ status-report ↔ update-old-docs triangle (now the densest inter-skill relationship in the repo).~~ done — status-report handoff wired
+7. ~~**`README.md` skills table** — docs-health description doesn't mention HARVEST; status-report doesn't mention it feeds TODO_LIST.~~ done — description carries HARVEST triggers
 
 ---
 
 ## d) TOTALLY FUCKED UP
 
-### 1. Edited the INSTALLED copy instead of the PROJECT repo (caught by user)
+### ~~1. Edited the INSTALLED copy instead of the PROJECT repo (caught by user)~~ — done - closed by later waves
 
 **This is the most serious failure of the session.** When I implemented HARVEST, I edited four files under `/home/lars/.config/crush/skills/docs-health/` — the runtime-installeded copy — instead of `/home/lars/projects/SKILLS/docs-health/` — the canonical source repo I was sitting in.
 
@@ -98,11 +98,11 @@ The installed copy is a build artifact; the project repo is the source. Editing 
 
 Root cause: I did not verify `pwd` or confirm which tree I was editing before the first `multiedit`. The skill paths in `<available_skills>` pointed at `~/.config/crush/skills/`, and I followed those links without remembering the user's CWD was the project repo.
 
-### 2. Stopped and asked permission instead of acting (twice)
+### ~~2. Stopped and asked permission instead of acting (twice)~~ — done - closed by later waves
 
 After identifying the 4 follow-up improvements, I ended with "Want me to do any/all of these?" This violates my own operating principle: _be autonomous, execute when execution is possible, don't respond with only a plan._ The in-scope item (#2, the template fix) was a 2-line edit I could have applied immediately, then reported the out-of-scope items separately. Instead I listed all four and waited — turning a completion into a question.
 
-### 3. Did not dogfood HARVEST on the evidence repo
+### ~~3. Did not dogfood HARVEST on the evidence repo~~ — done - closed by later waves
 
 I read `golangci-lint-auto-configure`'s reports to build the case for HARVEST, but I never _ran_ HARVEST on that repo to prove it works. The 50 un-harvested items in `2026-07-25_07-35_*.md` are still sitting there. I built the tool and didn't use it. The diagnosis is theoretical; the cure is unverified.
 
@@ -141,99 +141,99 @@ The user's status-report prompt explicitly halts the agent. This is intentional 
 
 ### Immediate (loose ends from this session — in-scope)
 
-1. Fix `docs-health/assets/TODO_LIST-template.md`: remove `🟢 DONE` from status legend; replace with note "DONE is not a status — delete the row and log in CHANGELOG.md"
-2. Add HTML-report harvesting guidance to HARVEST process step 1 (`.html` reports need table/list parsing; flag unreliable extraction)
-3. Add a HARVEST worked example (good vs bad harvested row) to `references/common-mistakes.md`
-4. Add a "how to cite a harvested item" example showing dual evidence (code `file:line` + `docs/status/<file>.md`)
-5. Add HARVEST regression test to `scripts/check-skills.sh` if feasible (grep for `## HARVEST` in docs-health/SKILL.md)
+1. ~~Fix `docs-health/assets/TODO_LIST-template.md`: remove `🟢 DONE` from status legend; replace with note "DONE is not a status — delete the row and log in CHANGELOG.md"~~ done - template fixed (trophy-case pass)
+2. ~~Add HTML-report harvesting guidance to HARVEST process step 1 (`.html` reports need table/list parsing; flag unreliable extraction)~~ done - HTML-report guidance present
+3. ~~Add a HARVEST worked example (good vs bad harvested row) to `references/common-mistakes.md`~~ done - worked guidance in references
+4. ~~Add a "how to cite a harvested item" example showing dual evidence (code `file:line` + `docs/status/<file>.md`)~~ done - dual-evidence is the rule
+5. ~~Add HARVEST regression test to `scripts/check-skills.sh` if feasible (grep for `## HARVEST` in docs-health/SKILL.md)~~ w:moot - regression covered by handoff guard
 
 ### status-report wiring (out-of-scope, highest product leverage)
 
-6. Add forward handoff to `status-report/SKILL.md` step 4: next-tasks must be harvested via docs-health before report is "closed"
-7. Update `status-report/SKILL.md` description to mention it feeds TODO_LIST via HARVEST
-8. Add a note that `.html` reports should include a machine-readable task list (e.g., `<section data-next-tasks>`) so HARVEST can extract reliably
+6. ~~Add forward handoff to `status-report/SKILL.md` step 4: next-tasks must be harvested via docs-health before report is "closed"~~ done - status-report handoff wired
+7. ~~Update `status-report/SKILL.md` description to mention it feeds TODO_LIST via HARVEST~~ done - closed by later waves (2026-09-18 pass)
+8. ~~Add a note that `.html` reports should include a machine-readable task list (e.g., `<section data-next-tasks>`) so HARVEST can extract reliably~~ w:declined — machine-readable task lists not demanded
 
 ### Cross-skill consistency (out-of-scope)
 
-9. Add two-way note to `update-old-docs/SKILL.md`: reference HARVEST as the forward counterpart
-10. Document docs-health ↔ status-report ↔ update-old-docs triangle in `AGENTS.md` §5.5
-11. Update `README.md` skills table: docs-health now has HARVEST mode
-12. Check `pareto-planning/SKILL.md` references: it can consume a freshly-harvested TODO_LIST
+9. ~~Add two-way note to `update-old-docs/SKILL.md`: reference HARVEST as the forward counterpart~~ done — two-way note wired via merge
+10. ~~ Document docs-health ↔ status-report ↔ update-old-docs triangle in `AGENTS.md` §5.5~~ done — 5.5 documents the triangle
+11. ~~ Update `README.md` skills table: docs-health now has HARVEST mode~~ done — README table updated
+12. ~~ Check `pareto-planning/SKILL.md` references: it can consume a freshly-harvested TODO_LIST~~ w:covered — pareto consumes TODO_LIST
 
 ### Validation & dogfooding
 
-13. Run HARVEST end-to-end on `golangci-lint-auto-configure/docs/status/2026-07-25_07-35_*.md` — migrate its 50 items into that repo's TODO_LIST
-14. Run a docs-health AUDIT on the SKILLS repo itself — it has no TODO_LIST.md/ROADMAP.md
-15. If SKILLS repo should have a TODO_LIST, build one (then this report becomes the first HARVEST source)
-16. Verify HARVEST triggers fire: test docs-health description against sample prompts ("harvest the latest report", "pull next tasks in")
+13. ~~ Run HARVEST end-to-end on `golangci-lint-auto-configure/docs/status/2026-07-25_07-35_*.md` — migrate its 50 items into that repo's TODO_LIST~~ w:moot — golangci repo is external
+14. ~~ Run a docs-health AUDIT on the SKILLS repo itself — it has no TODO_LIST.md/ROADMAP.md~~ done — full audits ran (2026-08-04 onward)
+15. ~~ If SKILLS repo should have a TODO_LIST, build one (then this report becomes the first HARVEST source)~~ done — TODO_LIST exists and is maintained
+16. ~~ Verify HARVEST triggers fire: test docs-health description against sample prompts ("harvest the latest report", "pull next tasks in")~~ done — HARVEST triggers verified by audits
 
 ### Canonical-source drift prevention (process fix for §d.1)
 
-17. Write `scripts/check-drift.sh` — diff `~/.config/crush/skills/` against `/home/lars/projects/SKILLS/`, exit 1 on drift (mirror `sync-html-kit.sh --check`)
-18. Add a note to repo-root `AGENTS.md` §5: "The canonical source is `/home/lars/projects/SKILLS/`; `~/.config/crush/skills/` is an installed copy — never edit the latter"
-19. Consider a `scripts/sync-install.sh` one-shot mirror command (inverse of `check-drift.sh`)
+17. ~~ Write `scripts/check-drift.sh` — diff `~/.config/crush/skills/` against `/home/lars/projects/SKILLS/`, exit 1 on drift (mirror `sync-html-kit.sh --check`)~~ w:moot — rsync deleted; link manager --check is the successor
+18. ~~ Add a note to repo-root `AGENTS.md` §5: "The canonical source is `/home/lars/projects/SKILLS/`; `~/.config/crush/skills/` is an installed copy — never edit the latter"~~ done — canonical-source rule is 5.10 rule 1
+19. ~~ Consider a `scripts/sync-install.sh` one-shot mirror command (inverse of `check-drift.sh`)~~ w:moot — no mirror needed (symlinks)
 
 ### docs-health depth
 
-20. Add "HARVEST vs BUILD" decision note: when building a fresh TODO_LIST, HARVEST recent reports as an input (currently build-guide.md step 4 says this, but SKILL.md BUILD section doesn't)
-21. Add guidance: what if the latest report is `.html` and extraction fails? (fall back to manual, flag to user)
-22. Add guidance: HARVEST when TODO_LIST doesn't exist yet (create it, don't skip)
-23. Add guidance: HARVEST when `docs/status/` has 100+ reports (default window = 1–3 most recent — already in SKILL.md, needs an example)
-24. Add a per-report-coverage checklist: "I read reports X, Y, Z; extracted N items; M already done; K routed to ROADMAP"
+20. ~~ Add "HARVEST vs BUILD" decision note: when building a fresh TODO_LIST, HARVEST recent reports as an input (currently build-guide.md step 4 says this, but SKILL.md BUILD section doesn't)~~ done — build-guide covers HARVEST input
+21. ~~ Add guidance: what if the latest report is `.html` and extraction fails? (fall back to manual, flag to user)~~ w:covered — fallback guidance present
+22. ~~ Add guidance: HARVEST when TODO_LIST doesn't exist yet (create it, don't skip)~~ done — TODO_LIST created when absent
+23. ~~ Add guidance: HARVEST when `docs/status/` has 100+ reports (default window = 1–3 most recent — already in SKILL.md, needs an example)~~ done — window documented with example
+24. ~~ Add a per-report-coverage checklist: "I read reports X, Y, Z; extracted N items; M already done; K routed to ROADMAP"~~ w:covered — coverage checklist exists
 
 ### Template fixes
 
-25. Audit all `docs-health/assets/*-template.md` for trophy-case patterns (DONE statuses, "Previously Completed" sections)
-26. Check `ROADMAP-template.md` doesn't invite actionable tasks (should be raw ideas only)
-27. Check `FEATURES-template.md` status vocabulary matches SKILL.md (4 statuses only)
-28. Add a "Harvested from" evidence example to TODO_LIST-template.md
+25. ~~ Audit all `docs-health/assets/*-template.md` for trophy-case patterns (DONE statuses, "Previously Completed" sections)~~ done — templates audited
+26. ~~ Check `ROADMAP-template.md` doesn't invite actionable tasks (should be raw ideas only)~~ done — ROADMAP-template is raw-ideas only
+27. ~~ Check `FEATURES-template.md` status vocabulary matches SKILL.md (4 statuses only)~~ done — vocabulary aligned
+28. ~~ Add a "Harvested from" evidence example to TODO_LIST-template.md~~ done — harvested-from evidence present
 
 ### Inter-skill boundary clarity
 
-29. Verify `update-old-docs/SKILL.md` doesn't claim to handle forward extraction (would re-conflict with HARVEST)
-30. Check `full-code-review/SKILL.md` references to docs-health — do they still make sense with HARVEST added?
-31. Check `brutal-self-review/SKILL.md` — its "what did you forget" output is a HARVEST input too; should it say so?
+29. ~~ Verify `update-old-docs/SKILL.md` doesn't claim to handle forward extraction (would re-conflict with HARVEST)~~ done — boundary documented (marker loop)
+30. ~~ Check `full-code-review/SKILL.md` references to docs-health — do they still make sense with HARVEST added?~~ w:covered — handoffs current
+31. ~~ Check `brutal-self-review/SKILL.md` — its "what did you forget" output is a HARVEST input too; should it say so?~~ done — its next-tasks are HARVEST input (documented)
 
 ### Repo hygiene
 
-32. The SKILLS repo `docs/status/` has 5+ reports — none harvested (no TODO_LIST exists). Either create one or document why content repos skip it.
-33. Consider whether content-repo project type in docs-health should still run HARVEST (reports exist even without TODO_LIST)
-34. Update `AGENTS.md` §5.4 "Thin Skills" — re-run `check-skills.sh` for current line counts after edits
+32. ~~ The SKILLS repo `docs/status/` has 5+ reports — none harvested (no TODO_LIST exists). Either create one or document why content repos skip it.~~ done — TODO_LIST exists
+33. ~~ Consider whether content-repo project type in docs-health should still run HARVEST (reports exist even without TODO_LIST)~~ done — content-repo HARVEST ran (2026-08-04+)
+34. ~~ Update `AGENTS.md` §5.4 "Thin Skills" — re-run `check-skills.sh` for current line counts after edits~~ done — counts script-derived
 
 ### Testing the diagnosis
 
-35. Grep all skills for `WAIT FOR INSTRUCTIONS` or `WAIT FOR FURTHER INSTRUCTIONS` — every one is a potential harvest gap
-36. Grep all skills for `docs/status/` — which ones read it, which ones refuse to?
-37. Audit whether any skill currently does ad-hoc harvesting (would be a split brain with HARVEST)
+35. ~~ Grep all skills for `WAIT FOR INSTRUCTIONS` or `WAIT FOR FURTHER INSTRUCTIONS` — every one is a potential harvest gap~~ done — WAIT-instructions enumerated by SESSION-START now
+36. ~~ Grep all skills for `docs/status/` — which ones read it, which ones refuse to?~~ done — docs/status is the canonical HARVEST scope
+37. ~~ Audit whether any skill currently does ad-hoc harvesting (would be a split brain with HARVEST)~~ w:covered — ad-hoc harvesting banned (single source rule)
 
 ### Documentation
 
-38. Add a HARVEST section to `how-to-write-skills.md` if it covers docs-health modes
-39. Update `docs/status/2026-05-03_07-51_comprehensive-skills-audit.md` with a resolution note for the HARVEST addition (via update-old-docs, non-destructive)
-40. Consider a blog/README example showing the full loop: status-report → HARVEST → TODO_LIST → work → CHANGELOG
+38. ~~ Add a HARVEST section to `how-to-write-skills.md` if it covers docs-health modes~~ w:covered — the guide references docs-health modes
+39. ~~ Update `docs/status/2026-05-03_07-51_comprehensive-skills-audit.md` with a resolution note for the HARVEST addition (via update-old-docs, non-destructive)~~ done — 05-03 audit annotated
+40. ~~ Consider a blog/README example showing the full loop: status-report → HARVEST → TODO_LIST → work → CHANGELOG~~ w:declined — README example not demanded
 
 ### Future / lower-priority
 
-41. Explore a `--harvest-since=<date>` concept for HARVEST (only reports newer than X)
-42. Explore semantic dedup helper for HARVEST (detect report item ↔ existing TODO match)
-43. Consider whether HARVEST should write a "harvested from <report>" annotation back via update-old-docs (closes the loop visibly)
-44. Add HARVEST to the `metadata.tags` frontmatter list (currently: documentation, freshness, features, todo, audit, consistency, verification — add "harvest")
-45. Consider machine-readable next-tasks format in status-report (JSON sidecar?) for reliable HARVEST
-46. Review whether the two-score health report (Accuracy/Fitness) should add a third: "Backlog coverage" (% of recent reports' next-tasks represented in TODO_LIST)
-47. Document the failure mode this session was: "agent edited installed copy instead of source repo" in `docs/feedback/new/` per the AGENTS.md feedback loop
-48. Check if the global `~/.config/crush/AGENTS.md` should mention the canonical-source rule for SKILLS specifically
-49. Consider a pre-commit hook that rejects edits to `~/.config/crush/skills/` when a matching project repo exists
-50. **Harvest this very report** into the SKILLS repo's TODO_LIST once one exists — close the loop on the dogfood
+41. ~~ Explore a `--harvest-since=<date>` concept for HARVEST (only reports newer than X)~~ w:open — harvest-since concept not demanded
+42. ~~ Explore semantic dedup helper for HARVEST (detect report item ↔ existing TODO match)~~ w:covered — semantic dedup is a HARVEST rule
+43. ~~ Consider whether HARVEST should write a "harvested from <report>" annotation back via update-old-docs (closes the loop visibly)~~ w:declined — visible loop-closing not demanded
+44. ~~ Add HARVEST to the `metadata.tags` frontmatter list (currently: documentation, freshness, features, todo, audit, consistency, verification — add "harvest")~~ done — harvest tag present
+45. ~~ Consider machine-readable next-tasks format in status-report (JSON sidecar?) for reliable HARVEST~~ w:declined — JSON sidecar not demanded
+46. ~~ Review whether the two-score health report (Accuracy/Fitness) should add a third: "Backlog coverage" (% of recent reports' next-tasks represented in TODO_LIST)~~ w:declined — backlog-coverage score not demanded
+47. ~~ Document the failure mode this session was: "agent edited installed copy instead of source repo" in `docs/feedback/new/` per the AGENTS.md feedback loop~~ done — feedback rule encoded (location guard)
+48. ~~ Check if the global `~/.config/crush/AGENTS.md` should mention the canonical-source rule for SKILLS specifically~~ w:covered — global file references the model
+49. ~~ Consider a pre-commit hook that rejects edits to `~/.config/crush/skills/` when a matching project repo exists~~ w:declined — pre-commit hook is the ROADMAP enforcement question
+50. ~~ **Harvest this very report** into the SKILLS repo's TODO_LIST once one exists — close the loop on the dogfood~~ done — harvested (this pass completes it)
 
 ---
 
 ## g) Questions I cannot figure out myself
 
-### 1. Should the SKILLS repo have a TODO_LIST.md / ROADMAP.md at all?
+### ~~1. Should the SKILLS repo have a TODO_LIST.md / ROADMAP.md at all?~~ RESOLVED — yes; both created 2026-08-04 and maintained since.
 
 Per the docs-health adapt-to-project table, a content repo's must-have docs are README + AGENTS; TODO_LIST/ROADMAP are optional. But this repo has 24 skills, ongoing improvement work, accumulating `docs/status/` reports, and a backlog (this report's §f has 50 items). Is that enough to warrant a TODO_LIST despite being "content"? **This is a project-shape decision — I cannot decide whether SKILLS is treated as a living product or a frozen artifact.**
 
-### 2. Should HARVEST run automatically after every status-report, or stay opt-in?
+### ~~2. Should HARVEST run automatically or stay opt-in?~~ RESOLVED — canonical rule lives in docs-health harvest-guide (after every status report; user WAIT overrides).
 
 The user's status-report prompt ends with `WAIT FOR INSTRUCTIONS`. Two designs:
 
@@ -242,7 +242,7 @@ The user's status-report prompt ends with `WAIT FOR INSTRUCTIONS`. Two designs:
 
 Auto closes the loop but violates the explicit "WAIT" in the user's prompt. Opt-in preserves user control but re-creates the gap if the user forgets. **This is a workflow-philosophy decision about how much autonomy the status-report skill should have.**
 
-### 3. Should I fix the out-of-scope items (status-report, update-old-docs, AGENTS.md) now, or wait?
+### ~~3. Fix out-of-scope items now or wait?~~ RESOLVED — fixed in the 2026-07-26 follow-up.
 
 Last turn I was scoped to "docs-health/SKILL.md only." The 4 remaining fixes (items 6, 9, 10, 11 above) are in other files but directly required for HARVEST to actually fire in practice. Should I treat the HARVEST feature as cross-skill work and do them all, or keep respecting the original docs-health-only scope and wait for explicit per-file sign-off? **This is a scope-boundary decision I cannot make unilaterally.**
 

@@ -123,8 +123,8 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
 | ~~2~~  | ~~ANNOTATE the 09-17 report's two false claims inline (canonical-wording claim; "18 of 30")~~ done — this pass, 2026-09-18 — both claims corrected inline in the 09-17 report | ~~High~~ | ~~S~~ | ~~Doc~~ |
 | 3  | Audit github-voice's preamble=28 lines (largest unexamined `--signal` number)                                 | High   | S      | Qual |
 | 4  | Fold "what you get / why worth effort" from the doctrine into the description quick-test table                | Med    | S      | Doc  |
-| 5  | SESSION-START.md step 5: mention `--signal` + check 15 alongside `--triggers`                                 | Med    | S      | Doc  |
-| 6  | README.md: document `--signal` / check 15 (grep-verified absent)                                              | Med    | S      | Doc  |
+| ~~5~~  | ~~SESSION-START.md step 5: mention `--signal` + check 15 alongside `--triggers`~~ done — this pass — SESSION-START step 5 now names --signal + check 15 | ~~Med~~ | ~~S~~ | ~~Doc~~ |
+| ~~6~~  | ~~README.md: document `--signal` / check 15 (grep-verified absent)~~ done — this pass — README Quality section documents --signal + check 15 | ~~Med~~ | ~~S~~ | ~~Doc~~ |
 | ~~7~~  | ~~Run `sync-html-kit.sh --check` (missed this session; near-certainly green)~~ done — run this pass — exit 0 | ~~Low~~ | ~~S~~ | ~~Verif~~ |
 | ~~8~~  | ~~Run `link-skills-to-agents.sh --check` (missed this session)~~ done — run this pass — exit 0 | ~~Low~~ | ~~S~~ | ~~Verif~~ |
 | 9  | website-launch long tail: 9 remaining prose blocks in the 797-line allowlisted WARN file                      | Med    | M      | Qual |

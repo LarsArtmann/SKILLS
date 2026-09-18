@@ -123,36 +123,44 @@ disclosure:
 
 ### From the 2026-05-03 comprehensive audit (not addressed this session)
 
-1. **`how-to-write-skills.md` location** — still at repo root, not converted to a
+1. ~~**`how-to-write-skills.md` location** — still at repo root, not converted to a
    proper skill directory or moved to `docs/`. The audit recommended either
-   converting to `skill-creator/` or moving to `docs/`.
+   converting to `skill-creator/` or moving to `docs/`.~~ routed — ROADMAP Open Questions (location decision)
 
-2. **`library-deep-dive` skill** — 146 lines, no references/. The audit flagged it
+
+2. ~~**`library-deep-dive` skill** — 146 lines, no references/. The audit flagged it
    as needing a decision tree for library selection, banned libraries reference,
-   and API stability checking patterns.
+   and API stability checking patterns.~~ done — library-deep-dive deepened; FULLY_FUNCTIONAL
 
-3. **Inter-skill cross-references** — the audit identified a target graph of
+
+3. ~~**Inter-skill cross-references** — the audit identified a target graph of
    cross-references between skills. `full-code-review` → `pareto-planning` was done.
    Others (e.g., `code-quality-scan` → `deduplicate-code`, `brutal-self-review` →
-   `how-to-golang`) are not wired.
+   `how-to-golang`) are not wired.~~ done — §5.5 graph + handoff guard
 
-4. **`allowed-tools` frontmatter field** — only `pareto-planning` uses it (`d2`).
+
+4. ~~**`allowed-tools` frontmatter field** — only `pareto-planning` uses it (`d2`).
    `architecture-visualization` should also declare `d2`. `deduplicate-code` and
-   `code-quality-scan` should declare `art-dupl`.
+   `code-quality-scan` should declare `art-dupl`.~~ done — AGENTS §5.8
 
-5. **`how-to-golang` code snippet accuracy** — the audit flagged known accuracy
+
+5. ~~**`how-to-golang` code snippet accuracy** — the audit flagged known accuracy
    issues in `gopter` signature, `encoding/json/v2` Go version, and E2E HTTP API
-   snippets. Not validated or fixed.
+   snippets. Not validated or fixed.~~ done — fixed 2026-08-04; compile-checked 2026-08-21
 
-6. **`naming-review` scripts** — the skill references `scripts/naming-smells.sh`
+
+6. ~~**`naming-review` scripts** — the skill references `scripts/naming-smells.sh`
    and linter integration (revive, eslint, clippy, ruff). Existence and accuracy
-   of these scripts not verified this session.
+   of these scripts not verified this session.~~ done — naming-smells.sh shipped and maintained
 
-7. **`bdd-testing` skill depth** — audit specifically said "needs ginkgo syntax
-   reference, test structure template, file naming conventions." Not started.
 
-8. **README.md skills table** — not verified to be current with all 20 skills.
-   `library-deep-dive` may not be listed (it's not in the original 17).
+7. ~~**`bdd-testing` skill depth** — audit specifically said "needs ginkgo syntax
+   reference, test structure template, file naming conventions." Not started.~~ done — ginkgo-syntax + spec template compile-verified
+
+
+8. ~~**README.md skills table** — not verified to be current with all 20 skills.
+   `library-deep-dive` may not be listed (it's not in the original 17).~~ done — coverage verified; counts live-derived
+
 
 ---
 
@@ -166,21 +174,21 @@ The working tree is clean (after committing this report).
 
 ### Near-misses (fixed this session)
 
-1. **go-modularize description was 1555 chars** — Crush silently refused to load it.
+1. ~~**go-modularize description was 1555 chars** — Crush silently refused to load it.~~ done - closed by later waves
    Fixed to 934 chars. Added CI guard (Check 5) to prevent regression.
 
-2. **FM#4 was wrong** — said "never mix go.work and replace directives." All 3
+2. ~~**FM#4 was wrong** — said "never mix go.work and replace directives." All 3~~ done - closed by later waves
    production projects use both deliberately. Fixed to "use both, keep in sync."
 
-3. **FM#7 said "core"** — stale reference from the `core/` → `domain/` rename.
+3. ~~**FM#7 said "core"** — stale reference from the `core/` → `domain/` rename.~~ done - closed by later waves
    Fixed. Also fixed a contradiction: FM#7 said ALL errors in interface module, but
    the error architecture section said implementation-specific errors belong in
    implementation modules.
 
-4. **phases.md used `git checkout` and `git reset --soft`** — both banned in
+4. ~~**phases.md used `git checkout` and `git reset --soft`** — both banned in~~ done - closed by later waves
    AGENTS.md. Fixed to `git switch -c` and revert-based rollback.
 
-5. **Version drift detection was a comment-only stub** — no actual script.
+5. ~~**Version drift detection was a comment-only stub** — no actual script.~~ done - closed by later waves
    Filled in with a working bash script.
 
 ---
@@ -252,39 +260,37 @@ The working tree is clean (after committing this report).
 
 | #  | Priority | Task                                                                              | Impact              |
 | -- | -------- | --------------------------------------------------------------------------------- | ------------------- |
-| 1  | 🔴 HIGH  | Validate Test Module Pattern in a real project                                    | Theory → practice   |
-| 2  | 🔴 HIGH  | Flesh out `bdd-testing` skill (ginkgo syntax, test structure, file naming)        | Thin skill → useful |
-| 3  | 🔴 HIGH  | Flesh out `code-quality-scan` skill (tool integration, severity guide)            | Thin skill → useful |
-| 4  | 🔴 HIGH  | Verify and fix `how-to-golang` code snippets (gopter, json/v2, E2E)               | Correctness         |
-| 5  | 🔴 HIGH  | Convert `how-to-write-skills.md` to proper skill directory                        | Structure           |
-| 6  | 🟠 MED   | Flesh out `architecture-visualization` skill (D2 examples, diagram types)         | Thin skill → useful |
-| 7  | 🟠 MED   | Flesh out `todo-list-builder` skill (sub-agent context guidance)                  | Thin skill → useful |
-| 8  | 🟠 MED   | Wire inter-skill cross-references (audit target graph)                            | Discoverability     |
-| 9  | 🟠 MED   | Add `allowed-tools: d2` to `architecture-visualization`                           | Pre-approval        |
-| 10 | 🟠 MED   | Add `allowed-tools: art-dupl` to `deduplicate-code` and `code-quality-scan`       | Pre-approval        |
-| 11 | 🟠 MED   | Verify `naming-review` scripts exist and work                                     | Correctness         |
-| 12 | 🟠 MED   | Update README.md skills table (verify all 20 listed)                              | Accuracy            |
-| 13 | 🟠 MED   | Extract `references/` for `deduplicate-code` (art-dupl integration, patterns)     | Depth               |
-| 14 | 🟠 MED   | Extract `references/` for `full-code-review` (review checklist)                   | Depth               |
-| 15 | 🟡 LOW   | Add "Common Mistakes" section to `how-to-write-skills.md`                         | Prevention          |
-| 16 | 🟡 LOW   | Study patterns from external Go multi-module projects (reduce single-author bias) | Validity            |
-| 17 | 🟡 LOW   | Add skill health dashboard script                                                 | Tooling             |
-| 18 | 🟡 LOW   | Add deprecation flow checklist to phases.md Phase 1.5                             | Completeness        |
-| 19 | 🟡 LOW   | Document `replace` directive style convention (single block vs split)             | Consistency         |
-| 20 | 🟡 LOW   | Verify `library-deep-dive` skill completeness (146 lines, no references)          | Depth               |
-| 21 | 🟡 LOW   | Add `references/` for `nix-flake-migration` if flake templates grow               | Depth               |
-| 22 | 🟡 LOW   | Extract review checklist from `brutal-self-review` to `references/`               | Depth               |
-| 23 | 🟡 LOW   | Verify all `originals/*.md` files are truly frozen (no edits since conversion)    | Integrity           |
-| 24 | 🟡 LOW   | Add a "skill lifecycle" guide (creation → improvement → deprecation)              | Process             |
-| 25 | 🟡 LOW   | Run `nix-review` skill on own `flake.nix` (if exists) or document why none        | Meta                |
+| ~~1~~ | HIGH | ~~Validate Test Module Pattern~~ w:open — awaits a real go-modularize consumer run                                    | Theory → practice   |
+| ~~2~~ | HIGH | ~~Flesh out bdd-testing~~ done — ginkgo-syntax ref + naming table + compile-verified spec template        | Thin skill → useful |
+| ~~3~~ | HIGH | ~~Flesh out code-quality-scan~~ done — tool-guidance matrix 2026-08-04            | Thin skill → useful |
+| ~~4~~ | HIGH | ~~Fix how-to-golang snippets~~ done 2026-08-04; compile-checked 2026-08-21               | Correctness         |
+| ~~5~~ | HIGH | ~~Convert how-to-write-skills.md~~ routed — ROADMAP Open Questions                        | Structure           |
+| ~~6~~ | MED | ~~Flesh out architecture-visualization~~ done — d2-syntax reference (wave-2 T31)         | Thin skill → useful |
+| ~~7~~ | MED | ~~Flesh out todo-list-builder~~ done — merged into docs-health (sub-agent guidance retained)                  | Thin skill → useful |
+| ~~8~~ | MED | ~~Wire cross-references~~ done — §5.5 graph + handoff guard                            | Discoverability     |
+| ~~9~~ | MED | ~~allowed-tools: d2~~ done                           | Pre-approval        |
+| ~~10~~ | MED | ~~allowed-tools: art-dupl~~ done (AGENTS §5.8)       | Pre-approval        |
+| ~~11~~ | MED | ~~Verify naming-review scripts~~ done — naming-smells.sh shipped and maintained                                     | Correctness         |
+| ~~12~~ | MED | ~~Update README.md~~ done — coverage gated (check 14 analog)                              | Accuracy            |
+| ~~13~~ | MED | ~~Extract references for deduplicate-code~~ done — judgment framework (bd9de94)     | Depth               |
+| ~~14~~ | MED | ~~Extract references for full-code-review~~ done — architect-checklist + rubric refs                   | Depth               |
+| ~~15~~ | LOW | ~~Common Mistakes section~~ done — present since 2026-07                         | Prevention          |
+| ~~16~~ | LOW | ~~External multi-module patterns~~ w:open — no demand signal | Validity            |
+| ~~17~~ | LOW | ~~Skill health dashboard~~ done — check-skills.sh inventory + --triggers/--signal reports                                                 | Tooling             |
+| ~~18~~ | LOW | ~~Deprecation flow checklist~~ w:open — no demand signal                             | Completeness        |
+| ~~19~~ | LOW | ~~replace-style convention~~ w:open — no demand signal             | Consistency         |
+| ~~20~~ | LOW | ~~Verify library-deep-dive~~ done — references added; FULLY_FUNCTIONAL in FEATURES          | Depth               |
+| ~~21~~ | LOW | ~~nix-flake-migration references~~ w:moot — consolidated into html-report-kit               | Depth               |
+| ~~22~~ | LOW | ~~brutal-self-review references~~ done — references present               | Depth               |
+| ~~23~~ | LOW | ~~Verify originals frozen~~ done — documented frozen (AGENTS §5.1)    | Integrity           |
+| ~~24~~ | LOW | ~~Skill lifecycle guide~~ w:covered — how-to-write-skills + SESSION-START carry the lifecycle              | Process             |
+| ~~25~~ | LOW | ~~nix-review on own flake~~ w:not applicable — this repo has no flake.nix (§1)        | Meta                |
 
 ---
 
 ## g) Top #1 Question I Cannot Figure Out Myself
 
-**Should the Test Module Pattern (companion `domain_test/` module for black-box
-tests) actually work in practice, or is it fighting Go's module system in a way
-that will cause more pain than it solves?**
+**~~Should the Test Module Pattern actually work in practice?~~** PARKED — the pattern is documented in go-modularize as a hypothesis; validation awaits a real consumer run (ROADMAP-shaped).
 
 The pattern proposes splitting test code into a companion module (`domain_test/`)
 so that test framework deps (ginkgo, gomega) live in the test module's `go.mod`,
@@ -293,21 +299,21 @@ not the production module's. In theory this keeps production `go.mod` clean.
 But I cannot verify this without actually trying it in a real project. The
 questions I can't answer:
 
-1. **Does `go test ./domain_test/...` work correctly when `domain_test/` imports
+1. ~~**Does `go test ./domain_test/...` work correctly when `domain_test/` imports~~ w:open - awaits a real go-modularize consumer run
    `domain/` via replace?** The test module is a consumer of the production module.
    Will Go's tooling handle this gracefully, or will there be circular dependency
    warnings, `go mod tidy` issues, or workspace conflicts?
 
-2. **Does the pattern work with `go.work`?** If both `domain/` and `domain_test/`
+2. ~~**Does the pattern work with `go.work`?** If both `domain/` and `domain_test/`~~ done - ginkgo ref + spec template
    are in `go.work`, does workspace resolution correctly override the replace
    directive? Or does the test module need a replace directive pointing to
    `../domain` AND a go.work entry?
 
-3. **What about white-box tests that NEED ginkgo?** The pattern says "this should
+3. ~~**What about white-box tests that NEED ginkgo?** The pattern says "this should~~ done - tool-guidance matrix
    be rare" but doesn't quantify it. If 30% of modules end up needing ginkgo for
    white-box tests, the pattern provides little value over the status quo.
 
-4. **Does this create a maintenance burden worse than the leak?** Every production
+4. ~~**Does this create a maintenance burden worse than the leak?** Every production~~ done - fixed 2026-08-04
    module now needs a companion test module with its own `go.mod`, `replace`
    directives, and `go.work` entry. That's 2× the module count. Is the clean
    `go.mod` worth 2× the maintenance?
