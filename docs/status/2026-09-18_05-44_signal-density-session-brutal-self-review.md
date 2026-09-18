@@ -41,11 +41,12 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
    buildflow 3, go-release 3) was deliberately left with "restraint is
    success" — spot-checks only, no deep pass.
 2. **Verification suite** — run: check-skills (exit 0), `--signal`, `--triggers`,
-   internal links, git-worktree list. Not run: `sync-html-kit.sh --check`,
-   `link-skills-to-agents.sh --check`, shellcheck (not on PATH — advisory
-   NOTE stands). Neither unrun check could plausibly fail from my edits (no
+   internal links, git-worktree list. ~~Not run: `sync-html-kit.sh --check`,
+   `link-skills-to-agents.sh --check`,~~ shellcheck (not on PATH — advisory
+   NOTE stands). ~~Neither unrun check could plausibly fail from my edits (no
    kit or symlink paths touched), but "could not fail" is reasoning, not
-   measurement.
+   measurement.~~ _(both --checks run 2026-09-18 by the docs-health pass — exit 0
+   each; the reasoning gap is closed; shellcheck still absent — TODO f14)_
 
 ## c) NOT STARTED
 

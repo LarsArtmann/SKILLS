@@ -63,19 +63,19 @@
 | 3  | Self-test for check-skills.sh guards (scratch fixture or `--selftest`, à la docs-health annotate-rows_test.py)                | Guards need regression proof (M)              |
 | 4  | Audit README.md per-skill 🆕/🟢 markers for drift; consider gating README↔FEATURES row parity                                 | Twin drift surface, ungated (S–M)             |
 | 5  | Re-verify verify-before-filing status with a dedicated trigger-evidence grep                                                  | Carried stale-forward risk (S)                |
-| 6  | Resolve github-voice / jj-fork-pr-workflow aging policy (g1), then act on it                                                  | Status honesty (decision first)               |
+| ~~6~~  | ~~Resolve github-voice / jj-fork-pr-workflow aging policy (g1), then act on it~~ done — routed to ROADMAP Open Questions this pass (g1 — cross-repo aging policy) | ~~Status honesty (decision first)~~ |
 | 7  | Encode "deferred architecture with explicit trigger" pattern in build-guide granularity guidance                              | Captured lesson not yet written (XS)          |
-| 8  | Document (or canonize) the SKILLS-repo FEATURES legend divergence from docs-health vocabulary (g2)                            | Split-brain optics (XS once decided)          |
+| ~~8~~  | ~~Document (or canonize) the SKILLS-repo FEATURES legend divergence from docs-health vocabulary (g2)~~ done — routed to ROADMAP Open Questions this pass (g2 — legend canon) | ~~Split-brain optics (XS once decided)~~ |
 | 9  | Extend hardcoded-count guard to FEATURES.md prose counts                                                                      | Counts guard covers README+AGENTS only (S)    |
-| 10 | Adopt scoped `dprint fmt <files>` as convention; note in AGENTS.md §1 shell-scripts bullet area (g3)                          | Historical-doc safety (XS)                    |
+| ~~10~~ | ~~Adopt scoped `dprint fmt <files>` as convention; note in AGENTS.md §1 shell-scripts bullet area (g3)~~ done — routed to ROADMAP Open Questions this pass (g3 — formatter scope) | ~~Historical-doc safety (XS)~~ |
 | 11 | Offer skill-creator eval loop for the vocabulary change (2–3 prompts, e.g. "CI workflow is disabled" row)                     | Behavioral validation (M)                     |
 | 12 | Verify what writes `.config/metadata.yaml` (unattributed modification appeared mid-session; left untouched)                   | Unknown writer in working tree (S)            |
 | 13 | On the next real docs-health run in a consumer project, exercise DISABLED + absent-why labels end-to-end                      | Natural validation (0 effort, wait)           |
-| 14 | HARVEST this report into TODO_LIST/ROADMAP after user review                                                                  | Close the loop (S)                            |
+| ~~14~~ | ~~HARVEST this report into TODO_LIST/ROADMAP after user review~~ done (docs-health pass 2026-09-18) | ~~Close the loop (S)~~ |
 | 15 | Consider a "standing doc gates" recipe reference (doc-verify pattern generalized) in docs-health references                   | Pattern is proven, only lived in wise-go (M)  |
-| 16 | If docs-health SKILL.md keeps growing (~190 lines now), push vocabulary detail fully into build-guide                         | 500-line budget hygiene (XS)                  |
-| 17 | CHANGELOG historical entries contain period-correct counts ("29 skills") — confirm convention: historical entries stay frozen | Avoid future false-positive count sweeps (XS) |
-| 18 | Pre-existing, unaffected: T35 annotate sweep; check-agents-md bloat advisory (>30 KB AGENTS.md); website-launch 803-line trim | Already tracked elsewhere                     |
+| ~~16~~ | ~~If docs-health SKILL.md keeps growing (~190 lines now), push vocabulary detail fully into build-guide~~ done — docs-health now 178 lines — budget healthy | ~~500-line budget hygiene (XS)~~ |
+| ~~17~~ | ~~CHANGELOG historical entries contain period-correct counts ("29 skills") — confirm convention: historical entries stay frozen~~ done — convention confirmed — CHANGELOG is append-only, historical entries stay frozen (docs-health canon) | ~~Avoid future false-positive count sweeps (XS)~~ |
+| ~~18~~ | ~~Pre-existing, unaffected: T35 annotate sweep; check-agents-md bloat advisory (>30 KB AGENTS.md); website-launch 803-line trim~~ **Won't implement — duplicate — each already tracked in TODO_LIST (T30/T33/T35) or ROADMAP.** | ~~Already tracked elsewhere~~ |
 
 ## g) Questions (cannot resolve myself)
 

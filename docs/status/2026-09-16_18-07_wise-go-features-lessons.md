@@ -37,8 +37,8 @@ research, reflect, execute, verify.
    (derivable from the script; two copies of the same number always rot).
 4. **Fixed the drift it found:** FEATURES.md gained the 5 missing rows (all
    honestly 🆕 NEW — trigger evidence grepped from docs/status, T30/T34 still
-   open), the per-skill `Lines` column was removed (12 of 24 rows had
-   drifted), the website-launch gap note updated 848→803, and a new
+   open), the per-skill `Lines` column was removed (~~12~~ 13 of 24 rows had
+   drifted — count corrected by the 18-17 self-review, `5dd75e2` era), the website-launch gap note updated 848→803, and a new
    "GitHub & Open Source" section holds jj-fork-pr-workflow + github-voice.
 5. **Wiring:** AGENTS.md §4 step 4 now includes the FEATURES.md row (gated);
    CHANGELOG entry added.
@@ -83,5 +83,5 @@ the AGENTS.md edit was correctly rejected once for not reading the file first.
 | # | Task                                                                                             | Why / size                       |
 | - | ------------------------------------------------------------------------------------------------ | -------------------------------- |
 | 1 | On the next real docs-health BUILD/VERIFY run in a consumer project, exercise the new vocabulary | Behavioral validation (natural)  |
-| 2 | Existing T30/T34 remain the aging path for the 5 🆕 NEW rows                                     | Already tracked                  |
-| 3 | Consider whether TODO_LIST/ROADMAP want a "why not" split analogous to absent-why labels         | Same conflation exists there (S) |
+| ~~2~~ | ~~Existing T30/T34 remain the aging path for the 5 🆕 NEW rows~~ **Won't implement — duplicate — T30/T34 already tracked verbatim in TODO_LIST.** | ~~Already tracked~~ |
+| ~~3~~ | ~~Consider whether TODO_LIST/ROADMAP want a "why not" split analogous to absent-why labels~~ **Won't implement — superseded by the 18-17 comprehensive report f9 (same idea, tracked there).** | ~~Same conflation exists there (S)~~ |

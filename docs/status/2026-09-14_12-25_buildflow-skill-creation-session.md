@@ -60,7 +60,7 @@ Nothing catastrophic shipped. Honest failures and near-misses:
 
 | #  | Task                                                                                                        | Why / size                                    |
 | -- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| 1  | Add back-reference: `code-quality-scan` description/SKILL.md names `buildflow` for covered projects         | Two-way pair convention (P0, 2 lines)         |
+| ~~1~~  | ~~Add back-reference: `code-quality-scan` description/SKILL.md names `buildflow` for covered projects~~ done — verified present 2026-09-16 (docs-health 18-47 evidence pass) — code-quality-scan names buildflow | ~~Two-way pair convention (P0, 2 lines)~~ |
 | 2  | Add `## Verification status` table to `buildflow/SKILL.md` (claim → status → source, canon format)          | Repo canon guard nudged a WARN-adjacent shape |
 | 3  | Re-verify README-derived numbers against live binary (doctor check count, gomod-check check count, linters) | Kill date-stamped uncertainty (15 min)        |
 | 4  | Run skill-creator eval loop: 2-3 realistic test prompts, with/without-skill baselines, eval viewer          | Await user decision (g1)                      |
@@ -68,8 +68,8 @@ Nothing catastrophic shipped. Honest failures and near-misses:
 | 6  | Fresh-session trigger validation (user opens new Crush session in a covered project, asks a lint question)  | Only real proof the skill fires               |
 | 7  | Add a regen note + freshness hint to `commands.md` (regenerate from `buildflow --help`; date-stamp)         | Drift defense (5 min)                         |
 | 8  | Consider `evals/evals.json` skeleton with the 2-3 prompts from #4                                           | Makes iteration cheap later                   |
-| 9  | docs-health HARVEST: route section (f) items into TODO_LIST.md / ROADMAP.md                                 | Close the loop this report opened             |
-| 10 | Add ROADMAP entry for the buildflow skill (status, future directions: per-project tuning, drift guard)      | Reconciliation (5 min)                        |
+| ~~9~~  | ~~docs-health HARVEST: route section (f) items into TODO_LIST.md / ROADMAP.md~~ done (docs-health pass 2026-09-18) | ~~Close the loop this report opened~~ |
+| ~~10~~ | ~~Add ROADMAP entry for the buildflow skill (status, future directions: per-project tuning, drift guard)~~ done (docs-health pass 2026-09-18 — ROADMAP theme added (empirical validation: buildflow aging)) | ~~Reconciliation (5 min)~~ |
 | 11 | Split SKILLS `AGENTS.md` history from living context (docs-health pass, target <30 KB)                      | check-agents-md WARN                          |
 | 12 | Fix or delete BuildFlow `docs/HOW_TO_USE.md` (justfile-era, removed steps) — it misleads agents             | Upstream doc rot (g3)                         |
 | 13 | Correct BuildFlow README "auto-installs required tools" claim if wrong vs doctor behavior                   | Same rot class                                |
@@ -77,10 +77,10 @@ Nothing catastrophic shipped. Honest failures and near-misses:
 | 15 | Consider `references/step-catalog.md` generated from `buildflow list steps --json`                          | Auto-derived, no hand-maintained list         |
 | 16 | Document the skill in BuildFlow's AGENTS.md (session agents there could point covered-project work at it)   | Cross-repo discoverability                    |
 | 17 | Age the README status marker 🆕 New → 🟢 after first documented successful trigger                          | Repo convention                               |
-| 18 | Re-run `check-skill-links.sh` + `--triggers` after any description back-reference (#1)                      | Gate discipline                               |
+| ~~18~~ | ~~Re-run `check-skill-links.sh` + `--triggers` after any description back-reference (#1)~~ done — gates re-run green this pass (check-skills exit 0) | ~~Gate discipline~~ |
 | 19 | Curated commit for the skill (if authorized) replacing the daemon's heuristic message                       | History tells the story (g2)                  |
-| 20 | Session-end checklist from SESSION-START.md: `git worktree list`, scratch-artifact disclaimer               | Was not run this session                      |
-| 21 | Add a "when the binary surface changes" note to the skill's Related Skills section pointing at regen (#7)   | Cheap reminder                                |
+| ~~20~~ | ~~Session-end checklist from SESSION-START.md: `git worktree list`, scratch-artifact disclaimer~~ done (docs-health pass 2026-09-18 — session-end duties executed by this docs-health pass) | ~~Was not run this session~~ |
+| ~~21~~ | ~~Add a "when the binary surface changes" note to the skill's Related Skills section pointing at regen (#7)~~ **Won't implement — duplicate of f7 (same regen-note task).** | ~~Cheap reminder~~ |
 | 22 | If evals run (#4): benchmark.md + analyst pass per skill-creator                                            | Quantitative evidence                         |
 | 23 | Consider pre-approving `allowed-tools: buildflow` frontmatter for the skill                                 | One less permission round-trip                |
 | 24 | Review whether `--semantic` (art-dupl) and other niche flags deserve their commands.md rows                 | Trim to load-bearing flags                    |
