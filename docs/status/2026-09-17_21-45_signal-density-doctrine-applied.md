@@ -16,7 +16,7 @@ The doctrine is now encoded as **Principle 7 ("Signal density")** in
 `how-to-write-skills.md` (added by a **concurrent session**, commit
 `5116703`, together with a `check-skills.sh --signal` advisory) and applied
 to the skill **bodies** by this session: 12 skills edited, every fix verified,
-all checks green (exit 0). 18 of 30 skills needed nothing.
+all checks green (exit 0). ~~18 of 30 skills needed nothing.~~ _(corrected 2026-09-18: 18 of **29** audited — linter-building was excluded while it carried foreign uncommitted changes; see `2026-09-18_05-44_*` d2)_
 
 ## a) FULLY DONE
 
