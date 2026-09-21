@@ -44,9 +44,13 @@ A brutal self-review is a point-in-time snapshot of honest reflection — it ben
 visual treatment so the team can quickly see what is fucked up, what to fix, and in what
 order.
 
-1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
-2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
-3. Map content to visual components:
+1. **Read prior reports in the series.** List `docs/reviews/*.html` and skim the
+   most recent 1-3 (TOC + findings). A self-review series is one conversation —
+   cross-reference prior episodes and their still-open items instead of
+   rediscovering them as new findings.
+2. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
+3. **Copy the template, never transcribe.** Start from [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html) by copying the file and editing its content — never re-type CSS or structure from memory or another report's rendered source; hand-transcribed CSS drifts from the kit and re-introduces bugs the kit already fixed.
+4. Map content to visual components:
    - **Stat cards** for counts (questions answered / ghost systems / split brains found / top actions)
    - **`.card-problem`** for things that are stupid or fucked up
    - **`.card-warning`** for scope creep / legacy / testing gaps

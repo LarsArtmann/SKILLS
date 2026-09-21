@@ -62,7 +62,9 @@ The `Artifact` decision rule (see `how-to-write-skills.md`):
 ## How Other Skills Use This Kit
 
 1. Read [./references/html-output-guide.md](./references/html-output-guide.md) for the full
-   design spec: required sections, color tokens, component catalog, syntax highlighting.
+   design spec: required sections, color tokens, component catalog, syntax highlighting —
+   including the two **Series Discipline** rules: read prior reports in the target series
+   before writing, and copy the template file, never transcribe its CSS.
 2. Choose a starting template:
    - Dashboard-style reports → [./assets/report-template.html](./assets/report-template.html)
    - Editorial/review-style reports → [./assets/report-template-editorial.html](./assets/report-template-editorial.html)

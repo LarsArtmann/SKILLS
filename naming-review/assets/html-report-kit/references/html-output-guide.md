@@ -549,6 +549,27 @@ Apply manually by wrapping tokens in spans:
 <span class="tok-punct">}</span></code></pre>
 ```
 
+## Series Discipline
+
+Reports are episodes of a series, not isolated documents. Before writing any
+report, two non-negotiable steps:
+
+1. **Read prior reports in the series.** List the target `docs/<category>/`
+   directory and skim the most recent 1-3 reports (TOC + findings tables).
+   Cross-reference them — companion reports, follow-up items resolved — so the
+   series reads as one continuous conversation. Observed failure mode
+   (2026-08-22): a review re-discovered findings an earlier review in the same
+   directory had already made, because episode N was written without reading
+   episode N-1.
+2. **Copy the template, never transcribe.** Start from a template file by
+   copying it and editing its content. Never re-type CSS or structure from
+   memory or from another report's rendered source. Observed failure mode
+   (2026-08-22): a hand-transcribed stylesheet carried a malformed `--text:`
+   token — transcription typos and token drift are the same risk class. The
+   finished report's CSS should be a clean subset of the template's (plus
+   deliberate, documented additions), verifiable by diffing against the
+   template.
+
 ## Filename Convention
 
 ```
@@ -562,18 +583,20 @@ Categories: `status/`, `planning/`, `architecture-understanding/`, `brainstormin
 
 1. Decide whether the report should feel like a **dashboard** (dark template)
    or an **audit brief** (editorial template).
-2. Copy the chosen template to the target path.
-3. Open [`example-editorial-report.html`](./example-editorial-report.html) to see a
+2. **Read the series first, then copy the template — never transcribe it**
+   (both rules and their failure modes: [Series Discipline](#series-discipline)).
+3. Copy the chosen template to the target path.
+4. Open [`example-editorial-report.html`](./example-editorial-report.html) to see a
    fully rendered report using every component in the Bauhaus editorial theme.
-4. Delete the example sections you don't need.
-5. Replace placeholder text, ids, and TOC links.
-6. Keep the CSS design tokens intact unless you are intentionally theming.
+5. Delete the example sections you don't need.
+6. Replace placeholder text, ids, and TOC links.
+7. Keep the CSS design tokens intact unless you are intentionally theming.
    The semantic tokens (`--surface`, `--text`, `--problem`, `--solution`,
    `--warning`, `--accent`) are the same in both templates — swapping palettes
    means editing only the primitive values in `:root`.
-7. To theme for a different brand, override the **primitive** colors
+8. To theme for a different brand, override the **primitive** colors
    (`--color-red`, `--color-blue`, etc.) and the semantic layer follows.
-8. The optional `.hero-shapes` cluster (circle / square / triangle / bar) is the
+9. The optional `.hero-shapes` cluster (circle / square / triangle / bar) is the
    Bauhaus signature. Remove it for a quieter hero; keep it for reports that
    benefit from a strong visual anchor.
 

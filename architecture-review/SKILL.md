@@ -21,10 +21,20 @@ Write the review to `docs/architecture-understanding/YYYY-MM-DD_HH-mm_<name>.htm
 `service-orientation`, `coupling`). Use the current timestamp for the date prefix. Create
 the directory if it doesn't exist.
 
+**Before writing anything, read the series context:**
+
+1. **Read prior reports in the series.** List `docs/architecture-understanding/*.html`
+   and skim the most recent 1-3 (TOC + scores + roadmaps) — cross-reference prior
+   reviews and their still-open roadmap items instead of re-deriving them as new.
+2. **Copy the template, never transcribe.** Start from
+   [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
+   by copying the file and editing its content — never re-type CSS or structure from
+   memory or another report's rendered source; hand-transcribed CSS drifts from the kit
+   and re-introduces bugs the kit already fixed.
+
 Use the shared design system from the `html-report-kit` skill:
 
 - Design spec: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
-- Template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
 
 Map the review to visual components:
 

@@ -43,17 +43,20 @@ A full code review produces a point-in-time audit of every file — issues,
 split brains, type-safety concerns, duplications — which benefits from
 visual treatment.
 
-1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
-2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
-3. Map findings to visual components:
+1. **Read prior reports in the series.** List `docs/reviews/*.html` and skim the
+   most recent 1-3 (TOC + findings tables) — cross-reference prior reviews and
+   their unresolved findings instead of re-discovering them as new.
+2. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
+3. **Copy the template, never transcribe.** Start from [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html) by copying the file and editing its content — never re-type CSS or structure from memory or another report's rendered source; hand-transcribed CSS drifts from the kit and re-introduces bugs the kit already fixed.
+4. Map findings to visual components:
    - **Stat cards** for files reviewed / issues found / split brains / TODOs added / fixed on the spot
    - **`.card-problem`** for type-safety issues, split brains, duplications
    - **`.card-warning`** for smaller improvements, naming smells, debt to ticket
    - **`.card-solution`** for strong patterns and good work to preserve
    - **Badge-coded tables** with columns: #, Severity, File, Line, Issue, Fix
-4. If you identified significant duplications, reference and delegate to the
+5. If you identified significant duplications, reference and delegate to the
    `deduplicate-code` skill.
-5. If documentation drift is a major finding, reference and delegate to the
+6. If documentation drift is a major finding, reference and delegate to the
    `docs-health` skill for a full documentation audit.
 6. This review's HTML report is a point-in-time snapshot; it goes stale. When a
    later task asks to bring old review reports current, use the `docs-health`

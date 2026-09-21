@@ -32,12 +32,15 @@ allowed-tools: bash view edit grep
 
 Write a **self-contained styled HTML report** — a sorted issue dashboard.
 
-1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
-2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
-3. Write to `docs/reviews/<YYYY-MM-DD_HH-MM_code-quality-scan.html`
-4. Map issues to visual components:
+1. **Read prior reports in the series.** List `docs/reviews/*.html` and skim the
+   most recent 1-3 (TOC + findings) — cross-reference prior scans instead of
+   re-reporting their known findings as new.
+2. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
+3. **Copy the template, never transcribe.** Start from [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html) by copying the file and editing its content — never re-type CSS or structure from memory or another report's rendered source; hand-transcribed CSS drifts from the kit and re-introduces bugs the kit already fixed.
+4. Write to `docs/reviews/<YYYY-MM-DD_HH-MM_code-quality-scan.html`
+5. Map issues to visual components:
    - **Stat cards** for counts (total issues / critical / high / medium / low)
    - **Badge-coded table** with columns: #, Severity, File, Line, Issue, Suggested Fix
    - Sort by severity (critical first), then by file
    - Max 250 issues
-5. Use `date` CLI for the filename timestamp
+6. Use `date` CLI for the filename timestamp
