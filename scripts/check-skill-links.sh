@@ -49,6 +49,7 @@ else
 		find . -name '*.md' -type f \
 			! -path "*/assets/*" \
 			! -path "*/originals/*" \
+			! -path "./scripts/fixtures/*" \
 			! -path "*/.git/*" \
 			! -path "./docs/*" \
 			! -name "CHANGELOG.md" |

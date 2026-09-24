@@ -64,49 +64,6 @@
 
 set -euo pipefail
 
-repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-if [[ -n "$fixture_root" ]]; then
-	repo_root="$(cd "$fixture_root" && pwd)"
-fi
-cd "$repo_root"
-
-# --- Selftest: fixture-test the gate itself -------------------------------------
-# The 2026-09-09 silent-exit incident (a zero-count grep abort under pipefail)
-# proved a gate can die while looking green. This mode runs the gate against
-# fixture mini-repos and asserts BEHAVIOR, not vibes: the pass tree must exit 0
-# AND print the final OK line; the fail tree must exit 1 with exactly one
-# check-15 FAIL plus its remediation line; the --signal counters must reproduce
-# the signal-fixture pins exactly. Any drift = broken gate, loud exit 1.
-if [[ "$selftest" -eq 1 ]]; then
-	fix="$repo_root/scripts/fixtures/check-skills"
-	st=0
-	pass_out="$(bash "$0" --root "$fix/pass" check 2>&1)" || st=1
-	if [[ "$st" -ne 0 ]] || ! grep -q '^OK: all 2 skills pass structural checks\.$' <<<"$pass_out"; then
-		echo "SELFTEST FAIL: pass tree must exit 0 AND print the final OK line (the 2026-09-09 silent-exit class)" >&2
-		printf '%s\n' "$pass_out" >&2
-		exit 1
-	fi
-	echo "selftest 1/3 green: pass tree exits 0 with the OK line"
-	st=0
-	fail_out="$(bash "$0" --root "$fix/fail" check 2>&1)" || st=1
-	n_fail="$(grep -c '^FAIL' <<<"$fail_out" || true)"
-	if [[ "$st" -eq 0 ]] || [[ "$n_fail" -ne 1 ]] || ! grep -q '^FAIL throat-clearer: throat-clearing prose' <<<"$fail_out" || ! grep -q '^  Fix: delete the sentence' <<<"$fail_out"; then
-		echo "SELFTEST FAIL: throat-clearer must yield exactly one check-15 FAIL with its remediation line (got $n_fail FAIL lines)" >&2
-		printf '%s\n' "$fail_out" >&2
-		exit 1
-	fi
-	echo "selftest 2/3 green: fail tree yields exactly one check-15 FAIL + remediation"
-	sig_out="$(bash "$0" --root "$fix/pass" --signal 2>&1)"
-	if ! grep -Eq '^  signal-fixture +preamble=6 +prose=1 +filler=0 +jargon=1 *$' <<<"$sig_out"; then
-		echo "SELFTEST FAIL: --signal counters drifted from the signal-fixture pins (expected preamble=6 prose=1 filler=0 jargon=1)" >&2
-		printf '%s\n' "$sig_out" >&2
-		exit 1
-	fi
-	echo "selftest 3/3 green: --signal fixture counts exact"
-	echo "OK: check-skills.sh selftest passed (3/3)."
-	exit 0
-fi
-
 mode="check"
 thin_only=0
 triggers_only=0
@@ -135,6 +92,49 @@ while [[ $# -gt 0 ]]; do
 	esac
 	shift
 done
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+if [[ -n "$fixture_root" ]]; then
+	repo_root="$(cd "$fixture_root" && pwd)"
+fi
+cd "$repo_root"
+
+# --- Selftest: fixture-test the gate itself -------------------------------------
+# The 2026-09-09 silent-exit incident (a zero-count grep abort under pipefail)
+# proved a gate can die while looking green. This mode runs the gate against
+# fixture mini-repos and asserts BEHAVIOR, not vibes: the pass tree must exit 0
+# AND print the final OK line; the fail tree must exit 1 with exactly one
+# check-15 FAIL plus its remediation line; the --signal counters must reproduce
+# the signal-fixture pins exactly. Any drift = broken gate, loud exit 1.
+if [[ "$selftest" -eq 1 ]]; then
+	fix="$repo_root/scripts/fixtures/check-skills"
+	st=0
+	pass_out="$(bash "$0" --root "$fix/pass" check 2>&1)" || st=1
+	if [[ "$st" -ne 0 ]] || ! grep -q '^OK: all 2 skills pass structural checks\.$' <<<"$pass_out"; then
+		echo "SELFTEST FAIL: pass tree must exit 0 AND print the final OK line (the 2026-09-09 silent-exit class)" >&2
+		printf '%s\n' "$pass_out" >&2
+		exit 1
+	fi
+	echo "selftest 1/3 green: pass tree exits 0 with the OK line"
+	st=0
+	fail_out="$(bash "$0" --root "$fix/fail" check 2>&1)" || st=1
+	n_fail="$(grep '^FAIL' <<<"$fail_out" | grep -vc '^FAIL: one or more' || true)"
+	if [[ "$st" -eq 0 ]] || [[ "$n_fail" -ne 1 ]] || ! grep -q '^FAIL throat-clearer: throat-clearing prose' <<<"$fail_out" || ! grep -q '^  Fix: delete the sentence' <<<"$fail_out"; then
+		echo "SELFTEST FAIL: throat-clearer must yield exactly one check-15 FAIL with its remediation line (got $n_fail FAIL lines)" >&2
+		printf '%s\n' "$fail_out" >&2
+		exit 1
+	fi
+	echo "selftest 2/3 green: fail tree yields exactly one check-15 FAIL + remediation"
+	sig_out="$(bash "$0" --root "$fix/pass" --signal 2>&1)"
+	if ! grep -Eq '^  signal-fixture +preamble=6 +prose=1 +filler=0 +jargon=1 *$' <<<"$sig_out"; then
+		echo "SELFTEST FAIL: --signal counters drifted from the signal-fixture pins (expected preamble=6 prose=1 filler=0 jargon=1)" >&2
+		printf '%s\n' "$sig_out" >&2
+		exit 1
+	fi
+	echo "selftest 3/3 green: --signal fixture counts exact"
+	echo "OK: check-skills.sh selftest passed (3/3)."
+	exit 0
+fi
 
 # extract_desc FILE — print the description text (single-line or YAML block
 # scalar) with newlines folded to spaces. Shared by check 6 and the
@@ -167,6 +167,7 @@ mapfile -t skill_dirs < <(
 	find . -name SKILL.md -type f \
 		! -path "*/assets/*" \
 		! -path "*/originals/*" \
+		! -path "./scripts/fixtures/*" \
 		-exec dirname {} \; | sort -u
 )
 
