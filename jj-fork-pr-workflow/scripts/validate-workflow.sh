@@ -89,14 +89,14 @@ echo "stacked" >stacked.txt
 jj new >/dev/null
 
 changes=$(jj log --no-pager --no-graph -r 'mine() & mutable() & ~empty()' -T 'description ++ "\n"' | grep -c .)
-[[ "$changes" -eq 3 ]]
-check "Phase 2: three described changes exist (2 siblings + 1 stacked)" $?
+changes_rc=0; [[ "$changes" -eq 3 ]] || changes_rc=1
+check "Phase 2: three described changes exist (2 siblings + 1 stacked)" "$changes_rc"
 
 # --- Phase 3: push all three PRs with -c ----------------------------------------
 jj git push -c "$ALPHA" -c "$BETA" -c "$STACKED" >/dev/null 2>&1
 fork_branches=$(git --git-dir="$scratch/fork.git" branch --format='%(refname:short)' | grep -c '^push-')
-[[ "$fork_branches" -eq 3 ]]
-check "Phase 3: three push-* bookmarks created on the fork remote" $?
+branches_rc=0; [[ "$fork_branches" -eq 3 ]] || branches_rc=1
+check "Phase 3: three push-* bookmarks created on the fork remote" "$branches_rc"
 
 # --- Upstream moves (touches a different file than any PR) ----------------------
 echo "upstream line" >>"$scratch/upstream-work/other.txt"
@@ -112,16 +112,16 @@ check "Phase 4: bulk rebase of roots(mine() & mutable()) onto new main@upstream 
 
 base_ids=$(jj log --no-pager --no-graph -r 'parents(roots(mine() & mutable() & ~empty()))' -T 'commit_id ++ "\n"' | sort -u)
 trunk_id=$(jj log --no-pager --no-graph -r 'main@upstream' -T 'commit_id')
-[[ "$base_ids" == "$trunk_id" ]]
-check "Phase 4: every PR chain root now sits on new main@upstream (stacks intact, siblings parallel)" $?
+roots_rc=0; [[ "$base_ids" == "$trunk_id" ]] || roots_rc=1
+check "Phase 4: every PR chain root now sits on new main@upstream (stacks intact, siblings parallel)" "$roots_rc"
 
 # Re-push with the SAME -c commands — bookmark names must be stable through rebase
 jj git push -c "$ALPHA" -c "$BETA" -c "$STACKED" >/dev/null 2>&1
 alpha_bm="push-$(jj log --no-pager --no-graph -r "$ALPHA" -T 'change_id.short()')"
 local_tip=$(jj log --no-pager --no-graph -r "$ALPHA" -T 'commit_id')
 remote_tip=$(git --git-dir="$scratch/fork.git" rev-parse "refs/heads/$alpha_bm")
-[[ "$local_tip" == "$remote_tip" ]]
-check "Phase 4: re-pushing rebased change with same -c moved fork branch $alpha_bm to the new commit" $?
+tip_rc=0; [[ "$local_tip" == "$remote_tip" ]] || tip_rc=1
+check "Phase 4: re-pushing rebased change with same -c moved fork branch $alpha_bm to the new commit" "$tip_rc"
 
 # --- Phase 4b: bare push skips true siblings (why the helper uses -b 'push-*') ---
 jj new main@upstream -m "feat: gamma true sibling" >/dev/null
@@ -139,8 +139,8 @@ gamma_bm="push-$(jj log --no-pager --no-graph -r "$GAMMA" -T 'change_id.short()'
 beta_bm="push-$(jj log --no-pager --no-graph -r "$BETA" -T 'change_id.short()')"
 if grep -q "$gamma_bm" <<<"$bare_out"; then gamma_rc=0; else gamma_rc=1; fi
 if grep -q "$beta_bm" <<<"$bare_out"; then beta_rc=1; else beta_rc=0; fi
-[[ "$gamma_rc" -eq 0 && "$beta_rc" -eq 0 ]]
-check "Phase 4b: bare jj git push covers only the @-reachable chain — true sibling skipped (use -b 'push-*')" $?
+bare_rc=0; [[ "$gamma_rc" -eq 0 && "$beta_rc" -eq 0 ]] || bare_rc=1
+check "Phase 4b: bare jj git push covers only the @-reachable chain — true sibling skipped (use -b 'push-*')" "$bare_rc"
 jj git push -b 'push-*' >/dev/null 2>&1
 
 # --- Squash-merge simulation: upstream absorbs alpha as ONE new commit -----------
@@ -154,12 +154,12 @@ git -C "$scratch/upstream-work" push -q origin main
 jj git fetch --all-remotes >/dev/null 2>&1
 jj rebase -s 'roots(mine() & mutable())' -o main@upstream >/dev/null
 merged_count=$(jj log --no-pager --no-graph -r "empty() & $ALPHA" -T 'commit_id ++ "\n"' | grep -c . || true)
-[[ "$merged_count" -ge 1 ]]
-check "Phase 5: squash-merged change rebases to empty() (diff absorbed by upstream)" $?
+merged_rc=0; [[ "$merged_count" -ge 1 ]] || merged_rc=1
+check "Phase 5: squash-merged change rebases to empty() (diff absorbed by upstream)" "$merged_rc"
 
 others=$(jj log --no-pager --no-graph -r 'mine() & mutable() & ~empty()' -T 'description ++ "\n"' | grep -cE 'beta|stacked')
-[[ "$others" -eq 2 ]]
-check "Phase 5: sibling + stacked changes survived the merge cleanup (still non-empty)" $?
+others_rc=0; [[ "$others" -eq 2 ]] || others_rc=1
+check "Phase 5: sibling + stacked changes survived the merge cleanup (still non-empty)" "$others_rc"
 
 # Abandon guarded by mine() & mutable(). Squash-merge (simulated here by
 # cherry-pick; GitHub behaves the same) PRESERVES THE PR AUTHOR — the upstream
@@ -174,8 +174,8 @@ check "Phase 5: abandon merged change via mine() & mutable() guard (squash commi
 jj bookmark delete "$alpha_bm" >/dev/null 2>&1
 jj git push --deleted >/dev/null 2>&1
 still_there=$(git --git-dir="$scratch/fork.git" branch --format='%(refname:short)' | grep -c "^$alpha_bm\$" || true)
-[[ "$still_there" -eq 0 ]]
-check "Phase 5: bookmark deleted locally and on the fork remote (--deleted push)" $?
+gone_rc=0; [[ "$still_there" -eq 0 ]] || gone_rc=1
+check "Phase 5: bookmark deleted locally and on the fork remote (--deleted push)" "$gone_rc"
 
 echo
 echo "RESULT: $pass passed, $fail failed"
