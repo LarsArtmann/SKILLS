@@ -24,11 +24,22 @@
 # USAGE
 #   scripts/check-skill-links.sh           # check all skill .md files
 #   scripts/check-skill-links.sh <file>... # check specific files
+#   scripts/check-skill-links.sh --root DIR # scan DIR instead of the repo
+#                                           # (check-skills.sh --selftest plumbing)
 #   exit 0 = clean, exit 1 = broken links found
 
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+if [[ "${1:-}" == "--root" ]]; then
+	if [[ $# -lt 2 ]]; then
+		echo "Usage: $0 [--root DIR]" >&2
+		exit 2
+	fi
+	repo_root="$2"
+	shift 2
+fi
+repo_root="$(cd "$repo_root" && pwd)"
 cd "$repo_root"
 
 if [[ $# -gt 0 ]]; then

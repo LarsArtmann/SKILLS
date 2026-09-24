@@ -52,26 +52,89 @@
 #   scripts/check-skills.sh --signal   # signal-density report, informational
 #                                      # (always exit 0; prints line numbers so
 #                                      #  an editor can judge each candidate)
+#   scripts/check-skills.sh --selftest # fixture-test this gate itself against
+#                                      # scripts/fixtures/check-skills/ (pass
+#                                      # tree must exit 0 AND print the OK line;
+#                                      # fail tree must yield one check-15 FAIL
+#                                      # with remediation; --signal counters
+#                                      # must match pinned counts)
+#   scripts/check-skills.sh --root DIR # run against DIR instead of the repo
+#                                      # (selftest plumbing; combinable with
+#                                      #  any mode)
 
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+if [[ -n "$fixture_root" ]]; then
+	repo_root="$(cd "$fixture_root" && pwd)"
+fi
 cd "$repo_root"
 
-mode="${1:-check}"
+# --- Selftest: fixture-test the gate itself -------------------------------------
+# The 2026-09-09 silent-exit incident (a zero-count grep abort under pipefail)
+# proved a gate can die while looking green. This mode runs the gate against
+# fixture mini-repos and asserts BEHAVIOR, not vibes: the pass tree must exit 0
+# AND print the final OK line; the fail tree must exit 1 with exactly one
+# check-15 FAIL plus its remediation line; the --signal counters must reproduce
+# the signal-fixture pins exactly. Any drift = broken gate, loud exit 1.
+if [[ "$selftest" -eq 1 ]]; then
+	fix="$repo_root/scripts/fixtures/check-skills"
+	st=0
+	pass_out="$(bash "$0" --root "$fix/pass" check 2>&1)" || st=1
+	if [[ "$st" -ne 0 ]] || ! grep -q '^OK: all 2 skills pass structural checks\.$' <<<"$pass_out"; then
+		echo "SELFTEST FAIL: pass tree must exit 0 AND print the final OK line (the 2026-09-09 silent-exit class)" >&2
+		printf '%s\n' "$pass_out" >&2
+		exit 1
+	fi
+	echo "selftest 1/3 green: pass tree exits 0 with the OK line"
+	st=0
+	fail_out="$(bash "$0" --root "$fix/fail" check 2>&1)" || st=1
+	n_fail="$(grep -c '^FAIL' <<<"$fail_out" || true)"
+	if [[ "$st" -eq 0 ]] || [[ "$n_fail" -ne 1 ]] || ! grep -q '^FAIL throat-clearer: throat-clearing prose' <<<"$fail_out" || ! grep -q '^  Fix: delete the sentence' <<<"$fail_out"; then
+		echo "SELFTEST FAIL: throat-clearer must yield exactly one check-15 FAIL with its remediation line (got $n_fail FAIL lines)" >&2
+		printf '%s\n' "$fail_out" >&2
+		exit 1
+	fi
+	echo "selftest 2/3 green: fail tree yields exactly one check-15 FAIL + remediation"
+	sig_out="$(bash "$0" --root "$fix/pass" --signal 2>&1)"
+	if ! grep -Eq '^  signal-fixture +preamble=6 +prose=1 +filler=0 +jargon=1 *$' <<<"$sig_out"; then
+		echo "SELFTEST FAIL: --signal counters drifted from the signal-fixture pins (expected preamble=6 prose=1 filler=0 jargon=1)" >&2
+		printf '%s\n' "$sig_out" >&2
+		exit 1
+	fi
+	echo "selftest 3/3 green: --signal fixture counts exact"
+	echo "OK: check-skills.sh selftest passed (3/3)."
+	exit 0
+fi
+
+mode="check"
 thin_only=0
 triggers_only=0
 signal_only=0
-case "$mode" in
---thin) thin_only=1 ;;
---triggers) triggers_only=1 ;;
---signal) signal_only=1 ;;
-check | "") ;;
-*)
-	echo "Usage: $0 [--thin|--triggers|--signal]" >&2
-	exit 2
-	;;
-esac
+selftest=0
+fixture_root=""
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+	--thin) thin_only=1 ;;
+	--triggers) triggers_only=1 ;;
+	--signal) signal_only=1 ;;
+	--selftest) selftest=1 ;;
+	--root)
+		if [[ $# -lt 2 ]]; then
+			echo "Usage: $0 --root DIR" >&2
+			exit 2
+		fi
+		fixture_root="$2"
+		shift
+		;;
+	check) ;;
+	*)
+		echo "Usage: $0 [--thin|--triggers|--signal|--selftest] [--root DIR]" >&2
+		exit 2
+		;;
+	esac
+	shift
+done
 
 # extract_desc FILE — print the description text (single-line or YAML block
 # scalar) with newlines folded to spaces. Shared by check 6 and the
@@ -229,7 +292,21 @@ preamble_lines() {
     { n++ }
   ' "$1"
 }
-filler_re='^(It is|It.s) (important|worth) (to note|noting)|^[[:space:]]*(Please note|Needless to say|As we all know|In conclusion)[, ]'
+# filler_scan FILE — print FILE with fenced blocks and blockquote lines blanked
+# (blank lines keep line numbers stable, so reported hit lines match the file).
+# Check 15 must not hard-fail a skill that TEACHES against throat-clearing by
+# quoting the exact phrases inside a fence or blockquote — only bare prose
+# fails. Negative fixture: scripts/fixtures/check-skills/pass/fenced-filler.
+filler_scan() {
+	awk '
+    BEGIN { fence = 0 }
+    /^[[:space:]]*```/ { fence = !fence; print ""; next }
+    fence { print ""; next }
+    /^[[:space:]]*>/ { print ""; next }
+    { print }
+  ' "$1"
+}
+filler_re="^(It is|It's|It’s) (important|worth) (to note|noting)|^[[:space:]]*(Please note|Needless to say|As we all know|In conclusion)[, ]"
 jargon_re='split[- ]brain|ghost system|trophy-case|cargo-cult|Verschlimmbesserung|entombed|epistemic|false green'
 if [[ "$signal_only" -eq 1 ]]; then
 	echo "Signal-density report (advisory — Principle 7, how-to-write-skills.md):"
@@ -237,13 +314,13 @@ if [[ "$signal_only" -eq 1 ]]; then
 		skill="${d#./}"
 		f="$d/SKILL.md"
 		pre="$(preamble_lines "$f")"
-		fill="$(grep -icE "$filler_re" "$f" || true)"
+		fill="$(filler_scan "$f" | grep -icE "$filler_re" || true)"
 		jarg="$(grep -icE "$jargon_re" "$f" || true)"
 		prose_n="$(grep -c 'prose ' <(signal_awk "$f") || true)"
 		printf "  %-28s preamble=%-3s prose=%-3s filler=%-2s jargon=%-3s\n" \
 			"$skill" "$pre" "${prose_n:-0}" "${fill:-0}" "${jarg:-0}"
 		[[ "${prose_n:-0}" -gt 0 ]] && signal_awk "$f"
-		[[ "${fill:-0}" -gt 0 ]] && grep -inE "$filler_re" "$f" | sed 's/^/    filler /'
+		[[ "${fill:-0}" -gt 0 ]] && filler_scan "$f" | grep -inE "$filler_re" | sed 's/^/    filler /'
 		[[ "${jarg:-0}" -gt 0 ]] && grep -inEo "$jargon_re" "$f" | sort -t: -k1,1n -u | sed 's/^/    jargon /'
 	done
 	echo
@@ -338,10 +415,13 @@ for d in "${skill_dirs[@]}"; do
 	# Everything judgment-dependent (long prose, house jargon) is the advisory
 	# --signal report instead, because a "why" paragraph is often load-bearing
 	# and must not be deleted by a grep (Pattern 10).
-	filler_hits="$(grep -inE "$filler_re" "$f" || true)"
+	# Fence- and quote-aware: filler_scan blanks fenced blocks and `>` quotes
+	# first, so a skill quoting the phrases to teach against them passes.
+	filler_hits="$(filler_scan "$f" | grep -inE "$filler_re" || true)"
 	if [[ -n "$filler_hits" ]]; then
 		echo "FAIL $skill: throat-clearing prose (delete it — it changes no action):"
 		while IFS= read -r hit; do echo "  $hit"; done <<<"$filler_hits"
+		echo "  Fix: delete the sentence, or fold its content into the sentence it announces (how-to-write-skills.md Principle 7)."
 		failed=1
 	fi
 done
@@ -567,7 +647,9 @@ fi
 # The dedicated checker covers ALL skill .md files (SKILL.md + references/),
 # file links AND in-file anchors, with GitHub-style slug rules. It supersedes
 # the SKILL.md-only backlink loop above (kept as a belt-and-braces subset).
-if ! "$(dirname "${BASH_SOURCE[0]}")/check-skill-links.sh"; then
+link_args=()
+if [[ -n "$fixture_root" ]]; then link_args=(--root "$fixture_root"); fi
+if ! "$(dirname "${BASH_SOURCE[0]}")/check-skill-links.sh" ${link_args[@]+"${link_args[@]}"}; then
 	failed=1
 fi
 
