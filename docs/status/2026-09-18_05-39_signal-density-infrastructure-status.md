@@ -92,7 +92,7 @@ false-positive mode, and the whole rewrite has never been measured with an eval
    mode exists.
 5. **The gate's false-positive mode is known and untested** (see d4).
 6. **Accessibility of the glossary is partial** — it lives in the authoring
-   guide, which is only read while writing skills; an agent *using* a skill
+   guide, which is only read while writing skills; an agent _using_ a skill
    never sees it, which is why per-skill glosses matter (the concurrent session
    did those).
 
@@ -119,7 +119,7 @@ false-positive mode, and the whole rewrite has never been measured with an eval
 ## d) TOTALLY FUCKED UP
 
 1. **I shipped a hard gate with a known, untested false-positive mode.**
-   Check 15 is line-based and fence-blind: a skill that *teaches against*
+   Check 15 is line-based and fence-blind: a skill that _teaches against_
    throat-clearing inside a fenced block or blockquote will hard-fail the
    build. I knew this when I shipped it and did not fix or test it.
 2. **Two wasted analysis iterations before the metric worked.** The first
@@ -143,7 +143,7 @@ false-positive mode, and the whole rewrite has never been measured with an eval
 ## e) WHAT WE SHOULD IMPROVE
 
 1. **Make check 15 fence- and quote-aware** before it fails anyone: skip
-   fenced blocks and `>` lines, and add a fixture that asserts *no* failure for
+   fenced blocks and `>` lines, and add a fixture that asserts _no_ failure for
    a skill that quotes a filler phrase.
 2. **Fixture-test `--signal` itself** — seed a file with known preamble/prose
    counts and assert them; mirror the `annotate-rows_test.py` precedent so the
@@ -185,7 +185,7 @@ Ordered roughly by value.
 6. Add a "measuring signal density" paragraph to how-to-write-skills' Testing section.
 7. Add an `--signal` preamble budget with an allowlist for known-good long preambles.
 8. Split the preamble metric into prose-preamble vs structured-preamble (tables).
-9. Add a glossary hook to `--signal` that flags *unglossed* jargon, not all jargon.
+9. Add a glossary hook to `--signal` that flags _unglossed_ jargon, not all jargon.
 10. Gloss or justify the 35 remaining jargon hits in the 13 flagged skills.
 11. Decide the fate of `go-release` (44-line preamble) — compress or allowlist with a reason.
 12. Decide the fate of `github-voice` (28-line preamble) — same.

@@ -44,30 +44,30 @@ Two items identified but not yet added:
 
 ## b) PARTIALLY DONE
 
-| Item                                             | What's Done                      | What's Left                                                            |
-| ------------------------------------------------ | -------------------------------- | ---------------------------------------------------------------------- |
-| `how-to-write-skills.md` vs `skill-creator` sync | Major improvements committed     | ~~2 minor gaps above~~ both closed |
+| Item                                             | What's Done                      | What's Left                                                                            |
+| ------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------- |
+| `how-to-write-skills.md` vs `skill-creator` sync | Major improvements committed     | ~~2 minor gaps above~~ both closed                                                     |
 | `architecture-visualization`                     | D2 change was externally applied | ~~Still not verified as intentional~~ verified — D2 is canonical (`allowed-tools: d2`) |
 
 ---
 
 ## c) NOT STARTED
 
-| #  | Item                                                                       | Priority | Notes                                      |
-| -- | -------------------------------------------------------------------------- | -------- | ------------------------------------------ |
-| ~~1~~  | ~~Test all 14 skills in Crush~~ done — superseded by behavioral trigger tests (jj T27) + --triggers density checks | ~~Critical~~ | ~~Verify they activate on correct triggers~~ |
-| ~~2~~  | ~~Create `crush.json` with `skills_paths`~~ **Won't implement — NOT-DO — intentional: skills installed via skills_paths or skills add (AGENTS §5.7).** | ~~Critical~~ | ~~Needed for Crush to discover these skills~~ |
-| ~~3~~  | ~~Write README.md for the SKILLS project~~ done — README.md shipped 2026-05-03 | ~~High~~ | ~~Explain project, list all skills~~ |
-| ~~4~~  | ~~Remove original `1.md`–`17.md` files~~ **Won't implement — resolved by decision — originals/ kept as frozen source material.** | ~~Medium~~ | ~~Waiting on user confirmation~~ |
-| ~~5~~  | ~~Refine descriptions from activation testing~~ done — descriptions rewritten trigger-first 2026-08-11 | ~~High~~ | ~~Depends on #1~~ |
-| ~~6~~  | ~~Add cross-references between related skills~~ done — inter-skill graph documented in AGENTS §5.5 | ~~Medium~~ | ~~e.g., brutal-self-review → pareto-planning~~ |
-| ~~7~~  | ~~Flesh out thin skills (nix-flake-migration: 21L, architecture-review: 30L)~~ done — thin-skill waves 2026-06/08; zero thin since | ~~Medium~~ | ~~Currently very sparse~~ |
-| ~~8~~  | ~~Add `allowed-tools` to skills where appropriate~~ done — allowed-tools adopted (AGENTS §5.8) | ~~Low~~ | ~~Experimental feature~~ |
-| ~~9~~  | ~~Reference `go-ecosystem.md` from full-code-review and code-quality-scan~~ done — go-ecosystem content absorbed by how-to-golang + go-ecosystem-upgrade | ~~Medium~~ | ~~Currently only in brutal-self-review~~ |
-| ~~10~~ | ~~Add CHANGELOG.md or version tracking~~ done — CHANGELOG.md created 2026-08-04 | ~~Low~~ | ~~No versioning exists~~ |
-| ~~11~~ | ~~Move `how-to-write-skills.md` to better location~~ done — routed to ROADMAP Open Questions — location decision | ~~Low~~ | ~~Currently in project root~~ |
-| ~~12~~ | ~~Add `.gitignore` if needed~~ **Won't implement — not applicable — no build artifacts.** | ~~Low~~ | ~~Housekeeping~~ |
-| ~~13~~ | ~~Test with non-Go projects (false-positive check)~~ **Won't implement — ROADMAP-shaped — false-positive check folded into empirical-validation theme.** | ~~Low~~ | ~~Go-specific skills may falsely trigger~~ |
+| #      | Item                                                                                                                                                     | Priority     | Notes                                          |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ---------------------------------------------- |
+| ~~1~~  | ~~Test all 14 skills in Crush~~ done — superseded by behavioral trigger tests (jj T27) + --triggers density checks                                       | ~~Critical~~ | ~~Verify they activate on correct triggers~~   |
+| ~~2~~  | ~~Create `crush.json` with `skills_paths`~~ **Won't implement — NOT-DO — intentional: skills installed via skills_paths or skills add (AGENTS §5.7).**   | ~~Critical~~ | ~~Needed for Crush to discover these skills~~  |
+| ~~3~~  | ~~Write README.md for the SKILLS project~~ done — README.md shipped 2026-05-03                                                                           | ~~High~~     | ~~Explain project, list all skills~~           |
+| ~~4~~  | ~~Remove original `1.md`–`17.md` files~~ **Won't implement — resolved by decision — originals/ kept as frozen source material.**                         | ~~Medium~~   | ~~Waiting on user confirmation~~               |
+| ~~5~~  | ~~Refine descriptions from activation testing~~ done — descriptions rewritten trigger-first 2026-08-11                                                   | ~~High~~     | ~~Depends on #1~~                              |
+| ~~6~~  | ~~Add cross-references between related skills~~ done — inter-skill graph documented in AGENTS §5.5                                                       | ~~Medium~~   | ~~e.g., brutal-self-review → pareto-planning~~ |
+| ~~7~~  | ~~Flesh out thin skills (nix-flake-migration: 21L, architecture-review: 30L)~~ done — thin-skill waves 2026-06/08; zero thin since                       | ~~Medium~~   | ~~Currently very sparse~~                      |
+| ~~8~~  | ~~Add `allowed-tools` to skills where appropriate~~ done — allowed-tools adopted (AGENTS §5.8)                                                           | ~~Low~~      | ~~Experimental feature~~                       |
+| ~~9~~  | ~~Reference `go-ecosystem.md` from full-code-review and code-quality-scan~~ done — go-ecosystem content absorbed by how-to-golang + go-ecosystem-upgrade | ~~Medium~~   | ~~Currently only in brutal-self-review~~       |
+| ~~10~~ | ~~Add CHANGELOG.md or version tracking~~ done — CHANGELOG.md created 2026-08-04                                                                          | ~~Low~~      | ~~No versioning exists~~                       |
+| ~~11~~ | ~~Move `how-to-write-skills.md` to better location~~ done — routed to ROADMAP Open Questions — location decision                                         | ~~Low~~      | ~~Currently in project root~~                  |
+| ~~12~~ | ~~Add `.gitignore` if needed~~ **Won't implement — not applicable — no build artifacts.**                                                                | ~~Low~~      | ~~Housekeeping~~                               |
+| ~~13~~ | ~~Test with non-Go projects (false-positive check)~~ **Won't implement — ROADMAP-shaped — false-positive check folded into empirical-validation theme.** | ~~Low~~      | ~~Go-specific skills may falsely trigger~~     |
 
 ---
 
@@ -109,33 +109,33 @@ Nothing. No known issues with the current files. All 14 skills have valid frontm
 
 ## f) Top #25 Things We Should Get Done Next
 
-| #  | Task                                                                              | Impact   | Effort | Depends On          |
-| -- | --------------------------------------------------------------------------------- | -------- | ------ | ------------------- |
-| ~~1~~  | ~~Test all 14 skills in Crush — verify correct activation~~ done — superseded by behavioral trigger tests + --triggers | ~~Critical~~ | ~~30min~~ | ~~`crush.json` config~~ |
-| ~~2~~  | ~~Create `crush.json` with `skills_paths` pointing to this repo~~ **Won't implement — NOT-DO — AGENTS §5.7 documents the deliberate omission.** | ~~Critical~~ | ~~5min~~ | ~~—~~ |
-| ~~3~~  | ~~Write README.md for the SKILLS project~~ done — README.md exists | ~~High~~ | ~~15min~~ | ~~—~~ |
-| ~~4~~  | ~~Refine descriptions based on activation test results~~ done — descriptions rewritten 2026-08-11 | ~~High~~ | ~~30min~~ | ~~#1~~ |
-| ~~5~~  | ~~Run `skill-creator` description optimizer on all 14 skills~~ **Won't implement — ROADMAP-shaped — skill-creator optimizer needs claude CLI (ROADMAP §1).** | ~~High~~ | ~~2hr~~ | ~~#1, #2~~ |
-| ~~6~~  | ~~Remove original `1.md`–`17.md` after user confirmation~~ **Won't implement — resolved by decision — originals/ retained.** | ~~Medium~~ | ~~2min~~ | ~~User OK~~ |
-| ~~7~~  | ~~Flesh out `nix-flake-migration` with decision tree, examples~~ done — nix-flake-migration consolidated into html-report-kit | ~~Medium~~ | ~~15min~~ | ~~—~~ |
-| ~~8~~  | ~~Flesh out `architecture-review` with detailed process steps~~ done — architecture-review references added 2026-08-04 | ~~Medium~~ | ~~15min~~ | ~~—~~ |
-| ~~9~~  | ~~Add cross-references between chained skills~~ done — cross-references wired (§5.5 graph) | ~~Medium~~ | ~~20min~~ | ~~—~~ |
-| ~~10~~ | ~~Reference `go-ecosystem.md` from full-code-review, code-quality-scan, bdd-testing~~ done — absorbed by how-to-golang/go-ecosystem-upgrade | ~~Medium~~ | ~~5min~~ | ~~—~~ |
-| ~~11~~ | ~~Add examples/output formats to each skill that lacks them~~ done — output templates ship via html-report-kit | ~~Medium~~ | ~~30min~~ | ~~—~~ |
-| ~~12~~ | ~~Add "When to use" clarification to `how-to-write-skills.md` template~~ **Won't implement — moot — the template section question was resolved in later guide versions.** | ~~Low~~ | ~~5min~~ | ~~—~~ |
-| ~~13~~ | ~~Add triggering mechanism explanation to `how-to-write-skills.md`~~ done — triggering mechanism documented in how-to-write-skills §1 | ~~Low~~ | ~~10min~~ | ~~—~~ |
-| ~~14~~ | ~~Verify `architecture-visualization` D2 change was intentional~~ done — D2 canonical (allowed-tools: d2) | ~~Low~~ | ~~2min~~ | ~~User input~~ |
-| ~~15~~ | ~~Consider splitting `execution-mode` into reflect vs execute skills~~ done — execution-mode split into brutal-self-review + pareto-planning | ~~Low~~ | ~~15min~~ | ~~—~~ |
-| ~~16~~ | ~~Add `allowed-tools` to skills that need specific tools~~ done — AGENTS §5.8 | ~~Low~~ | ~~15min~~ | ~~—~~ |
-| ~~17~~ | ~~Add CHANGELOG.md~~ done — CHANGELOG.md (2026-08-04) | ~~Low~~ | ~~10min~~ | ~~—~~ |
-| ~~18~~ | ~~Move `how-to-write-skills.md` to `docs/`~~ done — routed to ROADMAP Open Questions — location decision | ~~Low~~ | ~~2min~~ | ~~—~~ |
-| ~~19~~ | ~~Add `.gitignore`~~ **Won't implement — not applicable.** | ~~Low~~ | ~~2min~~ | ~~—~~ |
-| ~~20~~ | ~~Test with non-Go projects (false-positive check)~~ **Won't implement — ROADMAP-shaped — empirical validation theme.** | ~~Low~~ | ~~15min~~ | ~~#1~~ |
-| ~~21~~ | ~~Create a `scripts/` helper for any skill that does repetitive work~~ done — skills now bundle scripts/ (naming-smells, pre-release-check, validate-workflow, social-preview...) | ~~Low~~ | ~~Varies~~ | ~~Usage testing~~ |
-| ~~22~~ | ~~Write integration tests for skill triggering accuracy~~ **Won't implement — ROADMAP-shaped — empirical validation theme.** | ~~Low~~ | ~~1hr~~ | ~~#1, #2~~ |
-| ~~23~~ | ~~Add `metadata.tags` that are more specific/useful~~ done — tags curated | ~~Low~~ | ~~10min~~ | ~~—~~ |
-| ~~24~~ | ~~Consider a skill registry/index that maps user intents → skills~~ **Won't implement — declined — descriptions are the index.** | ~~Low~~ | ~~20min~~ | ~~—~~ |
-| ~~25~~ | ~~Archive or git-tag the pre-conversion state for history~~ done — originals/ preserves the pre-conversion state | ~~Low~~ | ~~2min~~ | ~~—~~ |
+| #      | Task                                                                                                                                                                              | Impact       | Effort     | Depends On              |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ---------- | ----------------------- |
+| ~~1~~  | ~~Test all 14 skills in Crush — verify correct activation~~ done — superseded by behavioral trigger tests + --triggers                                                            | ~~Critical~~ | ~~30min~~  | ~~`crush.json` config~~ |
+| ~~2~~  | ~~Create `crush.json` with `skills_paths` pointing to this repo~~ **Won't implement — NOT-DO — AGENTS §5.7 documents the deliberate omission.**                                   | ~~Critical~~ | ~~5min~~   | ~~—~~                   |
+| ~~3~~  | ~~Write README.md for the SKILLS project~~ done — README.md exists                                                                                                                | ~~High~~     | ~~15min~~  | ~~—~~                   |
+| ~~4~~  | ~~Refine descriptions based on activation test results~~ done — descriptions rewritten 2026-08-11                                                                                 | ~~High~~     | ~~30min~~  | ~~#1~~                  |
+| ~~5~~  | ~~Run `skill-creator` description optimizer on all 14 skills~~ **Won't implement — ROADMAP-shaped — skill-creator optimizer needs claude CLI (ROADMAP §1).**                      | ~~High~~     | ~~2hr~~    | ~~#1, #2~~              |
+| ~~6~~  | ~~Remove original `1.md`–`17.md` after user confirmation~~ **Won't implement — resolved by decision — originals/ retained.**                                                      | ~~Medium~~   | ~~2min~~   | ~~User OK~~             |
+| ~~7~~  | ~~Flesh out `nix-flake-migration` with decision tree, examples~~ done — nix-flake-migration consolidated into html-report-kit                                                     | ~~Medium~~   | ~~15min~~  | ~~—~~                   |
+| ~~8~~  | ~~Flesh out `architecture-review` with detailed process steps~~ done — architecture-review references added 2026-08-04                                                            | ~~Medium~~   | ~~15min~~  | ~~—~~                   |
+| ~~9~~  | ~~Add cross-references between chained skills~~ done — cross-references wired (§5.5 graph)                                                                                        | ~~Medium~~   | ~~20min~~  | ~~—~~                   |
+| ~~10~~ | ~~Reference `go-ecosystem.md` from full-code-review, code-quality-scan, bdd-testing~~ done — absorbed by how-to-golang/go-ecosystem-upgrade                                       | ~~Medium~~   | ~~5min~~   | ~~—~~                   |
+| ~~11~~ | ~~Add examples/output formats to each skill that lacks them~~ done — output templates ship via html-report-kit                                                                    | ~~Medium~~   | ~~30min~~  | ~~—~~                   |
+| ~~12~~ | ~~Add "When to use" clarification to `how-to-write-skills.md` template~~ **Won't implement — moot — the template section question was resolved in later guide versions.**         | ~~Low~~      | ~~5min~~   | ~~—~~                   |
+| ~~13~~ | ~~Add triggering mechanism explanation to `how-to-write-skills.md`~~ done — triggering mechanism documented in how-to-write-skills §1                                             | ~~Low~~      | ~~10min~~  | ~~—~~                   |
+| ~~14~~ | ~~Verify `architecture-visualization` D2 change was intentional~~ done — D2 canonical (allowed-tools: d2)                                                                         | ~~Low~~      | ~~2min~~   | ~~User input~~          |
+| ~~15~~ | ~~Consider splitting `execution-mode` into reflect vs execute skills~~ done — execution-mode split into brutal-self-review + pareto-planning                                      | ~~Low~~      | ~~15min~~  | ~~—~~                   |
+| ~~16~~ | ~~Add `allowed-tools` to skills that need specific tools~~ done — AGENTS §5.8                                                                                                     | ~~Low~~      | ~~15min~~  | ~~—~~                   |
+| ~~17~~ | ~~Add CHANGELOG.md~~ done — CHANGELOG.md (2026-08-04)                                                                                                                             | ~~Low~~      | ~~10min~~  | ~~—~~                   |
+| ~~18~~ | ~~Move `how-to-write-skills.md` to `docs/`~~ done — routed to ROADMAP Open Questions — location decision                                                                          | ~~Low~~      | ~~2min~~   | ~~—~~                   |
+| ~~19~~ | ~~Add `.gitignore`~~ **Won't implement — not applicable.**                                                                                                                        | ~~Low~~      | ~~2min~~   | ~~—~~                   |
+| ~~20~~ | ~~Test with non-Go projects (false-positive check)~~ **Won't implement — ROADMAP-shaped — empirical validation theme.**                                                           | ~~Low~~      | ~~15min~~  | ~~#1~~                  |
+| ~~21~~ | ~~Create a `scripts/` helper for any skill that does repetitive work~~ done — skills now bundle scripts/ (naming-smells, pre-release-check, validate-workflow, social-preview...) | ~~Low~~      | ~~Varies~~ | ~~Usage testing~~       |
+| ~~22~~ | ~~Write integration tests for skill triggering accuracy~~ **Won't implement — ROADMAP-shaped — empirical validation theme.**                                                      | ~~Low~~      | ~~1hr~~    | ~~#1, #2~~              |
+| ~~23~~ | ~~Add `metadata.tags` that are more specific/useful~~ done — tags curated                                                                                                         | ~~Low~~      | ~~10min~~  | ~~—~~                   |
+| ~~24~~ | ~~Consider a skill registry/index that maps user intents → skills~~ **Won't implement — declined — descriptions are the index.**                                                  | ~~Low~~      | ~~20min~~  | ~~—~~                   |
+| ~~25~~ | ~~Archive or git-tag the pre-conversion state for history~~ done — originals/ preserves the pre-conversion state                                                                  | ~~Low~~      | ~~2min~~   | ~~—~~                   |
 
 ---
 

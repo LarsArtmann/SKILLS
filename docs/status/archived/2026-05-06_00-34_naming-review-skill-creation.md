@@ -94,15 +94,15 @@
 
 ## c) NOT STARTED
 
-| Item                                                                              | Impact | Effort |
-| --------------------------------------------------------------------------------- | ------ | ------ |
-| ~~Eval test cases~~ — w:ROADMAP §1 empirical-validation | HIGH | MED |
-| ~~Description optimization~~ done — trigger-first 2026-08-11, STRONG | MED | LOW |
-| ~~Linter auto-detection~~ w:open — no demand signal | MED | MED |
-| ~~Split-brain for TS/Python/Rust~~ w:open — no demand signal | MED | MED |
-| ~~Integration with full-code-review~~ w:declined — separate skills, disambiguated descriptions | LOW | LOW |
-| ~~Naming glossary auto-generation~~ w:open — no demand signal | HIGH | MED |
-| ~~CI/CD integration~~ w:ROADMAP — enforcement-level question | MED | LOW |
+| Item                                                                                           | Impact | Effort |
+| ---------------------------------------------------------------------------------------------- | ------ | ------ |
+| ~~Eval test cases~~ — w:ROADMAP §1 empirical-validation                                        | HIGH   | MED    |
+| ~~Description optimization~~ done — trigger-first 2026-08-11, STRONG                           | MED    | LOW    |
+| ~~Linter auto-detection~~ w:open — no demand signal                                            | MED    | MED    |
+| ~~Split-brain for TS/Python/Rust~~ w:open — no demand signal                                   | MED    | MED    |
+| ~~Integration with full-code-review~~ w:declined — separate skills, disambiguated descriptions | LOW    | LOW    |
+| ~~Naming glossary auto-generation~~ w:open — no demand signal                                  | HIGH   | MED    |
+| ~~CI/CD integration~~ w:ROADMAP — enforcement-level question                                   | MED    | LOW    |
 
 ---
 
@@ -144,33 +144,33 @@
 
 ## f) Top #25 Things To Do Next
 
-| #  | Task                                                                                          | Impact | Effort | Category    |
-| -- | --------------------------------------------------------------------------------------------- | ------ | ------ | ----------- |
-| ~~1~~  | ~~Test naming-smells.sh against a real production Go codebase~~ **Won't implement — ROADMAP §1 — empirical validation (real-codebase testing).** | ~~HIGH~~ | ~~LOW~~ | ~~Validation~~ |
-| ~~2~~  | ~~Test naming-smells.sh against a real TypeScript codebase~~ **Won't implement — ROADMAP §1 — same theme.** | ~~HIGH~~ | ~~LOW~~ | ~~Validation~~ |
-| ~~3~~  | ~~Create naming glossary auto-generation script~~ **Won't implement — open — no demand signal.** | ~~HIGH~~ | ~~MED~~ | ~~Feature~~ |
-| ~~4~~  | ~~Sync how-to-golang to installed location~~ done — symlink model resolved sync (AGENTS §5.10) | ~~MED~~ | ~~LOW~~ | ~~Sync~~ |
-| ~~5~~  | ~~Add eval test cases via skill-creator~~ **Won't implement — ROADMAP §1 — eval theme.** | ~~HIGH~~ | ~~MED~~ | ~~Quality~~ |
-| ~~6~~  | ~~Add linter auto-detection to naming-smells.sh~~ **Won't implement — open — no demand signal.** | ~~MED~~ | ~~MED~~ | ~~Feature~~ |
-| ~~7~~  | ~~Split-brain detection for TypeScript classes/interfaces~~ **Won't implement — open — no demand signal.** | ~~MED~~ | ~~MED~~ | ~~Feature~~ |
-| ~~8~~  | ~~Split-brain detection for Python classes~~ **Won't implement — open — no demand signal.** | ~~MED~~ | ~~MED~~ | ~~Feature~~ |
-| ~~9~~  | ~~Run description optimization via run_loop.py~~ done — trigger-first rewrite + --triggers STRONG | ~~MED~~ | ~~LOW~~ | ~~Quality~~ |
-| ~~10~~ | ~~Migrate 3 orphan skills to source repo (copywriting, improve-codebase-architecture, remotion)~~ **Won't implement — resolved by decision — third-party installs stay upstream (AGENTS §5.10).** | ~~MED~~ | ~~LOW~~ | ~~Sync~~ |
-| ~~11~~ | ~~Add GraphQL schema naming conventions~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
-| ~~12~~ | ~~Add gRPC/Protobuf field naming conventions~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
-| ~~13~~ | ~~Add more Rust anti-pattern examples~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
-| ~~14~~ | ~~Add Java anti-pattern examples~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
-| ~~15~~ | ~~Add C# anti-pattern examples~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
-| ~~16~~ | ~~CI/CD pre-commit hook for naming-smells.sh~~ **Won't implement — open — no demand signal (CI integration is a ROADMAP enforcement question).** | ~~MED~~ | ~~LOW~~ | ~~Integration~~ |
-| ~~17~~ | ~~Integrate naming-review as sub-step of full-code-review~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Integration~~ |
-| ~~18~~ | ~~Add naming "quick fix" mode — just list rename suggestions, no full report~~ **Won't implement — open — no demand signal.** | ~~MED~~ | ~~LOW~~ | ~~Feature~~ |
-| ~~19~~ | ~~Add naming consistency score (0-100) to reports~~ **Won't implement — open — no demand signal.** | ~~MED~~ | ~~LOW~~ | ~~Feature~~ |
-| ~~20~~ | ~~Add "naming migration" mode — apply a canonical glossary across codebase~~ **Won't implement — open — no demand signal.** | ~~MED~~ | ~~MED~~ | ~~Feature~~ |
-| ~~21~~ | ~~Add naming-smells.sh to how-to-golang as recommended tool~~ done — naming-smells documented in the skill | ~~LOW~~ | ~~LOW~~ | ~~Integration~~ |
-| ~~22~~ | ~~Add Protocol Buffers naming (snake_case fields, PascalCase messages)~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
-| ~~23~~ | ~~Add Kubernetes resource naming conventions~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
-| ~~24~~ | ~~Add Terraform/Infrastructure-as-Code naming conventions~~ **Won't implement — open — no demand signal.** | ~~LOW~~ | ~~LOW~~ | ~~Content~~ |
-| ~~25~~ | ~~Create a naming-review README.md with quickstart guide~~ done — the repo README covers quickstart; per-skill README declined | ~~MED~~ | ~~LOW~~ | ~~Docs~~ |
+| #      | Task                                                                                                                                                                                              | Impact   | Effort  | Category        |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- | --------------- |
+| ~~1~~  | ~~Test naming-smells.sh against a real production Go codebase~~ **Won't implement — ROADMAP §1 — empirical validation (real-codebase testing).**                                                  | ~~HIGH~~ | ~~LOW~~ | ~~Validation~~  |
+| ~~2~~  | ~~Test naming-smells.sh against a real TypeScript codebase~~ **Won't implement — ROADMAP §1 — same theme.**                                                                                       | ~~HIGH~~ | ~~LOW~~ | ~~Validation~~  |
+| ~~3~~  | ~~Create naming glossary auto-generation script~~ **Won't implement — open — no demand signal.**                                                                                                  | ~~HIGH~~ | ~~MED~~ | ~~Feature~~     |
+| ~~4~~  | ~~Sync how-to-golang to installed location~~ done — symlink model resolved sync (AGENTS §5.10)                                                                                                    | ~~MED~~  | ~~LOW~~ | ~~Sync~~        |
+| ~~5~~  | ~~Add eval test cases via skill-creator~~ **Won't implement — ROADMAP §1 — eval theme.**                                                                                                          | ~~HIGH~~ | ~~MED~~ | ~~Quality~~     |
+| ~~6~~  | ~~Add linter auto-detection to naming-smells.sh~~ **Won't implement — open — no demand signal.**                                                                                                  | ~~MED~~  | ~~MED~~ | ~~Feature~~     |
+| ~~7~~  | ~~Split-brain detection for TypeScript classes/interfaces~~ **Won't implement — open — no demand signal.**                                                                                        | ~~MED~~  | ~~MED~~ | ~~Feature~~     |
+| ~~8~~  | ~~Split-brain detection for Python classes~~ **Won't implement — open — no demand signal.**                                                                                                       | ~~MED~~  | ~~MED~~ | ~~Feature~~     |
+| ~~9~~  | ~~Run description optimization via run_loop.py~~ done — trigger-first rewrite + --triggers STRONG                                                                                                 | ~~MED~~  | ~~LOW~~ | ~~Quality~~     |
+| ~~10~~ | ~~Migrate 3 orphan skills to source repo (copywriting, improve-codebase-architecture, remotion)~~ **Won't implement — resolved by decision — third-party installs stay upstream (AGENTS §5.10).** | ~~MED~~  | ~~LOW~~ | ~~Sync~~        |
+| ~~11~~ | ~~Add GraphQL schema naming conventions~~ **Won't implement — open — no demand signal.**                                                                                                          | ~~LOW~~  | ~~LOW~~ | ~~Content~~     |
+| ~~12~~ | ~~Add gRPC/Protobuf field naming conventions~~ **Won't implement — open — no demand signal.**                                                                                                     | ~~LOW~~  | ~~LOW~~ | ~~Content~~     |
+| ~~13~~ | ~~Add more Rust anti-pattern examples~~ **Won't implement — open — no demand signal.**                                                                                                            | ~~LOW~~  | ~~LOW~~ | ~~Content~~     |
+| ~~14~~ | ~~Add Java anti-pattern examples~~ **Won't implement — open — no demand signal.**                                                                                                                 | ~~LOW~~  | ~~LOW~~ | ~~Content~~     |
+| ~~15~~ | ~~Add C# anti-pattern examples~~ **Won't implement — open — no demand signal.**                                                                                                                   | ~~LOW~~  | ~~LOW~~ | ~~Content~~     |
+| ~~16~~ | ~~CI/CD pre-commit hook for naming-smells.sh~~ **Won't implement — open — no demand signal (CI integration is a ROADMAP enforcement question).**                                                  | ~~MED~~  | ~~LOW~~ | ~~Integration~~ |
+| ~~17~~ | ~~Integrate naming-review as sub-step of full-code-review~~ **Won't implement — open — no demand signal.**                                                                                        | ~~LOW~~  | ~~LOW~~ | ~~Integration~~ |
+| ~~18~~ | ~~Add naming "quick fix" mode — just list rename suggestions, no full report~~ **Won't implement — open — no demand signal.**                                                                     | ~~MED~~  | ~~LOW~~ | ~~Feature~~     |
+| ~~19~~ | ~~Add naming consistency score (0-100) to reports~~ **Won't implement — open — no demand signal.**                                                                                                | ~~MED~~  | ~~LOW~~ | ~~Feature~~     |
+| ~~20~~ | ~~Add "naming migration" mode — apply a canonical glossary across codebase~~ **Won't implement — open — no demand signal.**                                                                       | ~~MED~~  | ~~MED~~ | ~~Feature~~     |
+| ~~21~~ | ~~Add naming-smells.sh to how-to-golang as recommended tool~~ done — naming-smells documented in the skill                                                                                        | ~~LOW~~  | ~~LOW~~ | ~~Integration~~ |
+| ~~22~~ | ~~Add Protocol Buffers naming (snake_case fields, PascalCase messages)~~ **Won't implement — open — no demand signal.**                                                                           | ~~LOW~~  | ~~LOW~~ | ~~Content~~     |
+| ~~23~~ | ~~Add Kubernetes resource naming conventions~~ **Won't implement — open — no demand signal.**                                                                                                     | ~~LOW~~  | ~~LOW~~ | ~~Content~~     |
+| ~~24~~ | ~~Add Terraform/Infrastructure-as-Code naming conventions~~ **Won't implement — open — no demand signal.**                                                                                        | ~~LOW~~  | ~~LOW~~ | ~~Content~~     |
+| ~~25~~ | ~~Create a naming-review README.md with quickstart guide~~ done — the repo README covers quickstart; per-skill README declined                                                                    | ~~MED~~  | ~~LOW~~ | ~~Docs~~        |
 
 ---
 

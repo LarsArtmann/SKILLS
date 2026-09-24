@@ -48,6 +48,7 @@ All five suggestions from
 `docs/feedback/processed/2026-07-19_update-old-docs-buried-annotations-format-guidance.md`
 were implemented, plus one bonus fix:
 ~~ done — guide updated with patterns
+
 1. **TL;DR placement-decision rule.** Annotation placement section now
    states: "If the file has a TL;DR / summary / opening paragraph with stale
    claims, you MUST inline-correct those claims. An appendix alone is

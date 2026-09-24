@@ -60,10 +60,10 @@ all checks green (exit 0). ~~18 of 30 skills needed nothing.~~ _(corrected 2026-
    - `verify-before-filing` — vulnerability paragraph compressed to its one
      enforceable sentence; "epistemic error" glossed.
    - `brutal-self-review` — ghost system / split brain glossed at first use
-     ~~(canonical glossary wording)~~ *(correction 2026-09-18: several shipped
+     ~~(canonical glossary wording)~~ _(correction 2026-09-18: several shipped
      glosses are paraphrases diverging from the table's wording — "maintained
      in two places" vs "defined or configured in two places"; verbatim-vs-
-     semantic alignment pending the g2 decision in `2026-09-18_05-44_*` d1)*.
+     semantic alignment pending the g2 decision in `2026-09-18_05-44_*` d1)_.
    - `jj-fork-pr-workflow` — prior-art survey moved to new
      `references/prior-art.md` (with a re-verify caveat); the operationally
      load-bearing gh-stack `.jj`-safety rules kept inline.

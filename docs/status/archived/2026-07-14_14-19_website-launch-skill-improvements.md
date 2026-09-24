@@ -17,21 +17,21 @@
 7. **Fixed dependency-versions.md** — Full rewrite with verified gogenfilter baseline; documented the og-canvas version history; correct override guidance
 8. **Fixed common-pitfalls.md Vite entry** — Rewrote pitfall #1 with corrected root cause
 9. **Strengthened Visual QA gate** — Hard gate: "Phase 4 does not start until this passes"
-10.  **Added CI workflow guidance** — Phase 5 now references gogenfilter's `.github/workflows/website.yml`
-11.  **Validation passes** — `check-skills.sh` reports all 19 skills pass, 0 thin skills, website-launch is 451 lines
+10. **Added CI workflow guidance** — Phase 5 now references gogenfilter's `.github/workflows/website.yml`
+11. **Validation passes** — `check-skills.sh` reports all 19 skills pass, 0 thin skills, website-launch is 451 lines
 
 ---
 
 ## b) PARTIALLY DONE
 
 1. ~~**The "pnpm vs bun" guidance is split across files.** Dependency-versions.md has the deploy guidance, common-pitfalls.md has the re2 failure mode, SKILL.md Phase 3 doesn't mention bun at all. An agent reading just SKILL.md might run `bun run build` then hit the re2 error at deploy time without knowing why. The cross-referencing is there but the SKILL.md body should surface the one-liner: "bun is fine for build; deploy needs real Node.js from Nix."
-~~ resolved — body surfaces bun/deploy + CSP over later waves
+   ~~ resolved — body surfaces bun/deploy + CSP over later waves
 2. ~~**CSP patching is documented but not gated.** file-manifest.md now has a CSP section explaining `fix-csp.mjs`, but SKILL.md doesn't mention CSP as a decision point in Phase 2. An agent following SKILL.md linearly would copy the gogenfilter baseline (which has CSP) but might not realize the build script MUST include `&& node scripts/fix-csp.mjs` or CSP-protected inline scripts will break.
-~~ resolved — CSP decision documented in file-manifest + pitfalls
+   ~~ resolved — CSP decision documented in file-manifest + pitfalls
 3. ~~**OG image customization is documented but not linked from SKILL.md.** The guidance exists in file-manifest.md, but SKILL.md Phase 2 doesn't mention OG images at all. An agent reading just SKILL.md won't know to look for it.
-~~ resolved — OG guidance in file-manifest
+   ~~ resolved — OG guidance in file-manifest
 4. ~~**The `astro.config.mjs` customization is still vague.** The file manifest says "site URL, Starlight title, sidebar structure, social href, head description, fonts" but doesn't show the actual structure. This is the most complex customize file and the agent still has to reverse-engineer the sidebar config, the CSP block, the integration list, and the font configuration. This was flagged in my assessment but not fixed.
-~~ w:open — astro.config guide not demanded
+   ~~ w:open — astro.config guide not demanded
 5. ~~**The color palette reference now conflicts with the dependency-versions reference.** Dependency-versions.md was rewritten with the gogenfilter baseline (which includes `astro-og-canvas` and `jscpd`), but color-palette.md still has the old derivation formula at the bottom mentioning "Tint and Shade Generator" — a manual step the skill is supposed to eliminate. Not broken, but the tone is inconsistent.
 
 ---~~ w:moot — later rewrites resolved the tone
@@ -39,17 +39,17 @@
 ## c) NOT STARTED
 
 1. ~~**No scripts were created.** The original plan called for `scripts/preflight-check.sh`, `scripts/generate-palette.sh`, `scripts/add-custom-domain.sh`. None were written. The SKILL.md has inline bash for pre-flight checks, but these are not reusable, testable scripts in `scripts/`.
-~~ done — scripts evolved
+   ~~ done — scripts evolved
 2. ~~**No evals were run.** The skill-creator process requires test prompts run with and without the skill, graded against assertions. We never wrote test prompts, never ran them, never graded. The skill is untested.
-~~ w:ROADMAP §1 — evals exist since 2026-08
+   ~~ w:ROADMAP §1 — evals exist since 2026-08
 3. ~~**No `references/` TOC was added to large reference files.** The repo conventions say files >300 lines need a TOC. color-palette.md (244 lines) and common-pitfalls.md (228 lines) are close but under. file-manifest.md is now 142 lines. No TOC needed yet, but worth noting the convention.
-~~ w:moot — TOC convention enforced by check 11
+   ~~ w:moot — TOC convention enforced by check 11
 4. ~~**README.md was not updated.** The skill exists but the repo's `README.md` inventory table was not updated to include `website-launch` as skill #19 (or whatever the count is). Wait — `check-skills.sh` shows 19 skills including website-launch, so it may already be listed. But I didn't verify this.
-~~ done — verified
+   ~~ done — verified
 5. ~~**No `check-skills.sh` update needed.** The script already counts website-launch. But I didn't verify the README.md inventory table is current.
-~~ w:moot
+   ~~ w:moot
 6. ~~**No verification that the reference repos are actually accessible.** The sub-agent confirmed they exist at `~/projects/gogenfilter/` and `~/projectsgo-atomic-write/`, but I didn't add a pre-flight check for the reference repo existence. If those repos aren't cloned, the skill's core instruction ("copy from gogenfilter") fails silently.
-~~ done — --check-env
+   ~~ done — --check-env
 7. ~~**Feedback files were not archived.** The 7 feedback files in `docs/feedback/new/` are now processed into the skill. They should probably be moved to `docs/feedback/processed/` or similar, but I didn't touch them.
 
 ---~~ done — archived by the 07-26 pass

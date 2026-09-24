@@ -25,38 +25,38 @@ Not all skills have superb names and descriptions. The skill `description` field
 
 ### 1% that delivers 51%
 
-| # | Task                                                    | Why                                                                                                                            |
-| - | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| #     | Task                                                      | Why                                                                                                                                                                                                   |
+| ----- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ~~1~~ | ~~Rename `hierarchical-errors` → `go-error-modernization` | The ONLY broken name. Every other skill is named after its domain; this one is named after a tool that may not exist publicly.~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
-| ~~2~~ | ~~Rewrite `bdd-testing` description (210 chars)           | Thinnest description in the repo. Only 4 trigger phrases.                                                                     ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
-| ~~3~~ | ~~Rewrite `code-quality-scan` description (210 chars)     | Tied for thinnest. Missing "lint", "static analysis", "code smells".                                                          ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
+| ~~2~~ | ~~Rewrite `bdd-testing` description (210 chars)           | Thinnest description in the repo. Only 4 trigger phrases. ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report)                                                                     |
+| ~~3~~ | ~~Rewrite `code-quality-scan` description (210 chars)     | Tied for thinnest. Missing "lint", "static analysis", "code smells". ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report)                                                          |
 
 ### 4% that delivers 64%
 
-| # | Task                                                  | Why                                                          |
-| - | ----------------------------------------------------- | ------------------------------------------------------------ |
-| ~~4~~ | ~~Rewrite `deduplicate-code` description (232 chars)    | Missing "DRY", "find duplicates", "copy-paste code".        ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
+| #     | Task                                                    | Why                                                                                                                                 |
+| ----- | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| ~~4~~ | ~~Rewrite `deduplicate-code` description (232 chars)    | Missing "DRY", "find duplicates", "copy-paste code". ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report)        |
 | ~~5~~ | ~~Rewrite `status-report` description (269 chars)       | Missing "project status", "where are we", "project health". ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
 | ~~6~~ | ~~Rewrite `architecture-review` description (270 chars) | Repeats skill name as trigger. Missing "architecture audit".~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
 
 ### 20% that delivers 80%
 
-| #  | Task                                                     | Why                                                                         |
-| -- | -------------------------------------------------------- | --------------------------------------------------------------------------- |
-| ~~7~~ | ~~Rewrite `pareto-planning` description (314 chars)        | Missing "prioritize", "what should I work on first". Ends with impl detail.~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
-| ~~8~~ | ~~Rewrite `full-code-review` description (412 chars)       | Last 2 sentences describe contents, not triggers.                          ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
-| ~~9~~ | ~~Strip provenance from `go-ecosystem-upgrade` (966 chars) | "Built from 14 status reports" is not a trigger.                           ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
-| ~~10~~ | ~~Strip markdown links from `html-report-kit` (627 chars)  | Raw links don't render in skill-selection context.                         ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
+| #      | Task                                                       | Why                                                                                                                                                |
+| ------ | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ~~7~~  | ~~Rewrite `pareto-planning` description (314 chars)        | Missing "prioritize", "what should I work on first". Ends with impl detail.~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
+| ~~8~~  | ~~Rewrite `full-code-review` description (412 chars)       | Last 2 sentences describe contents, not triggers. ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report)                          |
+| ~~9~~  | ~~Strip provenance from `go-ecosystem-upgrade` (966 chars) | "Built from 14 status reports" is not a trigger. ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report)                           |
+| ~~10~~ | ~~Strip markdown links from `html-report-kit` (627 chars)  | Raw links don't render in skill-selection context. ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report)                         |
 
 ### The other 20% (polish to 100%)
 
-| #  | Task                                     | Why                                                         |
-| -- | ---------------------------------------- | ----------------------------------------------------------- |
+| #      | Task                                       | Why                                                                                                                                |
+| ------ | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
 | ~~11~~ | ~~Update all cross-references after rename | AGENTS.md, README.md, how-to-golang, verify-external-claims~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
-| ~~12~~ | ~~Run `scripts/check-skills.sh`            | Verify no structural regressions                           ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
-| ~~13~~ | ~~Verify all names match directories       | Programmatic check                                         ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
-| ~~14~~ | ~~Verify all descriptions < 1024 chars     | Programmatic check                                         ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
-| ~~15~~ | ~~Final documentation-creep audit          | No rewritten description describes contents                ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report) |
+| ~~12~~ | ~~Run `scripts/check-skills.sh`            | Verify no structural regressions ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report)                           |
+| ~~13~~ | ~~Verify all names match directories       | Programmatic check ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report)                                         |
+| ~~14~~ | ~~Verify all descriptions < 1024 chars     | Programmatic check ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report)                                         |
+| ~~15~~ | ~~Final documentation-creep audit          | No rewritten description describes contents ~~ done (executed 2026-08-02, phases 1-2; verified by the 03-20 report)                |
 
 ---
 

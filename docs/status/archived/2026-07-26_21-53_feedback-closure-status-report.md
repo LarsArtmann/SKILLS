@@ -147,19 +147,19 @@ _Rooted in this session's work and what I noticed — not a repo-wide audit._
 ~~1. **Eval-loop policy.**~~ RESOLVED — parked in ROADMAP §1 (empirical validation); structural gates are the accepted bar for this content repo.
 
 ~~original: Should _every_ feedback-driven skill edit go through the full skill-creator
-   eval loop (test prompts, baseline runs, grading, viewer), or is "edit + structural verify +
-   check-skills.sh" acceptable for prose-only fixes to trigger/handoff text? This decides whether
-   this session counts as "done" or "half-done."
+eval loop (test prompts, baseline runs, grading, viewer), or is "edit + structural verify +
+check-skills.sh" acceptable for prose-only fixes to trigger/handoff text? This decides whether
+this session counts as "done" or "half-done."
 
 ~~2. **docs-health line count.**~~ RESOLVED — refactored under 500 (489 → 166-line body via the nuclear merge).
 
 ~~original: It is now 571 lines. Do you want me to refactor it under 500 right
-   now (move HARVEST anti-patterns + health-report format to `references/`), or is the over-500
-   acceptable given the content density and the existing 1106-line `website-launch` precedent?
+now (move HARVEST anti-patterns + health-report format to `references/`), or is the over-500
+acceptable given the content density and the existing 1106-line `website-launch` precedent?
 
 ~~3. **HTML vs Markdown for status reports.**~~ ROUTED — ROADMAP Open Questions (8 documented overrides as of 2026-09-18).
 
 ~~original: The `status-report` skill mandates HTML; you overrode to
-   `.md` this turn. Should `.md` become the default (update the skill), or was this a one-off I
-   should not propagate? I honored the override this time but want to avoid drift between the skill
-   spec and actual usage.
+`.md` this turn. Should `.md` become the default (update the skill), or was this a one-off I
+should not propagate? I honored the override this time but want to avoid drift between the skill
+spec and actual usage.

@@ -26,21 +26,21 @@
 
 ## b) PARTIALLY DONE
 
-| Item                                                                            | Status            | What's Left                                                                                  |
-| ------------------------------------------------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------- |
+| Item                                                                            | Status            | What's Left                                     |
+| ------------------------------------------------------------------------------- | ----------------- | ----------------------------------------------- |
 | architecture-visualization was externally modified to use D2 instead of mermaid | Partially adapted | ~~verify it's intentional~~ done — D2 canonical |
 
 ## c) NOT STARTED
 
-| Item                                                            | Priority | Notes                                         |
-| --------------------------------------------------------------- | -------- | --------------------------------------------- |
-| ~~Remove original 1.md–17.md files~~ | Low      | done — relocated to originals/ at `c822b9d` |
-| ~~Write a README.md~~ | Medium   | done — shipped 2026-05-03 |
-| ~~Test skills in Crush~~ | High     | done in part — jj behavioral test + --triggers |
-| ~~Move how-to-write-skills.md~~ | Low      | routed — ROADMAP Open Questions |
-| ~~Create a crush.json~~ | Medium   | Won't implement — deliberate (AGENTS §5.7) |
-| ~~Verify descriptions trigger~~ | High     | done in part — trigger-first rewrite + --triggers STRONG |
-| ~~Add `allowed-tools`~~ | Low      | done — AGENTS §5.8 |
+| Item                                 | Priority | Notes                                                    |
+| ------------------------------------ | -------- | -------------------------------------------------------- |
+| ~~Remove original 1.md–17.md files~~ | Low      | done — relocated to originals/ at `c822b9d`              |
+| ~~Write a README.md~~                | Medium   | done — shipped 2026-05-03                                |
+| ~~Test skills in Crush~~             | High     | done in part — jj behavioral test + --triggers           |
+| ~~Move how-to-write-skills.md~~      | Low      | routed — ROADMAP Open Questions                          |
+| ~~Create a crush.json~~              | Medium   | Won't implement — deliberate (AGENTS §5.7)               |
+| ~~Verify descriptions trigger~~      | High     | done in part — trigger-first rewrite + --triggers STRONG |
+| ~~Add `allowed-tools`~~              | Low      | done — AGENTS §5.8                                       |
 
 ## d) TOTALLY FUCKED UP
 
@@ -56,31 +56,30 @@ Nothing. No known issues with the current skill files.
 
 4. ~~**Original prompts had personality/raw voice**~~ resolved by decision — tone kept where instructive; signal pass 2026-09-17 calibrated
 
-
 5. ~~**Go-ecosystem reference is only in brutal-self-review**~~ done — absorbed by how-to-golang + go-ecosystem-upgrade — Other skills like `full-code-review` and `code-quality-scan` could also benefit from the Go lib awareness but don't reference it.
 
 6. ~~**No versioning or changelog**~~ done — CHANGELOG.md date-based waves — Skills have no version tracking. When they evolve, there's no record of what changed.
 
 ## f) Top #25 Things We Should Get Done Next
 
-| #  | Task                                                                                     | Impact   | Effort |
-| -- | ---------------------------------------------------------------------------------------- | -------- | ------ |
-| ~~1~~ | ~~Test all 14 skills in Crush~~ done in part — behavioral + density checks | Critical | 30min |
-| ~~2~~ | ~~Create `crush.json`~~ Won't implement — deliberate (AGENTS §5.7) | Critical | 5min |
-| ~~3~~ | ~~Write README.md~~ done — 2026-05-03 | High | 15min |
-| ~~4~~ | ~~Remove original 1.md–17.md~~ done — relocated to originals/ (`c822b9d`) | High | 2min |
-| ~~5~~ | ~~Refine descriptions~~ done — trigger-first rewrite 2026-08-11 | High | 30min |
-| ~~6~~ | ~~Add cross-references~~ done — §5.5 graph | Medium | 20min |
-| ~~7~~ | ~~Flesh out thin skills~~ done — consolidation + deepening waves | Medium | 20min |
-| ~~8~~ | ~~allowed-tools~~ done — AGENTS §5.8 | Medium | 15min |
-| ~~9~~ | ~~Reference go-ecosystem.md~~ done — absorbed by how-to-golang | Medium | 5min |
-| ~~10~~ | ~~CHANGELOG.md~~ done — 2026-08-04 | Low | 10min |
-| ~~11~~ | ~~Move how-to-write-skills.md~~ routed — ROADMAP Open Questions | Low | 2min |
-| ~~12~~ | ~~Split execution-mode~~ done — brutal-self-review + pareto-planning | Low | 15min |
-| ~~13~~ | ~~Add examples~~ done — templates + references | Low | 30min |
-| ~~14~~ | ~~Test with non-Go projects~~ w:ROADMAP-shaped — empirical-validation | Low | 15min |
-| ~~15~~ | ~~Verify D2 change~~ done — D2 canonical | Medium | 2min |
-| ~~16~~ | ~~Add `.gitignore`~~ w:not applicable | Low | 2min |
+| #      | Task                                                                       | Impact   | Effort |
+| ------ | -------------------------------------------------------------------------- | -------- | ------ |
+| ~~1~~  | ~~Test all 14 skills in Crush~~ done in part — behavioral + density checks | Critical | 30min  |
+| ~~2~~  | ~~Create `crush.json`~~ Won't implement — deliberate (AGENTS §5.7)         | Critical | 5min   |
+| ~~3~~  | ~~Write README.md~~ done — 2026-05-03                                      | High     | 15min  |
+| ~~4~~  | ~~Remove original 1.md–17.md~~ done — relocated to originals/ (`c822b9d`)  | High     | 2min   |
+| ~~5~~  | ~~Refine descriptions~~ done — trigger-first rewrite 2026-08-11            | High     | 30min  |
+| ~~6~~  | ~~Add cross-references~~ done — §5.5 graph                                 | Medium   | 20min  |
+| ~~7~~  | ~~Flesh out thin skills~~ done — consolidation + deepening waves           | Medium   | 20min  |
+| ~~8~~  | ~~allowed-tools~~ done — AGENTS §5.8                                       | Medium   | 15min  |
+| ~~9~~  | ~~Reference go-ecosystem.md~~ done — absorbed by how-to-golang             | Medium   | 5min   |
+| ~~10~~ | ~~CHANGELOG.md~~ done — 2026-08-04                                         | Low      | 10min  |
+| ~~11~~ | ~~Move how-to-write-skills.md~~ routed — ROADMAP Open Questions            | Low      | 2min   |
+| ~~12~~ | ~~Split execution-mode~~ done — brutal-self-review + pareto-planning       | Low      | 15min  |
+| ~~13~~ | ~~Add examples~~ done — templates + references                             | Low      | 30min  |
+| ~~14~~ | ~~Test with non-Go projects~~ w:ROADMAP-shaped — empirical-validation      | Low      | 15min  |
+| ~~15~~ | ~~Verify D2 change~~ done — D2 canonical                                   | Medium   | 2min   |
+| ~~16~~ | ~~Add `.gitignore`~~ w:not applicable                                      | Low      | 2min   |
 
 ## g) Top #1 Question I Can NOT Figure Out Myself
 

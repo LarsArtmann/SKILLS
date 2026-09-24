@@ -172,7 +172,8 @@ qualitatively, and shipped the `github-voice` skill (SKILL.md + 2 references
    ~~`--own-followup-sample 6508` overnight if the maintainer-voice~~
    ~~segment ever needs depth.~~
 4. ~~**Optional: corpus refresh cadence** — re-run the two scripts after~~ **Won't implement — user decision — refresh cadence is an owner call (10-55 g2).**
-   ~~~3 months of activity; update profile numbers if ANALYSIS.md drifts.~~
+   ```3 months of activity; update profile numbers if ANALYSIS.md drifts.~~
+   ```
 
 ## g) QUESTIONS
 

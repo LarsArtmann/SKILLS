@@ -57,13 +57,13 @@ are manual and the 2026-09-04 config never shipped.
 
 ## Follow-ups (for the site repos, not this repo)
 
-| # | Task                                                                                          | Repo                            | Effort |
-| - | --------------------------------------------------------------------------------------------- | ------------------------------- | ------ |
-| ~~1~~ | ~~Redeploy hosting; verify `HEAD /demo.mp4` + one JS asset return immutable~~ done — wave-3 f4 (immutable live) | ~~emeet-pixyd~~ | ~~S~~ |
-| ~~2~~ | ~~Add `id="demo"` to the video container; add "Watch the 25s demo" to README docs bar~~ done — wave-3 f5/f6 (live-verified) | ~~emeet-pixyd~~ | ~~S~~ |
-| 3 | Recreate the HyperFrames composition from the surviving MP4 and commit under `website/video/` | emeet-pixyd                     | M      |
-| 4 | Full demo-video flow (first implementation of T22's corrected guidance)                       | gogenfilter                     | L      |
-| 5 | Video flow + og:image upgrade                                                                 | go-atomic-write, go-filewatcher | L      |
+| #     | Task                                                                                                                        | Repo                            | Effort |
+| ----- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ------ |
+| ~~1~~ | ~~Redeploy hosting; verify `HEAD /demo.mp4` + one JS asset return immutable~~ done — wave-3 f4 (immutable live)             | ~~emeet-pixyd~~                 | ~~S~~  |
+| ~~2~~ | ~~Add `id="demo"` to the video container; add "Watch the 25s demo" to README docs bar~~ done — wave-3 f5/f6 (live-verified) | ~~emeet-pixyd~~                 | ~~S~~  |
+| 3     | Recreate the HyperFrames composition from the surviving MP4 and commit under `website/video/`                               | emeet-pixyd                     | M      |
+| 4     | Full demo-video flow (first implementation of T22's corrected guidance)                                                     | gogenfilter                     | L      |
+| 5     | Video flow + og:image upgrade                                                                                               | go-atomic-write, go-filewatcher | L      |
 
 _Point-in-time snapshot; annotate, never rewrite. Evidence: GitHub trees API
 

@@ -79,11 +79,11 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
    glossary's existence). Mitigation: f1/g2.
 2. **Wrong arithmetic in my closing summary to the user.** I said "fixing 12"
    skills — the true count is 15 unique skills (recounted from `a45e9b2` stat
-   + the Tier-2 working-tree batch, which overlapped 3 files with the
-   commit). I also wrote "18 of 30 skills needed nothing" — 18 of **29**
-   audited (linter-building was excluded). Root cause: counted from the first
-   daemon commit instead of the full change set. The CHANGELOG enumerations
-   happen to be complete, so no shipped file is wrong — only my chat claim.
+   - the Tier-2 working-tree batch, which overlapped 3 files with the
+     commit). I also wrote "18 of 30 skills needed nothing" — 18 of **29**
+     audited (linter-building was excluded). Root cause: counted from the first
+     daemon commit instead of the full change set. The CHANGELOG enumerations
+     happen to be complete, so no shipped file is wrong — only my chat claim.
 3. **Overclaimed verification strength.** My closing message and 09-17 report
    said "every removed line was diffed and accounted for". What I actually
    did: full hunk-by-hunk review of full-code-review and pareto-planning,
@@ -117,26 +117,26 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
 
 ## f) Next tasks (18 real items — not padded to 50; padding to hit a number is the exact noise this session deleted)
 
-| #  | Task                                                                                                        | Impact | Effort | Cat  |
-| -- | ----------------------------------------------------------------------------------------------------------- | ------ | ------ | ---- |
-| 1  | Align all 7 shipped glosses verbatim to the Principle 7 table (or amend rule per g2, then skip)              | High   | S      | Bug  |
-| ~~2~~  | ~~ANNOTATE the 09-17 report's two false claims inline (canonical-wording claim; "18 of 30")~~ done — this pass, 2026-09-18 — both claims corrected inline in the 09-17 report | ~~High~~ | ~~S~~ | ~~Doc~~ |
-| 3  | Audit github-voice's preamble=28 lines (largest unexamined `--signal` number)                                 | High   | S      | Qual |
-| 4  | Fold "what you get / why worth effort" from the doctrine into the description quick-test table                | Med    | S      | Doc  |
-| ~~5~~  | ~~SESSION-START.md step 5: mention `--signal` + check 15 alongside `--triggers`~~ done — this pass — SESSION-START step 5 now names --signal + check 15 | ~~Med~~ | ~~S~~ | ~~Doc~~ |
-| ~~6~~  | ~~README.md: document `--signal` / check 15 (grep-verified absent)~~ done — this pass — README Quality section documents --signal + check 15 | ~~Med~~ | ~~S~~ | ~~Doc~~ |
-| ~~7~~  | ~~Run `sync-html-kit.sh --check` (missed this session; near-certainly green)~~ done — run this pass — exit 0 | ~~Low~~ | ~~S~~ | ~~Verif~~ |
-| ~~8~~  | ~~Run `link-skills-to-agents.sh --check` (missed this session)~~ done — run this pass — exit 0 | ~~Low~~ | ~~S~~ | ~~Verif~~ |
-| 9  | website-launch long tail: 9 remaining prose blocks in the 797-line allowlisted WARN file                      | Med    | M      | Qual |
-| 10 | verify-before-filing: 4 remaining prose hits, spot-check                                                     | Low    | S      | Qual |
-| 11 | docs-health / buildflow / go-ecosystem-upgrade / go-release prose hits — one restraint-disciplined pass        | Low    | M      | Qual |
-| 12 | Gloss-drift guard (first-use gloss must match table verbatim) — only if g2 answers "verbatim"                 | Med    | M      | Tool |
-| 13 | linter-building:105 split-brain line — recheck after its T34 open questions resolve                           | Low    | S      | Qual |
-| 14 | Install/provision shellcheck (nix) so the shell gate stops degrading to bash -n                               | Med    | S      | Tool |
-| 15 | Trivial: entombed glosses "file no later session reads" → "file **that** no later session reads" (2 files)    | Low    | XS     | Nit  |
-| 16 | Old TODO rows untouched and still open: T30 (blocked), T33, T34 (blocked), T35 — oldest is T35                | Med    | M      | Debt |
-| 17 | If g2 answers "semantic equivalence": add the one-line rationale to Principle 7 (currently says "identical")  | Low    | XS     | Doc  |
-| 18 | If g1 answers "encode .md default": update status-report (and brutal-self-review?) Output sections            | Med    | S      | Doc  |
+| #     | Task                                                                                                                                                                          | Impact   | Effort | Cat       |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------ | --------- |
+| 1     | Align all 7 shipped glosses verbatim to the Principle 7 table (or amend rule per g2, then skip)                                                                               | High     | S      | Bug       |
+| ~~2~~ | ~~ANNOTATE the 09-17 report's two false claims inline (canonical-wording claim; "18 of 30")~~ done — this pass, 2026-09-18 — both claims corrected inline in the 09-17 report | ~~High~~ | ~~S~~  | ~~Doc~~   |
+| 3     | Audit github-voice's preamble=28 lines (largest unexamined `--signal` number)                                                                                                 | High     | S      | Qual      |
+| 4     | Fold "what you get / why worth effort" from the doctrine into the description quick-test table                                                                                | Med      | S      | Doc       |
+| ~~5~~ | ~~SESSION-START.md step 5: mention `--signal` + check 15 alongside `--triggers`~~ done — this pass — SESSION-START step 5 now names --signal + check 15                       | ~~Med~~  | ~~S~~  | ~~Doc~~   |
+| ~~6~~ | ~~README.md: document `--signal` / check 15 (grep-verified absent)~~ done — this pass — README Quality section documents --signal + check 15                                  | ~~Med~~  | ~~S~~  | ~~Doc~~   |
+| ~~7~~ | ~~Run `sync-html-kit.sh --check` (missed this session; near-certainly green)~~ done — run this pass — exit 0                                                                  | ~~Low~~  | ~~S~~  | ~~Verif~~ |
+| ~~8~~ | ~~Run `link-skills-to-agents.sh --check` (missed this session)~~ done — run this pass — exit 0                                                                                | ~~Low~~  | ~~S~~  | ~~Verif~~ |
+| 9     | website-launch long tail: 9 remaining prose blocks in the 797-line allowlisted WARN file                                                                                      | Med      | M      | Qual      |
+| 10    | verify-before-filing: 4 remaining prose hits, spot-check                                                                                                                      | Low      | S      | Qual      |
+| 11    | docs-health / buildflow / go-ecosystem-upgrade / go-release prose hits — one restraint-disciplined pass                                                                       | Low      | M      | Qual      |
+| 12    | Gloss-drift guard (first-use gloss must match table verbatim) — only if g2 answers "verbatim"                                                                                 | Med      | M      | Tool      |
+| 13    | linter-building:105 split-brain line — recheck after its T34 open questions resolve                                                                                           | Low      | S      | Qual      |
+| 14    | Install/provision shellcheck (nix) so the shell gate stops degrading to bash -n                                                                                               | Med      | S      | Tool      |
+| 15    | Trivial: entombed glosses "file no later session reads" → "file **that** no later session reads" (2 files)                                                                    | Low      | XS     | Nit       |
+| 16    | Old TODO rows untouched and still open: T30 (blocked), T33, T34 (blocked), T35 — oldest is T35                                                                                | Med      | M      | Debt      |
+| 17    | If g2 answers "semantic equivalence": add the one-line rationale to Principle 7 (currently says "identical")                                                                  | Low      | XS     | Doc       |
+| 18    | If g1 answers "encode .md default": update status-report (and brutal-self-review?) Output sections                                                                            | Med      | S      | Doc       |
 
 > HARVEST routing (canonical rule lives in docs-health, not restated here):
 > items 1–8, 14 are TODO_LIST-grade; 9–13, 15–17 are ROADMAP-grade unless
@@ -169,7 +169,7 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
 
 ---
 
-*Self-review questions answered inline: forgot = c1/c2 + the unrun checks
+_Self-review questions answered inline: forgot = c1/c2 + the unrun checks
 (b2); stupid-anyway = reporting prose outran the evidence (d1–d3); better =
 e1–e5; still improve = f; lied = not intentionally, but three factually
 false sentences shipped (d1–d3 — the distinction matters and so does the
@@ -180,7 +180,7 @@ scope creep = none (18 clean files left untouched, keeps documented);
 removed-something-useful = checked each deletion against its original — the
 closest call was full-code-review's Mindset persona, which survives in the
 description where it loads at trigger time; tests = structural gates green
-(exit 0 quoted), shellcheck degraded to bash -n, two --checks unrun (b2).*
+(exit 0 quoted), shellcheck degraded to bash -n, two --checks unrun (b2)._
 
-*Next actor: run docs-health HARVEST over section (f) per the canonical
-routing rule; run ANNOTATE on the 09-17 report (f2).*
+_Next actor: run docs-health HARVEST over section (f) per the canonical
+routing rule; run ANNOTATE on the 09-17 report (f2)._

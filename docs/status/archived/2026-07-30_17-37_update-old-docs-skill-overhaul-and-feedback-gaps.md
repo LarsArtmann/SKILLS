@@ -209,18 +209,18 @@ resolution."
 > Prioritized by impact. Items 1-5 are direct consequences of this session's
 > gaps.
 
-| #  | Priority     | Task                                                                                                                                                                                       |
-| -- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| ~~1~~ | CRITICAL | ~~Fix the feedback mistake~~ done - work completed; file legitimately processed (Resolution Q1) |
-| ~~2~~ | HIGH | ~~Investigate HARVEST~~ done - implemented (Resolution Q2) |
-| ~~3~~ | HIGH | ~~Check annotation-placement~~ done - updated in the structural refactor |
-| ~~4~~ | HIGH | ~~Reconcile resolve-vs-untouched~~ done - gloss added (Resolution Q3) |
-| ~~5~~ | MEDIUM | ~~Archive as Step 6~~ done (Resolution) |
-| ~~6~~ | MEDIUM | ~~Check case-study~~ done - updated |
-| ~~7~~ | MEDIUM | ~~Propagate terminology~~ done (Resolution) |
-| ~~8~~ | LOW | ~~Update 5.5~~ done (Resolution) |
-| ~~9~~ | LOW | ~~Concrete verification command~~ w:declined - brittle by design; the grep -rLn completeness gate is the accepted form |
-| ~~10~~ | LOW | ~~OPEN cross-references~~ done - tables use Still open |
+| #      | Priority | Task                                                                                                                   |
+| ------ | -------- | ---------------------------------------------------------------------------------------------------------------------- |
+| ~~1~~  | CRITICAL | ~~Fix the feedback mistake~~ done - work completed; file legitimately processed (Resolution Q1)                        |
+| ~~2~~  | HIGH     | ~~Investigate HARVEST~~ done - implemented (Resolution Q2)                                                             |
+| ~~3~~  | HIGH     | ~~Check annotation-placement~~ done - updated in the structural refactor                                               |
+| ~~4~~  | HIGH     | ~~Reconcile resolve-vs-untouched~~ done - gloss added (Resolution Q3)                                                  |
+| ~~5~~  | MEDIUM   | ~~Archive as Step 6~~ done (Resolution)                                                                                |
+| ~~6~~  | MEDIUM   | ~~Check case-study~~ done - updated                                                                                    |
+| ~~7~~  | MEDIUM   | ~~Propagate terminology~~ done (Resolution)                                                                            |
+| ~~8~~  | LOW      | ~~Update 5.5~~ done (Resolution)                                                                                       |
+| ~~9~~  | LOW      | ~~Concrete verification command~~ w:declined - brittle by design; the grep -rLn completeness gate is the accepted form |
+| ~~10~~ | LOW      | ~~OPEN cross-references~~ done - tables use Still open                                                                 |
 
 ---
 

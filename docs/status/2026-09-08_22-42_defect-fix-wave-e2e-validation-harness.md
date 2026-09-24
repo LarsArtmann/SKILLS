@@ -55,22 +55,22 @@
 
 ## f) Next tasks (ranked; feeds docs-health HARVEST)
 
-| #  | Task                                                                                                                                                             | Impact   | Effort | Category      |
-| -- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------ | ------------- |
-| ~~1~~  | ~~Add `jj-fork-pr-workflow` to FEATURES.md (new "Version Control" section; honest status)~~ done — jj-fork row shipped in FEATURES.md (`5479784`/`5dd75e2`, GitHub & Open Source section) | ~~Critical~~ | ~~S~~ | ~~Bug~~ |
-| ~~2~~  | ~~Add FEATURES.md + CHANGELOG steps to the AGENTS.md §4 authoring checklist~~ done (docs-health pass 2026-09-18 — SESSION-START step 6 now names the FEATURES row + CHANGELOG entry) | ~~High~~ | ~~S~~ | ~~Process~~ |
-| ~~3~~  | ~~Add a check-skills.sh guard: every skill dir must have a FEATURES.md row~~ done — check 14 (`5479784`); row-level + reverse hardening still open (TODO T39) | ~~High~~ | ~~S~~ | ~~Quality~~ |
-| 4  | Identify the origin of the 2026-09-08 ~20:40 28-file staged batch (after g1 answer); if unknown-origin, audit the eval output.md rewrites for evidence integrity | High     | M      | Bug           |
-| 5  | Add a conflict-injection assertion to `validate-workflow.sh` (touch same file upstream + PR, verify conflict survives rebase, resolve, re-push)                  | High     | M      | Quality       |
-| 6  | Full end-to-end coherence read of `jj-fork-pr-workflow/SKILL.md` (306 lines, 8+ edits)                                                                           | Medium   | S      | Quality       |
-| 7  | Clean up `/tmp/jj-fork-pr-validate.*` scratch dirs; add trap-cleanup or reuse to the harness                                                                     | Low      | S      | Cleanup       |
-| ~~8~~  | ~~After Crush restart: behavioral trigger test (already T27)~~ **Won't implement — duplicate — T27 executed in wave-2 (trigger test passed both directions).** | ~~High~~ | ~~S~~ | ~~Quality~~ |
-| ~~9~~  | ~~Align verification block with `verify-external-claims` (already T28)~~ **Won't implement — duplicate — T28 executed in wave-2.** | ~~Medium~~ | ~~S~~ | ~~Quality~~ |
-| ~~10~~ | ~~Carbon-lang upstream-skill note (already T29); README flip after first green PR (already T30)~~ **Won't implement — duplicate — T29 executed in wave-2 (prior-art note).** | ~~Low~~ | ~~S~~ | ~~Documentation~~ |
-| ~~11~~ | ~~Session-start checklist artifact (already T32) — this session's d1/d6 strengthen its case~~ **Won't implement — duplicate — T32 executed in wave-2 (SESSION-START.md).** | ~~Medium~~ | ~~S~~ | ~~Process~~ |
-| ~~12~~ | ~~Thin-skill flesh-out wave (already T31 — should be split per-skill per the 06-17 audit before starting)~~ **Won't implement — duplicate — T31 executed in wave-2 (thin-skill audit + d2-syntax).** | ~~Medium~~ | ~~L~~ | ~~Quality~~ |
-| 13 | Consider a `PIPESTATUS`/no-pipe-on-exit-checks convention note in AGENTS.md alongside the existing pipeline-masking lesson                                       | Medium   | S      | Process       |
-| ~~14~~ | ~~Split T31 into four per-skill TODO rows citing the audit's per-skill findings (fixes my own d5)~~ **Won't implement — duplicate — T31 split executed per-skill in wave-2.** | ~~Low~~ | ~~S~~ | ~~Cleanup~~ |
+| #      | Task                                                                                                                                                                                                 | Impact       | Effort | Category          |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ------ | ----------------- |
+| ~~1~~  | ~~Add `jj-fork-pr-workflow` to FEATURES.md (new "Version Control" section; honest status)~~ done — jj-fork row shipped in FEATURES.md (`5479784`/`5dd75e2`, GitHub & Open Source section)            | ~~Critical~~ | ~~S~~  | ~~Bug~~           |
+| ~~2~~  | ~~Add FEATURES.md + CHANGELOG steps to the AGENTS.md §4 authoring checklist~~ done (docs-health pass 2026-09-18 — SESSION-START step 6 now names the FEATURES row + CHANGELOG entry)                 | ~~High~~     | ~~S~~  | ~~Process~~       |
+| ~~3~~  | ~~Add a check-skills.sh guard: every skill dir must have a FEATURES.md row~~ done — check 14 (`5479784`); row-level + reverse hardening still open (TODO T39)                                        | ~~High~~     | ~~S~~  | ~~Quality~~       |
+| 4      | Identify the origin of the 2026-09-08 ~20:40 28-file staged batch (after g1 answer); if unknown-origin, audit the eval output.md rewrites for evidence integrity                                     | High         | M      | Bug               |
+| 5      | Add a conflict-injection assertion to `validate-workflow.sh` (touch same file upstream + PR, verify conflict survives rebase, resolve, re-push)                                                      | High         | M      | Quality           |
+| 6      | Full end-to-end coherence read of `jj-fork-pr-workflow/SKILL.md` (306 lines, 8+ edits)                                                                                                               | Medium       | S      | Quality           |
+| 7      | Clean up `/tmp/jj-fork-pr-validate.*` scratch dirs; add trap-cleanup or reuse to the harness                                                                                                         | Low          | S      | Cleanup           |
+| ~~8~~  | ~~After Crush restart: behavioral trigger test (already T27)~~ **Won't implement — duplicate — T27 executed in wave-2 (trigger test passed both directions).**                                       | ~~High~~     | ~~S~~  | ~~Quality~~       |
+| ~~9~~  | ~~Align verification block with `verify-external-claims` (already T28)~~ **Won't implement — duplicate — T28 executed in wave-2.**                                                                   | ~~Medium~~   | ~~S~~  | ~~Quality~~       |
+| ~~10~~ | ~~Carbon-lang upstream-skill note (already T29); README flip after first green PR (already T30)~~ **Won't implement — duplicate — T29 executed in wave-2 (prior-art note).**                         | ~~Low~~      | ~~S~~  | ~~Documentation~~ |
+| ~~11~~ | ~~Session-start checklist artifact (already T32) — this session's d1/d6 strengthen its case~~ **Won't implement — duplicate — T32 executed in wave-2 (SESSION-START.md).**                           | ~~Medium~~   | ~~S~~  | ~~Process~~       |
+| ~~12~~ | ~~Thin-skill flesh-out wave (already T31 — should be split per-skill per the 06-17 audit before starting)~~ **Won't implement — duplicate — T31 executed in wave-2 (thin-skill audit + d2-syntax).** | ~~Medium~~   | ~~L~~  | ~~Quality~~       |
+| 13     | Consider a `PIPESTATUS`/no-pipe-on-exit-checks convention note in AGENTS.md alongside the existing pipeline-masking lesson                                                                           | Medium       | S      | Process           |
+| ~~14~~ | ~~Split T31 into four per-skill TODO rows citing the audit's per-skill findings (fixes my own d5)~~ **Won't implement — duplicate — T31 split executed per-skill in wave-2.**                        | ~~Low~~      | ~~S~~  | ~~Cleanup~~       |
 
 Not re-listed (already routed, unchanged): ROADMAP open questions (status-report format, how-to-write-skills location, mergemerge origin, and the pre-existing seven).
 
@@ -85,7 +85,6 @@ Not re-listed (already routed, unchanged): ROADMAP open questions (status-report
 **Handoff:** Section (f) is the primary input for `docs-health` → **HARVEST** (canonical rule lives there; note items 8-12 already exist as T27-T32 — dedupe, don't duplicate). When this snapshot goes stale, `docs-health` → **ANNOTATE** resolves it non-destructively.
 
 **Did I lie to you?** Once, by accident, and small: the "exit=0" on the final validation run was grep's exit status, not the script's (d2). The 11/11 RESULT output was and is real. Everything else in the wave checks out against the repo.
-
 
 ---
 

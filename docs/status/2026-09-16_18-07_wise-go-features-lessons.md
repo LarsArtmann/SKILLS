@@ -80,8 +80,8 @@ the AGENTS.md edit was correctly rejected once for not reading the file first.
 
 ## f) Next tasks (prioritized)
 
-| # | Task                                                                                             | Why / size                       |
-| - | ------------------------------------------------------------------------------------------------ | -------------------------------- |
-| 1 | On the next real docs-health BUILD/VERIFY run in a consumer project, exercise the new vocabulary | Behavioral validation (natural)  |
-| ~~2~~ | ~~Existing T30/T34 remain the aging path for the 5 🆕 NEW rows~~ **Won't implement — duplicate — T30/T34 already tracked verbatim in TODO_LIST.** | ~~Already tracked~~ |
+| #     | Task                                                                                                                                                                                           | Why / size                           |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| 1     | On the next real docs-health BUILD/VERIFY run in a consumer project, exercise the new vocabulary                                                                                               | Behavioral validation (natural)      |
+| ~~2~~ | ~~Existing T30/T34 remain the aging path for the 5 🆕 NEW rows~~ **Won't implement — duplicate — T30/T34 already tracked verbatim in TODO_LIST.**                                              | ~~Already tracked~~                  |
 | ~~3~~ | ~~Consider whether TODO_LIST/ROADMAP want a "why not" split analogous to absent-why labels~~ **Won't implement — superseded by the 18-17 comprehensive report f9 (same idea, tracked there).** | ~~Same conflation exists there (S)~~ |

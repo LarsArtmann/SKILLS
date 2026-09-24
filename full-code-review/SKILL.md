@@ -58,7 +58,7 @@ visual treatment.
    `deduplicate-code` skill.
 6. If documentation drift is a major finding, reference and delegate to the
    `docs-health` skill for a full documentation audit.
-6. This review's HTML report is a point-in-time snapshot; it goes stale. When a
+7. This review's HTML report is a point-in-time snapshot; it goes stale. When a
    later task asks to bring old review reports current, use the `docs-health`
    ANNOTATE mode (annotate non-destructively — never rewrite history).
    Likewise, when adding TODOs/annotations across many files during this review,

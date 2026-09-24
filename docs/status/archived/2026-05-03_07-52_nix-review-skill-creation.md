@@ -108,7 +108,6 @@ Created a comprehensive `nix-review` skill that reviews and improves `.nix` file
 
 5. ~~**Add sops-nix integration guide**~~ w:open — no demand signal yet
 
-
 ### Process Improvements
 
 6. ~~**Run eval test cases**~~ w:ROADMAP §1 — empirical-validation theme
@@ -116,7 +115,6 @@ Created a comprehensive `nix-review` skill that reviews and improves `.nix` file
 7. ~~**Iterate on feedback**~~ v:done — the feedback loop has processed every file since 2026-07
 
 8. ~~**Cross-reference with `nix flake check`**~~ v:done — the skill's verification gates run it
-
 
 ---
 

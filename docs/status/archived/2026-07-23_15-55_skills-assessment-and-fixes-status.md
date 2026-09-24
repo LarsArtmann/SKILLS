@@ -22,22 +22,22 @@ Session goal: **READ all SKILL.md files, assess what's good and what to improve,
 
 ## b) PARTIALLY DONE
 
-| # | Item                                     | What's done                                                                                                   | What's missing                                                                                                                                                                  |
-| - | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ~~1~~ | **website-launch path parameterization** | Added a top-of-file note documenting that paths are LarsArtmann-specific                                      | Did not actually parameterize `{repo-path}` and `{domains-path}` throughout the 1106-line file. Commands like `cd ~/projects/domains` (lines 163, 826, 834) are still hardcoded | done - resolved by later waves
-| ~~2~~ | **samber-do report vendoring**           | Copied 672-line report into `references/samber-do-best-practices-report.md`, updated SKILL.md to reference it | The report ITSELF still contains `/home/lars/projects` on line 2 (scope description). Minor — it's a historical artifact inside the report, not a skill instruction             | done - resolved by later waves
-| ~~3~~ | **pareto-planning content regression**   | Noticed that the original prompt says "Do not forget the other 20% to get to a 100%" but the skill drops this | Did not restore this content                                                                                                                                                    | done - resolved by later waves
+| #     | Item                                     | What's done                                                                                                   | What's missing                                                                                                                                                                  |
+| ----- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ~~1~~ | **website-launch path parameterization** | Added a top-of-file note documenting that paths are LarsArtmann-specific                                      | Did not actually parameterize `{repo-path}` and `{domains-path}` throughout the 1106-line file. Commands like `cd ~/projects/domains` (lines 163, 826, 834) are still hardcoded |
+| ~~2~~ | **samber-do report vendoring**           | Copied 672-line report into `references/samber-do-best-practices-report.md`, updated SKILL.md to reference it | The report ITSELF still contains `/home/lars/projects` on line 2 (scope description). Minor — it's a historical artifact inside the report, not a skill instruction             |
+| ~~3~~ | **pareto-planning content regression**   | Noticed that the original prompt says "Do not forget the other 20% to get to a 100%" but the skill drops this | Did not restore this content                                                                                                                                                    |
 
 ---
 
 ## c) NOT STARTED
 
-| # | Item                                         | Why it matters                                                                                                                                                                              |
-| - | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ~~1~~ | **README.md update**                         | Skills changed significantly (line counts, allowed-tools added, output dirs changed). README quality badges may need review                                                                 | done - resolved by later waves
-| ~~2~~ | **AGENTS.md §5.8 update**                    | The allowed-tools coverage changed — 7 more skills now have it. The guide could note the current coverage                                                                                   | done - resolved by later waves
-| ~~3~~ | **pareto-planning "other 20%" content**      | The original prompt explicitly says "Do not forget the other 20% to get to a 100%." The skill stops at the 1% tier and never addresses the remaining 80%→100% work                          | done - resolved by later waves
-| ~~4~~ | **Remaining skills without `allowed-tools`** | `architecture-review`, `brutal-self-review`, `docs-health`, `full-code-review`, `html-report-kit`, `naming-review`, `status-report`, `update-old-docs` still lack it (some may not need it) | done - resolved by later waves
+| #     | Item                                         | Why it matters                                                                                                                                                                              |
+| ----- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ~~1~~ | **README.md update**                         | Skills changed significantly (line counts, allowed-tools added, output dirs changed). README quality badges may need review                                                                 |
+| ~~2~~ | **AGENTS.md §5.8 update**                    | The allowed-tools coverage changed — 7 more skills now have it. The guide could note the current coverage                                                                                   |
+| ~~3~~ | **pareto-planning "other 20%" content**      | The original prompt explicitly says "Do not forget the other 20% to get to a 100%." The skill stops at the 1% tier and never addresses the remaining 80%→100% work                          |
+| ~~4~~ | **Remaining skills without `allowed-tools`** | `architecture-review`, `brutal-self-review`, `docs-health`, `full-code-review`, `html-report-kit`, `naming-review`, `status-report`, `update-old-docs` still lack it (some may not need it) |
 
 ---
 

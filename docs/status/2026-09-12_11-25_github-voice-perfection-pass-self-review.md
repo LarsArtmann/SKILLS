@@ -60,28 +60,28 @@
 
 ## f) NEXT (20, impact-sorted)
 
-| #  | Task                                                                                                                                    | Impact             | Effort   |
-| -- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | -------- |
-| ~~1~~  | ~~Process `docs/feedback/new/2026-09-11_*`: route Incident 2 (pipe/SIGPIPE) and Incident 4 (surgery-without-diff) into skill rules~~ done — `0f70bdb` (2026-09-13) — incidents 2+4 encoded into skills, feedback archived | ~~High (2× repeated)~~ | ~~S~~ |
-| 2  | `evals/evals.json`: 5-8 real prompts + mechanical scoring via check-draft.py (with/without skill FAIL-rate)                             | High               | M        |
-| 3  | First live use of github-voice on a real filing → age 🆕→🟢                                                                             | High               | S        |
-| 4  | Commit checker fixtures as tests (the 5 fixtures were trashed — recreate under `scripts/` + tiny runner, docs-health self-test pattern) | Medium             | S        |
-| 5  | Add `--monthly` time-series mode to analyze-corpus.py (script the turn-1 numbers)                                                       | Medium             | S        |
-| ~~6~~  | ~~Verify body-emoji corpus p90; fix cap or message in check-draft.py~~ done — carried open — body-emoji p90 never measured | ~~Medium~~ | ~~XS~~ |
-| 7  | Ban-list re-verify helper: assert FAIL_PHRASES still 0-hit on current corpus (mechanical freshness)                                     | Medium             | S        |
-| ~~8~~  | ~~Re-run `check-skills.sh --triggers` (description changed since last run)~~ done (docs-health pass 2026-09-18 — --triggers run green by this pass (github-voice STRONG)) | ~~Low~~ | ~~XS~~ |
-| 9  | AGENTS §5.5: add check-draft.py as the ban-list canonical home                                                                          | Low                | XS       |
-| ~~10~~ | ~~Verify verify-before-filing description length <1024 post-edit (carried)~~ done — measured 934/1024 chars (2026-09-18 pass) | ~~Low~~ | ~~XS~~ |
-| 11 | Announcement-classification marker in corpus markdown frontmatter (future analysis)                                                     | Low                | S        |
-| 12 | Drift pass: SKILL.md quick rules vs profile sections after today's rapid edits                                                          | Medium             | S        |
-| 13 | Distinct `--kind review` rules (praise→verdict→concern shape, currently aliased to comment)                                             | Low                | S        |
-| 14 | Corpus-snapshot date annotation next to every stat in profile §1/§6/§12 (partially present)                                             | Low                | XS       |
-| 15 | Reaction-weighted exemplars in §6 (top-reacted announcement posts)                                                                      | Low                | S        |
-| ~~16~~ | ~~Full own-repo hydration decision (carried)~~ **Won't implement — duplicate of 10-55 f11 (same hydration decision).** | ~~Low-Med~~ | ~~L~~ |
-| ~~17~~ | ~~Discussions collection, opt-in (carried)~~ **Won't implement — duplicate of 10-55 f12 (same Discussions decision).** | ~~Low~~ | ~~M~~ |
-| ~~18~~ | ~~Corpus + ban-list refresh cadence decision (see g2)~~ done — routed to ROADMAP Open Questions (refresh cadence, g2) | ~~Medium~~ | ~~decision~~ |
-| ~~19~~ | ~~Markdown-vs-HTML report default decision (see g3)~~ done — routed to ROADMAP Open Questions — 8th recurrence logged 2026-09-18 | ~~Medium~~ | ~~decision~~ |
-| ~~20~~ | ~~Deliberate-imperfection policy for autonomous drafts (see g1)~~ done — routed to ROADMAP Open Questions (deliberate-imperfection policy, g1) | ~~High~~ | ~~decision~~ |
+| #      | Task                                                                                                                                                                                                                      | Impact                 | Effort       |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------------ |
+| ~~1~~  | ~~Process `docs/feedback/new/2026-09-11_*`: route Incident 2 (pipe/SIGPIPE) and Incident 4 (surgery-without-diff) into skill rules~~ done — `0f70bdb` (2026-09-13) — incidents 2+4 encoded into skills, feedback archived | ~~High (2× repeated)~~ | ~~S~~        |
+| 2      | `evals/evals.json`: 5-8 real prompts + mechanical scoring via check-draft.py (with/without skill FAIL-rate)                                                                                                               | High                   | M            |
+| 3      | First live use of github-voice on a real filing → age 🆕→🟢                                                                                                                                                               | High                   | S            |
+| 4      | Commit checker fixtures as tests (the 5 fixtures were trashed — recreate under `scripts/` + tiny runner, docs-health self-test pattern)                                                                                   | Medium                 | S            |
+| 5      | Add `--monthly` time-series mode to analyze-corpus.py (script the turn-1 numbers)                                                                                                                                         | Medium                 | S            |
+| ~~6~~  | ~~Verify body-emoji corpus p90; fix cap or message in check-draft.py~~ done — carried open — body-emoji p90 never measured                                                                                                | ~~Medium~~             | ~~XS~~       |
+| 7      | Ban-list re-verify helper: assert FAIL_PHRASES still 0-hit on current corpus (mechanical freshness)                                                                                                                       | Medium                 | S            |
+| ~~8~~  | ~~Re-run `check-skills.sh --triggers` (description changed since last run)~~ done (docs-health pass 2026-09-18 — --triggers run green by this pass (github-voice STRONG))                                                 | ~~Low~~                | ~~XS~~       |
+| 9      | AGENTS §5.5: add check-draft.py as the ban-list canonical home                                                                                                                                                            | Low                    | XS           |
+| ~~10~~ | ~~Verify verify-before-filing description length <1024 post-edit (carried)~~ done — measured 934/1024 chars (2026-09-18 pass)                                                                                             | ~~Low~~                | ~~XS~~       |
+| 11     | Announcement-classification marker in corpus markdown frontmatter (future analysis)                                                                                                                                       | Low                    | S            |
+| 12     | Drift pass: SKILL.md quick rules vs profile sections after today's rapid edits                                                                                                                                            | Medium                 | S            |
+| 13     | Distinct `--kind review` rules (praise→verdict→concern shape, currently aliased to comment)                                                                                                                               | Low                    | S            |
+| 14     | Corpus-snapshot date annotation next to every stat in profile §1/§6/§12 (partially present)                                                                                                                               | Low                    | XS           |
+| 15     | Reaction-weighted exemplars in §6 (top-reacted announcement posts)                                                                                                                                                        | Low                    | S            |
+| ~~16~~ | ~~Full own-repo hydration decision (carried)~~ **Won't implement — duplicate of 10-55 f11 (same hydration decision).**                                                                                                    | ~~Low-Med~~            | ~~L~~        |
+| ~~17~~ | ~~Discussions collection, opt-in (carried)~~ **Won't implement — duplicate of 10-55 f12 (same Discussions decision).**                                                                                                    | ~~Low~~                | ~~M~~        |
+| ~~18~~ | ~~Corpus + ban-list refresh cadence decision (see g2)~~ done — routed to ROADMAP Open Questions (refresh cadence, g2)                                                                                                     | ~~Medium~~             | ~~decision~~ |
+| ~~19~~ | ~~Markdown-vs-HTML report default decision (see g3)~~ done — routed to ROADMAP Open Questions — 8th recurrence logged 2026-09-18                                                                                          | ~~Medium~~             | ~~decision~~ |
+| ~~20~~ | ~~Deliberate-imperfection policy for autonomous drafts (see g1)~~ done — routed to ROADMAP Open Questions (deliberate-imperfection policy, g1)                                                                            | ~~High~~               | ~~decision~~ |
 
 ## g) QUESTIONS (cannot figure out myself)
 

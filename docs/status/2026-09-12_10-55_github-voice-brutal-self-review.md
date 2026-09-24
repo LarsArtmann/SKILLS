@@ -64,33 +64,33 @@
 
 ## f) NEXT (25, impact-sorted; HARVEST blocked until instructions)
 
-| #  | Task                                                                                                        | Impact                      | Effort          |
-| -- | ----------------------------------------------------------------------------------------------------------- | --------------------------- | --------------- |
-| 1  | Fix "every comment" wording in SKILL.md + my chat claim (d2)                                                | High (honesty)              | XS              |
-| 2  | Self-application test: draft 3 artifacts from the profile, compare against corpus register (b5)             | High                        | S               |
-| 3  | First live trigger of github-voice on real work → age 🆕→🟢 in README                                       | High                        | S               |
-| ~~4~~  | ~~Add `--since YYYY` era filter to analyze-corpus.py; regenerate ANALYSIS + refresh profile §1 numbers (b3)~~ done — shipped in the 11-25 session (analyze-corpus.py --since + era tables) | ~~Medium~~ | ~~S~~ |
-| 5  | Frequency-based agent-template detector replacing MARKERS_AGENT_BODY (e4)                                   | Medium                      | M               |
-| 6  | Windowing-completeness assert + `discrepancies` in summary.json (e5)                                        | Medium                      | S               |
-| 7  | Verify `PullRequestReview.userContentEdits` exists or not; document the edit-check scope in the skill (b4)  | Medium                      | XS              |
-| 8  | Add tiny self-test to both scripts per docs-health pattern (e7)                                             | Medium                      | S               |
-| ~~9~~  | ~~Re-check verify-before-filing description length post-edit (b6)~~ done — measured 934/1024 chars (2026-09-18 pass) | ~~Low~~ | ~~XS~~ |
-| 10 | Collect external review-comments (`reviewed-by:LarsArtmann`) — his reviewing-others voice is thin in corpus | Medium                      | M               |
-| ~~11~~ | ~~Full own-repo hydration (6,508 threads) if maintainer-voice depth matters (g2)~~ **Won't implement — user decision (hydration budget — carried as g2, never requested).** | ~~Low–Med~~ | ~~L~~ |
-| ~~12~~ | ~~GitHub Discussions collection, opt-in (g2)~~ **Won't implement — user decision (Discussions collection, opt-in only).** | ~~Low~~ | ~~M~~ |
-| 13 | `evals/evals.json` prompt file per skill-creator (c1)                                                       | Low                         | XS              |
-| 14 | Description trigger-eval optimization loop                                                                  | Low                         | M               |
-| ~~15~~ | ~~HARVEST this section into TODO_LIST (after instructions)~~ done (docs-health pass 2026-09-18) | ~~Med (loop)~~ | ~~S~~ |
-| ~~16~~ | ~~Decide + encode the status-report/brutal-self-review markdown-default question (g3)~~ done — routed to ROADMAP Open Questions — 8th recurrence logged 2026-09-18 | ~~Medium~~ | ~~XS once decided~~ |
-| ~~17~~ | ~~Typo/imperfection policy for autonomous drafts written into the profile (g1)~~ done — routed to ROADMAP Open Questions (deliberate-imperfection policy, g1) | ~~High (correctness of skill)~~ | ~~S~~ |
-| 18 | Deduplicate the GitHub-API findings: AGENTS §5.5 stays canonical, SKILL.md table cites it (d4)              | Low                         | XS              |
-| 19 | De-overlap profile §2/§6/§10 or add a "single source per rule" pass (d4)                                    | Low                         | S               |
-| 20 | Incremental markdown rendering per phase in collector (crash-resilient artifacts)                           | Low                         | S               |
-| 21 | Search-rate-specific pacing (measure the 30/min budget; replace `sleep(2.1)` guess)                         | Low                         | S               |
-| 22 | Absence analysis: phrases common in AI prose but absent from his corpus → strengthen Do/Never               | Medium                      | S               |
-| 23 | Quantified intent-bucket frequencies for profile §6 table (from comment clustering)                         | Medium                      | M               |
-| 24 | German/English ratio + timeline stat to quantify the era note                                               | Low                         | S               |
-| 25 | Reactions-vs-length correlation ("what lands") into the profile                                             | Low                         | S               |
+| #      | Task                                                                                                                                                                                       | Impact                          | Effort              |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------- |
+| 1      | Fix "every comment" wording in SKILL.md + my chat claim (d2)                                                                                                                               | High (honesty)                  | XS                  |
+| 2      | Self-application test: draft 3 artifacts from the profile, compare against corpus register (b5)                                                                                            | High                            | S                   |
+| 3      | First live trigger of github-voice on real work → age 🆕→🟢 in README                                                                                                                      | High                            | S                   |
+| ~~4~~  | ~~Add `--since YYYY` era filter to analyze-corpus.py; regenerate ANALYSIS + refresh profile §1 numbers (b3)~~ done — shipped in the 11-25 session (analyze-corpus.py --since + era tables) | ~~Medium~~                      | ~~S~~               |
+| 5      | Frequency-based agent-template detector replacing MARKERS_AGENT_BODY (e4)                                                                                                                  | Medium                          | M                   |
+| 6      | Windowing-completeness assert + `discrepancies` in summary.json (e5)                                                                                                                       | Medium                          | S                   |
+| 7      | Verify `PullRequestReview.userContentEdits` exists or not; document the edit-check scope in the skill (b4)                                                                                 | Medium                          | XS                  |
+| 8      | Add tiny self-test to both scripts per docs-health pattern (e7)                                                                                                                            | Medium                          | S                   |
+| ~~9~~  | ~~Re-check verify-before-filing description length post-edit (b6)~~ done — measured 934/1024 chars (2026-09-18 pass)                                                                       | ~~Low~~                         | ~~XS~~              |
+| 10     | Collect external review-comments (`reviewed-by:LarsArtmann`) — his reviewing-others voice is thin in corpus                                                                                | Medium                          | M                   |
+| ~~11~~ | ~~Full own-repo hydration (6,508 threads) if maintainer-voice depth matters (g2)~~ **Won't implement — user decision (hydration budget — carried as g2, never requested).**                | ~~Low–Med~~                     | ~~L~~               |
+| ~~12~~ | ~~GitHub Discussions collection, opt-in (g2)~~ **Won't implement — user decision (Discussions collection, opt-in only).**                                                                  | ~~Low~~                         | ~~M~~               |
+| 13     | `evals/evals.json` prompt file per skill-creator (c1)                                                                                                                                      | Low                             | XS                  |
+| 14     | Description trigger-eval optimization loop                                                                                                                                                 | Low                             | M                   |
+| ~~15~~ | ~~HARVEST this section into TODO_LIST (after instructions)~~ done (docs-health pass 2026-09-18)                                                                                            | ~~Med (loop)~~                  | ~~S~~               |
+| ~~16~~ | ~~Decide + encode the status-report/brutal-self-review markdown-default question (g3)~~ done — routed to ROADMAP Open Questions — 8th recurrence logged 2026-09-18                         | ~~Medium~~                      | ~~XS once decided~~ |
+| ~~17~~ | ~~Typo/imperfection policy for autonomous drafts written into the profile (g1)~~ done — routed to ROADMAP Open Questions (deliberate-imperfection policy, g1)                              | ~~High (correctness of skill)~~ | ~~S~~               |
+| 18     | Deduplicate the GitHub-API findings: AGENTS §5.5 stays canonical, SKILL.md table cites it (d4)                                                                                             | Low                             | XS                  |
+| 19     | De-overlap profile §2/§6/§10 or add a "single source per rule" pass (d4)                                                                                                                   | Low                             | S                   |
+| 20     | Incremental markdown rendering per phase in collector (crash-resilient artifacts)                                                                                                          | Low                             | S                   |
+| 21     | Search-rate-specific pacing (measure the 30/min budget; replace `sleep(2.1)` guess)                                                                                                        | Low                             | S                   |
+| 22     | Absence analysis: phrases common in AI prose but absent from his corpus → strengthen Do/Never                                                                                              | Medium                          | S                   |
+| 23     | Quantified intent-bucket frequencies for profile §6 table (from comment clustering)                                                                                                        | Medium                          | M                   |
+| 24     | German/English ratio + timeline stat to quantify the era note                                                                                                                              | Low                             | S                   |
+| 25     | Reactions-vs-length correlation ("what lands") into the profile                                                                                                                            | Low                             | S                   |
 
 ## g) QUESTIONS (cannot be figured out myself)
 

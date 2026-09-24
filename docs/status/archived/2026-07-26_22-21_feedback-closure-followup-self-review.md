@@ -208,16 +208,16 @@ _Rooted in this session's defects — not a repo-wide re-audit._
 ## g) Questions I can NOT figure out myself
 
 ~~1. **String-guard vs real evals?**~~ RESOLVED - parked in ROADMAP par 1; structural gates are the accepted bar for this content repo. I've now twice
-   skipped the eval loop. You may be fine with that for a content repo, but I should not
-   keep making the call unilaterally. This decides whether (f5) is busywork or mandatory.
+skipped the eval loop. You may be fine with that for a content repo, but I should not
+keep making the call unilaterally. This decides whether (f5) is busywork or mandatory.
 
 ~~2. **Should HARVEST read ALL Historical dirs?**~~ RESOLVED - all three canonical dirs (documentation model owns the list). The
-   documentation model lists three Historical dirs but HARVEST's read step names only
-   `docs/status/`. Either the model is wrong or the read step is too narrow. I can make
-   either change but the scope decision is yours — it affects every report-producing skill.
+documentation model lists three Historical dirs but HARVEST's read step names only
+`docs/status/`. Either the model is wrong or the read step is too narrow. I can make
+either change but the scope decision is yours — it affects every report-producing skill.
 
 ~~3. **Where should architecture-review write its output?**~~ RESOLVED - kept in docs/architecture-understanding/ (added to the model; 2026-09-14 pair documentation). It currently uses
-   `docs/architecture-understanding/` — a lone dir not in the documentation model. Options:
-   (a) keep it and add it to the model + HARVEST scope; (b) move it to `docs/reviews/`;
-   (c) leave it outside HARVEST entirely and accept those roadmaps get entombed. This is a
-   real architectural choice, not a formatting one.
+`docs/architecture-understanding/` — a lone dir not in the documentation model. Options:
+(a) keep it and add it to the model + HARVEST scope; (b) move it to `docs/reviews/`;
+(c) leave it outside HARVEST entirely and accept those roadmaps get entombed. This is a
+real architectural choice, not a formatting one.

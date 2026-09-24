@@ -59,16 +59,16 @@ Pattern across d1–d5: **gates ≠ verification.** I quoted exit codes diligent
 
 ## f) Things we should get done next (from THIS session's findings)
 
-| # | Task                                                                                                                                                         | Impact | Effort |
-| - | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ------ |
-| ~~1~~ | ~~HARVEST c1 into TODO_LIST.md (naming-review description cap → rewrite to make room for data-model disambiguation)~~ done (docs-health pass 2026-09-18 — routed to TODO_LIST as T38) | ~~Med~~ | ~~15min~~ |
-| ~~2~~ | ~~Verify FEATURES.md line-count column for the other 3 edited skills (architecture-review, architecture-visualization, status-report) — and fix any drift~~ done — moot — the Lines column was removed entirely (`5dd75e2`) | ~~Low~~ | ~~5min~~ |
-| ~~3~~ | ~~e1: add "grep FEATURES.md row after SKILL.md edits" to how-to-write-skills.md checklist~~ done (docs-health pass 2026-09-18 — SESSION-START step 6 now carries the FEATURES-row re-check rule) | ~~Med~~ | ~~10min~~ |
-| 4 | e2: bare-count detector advisory in check-skills.sh                                                                                                          | Med    | 30min  |
-| ~~5~~ | ~~e5: `--features` recompute mode or drop the Lines column~~ done — resolved by removing the Lines column (`5dd75e2`) | ~~Low~~ | ~~20min~~ |
-| 6 | Verify the blending claim properly: sample ~5 "self-review"-named reports for actual format blend (b3) — strengthens or corrects the AGENTS §5.5 sentence    | Low    | 10min  |
-| ~~7~~ | ~~naming-review description rewrite (after #1): tighten to ~800 chars, add data-model-review mutual disambiguation~~ done (docs-health pass 2026-09-18 — routed to TODO_LIST as T38 (rewrite + mutual disambiguation)) | ~~Low~~ | ~~20min~~ |
-| 8 | Consider whether the a–g + brutal blend deserves a first-class "session-end report" convention doc (16/66 filename evidence, 1 verified blend — do #6 first) | Low    | 15min  |
+| #     | Task                                                                                                                                                                                                                        | Impact  | Effort    |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | --------- |
+| ~~1~~ | ~~HARVEST c1 into TODO_LIST.md (naming-review description cap → rewrite to make room for data-model disambiguation)~~ done (docs-health pass 2026-09-18 — routed to TODO_LIST as T38)                                       | ~~Med~~ | ~~15min~~ |
+| ~~2~~ | ~~Verify FEATURES.md line-count column for the other 3 edited skills (architecture-review, architecture-visualization, status-report) — and fix any drift~~ done — moot — the Lines column was removed entirely (`5dd75e2`) | ~~Low~~ | ~~5min~~  |
+| ~~3~~ | ~~e1: add "grep FEATURES.md row after SKILL.md edits" to how-to-write-skills.md checklist~~ done (docs-health pass 2026-09-18 — SESSION-START step 6 now carries the FEATURES-row re-check rule)                            | ~~Med~~ | ~~10min~~ |
+| 4     | e2: bare-count detector advisory in check-skills.sh                                                                                                                                                                         | Med     | 30min     |
+| ~~5~~ | ~~e5: `--features` recompute mode or drop the Lines column~~ done — resolved by removing the Lines column (`5dd75e2`)                                                                                                       | ~~Low~~ | ~~20min~~ |
+| 6     | Verify the blending claim properly: sample ~5 "self-review"-named reports for actual format blend (b3) — strengthens or corrects the AGENTS §5.5 sentence                                                                   | Low     | 10min     |
+| ~~7~~ | ~~naming-review description rewrite (after #1): tighten to ~800 chars, add data-model-review mutual disambiguation~~ done (docs-health pass 2026-09-18 — routed to TODO_LIST as T38 (rewrite + mutual disambiguation))      | ~~Low~~ | ~~20min~~ |
+| 8     | Consider whether the a–g + brutal blend deserves a first-class "session-end report" convention doc (16/66 filename evidence, 1 verified blend — do #6 first)                                                                | Low     | 15min     |
 
 ## g) Questions I can NOT figure out myself
 

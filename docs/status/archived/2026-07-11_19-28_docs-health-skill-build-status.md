@@ -45,37 +45,37 @@ several quality items remain.
 
 ## b) PARTIALLY DONE
 
-| # | What                               | What is missing                                                                                                                                                                                                   |
-| - | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ~~1~~ | README.md inventory table          | Updated skill rows (3 to 1) but **left stale count "20 skills" on line 11** (should be 18). Caught in this report, not yet fixed.                                                                                 | done - done - closed by later waves
-| ~~2~~ | Cross-references from other skills | Added refs FROM pareto-planning, full-code-review, brutal-self-review. But `status-report`, `code-quality-scan`, and `full-code-review`'s planning phase do not mention docs-health for doc-related findings.     | done - done - closed by later waves
-| ~~3~~ | Templates                          | All 7 exist but were created from imagination, not validated against real projects. The FEATURES and TODO_LIST templates reuse the old examples (auth/login.go etc.) which may not resonate for non-web projects. | done - done - closed by later waves
+| #     | What                               | What is missing                                                                                                                                                                                                   |
+| ----- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ~~1~~ | README.md inventory table          | Updated skill rows (3 to 1) but **left stale count "20 skills" on line 11** (should be 18). Caught in this report, not yet fixed.                                                                                 |
+| ~~2~~ | Cross-references from other skills | Added refs FROM pareto-planning, full-code-review, brutal-self-review. But `status-report`, `code-quality-scan`, and `full-code-review`'s planning phase do not mention docs-health for doc-related findings.     |
+| ~~3~~ | Templates                          | All 7 exist but were created from imagination, not validated against real projects. The FEATURES and TODO_LIST templates reuse the old examples (auth/login.go etc.) which may not resonate for non-web projects. |
 
 ---
 
 ## c) NOT STARTED
 
-| # | What                                                                                                          |
-| - | ------------------------------------------------------------------------------------------------------------- |
-| ~~1~~ | **Skill testing** -- no test prompts written, no trigger verification, no eval run                            | done - done - closed by later waves
-| ~~2~~ | **Status doc in docs/status/** -- writing it now (this file)                                                  | done - done - closed by later waves
-| ~~3~~ | **CI/automation guidance** -- pre-commit hooks for doc freshness, markdownlint, link checkers                 | done - done - closed by later waves
-| ~~4~~ | **Monorepo/multi-package handling** -- how to handle FEATURES.md per package                                  | done - done - closed by later waves
-| ~~5~~ | **Sub-agent guidance for FEATURES.md builds** -- only TODO_LIST.md has it                                     | done - done - closed by later waves
-| ~~6~~ | **Doc deletion guidance** -- when to delete vs rewrite a doc                                                  | done - done - closed by later waves
-| ~~7~~ | **flake.nix in documentation model** -- mentioned in verify-checklist but not in the SKILL.md doc model table | done - done - closed by later waves
-| ~~8~~ | **Relationship diagram** -- no D2 or visual for the 7-doc lifecycle                                           | done - done - closed by later waves
+| #     | What                                                                                                          |
+| ----- | ------------------------------------------------------------------------------------------------------------- |
+| ~~1~~ | **Skill testing** -- no test prompts written, no trigger verification, no eval run                            |
+| ~~2~~ | **Status doc in docs/status/** -- writing it now (this file)                                                  |
+| ~~3~~ | **CI/automation guidance** -- pre-commit hooks for doc freshness, markdownlint, link checkers                 |
+| ~~4~~ | **Monorepo/multi-package handling** -- how to handle FEATURES.md per package                                  |
+| ~~5~~ | **Sub-agent guidance for FEATURES.md builds** -- only TODO_LIST.md has it                                     |
+| ~~6~~ | **Doc deletion guidance** -- when to delete vs rewrite a doc                                                  |
+| ~~7~~ | **flake.nix in documentation model** -- mentioned in verify-checklist but not in the SKILL.md doc model table |
+| ~~8~~ | **Relationship diagram** -- no D2 or visual for the 7-doc lifecycle                                           |
 
 ---
 
 ## d) TOTALLY FUCKED UP
 
-| # | What                                                    | Impact                                                                                                                                                                                                                                                           | Root cause                                                                   |
-| - | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| ~~1~~ | **README.md says "20 skills" but there are 18**         | Anyone reading README sees a wrong count. This is EXACTLY the kind of stale count the docs-health skill is supposed to prevent. The skill author's own repo fails the skill's own rules.                                                                         | Removed 3 skills, added 1, forgot to update the count. Hardcoded counts rot. | done - done - closed by later waves
-| ~~2~~ | **Never tested the skill**                              | The description claims to trigger on "feature audit", "build TODO list", and "docs up to date" (three separate original skills). No verification that a single merged description triggers correctly for all three intents. Could over-trigger or under-trigger. | Identified as critical in self-review, then skipped it to "get shit done."   | done - done - closed by later waves
-| ~~3~~ | **sed replacement was crude**                           | The global `s/--/, /g` on em dashes was a blunt instrument. Most replacements read fine, but some sentences may have awkward comma placement where an em dash was the better punctuation. No manual review of every replacement was done.                        | Used a bulk sed instead of careful per-file editing.                         | done - done - closed by later waves
-| ~~4~~ | **No table of contents in reference files > 300 lines** | `build-guide.md` is 204 lines and has a TOC. But the convention from `how-to-write-skills.md` says ">300 lines" needs a TOC. Currently fine, but as these grow they will need TOCs. Noted for future.                                                            | Not yet a problem, but no guard exists.                                      | done - done - closed by later waves
+| #     | What                                                    | Impact                                                                                                                                                                                                                                                           | Root cause                                                                   |
+| ----- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| ~~1~~ | **README.md says "20 skills" but there are 18**         | Anyone reading README sees a wrong count. This is EXACTLY the kind of stale count the docs-health skill is supposed to prevent. The skill author's own repo fails the skill's own rules.                                                                         | Removed 3 skills, added 1, forgot to update the count. Hardcoded counts rot. |
+| ~~2~~ | **Never tested the skill**                              | The description claims to trigger on "feature audit", "build TODO list", and "docs up to date" (three separate original skills). No verification that a single merged description triggers correctly for all three intents. Could over-trigger or under-trigger. | Identified as critical in self-review, then skipped it to "get shit done."   |
+| ~~3~~ | **sed replacement was crude**                           | The global `s/--/, /g` on em dashes was a blunt instrument. Most replacements read fine, but some sentences may have awkward comma placement where an em dash was the better punctuation. No manual review of every replacement was done.                        | Used a bulk sed instead of careful per-file editing.                         |
+| ~~4~~ | **No table of contents in reference files > 300 lines** | `build-guide.md` is 204 lines and has a TOC. But the convention from `how-to-write-skills.md` says ">300 lines" needs a TOC. Currently fine, but as these grow they will need TOCs. Noted for future.                                                            | Not yet a problem, but no guard exists.                                      |
 
 ---
 
@@ -127,33 +127,33 @@ several quality items remain.
 
 ## f) Up to 50 Things to Get Done Next
 
-| #  | Priority | Task                                                                | Effort |
-| -- | -------- | ------------------------------------------------------------------- | ------ |
-| ~~1~~ | Critical | ~~Fix README count~~ done — script-derived + guarded | 2min |
-| ~~2~~ | Critical | ~~Test prompts~~ done in part — real audits since 2026-08 | 30min |
-| ~~3~~ | Critical | ~~skill-creator eval~~ w:ROADMAP §1 | 45min |
-| ~~4~~ | High | ~~FEATURES sub-agent guidance~~ w:open — no demand signal | 10min |
-| ~~5~~ | High | ~~flake.nix in model~~ done — verify-checklist covers it | 5min |
-| ~~6~~ | High | ~~Review sed replacements~~ w:moot — superseded | 15min |
-| ~~7~~ | High | ~~status-report back-ref~~ done — HARVEST handoff wired | 5min |
-| ~~8~~ | High | ~~code-quality-scan back-ref~~ done — disambiguated both ways | 5min |
-| ~~9~~ | Medium | ~~Monorepo guidance~~ w:open — no demand signal | 20min |
-| ~~10~~ | Medium | ~~When-to-delete guidance~~ w:open | 15min |
-| ~~11~~ | Medium | ~~Health tracking over time~~ w:ROADMAP-shaped | 20min |
-| ~~12~~ | Medium | ~~CI guidance~~ w:routed — ROADMAP enforcement question | 15min |
-| ~~13~~ | Medium | ~~Validate FEATURES-template~~ done — real FEATURES built from it | 20min |
-| ~~14~~ | Medium | ~~Validate TODO_LIST-template~~ done | 15min |
-| ~~15~~ | Medium | ~~TOC guard~~ done — check 11 | 15min |
-| ~~16~~ | Medium | ~~D2 doc-lifecycle diagram~~ w:open — nice-to-have | 20min |
-| ~~17~~ | Medium | ~~HTML AUDIT dashboard~~ Won't implement — inline by design | 30min |
-| ~~18~~ | Low | ~~markdownlint recommendation~~ w:moot — buildflow covers linting (§5.11) | 10min |
-| ~~19~~ | Low | ~~Link checker recommendation~~ done — check-skill-links.sh shipped | 10min |
-| ~~20~~ | Low | ~~docs/adr/ BUILD procedure~~ w:open — no ADR demand yet | 15min |
-| ~~21~~ | Low | ~~CHANGELOG anti-gaming~~ done — health-report-format rules (never invent baselines) | 10min |
-| ~~22~~ | Low | ~~Format flexibility~~ w:resolved-by-decision — table format canonical | 10min |
-| ~~23~~ | Low | ~~Content-repo FEATURES guidance~~ done — project-type adaptation table | 15min |
-| ~~24~~ | Low | ~~Pure-docs-repos guidance~~ done — content-repo adaptation | 10min |
-| ~~25~~ | Low | ~~Review vs Common Mistakes~~ done — docs-health authored the patterns | 15min |
+| #      | Priority | Task                                                                                 | Effort |
+| ------ | -------- | ------------------------------------------------------------------------------------ | ------ |
+| ~~1~~  | Critical | ~~Fix README count~~ done — script-derived + guarded                                 | 2min   |
+| ~~2~~  | Critical | ~~Test prompts~~ done in part — real audits since 2026-08                            | 30min  |
+| ~~3~~  | Critical | ~~skill-creator eval~~ w:ROADMAP §1                                                  | 45min  |
+| ~~4~~  | High     | ~~FEATURES sub-agent guidance~~ w:open — no demand signal                            | 10min  |
+| ~~5~~  | High     | ~~flake.nix in model~~ done — verify-checklist covers it                             | 5min   |
+| ~~6~~  | High     | ~~Review sed replacements~~ w:moot — superseded                                      | 15min  |
+| ~~7~~  | High     | ~~status-report back-ref~~ done — HARVEST handoff wired                              | 5min   |
+| ~~8~~  | High     | ~~code-quality-scan back-ref~~ done — disambiguated both ways                        | 5min   |
+| ~~9~~  | Medium   | ~~Monorepo guidance~~ w:open — no demand signal                                      | 20min  |
+| ~~10~~ | Medium   | ~~When-to-delete guidance~~ w:open                                                   | 15min  |
+| ~~11~~ | Medium   | ~~Health tracking over time~~ w:ROADMAP-shaped                                       | 20min  |
+| ~~12~~ | Medium   | ~~CI guidance~~ w:routed — ROADMAP enforcement question                              | 15min  |
+| ~~13~~ | Medium   | ~~Validate FEATURES-template~~ done — real FEATURES built from it                    | 20min  |
+| ~~14~~ | Medium   | ~~Validate TODO_LIST-template~~ done                                                 | 15min  |
+| ~~15~~ | Medium   | ~~TOC guard~~ done — check 11                                                        | 15min  |
+| ~~16~~ | Medium   | ~~D2 doc-lifecycle diagram~~ w:open — nice-to-have                                   | 20min  |
+| ~~17~~ | Medium   | ~~HTML AUDIT dashboard~~ Won't implement — inline by design                          | 30min  |
+| ~~18~~ | Low      | ~~markdownlint recommendation~~ w:moot — buildflow covers linting (§5.11)            | 10min  |
+| ~~19~~ | Low      | ~~Link checker recommendation~~ done — check-skill-links.sh shipped                  | 10min  |
+| ~~20~~ | Low      | ~~docs/adr/ BUILD procedure~~ w:open — no ADR demand yet                             | 15min  |
+| ~~21~~ | Low      | ~~CHANGELOG anti-gaming~~ done — health-report-format rules (never invent baselines) | 10min  |
+| ~~22~~ | Low      | ~~Format flexibility~~ w:resolved-by-decision — table format canonical               | 10min  |
+| ~~23~~ | Low      | ~~Content-repo FEATURES guidance~~ done — project-type adaptation table              | 15min  |
+| ~~24~~ | Low      | ~~Pure-docs-repos guidance~~ done — content-repo adaptation                          | 10min  |
+| ~~25~~ | Low      | ~~Review vs Common Mistakes~~ done — docs-health authored the patterns               | 15min  |
 
 ---
 

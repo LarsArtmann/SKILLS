@@ -202,14 +202,14 @@ done, leave it in `new/`.
 
 ## f) NEXT — things to get done
 
-| # | Priority   | Task                                                                                                                                                                   |
-| - | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ~~1~~ | HIGH | ~~Re-harvest guard row~~ done - marker rule in HARVEST + verify-checklist (01-00 resolution) |
-| ~~2~~ | HIGH | ~~Compress to 495~~ done - 477 after the structural refactor |
-| ~~3~~ | MEDIUM | ~~Audit status-report format~~ done - handles both prose and tables (resolving-items) |
-| ~~4~~ | MEDIUM | ~~Verify ordering~~ done - distinct and documented |
-| ~~5~~ | LOW | ~~annotate-vs-resolve doc~~ w:covered - inline gloss suffices |
-| ~~6~~ | LOW | ~~Marker-format home~~ done - owned by docs-health ANNOTATE (5.5 contract) |
+| #     | Priority | Task                                                                                         |
+| ----- | -------- | -------------------------------------------------------------------------------------------- |
+| ~~1~~ | HIGH     | ~~Re-harvest guard row~~ done - marker rule in HARVEST + verify-checklist (01-00 resolution) |
+| ~~2~~ | HIGH     | ~~Compress to 495~~ done - 477 after the structural refactor                                 |
+| ~~3~~ | MEDIUM   | ~~Audit status-report format~~ done - handles both prose and tables (resolving-items)        |
+| ~~4~~ | MEDIUM   | ~~Verify ordering~~ done - distinct and documented                                           |
+| ~~5~~ | LOW      | ~~annotate-vs-resolve doc~~ w:covered - inline gloss suffices                                |
+| ~~6~~ | LOW      | ~~Marker-format home~~ done - owned by docs-health ANNOTATE (5.5 contract)                   |
 
 ---
 
