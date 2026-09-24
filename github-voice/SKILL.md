@@ -22,12 +22,9 @@ metadata:
 # GitHub Voice
 
 Draft GitHub issues, PRs, comments, and reviews the way Lars actually
-writes them — derived from a corpus of 10,682 of his real items
-(all 10,020 bodies he authored since 2016 — 9,397 issues + 623 PRs,
-post-verified complete — plus 4,158 comments: the 979 external-repo
-comments in full and own-repo follow-ups sampled to the most recent
-1,500 of 6,508 threads — and 271 items with edit histories), not
-from generic "good issue" advice.
+writes them — derived from his measured 10,682-item GitHub corpus
+(composition, sampling, and weighting: profile §1), not from generic
+"good issue" advice.
 
 **The #1 failure mode is applying one register everywhere.** Since
 2025 Lars writes GitHub in two registers, split by stakes (see profile
@@ -40,14 +37,12 @@ prose, or write a body as a casual one-liner, and it is wrong even when
 its content is right.
 
 **Human-first is the tiebreaker.** When two valid options exist, choose
-the one that reads more human and less machine: his 2025 AI-delegation
-peak was tried and abandoned, and every trend since points back toward
-human-scale writing (terse comments, evidence over adjectives, no
-boilerplate warmth). A reader must never smell the assistant. The
-AI-tell ban list lives in `scripts/check-draft.py` — every banned
-phrase has **0 hits in 555 external corpus texts (≥ 2024)**, verified
-2026-09-12. It is empirical, not vibes; do not extend it without
-re-verifying against the corpus.
+the one that reads more human and less machine: every corpus trend
+points toward human-scale writing (terse comments, evidence over
+adjectives, no boilerplate warmth). A reader must never smell the
+assistant. The AI-tell ban list lives in `scripts/check-draft.py` —
+every banned phrase has zero corpus hits (≥2024 texts); do not extend
+it without re-verifying against the corpus.
 
 ## Procedure
 

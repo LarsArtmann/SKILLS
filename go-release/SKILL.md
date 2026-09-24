@@ -23,8 +23,7 @@ allowed-tools: goreleaser gh
 
 # Go Release
 
-The definitive guide to cutting, pushing, and verifying Go module releases. Every
-rule here exists because a real release broke something — a poisoned proxy, a
+Every rule here exists because a real release broke something — a poisoned proxy, a
 checksum mismatch, a tag on the wrong commit, a `replace` directive that leaked
 into production. Follow it precisely.
 
