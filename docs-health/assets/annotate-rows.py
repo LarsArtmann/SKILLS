@@ -42,7 +42,6 @@ import re
 import sys
 from pathlib import Path
 
-
 _spec = importlib.util.spec_from_file_location(
     "annotate_markers", Path(__file__).with_name("annotate-markers.py")
 )

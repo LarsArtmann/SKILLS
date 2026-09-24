@@ -13,6 +13,73 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-09-24 — T36–T56 execution wave: honesty fixes, gate hardening, self-tests, eval harness)
+
+- **Honesty fix (T36):** `github-voice` "every comment across all repos"
+  overclaim replaced with the `summary.json` collection parameters in all
+  three places it lived (SKILL.md intro, voice-profile.md header,
+  AGENTS.md §5.5 paragraph) — comments are external-repos-in-full (979)
+  plus own-repo follow-ups sampled at most-recent 1,500 of 6,508 threads;
+  the collector docstring's matching overclaim fixed too.
+- **Gate hardening (T39/T40/T50):** check 14 is now row-level
+  first-column matching (prose mentions no longer count as coverage) plus
+  the reverse direction (rows naming deleted skills FAIL); a new
+  README↔FEATURES status-parity gate compares the two inventories'
+  marker classes per skill — and immediately caught a live drift
+  (collector-extraction 🟢 in README, 🆕 in FEATURES since 2026-09-10;
+  FEATURES row corrected with the ssh-key-monitor run evidence). The
+  marker-vocabulary guard (check 10) is now section-scoped: it requires
+  the ANNOTATE section to define the markers and the HARVEST section to
+  reference them, instead of any stray mention anywhere.
+- **Self-tests (T43/T47/T41/T56):** `check-skills.sh --selftest` runs the
+  gate against fixture mini-repos (`scripts/fixtures/check-skills/`,
+  pass + fail trees) asserting exit codes AND output shape — it caught a
+  real silent-death regression (pipefail kill on the new parity gate
+  with no README.md) the same day it shipped. `link-skills-to-agents.sh
+  --selftest` automates the 8-case sandbox matrix (fresh/wrong/dangling/
+  missing/orphan/real-dir), and its `--check` is now wired into
+  `check-skills.sh` so one gate covers structure + links. New
+  `docs-health/assets/annotate-prose_test.py` pins the marker builder;
+  `marker_for` deduplicated into `annotate-markers.py` (prose's `done (x)`
+  unified to the corpus-majority `done — x`).
+- **Check 15 fence/quote-aware (T42):** a skill teaching against
+  throat-clearing by quoting the phrases inside fences or blockquotes no
+  longer hard-fails; the `It.s` regex replaced with explicit apostrophe
+  alternatives; FAIL output now prints the remediation line.
+- **New tools (T45/T46):** `scripts/site-dod-check.sh <site> [--repo DIR]`
+  — the mechanical site Definition-of-Done checker (demo anchor, og:image
+  with real 1200x630 dimension decoding, mp4+JS immutable cache headers,
+  firebase.json catch-all-order lint), verified end-to-end against local
+  fixture servers, replacing three sessions of throwaway /tmp scripts.
+  `scripts/run-eval.sh <eval-dir>` — reproducible eval harness (fresh
+  non-interactive `crush run` session, fixture repo, timestamped output +
+  meta capture).
+- **Verification tables (T37/T49):** `buildflow/SKILL.md` gained the
+  canonical `## Verification status` table (binary-verified vs
+  date-stamped README claims). All ten research-sourced specifics in
+  `linter-building/references/*` verified against local sources with
+  per-reference tables added; one inaccuracy found and fixed (H001's
+  trigger clusters: 3+ unit strings alone fire, not only with division).
+- **Skill content (T38/T52/T53/T54):** `naming-review` description
+  rewritten 1008→848 chars with data-model-review disambiguation (both
+  directions now name each other, descriptions + Related Skills);
+  github-voice preamble deduplicated against profile §1 and go-release's
+  self-description thesis removed (restraint-disciplined — the remaining
+  `--signal` prose blocks audited and judged load-bearing);
+  "tell them what they get" outcome-promise row added to the description
+  quick-test table; the "file no later session reads" grammar slip fixed
+  in all 3 live files (plan said 2); `originals/communication-doctrine.md`
+  preserves the 2026-09-17 doctrine paste (T44) with a provenance note.
+- **Provenance (T48) and lint debt (T55):** linter-building eval
+  iteration-2 ran through the REAL activation mechanism (`crush run`):
+  "write a linter" loads the skill (explicit activation + decision-tree
+  language), "lint my project" routes to run-existing-linters — closing
+  round-3 f29, which had been marked CLOSED without running. SC2319 ×8
+  fixed in `validate-workflow.sh` (the `$?`-after-condition form also
+  aborted under set -e before check() could report a failure) and
+  SC2089/90/2064 in `naming-smells.sh` (string options → arrays); both
+  proven with real runs (11/11 PASS lifecycle; smells run exit 0).
+
 ### Changed (2026-09-18 — docs-health full audit: corpus annotated, 28 reports archived, living docs rebuilt)
 
 - **ANNOTATE executed corpus-wide.** Every numbered forward-looking item in
