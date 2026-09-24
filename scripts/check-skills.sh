@@ -72,7 +72,6 @@
 
 set -euo pipefail
 
-mode="check"
 thin_only=0
 triggers_only=0
 signal_only=0
