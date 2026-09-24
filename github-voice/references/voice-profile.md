@@ -1,8 +1,10 @@
 # Lars's GitHub Voice Profile
 
-> Derived 2026-09-12 from a 10,682-item corpus (every issue/PR Lars authored
-> since 2016, every comment/review he wrote across all repos, plus 271 items
-> with full revision history). Refresh: `scripts/collect-corpus.py` then
+> Derived 2026-09-12 from a 10,682-item corpus (all 10,020 bodies Lars
+> authored since 2016 — 9,397 issues + 623 PRs, post-verified complete —
+> plus 4,158 comments: 979 external-repo comments in full, own-repo
+> follow-ups sampled to the most recent 1,500 of 6,508 threads — and 271
+> items with edit histories). Refresh: `scripts/collect-corpus.py` then
 > `scripts/analyze-corpus.py`. Corpus lives at `~/.cache/github-voice-corpus/`.
 
 ## Table of contents

@@ -2,7 +2,8 @@
 """Collect LarsArtmann's GitHub issues, PRs, comments, and edit history.
 
 Builds a markdown corpus of every issue/PR body authored by the user and
-every comment/review the user wrote (own repos + external repos), plus the
+the comments/reviews the user wrote (external repos in full; own-repo
+follow-ups sampled via --own-followup-sample, default 1500), plus the
 GitHub edit history (revision diffs) where available. Output feeds the
 voice/tone analysis documented in ../SKILL.md.
 

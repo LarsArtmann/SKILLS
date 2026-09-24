@@ -23,8 +23,11 @@ metadata:
 
 Draft GitHub issues, PRs, comments, and reviews the way Lars actually
 writes them — derived from a corpus of 10,682 of his real items
-(every issue/PR since 2016, every comment across all repos, plus his
-edit histories), not from generic "good issue" advice.
+(all 10,020 bodies he authored since 2016 — 9,397 issues + 623 PRs,
+post-verified complete — plus 4,158 comments: the 979 external-repo
+comments in full and own-repo follow-ups sampled to the most recent
+1,500 of 6,508 threads — and 271 items with edit histories), not
+from generic "good issue" advice.
 
 **The #1 failure mode is applying one register everywhere.** Since
 2025 Lars writes GitHub in two registers, split by stakes (see profile
