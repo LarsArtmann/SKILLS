@@ -124,3 +124,13 @@ path lives under `testdata/analysistest/` using
 - **GOEXPERIMENT=jsonv2 dependence** (go-finding ecosystem) is a real
   adoption friction: document the required Go version + experiment loudly
   in the README install section, and drop it when the toolchain stabilizes.
+
+
+## Verification status
+
+Canonical block per `verify-external-claims/SKILL.md` §5. Source-read, 2026-09-24.
+
+| Claim                                            | Status      | Source                                   |
+| ------------------------------------------------ | ----------- | ----------------------------------------- |
+| `analysistest.RunWithSuggestedFixes` convention  | ✅ Verified | `golang.org/x/tools@v0.35.0/go/analysis/analysistest/analysistest.go:82` |
+| go-finding per-module tag scheme (`pipeline/v*`, `analysis/v*`, `cmd/*/v*`) | ✅ Verified | `git -C ~/projects/go-finding tag -l` (also `toolsdk/*` + root tags) |

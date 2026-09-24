@@ -1,0 +1,10 @@
+{
+  "timestamp_utc": "2026-09-24T11:40:46.556114+00:00",
+  "eval_dir": "/home/lars/projects/SKILLS/linter-building/evals/iteration-2/eval-4-trigger-positive",
+  "prompt": "Write a linter for this Go project that flags error-returning functions whose error message is empty.",
+  "cwd": "/tmp/tmp.Qg2R3d6MOB",
+  "model": "unknown",
+  "exit_code": 0,
+  "duration_seconds": 1250,
+  "harness": "crush run --quiet (fresh non-interactive session)"
+}

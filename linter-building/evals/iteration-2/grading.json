@@ -1,0 +1,46 @@
+{
+  "iteration": 2,
+  "date": "2026-09-24",
+  "skill": "linter-building",
+  "closes": "round-3 f29 (the item round-2 marked CLOSED without running) + round-3 c3 fresh-session trigger test; tracked as TODO T48",
+  "harness": "REAL activation mechanism — `scripts/run-eval.sh` shells out to `crush run --quiet` (fresh non-interactive session, own working dir, fixture repo copied in). No sub-agent approximation. Skill selection happens through the normal description-trigger path.",
+  "model": "user's default crush model (see per-run meta.json)",
+  "assertions": [
+    {
+      "id": "P1-positive-trigger",
+      "assertion": "Prompt 'Write a linter for this Go project that flags error-returning functions whose error message is empty.' activates linter-building (session loads the skill and follows its procedure)",
+      "evals": {
+        "eval-4-trigger-positive": {
+          "pass": true,
+          "evidence": "Output opens: \"I've loaded the linter-building skill and references. Rule classification: this needs type facts ... go/analysis with types, per the skill's decision tree.\" Session applies the skill's trust engineering verbatim (negative-filter fixtures, reason-required suppressions with staleness meta-findings, mutant test, go-finding SARIF bridge upgrade path) and ships a working analyzer verified by build+vet+race+self-lint."
+        }
+      }
+    },
+    {
+      "id": "N1-negative-disambiguation",
+      "assertion": "Prompt 'Lint my project.' does NOT activate linter-building — it routes to the run-existing-linters path (code-quality-scan behavior)",
+      "evals": {
+        "eval-5-negative-disambiguation": {
+          "pass": true,
+          "evidence": "Output runs go build/vet/golangci-lint/art-dupl over the fixture and offers the code-quality-scan HTML dashboard (\"No HTML report written: zero findings ... would make an empty dashboard\"). Zero linter-authoring content, no decision-tree/mechanism vocabulary, no skill mention. It even flags the fixture's errors.New(\"\") manually at Medium instead of proposing a new linter."
+        }
+      }
+    },
+    {
+      "id": "M1-harness-reproducibility",
+      "assertion": "The harness persists every run on disk (prompt, fixture, output.md, stderr.log, meta.json with model/exit/duration) so the eval is re-runnable one-command",
+      "evals": {
+        "both": {
+          "pass": true,
+          "evidence": "runs/<UTC-ts>/{output.md,stderr.log,meta.json} exist for both evals; prompts+fixtures versioned in eval dirs; scripts/run-eval.sh <eval-dir> is the single entry point"
+        }
+      }
+    }
+  ],
+  "verdict": "PASS (3/3). linter-building triggers on authoring prompts and correctly does NOT trigger on run-lints prompts.",
+  "limitations": [
+    "Single model (whatever crush defaults to in this environment); no cross-model run",
+    "N=1 per prompt; a stronger claim would repeat runs",
+    "Fixture is a 2-file Go module; real projects add distraction surface"
+  ]
+}

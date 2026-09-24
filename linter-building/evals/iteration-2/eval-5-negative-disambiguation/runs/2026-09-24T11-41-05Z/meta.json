@@ -1,0 +1,10 @@
+{
+  "timestamp_utc": "2026-09-24T11:42:38.617612+00:00",
+  "eval_dir": "/home/lars/projects/SKILLS/linter-building/evals/iteration-2/eval-5-negative-disambiguation",
+  "prompt": "Lint my project.",
+  "cwd": "/tmp/tmp.nVUTF6Hr3Y",
+  "model": "unknown",
+  "exit_code": 0,
+  "duration_seconds": 92,
+  "harness": "crush run --quiet (fresh non-interactive session)"
+}

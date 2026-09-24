@@ -506,8 +506,8 @@ if [[ -f "$feat" ]]; then
 	# Compare only when both sides carry a classifiable marker.
 	for d in "${skill_dirs[@]}"; do
 		skill="${d#./}"
-		feat_status="$(grep -E "^[[:space:]]*\\|[[:space:]]*${skill}[[:space:]]*\\|" "$feat" | grep -oE 'FULLY_FUNCTIONAL|PARTIALLY_FUNCTIONAL|NEW|PLANNED' | head -1)"
-		readme_line="$(grep -E "^[[:space:]]*\\|[[:space:]]*\\*\\*${skill}\\*\\*[[:space:]]*\\|" README.md 2>/dev/null | head -1)"
+		feat_status="$(grep -E "^[[:space:]]*\\|[[:space:]]*${skill}[[:space:]]*\\|" "$feat" | grep -oE 'FULLY_FUNCTIONAL|PARTIALLY_FUNCTIONAL|NEW|PLANNED' | head -1 || true)"
+		readme_line="$(grep -E "^[[:space:]]*\\|[[:space:]]*\\*\\*${skill}\\*\\*[[:space:]]*\\|" README.md 2>/dev/null | head -1 || true)"
 		fc=""
 		case "$feat_status" in
 		FULLY_FUNCTIONAL) fc=green ;;

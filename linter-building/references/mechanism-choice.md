@@ -86,3 +86,12 @@ a thin analyzer instead.
 - **Silent delegation** — wrapping an external tool that no-ops without an
   error when the binary is missing, without telling the user. If the tool
   is absent, say so (or skip with a visible notice), or your CI green lies.
+
+
+## Verification status
+
+Canonical block per `verify-external-claims/SKILL.md` §5. Source-read, 2026-09-24.
+
+| Claim                                            | Status      | Source                                   |
+| ------------------------------------------------ | ----------- | ----------------------------------------- |
+| ADR 0001: syntactic alias resolution so the CLI path needs no type-checking | ✅ Verified | `go-humanize-linter/docs/adr/0001-import-alias-detection.md` (Status: Accepted) |

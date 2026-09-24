@@ -140,3 +140,15 @@ verified suppressions, `--strict` gating works (InboxClean runs
 `min-severity: info` config + health-score workflow in CI). Without
 suppression machinery, a hard gate just blocks merges on noise and gets the
 linter disabled at the CI level — the worst outcome.
+
+
+## Verification status
+
+Canonical block per `verify-external-claims/SKILL.md` §5. Source-read, 2026-09-24.
+
+| Claim                                            | Status      | Source                                                        |
+| ------------------------------------------------ | ----------- | -------------------------------------------------------------- |
+| 90-day retention purge on the audit ledger       | ✅ Verified | `golangci-lint-auto-configure/pkg/audit/ledger.go:323` (`retentionDays = 90`) |
+| Detect→fix loop cap of 5 iterations              | ✅ Verified | `go-finding/pipeline/config.go:95` (`DefaultMaxIterations = 5`) |
+| CompletionReasons `stable|max-iterations|timeout|cancelled` | ✅ Verified | `go-finding/pipeline/result.go:14-20` |
+| go-finding ADR-016 default `RollbackPolicyFailingFile` | ✅ Verified | round-2 SKILL.md table (source-read 2026-09-09) |

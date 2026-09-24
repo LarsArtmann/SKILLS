@@ -10,10 +10,11 @@ budget for it up front, not after users complain.
 **Never ship a single-signal rule.** Require at least two corroborating
 signals before firing:
 
-- `go-humanize-linter` H001 (hand-rolled byte formatting) requires
-  byte-unit strings AND (division by 1024 OR a KMGTPE unit index) within the
-  same function. Either signal alone matches thousands of innocent
-  functions; together they match reimplementations.
+- `go-humanize-linter` H001 (hand-rolled byte formatting) fires on either
+  cluster within the same function: 2+ distinct byte-unit strings PLUS a
+  division by a power of 1024, or 3+ distinct byte-unit strings alone (very
+  strong signal). Either ingredient alone matches thousands of innocent
+  functions; the clusters match reimplementations.
 - H004 (pluralization) additionally gates on the function's return type
   being `string` and a string literal appearing in a branch — negative
   filters that cut the rule's false-positive rate from ~60% to ~0%
@@ -150,3 +151,16 @@ Layered strategy used across the reference projects:
 - [ ] Discrimination proof: mutant rule fails the suite
 - [ ] Suppression path tested (directive silences it; staleness detected)
 - [ ] Self-lint clean
+
+## Verification status
+
+Canonical block per `verify-external-claims/SKILL.md` §5. Source-read against
+the local repos, 2026-09-24.
+
+| Claim                                                        | Status      | Source                                                              |
+| ------------------------------------------------------------ | ----------- | -------------------------------------------------------------------- |
+| H001 trigger clusters (2+ units + /1024, or 3+ units alone)  | ✅ Verified | `go-humanize-linter/rule_bytes.go:20-25`                              |
+| H004 FP-rate cut ~60% → ~0%                                  | ✅ Verified | round-2 SKILL.md table (`go-humanize-linter` validation docs, 2026-09-09) |
+| `normLit` underscore-separator normalizer exists             | ✅ Verified | `go-humanize-linter/pattern_helpers.go:69`                            |
+| MEDIUMBLOB word-boundary exclusion pattern                   | ✅ Verified | `go-humanize-linter/pattern_bytes.go` (unit-string matching)          |
+| Black-box tests convention (`package <x>_test`)              | ✅ Verified | `go-humanize-linter/linter_test.go:1` (`package humanizelint_test`)   |

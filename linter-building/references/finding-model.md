@@ -180,3 +180,13 @@ Three orthogonal axes, routinely conflated:
 
 A critical-severity low-confidence finding is the norm for heuristic rules —
 only separated axes can express it.
+
+
+## Verification status
+
+Canonical block per `verify-external-claims/SKILL.md` §5. Source-read, 2026-09-24.
+
+| Claim                                            | Status      | Source                                   |
+| ------------------------------------------------ | ----------- | ----------------------------------------- |
+| `linter.ContinueOnError()` Registry option name  | ✅ Verified | `go-linter-sdk/errors.go:59-62`, `example_test.go:208` |
+| `RuleMeta.Validate()` method + `ErrMissingFields` sentinel | ✅ Verified | `go-linter-sdk/rule.go:132,152` |
