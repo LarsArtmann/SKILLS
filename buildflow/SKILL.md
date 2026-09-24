@@ -13,6 +13,19 @@ This skill is for **using** BuildFlow in covered projects. For **developing** Bu
 
 A project is "covered" when it has a `.buildflow.yml` (even a minimal one) and/or a BuildFlow-generated pre-commit hook. Dozens of `~/projects/*` repos qualify.
 
+## Verification status
+
+Canonical block per `verify-external-claims/SKILL.md` §5. Rule of thumb for this skill: the binary is the fact source; README-derived numbers are date-stamped until re-verified.
+
+| Claim                                                                          | Status        | Source                                                                                                                                            |
+| ------------------------------------------------------------------------------ | ------------- | --------------------------------------------------------------------------------- |
+| Subcommands, flags, step names, exit-code semantics (`--fix`, `-s`, `doctor`)  | ✅ Verified   | Live `buildflow --help` capture, 2026-09-14 — [./references/commands.md](./references/commands.md) |
+| "19 doctor checks" (env, workspace, vendor, disk, network)                     | ⚠️ Date-stamped | BuildFlow README via httputil's verified investigation; source grep inconclusive (flags are cmdguard-defined). Re-verify with `buildflow doctor` |
+| Build-mode durations (fast ~5-30 s, full ~5-10 min, …)                         | ⚠️ Date-stamped | BuildFlow README — not re-verified with live `buildflow timings`                    |
+| `-s` does not accumulate — last flag wins                                      | ⚠️ Date-stamped | README-sourced; verify with `buildflow -s a -s b --dry-run` before scripting it     |
+| `--fix` runs detect → repair → verify                                          | ⚠️ Date-stamped | BuildFlow README; behavior consistent with observed runs but not isolation-tested   |
+| gitleaks/codespell on-demand only; findings gate fails on remaining errors     | ✅ Verified   | Live `buildflow --help` capture, 2026-09-14 — [./references/commands.md](./references/commands.md) |
+
 ## The core rule: delegate, don't duplicate
 
 Before manually running a quality tool in a covered project, check whether BuildFlow already owns that responsibility (table below). Hand-rolling a wrapper script, justfile target, Makefile target, or CI job for something BuildFlow orchestrates creates a split brain: two configs, two orders of execution, two sources of truth for "is this repo clean". The project's flake may own builds for distribution, but quality enforcement (lint, format, test, repair) belongs to BuildFlow.
