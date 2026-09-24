@@ -1,0 +1,1 @@
+Write a linter for this Go project that flags error-returning functions whose error message is empty.
