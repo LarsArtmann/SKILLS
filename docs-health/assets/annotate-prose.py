@@ -19,22 +19,17 @@ already-annotated lines; writes only if every spec matched (atomic
 in-memory then single write).
 """
 
+import importlib.util
 import re
 import sys
-from datetime import UTC, datetime
 from pathlib import Path
 
-
-def marker_for(kind: str, value: str) -> str:
-    if kind == "h":
-        return "done at " + ", ".join(f"`{h}`" for h in value.split(","))
-    if kind == "v":
-        return f"done ({value})"
-    if kind == "p":
-        return f"done (docs-health pass {value if value != '-' else datetime.now(tz=UTC).date().isoformat()})"
-    if kind == "w":
-        return f"**Won't implement — {value}.**"
-    raise SystemExit(f"bad kind {kind!r} (use h/v/p/w)")
+_spec = importlib.util.spec_from_file_location(
+    "annotate_markers", Path(__file__).with_name("annotate-markers.py")
+)
+_marker_mod = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_marker_mod)
+marker_for = _marker_mod.marker_for
 
 
 def main() -> None:

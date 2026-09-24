@@ -330,7 +330,7 @@ if [[ -z "$LANG_FILTER" || "$LANG_FILTER" == "go" ]]; then
 	echo ""
 
 	TMPFILE=$(mktemp)
-	trap "rm -f $TMPFILE" EXIT
+	trap 'rm -f "$TMPFILE"' EXIT
 
 	# Extract struct names and their field names
 	rg -o --sort-path -g '*.go' --glob '!**/naming-review/**' \
