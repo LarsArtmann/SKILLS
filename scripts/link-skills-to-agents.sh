@@ -15,18 +15,63 @@
 #                                               # by the skills-CLI lockfile
 #   scripts/link-skills-to-agents.sh --list     # show repo skills and their link state
 #   scripts/link-skills-to-agents.sh --force    # replace a conflicting real dir (DANGEROUS)
+#   scripts/link-skills-to-agents.sh --selftest # exercise the check matrix in a
+#                                               # sandbox (fresh/wrong/dangling/
+#                                               # missing/orphan/real-dir), exit 1 on any
+#                                               # behavior drift
 #
 # Environment:
 #   AGENTS_DIR      target runtime dir (default: ~/.agents/skills). Override for
 #                   isolated testing, e.g. AGENTS_DIR=/tmp/test-agents scripts/...
+#   REPO_DIR        source repo dir (default: derived from this script's location).
+#                   Override only for sandboxed selftests.
 #   SKILLS_LOCKFILE skills-CLI lockfile to guard against (default:
 #                   ~/.local/state/skills/.skill-lock.json). A repo skill tracked
 #                   there would be rm -rf'd by the next `skills update`.
 
 set -euo pipefail
 
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO_DIR="${REPO_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 AGENTS_DIR="${AGENTS_DIR:-$HOME/.agents/skills}"
+
+# --- Selftest: exercise the check matrix in a sandbox ---------------------------
+# The 2026-09-13 sync-layer hardening proved these checks by hand; this mode
+# automates that sandbox matrix so the guard's behavior is pinned, not recalled:
+# fresh repair, wrong target, repair-heals, dangling, missing, orphan, real-dir
+# conflict, and repair-without-force refusing to clobber. Any drift = exit 1.
+if [[ "${1:-}" == "--selftest" ]]; then
+	sbx="$(mktemp -d)"
+	trap 'rm -rf "$sbx"' EXIT
+	srepo="$sbx/repo"
+	sagents="$sbx/agents"
+	mkdir -p "$srepo/alpha" "$srepo/beta" "$sagents"
+	printf -- '---\nname: alpha\n---\n' > "$srepo/alpha/SKILL.md"
+	printf -- '---\nname: beta\n---\n' > "$srepo/beta/SKILL.md"
+	st_fail=0
+	run() { REPO_DIR="$srepo" AGENTS_DIR="$sagents" bash "$0" "$@"; }
+	run > /dev/null 2>&1 || st_fail=1
+	run --check > /dev/null 2>&1 || { echo "selftest 1 FAIL: fresh repair must leave --check green"; st_fail=1; }
+	ln -sfn "$srepo/alpha" "$sagents/alpha"
+	run --check > /dev/null 2>&1 && { echo "selftest 2 FAIL: wrong target must fail --check"; st_fail=1; }
+	run > /dev/null 2>&1
+	run --check > /dev/null 2>&1 || { echo "selftest 3 FAIL: repair must fix a wrong target"; st_fail=1; }
+	ln -sfn "$srepo/gone" "$sagents/beta"
+	run --check > /dev/null 2>&1 && { echo "selftest 4 FAIL: dangling link must fail --check"; st_fail=1; }
+	rm "$sagents/beta"
+	run --check > /dev/null 2>&1 && { echo "selftest 5 FAIL: missing link must fail --check"; st_fail=1; }
+	ln -s "$srepo/ghost" "$sagents/ghost"
+	run --check > /dev/null 2>&1 && { echo "selftest 6 FAIL: orphan link must fail --check"; st_fail=1; }
+	rm "$sagents/ghost"
+	mkdir "$sagents/beta"
+	run --check > /dev/null 2>&1 && { echo "selftest 7 FAIL: real-dir conflict must fail --check"; st_fail=1; }
+	run > /dev/null 2>&1
+	run --check > /dev/null 2>&1 && { echo "selftest 8 FAIL: repair without --force must not clobber a real dir"; st_fail=1; }
+	if [[ $st_fail -eq 0 ]]; then
+		echo "OK: link-skills-to-agents.sh selftest passed (8/8)."
+		exit 0
+	fi
+	exit 1
+fi
 
 if [[ ! -d "$AGENTS_DIR" ]]; then
 	echo "error: runtime skills directory not found at $AGENTS_DIR" >&2

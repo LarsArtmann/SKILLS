@@ -44,6 +44,12 @@
 #        to note") that can never change an agent action; everything else is
 #        the advisory --signal report (long code-free prose blocks, undefined
 #        house jargon). Rule: how-to-write-skills.md Principle 7.
+#        Fence- and quote-aware (T42): quotes inside fences/blockquotes pass;
+#        behavior pinned by --selftest fixtures.
+#    16. Runtime link integrity: every repo skill must be correctly symlinked
+#        into ~/.agents/skills (AGENTS.md §5.10) — a wrong link means agents
+#        silently run a stale or absent skill. Skipped with a NOTE when the
+#        runtime dir doesn't exist (portable checkouts); gated when it does.
 #
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
@@ -708,6 +714,21 @@ link_args=()
 if [[ -n "$fixture_root" ]]; then link_args=(--root "$fixture_root"); fi
 if ! "$(dirname "${BASH_SOURCE[0]}")/check-skill-links.sh" ${link_args[@]+"${link_args[@]}"}; then
 	failed=1
+fi
+
+# --- Runtime link integrity (own skills ↔ ~/.agents/skills) ---------------------
+# One gate covers structure + links: --check is cheap, idempotent, and its
+# behavior is pinned by link-skills-to-agents.sh --selftest. Skipped under
+# --root (fixtures have no runtime links) and when the runtime dir is absent.
+if [[ -z "$fixture_root" ]]; then
+	if [[ -d "${AGENTS_DIR:-$HOME/.agents/skills}" ]]; then
+		if ! scripts/link-skills-to-agents.sh --check; then
+			echo "FAIL: runtime link drift — run scripts/link-skills-to-agents.sh to repair (AGENTS.md §5.10)" >&2
+			failed=1
+		fi
+	else
+		echo "NOTE: ${AGENTS_DIR:-$HOME/.agents/skills} not found — runtime link check skipped"
+	fi
 fi
 
 if [[ "$failed" -ne 0 ]]; then
