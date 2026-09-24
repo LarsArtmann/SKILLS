@@ -32,9 +32,11 @@
 #        signals (blockquotes, wrong-shape headings, compound claims) without
 #        the canonical `## Verification status` table (verify-external-claims
 #        §5; the T28 wave eliminated the three-shapes drift).
-#    14. FEATURES.md coverage guard: every skill directory must have a row in
-#        FEATURES.md — inventories drift silently without a gate (2026-09-16:
-#        five skills shipped 09-08..09-14 with no row, stale counts too).
+#    14. FEATURES.md coverage guard: every skill directory must have a first-
+#        column table row in FEATURES.md (row-level, not any-mention), and no
+#        row may name a skill directory that no longer exists — bidirectional,
+#        both directions gate (2026-09-16: five skills shipped 09-08..09-14
+#        with no row, stale counts too).
 #        Line counts are deliberately NOT gated: they are derivable from this
 #        script's output — gate what is load-bearing, derive what is
 #        incidental (the wise-go doc-verify lesson, transplanted).
@@ -444,18 +446,72 @@ while IFS= read -r line; do
 	fi
 done < <(grep -rnE '[0-9]+[[:space:]]+(skills|total)' README.md AGENTS.md 2>/dev/null)
 
+# marker_class LINE — map a README row's status emoji to the canonical state
+# class shared with FEATURES.md: 🟢→green 🟡→yellow 🔴→red 🆕→new ("" if none).
+marker_class() {
+	if grep -q "🟢" <<<"${1:-}"; then echo green
+	elif grep -q "🟡" <<<"${1:-}"; then echo yellow
+	elif grep -q "🔴" <<<"${1:-}"; then echo red
+	elif grep -q "🆕" <<<"${1:-}"; then echo new
+	fi
+}
+
 # --- FEATURES.md coverage guard --------------------------------------------------
 # FEATURES.md is the honest skill inventory; skills that ship without their row
 # rot there silently. Coverage is a load-bearing claim ("every skill is
 # inventoried"), so it gates; per-skill line counts are incidental and
 # derivable from this script, so they do NOT — maintaining the same numbers in
 # two places is a drift factory.
+# Bidirectional + row-level: (a) the skill must appear as a TABLE ROW's first
+# column — a prose mention used to satisfy the check with no row behind it;
+# (b) the reverse — a row naming a skill directory that no longer exists is
+# deleted-skill residue and fails, the mirror image of the forward drift.
 feat="FEATURES.md"
 if [[ -f "$feat" ]]; then
+	# First-column cells of every markdown table row (trimmed; separators and
+	# known header words excluded) — the inventory's claimed skills.
+	feat_rows="$(awk -F'|' '/^\|/ { c=$2; gsub(/^[[:space:]]+|[[:space:]]+$/, "", c); if (c != "" && c !~ /^-+$/ && c != "Skill" && c != "Status" && c != "Feature") print c }' "$feat")"
 	for d in "${skill_dirs[@]}"; do
 		skill="${d#./}"
-		if ! grep -qF "$skill" "$feat"; then
-			echo "FAIL: $feat has no row for '$skill' — an undocumented skill is a drift seed (AGENTS.md §4 step 4)"
+		if ! grep -qE "^[[:space:]]*\\|[[:space:]]*${skill}[[:space:]]*\\|" "$feat"; then
+			echo "FAIL: $feat has no first-column row for '$skill' — an undocumented skill is a drift seed (AGENTS.md §4 step 4)"
+			failed=1
+		fi
+	done
+	# Reverse: a kebab-case first-column cell that names no skill directory is
+	# residue. Status-emoji cells, script names (*.sh), and .md filenames can't
+	# match the kebab pattern and are ignored by design.
+	while IFS= read -r c; do
+		[[ "$c" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || continue
+		known=0
+		for d in "${skill_dirs[@]}"; do
+			[[ "${d#./}" == "$c" ]] && { known=1; break; }
+		done
+		if [[ "$known" -eq 0 ]]; then
+			echo "FAIL: $feat has row '$c' but no such skill directory exists — deleted-skill residue; remove or update the row"
+			failed=1
+		fi
+	done < <(printf '%s\n' "$feat_rows" | sort -u)
+	# README↔FEATURES status parity: the two inventories use different
+	# vocabularies (README: Solid/Comprehensive/Thin/Functional/New;
+	# FEATURES: FULLY_FUNCTIONAL/…) for the same four states. Drift between
+	# them is exactly the silent-rot class this guard exists for — found live:
+	# collector-extraction was 🟢 in README but 🆕 in FEATURES for two weeks.
+	# Compare only when both sides carry a classifiable marker.
+	for d in "${skill_dirs[@]}"; do
+		skill="${d#./}"
+		feat_status="$(grep -E "^[[:space:]]*\\|[[:space:]]*${skill}[[:space:]]*\\|" "$feat" | grep -oE 'FULLY_FUNCTIONAL|PARTIALLY_FUNCTIONAL|NEW|PLANNED' | head -1)"
+		readme_line="$(grep -E "^[[:space:]]*\\|[[:space:]]*\\*\\*${skill}\\*\\*[[:space:]]*\\|" README.md 2>/dev/null | head -1)"
+		fc=""
+		case "$feat_status" in
+		FULLY_FUNCTIONAL) fc=green ;;
+		PARTIALLY_FUNCTIONAL) fc=yellow ;;
+		NEW) fc=new ;;
+		PLANNED) fc=red ;;
+		esac
+		rc="$(marker_class "$readme_line")"
+		if [[ -n "$fc" && -n "$rc" && "$fc" != "$rc" ]]; then
+			echo "FAIL: status drift for '$skill' — README says $rc, FEATURES.md says $fc — align the two inventories"
 			failed=1
 		fi
 	done

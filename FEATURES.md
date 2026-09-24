@@ -30,7 +30,7 @@
 | data-model-review          | 🟢 `FULLY_FUNCTIONAL`     | ✅          | Go-native type system review with decision trees                                                                                                      |
 | pareto-planning            | 🟢 `FULLY_FUNCTIONAL`     | ✅ (assets) | 80/20 plans with D2 dependency graphs; `allowed-tools: d2`                                                                                            |
 | architecture-review        | 🟡 `PARTIALLY_FUNCTIONAL` | ✅          | Assessment rubric + methodology references added 2026-08-04; not yet exercised against a real review since                                            |
-| collector-extraction       | 🆕 `NEW`                  | ✅          | monitor365 → standalone sibling repos; encodes four completed extractions (wireguard-collector et al.); no documented run since creation (2026-09-10) |
+| collector-extraction       | 🟢 `FULLY_FUNCTIONAL`     | ✅          | monitor365 → standalone sibling repos; encodes four completed extractions (wireguard-collector et al.); first live run ssh-key-monitor v0.1.0 PASS (2026-09-10) |
 
 ## Skill Collection — Code Quality & Review
 
