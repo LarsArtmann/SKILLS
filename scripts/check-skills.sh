@@ -641,18 +641,46 @@ for f in \
 done
 
 # --- Marker-vocabulary guard ----------------------------------------------------
-# docs-health ANNOTATE owns the marker vocabulary (done at, Won't implement,
-# NOT-DO/DUPLICATE). HARVEST must reference these markers, not invent rival
-# formats (AGENTS.md §5.5 contract). This guard catches silent drift if either
-# mode is rewritten.
+# docs-health ANNOTATE owns the resolution-marker vocabulary (done at, Won't
+# implement, NOT-DO/DUPLICATE); HARVEST must reference those markers in its own
+# section — that is the contract that harvested TODO_LISTs never re-harvest
+# closed items (AGENTS.md §5.5). Structural, not string-global: each marker is
+# checked INSIDE the section that owns or consumes it, so deleting the section
+# or moving the prose elsewhere fails loudly (was: a whole-file grep that any
+# stray mention anywhere could satisfy).
 dh="docs-health/SKILL.md"
 if [[ -f "$dh" ]]; then
-	for marker in "done at" "Won't implement" "NOT-DO"; do
-		if ! grep -qF "$marker" "$dh"; then
-			echo "FAIL docs-health: marker '$marker' missing from SKILL.md — ANNOTATE and HARVEST modes MUST share the resolution-marker vocabulary (AGENTS.md §5.5)"
-			failed=1
-		fi
-	done
+	section() {
+		awk -v sec="$1" '
+			$0 ~ "^## " sec { in_sec = 1; next }
+			in_sec && /^## / { exit }
+			in_sec { print }
+		' "$dh"
+	}
+	annotate_body="$(section "ANNOTATE")"
+	harvest_body="$(section "HARVEST")"
+	if [[ -z "$annotate_body" ]]; then
+		echo "FAIL docs-health: no '## ANNOTATE' section — the marker-vocabulary owner is missing (AGENTS.md §5.5)"
+		failed=1
+	else
+		for marker in "done at" "Won't implement" "NOT-DO"; do
+			if ! grep -qF "$marker" <<<"$annotate_body"; then
+				echo "FAIL docs-health: ANNOTATE section no longer defines marker '$marker' — ANNOTATE owns the vocabulary (AGENTS.md §5.5)"
+				failed=1
+			fi
+		done
+	fi
+	if [[ -z "$harvest_body" ]]; then
+		echo "FAIL docs-health: no '## HARVEST' section — the harvest skip-contract section is missing (AGENTS.md §5.5)"
+		failed=1
+	else
+		for marker in "done at" "Won't implement"; do
+			if ! grep -qF "$marker" <<<"$harvest_body"; then
+				echo "FAIL docs-health: HARVEST section no longer references ANNOTATE marker '$marker' — the skip-closed-items contract broke (AGENTS.md §5.5)"
+				failed=1
+			fi
+		done
+	fi
 fi
 
 # --- Verification-status canon guard (advisory) ---------------------------------
