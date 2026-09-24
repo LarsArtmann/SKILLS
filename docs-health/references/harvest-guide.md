@@ -13,7 +13,7 @@ report" rule. Other skills (`status-report`) link here rather than restating._
 - **After every `status-report` session.** The report's "next tasks"
   section is a TODO_LIST input, not its final resting place. **If you just
   wrote a status report and TODO_LIST was not updated, run HARVEST now** —
-  otherwise the items rot in a timestamped file no later session reads.
+  otherwise the items rot in a timestamped file that no later session reads.
 - **As a step in AUDIT.** A full docs-health run that skips HARVEST will
   declare TODO_LIST "fresh" while dozens of planned items rot in the most
   recent snapshot.

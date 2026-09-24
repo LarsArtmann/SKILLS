@@ -435,7 +435,7 @@ review, audit) whose most valuable output is **forward-looking** — "next
 tasks," recommendations, an action roadmap, "debt to ticket" — that output is
 the primary input for another skill. If the producing skill ends with "WAIT
 FOR INSTRUCTIONS" and never names the consumer, the forward items get
-**entombed** in a timestamped file no later session reads. This is the #1
+**entombed** in a timestamped file that no later session reads. This is the #1
 cause of `TODO_LIST.md` staleness across long sessions.
 
 Include a handoff note at the end of any report/plan/review skill:

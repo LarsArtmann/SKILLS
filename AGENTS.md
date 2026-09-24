@@ -126,6 +126,13 @@ Three original files (`todo-list-builder.md`, `features-audit.md`,
 `docs-health`. They are kept for historical reference; the canonical
 skill is `docs-health/SKILL.md`.
 
+`communication-doctrine.md` (added 2026-09-24) is the one original that
+seeded a *principle* rather than a skill directory: the 2026-09-17 user
+paste ("SHUT UP AND COMMUNICATE") distilled into `how-to-write-skills.md`
+Principle 7, the `--signal` report, and check 15. The verbatim paste was
+never persisted; the file is a faithful reconstruction from the two
+processing reports, and says so in its provenance note.
+
 ### 5.2 `git commit <--` Syntax Bug (guarded)
 
 The literal phrase `git commit <--` is banned in every `SKILL.md`: `<--` is not a git flag, it is a typo artifact inherited from the original prompts. Write clear prose instead ("commit with a very detailed message"). `scripts/check-skills.sh` fails if the phrase reappears in any `SKILL.md`; `originals/` is exempt — frozen source material.

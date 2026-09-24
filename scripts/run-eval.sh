@@ -18,8 +18,8 @@
 #                                             # fictional repo)
 #   Output: <eval-dir>/runs/<UTC-timestamp>/{output.md,meta.json}
 #
-# Requirements: `crush` on PATH. The session runs non-interactively with
-# --yolo inside the throwaway cwd — never point --cwd at a real repo.
+# Requirements: `crush` on PATH. The session runs non-interactively in the
+# throwaway cwd — never point --cwd at a real repo.
 
 set -euo pipefail
 
@@ -81,7 +81,7 @@ start=$(date +%s)
 set +e
 (
 	cd "$workdir"
-	crush run --yolo "$prompt"
+	crush run --quiet "$prompt"
 ) > "$run_dir/output.md" 2> "$run_dir/stderr.log"
 exit_code=$?
 set -e
@@ -98,7 +98,7 @@ meta = {
     "model": model.strip() or "unknown",
     "exit_code": int(code),
     "duration_seconds": int(secs),
-    "harness": "crush run --yolo (fresh non-interactive session)",
+    "harness": "crush run --quiet (fresh non-interactive session)",
 }
 with open(f"{run_dir}/meta.json", "w") as f:
     json.dump(meta, f, indent=2)
