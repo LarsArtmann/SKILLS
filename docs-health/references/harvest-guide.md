@@ -20,6 +20,30 @@ report" rule. Other skills (`status-report`) link here rather than restating._
 - **On explicit request:** "harvest the latest status report", "pull the
   next tasks into TODO_LIST", "extract open items from recent reports".
 
+## Harvest ledger (pass artifact)
+
+Every multi-report harvest produces a **ledger table** appended to the pass
+report (or the docs-health section of the session report): one row per
+harvested item, recording its disposition. The ledger is what makes a harvest
+auditable instead of vibes — a later session can see why an item DIDN'T land
+without re-reading the source report.
+
+Shape:
+
+| Source (report §item)                       | Disposition          | Destination / reason                                   |
+| ------------------------------------------- | -------------------- | ------------------------------------------------------ |
+| 12-26 §f11 catalog tag wave                 | existing row         | Data-mesh tail, row 1 (source citation merged)          |
+| 12-26 §f23 goal-shaped-app activation       | existing row (blocked) | Data-mesh tail, row 3                                 |
+| 12-26 §e9 rename X to Y                     | declined             | naming churn without consumer ask                      |
+
+Rules:
+
+- Disposition is one of: `new row`, `existing row`, `merged`, `declined`
+  (with reason), `done in code` (verified — cite the commit/CHANGELOG line).
+- "Declined" rows need a reason a future session can re-evaluate against.
+- The ledger lives in the pass report (a timestamped artifact), NOT in
+  TODO_LIST — it records the pass, it is not a backlog.
+
 ## Anti-patterns (not already stated in the body)
 
 The body covers: drop resolved items, questions aren't tasks, verify against
