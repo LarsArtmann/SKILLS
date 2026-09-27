@@ -7,6 +7,7 @@ Usage: annotate-rows.py [--dry-run] [--section <heading-prefix>] <file> <spec>..
     kind v -> done — <value>          (verified evidence, no commit)
     kind p -> done (docs-health pass <value-or-today>)
     kind w -> **Won't implement — <value>.**
+    kind n -> **NOT-DO — <value>.**       (decided-against, not a request verdict)
 
 --section scopes matches to the region from the first line starting with
 <heading-prefix> (e.g. "## f)") up to the next same-level "## " heading;

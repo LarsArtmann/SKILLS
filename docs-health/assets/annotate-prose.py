@@ -9,6 +9,7 @@ Usage: annotate-prose.py [--dry-run] <file> <section-prefix> <spec>...
     kind v -> done (<value>)         (verified without a commit, short evidence)
     kind p -> done (docs-health pass <value-or-today>)
     kind w -> **Won't implement — <value>.**
+    kind n -> **NOT-DO — <value>.**       (decided-against, not a request verdict)
 
 --dry-run prints the would-be new line instead of writing. Wraps the ENTIRE
 original item text in ~~...~~ and appends the marker. Multi-line items:

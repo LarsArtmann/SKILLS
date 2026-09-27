@@ -37,7 +37,10 @@ def outside_code_spans(text: str) -> str:
 def is_separator(line: str) -> bool:
     cells = [c.strip() for c in line.strip().strip("|").split("|")]
 
-    return bool(cells) and all(re.fullmatch(r":?-{3,}:?", c) for c in cells)
+    # CommonMark delimiter cells are dashes/colons in any count >= 1; the
+    # corpus carries 2-dash separators (`--|--`), which the old {3,} floor
+    # misclassified as data rows and false-flagged struck tables PARTIAL.
+    return bool(cells) and all(re.fullmatch(r":?-{2,}:?", c) for c in cells)
 
 
 def classify_row(line: str) -> str:

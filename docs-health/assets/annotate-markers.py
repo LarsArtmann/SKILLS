@@ -1,7 +1,9 @@
 """Shared resolution-marker builder for the docs-health annotate scripts.
 
 Canonical vocabulary (docs-health SKILL.md, ANNOTATE): `done at <hashes>`,
-`**Won't implement — <reason>.**`, plus the evidence markers
+`**Won't implement — <reason>.**`, the decision marker
+`**NOT-DO — <reason>.**` (added 2026-09-27 for decided-against items that
+are not "won't implement" verdicts on a request), plus the evidence markers
 `done — <evidence>` and `done (docs-health pass <date>)`. Both
 annotate-rows.py and annotate-prose.py build their markers here so the
 formats cannot drift — they had: rows emitted `done — x`, prose emitted
@@ -24,4 +26,6 @@ def marker_for(kind: str, value: str) -> str:
         return f"done (docs-health pass {value if value != '-' else datetime.now(tz=UTC).date().isoformat()})"
     if kind == "w":
         return f"**Won't implement — {value}.**"
-    raise SystemExit(f"bad kind {kind!r} (use h/v/p/w)")
+    if kind == "n":
+        return f"**NOT-DO — {value}.**"
+    raise SystemExit(f"bad kind {kind!r} (use h/v/p/w/n)")
