@@ -127,7 +127,7 @@ Three original files (`todo-list-builder.md`, `features-audit.md`,
 skill is `docs-health/SKILL.md`.
 
 `communication-doctrine.md` (added 2026-09-24) is the one original that
-seeded a *principle* rather than a skill directory: the 2026-09-17 user
+seeded a _principle_ rather than a skill directory: the 2026-09-17 user
 paste ("SHUT UP AND COMMUNICATE") distilled into `how-to-write-skills.md`
 Principle 7, the `--signal` report, and check 15. The verbatim paste was
 never persisted; the file is a faithful reconstruction from the two

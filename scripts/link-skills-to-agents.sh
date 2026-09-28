@@ -45,27 +45,51 @@ if [[ "${1:-}" == "--selftest" ]]; then
 	srepo="$sbx/repo"
 	sagents="$sbx/agents"
 	mkdir -p "$srepo/alpha" "$srepo/beta" "$sagents"
-	printf -- '---\nname: alpha\n---\n' > "$srepo/alpha/SKILL.md"
-	printf -- '---\nname: beta\n---\n' > "$srepo/beta/SKILL.md"
+	printf -- '---\nname: alpha\n---\n' >"$srepo/alpha/SKILL.md"
+	printf -- '---\nname: beta\n---\n' >"$srepo/beta/SKILL.md"
 	st_fail=0
 	run() { REPO_DIR="$srepo" AGENTS_DIR="$sagents" bash "$0" "$@"; }
-	run > /dev/null 2>&1 || st_fail=1
-	run --check > /dev/null 2>&1 || { echo "selftest 1 FAIL: fresh repair must leave --check green"; st_fail=1; }
+	run >/dev/null 2>&1 || st_fail=1
+	run --check >/dev/null 2>&1 || {
+		echo "selftest 1 FAIL: fresh repair must leave --check green"
+		st_fail=1
+	}
 	ln -sfn "$srepo/alpha" "$sagents/alpha"
-	run --check > /dev/null 2>&1 && { echo "selftest 2 FAIL: wrong target must fail --check"; st_fail=1; }
-	run > /dev/null 2>&1
-	run --check > /dev/null 2>&1 || { echo "selftest 3 FAIL: repair must fix a wrong target"; st_fail=1; }
+	run --check >/dev/null 2>&1 && {
+		echo "selftest 2 FAIL: wrong target must fail --check"
+		st_fail=1
+	}
+	run >/dev/null 2>&1
+	run --check >/dev/null 2>&1 || {
+		echo "selftest 3 FAIL: repair must fix a wrong target"
+		st_fail=1
+	}
 	ln -sfn "$srepo/gone" "$sagents/beta"
-	run --check > /dev/null 2>&1 && { echo "selftest 4 FAIL: dangling link must fail --check"; st_fail=1; }
+	run --check >/dev/null 2>&1 && {
+		echo "selftest 4 FAIL: dangling link must fail --check"
+		st_fail=1
+	}
 	rm "$sagents/beta"
-	run --check > /dev/null 2>&1 && { echo "selftest 5 FAIL: missing link must fail --check"; st_fail=1; }
+	run --check >/dev/null 2>&1 && {
+		echo "selftest 5 FAIL: missing link must fail --check"
+		st_fail=1
+	}
 	ln -s "$srepo/ghost" "$sagents/ghost"
-	run --check > /dev/null 2>&1 && { echo "selftest 6 FAIL: orphan link must fail --check"; st_fail=1; }
+	run --check >/dev/null 2>&1 && {
+		echo "selftest 6 FAIL: orphan link must fail --check"
+		st_fail=1
+	}
 	rm "$sagents/ghost"
 	mkdir "$sagents/beta"
-	run --check > /dev/null 2>&1 && { echo "selftest 7 FAIL: real-dir conflict must fail --check"; st_fail=1; }
-	run > /dev/null 2>&1
-	run --check > /dev/null 2>&1 && { echo "selftest 8 FAIL: repair without --force must not clobber a real dir"; st_fail=1; }
+	run --check >/dev/null 2>&1 && {
+		echo "selftest 7 FAIL: real-dir conflict must fail --check"
+		st_fail=1
+	}
+	run >/dev/null 2>&1
+	run --check >/dev/null 2>&1 && {
+		echo "selftest 8 FAIL: repair without --force must not clobber a real dir"
+		st_fail=1
+	}
 	if [[ $st_fail -eq 0 ]]; then
 		echo "OK: link-skills-to-agents.sh selftest passed (8/8)."
 		exit 0

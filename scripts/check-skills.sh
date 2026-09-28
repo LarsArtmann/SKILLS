@@ -454,10 +454,14 @@ done < <(grep -rnE '[0-9]+[[:space:]]+(skills|total)' README.md AGENTS.md 2>/dev
 # marker_class LINE — map a README row's status emoji to the canonical state
 # class shared with FEATURES.md: 🟢→green 🟡→yellow 🔴→red 🆕→new ("" if none).
 marker_class() {
-	if grep -q "🟢" <<<"${1:-}"; then echo green
-	elif grep -q "🟡" <<<"${1:-}"; then echo yellow
-	elif grep -q "🔴" <<<"${1:-}"; then echo red
-	elif grep -q "🆕" <<<"${1:-}"; then echo new
+	if grep -q "🟢" <<<"${1:-}"; then
+		echo green
+	elif grep -q "🟡" <<<"${1:-}"; then
+		echo yellow
+	elif grep -q "🔴" <<<"${1:-}"; then
+		echo red
+	elif grep -q "🆕" <<<"${1:-}"; then
+		echo new
 	fi
 }
 
@@ -490,7 +494,10 @@ if [[ -f "$feat" ]]; then
 		[[ "$c" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || continue
 		known=0
 		for d in "${skill_dirs[@]}"; do
-			[[ "${d#./}" == "$c" ]] && { known=1; break; }
+			[[ "${d#./}" == "$c" ]] && {
+				known=1
+				break
+			}
 		done
 		if [[ "$known" -eq 0 ]]; then
 			echo "FAIL: $feat has row '$c' but no such skill directory exists — deleted-skill residue; remove or update the row"

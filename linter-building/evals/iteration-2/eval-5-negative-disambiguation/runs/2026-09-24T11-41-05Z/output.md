@@ -1,10 +1,10 @@
 Tiny Go project (no flake.nix), so I'll run the Go toolchain per the scan process.Build and vet pass. Now golangci-lint and duplication scan:All quality gates pass on `fixture/tiny`:
 
-| Gate | Command | Result |
-|---|---|---|
-| Build | `go build ./...` | OK (exit 0) |
-| Vet | `go vet ./...` | OK (exit 0) |
-| Lint | `golangci-lint run ./...` | 0 issues |
+| Gate        | Command                      | Result         |
+| ----------- | ---------------------------- | -------------- |
+| Build       | `go build ./...`             | OK (exit 0)    |
+| Vet         | `go vet ./...`               | OK (exit 0)    |
+| Lint        | `golangci-lint run ./...`    | 0 issues       |
 | Duplication | `art-dupl --type-aware -t 5` | 0 clone groups |
 
 One manual finding golangci-lint's defaults don't catch:

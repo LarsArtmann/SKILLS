@@ -71,7 +71,7 @@ run_pattern() {
 	local severity="$3"
 	local matches
 
-	matches=$(rg ${TYPE_GLOB[@]+"${TYPE_GLOB[@]}"} "${RIPGREP_OPTS[@]}" "$pattern" "$PATH_TO_SCAN" 2> /dev/null || true)
+	matches=$(rg ${TYPE_GLOB[@]+"${TYPE_GLOB[@]}"} "${RIPGREP_OPTS[@]}" "$pattern" "$PATH_TO_SCAN" 2>/dev/null || true)
 	local count
 	count=$(echo "$matches" | head -30 | grep -c . || true)
 

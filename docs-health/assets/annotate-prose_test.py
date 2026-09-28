@@ -39,9 +39,17 @@ def main() -> int:
     check("h single", marker_for("h", "abc1234"), "done at `abc1234`")
     check("h multi", marker_for("h", "a1,b2"), "done at `a1`, `b2`")
     check("v evidence", marker_for("v", "live curl check"), "done — live curl check")
-    check("v strips redundant done", marker_for("v", "done: verified live"), "done — verified live")
+    check(
+        "v strips redundant done",
+        marker_for("v", "done: verified live"),
+        "done — verified live",
+    )
     check("v bare", marker_for("v", "done"), "done")
-    check("p explicit date", marker_for("p", "2026-09-24"), "done (docs-health pass 2026-09-24)")
+    check(
+        "p explicit date",
+        marker_for("p", "2026-09-24"),
+        "done (docs-health pass 2026-09-24)",
+    )
     today = datetime.now(tz=UTC).date().isoformat()
     check("p UTC default", marker_for("p", "-"), f"done (docs-health pass {today})")
     check("w", marker_for("w", "user decision"), "**Won't implement — user decision.**")
@@ -72,12 +80,22 @@ def main() -> int:
         target = Path(f.name)
     try:
         sys_argv_backup = prose.sys.argv
-        prose.sys.argv = ["annotate-prose.py", str(target), "## f)", "1:h:abc1234", "2:w:never wanted"]
+        prose.sys.argv = [
+            "annotate-prose.py",
+            str(target),
+            "## f)",
+            "1:h:abc1234",
+            "2:w:never wanted",
+        ]
         prose.main()
         out = target.read_text()
         check("item 1 struck", "~~First item~~ done at `abc1234`" in out, True)
         check("item 1 continuation struck", "   ~~continued line~~" in out, True)
-        check("item 2 struck", "~~Second item~~ **Won't implement — never wanted.**" in out, True)
+        check(
+            "item 2 struck",
+            "~~Second item~~ **Won't implement — never wanted.**" in out,
+            True,
+        )
         check("blank line not struck", "\n\n3. After a blank line" in out, True)
         check("section g untouched", "1. Different section, same number" in out, True)
         # Already-annotated guard: re-running item 1 must fail loudly.

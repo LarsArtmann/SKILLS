@@ -118,20 +118,20 @@ file rather than patching (see "Rebuild vs patch" in SKILL.md).
 
 These checks compare docs against each other, not against code.
 
-| Check                     | What to look for                                                                   | Severity    |
-| ------------------------- | ---------------------------------------------------------------------------------- | ----------- |
-| Status consistency        | `FEATURES.md` says BROKEN but `README.md` markets it as working                    | Critical    |
-| No duplication            | The same fact stated in multiple files (will drift)                                | Medium      |
-| Correct ownership         | TODOs leaking into `FEATURES.md`; features leaking into `TODO_LIST.md`             | Medium      |
-| Valid cross-refs          | `README.md` links to files that exist; `AGENTS.md` paths are real                  | Critical    |
-| Lifecycle integrity       | Shipped feature still in `TODO_LIST.md` (split brain)                              | Critical    |
-| TODO↔CHANGELOG dup        | Completed item in TODO_LIST also present in CHANGELOG `[Unreleased]`               | Medium-High |
-| TODO↔ROADMAP dup          | Deferred/backlog item in TODO_LIST duplicates a ROADMAP entry                      | Medium      |
-| TODO covers recent report | TODO_LIST/ROADMAP cover the "next tasks" of the most recent `docs/status/*` report | Medium-High |
-| Forbidden sections        | TODO_LIST has a "Previously Completed" / "Done" / "Resolved" section               | Medium-High |
-| Version consistency       | `CHANGELOG.md` version matches `README.md` stated version                          | Low         |
+| Check                     | What to look for                                                                          | Severity                                                                                                                                                          |
+| ------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Status consistency        | `FEATURES.md` says BROKEN but `README.md` markets it as working                           | Critical                                                                                                                                                          |
+| No duplication            | The same fact stated in multiple files (will drift)                                       | Medium                                                                                                                                                            |
+| Correct ownership         | TODOs leaking into `FEATURES.md`; features leaking into `TODO_LIST.md`                    | Medium                                                                                                                                                            |
+| Valid cross-refs          | `README.md` links to files that exist; `AGENTS.md` paths are real                         | Critical                                                                                                                                                          |
+| Lifecycle integrity       | Shipped feature still in `TODO_LIST.md` (split brain)                                     | Critical                                                                                                                                                          |
+| TODO↔CHANGELOG dup        | Completed item in TODO_LIST also present in CHANGELOG `[Unreleased]`                      | Medium-High                                                                                                                                                       |
+| TODO↔ROADMAP dup          | Deferred/backlog item in TODO_LIST duplicates a ROADMAP entry                             | Medium                                                                                                                                                            |
+| TODO covers recent report | TODO_LIST/ROADMAP cover the "next tasks" of the most recent `docs/status/*` report        | Medium-High                                                                                                                                                       |
+| Forbidden sections        | TODO_LIST has a "Previously Completed" / "Done" / "Resolved" section                      | Medium-High                                                                                                                                                       |
+| Version consistency       | `CHANGELOG.md` version matches `README.md` stated version                                 | Low                                                                                                                                                               |
 | Status live-index rot     | `docs/status/*` files exist with no row in the status README index (or rows link nothing) | Critical — mechanically gated where the repo has `scripts/check-canonical-facts.sh` (status leg); otherwise check by diffing `ls docs/status/` vs the index links |
-| Archived-count drift      | status `archived/` intro claims N snapshots but the dir holds M                     | Medium-High — same gate leg pins the intro count to the dir count |
+| Archived-count drift      | status `archived/` intro claims N snapshots but the dir holds M                           | Medium-High — same gate leg pins the intro count to the dir count                                                                                                 |
 
 ---
 

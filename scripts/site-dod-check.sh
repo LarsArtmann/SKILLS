@@ -50,15 +50,24 @@ while [[ $# -gt 0 ]]; do
 	esac
 done
 [[ -n "$site" && "$site" =~ ^https?:// ]] || usage
-command -v curl > /dev/null 2>&1 || { echo "error: curl not on PATH" >&2; exit 2; }
-command -v python3 > /dev/null 2>&1 || { echo "error: python3 not on PATH" >&2; exit 2; }
+command -v curl >/dev/null 2>&1 || {
+	echo "error: curl not on PATH" >&2
+	exit 2
+}
+command -v python3 >/dev/null 2>&1 || {
+	echo "error: python3 not on PATH" >&2
+	exit 2
+}
 
 site="${site%/}"
 fails=0
 warns=0
 
 note() { printf '  %s\n' "$1"; }
-pass() { printf 'PASS %s\n' "$1"; note "$2"; }
+pass() {
+	printf 'PASS %s\n' "$1"
+	note "$2"
+}
 fail() {
 	printf 'FAIL %s\n' "$1"
 	note "$2"
@@ -104,13 +113,13 @@ tmp="$(mktemp -d)"
 trap 'trash "$tmp" 2>/dev/null || rm -rf "$tmp"' EXIT
 
 # --- 1+2: landing HTML -----------------------------------------------------------
-html="$(curl -fsSL --max-time 30 "$site/" )" || {
+html="$(curl -fsSL --max-time 30 "$site/")" || {
 	fail "landing page fetch" "curl could not fetch $site/ — is the site deployed?"
 	echo
 	echo "RESULT: FAIL (fetch error)"
 	exit 1
 }
-printf '%s' "$html" > "$tmp/index.html"
+printf '%s' "$html" >"$tmp/index.html"
 if grep -q 'id="demo"' "$tmp/index.html"; then
 	pass "demo anchor" 'id="demo" present in landing HTML'
 else
@@ -172,7 +181,8 @@ if [[ -n "$repo" ]]; then
 	if [[ ! -f "$fbj" ]]; then
 		warn "firebase.json lint" "$fbj not found — pass --repo pointing at the site repo checkout"
 	else
-		order="$(python3 - "$fbj" <<'EOF'
+		order="$(
+			python3 - "$fbj" <<'EOF'
 import json, sys
 try:
     host = json.load(open(sys.argv[1]))["hosting"]
@@ -184,7 +194,7 @@ globs = [h.get("source", "") for h in hdrs]
 catchalls = [i for i, g in enumerate(globs) if g == "/**"]
 print("OK" if not catchalls or catchalls[-1] == len(globs) - 1 else "CATCHALL_FIRST")
 EOF
-)"
+		)"
 		if [[ "$order" == "OK" ]]; then
 			pass "firebase.json block order" "catch-all /** is last (or absent) — immutable globs cannot be shadowed"
 		elif [[ "$order" == CATCHALL_FIRST* ]]; then

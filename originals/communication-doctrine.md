@@ -34,9 +34,9 @@
 
 ## Mapping onto this repo (as recorded 2026-09-17/18)
 
-| Doctrine tenet            | Repo encoding                                            |
-| ------------------------- | -------------------------------------------------------- |
-| delete the first 90%      | Principle 7 "lead with signal"; check 15 filler gate      |
-| physical-world test       | "What tool call does this line produce?" (Principle 7)    |
-| behavioral control        | "keep the why, drop the essay" (Pattern 10 boundary)      |
-| clear over clever         | jargon glossary in Principle 7 + `--signal` jargon report |
+| Doctrine tenet       | Repo encoding                                             |
+| -------------------- | --------------------------------------------------------- |
+| delete the first 90% | Principle 7 "lead with signal"; check 15 filler gate      |
+| physical-world test  | "What tool call does this line produce?" (Principle 7)    |
+| behavioral control   | "keep the why, drop the essay" (Pattern 10 boundary)      |
+| clear over clever    | jargon glossary in Principle 7 + `--signal` jargon report |

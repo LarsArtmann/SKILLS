@@ -31,8 +31,14 @@ usage() {
 eval_dir="${1:-}"
 [[ -d "$eval_dir" ]] || usage
 prompt_file="$eval_dir/prompt.txt"
-[[ -f "$prompt_file" ]] || { echo "error: $prompt_file missing" >&2; exit 2; }
-command -v crush > /dev/null 2>&1 || { echo "error: crush not on PATH" >&2; exit 2; }
+[[ -f "$prompt_file" ]] || {
+	echo "error: $prompt_file missing" >&2
+	exit 2
+}
+command -v crush >/dev/null 2>&1 || {
+	echo "error: crush not on PATH" >&2
+	exit 2
+}
 
 shift || true
 cwd_override=""
@@ -50,7 +56,7 @@ done
 workdir=""
 cleanup() {
 	if [[ -n "$workdir" && -d "$workdir" && "$workdir" == "${TMPDIR:-/tmp}"/* ]]; then
-		trash "$workdir" 2> /dev/null || rm -rf "$workdir"
+		trash "$workdir" 2>/dev/null || rm -rf "$workdir"
 	fi
 }
 trap cleanup EXIT
@@ -69,7 +75,7 @@ run_dir="$eval_dir/runs/$ts"
 mkdir -p "$run_dir"
 
 prompt="$(cat "$prompt_file")"
-model="$(crush stats 2> /dev/null | grep -oE 'model:[[:space:]]*[^ ]+' | head -1 || true)"
+model="$(crush stats 2>/dev/null | grep -oE 'model:[[:space:]]*[^ ]+' | head -1 || true)"
 
 echo "eval:    $eval_dir"
 echo "cwd:     $workdir"
@@ -82,7 +88,7 @@ set +e
 (
 	cd "$workdir"
 	crush run --quiet "$prompt"
-) > "$run_dir/output.md" 2> "$run_dir/stderr.log"
+) >"$run_dir/output.md" 2>"$run_dir/stderr.log"
 exit_code=$?
 set -e
 end=$(date +%s)

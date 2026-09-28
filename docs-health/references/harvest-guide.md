@@ -30,11 +30,11 @@ without re-reading the source report.
 
 Shape:
 
-| Source (report §item)                       | Disposition          | Destination / reason                                   |
-| ------------------------------------------- | -------------------- | ------------------------------------------------------ |
-| 12-26 §f11 catalog tag wave                 | existing row         | Data-mesh tail, row 1 (source citation merged)          |
-| 12-26 §f23 goal-shaped-app activation       | existing row (blocked) | Data-mesh tail, row 3                                 |
-| 12-26 §e9 rename X to Y                     | declined             | naming churn without consumer ask                      |
+| Source (report §item)                 | Disposition            | Destination / reason                           |
+| ------------------------------------- | ---------------------- | ---------------------------------------------- |
+| 12-26 §f11 catalog tag wave           | existing row           | Data-mesh tail, row 1 (source citation merged) |
+| 12-26 §f23 goal-shaped-app activation | existing row (blocked) | Data-mesh tail, row 3                          |
+| 12-26 §e9 rename X to Y               | declined               | naming churn without consumer ask              |
 
 Rules:
 
