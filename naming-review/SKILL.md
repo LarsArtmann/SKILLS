@@ -1,8 +1,8 @@
 ---
 name: naming-review
-description: Use when the user wants to review, audit, improve, or fix naming in their codebase — type names, function names, variable names, field names, any identifier naming. Also triggers on "naming review", "review naming", "audit names", "improve naming", "bad names", "naming conventions", "rename identifiers", "clean up names", or asks about naming anti-patterns and smells: Manager/Handler/Helper classes, Data/Info suffixes, type encoding in names, lying names, vague verbs. Covers clarity, honesty, domain alignment, consistency, and language-specific conventions, with automated detection via scripts/naming-smells.sh and linter integration (Go revive, TS eslint, Rust clippy, Python ruff). Distinct from data-model-review — that skill redesigns the SHAPE of a model (types, invariants, optionality); this one fixes what its identifiers are CALLED.
-  metadata:
-    tags: naming, review, quality, clean-code, ddd, anti-patterns, data-models, functions, naming-conventions
+description: 'Use when the user wants to review, audit, improve, or fix naming in their codebase — type names, function names, variable names, field names, any identifier naming. Also triggers on "naming review", "review naming", "audit names", "improve naming", "bad names", "naming conventions", "rename identifiers", "clean up names", or asks about naming anti-patterns and smells: Manager/Handler/Helper classes, Data/Info suffixes, type encoding in names, lying names, vague verbs. Covers clarity, honesty, domain alignment, consistency, and language-specific conventions, with automated detection via scripts/naming-smells.sh and linter integration (Go revive, TS eslint, Rust clippy, Python ruff). Distinct from data-model-review — that skill redesigns the SHAPE of a model (types, invariants, optionality); this one fixes what its identifiers are CALLED.'
+metadata:
+  tags: naming, review, quality, clean-code, ddd, anti-patterns, data-models, functions, naming-conventions
 ---
 
 # Naming Review
