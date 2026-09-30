@@ -13,6 +13,22 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-09-30 — annotate-prose `r` kind: routed verdicts, attribution)
+
+- **`docs-health/assets/annotate-prose.py` kind `r` (routed, no strike):**
+  emits the house open-work marker grammar — an unstruck bold
+  `**→ routed/open/… — <evidence>**` arrow appended in the task cell —
+  with a refusal guard against re-annotating rows that already carry a
+  routed marker (`**→`) and continuations left bare. Built to annotate
+  the telephony repo's 2026-09-30 WhatsApp session report (41 routed
+  verdicts, §b/§c/§f/§g scoped); fixture tests extended in
+  `annotate-prose_test.py`. **Attribution note:** the change landed via
+  the repo's auto-commit daemon as heuristic commit `28d2e4d` (after the
+  hand-authored `78dc335` covered the rows-annotator sibling) — this
+  entry is the hand-authored record the daemon heuristic message could
+  not provide (same class as the telephony repo's unattributed lock
+  moves).
+
 ### Added (2026-09-24 — T36–T56 execution wave: honesty fixes, gate hardening, self-tests, eval harness)
 
 - **Honesty fix (T36):** `github-voice` "every comment across all repos"
