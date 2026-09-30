@@ -52,6 +52,18 @@ def main() -> int:
         "struck row trips", already_annotated("| M1 | ~~task~~ done at `abc` |"), True
     )
     check("clean row passes", already_annotated("| M1 | task | High |"), False)
+    # routed-arrow guard: a bold marker trips (double-route refusal)...
+    check(
+        "routed row trips",
+        already_annotated("| M1 | task **→ open — owner lane** | High |"),
+        True,
+    )
+    # ...but a bare prose arrow (flag syntax, math) must NOT trip it
+    check(
+        "prose arrow passes",
+        already_annotated("| M19 | rewrite `x` → new `--flag` arg | High |"),
+        False,
+    )
 
     # v-kind renders "done — <evidence>" with no nested parens...
     check(
@@ -74,6 +86,39 @@ def main() -> int:
     check("p default", marker_for("p", "-").startswith("done (docs-health pass "), True)
     check(
         "w", marker_for("w", "gated upstream"), "**Won't implement — gated upstream.**"
+    )
+
+    # r-kind: routed verdict, bold arrow, whole phrase from the value
+    check(
+        "r open",
+        marker_for("r", "open — owner lane (TODO_LIST row)"),
+        "**→ open — owner lane (TODO_LIST row)**",
+    )
+    check(
+        "r done",
+        marker_for("r", "done — landed at 4cea337"),
+        "**→ done — landed at 4cea337**",
+    )
+    # a value that already starts with the arrow is not doubled
+    check(
+        "r strips leading arrow",
+        marker_for("r", "→ routed to ROADMAP"),
+        "**→ routed to ROADMAP**",
+    )
+    check("r empty", marker_for("r", ""), "**→ resolved**")
+
+    # route_row: NO strike, marker lands at the end of the first content
+    # cell, all other cells byte-identical
+    check(
+        "route_row appends in task cell",
+        _mod.route_row("| M02 | host check | Critical |", "M02", "**→ done — live**"),
+        "| M02 | host check **→ done — live** | Critical |",
+    )
+    # strike_row keeps its documented striking behavior
+    check(
+        "strike_row still strikes",
+        _mod.strike_row("| 3 | tail | S |", "3", "done at `a1b2c3`"),
+        "| ~~3~~ | ~~tail~~ done at `a1b2c3` | ~~S~~ |",
     )
 
     if failures:

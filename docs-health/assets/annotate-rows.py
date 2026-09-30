@@ -8,6 +8,12 @@ Usage: annotate-rows.py [--dry-run] [--section <heading-prefix>] <file> <spec>..
     kind p -> done (docs-health pass <value-or-today>)
     kind w -> **Won't implement — <value>.**
     kind n -> **NOT-DO — <value>.**       (decided-against, not a request verdict)
+    kind r -> **→ <value>**           (routed verdict, NO strike — the
+                                       2026-09-29+ house table grammar:
+                                       value carries the whole phrase,
+                                       e.g. `open — owner lane (TODO_LIST
+                                       row)` or `done — landed at <hash>`;
+                                       appended in the task cell)
 
 --section scopes matches to the region from the first line starting with
 <heading-prefix> (e.g. "## f)") up to the next same-level "## " heading;
@@ -62,8 +68,11 @@ def outside_code_spans(line: str) -> str:
 
 
 def already_annotated(line: str) -> bool:
-    """True when the line carries strikethrough outside inline code spans."""
-    return "~~" in outside_code_spans(line)
+    """True when the line carries strikethrough outside inline code spans,
+    or an existing routed-arrow marker (a bold `**→` outside code spans —
+    bare prose arrows like `-> new flag` must not count)."""
+    bare = outside_code_spans(line)
+    return "~~" in bare or "**→" in bare
 
 
 def strike_row(line: str, row: str, marker: str) -> str:
@@ -76,6 +85,20 @@ def strike_row(line: str, row: str, marker: str) -> str:
     struck = [f" ~~{c.strip()}~~ " for c in cells]
     struck[0] = struck[0].rstrip() + f" {marker} "
     return m.group(1) + f"~~{m.group(2)}~~" + m.group(3) + "|".join(struck) + m.group(5)
+
+
+def route_row(line: str, row: str, marker: str) -> str:
+    """Routed-arrow transform: NO strike — append the bold verdict marker
+    at the end of the FIRST content cell (the task column), leaving the
+    row readable as live text. The 2026-09-29+ house grammar."""
+    m = re.match(r"^(\|\s*)([A-Za-z]?[A-Za-z0-9.]*)(\s*\|)(.*)(\|)\s*$", line)
+    if not m or m.group(2) != row:
+        raise SystemExit(
+            f"row {row}: line does not match table-row shape: {line[:80]!r}"
+        )
+    cells = m.group(4).split("|")
+    cells[0] = cells[0].rstrip() + f" {marker} "
+    return m.group(1) + m.group(2) + m.group(3) + "|".join(cells) + m.group(5)
 
 
 def heading_level(line: str) -> int:
@@ -169,7 +192,8 @@ def main() -> None:
         i = hits[0]
         if already_annotated(lines[i]):
             raise SystemExit(f"row {row}: already annotated")
-        edits[i] = strike_row(lines[i].rstrip("\n"), row, marker) + (
+        transform = route_row if kind == "r" else strike_row
+        edits[i] = transform(lines[i].rstrip("\n"), row, marker) + (
             "\n" if lines[i].endswith("\n") else ""
         )
         if dry_run:
