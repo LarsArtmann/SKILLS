@@ -10,6 +10,12 @@ Usage: annotate-prose.py [--dry-run] <file> <section-prefix> <spec>...
     kind p -> done (docs-health pass <value-or-today>)
     kind w -> **Won't implement — <value>.**
     kind n -> **NOT-DO — <value>.**       (decided-against, not a request verdict)
+    kind r -> **→ <value>**           (routed verdict, NO strike — mirrors
+                                       annotate-rows.py's r kind / the
+                                       2026-09-29+ house grammar: the bold
+                                       arrow is appended to the item's first
+                                       line, continuation lines stay bare;
+                                       open/routed items are never struck)
 
 --dry-run prints the would-be new line instead of writing. Wraps the ENTIRE
 original item text in ~~...~~ and appends the marker. Multi-line items:
@@ -79,7 +85,11 @@ def main() -> None:
                 f"item {num}: expected 1 match in section, found {len(hits)}"
             )
         i = hits[0]
-        if "~~" in lines[i]:
+        # Already-annotated guard: strikethrough OR a routed-arrow marker
+        # (outside inline code spans — a line describing the syntax in
+        # backticks must not look annotated; the annotate-rows precedent).
+        outside_code = re.sub(r"`[^`]*`", "", lines[i])
+        if "~~" in outside_code or "**→" in outside_code:
             raise SystemExit(f"item {num}: already annotated")
         # Item span: the start line plus indented continuation lines until
         # the next numbered item, a blank line, or the section end.
@@ -91,7 +101,13 @@ def main() -> None:
             span_end += 1
         raw = lines[i].rstrip("\n")
         m = re.match(r"^(\s*)((?:\*\*)?\d+\.(?:\*\*)?\s*)(.*)$", raw)
-        new = f"{m.group(1)}{m.group(2)}~~{m.group(3)}~~ {marker}"
+        routed = kind == "r"
+        if routed:
+            # Routed verdict: NO strike — append the bold arrow, leave the
+            # original text and all continuation lines untouched.
+            new = f"{m.group(1)}{m.group(2)}{m.group(3)} {marker}"
+        else:
+            new = f"{m.group(1)}{m.group(2)}~~{m.group(3)}~~ {marker}"
         if dry_run:
             print(
                 f"DRY {target.name} item {num} (lines {i + 1}-{span_end}):\n  - {raw}\n  + {new}"
@@ -104,6 +120,8 @@ def main() -> None:
                 raise SystemExit(
                     f"item {num}: continuation line {j + 1} already annotated"
                 )
+            if routed:
+                continue
             cm = re.match(r"^(\s*)(.*)$", cont)
             struck = f"{cm.group(1)}~~{cm.group(2)}~~"
             if dry_run:

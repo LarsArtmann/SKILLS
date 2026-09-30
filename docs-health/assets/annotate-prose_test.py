@@ -86,6 +86,7 @@ def main() -> int:
             "## f)",
             "1:h:abc1234",
             "2:w:never wanted",
+            "3:r:open — owner lane (TODO_LIST row)",
         ]
         prose.main()
         out = target.read_text()
@@ -97,12 +98,25 @@ def main() -> int:
             True,
         )
         check("blank line not struck", "\n\n3. After a blank line" in out, True)
+        check(
+            "routed item NOT struck",
+            "3. After a blank line (own item) **→ open — owner lane (TODO_LIST row)**"
+            in out,
+            True,
+        )
         check("section g untouched", "1. Different section, same number" in out, True)
         # Already-annotated guard: re-running item 1 must fail loudly.
         prose.sys.argv = ["annotate-prose.py", str(target), "## f)", "1:v:again"]
         try:
             prose.main()
             failures.append("already-annotated guard: no SystemExit")
+        except SystemExit:
+            pass
+        # Routed guard: re-routing item 3 must also fail (the **→ marker).
+        prose.sys.argv = ["annotate-prose.py", str(target), "## f)", "3:r:again"]
+        try:
+            prose.main()
+            failures.append("routed already-annotated guard: no SystemExit")
         except SystemExit:
             pass
         prose.sys.argv = sys_argv_backup
