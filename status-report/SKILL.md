@@ -41,6 +41,14 @@ treatment: stat cards, severity badges, color-coded sections.
 > the override in your closing message so the spec/usage divergence is
 > visible, and do **not** propagate a one-off override back into this skill
 > as a new default.
+>
+> **Standing exception — task-queue dispatch reports (recorded 2026-10-01):**
+> reports for task-queue dispatches (`Task-Queue-ID:` prompts) are `.md`
+> files at the repo's `docs/status/YYYY-MM-DD_HH-MM_*.md` convention — the
+> operator's observed standing preference (recurred 2026-09-19 in the 00-51
+> and 03-16 dispatch reports, both `.md` at explicit path demand). When the
+> dispatch prompt names its `.md` path, that is not an override to flag; it
+> is the expected shape. All other status reports stay HTML-canonical.
 
 1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
 2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
