@@ -155,6 +155,14 @@ classifies every data row of every table as COMPLETE (uniformly struck), UNTOUCH
 | SKIP        | Already clear — has its own resolution or correct content |
 | LEAVE ALONE | Describes rejected / deferred work where a note misleads  |
 
+**Archive manifest for bulk audits (2026-10-01):** when an AUDIT/ANNOTATE
+sweep archives MORE THAN ONE file in one pass, the sweep's report (or the
+archive dir's README) carries a one-line-per-file manifest: filename →
+classification (from the table above) + the deciding reason. A bulk archive
+without a manifest is invisible history — the next audit cannot tell a
+resolved-and-archived file from one that was never classified. Single-file
+archives skip this (the commit message is the manifest).
+
 ### Placement: inline before appendix
 
 Correct stale claims **in place**: `~~Nothing committed.~~ Committed as a7b8159.` If the opening/TL;DR has stale claims, inline-correct them — a reader forms their impression from the opening. An end-of-file `## Resolution (date)` appendix is supplementary context, **never the only annotation. Appendix-only on a file with numbered items = the #1 failure mode.**
