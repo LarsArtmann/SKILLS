@@ -115,6 +115,7 @@ criteria" sections) and are **not** his natural voice.
     ```markdown
     > [!IMPORTANT]
     > This issue was found and reported by <AI-Model> via Crush independent of me.
+    >
     > - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`
     ```
 

@@ -107,11 +107,12 @@ EMOJI_RE = re.compile("[\U0001f000-\U0001faff\u2600-\u27bf\u2b00-\u2bff\u2139\uf
 EMOJI_HEADER_RE = re.compile(r"^#+.*[\U0001F000-\U0001FAFF\u2600-\u27BF]", re.MULTILINE)
 HEADER_RE = re.compile(r"^#{1,6} ", re.MULTILINE)
 FOOTER_RE = re.compile(r"(generated with|co-authored-by|assisted-by)", re.IGNORECASE)
-UNSOLICITED_BANNER_RE = re.compile(
-    r"\A\s*> \[!IMPORTANT\]\s*\n>[^\n]*found and reported by[^\n]*\n>"
-    r"[^\n]*MANUALLY REVIEWED",
-    re.IGNORECASE,
+_BANNER_BODY = (
+    r"> \[!IMPORTANT\]\s*\n>[^\n]*found and reported by[^\n]*\n>"
+    r"[^\n]*MANUALLY REVIEWED"
 )
+UNSOLICITED_BANNER_RE = re.compile(_BANNER_BODY, re.IGNORECASE)
+UNSOLICITED_BANNER_AT_TOP_RE = re.compile(r"\A\s*" + _BANNER_BODY, re.IGNORECASE)
 EVIDENCE_RE = re.compile(r"(```|\]\(|https?://|^\s*\|)", re.MULTILINE | re.IGNORECASE)
 
 
@@ -284,7 +285,7 @@ def check(
                     ),
                 )
             )
-        if unsolicited and not UNSOLICITED_BANNER_RE.search(text):
+        if unsolicited and not UNSOLICITED_BANNER_AT_TOP_RE.search(text):
             findings.append(
                 (
                     "FAIL",
