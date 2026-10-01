@@ -105,6 +105,27 @@ criteria" sections) and are **not** his natural voice.
     and GLM-4.6 after looking at the diff inside of GitHub." One-line
     comments carry no footer (~0-1% ever).
 
+    **Unsolicited-filing banner** (policy, mandated 2026-10-01 — not
+    corpus-derived; no instances in the corpus yet, expect the first
+    after adoption): when the AI found the issue/PR on its own
+    initiative rather than Lars requesting the filing or handing over
+    the finding, the body opens with a provenance banner before any
+    content:
+
+    ```markdown
+    > [!IMPORTANT]
+    > This issue was found and reported by <AI-Model> via Crush independent of me.
+    > - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`
+    ```
+
+    `<AI-Model>` = the drafting model; "This PR was found and
+    reported ..." on PR descriptions. The box ships unchecked and the
+    timestamp as the literal placeholder — Lars ticks it and fills the
+    time only after actually reading the filing, which makes the
+    checkbox a review ledger, not decoration. It complements the footer
+    (provenance up top, attribution at the bottom) and never appears on
+    comments. `check-draft.py --unsolicited` enforces it mechanically.
+
 ## 3. External bug report
 
 Skeleton (recent, representative):
@@ -121,6 +142,8 @@ Skeleton (recent, representative):
 
 - Opens with `## Problem` or a one-line summary, never with "Hi" or
   "Thanks for the great project" (5 greetings in 372 external bodies).
+  Unsolicited AI-found filings put the habit-10 provenance banner
+  above `## Problem` — banner first, then the normal skeleton.
 - **Versions pinned early**: "do v2.1.0 (also re-verified on v2.0.0),
   Go 1.26".
 - Quotes the offending source with `// backend.go:123 (newBackend)`

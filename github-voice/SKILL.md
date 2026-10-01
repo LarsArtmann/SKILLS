@@ -47,8 +47,12 @@ it without re-verifying against the corpus.
 ## Procedure
 
 1. **Classify the artifact**: genre (bug report / feature request / PR
-   description / comment / review / maintainer-closing) and audience
-   (external repo vs own repo). This selects the profile section.
+   description / comment / review / maintainer-closing), audience
+   (external repo vs own repo), and provenance — solicited (Lars asked
+   for this filing or handed you the finding) vs unsolicited (the AI
+   found it on its own initiative: autonomous work, scans, proactive
+   maintenance). This selects the profile section; unsolicited bodies
+   carry the provenance banner (quick rules below).
 2. **For external filings, verify content first**: if the issue/PR goes
    to a repo Lars does not own, the diagnosis must pass
    [../verify-before-filing/SKILL.md](../verify-before-filing/SKILL.md)
@@ -61,7 +65,8 @@ it without re-verifying against the corpus.
    right register: bodies long+structured (AI-drafting fine — then cut),
    comments terse+human (draft as if typing fast). Prefer one evidence
    artifact (file:line, version pin, command output, link) over
-   adjectives in both.
+   adjectives in both. Unsolicited issue/PR bodies open with the
+   provenance banner before any content.
 5. **Revise once, his way**:
    [./references/revision-lessons.md](./references/revision-lessons.md)
    — add status word, add `file:line` precision, swap promises for
@@ -73,6 +78,7 @@ it without re-verifying against the corpus.
    ```bash
    ./scripts/check-draft.py --kind comment draft.md          # exit 1 = fix
    ./scripts/check-draft.py --kind body-issue --ai-drafted draft.md
+   # unsolicited AI-found filings add --unsolicited (banner required)
    # release posts / AI-assisted review reports: --kind announcement
    ```
 
@@ -107,6 +113,24 @@ it without re-verifying against the corpus.
   footer on bodies; in-line disclosure for AI-assisted reviews
   ("> [!NOTE] PR review done with Crush and GLM-4.6 ..."). Never on
   quick comments.
+- **Unsolicited issue/PR bodies open with the provenance banner**
+  (policy 2026-10-01): whenever the AI found the problem itself — not
+  Lars requesting the filing or handing over the finding — the body
+  starts, before any content, with:
+
+  ```markdown
+  > [!IMPORTANT]
+  > This issue was found and reported by <AI-Model> via Crush independent of me.
+  > - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`
+  ```
+
+  `<AI-Model>` = the drafting model (e.g. GLM-4.6); write "This PR was
+  found and reported ..." on PR descriptions. Ship the box UNCHECKED
+  and the timestamp as the literal placeholder — Lars ticks it and
+  fills the time only after actually reading the filing, so a
+  pre-checked box is a lie. The banner complements the Crush footer
+  (provenance + review ledger up top, attribution at the bottom) and
+  never appears on comments. Enforced by `--unsolicited`.
 - Quote-reply with `>` when answering a specific point; `@mention` the
   addressee at the start.
 

@@ -13,9 +13,17 @@ external texts (>= 2024) in Lars's corpus, verified 2026-09-12. Do not
 add phrases on vibes — re-verify against the corpus first (the profile
 section "AI-tells" documents the method).
 
+The --unsolicited check (added 2026-10-01) enforces the provenance
+banner for AI-initiated findings (user-mandated policy, not
+corpus-derived): the body must open with the
+"> [!IMPORTANT] ... found and reported by ... MANUALLY REVIEWED"
+banner, checkbox unchecked. It is flag-gated, so it cannot fire on
+the calibration corpus.
+
 Usage:
     check-draft.py --kind comment draft.md
     check-draft.py --kind body-issue --ai-drafted draft.md
+    check-draft.py --kind body-issue --ai-drafted --unsolicited draft.md
     check-draft.py --list          # show all checks and phrase lists
 
 Exit codes: 0 = no FAIL (WARN allowed), 1 = at least one FAIL,
@@ -99,6 +107,11 @@ EMOJI_RE = re.compile("[\U0001f000-\U0001faff\u2600-\u27bf\u2b00-\u2bff\u2139\uf
 EMOJI_HEADER_RE = re.compile(r"^#+.*[\U0001F000-\U0001FAFF\u2600-\u27BF]", re.MULTILINE)
 HEADER_RE = re.compile(r"^#{1,6} ", re.MULTILINE)
 FOOTER_RE = re.compile(r"(generated with|co-authored-by|assisted-by)", re.IGNORECASE)
+UNSOLICITED_BANNER_RE = re.compile(
+    r"\A\s*> \[!IMPORTANT\]\s*\n>[^\n]*found and reported by[^\n]*\n>"
+    r"[^\n]*MANUALLY REVIEWED",
+    re.IGNORECASE,
+)
 EVIDENCE_RE = re.compile(r"(```|\]\(|https?://|^\s*\|)", re.MULTILINE | re.IGNORECASE)
 
 
@@ -112,7 +125,9 @@ def content_lines(text: str) -> list[str]:
     return out
 
 
-def check(kind: str, text: str, ai_drafted: bool) -> list[tuple[str, str, str]]:
+def check(
+    kind: str, text: str, ai_drafted: bool, unsolicited: bool = False
+) -> list[tuple[str, str, str]]:
     findings: list[tuple[str, str, str]] = []
     low = text.lower()
     lines = content_lines(text)
@@ -269,6 +284,30 @@ def check(kind: str, text: str, ai_drafted: bool) -> list[tuple[str, str, str]]:
                     ),
                 )
             )
+        if unsolicited and not UNSOLICITED_BANNER_RE.search(text):
+            findings.append(
+                (
+                    "FAIL",
+                    "missing provenance banner",
+                    (
+                        "unsolicited AI-found filings open with the "
+                        '"> [!IMPORTANT] ... found and reported by ... '
+                        'MANUALLY REVIEWED" banner (box unchecked)'
+                    ),
+                )
+            )
+        if not unsolicited and UNSOLICITED_BANNER_RE.search(text):
+            findings.append(
+                (
+                    "WARN",
+                    "banner without --unsolicited",
+                    (
+                        "provenance banner present but flag not set — pass "
+                        "--unsolicited for AI-initiated findings, or drop "
+                        "the banner if Lars requested this filing"
+                    ),
+                )
+            )
     return findings
 
 
@@ -289,6 +328,12 @@ def main() -> int:
         help="mark as AI-drafted (bodies then REQUIRE an attribution footer)",
     )
     ap.add_argument(
+        "--unsolicited",
+        action="store_true",
+        help="mark as an AI-initiated finding (bodies then REQUIRE the "
+        "provenance banner up top, checkbox unchecked)",
+    )
+    ap.add_argument(
         "--list",
         action="store_true",
         help="list all checks and phrase lists, then exit",
@@ -306,14 +351,15 @@ def main() -> int:
             "\nStructural checks: ai-tell grep, double-hedge, greeting "
             "opener (unless @mention), sign-off, emoji headers, "
             "comment: no headers / max 1 emoji / no footer, body: "
-            "attribution footer iff --ai-drafted, thin-body warn."
+            "attribution footer iff --ai-drafted, provenance banner "
+            "iff --unsolicited, thin-body warn."
         )
         return 0
 
     if not args.file:
         ap.error("file required (or use --list)")
     text = sys.stdin.read() if args.file == "-" else Path(args.file).read_text()
-    findings = check(args.kind, text, args.ai_drafted)
+    findings = check(args.kind, text, args.ai_drafted, args.unsolicited)
     fails = [f for f in findings if f[0] == "FAIL"]
     warns = [f for f in findings if f[0] == "WARN"]
     for level, name, msg in findings:
