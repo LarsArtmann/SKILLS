@@ -109,7 +109,7 @@ HEADER_RE = re.compile(r"^#{1,6} ", re.MULTILINE)
 FOOTER_RE = re.compile(r"(generated with|co-authored-by|assisted-by)", re.IGNORECASE)
 _BANNER_BODY = (
     r"> \[!IMPORTANT\]\s*\n>[^\n]*found and reported by[^\n]*\n>"
-    r"[^\n]*MANUALLY REVIEWED"
+    r"(?:[^\n]*\n>)?[^\n]*MANUALLY REVIEWED"
 )
 UNSOLICITED_BANNER_RE = re.compile(_BANNER_BODY, re.IGNORECASE)
 UNSOLICITED_BANNER_AT_TOP_RE = re.compile(r"\A\s*" + _BANNER_BODY, re.IGNORECASE)
@@ -312,12 +312,51 @@ def check(
     return findings
 
 
+def _self_test() -> int:
+    """Assert the provenance-banner regex accepts both banner layouts.
+
+    The skill doc (SKILL.md quick rules) shows a blank `>` line between
+    the found-by line and the MANUALLY REVIEWED checkbox; the compact
+    3-line form is what earlier filings shipped. Both must pass, and a
+    body without the banner must fail.
+    """
+    compact = (
+        "> [!IMPORTANT]\n"
+        "> This issue was found and reported by GLM-5.3 via Crush independent of me.\n"
+        "> - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`\n\n"
+        "## Symptom\n\n" + "x" * 300
+    )
+    documented = (
+        "> [!IMPORTANT]\n"
+        "> This issue was found and reported by GLM-5.3 via Crush independent of me.\n"
+        ">\n"
+        "> - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`\n\n"
+        "## Symptom\n\n" + "x" * 300
+    )
+    missing = "## Symptom\n\n" + "x" * 300
+    cases = [
+        ("compact 3-line banner accepted", compact, True),
+        ("documented 4-line banner accepted", documented, True),
+        ("missing banner rejected", missing, False),
+    ]
+    failures = 0
+    for name, body, expected in cases:
+        got = bool(UNSOLICITED_BANNER_AT_TOP_RE.search(body))
+        if got != expected:
+            print(f"SELF-TEST FAIL: {name} (banner detected={got}, want={expected})")
+            failures += 1
+    if failures:
+        return 1
+    print("SELF-TEST PASSED: banner regex accepts both documented layouts")
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("file", nargs="?", help="draft file ('-' for stdin)")
     ap.add_argument(
         "--kind",
-        required=True,
+        required="--self-test" not in sys.argv,
         choices=["body-issue", "body-pr", "comment", "review", "announcement"],
         help="announcement = release posts / AI-assisted review "
         "reports: headers, emoji headers, 'Hi,' openers, and AI "
@@ -339,7 +378,16 @@ def main() -> int:
         action="store_true",
         help="list all checks and phrase lists, then exit",
     )
+    ap.add_argument(
+        "--self-test",
+        action="store_true",
+        help="assert the provenance-banner regex accepts both documented "
+        "banner layouts, then exit",
+    )
     args = ap.parse_args()
+
+    if args.self_test:
+        return _self_test()
 
     if args.list:
         print("FAIL phrases (0 hits in corpus, verified 2026-09-12):")
