@@ -13,10 +13,10 @@ external texts (>= 2024) in Lars's corpus, verified 2026-09-12. Do not
 add phrases on vibes — re-verify against the corpus first (the profile
 section "AI-tells" documents the method).
 
-The --unsolicited check (added 2026-10-01) enforces the provenance
-banner for AI-initiated findings (user-mandated policy, not
-corpus-derived): the body must open with the
-"> [!IMPORTANT] ... found and reported by ... MANUALLY REVIEWED"
+The --unsolicited check (added 2026-10-01, wording corrected
+2026-10-03) enforces the provenance banner for AI-initiated findings
+(user-mandated policy, not corpus-derived): the body must open with the
+"> [!NOTICE] ... drafted by ... via Crush ... MANUALLY REVIEWED"
 banner, checkbox unchecked. It is flag-gated, so it cannot fire on
 the calibration corpus.
 
@@ -108,7 +108,7 @@ EMOJI_HEADER_RE = re.compile(r"^#+.*[\U0001F000-\U0001FAFF\u2600-\u27BF]", re.MU
 HEADER_RE = re.compile(r"^#{1,6} ", re.MULTILINE)
 FOOTER_RE = re.compile(r"(generated with|co-authored-by|assisted-by)", re.IGNORECASE)
 _BANNER_BODY = (
-    r"> \[!IMPORTANT\]\s*\n>[^\n]*found and reported by[^\n]*\n>"
+    r"> \[!NOTICE\]\s*\n>[^\n]*via Crush[^\n]*\n>"
     r"(?:[^\n]*\n>)?[^\n]*MANUALLY REVIEWED"
 )
 UNSOLICITED_BANNER_RE = re.compile(_BANNER_BODY, re.IGNORECASE)
@@ -316,19 +316,22 @@ def _self_test() -> int:
     """Assert the provenance-banner regex accepts both banner layouts.
 
     The skill doc (SKILL.md quick rules) shows a blank `>` line between
-    the found-by line and the MANUALLY REVIEWED checkbox; the compact
+    the drafted-by line and the MANUALLY REVIEWED checkbox; the compact
     3-line form is what earlier filings shipped. Both must pass, and a
-    body without the banner must fail.
+    body without the banner must fail. Wording corrected 2026-10-03:
+    [!NOTICE] + "drafted by ... via Crush ... not at my request" (the
+    old "[!IMPORTANT] found and reported by ... independent of me"
+    wording misattributed failures that came from user reports).
     """
     compact = (
-        "> [!IMPORTANT]\n"
-        "> This issue was found and reported by GLM-5.3 via Crush independent of me.\n"
+        "> [!NOTICE]\n"
+        "> This filing was drafted by GLM-5.3 via Crush from an AI-run investigation, not at my request.\n"
         "> - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`\n\n"
         "## Symptom\n\n" + "x" * 300
     )
     documented = (
-        "> [!IMPORTANT]\n"
-        "> This issue was found and reported by GLM-5.3 via Crush independent of me.\n"
+        "> [!NOTICE]\n"
+        "> This filing was drafted by GLM-5.3 via Crush from an AI-run investigation, not at my request.\n"
         ">\n"
         "> - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`\n\n"
         "## Symptom\n\n" + "x" * 300

@@ -106,26 +106,29 @@ criteria" sections) and are **not** his natural voice.
     comments carry no footer (~0-1% ever).
 
     **Unsolicited-filing banner** (policy, mandated 2026-10-01 — not
-    corpus-derived; no instances in the corpus yet, expect the first
-    after adoption): when the AI found the issue/PR on its own
-    initiative rather than Lars requesting the filing or handing over
-    the finding, the body opens with a provenance banner before any
-    content:
+    corpus-derived; wording corrected 2026-10-03): when the AI found
+    the issue/PR on its own initiative rather than Lars requesting the
+    filing or handing over the finding, the body opens with a
+    provenance banner before any content:
 
     ```markdown
-    > [!IMPORTANT]
-    > This issue was found and reported by <AI-Model> via Crush independent of me.
+    > [!NOTICE]
+    > This filing was drafted by <AI-Model> via Crush from an AI-run investigation, not at my request. When the failure traces to an external report, that source is linked in the body.
     >
     > - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`
     ```
 
-    `<AI-Model>` = the drafting model; "This PR was found and
-    reported ..." on PR descriptions. The box ships unchecked and the
-    timestamp as the literal placeholder — Lars ticks it and fills the
-    time only after actually reading the filing, which makes the
-    checkbox a review ledger, not decoration. It complements the footer
-    (provenance up top, attribution at the bottom) and never appears on
-    comments. `check-draft.py --unsolicited` enforces it mechanically.
+    `<AI-Model>` = the drafting model; "This PR was drafted by ..."
+    on PR descriptions. "Not at my request" discloses an AI-initiated
+    filing, not an AI-discovered failure — external evidence (e.g. a
+    user report on Lars's own repo) goes in the banner's second
+    sentence and the body. The box ships unchecked and the timestamp
+    as the literal placeholder — Lars ticks it and fills the time
+    only after actually reading the filing, which makes the checkbox
+    a review ledger, not decoration. It complements the footer
+    (provenance up top, attribution at the bottom) and never appears
+    on comments. `check-draft.py --unsolicited` enforces it
+    mechanically.
 
 ## 3. External bug report
 

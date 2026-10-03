@@ -114,24 +114,30 @@ it without re-verifying against the corpus.
   ("> [!NOTE] PR review done with Crush and GLM-4.6 ..."). Never on
   quick comments.
 - **Unsolicited issue/PR bodies open with the provenance banner**
-  (policy 2026-10-01): whenever the AI found the problem itself — not
-  Lars requesting the filing or handing over the finding — the body
-  starts, before any content, with:
+  (policy 2026-10-01; wording corrected 2026-10-03): whenever the AI
+  found the problem itself — not Lars requesting the filing or
+  handing over the finding — the body starts, before any content,
+  with:
 
   ```markdown
-  > [!IMPORTANT]
-  > This issue was found and reported by <AI-Model> via Crush independent of me.
+  > [!NOTICE]
+  > This filing was drafted by <AI-Model> via Crush from an AI-run investigation, not at my request. When the failure traces to an external report, that source is linked in the body.
   >
   > - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`
   ```
 
-  `<AI-Model>` = the drafting model (e.g. GLM-4.6); write "This PR was
-  found and reported ..." on PR descriptions. Ship the box UNCHECKED
-  and the timestamp as the literal placeholder — Lars ticks it and
-  fills the time only after actually reading the filing, so a
-  pre-checked box is a lie. The banner complements the Crush footer
-  (provenance + review ledger up top, attribution at the bottom) and
-  never appears on comments. Enforced by `--unsolicited`.
+  `<AI-Model>` = the drafting model (e.g. GLM-4.6); on PR descriptions
+  write "This PR was drafted by ...". "Not at my request" means the
+  filing was AI-initiated — it does not claim the AI discovered the
+  failure: when a user report or other external evidence motivates
+  the filing, that source belongs in the banner's second sentence and
+  the body. Ship the box UNCHECKED and the timestamp as the literal
+  placeholder — Lars ticks it and fills the time only after actually
+  reading the filing, so a pre-checked box is a lie. The banner
+  complements the Crush footer (provenance + review ledger up top,
+  attribution at the bottom) and never appears on comments. Enforced
+  by `--unsolicited` (structural regex: `[!NOTICE]` + via-Crush line
+  + MANUALLY REVIEWED line).
 - Quote-reply with `>` when answering a specific point; `@mention` the
   addressee at the start.
 
