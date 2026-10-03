@@ -119,16 +119,19 @@ criteria" sections) and are **not** his natural voice.
     ```
 
     `<AI-Model>` = the drafting model; "This PR was drafted by ..."
-    on PR descriptions. "Not at my request" discloses an AI-initiated
-    filing, not an AI-discovered failure — external evidence (e.g. a
-    user report on Lars's own repo) goes in the banner's second
-    sentence and the body. The box ships unchecked and the timestamp
-    as the literal placeholder — Lars ticks it and fills the time
-    only after actually reading the filing, which makes the checkbox
-    a review ledger, not decoration. It complements the footer
-    (provenance up top, attribution at the bottom) and never appears
-    on comments. `check-draft.py --unsolicited` enforces it
-    mechanically.
+    on PR descriptions. Second sentence adapts to the collaboration
+    mode: "from an AI-run investigation, not at my request" for
+    fully-autonomous filings; "with multiple rounds of feedback from
+    me" when Lars iterated before posting (2026-10-03, his wording).
+    External evidence (e.g. a user report on Lars's own repo) goes in
+    the banner's second sentence and the body. The box ships unchecked
+    and the timestamp as the literal placeholder — Lars ticks it and
+    fills the time only after actually reading the filing, which makes
+    the checkbox a review ledger, not decoration; on CLI posting the
+    agent ticks+stamps it only on an explicit publish order after
+    Lars's review. It complements the footer (provenance up top,
+    attribution at the bottom) and never appears on comments.
+    `check-draft.py --unsolicited` enforces it mechanically.
 
 ## 3. External bug report
 

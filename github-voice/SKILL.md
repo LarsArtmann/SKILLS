@@ -66,7 +66,12 @@ it without re-verifying against the corpus.
    comments terse+human (draft as if typing fast). Prefer one evidence
    artifact (file:line, version pin, command output, link) over
    adjectives in both. Unsolicited issue/PR bodies open with the
-   provenance banner before any content.
+   provenance banner before any content. Keep filing drafts in the
+   repo (e.g. `docs/drafts/`), NEVER `/tmp` — tmp wipes between
+   sessions and lost drafts are unrecoverable (2026-10-03: one draft
+   lost for good, one survived only in session context). Ship a
+   proposed title with the draft — titles need the same voice review
+   as bodies, and coin-ing one at `gh issue create` time skips it.
 5. **Revise once, his way**:
    [./references/revision-lessons.md](./references/revision-lessons.md)
    — add status word, add `file:line` precision, swap promises for
@@ -127,17 +132,33 @@ it without re-verifying against the corpus.
   ```
 
   `<AI-Model>` = the drafting model (e.g. GLM-4.6); on PR descriptions
-  write "This PR was drafted by ...". "Not at my request" means the
-  filing was AI-initiated — it does not claim the AI discovered the
-  failure: when a user report or other external evidence motivates
-  the filing, that source belongs in the banner's second sentence and
-  the body. Ship the box UNCHECKED and the timestamp as the literal
-  placeholder — Lars ticks it and fills the time only after actually
-  reading the filing, so a pre-checked box is a lie. The banner
-  complements the Crush footer (provenance + review ledger up top,
-  attribution at the bottom) and never appears on comments. Enforced
-  by `--unsolicited` (structural regex: `[!NOTICE]` + via-Crush line
-  + MANUALLY REVIEWED line).
+  write "This PR was drafted by ...". Second sentence adapts to the
+  collaboration mode: "from an AI-run investigation, not at my
+  request" for fully-autonomous filings; "with multiple rounds of
+  feedback from me" when Lars iterated on the draft before posting
+  (2026-10-03, Lars's own wording — "not at my request" would be
+  false once he has endorsed the filing). Neither claims the AI
+  discovered the failure: when a user report or other external
+  evidence motivates the filing, that source belongs in the banner's
+  second sentence and the body. Ship the box UNCHECKED and the
+  timestamp as the literal placeholder — Lars ticks it and fills the
+  time only after actually reading the filing, so a pre-checked box
+  is a lie; when posting through the CLI, the agent may tick+stamp it
+  only on an explicit publish order after Lars's review (his wording
+  iterations count as the review). The banner complements the Crush
+  footer (provenance + review ledger up top, attribution at the
+  bottom) and never appears on comments. Enforced by `--unsolicited`
+  (structural regex: `[!NOTICE]` + via-Crush line + MANUALLY
+  REVIEWED line).
+- **External filings carry a TL;DR directly under the banner**
+  (policy 2026-10-03, Lars-mandated, not corpus-derived): ONE short
+  paragraph — first sentence = the mechanism (what silently happens,
+  what breaks), second = the ask. The pure core, not a summary of
+  every Goal bullet: Lars rejected a three-clause TL;DR as "TOO LONG
+  DIDN'T READ". When both a pre-collision fix (warning) and an
+  at-failure fix (better error messages) are being asked for, name
+  both — the at-failure fix is often the one that would have saved
+  the reporter (a hard-failing program never sees a warning).
 - Quote-reply with `>` when answering a specific point; `@mention` the
   addressee at the start.
 
