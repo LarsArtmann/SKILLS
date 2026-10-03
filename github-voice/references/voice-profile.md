@@ -112,7 +112,7 @@ criteria" sections) and are **not** his natural voice.
     provenance banner before any content:
 
     ```markdown
-    > [!NOTICE]
+    > [!NOTE]
     > This filing was drafted by <AI-Model> via Crush from an AI-run investigation, not at my request. When the failure traces to an external report, that source is linked in the body.
     >
     > - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`

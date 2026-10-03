@@ -125,7 +125,7 @@ it without re-verifying against the corpus.
   with:
 
   ```markdown
-  > [!NOTICE]
+  > [!NOTE]
   > This filing was drafted by <AI-Model> via Crush from an AI-run investigation, not at my request. When the failure traces to an external report, that source is linked in the body.
   >
   > - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`
@@ -148,7 +148,7 @@ it without re-verifying against the corpus.
   iterations count as the review). The banner complements the Crush
   footer (provenance + review ledger up top, attribution at the
   bottom) and never appears on comments. Enforced by `--unsolicited`
-  (structural regex: `[!NOTICE]` + via-Crush line + MANUALLY
+  (structural regex: `[!NOTE]` + via-Crush line + MANUALLY
   REVIEWED line).
 - **External filings carry a TL;DR directly under the banner**
   (policy 2026-10-03, Lars-mandated, not corpus-derived): ONE short

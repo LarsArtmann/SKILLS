@@ -11,6 +11,7 @@ AI-initiated) must START with:
 ```markdown
 > [!IMPORTANT]
 > This issue was found and reported by <AI-Model> via Crush independent of me.
+>
 > - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`
 ```
 
@@ -34,8 +35,8 @@ check-draft.py mechanical enforcement).
      pre-checked box is a lie"), banner complements (not replaces) the
      Crush footer, never on comments.
 2. **`github-voice/references/voice-profile.md`** — habit 10 extended
-   with the banner policy, marked *(policy, mandated 2026-10-01 — not
-   corpus-derived)*; §3 external-bug-report skeleton got a pointer
+   with the banner policy, marked _(policy, mandated 2026-10-01 — not
+   corpus-derived)_; §3 external-bug-report skeleton got a pointer
    (banner above `## Problem`).
 3. **`github-voice/scripts/check-draft.py`** — new `--unsolicited` flag
    mirroring the `--ai-drafted` pattern:
@@ -60,15 +61,15 @@ check-draft.py mechanical enforcement).
    the one corpus file containing related wording does not match the
    banner regex; WARN cannot fire on the corpus.
 7. **Daemon commit hygiene — verified:** auto-commit `7dce3a0`
-   (06:22:15) captured a *parseable* intermediate version; the remaining
+   (06:22:15) captured a _parseable_ intermediate version; the remaining
    uncommitted diff (11 lines) is only the final regex-split refinement.
    No broken state ever entered git history.
 
 ## b) PARTIALLY DONE 🟡
 
 1. **Empirical grounding of the banner rule.** I wrote and shipped the
-   profile claim *"no instances in the corpus yet, expect the first
-   after adoption"* WITHOUT grepping the corpus first — then verified
+   profile claim _"no instances in the corpus yet, expect the first
+   after adoption"_ WITHOUT grepping the corpus first — then verified
    in this report run and found it **imprecise** (see d3). The exact
    new 3-line shape has 0 corpus matches (true), but a direct manual
    precursor exists. Profile wording needs a one-line correction.
@@ -107,20 +108,20 @@ check-draft.py mechanical enforcement).
    (JSON-escaped `\"` inside a double-quoted Python string; single
    quotes would have been trivially safe).
 2. **First regex design was silent on a real failure shape.** The
-   initial anchored-only regex meant a *misplaced* banner with no
+   initial anchored-only regex meant a _misplaced_ banner with no
    `--unsolicited` flag produced zero findings. Caught by re-examining
    my own test output (T3c expected WARN, got silence); fixed with the
    `_BANNER_BODY` split (anchored FAIL + anywhere WARN).
 3. **Claimed corpus facts without checking the corpus.** The
-   check-draft.py docstring itself says *"Do not add phrases on vibes —
-   re-verify against the corpus first."* I added a banner pattern +
+   check-draft.py docstring itself says _"Do not add phrases on vibes —
+   re-verify against the corpus first."_ I added a banner pattern +
    prose claims and only ran the corpus grep during THIS report. Result:
    `bodies/hagezi--dns-blocklists--11446.md` (external, 2026-09-12,
    `edits: 4`) already carries Lars's manual precursor —
    `> This issue was created from GLM-5.3-Flash via [Crush](...);
    manually reviewed by Lars Artmann.` — and own-repo bodies carry an
    older `🤖 Issue created from <source>` style. So the new banner is
-   the *formalization of an existing habit*, not a from-zero policy.
+   the _formalization of an existing habit_, not a from-zero policy.
    My "no instances yet" prose overclaimed; the regex-safety claim
    luckily holds (precursor lacks "found and reported by" and the
    `[!IMPORTANT]` shape). This was a verify-external-claims violation
@@ -153,24 +154,24 @@ check-draft.py mechanical enforcement).
 
 ## f) NEXT TASKS (ranked, realistic — not padded to 50)
 
-| #  | Task                                                                              | Impact | Effort |
-| -- | --------------------------------------------------------------------------------- | ------ | ------ |
-| 1  | Correct profile habit-10 wording: cite the hagezi#11446 precursor ("created from ... via Crush; manually reviewed by ...") as the existing manual habit the banner formalizes | High | S |
-| 2  | Add CHANGELOG.md entry for the banner feature + checker flag                       | High | S |
-| 3  | Make `UNSOLICITED_BANNER_RE` wrap-tolerant (multi-`>`-line between the markers)     | High | S |
-| 4  | Add banner rule row to profile §10 Do/Never table (step-7 human re-read relies on it) | Med | S |
-| 5  | Read the PR-description genre section of the profile; add the banner pointer there (PRs are in scope but only §3 got one) | Med | S |
-| 6  | Read the FULL voice-profile.md (370 lines; session read ~30%) and sweep §12 AI-tells + evolution section for banner mentions | Med | M |
-| 7  | Persist check-draft.py regression fixtures (in-repo, `annotate-rows_test.py` pattern: banner pass/fail/misplaced/warn/checked-box/comment) | Med | M |
-| 8  | Decide + document own-repo scope: banner replaces/augments the 🚨🎯 and 🤖 agent-filed styles? (see question 2) | Med | S |
-| 9  | Add corpus-verification row to SKILL.md verification-status table ("banner regex: 0 matches in 10,682-item corpus, verified 2026-10-01") | Med | S |
-| 10 | Specify canonical `[<date-time>]` format (see question 1) and encode it in the template gloss | Med | S |
-| 11 | Clarify in checker `--help` that a CHECKED box is valid input (post-review state); FAIL message wording implies unchecked-only | Low | S |
-| 12 | Cross-link the 3 template copies (comment in script regex → SKILL.md quick rules ↔ profile habit 10) against drift | Low | S |
-| 13 | FEATURES.md github-voice row: mention banner policy                                         | Low | S |
-| 14 | After the first real unsolicited filing: confirm the corpus refresh picks up banner instances and the profile numbers get updated (profile §refresh already mandates this) | Low | M |
-| 15 | Consider a `--kind body-pr` example line in SKILL.md step 6 (only body-issue shown)  | Low | S |
-| 16 | Commit the remaining 11-line regex-split diff is already staged for the daemon; verify next session it landed | Low | S |
+| #  | Task                                                                                                                                                                          | Impact | Effort |
+| -- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ |
+| 1  | Correct profile habit-10 wording: cite the hagezi#11446 precursor ("created from ... via Crush; manually reviewed by ...") as the existing manual habit the banner formalizes | High   | S      |
+| 2  | Add CHANGELOG.md entry for the banner feature + checker flag                                                                                                                  | High   | S      |
+| 3  | Make `UNSOLICITED_BANNER_RE` wrap-tolerant (multi-`>`-line between the markers)                                                                                               | High   | S      |
+| 4  | Add banner rule row to profile §10 Do/Never table (step-7 human re-read relies on it)                                                                                         | Med    | S      |
+| 5  | Read the PR-description genre section of the profile; add the banner pointer there (PRs are in scope but only §3 got one)                                                     | Med    | S      |
+| 6  | Read the FULL voice-profile.md (370 lines; session read ~30%) and sweep §12 AI-tells + evolution section for banner mentions                                                  | Med    | M      |
+| 7  | Persist check-draft.py regression fixtures (in-repo, `annotate-rows_test.py` pattern: banner pass/fail/misplaced/warn/checked-box/comment)                                    | Med    | M      |
+| 8  | Decide + document own-repo scope: banner replaces/augments the 🚨🎯 and 🤖 agent-filed styles? (see question 2)                                                               | Med    | S      |
+| 9  | Add corpus-verification row to SKILL.md verification-status table ("banner regex: 0 matches in 10,682-item corpus, verified 2026-10-01")                                      | Med    | S      |
+| 10 | Specify canonical `[<date-time>]` format (see question 1) and encode it in the template gloss                                                                                 | Med    | S      |
+| 11 | Clarify in checker `--help` that a CHECKED box is valid input (post-review state); FAIL message wording implies unchecked-only                                                | Low    | S      |
+| 12 | Cross-link the 3 template copies (comment in script regex → SKILL.md quick rules ↔ profile habit 10) against drift                                                            | Low    | S      |
+| 13 | FEATURES.md github-voice row: mention banner policy                                                                                                                           | Low    | S      |
+| 14 | After the first real unsolicited filing: confirm the corpus refresh picks up banner instances and the profile numbers get updated (profile §refresh already mandates this)    | Low    | M      |
+| 15 | Consider a `--kind body-pr` example line in SKILL.md step 6 (only body-issue shown)                                                                                           | Low    | S      |
+| 16 | Commit the remaining 11-line regex-split diff is already staged for the daemon; verify next session it landed                                                                 | Low    | S      |
 
 Unrelated working-tree changes noticed (NOT mine, untouched per safety
 rules): `docs-health/SKILL.md`, `docs-health/assets/annotate-status-items.py`,
@@ -202,4 +203,4 @@ testing before they mattered, and one empirical-discipline miss (corpus
 grep after the claim, not before) that this report itself then caught
 and converted into ranked follow-up #1.
 
-*Report ends. Waiting for instructions.*
+_Report ends. Waiting for instructions._
