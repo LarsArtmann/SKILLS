@@ -69,3 +69,10 @@ code, don't rewrite the source. These are the additional failure modes:
 - **Reading every historical report.** The 100th-oldest report's "next
   tasks" are either done, obsolete, or already captured. Recent reports
   carry the signal; old ones carry noise. Default to the most recent 1–3.
+- **Descending into `archived/`.** Archived reports are terminal state: every
+  item carries a resolution marker, so they contain zero forward-looking
+  work. Opening them burns context and tempts re-harvesting closed items
+  (which the "respect the markers" rule above already bans). Do not read
+  them without a concrete need — the user names the file, a provenance
+  question needs the original wording, or a completeness gate flagged it
+  (see "The documentation model" in the SKILL.md body for the canonical rule).

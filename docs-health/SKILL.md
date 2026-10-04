@@ -38,6 +38,8 @@ Each file has ONE job. Each fact lives in exactly ONE place. When the same fact 
 
 **Living docs** get rewritten in place when they drift. **Historical docs** cannot be rewritten without destroying their value — they get annotated non-destructively (see ANNOTATE). For the full ownership matrix, load [./references/doc-ownership.md](./references/doc-ownership.md).
 
+**`<dir>/archived/` is closed history — do not open archived files.** A report lands there only when ANNOTATE resolved EVERY item (each line carries `done at` / `Won't implement` / `NOT-DO`); the content is settled and already routed. Reading archived files during HARVEST/VERIFY/AUDIT burns context and tempts you to re-open closed work. Open one only for a concrete need: the user names the file, a provenance question (when/why was this decided?) needs the original wording and the archive manifest plus commit message are insufficient, or a completeness gate flagged it.
+
 ## Which mode?
 
 | Situation                                                     | Mode     | Does                                   |
@@ -56,7 +58,7 @@ If ambiguous, default to AUDIT.
 
 _The primary mode for most runs._ Status reports capture what a session did AND what should happen next. The "next" part is forward-looking intent. If it lives only in the timestamped report, it is lost — subsequent sessions never read old reports as a backlog source.
 
-1. **Select reports.** Most recent 1–3 in `docs/status/`. Go further back only if sparse. Reading all 100+ historical reports produces duplication, not coverage.
+1. **Select reports.** Most recent 1–3 in `docs/status/`. Go further back only if sparse. Reading all 100+ historical reports produces duplication, not coverage. Never descend into `archived/` subdirectories — those reports are fully resolved and hold zero open items (see "The documentation model").
 2. **Extract forward-looking items.** "Next tasks" / "Top N", "partially done" with open work, actionable "improvements."
    - **Drop resolved items.** If a report carries `done at` / `Won't implement` markers (from ANNOTATE), those are closed — route to CHANGELOG (if missing), never TODO_LIST. Harvest only items with NO marker.
    - **Questions are not tasks.** Unresolved questions route to the user or ROADMAP "Open questions", never TODO_LIST.
