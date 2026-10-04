@@ -86,9 +86,9 @@ Skills organized by domain — live count via `scripts/check-skills.sh` (never h
 
 ### Communication & Email
 
-| Skill            | What It Does                                                                                                               | Status |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------- | ------ |
-| **gmail-drafts** | Stage emails as reviewable server-side Gmail drafts via InboxClean's OAuth grants — RFC 2047-safe, idempotent, never sends | 🆕 New |
+| Skill            | What It Does                                                                                                               | Status   |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------- | -------- |
+| **gmail-drafts** | Stage emails as reviewable server-side Gmail drafts via InboxClean's OAuth grants — RFC 2047-safe, idempotent, never sends | 🟢 Solid |
 
 ### Project Intelligence
 
