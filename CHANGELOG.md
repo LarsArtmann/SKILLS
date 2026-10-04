@@ -13,6 +13,20 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-10-04 — gmail-drafts: stage Gmail drafts via InboxClean)
+
+- **`gmail-drafts/` skill:** stage finished emails as server-side Gmail
+  drafts (never sent) in Lars's mailboxes using InboxClean's stored OAuth
+  grants (`--account main|work`), executed as the `inboxclean` system user
+  via a one-liner handed to the user. Bundles `scripts/gmail_drafts.py`
+  (spec-driven, idempotent per subject, `--list`/`--delete`). Encodes the
+  three lessons from the live case-glovo staging run the same day: RFC 2047
+  header encoding (raw UTF-8 subjects render as `dowodÃ³w` mojibake),
+  `drafts.get` returning no `raw` (bytes live behind
+  `messages/{id}?format=raw`), and `drafts.delete` answering `204` with an
+  empty body. README/FEATURES inventory updated (new "Communication &
+  Email" section).
+
 ### Added (2026-09-30 — annotate-prose `r` kind: routed verdicts, attribution)
 
 - **`docs-health/assets/annotate-prose.py` kind `r` (routed, no strike):**

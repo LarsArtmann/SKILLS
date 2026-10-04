@@ -85,9 +85,9 @@
 
 ## Skill Collection — Communication & Email
 
-| Skill        | Status       | References    | Notes                                                                                                                                                       |
-| ------------ | ------------ | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| gmail-drafts | 🆕 `NEW`     | ✅ (scripts)  | Gmail drafts API via InboxClean's OAuth grants; born from the live 2026-10-04 case-glovo staging run (mojibake, `KeyError: raw`, empty-204 lessons encoded) |
+| Skill        | Status   | References   | Notes                                                                                                                                                       |
+| ------------ | -------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| gmail-drafts | 🆕 `NEW` | ✅ (scripts) | Gmail drafts API via InboxClean's OAuth grants; born from the live 2026-10-04 case-glovo staging run (mojibake, `KeyError: raw`, empty-204 lessons encoded) |
 
 ## Skill Collection — Project Intelligence
 
