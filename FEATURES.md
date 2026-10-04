@@ -83,6 +83,12 @@
 | ----------------- | --------------------- | ---------- | --------------------------------------------------- |
 | library-deep-dive | 🟢 `FULLY_FUNCTIONAL` | ✅         | Audits library utilization to the max → HTML report |
 
+## Skill Collection — Communication & Email
+
+| Skill        | Status       | References    | Notes                                                                                                                                                       |
+| ------------ | ------------ | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| gmail-drafts | 🆕 `NEW`     | ✅ (scripts)  | Gmail drafts API via InboxClean's OAuth grants; born from the live 2026-10-04 case-glovo staging run (mojibake, `KeyError: raw`, empty-204 lessons encoded) |
+
 ## Skill Collection — Project Intelligence
 
 | Skill          | Status                    | References    | Notes                                                                                                                                      |
