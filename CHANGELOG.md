@@ -13,6 +13,17 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Fixed (2026-10-04 — gmail-drafts: /tmp staging + bilingual/signature rule)
+
+- **One-liner bug:** `inboxclean` cannot traverse `/home/lars` (mode 750, ACL mask
+  `---`, verified via `getfacl`/`getent`) — referencing the repo copy of the script
+  in the sudo one-liner fails with `Permission denied`. The procedure now stages
+  script + spec in `/tmp` first; failure-modes table carries the new row.
+- **Standing client rule baked into the procedure:** every staged email is bilingual
+  (English first + the recipient's local language, PL/DE), subjects bilingual, each
+  body ending with the client's fixed signature block. `assets/spec.example.json`
+  added as the shape reference.
+
 ### Added (2026-10-04 — gmail-drafts: stage Gmail drafts via InboxClean)
 
 - **`gmail-drafts/` skill:** stage finished emails as server-side Gmail

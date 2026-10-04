@@ -28,14 +28,14 @@ actually send mail, stop: this skill never sends.
 
 ## Terrain (verify before acting, paths drift)
 
-| Fact                  | Value                                                               |
-| --------------------- | ------------------------------------------------------------------- |
-| Work account          | `lars@helpless.ai` (Google Workspace)                               |
-| Personal account      | `main`                                                              |
-| OAuth grant files     | `/var/lib/inboxclean/token[-work].json` + `credentials[-work].json` |
-| File permissions      | mode 600, owned by the `inboxclean` system user                     |
-| InboxClean web (8099) | `POST /compose` **sends** — there is no draft route                                 |
-| InboxClean MCP mode   | read-only v1 — `create_draft` is not exposed                        |
+| Fact                  | Value                                                                                                                |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Work account          | `lars@helpless.ai` (Google Workspace)                                                                                |
+| Personal account      | `main`                                                                                                               |
+| OAuth grant files     | `/var/lib/inboxclean/token[-work].json` + `credentials[-work].json`                                                  |
+| File permissions      | mode 600, owned by the `inboxclean` system user                                                                      |
+| InboxClean web (8099) | `POST /compose` **sends** — there is no draft route                                                                  |
+| InboxClean MCP mode   | read-only v1 — `create_draft` is not exposed                                                                         |
 | `/home/lars` perms    | mode 750, ACL mask `---` — `inboxclean` CANNOT read under `/home/lars`; the script and spec must be staged in `/tmp` |
 
 Consequence: an agent shell (user `lars`) **cannot read the OAuth tokens**,
@@ -118,14 +118,14 @@ the permission boundary — it is deliberate systemd hardening.
 
 ## Failure modes
 
-| Symptom                                | Cause / fix                                                                                                                                                                |
-| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Permission denied` reading token file | Script run as `lars` — must run via `sudo -u inboxclean` one-liner                                          |
-| `Permission denied` reading the script/spec | Script or spec referenced under `/home/lars` — `inboxclean` cannot traverse it; stage both in `/tmp` first |
-| `KeyError: 'raw'`                      | Used `drafts.get` for bytes — use `messages/{id}?format=raw`                                                                                                               |
-| Subject shows `Ã³`/`Ä™`                | Raw UTF-8 headers — rebuild with `EmailMessage(policy=SMTP)`                                                                                                               |
-| `400` from drafts.create               | Base64 not URL-safe or message not RFC 2822 — use the bundled builder                                                                                                      |
-| `401 invalid_grant`                    | Token expired/revoked (testing-mode tokens die after 7 days) — see the auth runbook in `SystemNix/modules/nixos/services/inboxclean.nix`; re-auth needs the user's browser |
+| Symptom                                     | Cause / fix                                                                                                                                                                |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Permission denied` reading token file      | Script run as `lars` — must run via `sudo -u inboxclean` one-liner                                                                                                         |
+| `Permission denied` reading the script/spec | Script or spec referenced under `/home/lars` — `inboxclean` cannot traverse it; stage both in `/tmp` first                                                                 |
+| `KeyError: 'raw'`                           | Used `drafts.get` for bytes — use `messages/{id}?format=raw`                                                                                                               |
+| Subject shows `Ã³`/`Ä™`                     | Raw UTF-8 headers — rebuild with `EmailMessage(policy=SMTP)`                                                                                                               |
+| `400` from drafts.create                    | Base64 not URL-safe or message not RFC 2822 — use the bundled builder                                                                                                      |
+| `401 invalid_grant`                         | Token expired/revoked (testing-mode tokens die after 7 days) — see the auth runbook in `SystemNix/modules/nixos/services/inboxclean.nix`; re-auth needs the user's browser |
 
 ## After staging
 
