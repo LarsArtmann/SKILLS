@@ -23,6 +23,11 @@ Key forms:
   any:substring  any line containing <substring> (use sparingly — last resort)
   - [ ] checkbox lines match by literal substring of the checkbox text
 
+A table key cell may be bold-wrapped (`| **C34** | …`) — the `**` wrapper is
+stripped for matching, so the key is `C34` either way (sweep-6 emitter bug,
+fixed 2026-10-04; before the fix such rows were invisible and needed hand-
+written `any:` anchors).
+
 AMBIGUITY RULES:
   - Duplicate keys in a specfile are a HARD ERROR (the silent dict-overwrite
     mis-struck 4 files in the June batch — a bare numeric key quietly replaced
@@ -102,7 +107,7 @@ def load_specs(spec_path):
 NUM_PAT = re.compile(
     r"^(\s*)(?:[-*]\s*)?([A-Za-z]{0,3}\d{1,3}[a-z]?|[A-Za-z]+#\d+|\d+)\.\s"
 )
-ROW_PAT = re.compile(r"^\|\s*([A-Za-z]{0,3}\d{1,3}[a-z]?)\s*\|")
+ROW_PAT = re.compile(r"^\|\s*\*{0,2}([A-Za-z]{0,3}\d{1,3}[a-z]?)\*{0,2}\s*\|")
 CB_PAT = re.compile(r"^(\s*)- \[ \] (.*)$")
 
 

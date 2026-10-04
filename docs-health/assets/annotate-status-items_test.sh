@@ -120,4 +120,28 @@ expect "unspecified checkbox stays bare" "- [ ] checkbox two" "$(sed -n 17p "$WO
 expect "any-mode prose struck" "~~Free prose mentioning item beta for any-mode.~~" \
 	"$(sed -n 19p "$WORK/doc.md" | sed 's/\t.*//')"
 
+# --- bold-wrapped key cell (sweep-6 emitter bug, fixed 2026-10-04): a row
+# whose key cell is `**C34**` must key and strike like a bare `C34` row.
+# Before the fix both --emit-keys and resolve() saw no row pattern here,
+# forcing hand-written `any:` anchors.
+cat >"$WORK/bold.md" <<'EOF'
+| Item | Detail | Status |
+| --- | --- | --- |
+| **C34** | Health-architecture hardening batch (R1-R6) | open |
+EOF
+cp "$WORK/bold.md" "$WORK/bold.pristine"
+python3 "$ANN" --emit-keys "$WORK/bold.md" 3 >"$WORK/bold.keys" 2>"$WORK/bold.err"
+expect "bold-cell emit-key" "C34@Health-architecture hardening ba" "$(cat "$WORK/bold.keys")"
+printf 'C34@Health-architecture hardening ba\tDONE — struck via bold cell\n' >"$WORK/bold.tsv"
+python3 "$ANN" --verify "$WORK/bold.md" "$WORK/bold.tsv" >"$WORK/bold.verify" 2>&1
+expect "bold-cell verify" "VERIFY OK bold.md: 1 keys resolved (nothing written)" "$(tail -1 "$WORK/bold.verify")"
+python3 "$ANN" "$WORK/bold.md" "$WORK/bold.tsv" >"$WORK/bold.strike" 2>&1
+expect "bold-cell strike" "OK bold.md: annotated 1 items" "$(cat "$WORK/bold.strike")"
+expect "bold-cell struck line" "~~| **C34** | Health-architecture hardening batch (R1-R6) | open |~~ DONE — struck via bold cell" \
+	"$(sed -n 3p "$WORK/bold.md" | sed 's/ $//')"
+cmp -s "$WORK/bold.pristine" "$WORK/bold.md" && {
+	echo "bold-cell strike did not write" >&2
+	exit 1
+}
+
 echo "annotator fixtures OK ($pass assertions)"
