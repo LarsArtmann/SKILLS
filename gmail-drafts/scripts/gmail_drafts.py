@@ -14,6 +14,7 @@ is skipped), headers are RFC 2047-encoded (raw UTF-8 header bytes are read
 as Latin-1 by Gmail -> mojibake), and the token files are read-only: the
 refreshed access token lives in memory only, never written back.
 """
+
 import argparse
 import base64
 import json
@@ -49,12 +50,15 @@ def get_access_token(account):
     if not token.get("refresh_token"):
         sys.exit(f"ERROR: {token_file} has no refresh_token (re-auth runbook)")
     inst = creds.get("installed", creds.get("web", {}))
-    resp = post("https://oauth2.googleapis.com/token", {
-        "client_id": inst["client_id"],
-        "client_secret": inst["client_secret"],
-        "refresh_token": token["refresh_token"],
-        "grant_type": "refresh_token",
-    })
+    resp = post(
+        "https://oauth2.googleapis.com/token",
+        {
+            "client_id": inst["client_id"],
+            "client_secret": inst["client_secret"],
+            "refresh_token": token["refresh_token"],
+            "grant_type": "refresh_token",
+        },
+    )
     return resp["access_token"]
 
 
@@ -74,7 +78,8 @@ def api(token, path, method="GET", data=None):
 
 def parse_raw(raw_b64):
     msg = BytesParser(policy=policy.default).parsebytes(
-        base64.urlsafe_b64decode(raw_b64 + "==="))
+        base64.urlsafe_b64decode(raw_b64 + "===")
+    )
     return msg
 
 
@@ -89,9 +94,9 @@ def draft_subjects(token):
     drafts = api(token, "/users/me/drafts?maxResults=100").get("drafts", [])
     subjects = {}
     for draft in drafts:
-        msg = parse_raw(api(
-            token,
-            f"/users/me/messages/{draft['message']['id']}?format=raw")["raw"])
+        msg = parse_raw(
+            api(token, f"/users/me/messages/{draft['message']['id']}?format=raw")["raw"]
+        )
         subjects[subject_of(msg)] = draft["id"]
     return subjects
 
@@ -112,9 +117,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--account", choices=sorted(ACCOUNT_FILES), required=True)
     parser.add_argument("--spec", help="JSON file: array of {to,cc,bcc,subject,body}")
-    parser.add_argument("--list", action="store_true", help="list drafts (id + subject)")
-    parser.add_argument("--delete", nargs="+", metavar="DRAFT_ID",
-                        help="delete drafts by id")
+    parser.add_argument(
+        "--list", action="store_true", help="list drafts (id + subject)"
+    )
+    parser.add_argument(
+        "--delete", nargs="+", metavar="DRAFT_ID", help="delete drafts by id"
+    )
     args = parser.parse_args()
     if not (args.spec or args.list or args.delete):
         parser.error("one of --spec / --list / --delete is required")
@@ -124,8 +132,9 @@ def main():
     print(f"account mailbox: {mailbox}")
 
     if args.list:
-        for subject, draft_id in sorted(draft_subjects(token).items(),
-                                        key=lambda kv: kv[1]):
+        for subject, draft_id in sorted(
+            draft_subjects(token).items(), key=lambda kv: kv[1]
+        ):
             print(f"  {draft_id}  {subject!r}")
         return
 
@@ -148,16 +157,24 @@ def main():
         if subject in existing:
             print(f"SKIP (subject exists as draft {existing[subject]}): {subject!r}")
             continue
-        raw = build_raw(letter["to"], letter.get("cc", []), letter.get("bcc", []),
-                        subject, letter["body"])
-        draft_id = api(token, "/users/me/drafts", "POST",
-                       {"message": {"raw": raw}})["id"]
+        raw = build_raw(
+            letter["to"],
+            letter.get("cc", []),
+            letter.get("bcc", []),
+            subject,
+            letter["body"],
+        )
+        draft_id = api(token, "/users/me/drafts", "POST", {"message": {"raw": raw}})[
+            "id"
+        ]
         draft = api(token, f"/users/me/drafts/{draft_id}")
         raw = api(token, f"/users/me/messages/{draft['message']['id']}?format=raw")
         rendered = subject_of(parse_raw(raw["raw"]))
         mojibake = "Ã" in rendered or "Ä" in rendered
-        print(f"{'[MOJIBAKE!]' if mojibake else '[OK]'} {draft_id} "
-              f"-> {letter['to']} :: {rendered!r}")
+        print(
+            f"{'[MOJIBAKE!]' if mojibake else '[OK]'} {draft_id} "
+            f"-> {letter['to']} :: {rendered!r}"
+        )
 
 
 if __name__ == "__main__":
