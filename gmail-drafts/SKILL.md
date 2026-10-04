@@ -88,6 +88,10 @@ the permission boundary — it is deliberate systemd hardening.
 
    `--account main` targets the personal mailbox. Useful companions:
    `--list` (draft id + subject), `--delete <id>...` (remove a staged draft).
+   `--delete` and `--spec` combine in one run (deletes first, then stages) —
+   the standard replace-stale-drafts flow. **Crash recovery:** `/tmp` is volatile;
+   after a reboot re-`cp` the script and re-stage the spec from its persistent home
+   (e.g. the case repo's `drafts/*-email-spec.json`) before handing over the one-liner.
 5. **Read the output back.** Every created draft must print
    `[OK] <draftId> -> <recipient> :: '<subject>'` with the subject rendered
    correctly. Any `[MOJIBAKE!]` or `Ã`/`Ä` in the subject means the header
