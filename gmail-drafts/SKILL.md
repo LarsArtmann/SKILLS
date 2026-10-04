@@ -51,9 +51,10 @@ the permission boundary — it is deliberate systemd hardening.
    placeholders (name, date); leave personal data placeholders (`[ADRES]`,
    `[IBAN]`) for the user to complete in the compose window. Standing client
    rule (2026-10-04): every outgoing email is **bilingual — English first,
-   then the recipient's local language** (PL in Poland, DE in Germany), with a
-   one-line language note up top, and **ends with the fixed signature block**
-   (see `assets/spec.example.json`):
+   then the recipient's local language** (PL in Poland, DE in Germany) and
+   **ends with the fixed signature block** (see `assets/spec.example.json`).
+   No "language-prevails" preamble on unilateral notices — that clause is
+   reserved for agreements (ugoda, settlements).
 
    ```text
    Mit freundlichen Grüßen | Best regards,
