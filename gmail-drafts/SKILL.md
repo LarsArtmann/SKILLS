@@ -9,8 +9,11 @@ description: >-
   subject, or when asked which InboxClean surface can create drafts. The
   skill stages server-side drafts (never sent) via the Gmail drafts API
   using InboxClean's OAuth grants, handles the sudo -u inboxclean handoff,
-  RFC 2047 header encoding, idempotent staging, and verification. NOT for
-  sending email — drafts only; sending stays a human act.
+  RFC 2047 header encoding, idempotent staging, and verification. Also
+  covers exporting sent/received messages as forensic .eml files (read-only,
+  "export the emails", "archive as .eml", "evidence layer") via
+  scripts/gmail_eml_export.py. NOT for sending email — drafts only; sending
+  stays a human act.
 metadata:
   tags: gmail, email, drafts, inboxclean
 ---
@@ -131,6 +134,27 @@ the permission boundary — it is deliberate systemd hardening.
 | Subject shows `Ã³`/`Ä™`                     | Raw UTF-8 headers — rebuild with `EmailMessage(policy=SMTP)`                                                                                                               |
 | `400` from drafts.create                    | Base64 not URL-safe or message not RFC 2822 — use the bundled builder                                                                                                      |
 | `401 invalid_grant`                         | Token expired/revoked (testing-mode tokens die after 7 days) — see the auth runbook in `SystemNix/modules/nixos/services/inboxclean.nix`; re-auth needs the user's browser |
+
+## Exporting messages as .eml (forensic evidence layer)
+
+`scripts/gmail_eml_export.py` is the read-only sibling of the drafter: it
+searches Gmail and writes each match's full RFC822 raw form (`format=raw`,
+complete DKIM/ARC headers) as a mode-644 `.eml`, printing per-message
+sha256 for the evidence chain. Same permission terrain and same one-liner
+handoff (stage in `/tmp` first — `inboxclean` cannot read under
+`/home/lars`):
+
+```bash
+cp /home/lars/projects/SKILLS/gmail-drafts/scripts/gmail_eml_export.py /tmp/
+sudo -u inboxclean /run/current-system/sw/bin/python3 \
+  /tmp/gmail_eml_export.py --account work --outdir /tmp/glovo-eml
+# custom queries: --query 'from:x.com after:2026/10/04' (repeatable)
+```
+
+After the user runs it: review the printed listing (mailbox line first),
+`cp` chosen files into the case `evidence/` folder, append their sha256 to
+`evidence/SHA256SUMS.txt`, add evidence-log rows, and run the case gates.
+The `.eml` bytes are the exported evidence — never reformat them.
 
 ## After staging
 
