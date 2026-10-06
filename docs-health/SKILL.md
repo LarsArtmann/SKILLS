@@ -129,6 +129,15 @@ For the full per-doc verification checklist and cross-file table, load [./refere
 
 Old reports go stale. A reader opening one wants to know: _is this done? where is it NOW?_ You cannot rewrite history — annotate non-destructively. **If the user did not specify which files or time range, ask before touching anything.**
 
+> ⚠️ **QUOTE THE VERDICT BEFORE ROUTING A DECISION DOC (2026-10-05 rule).**
+> Before archiving a report as "superseded"/"never decided", QUOTE its
+> verdict/conclusion section verbatim in your working notes. A decision
+> doc whose Verdict-up-front says the opposite of its title HAS fooled a
+> session into routing "never decided" (the httputil analysis: title said
+> proposal, verdict section had DECIDED keep-local) — corrected only
+> because a reviewer diff-read the manifest. The quote is the check: if
+> you cannot quote the verdict, you have not read the doc.
+
 ### The primary work: resolve every numbered item inline
 
 Old reports contain numbered items (lists `1. 2. 3.` or table rows). **You must resolve every one — not just the ones you know about.** Each item gets a verdict:
