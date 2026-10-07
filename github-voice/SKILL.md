@@ -95,6 +95,15 @@ it without re-verifying against the corpus.
    AI-tells section (§12): would any line survive being pasted into a
    support chat? Then it is wrong. Every claim still carries evidence?
    Then ship.
+8. **File mechanically, then verify it landed** — post with
+   `gh issue create --body-file <real-file>` and NEVER `--body-file -`:
+   the piped form can fail silently (no stdout, no stderr, no issue —
+   2026-10-07, two silent no-ops before the working form was found).
+   Confirm with `gh issue list` / `issue view <n>` before claiming the
+   filing exists. Extract fenced bodies with python
+   `split`/`rsplit` on the fence markers, never sed ranges (sed stops
+   at the first inner fence and truncates nested-fence bodies), and
+   byte-count the extracted body before posting.
 
 ## Quick rules (full detail in the profile)
 
