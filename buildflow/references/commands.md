@@ -67,11 +67,13 @@ All flags also work as `BUILDFLOW_*` environment variables (`BUILDFLOW_BUILD_MOD
 
 Unknown top-level keys are silently ignored — but since the unknown-key warning shipped, every load prints a Warn listing them. Write ONLY non-default values; pure default-restatement files were deleted fleet-wide on principle.
 
-`auto_fix`, `build_mode`, `color`, `default_step_timeout`, `dep_update_mode`, `disable`, `dry_run`, `dupl_threshold`, `exclude`, `env`, `fail_on`, `go_mod_ignore_dirs`, `language`, `log_level`, `max_concurrency`, `max_file_size`, `output_mode`, `retry_budget`, `retry_modifier`, `skip_steps`, `strict`, `todo_min_severity`, `tool_paths`, `verbose` (+ deprecated alias `exclude_patterns`).
+`auto_fix`, `baseline`, `budget`, `build_mode`, `color`, `default_step_timeout`, `dep_update_mode`, `disable`, `dry_run`, `exclude`, `env`, `fail_on`, `go_mod_ignore_dirs`, `language`, `log_level`, `max_concurrency`, `max_file_size`, `max_time`, `no_action_upgrades`, `output_mode`, `retry_budget`, `retry_modifier`, `skip_steps`, `strict`, `todo_min_severity`, `tool_options`, `tool_paths`, `verbose`, `warnings_budget` (+ deprecated alias `exclude_patterns`). `dupl_threshold` was a ghost key, purged (gotcha #191).
 
 Notes:
 
 - `disable` is a merged alias for `skip_steps`; both warn if used together.
+- `tool_options` feeds per-tool options into toolsdk-registered tools (validated at startup; unknown option panics): `tool_options: {go-version-auto-configure: {respect_patch_floor: true}}`, `tool_options: {art-dupl: {threshold: 20}}`.
+- `config lint` (ZC10) reports unknown keys, default-restating keys, stale exclude mirrors, and dead skip_steps entries; `--fix` prints the shrunken file.
 - `skip_steps` is whole-tool only — qualified entries like `tool:repair` or `tool [module]` never match (they warn now).
 - Deprecated tool aliases in `skip_steps` resolve with a warning (e.g. `hierarchical-errors` → `erraudit`).
 - `env:` injects environment into all tool subprocesses (the standard way to set `GOEXPERIMENT: jsonv2` per project).

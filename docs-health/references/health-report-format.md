@@ -115,3 +115,13 @@ The score lines must be a **pure function of the findings table** — nothing el
   audit — no baseline." Do not write "was Accuracy X / Fitness Y" without a
   prior report to cite. Do not write "improved from X" without evidence of
   the prior state. Invented baselines are lies.
+- **Scoring frame (2026-10-01, audit #15 §e2 ruling):** score the AS-FOUND
+  state — the table counts findings as they were when the audit ARRIVED;
+  fixes applied during the audit are REPORTED (the "what was stale and
+  fixed" rule above) but do not silently subtract from the substitution.
+  The report marks them ("fixed in-audit") and carries an explicit residual
+  line when a finding is resolved by an assumption instead of a repair
+  ("substituted: assumed X because Y — residual if the assumption breaks").
+  The alternative — scoring the post-fix state — makes every audit's number
+  a function of how fast the auditor fixed things, not how healthy the docs
+  were.
