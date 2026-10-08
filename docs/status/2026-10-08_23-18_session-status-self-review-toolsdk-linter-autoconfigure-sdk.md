@@ -127,34 +127,34 @@ documentation in `linter-building`; linter-autoconfigure-sdk status check)
 
 ## f) Next things (session-derived; HARVEST input — 26, impact-ordered)
 
-| # | Task | Impact | Effort |
-| --- | --- | --- | --- |
-| 1 | Run docs-health HARVEST over this report's (f) after user instruction | High | S |
-| 2 | AGENTS.md §5.5: one-line entry for linter-building↔buildflow author/consumer split | High | S |
-| 3 | Add "re-verify after toolsdk T22 / v1.16" trigger note to the toolsdk verification rows; decide pin-centralization policy (see g2) | High | S |
-| 4 | toolsdk field-table sync when linter-autoconfigure-sdk T22 pass-through fields ship (ExtraInputs/HealthCheck/Trigger) — route to that repo's train or a standing note here | High | S |
-| 5 | Add the exhaustruct_v5 upstream-pinning gotcha (toolsdk CHANGELOG v1.14.0) to distribution.md lessons | Medium | S |
-| 6 | Run 1-2 eval prompts against the updated linter-building skill ("make my tool a BuildFlow provider") — iteration-2 of `linter-building/evals/` | High | M |
-| 7 | CHANGELOG.md entry ruling for existing-skill doc expansions — do we log them? | Medium | S |
-| 8 | Fix pre-existing SKILL.md jargon flag: "split-brain" at first use (~line 108) needs inline gloss | Low | S |
-| 9 | Realign ecosystem.md stack-table columns (cosmetic drift after 2 row edits) | Low | S |
-| 10 | markdownlint pass on the new distribution.md section (MD013 advisories) | Low | S |
-| 11 | SKILL.md step 8 parenthetical: name toolsdk alongside go-finding/go-linter-sdk | Low | S |
-| 12 | Consider glossary entry "Provider spec" in linter-building SKILL.md | Low | S |
-| 13 | linter-autoconfigure-sdk ecosystem row: pin a re-verify date (very active repo, will stale fastest) | Medium | S |
-| 14 | Re-count toolsdk consumers when BuildFlow goes public (their T21) — indirect→direct flips | Low | S |
-| 15 | Evaluate graduating the toolsdk section to its own skill when a second host adopts it (see g3) | Medium | M |
-| 16 | linter-autoconfigure-sdk T22 itself (their repo, High) — blocked on their v1 freeze decision | High | M |
-| 17 | T34 g1-g3 user decisions still BLOCKED (see g1) | High | S |
-| 18 | Their T30: GIF social-preview validation (needs your hands) | Low | S |
-| 19 | Their T44: dprint formatter-of-record orphan state | Medium | S |
-| 20 | Their T20: remove deprecated ErrNoRepair alias at v1 | Low | S |
-| 21 | Their T21: BuildFlow CI pipeline — blocked on BuildFlow visibility | High | S |
-| 22 | naming-review description WARN (non-canonical opening) — pre-existing, one-line fix | Low | S |
-| 23 | website-launch 797-line allowlisted WARN — trim (pre-existing backlog) | Low | M |
-| 24 | Note in description length ledger: linter-building desc at 988/1024 — next trigger addition must prune | Low | S |
-| 25 | Consider a scripts/ check: pipe-count uniformity per markdown table row (would have caught d2 mechanically) | Medium | S |
-| 26 | `cmd/jsondeterminism` (noticed in linter-autoconfigure-sdk): routing decision — linter-building ecosystem row mention or how-to-golang | Low | S |
+| #  | Task                                                                                                                                                                       | Impact | Effort |
+| -- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ |
+| 1  | Run docs-health HARVEST over this report's (f) after user instruction                                                                                                      | High   | S      |
+| 2  | AGENTS.md §5.5: one-line entry for linter-building↔buildflow author/consumer split                                                                                         | High   | S      |
+| 3  | Add "re-verify after toolsdk T22 / v1.16" trigger note to the toolsdk verification rows; decide pin-centralization policy (see g2)                                         | High   | S      |
+| 4  | toolsdk field-table sync when linter-autoconfigure-sdk T22 pass-through fields ship (ExtraInputs/HealthCheck/Trigger) — route to that repo's train or a standing note here | High   | S      |
+| 5  | Add the exhaustruct_v5 upstream-pinning gotcha (toolsdk CHANGELOG v1.14.0) to distribution.md lessons                                                                      | Medium | S      |
+| 6  | Run 1-2 eval prompts against the updated linter-building skill ("make my tool a BuildFlow provider") — iteration-2 of `linter-building/evals/`                             | High   | M      |
+| 7  | CHANGELOG.md entry ruling for existing-skill doc expansions — do we log them?                                                                                              | Medium | S      |
+| 8  | Fix pre-existing SKILL.md jargon flag: "split-brain" at first use (~line 108) needs inline gloss                                                                           | Low    | S      |
+| 9  | Realign ecosystem.md stack-table columns (cosmetic drift after 2 row edits)                                                                                                | Low    | S      |
+| 10 | markdownlint pass on the new distribution.md section (MD013 advisories)                                                                                                    | Low    | S      |
+| 11 | SKILL.md step 8 parenthetical: name toolsdk alongside go-finding/go-linter-sdk                                                                                             | Low    | S      |
+| 12 | Consider glossary entry "Provider spec" in linter-building SKILL.md                                                                                                        | Low    | S      |
+| 13 | linter-autoconfigure-sdk ecosystem row: pin a re-verify date (very active repo, will stale fastest)                                                                        | Medium | S      |
+| 14 | Re-count toolsdk consumers when BuildFlow goes public (their T21) — indirect→direct flips                                                                                  | Low    | S      |
+| 15 | Evaluate graduating the toolsdk section to its own skill when a second host adopts it (see g3)                                                                             | Medium | M      |
+| 16 | linter-autoconfigure-sdk T22 itself (their repo, High) — blocked on their v1 freeze decision                                                                               | High   | M      |
+| 17 | T34 g1-g3 user decisions still BLOCKED (see g1)                                                                                                                            | High   | S      |
+| 18 | Their T30: GIF social-preview validation (needs your hands)                                                                                                                | Low    | S      |
+| 19 | Their T44: dprint formatter-of-record orphan state                                                                                                                         | Medium | S      |
+| 20 | Their T20: remove deprecated ErrNoRepair alias at v1                                                                                                                       | Low    | S      |
+| 21 | Their T21: BuildFlow CI pipeline — blocked on BuildFlow visibility                                                                                                         | High   | S      |
+| 22 | naming-review description WARN (non-canonical opening) — pre-existing, one-line fix                                                                                        | Low    | S      |
+| 23 | website-launch 797-line allowlisted WARN — trim (pre-existing backlog)                                                                                                     | Low    | M      |
+| 24 | Note in description length ledger: linter-building desc at 988/1024 — next trigger addition must prune                                                                     | Low    | S      |
+| 25 | Consider a scripts/ check: pipe-count uniformity per markdown table row (would have caught d2 mechanically)                                                                | Medium | S      |
+| 26 | `cmd/jsondeterminism` (noticed in linter-autoconfigure-sdk): routing decision — linter-building ecosystem row mention or how-to-golang                                     | Low    | S      |
 
 ## g) Questions I CANNOT answer myself
 
@@ -179,6 +179,6 @@ documentation in `linter-building`; linter-autoconfigure-sdk status check)
 - `check-skills.sh` exit 0 after all corrections; `--triggers` STRONG (21
   markers); `--signal` advisory-only, unchanged.
 
-*Format note: written as `.md` at explicit user path demand — overrides the
+_Format note: written as `.md` at explicit user path demand — overrides the
 status-report skill's HTML-canonical default (flagged per that skill's
-override rule). HARVEST deliberately not run: user said WAIT.*
+override rule). HARVEST deliberately not run: user said WAIT._
