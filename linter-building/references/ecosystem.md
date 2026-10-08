@@ -3,7 +3,8 @@
 Lars already owns every layer of the linter stack. Reuse before building —
 check this map first. Paths are local checkouts; all LarsArtmann repos are
 public unless noted. (Claim provenance: the go-finding / go-linter-sdk /
-linter-autoconfigure-sdk rows are verified against source 2026-09-09; other
+linter-autoconfigure-sdk rows are verified against source 2026-09-09; the
+toolsdk row 2026-10-08; other
 states come from the research pass over each repo's docs — re-check `git log`
 before relying on a repo's freshness.)
 
@@ -12,6 +13,7 @@ before relying on a repo's freshness.)
 | Layer                     | Repo                                                     | State                                               | What to take from it                                                                                                                                                                                                                                                                                                                |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Finding data model        | `~/projects/go-finding`                                  | v1.12.x (2026-09-17), API locked since v1.0, public | `finding.Finding`, Builder, Severity/Confidence, SARIF import/export, LSP, merge/correlate, filters, fix layer (FixEdit/FixOutcome), pipeline (detect→triage→fix→verify), 70+ golangci-linter→category registry (measured ~84 entries), `analysis.FromDiagnostic` bridge                                                            |
+| BuildFlow provider contract | `~/projects/go-finding/toolsdk` (sub-module, `toolsdk/v*` tags) | v1.15.0 (2026-10-05), public | `toolsdk.Register(Spec{...})` self-registration: Trigger constructors, Options channel, dry-run, ModuleFanOut, SwitchCases; 10 shipped consumers. The front that makes a tool runnable across every BuildFlow repo with zero per-repo wiring — authoring guide in [distribution.md](distribution.md) |
 | Rule/registry scaffolding | `~/projects/go-linter-sdk`                               | v0.3.x, public                                      | `Rule`/`RuleFunc{Meta,Run}`, `Registry` (panic-on-duplicate), `RuleError`, `ExitCodeByConfidence` (0/1/2), examples dir with minimal linters                                                                                                                                                                                        |
 | Config-tool plumbing      | `~/projects/linter-autoconfigure-sdk`                    | seed-stage, public                                  | `ReadConfig/LoadJSON/SaveJSON` with `Op`-typed `ConfigError`, `ConfigIssue → Finding`, atomic idempotent writes. Use only when a second configurator consumer exists (their own README says value is modest pre-consumer)                                                                                                           |
 | Configurator (Go)         | `~/projects/golangci-lint-auto-configure`                | v0.6.0 mature, public                               | 4-tier linter priorities, governance maps (Disabled/NeverAutoEnable/PragmaticNoise with data-integrity tests), fixer anti-gaming (justified disables, audit ledger, loop detection), v1→v2 migration                                                                                                                                |
@@ -29,6 +31,10 @@ before relying on a repo's freshness.)
 ## Decision shortcuts (need → use)
 
 - Emit findings of any kind → import `go-finding`, full stop.
+- Make a tool runnable by BuildFlow (or any toolsdk host) → a
+  `pkg/provider` package with a package-level
+  `var Provider = toolsdk.Register(toolsdk.Spec{...})`; host-side wiring is
+  one blank import. Full field rules: [distribution.md](distribution.md).
 - Build a directory-scoped Go linter (rules over a repo dir) → `go-linter-sdk`
   registry + your rules as `RuleFunc`; expose CLI + plugin like
   go-humanize-linter.

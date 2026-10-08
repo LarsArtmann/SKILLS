@@ -7,7 +7,9 @@ description: >
   "custom rule", "golangci-lint plugin", "oxlint plugin", "static analysis
   tool", "reduce linter false positives", "nolint handling", "lint autofix",
   "SARIF output", "finding data model", "lint exit codes", "lint baseline",
-  "architecture test", "archtest". Covers: the mechanism decision tree
+  "architecture test", "archtest", "BuildFlow provider", "toolsdk spec", or
+  making a linter/tool self-register as a BuildFlow tool via
+  go-finding/toolsdk. Covers: the mechanism decision tree
   (configure existing vs delegate vs AST walker vs go/analysis vs filesystem
   rules vs configurator), finding/severity/confidence modeling, suppressions,
   autofix safety, FP control, testing, distribution (CLI, golangci plugin,
@@ -61,8 +63,9 @@ shared finding type instead of inventing a converter layer.
    discrimination proof that the tests actually fail on a broken rule.
    Covered in [./references/trust-engineering.md](references/trust-engineering.md#testing-the-linter-itself).
 7. **Distribute in layers.** One detector core behind library, CLI,
-   golangci-lint plugin, GitHub Action, and SARIF — never four
-   implementations. [./references/distribution.md](references/distribution.md).
+   golangci-lint plugin, BuildFlow provider (toolsdk self-registration),
+   GitHub Action, and SARIF — never multiple implementations.
+   [./references/distribution.md](references/distribution.md).
 8. **Reuse the local stack before building anything.**
    [./references/ecosystem.md](references/ecosystem.md) maps Lars's existing
    linter-building blocks (go-finding, go-linter-sdk, the auto-configure
@@ -165,6 +168,7 @@ Full matrix with project evidence and anti-patterns:
 | samber-linter spec: HW-1/HW-5/HW-6 rules, `//samber-linter:allow <rule> <reason>` (reason required)                                                                                                                                                              | ✅ verified 2026-09-09, source read | `samber-linter/README.md:128-252`                                                                                                                                          |
 | SARIF property-bag round-trip keys (`go-finding/severity`, `-confidence`, `-category`, `-tags`, `-suggestion`, `-snippet`, `-id`, `-start/end-offset`, `-suppression-kind/reason/rule/expiry`)                                                                   | ✅ verified 2026-09-09, source read | `go-finding/sarif_types.go`                                                                                                                                                |
 | linter-autoconfigure-sdk: single-file library (~239 LOC) with `Op`-typed `ConfigError` (read/unmarshal/marshal/mkdir/write)                                                                                                                                      | ✅ verified 2026-09-09, source read | `linter-autoconfigure-sdk/autoconfigure.go:40-44`                                                                                                                          |
+| toolsdk (`go-finding/toolsdk`, tagged `toolsdk/v1.15.0`): `Register(Spec{...})` panics on invalid specs; `Trigger` constructors (`OnGoFiles`/`OnGoModule`/`OnFiles`/`AnyLanguage`); `Spec.Options` kind-only validation with `ErrUnknownOption` on typos; `WithOptions` snapshot + nil/empty clears inherited; `DryRunFromContext`; `RepairResult` description-only (host re-detects — anti-lie); `SnapshotForTest`/`RestoreForTest`; 10 shipped consumers wired by one blank import each | ✅ verified 2026-10-08, source read | `go-finding/toolsdk/{doc,spec,registry,options,triggers,dryrun}.go`, `BuildFlow/tools/providers/sdk_imports.go`, `art-dupl/pkg/provider/provider.go` |
 
 All load-bearing claims in this skill were re-verified against source on
 2026-09-09 (round 2 of this session); earlier research-pass-only rows have

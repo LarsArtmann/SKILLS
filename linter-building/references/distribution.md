@@ -11,13 +11,14 @@ detector core (rules as data + pure functions)
   ├── library API        (Registry, types.Issue = finding.Finding)
   ├── CLI                (exit codes, baseline, formats)
   ├── golangci-lint v2 plugin (module plugin wrapping the same detectors)
+  ├── BuildFlow provider (toolsdk.Spec — self-registration, no host glue)
   ├── GitHub Action      (action.yml → CLI)
   └── SARIF              (CI code-scanning UIs)
 ```
 
-Order matters: library first (the CLI is a consumer), plugin LAST (a thin
-`analysis.Analyzer` wrapper). Detection logic must not import cobra,
-golangci internals, or actions tooling.
+Order matters: library first (the CLI is a consumer), the fronts LAST (thin
+wrappers). Detection logic must not import cobra, golangci internals,
+BuildFlow, or actions tooling.
 
 ## CLI contract
 
@@ -66,6 +67,90 @@ Plugin gotchas: re-anchor suppression-verification findings to line 1 (the
 host nolint filter eats findings on nolint lines); testdata for the plugin
 path lives under `testdata/analysistest/` using
 `analysistest.RunWithSuggestedFixes` conventions when you have fixes.
+
+## BuildFlow provider (toolsdk self-registration)
+
+The cheapest distribution front in the local fleet: the tool self-registers
+as a BuildFlow provider via `github.com/larsartmann/go-finding/toolsdk`
+(a go-finding sub-module, tagged `toolsdk/v*`, v1.15.0 as of 2026-10-05),
+and every BuildFlow-covered repo can run it with zero per-repo wiring.
+Adding a tool is a one-file change in the tool's own repo; the host side is
+a single blank import line. (This section AUTHORs providers; for RUNNING
+BuildFlow, see the `buildflow` skill.)
+
+The whole contract — a package-level `Spec` var (runs at init):
+
+```go
+package provider
+
+import toolsdk "github.com/larsartmann/go-finding/toolsdk"
+
+//nolint:gochecknoglobals // toolsdk self-registration by design
+var Provider = toolsdk.Register(toolsdk.Spec{
+	Name:        "mytool",                     // unique, stable
+	Description: "One-liner shown in the host --list output", // required
+	Trigger:     toolsdk.OnGoFiles(),
+	Inputs:      []string{"**/*.go"},          // data-flow edges + presence gate
+	Detect:      myDetector,                   // a finding.Detector
+})
+```
+
+The host (BuildFlow) blank-imports this package
+(`tools/providers/sdk_imports.go` — one line + a go.mod require) and
+discovers every spec via `toolsdk.All()` at startup. 10 tools ship this way
+today (art-dupl, go-structure-linter, cqrs-lint, cmdguard,
+dependabot-auto-configure, go-branded-id, go-design-smells,
+go-version-auto-configure, oxlint-auto-configure, licenseforge).
+
+**Why this shape:** the SDK depends ONLY on go-finding — no BuildFlow
+internal types leak into the contract, so a provider never couples to
+BuildFlow's release cycle. Conversion (`ToolFromSpec`) is one-way and lives
+entirely in the host.
+
+### Spec field rules that bite
+
+| Field        | Rule                                                                                                                                                                                                                                                                                                                                                 |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Name`       | Required, unique, stable — suppressions and config key on it. Empty → panic.                                                                                                                                                                                                                                                                          |
+| `Description`| Required non-empty (trimmed) → panic otherwise. The host shows it in `--list`; make it say what the tool does AND what it will not do.                                                                                                                                                                                                                 |
+| `Detect`     | A `finding.Detector`. `nil` is legal only for repair/generate-only tools; a spec with neither Detect nor Repair panics — a capability is mandatory.                                                                                                                                                                                                   |
+| `Repair`     | `Repairer` (or `toolsdk.RepairerFunc`). MUST honor `toolsdk.DryRunFromContext(ctx)` — report what would happen, change nothing. `RepairResult.Description` is the ONLY meaningful field: the host re-runs Detect and measures the finding delta instead of trusting self-reported fix counts (structural anti-lie).                                                                     |
+| `Trigger`    | When the tool is relevant: `Files` globs activate it, `Language` gates it (`"go"`, `"js"`, ... or `""` = agnostic), `Requires` is an OR-group of prerequisite patterns (`**/go.mod`, `**/go.work`), `NotRequires` DISQUALIFIES on match — ownership deference: a standalone formatter skips repos carrying their own toolchain config (e.g. `treefmt.toml`) instead of fighting it every run. Constructors: `OnGoFiles()`, `OnGoModule()`, `OnFiles(lang, pats...)`, `AnyLanguage(pats...)`. |
+| `DependsOn`  | Plain tool-name strings; the host resolves them into DAG ordering edges.                                                                                                                                                                                                                                                                             |
+| `ModuleFanOut` | Declares run-once-per-Go-module (multi-module workspaces). The host wraps Detect/Repair for you — callbacks MUST read the working directory from `finding.WorkingDirFromContext(ctx)`, never the process CWD, and must NOT self-wrap with their own WorkDir/progress adapters.                                                                                          |
+| `SwitchCases`| Conditional repair paths keyed on the diagnose output's finding rule IDs: `Suffix` names the DAG node, `FindingRuleIDs` select (any-match runs), `ExcludedRuleIDs` suppress. The host runs EVERY matching case in parallel — mutual exclusion is the SPEC AUTHOR's job: encode precedence via `ExcludedRuleIDs` or lose writes to racing siblings.                                                                       |
+| `Options`    | Tunable knobs: `{Name, Kind, Default, Description}` with Kind one of `int`, `string`, `bool`. Kind-checking only — range/semantic validation stays with the tool (art-dupl validates `threshold` 1–1000 itself with domain sentinels). DECLARING an option is what makes it settable: a spec with no Options rejects any value. Unknown names fail loudly (`ErrUnknownOption`) so a consumer config typo cannot silently run on defaults. Read per-run values with `OptionsFromContext(ctx)`; the host injects via `WithOptions` (map is snapshotted; nil/empty CLEARS inherited values). Sentinels match with `errors.Is`. |
+| `HealthCheck`| Verify external dependencies (a binary is installed) before the pipeline runs; `nil` = no external dep. Pure-Go tools declare an explicit no-op `func(context.Context) error { return nil }` so absent is not mistaken for unverified (art-dupl).                                                                                                       |
+
+**Registration panics on invalid specs** (empty Name/Description, no
+capability, malformed or duplicate Options) — a malformed registration is a
+programming error that must surface at startup, not a runtime condition.
+Same doctrine as duplicate rule IDs in a registry.
+
+### Testing a provider
+
+The registry is process-global (that is how init-time registration is
+discoverable). Tests that mutate it — `ResetForTest`, re-`Register` — must
+snapshot with `SnapshotForTest()` and restore via
+`t.Cleanup(func() { toolsdk.RestoreForTest(snap) })`, or the suite breaks
+under shuffle. `EnsureContext(ctx)` defends standalone callers against a
+nil context.
+
+### Lessons from shipped providers (all real)
+
+- **Cap detector-only tools at advisory severity.** If findings feed a gate
+  on error-or-above and the tool has NO Repairer, error findings fail every
+  run with no automated fix path. art-dupl caps at `SeverityWarning` and
+  preserves the original severity in a tag (`original-severity-<sev>`).
+- **Hyphenate metadata tags, never colonate.** A colonated tag fails go-finding
+  report validation and breaks consumers' `--format finding` output (found
+  in branching-flow via PapDashboard, mirrored in art-dupl).
+- **"Nothing found" is a clean run, not an error.** Map the SDK's
+  no-duplicates sentinel to `[]finding.Finding{}`, `nil` error.
+- **Put the spec in its own `pkg/provider` package** with a doc comment
+  explaining the registration pattern — the blank import IS the wiring, so
+  the package must be importable without side effects beyond registration
+  (art-dupl's provider doc is the model).
 
 ## SARIF
 
@@ -133,3 +218,5 @@ Canonical block per `verify-external-claims/SKILL.md` §5. Source-read, 2026-09-
 | --------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------ |
 | `analysistest.RunWithSuggestedFixes` convention                             | ✅ Verified | `golang.org/x/tools@v0.35.0/go/analysis/analysistest/analysistest.go:82` |
 | go-finding per-module tag scheme (`pipeline/v*`, `analysis/v*`, `cmd/*/v*`) | ✅ Verified | `git -C ~/projects/go-finding tag -l` (also `toolsdk/*` + root tags)     |
+| toolsdk contract: `Spec` fields + panic-on-invalid `Register`; `Trigger` constructors; `Option` kinds + `WithOptions`/`OptionsFromContext` snapshot-and-clear semantics; `ValidateOptions` unknown-name rejection; `DryRunFromContext`; `RepairResult` description-only (host re-detects); `SnapshotForTest`/`RestoreForTest`; `EnsureContext` | ✅ Verified 2026-10-08, source read | `go-finding/toolsdk/{doc,spec,registry,options,triggers,dryrun}.go` (tagged toolsdk/v1.15.0; 10 consumers) |
+| Provider lessons (advisory cap + `original-severity-` tag, explicit no-op HealthCheck, hyphen-not-colon tags, own `pkg/provider` package)   | ✅ Verified 2026-10-08, source read | `art-dupl/pkg/provider/provider.go`; `dependabot-auto-configure/pkg/provider/provider.go`; `BuildFlow/tools/providers/sdk_imports.go` (10 blank imports) |

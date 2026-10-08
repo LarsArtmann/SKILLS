@@ -41,7 +41,7 @@
 | naming-review      | 🟢 `FULLY_FUNCTIONAL`     | ✅          | Multi-language naming audit with automated detection scripts                                                                                                              |
 | code-quality-scan  | 🟡 `PARTIALLY_FUNCTIONAL` | ✅ (assets) | Build + lint + duplication → HTML dashboard; tool-guidance matrix added 2026-08-04, body still thin                                                                       |
 | deduplicate-code   | 🟡 `PARTIALLY_FUNCTIONAL` | —           | Semantic duplication detection; relies on `art-dupl` CLI                                                                                                                  |
-| linter-building    | 🆕 `NEW`                  | ✅          | Authors linters/rules/configurators (counterpart to code-quality-scan); eval iteration-1 ran (`linter-building/evals/`); real-work trigger + open questions pending (T34) |
+| linter-building    | 🆕 `NEW`                  | ✅          | Authors linters/rules/configurators (counterpart to code-quality-scan); toolsdk BuildFlow-provider front documented + source-verified 2026-10-08; eval iteration-1 ran; real-work trigger + open questions pending (T34) |
 
 ## Skill Collection — Epistemic Hygiene
 
