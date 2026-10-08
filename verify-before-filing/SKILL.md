@@ -132,6 +132,15 @@ If all five gates pass, draft the issue with:
 - **Why existing alternatives don't work** (shows you checked)
 - **Platform/architecture scope** (who benefits, who's unaffected)
 
+**Line-number freshness (2026-10-08, wave-5 M11):** grep-proves-the-fact
+is NOT enough for `file:line` citations — between verification and filing,
+a rebase, sibling commit, or upstream move shifts the offsets and the
+posted artifact inherits STALE line numbers (branching-flow#2 shipped
+exactly this class: facts held, `file:line` cites were off). Re-run the
+grep/print at the EXACT commit you file from, as the LAST step before
+submitting, and either pin the commit hash beside the citation or quote
+the lines verbatim so a maintainer can re-locate them regardless.
+
 ## 6. Pre-Submission Review
 
 Re-read your draft as the upstream maintainer. Answer honestly:
