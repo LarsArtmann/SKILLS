@@ -76,3 +76,27 @@ If the diagnosis is a genuine BuildFlow bug (not a stale binary, not a documente
 1. Reproduce minimally (`buildflow -s <tool> -v` output).
 2. Record it in the PROJECT's AGENTS.md as a known tool bug (that's where consumers keep them).
 3. The fix belongs in the BuildFlow repo — for filing upstream, the verify-before-filing and github-voice skills apply.
+
+## "File flips between runs": watcher + step-log correlation (2026-10-08, go-retry)
+
+When a config file silently changes content between buildflow runs and no
+obvious step explains it:
+
+1. **Bisect by step first** — `buildflow -s "<tool> [module]" --fix` each
+   candidate step in isolation and diff the file after each. This exonerates
+   or convicts whole tools fast — but it is NOT sufficient alone: the writer
+   may be a *repair rule inside a tool whose name suggests it only checks*
+   (a "structure" linter owned a `go-version` repair rule that rewrote
+   go.mod; every gomod step was innocent).
+2. **Watch the file during a live full run** — a 300 ms poller recording
+   `stat`+hash of the suspect file with timestamps:
+   `while true; do printf '%s %s\n' "$(date +%H:%M:%S.%3N)" "$(sha256sum FILE | cut -c1-12)"; sleep 0.3; done`
+3. **Correlate the flip timestamp against the pipeline step log** — the
+   verbose run log carries per-step timing; the step whose window contains
+   the flip is the writer. In the discovery case the log line was
+   `Applied fix file=go.mod rule=go-version` inside `go-structure-linter:repair`.
+
+The technique generalizes to any "who wrote this file" mystery in an
+orchestrated pipeline: watch + correlate beats source-guessing, and
+step-bisection alone produces false exonerations when the writer hides
+behind an innocuous tool name.

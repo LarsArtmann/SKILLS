@@ -285,6 +285,7 @@ If you don't need the fields, `errors.Is` is still fine — the linter is then a
 
 Load on demand:
 
+- [./references/sentinel-declarations.md](./references/sentinel-declarations.md) — Declare package-level sentinels with the `error` interface type (`var ErrX error = ...`), never a concrete type: erraudit's sentinel recognition and the standard idiom both require it; includes the verified contract and the compile-time guard-test pattern (2026-10-08)
 - [./references/decision-tree.md](./references/decision-tree.md) — Background on Go's three error-matching APIs, the full decision tree with code examples, and how to suppress correctly
 - [./references/cli-and-flags.md](./references/cli-and-flags.md) — Full flag reliability table, the `--no-suppress` history (broken 2026-07-21, re-verified working on the root invocation 2026-09-11), the remove-and-restore verification technique, exit codes. Flag behaviors reflect the original feedback (2026-07-21, when the tool was called `hierarchical-errors`) and have not all been re-verified against the renamed `erraudit` binary — see verification status at the top of this file.
 - [./references/anti-patterns.md](./references/anti-patterns.md) — All four anti-patterns with full code, plus the agent-specific "fix-to-zero" trap guidance
