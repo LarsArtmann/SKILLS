@@ -7,6 +7,9 @@ import (
 )
 
 type UserBrand struct{}
+
+func (UserBrand) Name() string { return "User" }
+
 type UserID = id.ID[UserBrand, nanoid.NanoID]
 
 func GenerateUserID() UserID {
