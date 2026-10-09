@@ -65,6 +65,9 @@ because it's 80 KB of stale changelog entries and code dumps.
 | Missing shipped features         | Are there new features in code not in FEATURES.md?                                                                                  | Medium             |
 | Counts verifiable                | Compute any count from the repo; prefer a standing gate (script/flake app) that re-derives doc numbers — hand-maintained counts rot | Medium             |
 | External sweeps date-stamped     | Coverage diffed against an external reference carries the audit date                                                                | Low                |
+| External claims dated + sourced  | Every competitor/external claim cluster carries a verify date and a source link (grep live docs for competitor names)               | Medium-High        |
+| External claims within cadence   | Verify date is within the doc's stated re-verify cadence (quarterly default); stale claims are findings even if plausibly unchanged | Medium-High        |
+| No unsourced competitor numbers  | Star counts, version comparisons, feature comparisons name their fetch date and origin; "roughly", "about", bare numbers fail       | Medium-High        |
 | Status vocabulary used correctly | Only the 5 core statuses (+ the absent-why extensions where adopted), no synonyms                                                   | Low                |
 
 ## TODO_LIST.md
