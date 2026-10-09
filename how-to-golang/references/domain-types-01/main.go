@@ -1,21 +1,26 @@
-// source: how-to-golang/references//home/lars/projects/SKILLS/how-to-golang/references/domain-types block #1
+// source: how-to-golang/references/domain-types block #1
 package ids
 
 import (
-	id "github.com/larsartmann/go-composable-business-types/id"
-	"github.com/larsartmann/go-composable-business-types/nanoid"
+	"fmt"
+
+	id "github.com/larsartmann/go-branded-id"
+	"github.com/sixafter/nanoid"
 )
 
 type UserBrand struct{}
-type UserID = id.ID[UserBrand, nanoid.NanoID]
+
+func (UserBrand) Name() string { return "User" }
+
+type UserID = id.ID[UserBrand, nanoid.ID]
 
 func GenerateUserID() UserID {
-	return id.NewID[UserBrand, nanoid.NanoID](nanoid.New())
+	return id.NewID[UserBrand](nanoid.Must())
 }
 
 func GenerateUserIDFromString(s string) (UserID, error) {
-	nid, err := nanoid.Parse(s)
-	if err != nil { return UserID{}, fmt.Errorf("invalid user ID: %w", err) }
-	return id.NewID[UserBrand, nanoid.NanoID](nid), nil
+	if len(s) != 21 {
+		return UserID{}, fmt.Errorf("invalid user ID %q: want 21 nanoid chars", s)
+	}
+	return id.NewID[UserBrand](nanoid.ID(s)), nil
 }
-
