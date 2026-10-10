@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# check-annotator.sh — fixture tests for annotate-status-items.py.
+# check-annotator.sh — fixture tests for annotate.go status-items (port of the annotate-status-items.py harness).
 # Exercises: numbered/table/checkbox/any:/@-disambiguation strikes, duplicate-key
 # refusal, banned-verdict refusal, atomicity (one miss = no write), --verify
 # (prints, writes nothing), and --emit-keys. Exit 0 = all fixtures pass.
@@ -12,7 +12,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-ANN="$(dirname "$0")/annotate-status-items.py"
+GO="$(dirname "$0")/annotate.go"
 WORK=$(mktemp -d)
 trap 'rm -rf "$WORK"' EXIT
 pass=0
@@ -52,7 +52,7 @@ EOF
 cp "$WORK/doc.md" "$WORK/doc.pristine"
 
 # --- emit-keys: keys generated mechanically from line numbers ---
-python3 "$ANN" --emit-keys "$WORK/doc.md" 3 8 13 16 >"$WORK/keys.out" 2>"$WORK/keys.preview"
+go run "$GO" emit-keys "$WORK/doc.md" 3 8 13 16 >"$WORK/keys.out" 2>"$WORK/keys.preview"
 expect "emit-keys count" "4" "$(wc -l <"$WORK/keys.out")"
 expect "emit-keys disambiguates restart" "1@First item gamma" "$(sed -n 2p "$WORK/keys.out")"
 expect "emit-keys preview names line 8" "8: 1. First item gamma" "$(sed -n 2p "$WORK/keys.preview")"
@@ -72,7 +72,7 @@ cp "$WORK/doc.pristine" "$WORK/doc.md"
 cat "$WORK/spec.tsv" >"$WORK/dup.tsv"
 sed -n '1p' "$WORK/spec.tsv" >>"$WORK/dup.tsv"
 rc=0
-python3 "$ANN" "$WORK/doc.md" "$WORK/dup.tsv" >"$WORK/dup.out" 2>&1 || rc=$?
+go run "$GO" status-items "$WORK/doc.md" "$WORK/dup.tsv" >"$WORK/dup.out" 2>&1 || rc=$?
 expect "dup-key exit" "1" "$rc"
 grep -q "duplicate spec key" "$WORK/dup.out"
 expect "dup-key message" "0" "$?"
@@ -82,7 +82,7 @@ pass=$((pass + 1))
 # --- banned-verdict refusal ---
 printf 'checkbox two\topen\n' >"$WORK/banned.tsv"
 rc=0
-python3 "$ANN" "$WORK/doc.md" "$WORK/banned.tsv" >/dev/null 2>&1 || rc=$?
+go run "$GO" status-items "$WORK/doc.md" "$WORK/banned.tsv" >/dev/null 2>&1 || rc=$?
 expect "banned verdict refuses" "1" "$rc"
 cmp -s "$WORK/doc.pristine" "$WORK/doc.md"
 pass=$((pass + 1))
@@ -94,13 +94,13 @@ cp "$WORK/doc.pristine" "$WORK/doc.md"
 	printf '999\t\n'
 } >"$WORK/atomic.tsv"
 rc=0
-python3 "$ANN" "$WORK/doc.md" "$WORK/atomic.tsv" >/dev/null 2>&1 || rc=$?
+go run "$GO" status-items "$WORK/doc.md" "$WORK/atomic.tsv" >/dev/null 2>&1 || rc=$?
 expect "atomic aborts" "1" "$rc"
 cmp -s "$WORK/doc.pristine" "$WORK/doc.md"
 pass=$((pass + 1))
 
 # --- verify mode: resolves and prints, writes nothing ---
-python3 "$ANN" --verify "$WORK/doc.md" "$WORK/spec.tsv" >"$WORK/verify.out" 2>&1
+go run "$GO" status-items --verify "$WORK/doc.md" "$WORK/spec.tsv" >"$WORK/verify.out" 2>&1
 expect "verify exit" "0" "$?"
 expect "verify resolves 5 keys" "VERIFY OK doc.md: 5 keys resolved (nothing written)" \
 	"$(tail -1 "$WORK/verify.out")"
@@ -108,7 +108,7 @@ cmp -s "$WORK/doc.pristine" "$WORK/doc.md"
 pass=$((pass + 1))
 
 # --- strike mode: all five keys land, restart list disambiguated ---
-python3 "$ANN" "$WORK/doc.md" "$WORK/spec.tsv" >"$WORK/strike.out" 2>&1
+go run "$GO" status-items "$WORK/doc.md" "$WORK/spec.tsv" >"$WORK/strike.out" 2>&1
 expect "strike exit" "0" "$?"
 expect "strike reports 5" "OK doc.md: annotated 5 items" "$(cat "$WORK/strike.out")"
 expect "list-one 1 struck" "~~1. First item alpha~~" "$(sed -n 3p "$WORK/doc.md" | sed 's/\t.*//')"
@@ -130,12 +130,12 @@ cat >"$WORK/bold.md" <<'EOF'
 | **C34** | Health-architecture hardening batch (R1-R6) | open |
 EOF
 cp "$WORK/bold.md" "$WORK/bold.pristine"
-python3 "$ANN" --emit-keys "$WORK/bold.md" 3 >"$WORK/bold.keys" 2>"$WORK/bold.err"
+go run "$GO" emit-keys "$WORK/bold.md" 3 >"$WORK/bold.keys" 2>"$WORK/bold.err"
 expect "bold-cell emit-key" "C34@Health-architecture hardening ba" "$(cat "$WORK/bold.keys")"
 printf 'C34@Health-architecture hardening ba\tDONE — struck via bold cell\n' >"$WORK/bold.tsv"
-python3 "$ANN" --verify "$WORK/bold.md" "$WORK/bold.tsv" >"$WORK/bold.verify" 2>&1
+go run "$GO" status-items --verify "$WORK/bold.md" "$WORK/bold.tsv" >"$WORK/bold.verify" 2>&1
 expect "bold-cell verify" "VERIFY OK bold.md: 1 keys resolved (nothing written)" "$(tail -1 "$WORK/bold.verify")"
-python3 "$ANN" "$WORK/bold.md" "$WORK/bold.tsv" >"$WORK/bold.strike" 2>&1
+go run "$GO" status-items "$WORK/bold.md" "$WORK/bold.tsv" >"$WORK/bold.strike" 2>&1
 expect "bold-cell strike" "OK bold.md: annotated 1 items" "$(cat "$WORK/bold.strike")"
 expect "bold-cell struck line" "~~| **C34** | Health-architecture hardening batch (R1-R6) | open |~~ DONE — struck via bold cell" \
 	"$(sed -n 3p "$WORK/bold.md" | sed 's/ $//')"
