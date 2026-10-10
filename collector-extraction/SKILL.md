@@ -213,3 +213,10 @@ sibling push (+tag) → flake `?ref=` full rev → `cargo update -p <crate>` →
 - Never propose grouping unrelated collectors into one workspace repo.
   Domain grouping (e.g. "all SSH/security-key collectors") is fine as ONE
   flat crate with multiple backends — ask the owner first.
+
+---
+
+**Fan-out:** this skill lives in the SKILLS repo and is symlinked into the
+Crush fan-out. The authoring norm, its guards, and the 2026-09 stale-link
+incident that spawned them live in `/home/lars/projects/crush-config/README.md`
+§ "Skill fan-out: authoring norm and integrity".
