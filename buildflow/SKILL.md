@@ -64,6 +64,7 @@ Imperative workflow for any quality task in a covered project:
 4. **Fix** — `buildflow --fix`. Repairs run as detect → repair → verify; the summary honestly reports what was fixed vs. what remains.
 5. **Drill into one tool** — `buildflow -s <tool>` (does NOT accumulate across multiple `-s` flags — last one wins). Use `--format finding` for the full findings list, `-v` for step logs. Module fan-out tools accept a qualifier: `-s "golangci-lint [tools]"` or `golangci-lint@tools`.
 6. **Recover** — `buildflow --failed-only` reruns exactly the steps that failed last run; `--resume` skips previously succeeded steps.
+7. **Close the loop — file or fix, never absorb.** Every problem encountered in a run (step failure, false positive, stale doc, misleading message) MUST end the session in exactly one state: (a) fixed in the owning repo, (b) filed as a GitHub issue there — diagnosis verified at source level per **verify-before-filing**, duplicates searched open+closed — or (c) recorded as a deliberate non-fix with rationale in the consumer repo. "Mentioned in the run summary" is not a state. This also catches stale workarounds: re-verify documented limitations against the current binary before re-documenting them.
 
 ### Build modes
 
@@ -105,6 +106,8 @@ A green run can still exit non-zero: by default BuildFlow **fails when findings 
 | Commit blocked by pre-commit hook           | It ran `buildflow --build-mode pre-commit --staged-only` and re-staged formatted files; fix the findings, re-stage |
 
 Deep triage (stale-binary update paths, result-cache purge, pre-commit edge cases, daemon interactions) is in [./references/failure-triage.md](./references/failure-triage.md) — read it before improvising a workaround.
+
+Whatever the symptom, close the loop (step 7): a confirmed problem ends fixed, filed, or documented as a deliberate non-fix — never merely observed. The same gate applies to workarounds: before documenting one, re-verify the limitation still exists in the current binary.
 
 ## Anti-patterns
 
