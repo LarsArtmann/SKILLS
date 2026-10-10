@@ -189,3 +189,10 @@ any upstream release.
   codes, baselines, golangci plugin, GitHub Action, SARIF, publishing pitfalls
 - [./references/ecosystem.md](references/ecosystem.md) — Lars's local
   linter-building stack: what to reuse when, and which repo to copy
+
+---
+
+**Fan-out:** this skill lives in the SKILLS repo and is symlinked into the
+Crush fan-out. The authoring norm, its guards, and the 2026-09 stale-link
+incident that spawned them live in `/home/lars/projects/crush-config/README.md`
+§ "Skill fan-out: authoring norm and integrity".
