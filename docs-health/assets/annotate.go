@@ -28,7 +28,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"regexp"
 	"sort"
@@ -154,26 +156,24 @@ func markerFor(kind, value string) (string, error) {
 // ---------- annotate-rows ----------
 
 var (
-	reDoubledSpanRows   = regexp.MustCompile("``.+?``")
-	reSingleSpan        = regexp.MustCompile("`[^`]*`")
-	reTableRowShape     = regexp.MustCompile(`^(\|\s*)([A-Za-z]?[A-Za-z0-9.]*)(\s*\|)(.*)(\|)\s*$`)
-	reRowID             = regexp.MustCompile(`^[A-Za-z]?[A-Za-z0-9.]*$`)
-	reHeading           = regexp.MustCompile(`^(#{1,6})\s`)
-	reOccurrenceSuffix  = regexp.MustCompile(`#(\d+)$`)
-	reProseItemHead     = regexp.MustCompile(`^(\s*)(?:\d+\.|\*\*\d+\.\*\*)\s`)
-	reProseItemBody     = regexp.MustCompile(`^(\s*)((?:\*\*)?\d+\.(?:\*\*)?\s*)(.*)$`)
-	reNumItem           = regexp.MustCompile(`^(\s*)(?:[-*]\s*)?([A-Za-z]{0,3}\d{1,3}[a-z]?|[A-Za-z]+#\d+|\d+)\.\s`)
-	reNumItemAny        = regexp.MustCompile(`^\s*(?:\*\*)?(\d+)\.(?:\*\*)?\s`)
-	reTableRowKey       = regexp.MustCompile(`^\|\s*\*{0,2}([A-Za-z]{0,3}\d{1,3}[a-z]?)\*{0,2}\s*\|`)
-	reCheckbox          = regexp.MustCompile(`^(\s*)- \[ \] (.*)$`)
-	reTableSepCell      = regexp.MustCompile(`^:?-{2,}:?$`)
-	reDoubledSpanCheck  = regexp.MustCompile("``[^`]+``")
-	reIndentRest        = regexp.MustCompile(`^(\s*)(.*)$`)
-	reUnsolicitedBanner = regexp.MustCompile(`(?i)> \[!NOTE\]\s*\n>[^\n]*via Crush[^\n]*\n>(?:[^\n]*\n>)?[^\n]*MANUALLY REVIEWED`)
+	reDoubledSpanRows  = regexp.MustCompile("``.+?``")
+	reSingleSpan       = regexp.MustCompile("`[^`]*`")
+	reTableRowShape    = regexp.MustCompile(`^(\|\s*)([A-Za-z]?[A-Za-z0-9.]*)(\s*\|)(.*)(\|)\s*$`)
+	reRowID            = regexp.MustCompile(`^[A-Za-z]?[A-Za-z0-9.]*$`)
+	reHeading          = regexp.MustCompile(`^(#{1,6})\s`)
+	reOccurrenceSuffix = regexp.MustCompile(`#(\d+)$`)
+	reProseItemHead    = regexp.MustCompile(`^(\s*)(?:\d+\.|\*\*\d+\.\*\*)\s`)
+	reProseItemBody    = regexp.MustCompile(`^(\s*)((?:\*\*)?\d+\.(?:\*\*)?\s*)(.*)$`)
+	reNumItem          = regexp.MustCompile(`^(\s*)(?:[-*]\s*)?([A-Za-z]{0,3}\d{1,3}[a-z]?|[A-Za-z]+#\d+|\d+)\.\s`)
+	reTableRowKey      = regexp.MustCompile(`^\|\s*\*{0,2}([A-Za-z]{0,3}\d{1,3}[a-z]?)\*{0,2}\s*\|`)
+	reCheckbox         = regexp.MustCompile(`^(\s*)- \[ \] (.*)$`)
+	reTableSepCell     = regexp.MustCompile(`^:?-{2,}:?$`)
+	reDoubledSpanCheck = regexp.MustCompile("``[^`]+``")
+	reIndentRest       = regexp.MustCompile(`^(\s*)(.*)$`)
 )
 
-// outsideCodeSpansRows is the annotate-rows variant (``.+?``); check-rows
-// uses the ``[^`]+`` variant below — kept byte-faithful to both originals.
+// outsideCodeSpansRows is the annotate-rows variant (“.+?“); check-rows
+// uses the “[^`]+“ variant below — kept byte-faithful to both originals.
 func outsideCodeSpansRows(line string) string {
 	return reSingleSpan.ReplaceAllString(reDoubledSpanRows.ReplaceAllString(line, ""), "")
 }
@@ -296,13 +296,12 @@ func cmdRows(argv []string) error {
 		usage()
 		os.Exit(2)
 	}
-	target, original, lines, err := readLines(rest[0])
+	targetPath := rest[0]
+	original, lines, err := readLines(targetPath)
 	if err != nil {
 		return err
 	}
-	if target == "" {
-		return fail("empty path")
-	}
+	target := baseName(targetPath)
 	start, end, err := scopedLines(lines, section)
 	if err != nil {
 		return err
@@ -420,8 +419,8 @@ func cmdProse(argv []string) error {
 	return proseRun(rest[0], rest[1], rest[2:], dryRun, os.Stdout)
 }
 
-func proseRun(targetPath, prefix string, specs []string, dryRun bool, out *os.File) error {
-	_, _, lines, err := readLines(targetPath)
+func proseRun(targetPath, prefix string, specs []string, dryRun bool, out io.Writer) error {
+	_, lines, err := readLines(targetPath)
 	if err != nil {
 		return err
 	}
@@ -438,7 +437,7 @@ func proseRun(targetPath, prefix string, specs []string, dryRun bool, out *os.Fi
 		if found < 0 {
 			return fail("section %q not found", prefix)
 		}
-		start = found + 1
+		start = found
 		end = len(lines)
 		for i := found + 1; i < len(lines); i++ {
 			if strings.HasPrefix(lines[i], "## ") {
@@ -673,7 +672,7 @@ func cmdStatusItems(argv []string) error {
 	if err != nil {
 		return err
 	}
-	_, _, lines, err := readLines(path)
+	_, lines, err := readLines(path)
 	if err != nil {
 		return err
 	}
@@ -715,7 +714,7 @@ func cmdEmitKeys(argv []string) error {
 		return fail("usage: --emit-keys <file> <lineno> [<lineno> ...]")
 	}
 	path := argv[0]
-	_, _, lines, err := readLines(path)
+	_, lines, err := readLines(path)
 	if err != nil {
 		return err
 	}
@@ -767,14 +766,7 @@ func cmdEmitKeys(argv []string) error {
 // ---------- check-rows ----------
 
 func isSeparator(line string) bool {
-	trimmed := strings.Trim(strings.TrimSpace(line), "|")
-	if trimmed == "" && !strings.HasPrefix(strings.TrimSpace(line), "|") {
-		return false
-	}
-	cells := strings.Split(trimmed, "|")
-	if len(cells) == 0 {
-		return false
-	}
+	cells := strings.Split(strings.Trim(strings.TrimSpace(line), "|"), "|")
 	for _, c := range cells {
 		if !reTableSepCell.MatchString(strings.TrimSpace(c)) {
 			return false
@@ -806,7 +798,7 @@ func classifyRow(line string) string {
 }
 
 func checkFile(path string) (int, error) {
-	_, _, lines, err := readLines(path)
+	_, lines, err := readLines(path)
 	if err != nil {
 		return 1, err
 	}
@@ -912,5 +904,125 @@ func cmdCheckRows(argv []string) error {
 	if failures == 0 {
 		fmt.Printf("check-rows: %d file(s) complete\n", len(argv))
 	}
+	return nil
+}
+
+// ---------- self-test (ports of annotate-rows_test.py + annotate-prose_test.py) ----------
+
+func selfTest() error {
+	failures := []string{}
+	check := func(name string, got, want any) {
+		if got != want {
+			failures = append(failures, fmt.Sprintf("%s: got %q, want %q", name, got, want))
+		}
+	}
+	mustMarker := func(kind, value string) string {
+		m, err := markerFor(kind, value)
+		if err != nil {
+			failures = append(failures, fmt.Sprintf("marker(%s,%q): unexpected error %v", kind, value, err))
+		}
+		return m
+	}
+
+	// outside-code-span stripping (rows variant)
+	check("code-span tildes stripped",
+		outsideCodeSpansRows("| x | skip guard when `~~...~~` occurs |"),
+		"| x | skip guard when  occurs |")
+	check("plain text kept", outsideCodeSpansRows("a ~~b~~ c"), "a ~~b~~ c")
+	check("doubled-backtick span stripped", outsideCodeSpansRows("x ``a`b`` y"), "x  y")
+
+	// already_annotated: quoted marker syntax must not trip; real markers must
+	check("code-span tildes are not annotation",
+		alreadyAnnotated("| F12.1 | skip already-annotated guard when `~~` occurs in code spans | High |"), false)
+	check("struck row trips", alreadyAnnotated("| M1 | ~~task~~ done at `abc` |"), true)
+	check("clean row passes", alreadyAnnotated("| M1 | task | High |"), false)
+	check("routed row trips", alreadyAnnotated("| M1 | task **→ open — owner lane** | High |"), true)
+	check("prose arrow passes", alreadyAnnotated("| M19 | rewrite `x` → new `--flag` arg | High |"), false)
+
+	// marker vocabulary
+	check("v plain", mustMarker("v", "verified live 2026-08-29"), "done — verified live 2026-08-29")
+	check("v strips leading done", mustMarker("v", "done — some evidence"), "done — some evidence")
+	check("v strips 'done:'", mustMarker("v", "done: x"), "done — x")
+	check("v strips 'done '", mustMarker("v", "done at the site"), "done — at the site")
+	check("v empty", mustMarker("v", ""), "done")
+	check("v bare", mustMarker("v", "done"), "done")
+	check("v evidence", mustMarker("v", "live curl check"), "done — live curl check")
+	check("h", mustMarker("h", "abc123"), "done at `abc123`")
+	check("h single", mustMarker("h", "abc1234"), "done at `abc1234`")
+	check("h multi", mustMarker("h", "a1,b2"), "done at `a1`, `b2`")
+	check("p explicit date", mustMarker("p", "2026-09-24"), "done (docs-health pass 2026-09-24)")
+	check("p UTC default", mustMarker("p", "-"), "done (docs-health pass "+time.Now().UTC().Format("2006-01-02")+")")
+	check("w", mustMarker("w", "gated upstream"), "**Won't implement — gated upstream.**")
+	check("w user decision", mustMarker("w", "user decision"), "**Won't implement — user decision.**")
+	check("r open", mustMarker("r", "open — owner lane (TODO_LIST row)"), "**→ open — owner lane (TODO_LIST row)**")
+	check("r done", mustMarker("r", "done — landed at 4cea337"), "**→ done — landed at 4cea337**")
+	check("r strips leading arrow", mustMarker("r", "→ routed to ROADMAP"), "**→ routed to ROADMAP**")
+	check("r empty", mustMarker("r", ""), "**→ resolved**")
+	if _, err := markerFor("x", "y"); err == nil {
+		failures = append(failures, "bad kind: no error raised")
+	}
+
+	// row transforms
+	got, err := routeRow("| M02 | host check | Critical |", "M02", "**→ done — live**")
+	check("route_row err", err, nil)
+	check("route_row appends in task cell", got, "| M02 | host check **→ done — live** | Critical |")
+	got, err = strikeRow("| 3 | tail | S |", "3", "done at `a1b2c3`")
+	check("strike_row err", err, nil)
+	check("strike_row still strikes", got, "| ~~3~~ | ~~tail~~ done at `a1b2c3` | ~~S~~ |")
+
+	// prose annotation: end-to-end on a scratch file
+	dir, err := os.MkdirTemp("", "annotate-selftest")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(dir)
+	target := dir + "/sample.md"
+	sample := "# Report\n\n## f) Next\n\n1. First item\n   continued line\n2. Second item\n\n3. After a blank line (own item)\n\n## g) Tail\n\n1. Different section, same number\n"
+	if err := os.WriteFile(target, []byte(sample), 0o644); err != nil {
+		return err
+	}
+	err = proseRun(target, "## f)", []string{
+		"1:h:abc1234",
+		"2:w:never wanted",
+		"3:r:open — owner lane (TODO_LIST row)",
+	}, false, io.Discard)
+	check("prose run err", err, nil)
+	outBytes, _ := os.ReadFile(target)
+	out := string(outBytes)
+	check("item 1 struck", strings.Contains(out, "~~First item~~ done at `abc1234`"), true)
+	check("item 1 continuation struck", strings.Contains(out, "   ~~continued line~~"), true)
+	check("item 2 struck", strings.Contains(out, "~~Second item~~ **Won't implement — never wanted.**"), true)
+	check("blank line not struck", strings.Contains(out, "\n\n3. After a blank line"), true)
+	check("routed item NOT struck",
+		strings.Contains(out, "3. After a blank line (own item) **→ open — owner lane (TODO_LIST row)**"), true)
+	check("section g untouched", strings.Contains(out, "1. Different section, same number"), true)
+
+	// guards: re-running a struck item and a routed item must fail loudly
+	err = proseRun(target, "## f)", []string{"1:v:again"}, false, io.Discard)
+	if err == nil {
+		failures = append(failures, "already-annotated guard: no error raised")
+	}
+	err = proseRun(target, "## f)", []string{"3:r:again"}, false, io.Discard)
+	if err == nil {
+		failures = append(failures, "routed already-annotated guard: no error raised")
+	}
+
+	// dry-run writes nothing
+	dir2, _ := os.MkdirTemp("", "annotate-selftest-dry")
+	defer os.RemoveAll(dir2)
+	dry := dir2 + "/dry.md"
+	_ = os.WriteFile(dry, []byte(sample), 0o644)
+	var buf bytes.Buffer
+	if err := proseRun(dry, "## f)", []string{"1:h:deadbee"}, true, &buf); err != nil {
+		failures = append(failures, "dry-run: unexpected error "+err.Error())
+	}
+	dryOut, _ := os.ReadFile(dry)
+	check("dry-run wrote nothing", string(dryOut), sample)
+	check("dry-run reported", strings.Contains(buf.String(), "would annotate 1 items"), true)
+
+	if len(failures) > 0 {
+		return fail("self-test FAILED (%d):\n  %s", len(failures), strings.Join(failures, "\n  "))
+	}
+	fmt.Println("self-tests: all passed (markers + rows guards + prose strikes + atomic dry-run)")
 	return nil
 }
