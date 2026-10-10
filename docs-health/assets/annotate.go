@@ -590,15 +590,16 @@ func loadSpecs(specPath string) (*specSet, error) {
 // or reports the missing keys.
 func resolve(lines []string, specs *specSet) (map[string]int, []string) {
 	hits := map[string]int{}
-	for i, line := range lines {
-		if strings.Contains(line, "~~") {
+	for i, rawLine := range lines {
+		if strings.Contains(rawLine, "~~") {
 			continue
 		}
+		line := strings.TrimSuffix(rawLine, "\n")
 		matched := false
 		tok := ""
-		if m := reNumItem.FindStringSubmatch(lines[i]); m != nil {
+		if m := reNumItem.FindStringSubmatch(line); m != nil {
 			tok = m[2]
-		} else if m := reTableRowKey.FindStringSubmatch(lines[i]); m != nil {
+		} else if m := reTableRowKey.FindStringSubmatch(line); m != nil {
 			tok = m[1]
 		}
 		if tok != "" && !strings.Contains(tok, "@") {
@@ -623,7 +624,7 @@ func resolve(lines []string, specs *specSet) (map[string]int, []string) {
 		if matched {
 			continue
 		}
-		if m := reCheckbox.FindStringSubmatch(lines[i]); m != nil {
+		if m := reCheckbox.FindStringSubmatch(line); m != nil {
 			for _, key := range specs.order {
 				if _, ok := hits[key]; ok {
 					continue
@@ -726,7 +727,7 @@ func cmdEmitKeys(argv []string) error {
 		if no < 1 || no > len(lines) {
 			return fail("--emit-keys: line %d out of range (file has %d lines)", no, len(lines))
 		}
-		line := lines[no-1]
+		line := strings.TrimSuffix(lines[no-1], "\n")
 		var tok, rest string
 		switch {
 		case reNumItem.MatchString(line):
