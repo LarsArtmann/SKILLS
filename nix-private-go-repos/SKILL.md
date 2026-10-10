@@ -152,6 +152,7 @@ Load [./references/ci-auth.md](./references/ci-auth.md) for copy-paste workflows
 | Transitive private deps             | Build fails on a private dep of a private dep                     | Add the transitive dep as a flake input too, or disable validation     |
 | `tools/go.mod`                      | Secondary module lacks `replace` directives                       | Use `postPatchExtra` to inject replaces there too                      |
 | `go.work`                           | Workspace resolution interferes with module builds                | Automatic in go-standard; set `GOWORK = "off"` manually for Option B   |
+| nixpkgs `gotools` Go skew           | treefmt `goimports` check fails in-sandbox trying to download a newer toolchain ("no network") | Don't add `goimports` to the sandboxed formatter when `go.mod` requires a newer Go than `gotools` bundles; pin the matching `go_N_M` in devShells and enforce imports via golangci-lint outside the sandbox instead (securitymd 2026-10-09: gotools bundled Go 1.26, `go.mod` required 1.27) |
 
 For the full gotcha list, load [./references/implementation-guide.md](./references/implementation-guide.md).
 

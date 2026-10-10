@@ -209,3 +209,10 @@ new corpus — the profile is data-derived and must stay that way.
 | REST `.../versions` endpoints unusable                 | ✅ verified | 404 on `issues/comments/{id}/versions` and `issues/{n}/versions`, 2026-09-12          |
 | GraphQL `userContentEdits` returns revision snapshots  | ✅ verified | live query against comment `IC_kwDOOt6mSM8AAAABTopgeQ` + 271 edited items, 2026-09-12 |
 | Search 1000-result cap requires date windowing         | ✅ verified | author query returns 9,397 total; windowed retrieval succeeded                        |
+
+---
+
+**Fan-out:** this skill lives in the SKILLS repo and is symlinked into the
+Crush fan-out. The authoring norm, its guards, and the 2026-09 stale-link
+incident that spawned them live in `/home/lars/projects/crush-config/README.md`
+§ "Skill fan-out: authoring norm and integrity".
