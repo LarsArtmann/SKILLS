@@ -140,6 +140,23 @@ func (c *counted) marshal() []byte {
 	return []byte(b.String())
 }
 
+func (c *counted) repr() string {
+	type kv struct {
+		k string
+		v int
+	}
+	entries := make([]kv, 0, len(c.keys))
+	for _, k := range c.keys {
+		entries = append(entries, kv{k, c.counts[k]})
+	}
+	sort.SliceStable(entries, func(i, j int) bool { return entries[i].v > entries[j].v })
+	parts := make([]string, 0, len(entries))
+	for _, e := range entries {
+		parts = append(parts, fmt.Sprintf("'%s': %d", e.k, e.v))
+	}
+	return "{" + strings.Join(parts, ", ") + "}"
+}
+
 func ngrams(texts []string, n, top int) [][2]any {
 	counts := newCounted()
 	re := regexp.MustCompile(`[a-zA-Z']+`)
@@ -174,9 +191,10 @@ var agentMarkers = []string{
 }
 
 func isAgent(body string) bool {
+	runes := []rune(body)
 	head := body
-	if len(head) > 800 {
-		head = head[:800]
+	if len(runes) > 800 {
+		head = string(runes[:800])
 	}
 	hits := 0
 	for _, m := range agentMarkers {
@@ -204,6 +222,7 @@ type segStats struct {
 	MentionPct    float64         `json:"mention_pct"`
 	QuestionPct   float64         `json:"question_pct"`
 	Openings      json.RawMessage `json:"openings"`
+	OpeningsRepr  string          `json:"-"`
 	Bigrams       [][2]any        `json:"bigrams"`
 	Trigrams      [][2]any        `json:"trigrams"`
 }
@@ -281,6 +300,7 @@ func segStatsOf(label string, texts []string) segStats {
 		MentionPct:    pct(sum(func(f feats) bool { return f.mention }), n),
 		QuestionPct:   pct(sum(func(f feats) bool { return f.question }), n),
 		Openings:      openings.marshal(),
+		OpeningsRepr:  openings.repr(),
 		Bigrams:       ngrams(texts, 2, 20),
 		Trigrams:      ngrams(texts, 3, 15),
 	}
@@ -553,7 +573,7 @@ func main() {
 			fmt.Sprintf("- code fence %s%% | inline code %s%% | links %s%% | bullets %s%% | headers %s%% | bold %s%% | emoji %s%% | mentions %s%% | question %s%%",
 				pctStr(s.CodeFencePct), pctStr(s.InlineCodePct), pctStr(s.LinkPct), pctStr(s.BulletsPct),
 				pctStr(s.HeaderPct), pctStr(s.BoldPct), pctStr(s.EmojiPct), pctStr(s.MentionPct), pctStr(s.QuestionPct)),
-			fmt.Sprintf("- openings: %s", string(s.Openings)),
+			fmt.Sprintf("- openings: %s", s.OpeningsRepr),
 			fmt.Sprintf("- top bigrams: %s", tupleRepr(s.Bigrams)),
 			"",
 		}
