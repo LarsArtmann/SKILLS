@@ -148,8 +148,11 @@ These are blockers that need a human decision before they can become tasks:
   trigger collision analysis is a real problem or self-resolving.
 - **Should `website-launch` stay at 848 lines or be refactored?** It is
   allowlisted past the 500-line guideline (trimmed 1106 → 799 in 2026-08-04,
-  regrew to 848 with the sales-video expansion). Trim path exists (TODO T11);
-  it keeps losing to feature work.
+  regrew to 848 with the sales-video expansion; 797 measured 2026-10-11).
+  Trim path exists (TODO T11); it keeps losing to feature work.
+  **Decision package ready (2026-10-11):** the template-repo + CLI overhaul
+  (TODO T57–T59, `docs/status/2026-10-11_08-30_*` reconciliation) relocates
+  the load instead of deleting it — close this question when T59 lands.
 - **Backup retention** (`2026-08-14_15-04` g1): trash
   `~/.agents/.backup-skills-20260814/` (25 full skill copies) and the lockfile
   `.bak` now that symlinks are verified, or keep for N days? Deletion is

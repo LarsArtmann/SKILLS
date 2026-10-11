@@ -4,6 +4,13 @@
 `~/projects/templ-components/website/` · **Mode:** exploration (user asked
 "what do you think?" — analysis only, **no files were edited**)
 
+> **Extended (08:30):** a parallel proposal (04:29 — Astro template repo +
+> SDK, different author/session) and the reconciliation composing both live at
+> `2026-10-11_04-29_website-launch-template-sdk-proposal.md` and
+> `2026-10-11_08-30_website-launch-two-proposal-reconciliation.md`. Read those
+> before acting on this report alone — the unified plan is gated on one
+> decision (extraction baseline) tracked as TODO T57.
+
 ## TL;DR
 
 **Migrate — yes.** The deciding fact: the target stack is not a proposal, it
