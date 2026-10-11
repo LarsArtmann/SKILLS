@@ -81,7 +81,7 @@ type collector struct {
 type editInfo struct {
 	EditCount int           `json:"edit_count"`
 	Versions  []editVersion `json:"versions"`
-	Truncated bool          `json:"truncated,omitempty"`
+	Truncated bool          `json:"truncated"`
 }
 
 type editVersion struct {
@@ -846,65 +846,106 @@ func truncate(s string, n int) string {
 }
 
 // pyJSONString mirrors Python's json.dumps default (ensure_ascii=True):
-// non-ASCII escapes to \uXXXX, quotes escape to \".
+// non-ASCII escapes to \uXXXX (surrogate pairs above BMP), quotes escape.
 func pyJSONString(s string) string {
 	var b strings.Builder
-	enc := json.NewEncoder(&b)
-	enc.SetEscapeHTML(false)
-	if err := enc.Encode(s); err != nil {
-		return `"` + s + `"`
+	b.WriteByte('"')
+	for _, r := range s {
+		switch r {
+		case '"':
+			b.WriteString("\\\"")
+			continue
+		case '\\':
+			b.WriteString("\\\\")
+			continue
+		case '\n':
+			b.WriteString("\\n")
+			continue
+		case '\r':
+			b.WriteString("\\r")
+			continue
+		case '\t':
+			b.WriteString("\\t")
+			continue
+		}
+		if r < 0x20 {
+			fmt.Fprintf(&b, "\\u%04x", r)
+			continue
+		}
+		if r > 0x7e {
+			if r > 0xffff {
+				r -= 0x10000
+				hi := 0xd800 + (r >> 10)
+				lo := 0xdc00 + (r & 0x3ff)
+				fmt.Fprintf(&b, "\\u%04x\\u%04x", hi, lo)
+			} else {
+				fmt.Fprintf(&b, "\\u%04x", r)
+			}
+			continue
+		}
+		b.WriteRune(r)
 	}
-	return strings.TrimSuffix(b.String(), "\n")
+	b.WriteByte('"')
+	return b.String()
 }
 
 type summary struct {
-	Generated               string         `json:"generated"`
-	User                    string         `json:"user"`
-	ItemsTotal              int            `json:"items_total"`
-	BodiesAuthored          int            `json:"bodies_authored"`
-	BodiesAuthoredIssue     int            `json:"bodies_authored_issue"`
-	BodiesAuthoredPR        int            `json:"bodies_authored_pr"`
-	BodiesExternal          int            `json:"bodies_external"`
-	AgentSuspectBodies      int            `json:"agent_suspect_bodies"`
-	ThreadsCommentedNotAuth int            `json:"threads_commented_not_authored"`
-	Comments                int            `json:"comments"`
-	CommentsByKind          map[string]int `json:"comments_by_kind"`
-	CommentsExternalRepo    int            `json:"comments_external_repo"`
-	ItemsWithEdits          int            `json:"items_with_edits"`
-	RestCalls               int            `json:"rest_calls"`
-	GraphqlCalls            int            `json:"graphql_calls"`
-	TopReposBodies          [][2]any       `json:"top_repos_bodies"`
-	TopReposComments        [][2]any       `json:"top_repos_comments"`
+	Generated               string          `json:"generated"`
+	User                    string          `json:"user"`
+	ItemsTotal              int             `json:"items_total"`
+	BodiesAuthored          int             `json:"bodies_authored"`
+	BodiesAuthoredIssue     int             `json:"bodies_authored_issue"`
+	BodiesAuthoredPR        int             `json:"bodies_authored_pr"`
+	BodiesExternal          int             `json:"bodies_external"`
+	AgentSuspectBodies      int             `json:"agent_suspect_bodies"`
+	ThreadsCommentedNotAuth int             `json:"threads_commented_not_authored"`
+	Comments                int             `json:"comments"`
+	CommentsByKind          json.RawMessage `json:"comments_by_kind"`
+	CommentsExternalRepo    int             `json:"comments_external_repo"`
+	ItemsWithEdits          int             `json:"items_with_edits"`
+	RestCalls               int             `json:"rest_calls"`
+	GraphqlCalls            int             `json:"graphql_calls"`
+	TopReposBodies          json.RawMessage `json:"top_repos_bodies"`
+	TopReposComments        json.RawMessage `json:"top_repos_comments"`
+
+	kindCounts map[string]int
+	KindOrder  []string
 }
 
-func topRepos(counts map[string]int, order []string, n int) [][2]any {
+// orderedCountJSON renders {key: count} with Python-dict semantics:
+// mostCommon sorts count desc (stable by first appearance), otherwise
+// first-appearance order.
+func orderedCountJSON(order []string, counts map[string]int, mostCommon bool) json.RawMessage {
 	type kv struct {
 		k string
 		v int
 	}
-	var entries []kv
+	entries := make([]kv, 0, len(order))
 	for _, k := range order {
 		entries = append(entries, kv{k, counts[k]})
 	}
-	sort.SliceStable(entries, func(i, j int) bool { return entries[i].v > entries[j].v })
-	if len(entries) > n {
-		entries = entries[:n]
+	if mostCommon {
+		sort.SliceStable(entries, func(i, j int) bool { return entries[i].v > entries[j].v })
 	}
-	var out [][2]any
-	for _, e := range entries {
-		out = append(out, [2]any{e.k, e.v})
+	var b strings.Builder
+	b.WriteString("{")
+	for i, e := range entries {
+		if i > 0 {
+			b.WriteString(", ")
+		}
+		b.WriteString(fmt.Sprintf("%q: %d", e.k, e.v))
 	}
-	return out
+	b.WriteString("}")
+	return json.RawMessage(b.String())
 }
 
 func (c *collector) summary() summary {
 	s := summary{
-		Generated:      time.Now().UTC().Format("2006-01-02T15:04:05.000000-07:00"),
-		User:           c.user,
-		ItemsTotal:     len(c.items),
-		CommentsByKind: map[string]int{},
+		Generated:  time.Now().UTC().Format("2006-01-02T15:04:05.000000-07:00"),
+		User:       c.user,
+		ItemsTotal: len(c.items),
+		kindCounts: map[string]int{},
 	}
-	var authoredOrder []string
 	repoBodyCounts := map[string]int{}
 	repoCommentCounts := map[string]int{}
 	var repoBodyOrder, repoCommentOrder []string
@@ -933,9 +974,13 @@ func (c *collector) summary() summary {
 		}
 		repoBodyCounts[i.Repo]++
 	}
+	s.KindOrder = nil
 	for _, cm := range c.comments {
 		s.Comments++
-		s.CommentsByKind[cm.Kind]++
+		if _, seen := s.kindCounts[cm.Kind]; !seen {
+			s.KindOrder = append(s.KindOrder, cm.Kind)
+		}
+		s.kindCounts[cm.Kind]++
 		if cm.Parent != nil && !c.ownRepo(cm.Parent.Repo) {
 			s.CommentsExternalRepo++
 		}
@@ -949,8 +994,15 @@ func (c *collector) summary() summary {
 	s.ItemsWithEdits = len(c.edits)
 	s.RestCalls = c.restCalls
 	s.GraphqlCalls = c.glCalls
-	s.TopReposBodies = topRepos(repoBodyCounts, repoBodyOrder, 15)
-	s.TopReposComments = topRepos(repoCommentCounts, repoCommentOrder, 15)
+	if len(repoBodyOrder) > 15 {
+		repoBodyOrder = repoBodyOrder[:15]
+	}
+	if len(repoCommentOrder) > 15 {
+		repoCommentOrder = repoCommentOrder[:15]
+	}
+	s.TopReposBodies = orderedCountJSON(repoBodyOrder, repoBodyCounts, true)
+	s.TopReposComments = orderedCountJSON(repoCommentOrder, repoCommentCounts, true)
+	s.CommentsByKind = orderedCountJSON(s.KindOrder, s.kindCounts, false)
 	return s
 }
 
