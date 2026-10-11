@@ -98,7 +98,7 @@ into Go or .sh" run: 12 Python files, 2,802 lines, three skills) ·
    captured the Python harness's printed count before deletion. The
    assertion list is byte-identical (I only swapped the invocation), and
    the old "22" was itself stale (the 2026-10-04 bold-cell block added 5),
-   so 26 is correct now — but the parity claim for the *number* rests on
+   so 26 is correct now — but the parity claim for the _number_ rests on
    reasoning, not a captured baseline.
 10. **Fan-out delivery not read through the symlink layer** — check-skills
     verifies symlink existence, but I never did the global-AGENTS.md
@@ -148,7 +148,7 @@ process failures deserve the red card:
 3. **Honorable mention — wasted cycles from my own harness bugs:** the
    fake-`gh` shim's `per_page=100`/`per_page=1` pattern collision made BOTH
    collectors test the empty path (caught because `items_total: 0` looked
-   wrong in *both* outputs — the both-agree-on-wrong trap); an earlier
+   wrong in _both_ outputs — the both-agree-on-wrong trap); an earlier
    `cd` in a compound command ran the rest of the invocation in the wrong
    directory. Caught, fixed, but both were avoidable with a slower first
    pass.
@@ -189,6 +189,7 @@ process failures deserve the red card:
 ## f) UP TO 50 THINGS TO GET DONE NEXT (brainstorm — HARVEST must route; most are ROADMAP fuel)
 
 **Evidence & verification debt (this session's loose ends)**
+
 1. Commit the equivalence harness + fake-`gh`/fake-`curl` fixtures as permanent repo testdata (or explicitly decide they were one-shot).
 2. Fix `docs-health/SKILL.md` line 158 dangling fragment (one-line doc fix).
 3. Run buildflow full pipeline post-conversion; triage new shellcheck/golangci findings on the new files.
@@ -257,4 +258,5 @@ process failures deserve the red card:
 3. **Real-server gmail verification:** do you want the hand-over one-liner for a real `inboxclean` smoke test now (I'd stage nothing — `--list` only, read-only), or is the fake-curl e2e coverage sufficient until the next real drafting session? This decides f21/f22.
 
 ---
-*Verification snapshot: `check-skills.sh` exit 0 · zero `.py` in skills · gofmt/vet clean ×4 · self-tests green ×4 · harness 26/26 · buildflow ruff green (not-applicable). Prior report: `2026-10-11_03-55_python-to-go-bash-conversion.md` (conversion detail); this report adds the self-review layer and the honest misses above.*
+
+_Verification snapshot: `check-skills.sh` exit 0 · zero `.py` in skills · gofmt/vet clean ×4 · self-tests green ×4 · harness 26/26 · buildflow ruff green (not-applicable). Prior report: `2026-10-11_03-55_python-to-go-bash-conversion.md` (conversion detail); this report adds the self-review layer and the honest misses above._
