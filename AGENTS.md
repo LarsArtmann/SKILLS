@@ -247,7 +247,8 @@ repo even though the repo has no committed build config (§1 still holds: no
   `github-voice/scripts/{check-draft,analyze-corpus,collect-corpus}/*.go`,
   gmail-drafts → `scripts/gmail_{drafts,eml_export}.sh` (bash + curl + jq).
   ruff has nothing to scan anymore; `buildflow -s ruff-check-fix --format
-  finding` remains the expected-green gate (exit 0, `"findings": []`).
+  finding` now returns exit 0 with a `[Rejection:tool.not_applicable]`
+  note ("no files matching: **/*.py") — that rejection IS the green state.
   Conversion was verified equivalence-style: old Python vs new Go/shell
   ran side-by-side on fixtures and the real corpus (byte-identical
   markdown corpus, semantically identical JSON).
