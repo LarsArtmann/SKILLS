@@ -13,6 +13,37 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Fixed (2026-10-11 — buildflow findings gate brought to green)
+
+- Committed a minimal `.buildflow.yml` whose only non-default setting skips
+  `go-structure-linter`, with the rationale recorded in the file: its
+  repo-level Go-project rules (mandatory `go.mod`, `.golangci.yml`,
+  `internal/` layout) contradict this docs-only repo by design (AGENTS.md
+  §9 policy). The findings gate now exits 0 and `buildflow config lint` is
+  clean.
+- Resolved all 9 gate-blocking findings from the 04:08 run: the two
+  linter-building eval fixture `go.mod` files now use a valid dotted module
+  path (`example.com/fixture/tiny`; the dotless `fixture/tiny` failed
+  gomod-check), the eval-run `tiny` binaries are gitignored instead of
+  tracked, the `bdd-testing` spec-template placeholder package is lowercase
+  (`subject_test`, valid Go naming for a template), and AGENTS.md was
+  slimmed 413 → 342 lines by moving §10 verbatim to
+  `docs/external-dependencies.md` and §11 verbatim to
+  `docs/feedback-loop.md` (compact pointers remain in place, so existing
+  "AGENTS.md §10/§11" references still resolve).
+- gmail-drafts scripts: all 5 shellcheck findings fixed. The RFC 2047
+  base64-padding `printf` was missing its `'=='` argument (latent
+  portability bug — output silently relied on GNU `base64 -d` accepting
+  unpadded input), eval-account state filenames are now quoted (also dodges
+  a shellcheck SC2100 false positive triggered by the trailing `for ((…))`
+  loop), and `safe_name`'s trailing-underscore re-strip uses a
+  parameter-expansion loop instead of `sed`. Both `--self-test` suites
+  pass; `shfmt` reports no diffs.
+- Repaired the dangling sentence fragment at `docs-health/SKILL.md:158`
+  (introduced by the Python→Go conversion pass): the `check-rows` command
+  mention moved from the tooling paragraph into the fragment, restoring the
+  complete row-uniformity gate sentence.
+
 ### Changed (2026-10-11 — Python assets converted to Go and bash)
 
 - **All 12 Python script assets (2,802 lines) are gone** — converted to Go or
