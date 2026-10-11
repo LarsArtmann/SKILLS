@@ -7,7 +7,8 @@
 // (the natural voice) over own-repo automation noise.
 //
 // Run: go run analyze-corpus.go [--out ~/.cache/github-voice-corpus]
-//      [--own-owners LarsArtmann,Artmann-Games] [--since 2024-01-01]
+//
+//	[--own-owners LarsArtmann,Artmann-Games] [--since 2024-01-01]
 package main
 
 import (
@@ -53,10 +54,10 @@ func quantile(values []int) quantiles {
 }
 
 type feats struct {
-	chars, words                                  int
-	codeFence, inlineCode, link                   bool
-	bullets, header, bold, emoji                  bool
-	mention, question                             bool
+	chars, words                 int
+	codeFence, inlineCode, link  bool
+	bullets, header, bold, emoji bool
+	mention, question            bool
 }
 
 func featurize(body string) feats {

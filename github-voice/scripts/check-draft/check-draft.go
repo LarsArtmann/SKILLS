@@ -11,8 +11,9 @@
 // add phrases on vibes — re-verify against the corpus first.
 //
 // Run: go run check-draft.go --kind <kind> [--ai-drafted] [--unsolicited] <file|'-'>
-//      go run check-draft.go --list
-//      go run check-draft.go --self-test
+//
+//	go run check-draft.go --list
+//	go run check-draft.go --self-test
 package main
 
 import (
@@ -326,7 +327,7 @@ func main() {
 	}
 
 	if kind == "" || !validKind(kind) {
-		fmt.Fprintln(os.Stderr, usageText)
+		fmt.Fprint(os.Stderr, usageText)
 		os.Exit(2)
 	}
 	if file == "" {

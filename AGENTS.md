@@ -14,6 +14,8 @@ If you are looking for source code to build, test, or lint: **there is none**. T
 
 **Shell scripts:** format every `.sh` with shfmt (tab indentation) BEFORE writing/committing; the repo owner reformats non-conforming scripts (see `b6163c2`), which trips "modified since read" guards. Quality gate: `scripts/check-skills.sh` (run after every change). An external tool (buildflow) also lints this repo — see §5.11 for what it covers and which invocation is reliable.
 
+**Go tooling:** the script assets are single-file, stdlib-only Go programs run via `go run <file.go>` (`docs-health/assets/annotate.go`; `github-voice/scripts/{check-draft,analyze-corpus,collect-corpus}/*.go`) — the repo still has no go.mod by design (§9), so each program is deliberately one self-contained file in its own directory. Format with gofmt, check with `go vet <file.go>`, and run the embedded `self-test` subcommands after edits.
+
 ---
 
 ## 2. Directory Structure
@@ -238,24 +240,26 @@ Lars runs buildflow (a build-automation tool, nix-provisioned) against this
 repo even though the repo has no committed build config (§1 still holds: no
 `.buildflow.yml`, no CI, no package manager). What agents must know:
 
-- **Python assets are ruff-linted** (ruff itself fetched via
-  `nix run nixpkgs#ruff` when absent from PATH). Rules observed firing:
-  EXE001 (a shebang makes the exec bit mandatory — repo convention is 755
-  for all scripts) and DTZ011 (`date.today()` banned; use
-  `datetime.now(tz=UTC)`). ruff `--fix` auto-applies what it can, then
-  exits 1 listing the rest — a green-looking output tail can still be a
-  failure (same lesson as SESSION-START step 5).
-- **Full-pipeline runs may skip ruff** ("language mismatch: project: go"
-  from buildflow's language detection). The reliable verification is
-  `buildflow -s ruff-check-fix --format finding` — expect exit 0 and
-  `"findings": []`.
+- **No Python left (2026-10-11):** all 12 former `.py` script assets were
+  converted — docs-health annotators → `docs-health/assets/annotate.go`
+  (one Go program, subcommands `rows`/`prose`/`status-items`/`emit-keys`/
+  `check-rows`/`self-test`), github-voice corpus tooling →
+  `github-voice/scripts/{check-draft,analyze-corpus,collect-corpus}/*.go`,
+  gmail-drafts → `scripts/gmail_{drafts,eml_export}.sh` (bash + curl + jq).
+  ruff has nothing to scan anymore; `buildflow -s ruff-check-fix --format
+  finding` remains the expected-green gate (exit 0, `"findings": []`).
+  Conversion was verified equivalence-style: old Python vs new Go/shell
+  ran side-by-side on fixtures and the real corpus (byte-identical
+  markdown corpus, semantically identical JSON).
 - Green-but-noisy steps: markdownlint lists hundreds of MD013/MD010
   advisories and still exits ✔; shellcheck warns (SC2319, SC2089/SC2090)
   on `jj-fork-pr-workflow` and `naming-review` scripts and still exits ✔.
   Read exit codes, not output tails.
-- `docs-health/assets/annotate-rows_test.py` self-tests
-  `annotate-rows.py`; the importlib invocation one-liner is in its
-  docstring (the hyphenated filename blocks a plain import).
+- `docs-health/assets/annotate.go self-test` runs the ported
+  marker/guard/prose assertions; `docs-health/assets/annotate-status-items_test.sh`
+  is the 26-assertion fixture harness against the Go program; both gmail
+  scripts carry a `--self-test` mode (RFC 2047/MIME/header helpers, no
+  network).
 
 ---
 

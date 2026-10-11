@@ -13,6 +13,33 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Changed (2026-10-11 — Python assets converted to Go and bash)
+
+- **All 12 Python script assets (2,802 lines) are gone** — converted to Go or
+  bash per the "convert all into Go or .sh" directive:
+  - `docs-health/assets/annotate.go` — one Go program replacing the five
+    Python annotator assets (`annotate-rows.py`, `annotate-prose.py`,
+    `annotate-status-items.py`, `check-rows.py`, `annotate-markers.py`) and
+    absorbing the two `_test.py` files as a `self-test` subcommand. One
+    marker vocabulary, no importlib-by-hyphen hack, atomic-write and
+    shape-check guards preserved.
+  - `github-voice/scripts/{check-draft,analyze-corpus,collect-corpus}/*.go` —
+    same flags, same ban lists, same API strategy, same resume files.
+  - `gmail-drafts/scripts/gmail_{drafts,eml_export}.sh` — bash + curl + jq,
+    RFC 2047 encode/decode in-process, `--self-test` mode, `GMAIL_STATE_DIR`
+    test override.
+- **Equivalence-verified, not hand-waved:** every Go program was run
+  side-by-side with its Python original — byte-identical markdown corpus and
+  fixture files, structurally identical JSON (only float `25` vs `25.0` and
+  the run timestamp differ), identical exit codes and messages.
+  `analyze-corpus.go` was validated against the real 10,682-item corpus;
+  `collect-corpus.go` against a fake-gh offline fixture; both gmail scripts
+  against a fake-curl fixture (drafts create/skip/list/delete, eml export
+  with dup suppression).
+- **Docs updated in the same pass:** skill SKILL.mds, `FEATURES.md`,
+  this changelog, and AGENTS.md §1/§5.11 (ruff guidance replaced by the
+  post-conversion verification story).
+
 ### Fixed (2026-10-04 — gmail-drafts: /tmp staging + bilingual/signature rule)
 
 - **One-liner bug:** `inboxclean` cannot traverse `/home/lars` (mode 750, ACL mask

@@ -12,7 +12,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-GO="$(dirname "$0")/annotate.go"
+GO="$PWD/annotate.go"
 WORK=$(mktemp -d)
 trap 'rm -rf "$WORK"' EXIT
 pass=0
