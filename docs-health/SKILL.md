@@ -63,6 +63,7 @@ _The primary mode for most runs._ Status reports capture what a session did AND 
    - **Drop resolved items.** If a report carries `done at` / `Won't implement` markers (from ANNOTATE), those are closed — route to CHANGELOG (if missing), never TODO_LIST. Harvest only items with NO marker.
    - **Questions are not tasks.** Unresolved questions route to the user or ROADMAP "Open questions", never TODO_LIST.
 3. **Verify against code.** Many "next tasks" are already done by a later session. Grep before adding — an item already shipped goes to CHANGELOG (if missing) or is dropped.
+   - **Park-landed pre-check (added 2026-10-12).** Before re-rowing any harvested PARK (a report's parked batch of items), grep `CHANGELOG.md` + `AGENTS.md` for the park's key nouns: a done disposition in either closes the item inline (→ DONE with the evidence cited) instead of minting a fresh dispatch. Inline `done at` markers cannot catch this class — the disposition was recorded in the CHANGELOG, not the source report (origin: the 2026-10-10 tq-micros re-row, a paid no-op re-dispatch of work a same-week CHANGELOG entry already closed).
 4. **Route each surviving item:** bounded + short-term → `TODO_LIST.md`; vague / long-term → `ROADMAP.md`; already in TODO_LIST (semantic match) → dedupe, keep the better entry.
 5. **Cite the source.** Every item carries evidence: code path (`file:line`) AND report (`docs/status/<file>.md`).
 6. **Do NOT rewrite the source report.** HARVEST reads forward; it never edits the historical file.
