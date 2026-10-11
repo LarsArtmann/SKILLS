@@ -9,7 +9,7 @@
 //   - One bootstrap file per package: <pkg>_suite_test.go (see SKILL.md).
 //   - Add the import for the package under test: `Subject`, `NewSubject` are
 //     placeholders, so the import cannot be pre-written for you.
-package TEMPLATE_test
+package subject_test
 
 import (
 	. "github.com/onsi/ginkgo/v2"
