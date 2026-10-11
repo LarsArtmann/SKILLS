@@ -13,11 +13,12 @@
 # token files are read-only: the refreshed access token lives in a shell
 # variable only, never written back.
 #
+# Test override: GMAIL_STATE_DIR (default /var/lib/inboxclean).
 # Requires: curl, jq, base64, awk (gawk), iconv, sha256sum.
 # Self-test (no network): gmail_drafts.sh --self-test
 set -euo pipefail
 
-STATE_DIR=/var/lib/inboxclean
+STATE_DIR=${GMAIL_STATE_DIR:-/var/lib/inboxclean}
 API_BASE=https://gmail.googleapis.com/gmail/v1
 
 usage() {
