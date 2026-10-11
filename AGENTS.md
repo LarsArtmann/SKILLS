@@ -243,9 +243,10 @@ non-default setting skips `go-structure-linter` (recorded deliberate
 non-fix): that tool's repo-level Go-project rules (mandatory `go.mod`,
 `.golangci.yml`, `internal/` layout) contradict this docs-only repo by
 design. Per-file Go quality is verified per convention: `go vet` + `gofmt`
-+ `--self-test`. What agents must know:
 
-- **No Python left (2026-10-11):** all 12 former `.py` script assets were
+- `--self-test`. What agents must know:
+
+* **No Python left (2026-10-11):** all 12 former `.py` script assets were
   converted — docs-health annotators → `docs-health/assets/annotate.go`
   (one Go program, subcommands `rows`/`prose`/`status-items`/`emit-keys`/
   `check-rows`/`self-test`), github-voice corpus tooling →
@@ -257,16 +258,16 @@ design. Per-file Go quality is verified per convention: `go vet` + `gofmt`
   Conversion was verified equivalence-style: old Python vs new Go/shell
   ran side-by-side on fixtures and the real corpus (byte-identical
   markdown corpus, semantically identical JSON).
-- linter-building eval fixtures are real Go modules under
+* linter-building eval fixtures are real Go modules under
   `linter-building/evals/*/fixture/`: keep their `go.mod` module paths
   dotted (`example.com/fixture/tiny` — gomod-check rejects dotless paths)
   and never commit the `tiny` binary that eval runs build there (gitignored
   via `**/fixture/tiny`).
-- Green-but-noisy steps: markdownlint lists hundreds of MD013/MD010
+* Green-but-noisy steps: markdownlint lists hundreds of MD013/MD010
   advisories and still exits ✔; shellcheck warns (SC2319, SC2089/SC2090)
   on `jj-fork-pr-workflow` and `naming-review` scripts and still exits ✔.
   Read exit codes, not output tails.
-- `docs-health/assets/annotate.go self-test` runs the ported
+* `docs-health/assets/annotate.go self-test` runs the ported
   marker/guard/prose assertions; `docs-health/assets/annotate-status-items_test.sh`
   is the 26-assertion fixture harness against the Go program; both gmail
   scripts carry a `--self-test` mode (RFC 2047/MIME/header helpers, no

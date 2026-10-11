@@ -46,11 +46,11 @@ moves the load out of the skill entirely.
 `references/file-manifest.md` (196 lines), which classifies the ~47 files
 of a website into:
 
-| Class            | Count | Mechanism                                             |
-| ---------------- | ----- | ----------------------------------------------------- |
-| Copy verbatim    | ~12   | Copy as-is from `~/projects/gogenfilter/website/`     |
-| Customize fields | ~15   | Copy from gogenfilter, edit name/URLs/accent/sidebar  |
-| Write fresh      | ~20   | Project-specific content, "follow gogenfilter pattern"|
+| Class            | Count | Mechanism                                              |
+| ---------------- | ----- | ------------------------------------------------------ |
+| Copy verbatim    | ~12   | Copy as-is from `~/projects/gogenfilter/website/`      |
+| Customize fields | ~15   | Copy from gogenfilter, edit name/URLs/accent/sidebar   |
+| Write fresh      | ~20   | Project-specific content, "follow gogenfilter pattern" |
 
 So the de-facto template is **gogenfilter's working tree**, read at launch
 time. Three structural consequences:
@@ -59,7 +59,7 @@ time. Three structural consequences:
    gogenfilter. Every launch inherits whatever state that repo happens to
    be in — including stale pins, as pitfall #4 documents ("Pinning
    `vite: 7.3.2` (copied from gogenfilter's older lockfile) causes a build
-   failure"). That is not a one-off: it is the *designed* failure mode of
+   failure"). That is not a one-off: it is the _designed_ failure mode of
    copy-from-a-live-repo.
 2. **The version matrix is prose.** `references/dependency-versions.md`
    (186 lines) duplicates, in markdown, what a canonical `package.json`
@@ -114,7 +114,7 @@ Verified state today:
   `LarsArtmann/template-CLI` matches **only its own go.mod**. Still zero
   consumers.
 - The May review's own P2 recommendation is that `templates` should
-  become the *first* consumer — not website-launch. Making a content
+  become the _first_ consumer — not website-launch. Making a content
   workflow the first dependency injection testbed of an unstable SDK
   couples two bets.
 
@@ -161,12 +161,12 @@ demo video retrofit…"). With a canonical template:
 
 ## 4. Options Considered
 
-| # | Option | Verdict | Reason |
-| - | ------ | ------- | ------ |
-| A | **New `website-template` repo + small purpose-built `websitelaunch` CLI** | **PICK** | Fixes drift at the root (canonical, CI-green baseline); pitfall list becomes code; skill shrinks; no coupling to broken ecosystem |
-| B | Build the scaffold **on `template-CLI`** (the literal "actual SDK") | Reject (for now) | Zero consumers, C+ grade, 0% coverage in 13 packages; wrong first consumer (May review P2 says `templates` goes first). Revisit after that integration lands |
-| C | **Vendor the template into the skill** as `assets/` (html-report-kit model) | Reject | Vendoring exists so per-skill installs work for third parties; website-launch is Lars-machine-only (already assumes `~/projects/domains`, gogenfilter). A 94-file Astro project + `pnpm-lock.yaml` inside a docs-only repo violates §9 spirit and bloats every install |
-| D | Keep skill-only; add `scripts/` (`preflight.sh`, `verify.sh`) to the skill dir | Partial | The cheap subset of A — but the template *repo* is the part that fixes the drift class; scripts without a canonical baseline just polish the copy step. Fold into A |
+| # | Option                                                                         | Verdict          | Reason                                                                                                                                                                                                                                                                 |
+| - | ------------------------------------------------------------------------------ | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A | **New `website-template` repo + small purpose-built `websitelaunch` CLI**      | **PICK**         | Fixes drift at the root (canonical, CI-green baseline); pitfall list becomes code; skill shrinks; no coupling to broken ecosystem                                                                                                                                      |
+| B | Build the scaffold **on `template-CLI`** (the literal "actual SDK")            | Reject (for now) | Zero consumers, C+ grade, 0% coverage in 13 packages; wrong first consumer (May review P2 says `templates` goes first). Revisit after that integration lands                                                                                                           |
+| C | **Vendor the template into the skill** as `assets/` (html-report-kit model)    | Reject           | Vendoring exists so per-skill installs work for third parties; website-launch is Lars-machine-only (already assumes `~/projects/domains`, gogenfilter). A 94-file Astro project + `pnpm-lock.yaml` inside a docs-only repo violates §9 spirit and bloats every install |
+| D | Keep skill-only; add `scripts/` (`preflight.sh`, `verify.sh`) to the skill dir | Partial          | The cheap subset of A — but the template _repo_ is the part that fixes the drift class; scripts without a canonical baseline just polish the copy step. Fold into A                                                                                                    |
 
 ---
 
@@ -195,12 +195,12 @@ demo video retrofit…"). With a canonical template:
 Go, stdlib-only, single module, hard-capped small (see Risks R3). Four
 subcommands, each mapping to a skill phase:
 
-| Subcommand | Replaces | What it does |
-| ---------- | -------- | ------------ |
-| `doctor`   | Phase 0 (§0.0–0.5) | Existing-site detection, credential/API-key checks, `firebase projects:list` + hosting-site collision, DNS + `gh repo` name-collision grep, `gh secret list` (pitfall #16 pre-check). Prints blockers as What/Why/Fix |
-| `init`     | Phase 3 + file-manifest.md | Clone/copy template into `{repo}/website/`, substitute flags: `--name --repo --type library\|application --accent --subdomain --site-id --firebase shared\|standalone --branch [--csp] [--og]`. Emits `.npmrc` only when needed (pitfall #5), correct `.firebaserc`/`firebase.json` shape per shared-vs-standalone table (§0.1) |
+| Subcommand | Replaces                                         | What it does                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ---------- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `doctor`   | Phase 0 (§0.0–0.5)                               | Existing-site detection, credential/API-key checks, `firebase projects:list` + hosting-site collision, DNS + `gh repo` name-collision grep, `gh secret list` (pitfall #16 pre-check). Prints blockers as What/Why/Fix                                                                                                                                                                                                               |
+| `init`     | Phase 3 + file-manifest.md                       | Clone/copy template into `{repo}/website/`, substitute flags: `--name --repo --type library\|application --accent --subdomain --site-id --firebase shared\|standalone --branch [--csp] [--og]`. Emits `.npmrc` only when needed (pitfall #5), correct `.firebaserc`/`firebase.json` shape per shared-vs-standalone table (§0.1)                                                                                                     |
 | `check`    | Phase 4 + definition-of-done.md + visual-QA gate | `astro check` = 0 errors, `html-validate`, lockfile present + package-manager consistency (#7, #20), `GOEXPERIMENT=jsonv2` documented if `go.mod` needs it (#8), license consistency across LICENSE/`.goreleaser.yaml`/`flake.nix`/`package.json` (#19), og:image 1200×630, mp4 cache headers, video-present-on-landing. **Advanced:** extract `hero-code.ts` and compile the snippet in a scratch module (pitfall #15, mechanized) |
-| `retrofit` | §0.0 maintenance audit | Diff an existing site against current template; report drift as actionable checklist |
+| `retrofit` | §0.0 maintenance audit                           | Diff an existing site against current template; report drift as actionable checklist                                                                                                                                                                                                                                                                                                                                                |
 
 All nix-shell wrapping (`pnpm`/`node`/`firebase` not in PATH, pitfall #3;
 re2-vs-bun #11; terraform unfree #2) lives **inside the CLI**, so the
@@ -215,27 +215,27 @@ skill stops repeating invocation shapes per command.
 - §0.4 domain-confirmation human gate — stays a human gate
 - §3.11 demo video (routing to HyperFrames) — creative work
 - The ~20 write-fresh content files (features, hero copy, docs pages)
-- Common-pitfall entries that are *content* mistakes, not mechanics (#6
+- Common-pitfall entries that are _content_ mistakes, not mechanics (#6
   MDX escaping, #13 commit-before-confirm, #15 honesty rule, #17 stale
   root docs, #21 wrong-framework claims, #22 video in /tmp)
 
 **Sheds (→ template or CLI):**
 
-| Skill artifact | Lines | Goes where |
-| -------------- | ----- | ---------- |
-| `references/file-manifest.md` | 196 | `init` (classification becomes code) |
-| `references/dependency-versions.md` | 186 | template `pnpm-lock.yaml` |
-| `references/color-palette.md` | 314 | template `palettes/` dir |
-| `references/definition-of-done.md` | 74 | `check` |
-| `references/ci-workflow.md` | 151 | template `.github/workflows/website.yml` |
-| Phase 3 body in SKILL.md | ~150 | `init` + "write the fresh files" |
-| `references/website-creation-details.md` | 119 | mostly (favicon/MDX bits stay) |
-| `references/common-pitfalls.md` | 588 | mechanical half → CLI checks |
+| Skill artifact                           | Lines | Goes where                               |
+| ---------------------------------------- | ----- | ---------------------------------------- |
+| `references/file-manifest.md`            | 196   | `init` (classification becomes code)     |
+| `references/dependency-versions.md`      | 186   | template `pnpm-lock.yaml`                |
+| `references/color-palette.md`            | 314   | template `palettes/` dir                 |
+| `references/definition-of-done.md`       | 74    | `check`                                  |
+| `references/ci-workflow.md`              | 151   | template `.github/workflows/website.yml` |
+| Phase 3 body in SKILL.md                 | ~150  | `init` + "write the fresh files"         |
+| `references/website-creation-details.md` | 119   | mostly (favicon/MDX bits stay)           |
+| `references/common-pitfalls.md`          | 588   | mechanical half → CLI checks             |
 
 Fully-absorbed references alone: ~921 lines; with partials, well over
 1,200 lines move out of agent context into executable form. SKILL.md
 drops under the 500-line guideline with room for the sales-video
-expansion to *stay*.
+expansion to _stay_.
 
 ### 5.4 Answers the ROADMAP refactor question
 
@@ -274,13 +274,13 @@ existing harms nothing.
 
 ### Risks
 
-| # | Risk | Mitigation |
-| - | ---- | ---------- |
-| R1 | Template itself ossifies into a new stale baseline | CI builds every PR; every `init` consumes latest; gogenfilter can later be rebuilt ON the template so there is only one baseline |
-| R2 | Two baselines during transition (gogenfilter + template) | Time-boxed: template becomes the sole baseline at the dogfood launch (step 6); skill drops gogenfilter-as-baseline, keeps it as design reference only |
-| R3 | CLI scope-creeps into a `template-CLI`-scale SDK (51k lines, 0 users) | Hard constraints: stdlib-only, single module, ~<2k lines, four subcommands. The 2026-05-22 review is the cautionary tale pinned in the repo's AGENTS |
-| R4 | Astro/Tailwind major bumps churn the template | That's the point: one PR in one repo replaces N manual per-launch migrations; CI proves each bump |
-| R5 | Name collision with `go-website-template` confuses humans | Pick a distinct name (Q1) |
+| #  | Risk                                                                  | Mitigation                                                                                                                                            |
+| -- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| R1 | Template itself ossifies into a new stale baseline                    | CI builds every PR; every `init` consumes latest; gogenfilter can later be rebuilt ON the template so there is only one baseline                      |
+| R2 | Two baselines during transition (gogenfilter + template)              | Time-boxed: template becomes the sole baseline at the dogfood launch (step 6); skill drops gogenfilter-as-baseline, keeps it as design reference only |
+| R3 | CLI scope-creeps into a `template-CLI`-scale SDK (51k lines, 0 users) | Hard constraints: stdlib-only, single module, ~<2k lines, four subcommands. The 2026-05-22 review is the cautionary tale pinned in the repo's AGENTS  |
+| R4 | Astro/Tailwind major bumps churn the template                         | That's the point: one PR in one repo replaces N manual per-launch migrations; CI proves each bump                                                     |
+| R5 | Name collision with `go-website-template` confuses humans             | Pick a distinct name (Q1)                                                                                                                             |
 
 ### Open questions (need Lars' decision before step 1)
 
@@ -301,18 +301,18 @@ existing harms nothing.
 
 ## 8. Appendix: Verification Log (all run 2026-10-11 ~04:00–04:30)
 
-| # | Claim in this report | How verified |
-| - | -------------------- | ------------ |
-| 1 | SKILL.md = 797 lines; 16 references = 3,267; total 4,064 | `wc -l website-launch/SKILL.md references/*.md` |
-| 2 | Phase 3 copies from live gogenfilter; 94 files on disk | `SKILL.md` §3.1/§3.2 + `file-manifest.md`; `find ~/projects/gogenfilter/website -type f` (excl. node_modules/dist/.firebase) = 94 |
-| 3 | Pitfall #4 vite-pin drift documented | `SKILL.md` lines 742–747 |
-| 4 | 18 repos have `website/` | `ls -d ~/projects/*/website \| wc -l` = 18 |
-| 5 | `templates` CLI tests fail on hardcoded macOS paths, today | `cd ~/projects/templates && go test ./...` → FAIL (`Expected default templates dir '/Users/larsartmann/projects', got "/home/lars/projects"`) |
-| 6 | `template-CLI` has zero consumers | `grep -rl LarsArtmann/template-CLI ~/projects/*/go.mod` → only its own go.mod |
-| 7 | `go-website-template` is Go+Templ+HTMX on Cloud Run (different stack) | its README, read this session |
-| 8 | May review grades/quotes (B- templates, C+ template-CLI, "searching for a user base") | `~/projects/review-templates-vs-template-CLI.md` (2026-05-22) — point-in-time doc; items 5 & 6 above re-verified the load-bearing parts |
-| 9 | ROADMAP open question "848 lines / refactor?" | `ROADMAP.md` ~line 148, quoted this session |
-| 10 | TODO T33 overlap (CI deploy workflow, og:image) | `TODO_LIST.md`, read this session |
+| #  | Claim in this report                                                                  | How verified                                                                                                                                  |
+| -- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1  | SKILL.md = 797 lines; 16 references = 3,267; total 4,064                              | `wc -l website-launch/SKILL.md references/*.md`                                                                                               |
+| 2  | Phase 3 copies from live gogenfilter; 94 files on disk                                | `SKILL.md` §3.1/§3.2 + `file-manifest.md`; `find ~/projects/gogenfilter/website -type f` (excl. node_modules/dist/.firebase) = 94             |
+| 3  | Pitfall #4 vite-pin drift documented                                                  | `SKILL.md` lines 742–747                                                                                                                      |
+| 4  | 18 repos have `website/`                                                              | `ls -d ~/projects/*/website \| wc -l` = 18                                                                                                    |
+| 5  | `templates` CLI tests fail on hardcoded macOS paths, today                            | `cd ~/projects/templates && go test ./...` → FAIL (`Expected default templates dir '/Users/larsartmann/projects', got "/home/lars/projects"`) |
+| 6  | `template-CLI` has zero consumers                                                     | `grep -rl LarsArtmann/template-CLI ~/projects/*/go.mod` → only its own go.mod                                                                 |
+| 7  | `go-website-template` is Go+Templ+HTMX on Cloud Run (different stack)                 | its README, read this session                                                                                                                 |
+| 8  | May review grades/quotes (B- templates, C+ template-CLI, "searching for a user base") | `~/projects/review-templates-vs-template-CLI.md` (2026-05-22) — point-in-time doc; items 5 & 6 above re-verified the load-bearing parts       |
+| 9  | ROADMAP open question "848 lines / refactor?"                                         | `ROADMAP.md` ~line 148, quoted this session                                                                                                   |
+| 10 | TODO T33 overlap (CI deploy workflow, og:image)                                       | `TODO_LIST.md`, read this session                                                                                                             |
 
 **Not verified this session** (and marked as such above): the template-*
 repo ceremony description is from directory listings only; the May

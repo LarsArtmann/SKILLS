@@ -26,26 +26,26 @@ hardcoded landing/sales sections). Phase the migration: extract → parameterize
 
 ### 1.1 The skill today
 
-| Asset                                      | Size / state                                                                                                    |
-| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| `website-launch/SKILL.md`                  | 797 lines (ROADMAP's "848" figure is stale; measured 2026-10-11)                                                 |
-| 15 reference files                         | 3,267 lines (4,064 total with SKILL.md)                                                                          |
-| `evals/iteration-1/`                       | old-skill vs new-skill output comparisons + grading — **any stack migration must re-run these**                  |
-| Baseline repo (Phase 3.1)                  | `gogenfilter/website` (CSP hardening, OG images, two-job CI); `go-atomic-write` is the older simple pattern      |
-| Stack-pinned claims                        | description + body name "Astro + Starlight + Tailwind v4 + Firebase Hosting ... shared across all LarsArtmann projects" |
+| Asset                     | Size / state                                                                                                            |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `website-launch/SKILL.md` | 797 lines (ROADMAP's "848" figure is stale; measured 2026-10-11)                                                        |
+| 15 reference files        | 3,267 lines (4,064 total with SKILL.md)                                                                                 |
+| `evals/iteration-1/`      | old-skill vs new-skill output comparisons + grading — **any stack migration must re-run these**                         |
+| Baseline repo (Phase 3.1) | `gogenfilter/website` (CSP hardening, OG images, two-job CI); `go-atomic-write` is the older simple pattern             |
+| Stack-pinned claims       | description + body name "Astro + Starlight + Tailwind v4 + Firebase Hosting ... shared across all LarsArtmann projects" |
 
 ### 1.2 Where sibling project sites actually live (verified 2026-10-11)
 
-| Repo                     | Stack                                        | Evidence                                    |
-| ------------------------ | -------------------------------------------- | ------------------------------------------- |
-| go-atomic-write          | Astro (pnpm)                                 | `website/package.json` exists               |
-| gogenfilter              | Astro (pnpm)                                 | `website/package.json` exists               |
-| go-output                | Astro (pnpm)                                 | `website/package.json` exists               |
-| go-workflow-auditlog     | Astro (pnpm)                                 | `website/package.json` exists               |
-| dynamic-markdown-site    | Astro (pnpm)                                 | `website/package.json` exists               |
-| art-dupl                 | Astro (pnpm)                                 | `website/package.json` exists               |
-| samber-do-auditlog       | Astro (pnpm) — plus an unrelated in-app `html.templ` (audit viewer UI, not the site) | `website/package.json` exists |
-| **templ-components**     | **Pure Go SSG** (since 2026-09-13)           | `website/go.mod`, **no** `package.json`     |
+| Repo                  | Stack                                                                                | Evidence                                |
+| --------------------- | ------------------------------------------------------------------------------------ | --------------------------------------- |
+| go-atomic-write       | Astro (pnpm)                                                                         | `website/package.json` exists           |
+| gogenfilter           | Astro (pnpm)                                                                         | `website/package.json` exists           |
+| go-output             | Astro (pnpm)                                                                         | `website/package.json` exists           |
+| go-workflow-auditlog  | Astro (pnpm)                                                                         | `website/package.json` exists           |
+| dynamic-markdown-site | Astro (pnpm)                                                                         | `website/package.json` exists           |
+| art-dupl              | Astro (pnpm)                                                                         | `website/package.json` exists           |
+| samber-do-auditlog    | Astro (pnpm) — plus an unrelated in-app `html.templ` (audit viewer UI, not the site) | `website/package.json` exists           |
+| **templ-components**  | **Pure Go SSG** (since 2026-09-13)                                                   | `website/go.mod`, **no** `package.json` |
 
 **7 Astro sites, 1 Go site.** The "shared pattern" claim in the skill is
 already inaccurate, and the one Go site is the newest, most heavily tested
@@ -57,10 +57,10 @@ Read directly; this is the reference implementation a migration would
 generalize.
 
 - **Stack:** `cmd/site` single binary; `a-h/templ v0.3.1020`, `goldmark v1.8.6`
-  + `goldmark-highlighting/v2` (chroma v2.27.0), `templ-components v1.21.0`
-  (+ errorpage, icons, utils modules). Tailwind CSS v4 via the standalone
-  `tailwindcss` CLI (nix devShell locally; CI currently installs
-  `@tailwindcss/cli`).
+  - `goldmark-highlighting/v2` (chroma v2.27.0), `templ-components v1.21.0`
+    (+ errorpage, icons, utils modules). Tailwind CSS v4 via the standalone
+    `tailwindcss` CLI (nix devShell locally; CI currently installs
+    `@tailwindcss/cli`).
 - **Self-description:** "the site is the library's largest dogfood consumer" —
   every page renders through the library's own components. The old
   Astro/Starlight/pnpm site was fully removed 2026-09-13.
@@ -92,20 +92,20 @@ generalize.
 
 ## 2. Parity Analysis: Starlight features vs Go SSG
 
-| Starlight feature                          | Go SSG status                                                                 |
-| ------------------------------------------ | ----------------------------------------------------------------------------- |
-| Full-text search (Pagefind)                | ✅ Equivalent shape: prebuilt JSON index + section anchors, no third-party binary |
-| Dark mode                                  | ✅ `ThemeScript` (FOUC-safe) + `ThemeToggle` from the library                  |
-| Syntax highlighting                        | ✅ chroma via goldmark-highlighting                                            |
-| Sidebar docs navigation                    | ✅ `docs.templ` + `SidebarNav`/`Nav` components                                |
-| Sitemap + lastmod                          | ✅ registered per-page (`internal/pages/doc.go`)                               |
-| OG images                                  | ✅ per-page `OGImage` (`/og/{slug}.png`, `/og/home.png`, `/og/sales.png`)      |
-| Security headers / CSP                     | ✅ Better: hash-pinned CSP with drift-failing build vs post-hoc `fix-csp.mjs`  |
-| `editLink` ("edit this page on GitHub")    | ⚠️ **Missing — the only gap that matters.** Trivial to add (repo URL + file path per page) |
-| `lastUpdated` display on page              | ⚠️ Present in sitemap lastmod; per-page display needs wiring to git log       |
-| RSS                                        | ⚠️ Missing; no current site has a blog — defer until one does                  |
-| i18n                                       | ❌ Missing; no current site uses it — accept the loss explicitly               |
-| MDX                                        | ❌ Gone — and good riddance: MDX-escaping pitfalls are a recurring pain class in `common-pitfalls.md`; plain goldmark markdown + templ components for rich blocks instead |
+| Starlight feature                       | Go SSG status                                                                                                                                                             |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Full-text search (Pagefind)             | ✅ Equivalent shape: prebuilt JSON index + section anchors, no third-party binary                                                                                         |
+| Dark mode                               | ✅ `ThemeScript` (FOUC-safe) + `ThemeToggle` from the library                                                                                                             |
+| Syntax highlighting                     | ✅ chroma via goldmark-highlighting                                                                                                                                       |
+| Sidebar docs navigation                 | ✅ `docs.templ` + `SidebarNav`/`Nav` components                                                                                                                           |
+| Sitemap + lastmod                       | ✅ registered per-page (`internal/pages/doc.go`)                                                                                                                          |
+| OG images                               | ✅ per-page `OGImage` (`/og/{slug}.png`, `/og/home.png`, `/og/sales.png`)                                                                                                 |
+| Security headers / CSP                  | ✅ Better: hash-pinned CSP with drift-failing build vs post-hoc `fix-csp.mjs`                                                                                             |
+| `editLink` ("edit this page on GitHub") | ⚠️ **Missing — the only gap that matters.** Trivial to add (repo URL + file path per page)                                                                                 |
+| `lastUpdated` display on page           | ⚠️ Present in sitemap lastmod; per-page display needs wiring to git log                                                                                                    |
+| RSS                                     | ⚠️ Missing; no current site has a blog — defer until one does                                                                                                              |
+| i18n                                    | ❌ Missing; no current site uses it — accept the loss explicitly                                                                                                          |
+| MDX                                     | ❌ Gone — and good riddance: MDX-escaping pitfalls are a recurring pain class in `common-pitfalls.md`; plain goldmark markdown + templ components for rich blocks instead |
 
 **Verdict:** the parity gap is `editLink` + per-page lastUpdated display.
 Everything else is equal or better. The MDX/i18n losses are features.
@@ -143,7 +143,7 @@ Everything else is equal or better. The MDX/i18n losses are features.
 
 1. **Extraction work is the blocker.** The SSG is repo-coupled: `replace`
    directives to `../`, `--repo-root ..` scanning (its `@source` directives
-   scan the *library's* generated components), hardcoded landing/sales/hero
+   scan the _library's_ generated components), hardcoded landing/sales/hero
    sections, `SITE_LIVE_STARS` badge logic tied to one repo. A template needs
    parameterization: project name, accent color, sidebar config, hero content,
    data files — the same "data-driven, copy then customize" contract the skill
@@ -212,23 +212,23 @@ Everything else is equal or better. The MDX/i18n losses are features.
 
 ## 6. Reference-by-Reference Disposition
 
-| Reference                 | Lines | Disposition                                                                 |
-| ------------------------- | ----- | --------------------------------------------------------------------------- |
-| `readme-template.md`      | 194   | **Survives untouched** (stack-agnostic)                                     |
-| `content-patterns.md`     | 232   | **Survives** — minus Astro-component mentions in retrofit section           |
-| `dns-terraform.md`        | 238   | **Survives untouched**                                                      |
-| `firebase-rest-api.md`    | 302   | **Survives untouched**                                                      |
-| `go-live-runbook.md`      | 145   | **Survives** — build command updated                                        |
-| `demo-video.md`           | 276   | **Survives untouched** (HyperFrames → MP4 is stack-independent)             |
-| `social-preview.md`       | 160   | **Survives** — generator script already stack-independent                   |
-| `color-palette.md`        | 314   | **Survives** (Tailwind tokens unchanged)                                    |
-| `definition-of-done.md`   | 74    | **Survives** — add SSG checks (goldens, CSP pin) to the checklist           |
-| `design-inspiration.md`   | 92    | **Survives** — reframe "Starlight reaches it via theme tuning"             |
-| `common-pitfalls.md`      | 588   | **Split**: Astro/pnpm/MDX pitfalls evaporate; Go pitfalls (templ gen, `@source`, jsonv2, CSP-pin drift) lifted from the SSG's own docs |
-| `file-manifest.md`        | 196   | **Rewrite** — new baseline = template repo                                  |
-| `dependency-versions.md`  | 186   | **Rewrite** — Go module matrix + tailwind CLI pin                           |
-| `ci-workflow.md`          | 151   | **Rewrite** — `build.sh` + firebase deploy, no pnpm/lockfile layers         |
-| `website-creation-details.md` | 119 | **Rewrite** — content contract from `internal/pages/doc.go`                |
+| Reference                     | Lines | Disposition                                                                                                                            |
+| ----------------------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `readme-template.md`          | 194   | **Survives untouched** (stack-agnostic)                                                                                                |
+| `content-patterns.md`         | 232   | **Survives** — minus Astro-component mentions in retrofit section                                                                      |
+| `dns-terraform.md`            | 238   | **Survives untouched**                                                                                                                 |
+| `firebase-rest-api.md`        | 302   | **Survives untouched**                                                                                                                 |
+| `go-live-runbook.md`          | 145   | **Survives** — build command updated                                                                                                   |
+| `demo-video.md`               | 276   | **Survives untouched** (HyperFrames → MP4 is stack-independent)                                                                        |
+| `social-preview.md`           | 160   | **Survives** — generator script already stack-independent                                                                              |
+| `color-palette.md`            | 314   | **Survives** (Tailwind tokens unchanged)                                                                                               |
+| `definition-of-done.md`       | 74    | **Survives** — add SSG checks (goldens, CSP pin) to the checklist                                                                      |
+| `design-inspiration.md`       | 92    | **Survives** — reframe "Starlight reaches it via theme tuning"                                                                         |
+| `common-pitfalls.md`          | 588   | **Split**: Astro/pnpm/MDX pitfalls evaporate; Go pitfalls (templ gen, `@source`, jsonv2, CSP-pin drift) lifted from the SSG's own docs |
+| `file-manifest.md`            | 196   | **Rewrite** — new baseline = template repo                                                                                             |
+| `dependency-versions.md`      | 186   | **Rewrite** — Go module matrix + tailwind CLI pin                                                                                      |
+| `ci-workflow.md`              | 151   | **Rewrite** — `build.sh` + firebase deploy, no pnpm/lockfile layers                                                                    |
+| `website-creation-details.md` | 119   | **Rewrite** — content contract from `internal/pages/doc.go`                                                                            |
 
 Roughly 2,025 of 3,267 reference lines survive as-is.
 

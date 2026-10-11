@@ -40,7 +40,7 @@ b64url_decode() {
 	s=${s//-/+}
 	s=${s//_//}
 	pad=$(((4 - ${#s} % 4) % 4))
-	printf '%s%.*s' "$s" "$pad" | base64 -d
+	printf '%s%.*s' "$s" "$pad" '==' | base64 -d
 }
 
 # rfc2047_encode <text>: B-encoded-words per RFC 2047, 11-rune chunks (each
@@ -160,12 +160,12 @@ http() {
 account_files() {
 	case $1 in
 	main)
-		CRED=credentials.json
-		TOK=token.json
+		CRED="credentials.json"
+		TOK="token.json"
 		;;
 	work)
-		CRED=credentials-work.json
-		TOK=token-work.json
+		CRED="credentials-work.json"
+		TOK="token-work.json"
 		;;
 	*) usage ;;
 	esac

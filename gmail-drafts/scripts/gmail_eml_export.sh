@@ -45,7 +45,7 @@ b64url_decode() {
 	local s pad
 	s=$(sed 's#-#+#g; s#_#/#g' <<<"$1")
 	pad=$(((4 - ${#s} % 4) % 4))
-	printf '%s%.*s' "$s" "$pad" | base64 -d
+	printf '%s%.*s' "$s" "$pad" '==' | base64 -d
 }
 
 q_decode() {
@@ -128,7 +128,9 @@ safe_name() {
 	local text max=${2:-70}
 	text=$(sed 's/[^A-Za-z0-9._-]/_/g; s/^_*//; s/_*$//' <<<"$1")
 	text=${text:0:max}
-	text=$(sed 's/_*$//' <<<"$text")
+	while [[ $text == *_ ]]; do
+		text=${text%_}
+	done
 	printf '%s' "${text:-unnamed}"
 }
 
@@ -147,12 +149,12 @@ http() {
 account_files() {
 	case $1 in
 	main)
-		CRED=credentials.json
-		TOK=token.json
+		CRED="credentials.json"
+		TOK="token.json"
 		;;
 	work)
-		CRED=credentials-work.json
-		TOK=token-work.json
+		CRED="credentials-work.json"
+		TOK="token-work.json"
 		;;
 	*) usage ;;
 	esac
