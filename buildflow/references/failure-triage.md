@@ -85,7 +85,7 @@ obvious step explains it:
 1. **Bisect by step first** — `buildflow -s "<tool> [module]" --fix` each
    candidate step in isolation and diff the file after each. This exonerates
    or convicts whole tools fast — but it is NOT sufficient alone: the writer
-   may be a *repair rule inside a tool whose name suggests it only checks*
+   may be a _repair rule inside a tool whose name suggests it only checks_
    (a "structure" linter owned a `go-version` repair rule that rewrote
    go.mod; every gomod step was innocent).
 2. **Watch the file during a live full run** — a 300 ms poller recording

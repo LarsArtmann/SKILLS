@@ -91,11 +91,11 @@
 
 ## Skill Collection — Project Intelligence
 
-| Skill          | Status                    | References    | Notes                                                                                                                                      |
-| -------------- | ------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Skill          | Status                    | References    | Notes                                                                                                                                                     |
+| -------------- | ------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | docs-health    | 🟢 `FULLY_FUNCTIONAL`     | ✅ (10 files) | All docs: BUILD + HARVEST + VERIFY + ANNOTATE + AUDIT; batch annotation tooling (`annotate.go` — Go port of the five Python annotator assets, 2026-10-11) |
-| website-launch | 🟢 `FULLY_FUNCTIONAL`     | ✅            | Astro + Starlight + Firebase; HyperFrames demo video as the launch's sales engine (2026-08-18/21); allowlisted over 500-line guideline     |
-| status-report  | 🟡 `PARTIALLY_FUNCTIONAL` | ✅ (assets)   | HTML dashboards; section-quality guide added 2026-08-04; exercised every session but single reference                                      |
+| website-launch | 🟢 `FULLY_FUNCTIONAL`     | ✅            | Astro + Starlight + Firebase; HyperFrames demo video as the launch's sales engine (2026-08-18/21); allowlisted over 500-line guideline                    |
+| status-report  | 🟡 `PARTIALLY_FUNCTIONAL` | ✅ (assets)   | HTML dashboards; section-quality guide added 2026-08-04; exercised every session but single reference                                                     |
 
 ## Shared Infrastructure
 
