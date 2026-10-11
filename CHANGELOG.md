@@ -13,6 +13,20 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-10-11 — go-error-modernization two-token suppression topology)
+
+- go-error-modernization SKILL.md gains the `lint` vs `nolint-audit`
+  suppression-topology section (recut5 M15/F63 residue): `lint` honors
+  `//nolint:legacyerrors` only ON the `errors.As` call-start line (a
+  line-above directive does NOT suppress — fixture-proven), while
+  `nolint-audit` audits ONLY the `erraudit` token and therefore reports every
+  `legacyerrors` directive STALE forever (exit 2, "safe to remove"). The
+  permanent-disagreement consequence is pinned: `nolint-audit --fix` in a
+  tree using `legacyerrors` suppressions deletes directives `lint` actively
+  honors and resurrects every suppressed finding. Both claims reproduced in
+  a two-file fixture against the `~/.local/bin/erraudit` binary before
+  encoding (verify-external-claims).
+
 ### Fixed (2026-10-11 — buildflow findings gate brought to green)
 
 - Committed a minimal `.buildflow.yml` whose only non-default setting skips
