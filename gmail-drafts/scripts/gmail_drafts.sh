@@ -148,8 +148,9 @@ http() {
 		args+=(-H "Content-Type: application/json" -d "$body")
 	fi
 	resp=$("${args[@]}" -w $'\n%{http_code}' "$url")
-	code=${resp##*$'\n'}
-	resp=${resp%$'\n'*}
+	code=$(tail -n1 <<<"$resp")
+	[[ $code =~ ^[0-9]+$ ]] || die "Gmail API: no HTTP status in response: ${resp:0:300}"
+	resp=$(sed '$d' <<<"$resp")
 	if ((code >= 400)); then
 		die "Gmail API $code: ${resp:0:300}"
 	fi

@@ -12,7 +12,7 @@ description: >-
   RFC 2047 header encoding, idempotent staging, and verification. Also
   covers exporting sent/received messages as forensic .eml files (read-only,
   "export the emails", "archive as .eml", "evidence layer") via
-  scripts/gmail_eml_export.py. NOT for sending email — drafts only; sending
+  scripts/gmail_eml_export.sh. NOT for sending email — drafts only; sending
   stays a human act.
 metadata:
   tags: gmail, email, drafts, inboxclean
@@ -71,12 +71,10 @@ the permission boundary — it is deliberate systemd hardening.
    `{"to": "...", "cc": ["..."], "subject": "...", "body": "..."}` objects.
    `cc`/`bcc` are optional arrays. Subjects are bilingual too
    (`EN subject / PL subject`).
-3. **Syntax-check both files without writing bytecode** (a prior `sudo` run
-   leaves an `inboxclean`-owned `/tmp/__pycache__` that breaks plain
-   `py_compile` for user `lars`):
+3. **Syntax-check the script and the spec** (no bytecode, no root needed):
 
    ```bash
-   python3 -c "import ast,json; ast.parse(open('/home/lars/projects/SKILLS/gmail-drafts/scripts/gmail_drafts.py').read()); json.load(open('/tmp/gmail-drafts-spec.json')); print('OK')"
+   bash -n /home/lars/projects/SKILLS/gmail-drafts/scripts/gmail_drafts.sh && jq empty /tmp/gmail-drafts-spec.json && echo OK
    ```
 
 4. **Hand the user the one-liner** (never run it yourself). The script and the
@@ -85,9 +83,8 @@ the permission boundary — it is deliberate systemd hardening.
    copy directly fails with `Permission denied`:
 
    ```bash
-   cp /home/lars/projects/SKILLS/gmail-drafts/scripts/gmail_drafts.py /tmp/gmail_drafts.py
-   sudo -u inboxclean /run/current-system/sw/bin/python3 \
-     /tmp/gmail_drafts.py --account work --spec /tmp/gmail-drafts-spec.json
+   cp /home/lars/projects/SKILLS/gmail-drafts/scripts/gmail_drafts.sh /tmp/gmail_drafts.sh
+   sudo -u inboxclean /tmp/gmail_drafts.sh --account work --spec /tmp/gmail-drafts-spec.json
    ```
 
    `--account main` targets the personal mailbox. Useful companions:
@@ -137,7 +134,7 @@ the permission boundary — it is deliberate systemd hardening.
 
 ## Exporting messages as .eml (forensic evidence layer)
 
-`scripts/gmail_eml_export.py` is the read-only sibling of the drafter: it
+`scripts/gmail_eml_export.sh` is the read-only sibling of the drafter: it
 searches Gmail and writes each match's full RFC822 raw form (`format=raw`,
 complete DKIM/ARC headers) as a mode-644 `.eml`, printing per-message
 sha256 for the evidence chain. Same permission terrain and same one-liner
@@ -145,9 +142,8 @@ handoff (stage in `/tmp` first — `inboxclean` cannot read under
 `/home/lars`):
 
 ```bash
-cp /home/lars/projects/SKILLS/gmail-drafts/scripts/gmail_eml_export.py /tmp/
-sudo -u inboxclean /run/current-system/sw/bin/python3 \
-  /tmp/gmail_eml_export.py --account work --outdir /tmp/glovo-eml
+cp /home/lars/projects/SKILLS/gmail-drafts/scripts/gmail_eml_export.sh /tmp/
+sudo -u inboxclean /tmp/gmail_eml_export.sh --account work --outdir /tmp/glovo-eml
 # custom queries: --query 'from:x.com after:2026/10/04' (repeatable)
 ```
 

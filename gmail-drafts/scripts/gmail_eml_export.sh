@@ -135,8 +135,9 @@ safe_name() {
 http() {
 	local method=$1 url=$2 resp code
 	resp=$(curl -sS --max-time 60 -X "$method" -H "Authorization: Bearer $TOKEN" -w $'\n%{http_code}' "$url")
-	code=${resp##*$'\n'}
-	resp=${resp%$'\n'*}
+	code=$(tail -n1 <<<"$resp")
+	[[ $code =~ ^[0-9]+$ ]] || die "Gmail API: no HTTP status in response: ${resp:0:300}"
+	resp=$(sed '$d' <<<"$resp")
 	if ((code >= 400)); then
 		die "Gmail API $code: ${resp:0:300}"
 	fi
@@ -261,8 +262,9 @@ for query in "${QUERIES[@]}"; do
 	listing=$(curl -sS --max-time 60 -G "$API_BASE/users/me/messages" \
 		-H "Authorization: Bearer $TOKEN" --data-urlencode "q=$query" --data "maxResults=$LIMIT" \
 		-w $'\n%{http_code}')
-	code=${listing##*$'\n'}
-	listing=${listing%$'\n'*}
+	code=$(tail -n1 <<<"$listing")
+	[[ $code =~ ^[0-9]+$ ]] || die "Gmail API: no HTTP status in response: ${listing:0:300}"
+	listing=$(sed '$d' <<<"$listing")
 	if ((code >= 400)); then
 		die "Gmail API $code: ${listing:0:300}"
 	fi
