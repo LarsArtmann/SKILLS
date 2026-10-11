@@ -26,7 +26,10 @@ usage() {
 	exit 2
 }
 
-die() { echo "ERROR: $*" >&2; exit 1; }
+die() {
+	echo "ERROR: $*" >&2
+	exit 1
+}
 
 # ---------- helpers ----------
 
@@ -39,70 +42,83 @@ b64url_decode() {
 	printf '%s%.*s' "$s" "$pad" | base64 -d
 }
 
-# rfc2047_encode <text>: B-encoded-word per RFC 2047 (chunked at 45 bytes so
-# each encoded word stays under the 75-char limit); ASCII text passes raw.
+# rfc2047_encode <text>: B-encoded-words per RFC 2047, 11-rune chunks (each
+# chunk is at most 44 UTF-8 bytes, so every encoded word stays under the
+# 75-char limit and no character is ever split). ASCII text passes raw.
 rfc2047_encode() {
-	local text="$1"
-	if ! LC_ALL=C grep -q '[^[:print:]]' <<<"$text" && ! LC_ALL=C grep -q '[^ -~]' <<<"$text"; then
+	local text=$1 j chunk out="" word
+	if ((${#text} == $(printf '%s' "$text" | wc -c))); then
 		printf '%s' "$text"
 		return
 	fi
-	local out="" chunk="" chunk_bytes=0 word
-	while IFS= read -r -N 1 char; do
-		local bytes
-		bytes=${#char}
-		if ((chunk_bytes + bytes > 45)) && [[ -n $chunk ]]; then
-			word=$(printf '%s' "$chunk" | base64 -w0)
-			out+="${out:+= }=?utf-8?B?${word}?="
-			chunk="" chunk_bytes=0
-		fi
-		chunk+=$char
-		chunk_bytes=$((chunk_bytes + ${#char}))
-	done <<<"$text"
-	if [[ -n $chunk ]]; then
+	for ((j = 0; j < ${#text}; j += 11)); do
+		chunk=${text:j:11}
 		word=$(printf '%s' "$chunk" | base64 -w0)
 		out+="${out:+= }=?utf-8?B?${word}?="
-	fi
+	done
 	printf '%s' "$out"
 }
 
-# rfc2047_decode <header-value>: decode =?charset?B|Q?...?= words (space-
-# separated encoded words and plain runs both pass through).
-rfc2047_decode() {
-	local value="$1" out="" token plain
-	while [[ -n $value ]]; do
-		if [[ $value == *=\?*?\[BbQq\]?*?*=* ]]; then
-			plain=${value%%=\?*}
-			[[ -n $plain ]] && out+="$plain"
-			value=${value#*=\?}
-			local charset=${value%%\?*} rest enc data
-			value=${value#*\?}
-			enc=${value%%\?*}
-			value=${value#*\?}
-			data=${value%%\?=*}
-			value=${value#*\?=}
-			if [[ ${enc,,} == b ]]; then
-				token=$(b64url_decode "$data" | iconv -f "${charset//\*/}" -t utf-8//translit 2>/dev/null || b64url_decode "$data")
-			else
-				token=$(printf '%s' "$data" | sed 's/_/ /g; s/=/\n=/g' | while IFS= read -r -d '' -r seg || [[ -n $seg ]]; do :; done)
-				token=$(printf '%s' "$data" | perl -pe 's/_/ /g; s/=([0-9A-Fa-f]{2})/chr(hex($1))/ge' 2>/dev/null \
-					|| printf '%s' "$data" | sed 's/_/ /g')
-				token=$(printf '%s' "$token" | iconv -f "${charset//\*/}" -t utf-8//translit 2>/dev/null || printf '%s' "$token")
-			fi
-			out+="$token"
+# q_decode <data>: RFC 2047 Q-form (underscore = space, =XX hex octets).
+q_decode() {
+	local s=$1 out="" c i=0
+	while ((i < ${#s})); do
+		c=${s:i:1}
+		if [[ $c == "_" ]]; then
+			out+=" "
+		elif [[ $c == "=" ]]; then
+			out+=$(printf '%b' "\\x${s:i+1:2}")
+			((i += 3))
+			continue
 		else
-			out+="$value"
-			value=""
+			out+=$c
 		fi
+		((i++))
+	done
+	printf '%s' "$out"
+}
+
+# rfc2047_decode <header-value>: decode =?charset?B|Q?...?= words; whitespace
+# between adjacent encoded words is dropped (RFC 2047 display rule, and the
+# behavior of Python's decode_header that callers rely on for dedup keys).
+rfc2047_decode() {
+	local value=$1 out="" head charset enc data decoded
+	while [[ -n $value ]]; do
+		if [[ $value != *=\?* ]]; then
+			out+="$value"
+			break
+		fi
+		head=${value%%=\?*}
+		if [[ $head =~ ^[[:space:]]+$ && $value == "${head}=\?"* ]]; then
+			: # whitespace between two encoded words: drop
+		else
+			out+="$head"
+		fi
+		value=${value#*=\?}
+		charset=${value%%\?*}
+		value=${value#*\?}
+		enc=${value%%\?*}
+		value=${value#*\?}
+		data=${value%%\?=*}
+		value=${value#*\?=}
+		charset=${charset%%\**}
+		if [[ ${enc,,} == b ]]; then
+			decoded=$(b64url_decode "$data")
+		else
+			decoded=$(q_decode "$data")
+		fi
+		decoded=$(printf '%s' "$decoded" | iconv -f "$charset" -t utf-8 2>/dev/null || printf '%s' "$decoded")
+		out+="$decoded"
 	done
 	printf '%s' "$out"
 }
 
 # extract_header <file> <name>: unfolded header value (continuation lines
-# joined), case-insensitive, header section only.
+# joined), case-insensitive, header section only, CRLF-tolerant.
 extract_header() {
 	awk -v target="$2" '
 		BEGIN { IGNORECASE = 1 }
+		{ sub(/\r$/, "") }
 		headerdone { next }
 		$0 == "" { headerdone = 1; next }
 		$0 ~ /^[ \t]/ { if (capture) { s = $0; sub(/^[ \t]+/, " ", s); buf = buf s } next }
@@ -141,8 +157,14 @@ http() {
 
 account_files() {
 	case $1 in
-	main) CRED=credentials.json; TOK=token.json ;;
-	work) CRED=credentials-work.json; TOK=token-work.json ;;
+	main)
+		CRED=credentials.json
+		TOK=token.json
+		;;
+	work)
+		CRED=credentials-work.json
+		TOK=token-work.json
+		;;
 	*) usage ;;
 	esac
 }
@@ -230,13 +252,16 @@ self_test() {
 	bodyfile=$(mktemp)
 	printf 'Zeile eins\nZwei mit Ümläuten\n' >"$bodyfile"
 	raw=$(build_raw "to@x" "cc@x" "" "Betreff Präzise" "$bodyfile")
-	printf '%s' "$raw" | tr '-_' '+/' >>/dev/null
 	local decoded
 	decoded=$(mktemp)
-	{ printf '%s' "$raw" | tr '-_' '+/'; local pad=$(((4 - ${#raw} % 4) % 4)); printf '%.*s' "$pad" ''; } | base64 -d >"$decoded"
+	local pad=$(((4 - ${#raw} % 4) % 4))
+	{
+		printf '%s' "$raw" | tr '-_' '+/'
+		printf '%.*s' "$pad" ''
+	} | base64 -d >"$decoded"
 	check "raw has To" "$(extract_header "$decoded" To)" "to@x"
 	check "raw subject decodes" "$(rfc2047_decode "$(extract_header "$decoded" Subject)")" "Betreff Präzise"
-	check "raw body intact" "$(base64 -d < <(tail -n 1 "$decoded"))" "$(cat "$bodyfile")"
+	check "raw body intact" "$(awk 'f {print} /^$/{f=1}' "$decoded" | base64 -d)" "$(cat "$bodyfile")"
 	rm -f "$msgfile" "$bodyfile" "$decoded"
 	if ((failures)); then exit 1; fi
 	echo "gmail_drafts self-test: all passed"
@@ -311,7 +336,6 @@ for ((i = 0; i < n; i++)); do
 	if [[ -z $to || -z $subject ]]; then
 		die "spec entry $i missing to/subject"
 	fi
-	if grep -q "^${draft_id}\b" <<<"" 2>/dev/null; then :; fi
 	if cut -f2- <<<"$existing" | grep -qFx "$subject"; then
 		match_id=$(awk -F'\t' -v s="$subject" '$2 == s { print $1; exit }' <<<"$existing")
 		echo "SKIP (subject exists as draft $match_id): $subject"
