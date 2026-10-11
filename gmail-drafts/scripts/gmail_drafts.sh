@@ -54,7 +54,7 @@ rfc2047_encode() {
 	for ((j = 0; j < ${#text}; j += 11)); do
 		chunk=${text:j:11}
 		word=$(printf '%s' "$chunk" | base64 -w0)
-		out+="${out:+= }=?utf-8?B?${word}?="
+		out+="${out:+ }=?utf-8?B?${word}?="
 	done
 	printf '%s' "$out"
 }
@@ -89,7 +89,7 @@ rfc2047_decode() {
 			break
 		fi
 		head=${value%%=\?*}
-		if [[ $head =~ ^[[:space:]]+$ && $value == "${head}=\?"* ]]; then
+		if [[ $head =~ ^[[:space:]]+$ && $value == ${head}"=?"* ]]; then
 			: # whitespace between two encoded words: drop
 		else
 			out+="$head"
@@ -202,7 +202,7 @@ build_raw() {
 		printf '\r\n'
 		base64 -w 76 "$bodyfile"
 	} >"$msg"
-	base64 -w0 <"$msg" | tr '+/' '-_' | tr -d '='
+	base64 -w0 <"$msg" | sed 's#+#-#g; s#/#_#g; s#=##g' | tr -d '\n'
 	rm -f "$msg"
 }
 
@@ -247,7 +247,7 @@ self_test() {
 	printf 'To: a@b.c\r\nSubject: folded\r\n subject line\r\nFrom: x@y.z\r\n\r\nbody here\r\n' >"$msgfile"
 	check "unfolded subject" "$(extract_header "$msgfile" Subject)" "folded subject line"
 	check "from header" "$(extract_header "$msgfile" From)" "x@y.z"
-	check "b64url decode" "$(b64url_decode "$(printf 'Grü' | base64 -w0 | tr '+/' '-_' | tr -d '=')")" "Grü"
+	check "b64url decode" "$(b64url_decode "$(printf 'Grü' | base64 -w0 | sed 's#+#-#g; s#/#_#g; s#=##g')")" "Grü"
 	local raw bodyfile
 	bodyfile=$(mktemp)
 	printf 'Zeile eins\nZwei mit Ümläuten\n' >"$bodyfile"
@@ -256,12 +256,12 @@ self_test() {
 	decoded=$(mktemp)
 	local pad=$(((4 - ${#raw} % 4) % 4))
 	{
-		printf '%s' "$raw" | tr '-_' '+/'
+		printf '%s' "$raw" | sed 's#-#+#g; s#_#/#g'
 		printf '%.*s' "$pad" ''
 	} | base64 -d >"$decoded"
 	check "raw has To" "$(extract_header "$decoded" To)" "to@x"
 	check "raw subject decodes" "$(rfc2047_decode "$(extract_header "$decoded" Subject)")" "Betreff Präzise"
-	check "raw body intact" "$(awk 'f {print} /^$/{f=1}' "$decoded" | base64 -d)" "$(cat "$bodyfile")"
+	check "raw body intact" "$(awk '{ sub(/\r$/, "") } f {print} /^$/{f=1}' "$decoded" | base64 -d)" "$(cat "$bodyfile")"
 	rm -f "$msgfile" "$bodyfile" "$decoded"
 	if ((failures)); then exit 1; fi
 	echo "gmail_drafts self-test: all passed"
