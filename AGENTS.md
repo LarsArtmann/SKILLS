@@ -12,7 +12,7 @@ This is a **documentation-only content repository**. There is no build system, n
 
 If you are looking for source code to build, test, or lint: **there is none**. The "product" is the markdown content itself.
 
-**Shell scripts:** format every `.sh` with shfmt (tab indentation) BEFORE writing/committing; the repo owner reformats non-conforming scripts (see `b6163c2`), which trips "modified since read" guards. Quality gate: `scripts/check-skills.sh` (run after every change). An external tool (buildflow) also lints this repo — see §5.11 for what it covers and which invocation is reliable.
+**Shell scripts:** format every `.sh` with shfmt (tab indentation) BEFORE writing/committing; the repo owner reformats non-conforming scripts (see `b6163c2`), which trips "modified since read" guards. Quality gate: `scripts/check-skills.sh` (run after every change). An external tool (buildflow) also lints this repo via a minimal committed `.buildflow.yml` (quality-gate config, not a build system — §9 still bans go.mod/CI/package manager) — see §5.11 for what it covers and which invocation is reliable.
 
 **Go tooling:** the script assets are single-file, stdlib-only Go programs run via `go run <file.go>` (`docs-health/assets/annotate.go`; `github-voice/scripts/{check-draft,analyze-corpus,collect-corpus}/*.go`) — the repo still has no go.mod by design (§9), so each program is deliberately one self-contained file in its own directory. Format with gofmt, check with `go vet <file.go>`, and run the embedded `self-test` subcommands after edits.
 
@@ -237,8 +237,13 @@ When a new skill needs HTML reports: (1) reference `./assets/html-report-kit/...
 ### 5.11 buildflow Runs Over This Repo (external tool)
 
 Lars runs buildflow (a build-automation tool, nix-provisioned) against this
-repo even though the repo has no committed build config (§1 still holds: no
-`.buildflow.yml`, no CI, no package manager). What agents must know:
+repo. The repo carries a minimal `.buildflow.yml` — quality-gate config, not
+a build system; §9 still bans go.mod/CI/package managers. Its only
+non-default setting skips `go-structure-linter` (recorded deliberate
+non-fix): that tool's repo-level Go-project rules (mandatory `go.mod`,
+`.golangci.yml`, `internal/` layout) contradict this docs-only repo by
+design. Per-file Go quality is verified per convention: `go vet` + `gofmt`
++ `--self-test`. What agents must know:
 
 - **No Python left (2026-10-11):** all 12 former `.py` script assets were
   converted — docs-health annotators → `docs-health/assets/annotate.go`
@@ -252,6 +257,11 @@ repo even though the repo has no committed build config (§1 still holds: no
   Conversion was verified equivalence-style: old Python vs new Go/shell
   ran side-by-side on fixtures and the real corpus (byte-identical
   markdown corpus, semantically identical JSON).
+- linter-building eval fixtures are real Go modules under
+  `linter-building/evals/*/fixture/`: keep their `go.mod` module paths
+  dotted (`example.com/fixture/tiny` — gomod-check rejects dotless paths)
+  and never commit the `tiny` binary that eval runs build there (gitignored
+  via `**/fixture/tiny`).
 - Green-but-noisy steps: markdownlint lists hundreds of MD013/MD010
   advisories and still exits ✔; shellcheck warns (SC2319, SC2089/SC2090)
   on `jj-fork-pr-workflow` and `naming-review` scripts and still exits ✔.
@@ -320,92 +330,11 @@ Before making changes:
 
 ## 10. External Dependencies Referenced by Skills
 
-These tools are referenced by skills but are **not** bundled in this repo. Agents should verify their availability or install them:
-
-| Tool                                                                                       | Referenced By                           | Purpose                                                                                                                                                                                                                                                                                                                                                                                                    |
-| ------------------------------------------------------------------------------------------ | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `d2` CLI                                                                                   | `architecture-visualization`            | Render `.d2` diagrams to `.svg`                                                                                                                                                                                                                                                                                                                                                                            |
-| `art-dupl`                                                                                 | `deduplicate-code`, `code-quality-scan` | Semantic code duplication detection                                                                                                                                                                                                                                                                                                                                                                        |
-| `nix` / `nix flake check`                                                                  | `code-quality-scan`, `nix-review`       | Nix build/lint                                                                                                                                                                                                                                                                                                                                                                                             |
-| `revive` / `golangci-lint`                                                                 | `naming-review`                         | Go naming lint                                                                                                                                                                                                                                                                                                                                                                                             |
-| `onsi/ginkgo`                                                                              | `bdd-testing`                           | BDD testing framework                                                                                                                                                                                                                                                                                                                                                                                      |
-| `erraudit` CLI (old name: `hierarchical-errors`)                                           | `go-error-modernization`                | Go 1.26+ `errors.As`/`errors.Is` → `errors.AsType` linter. **Not publicly findable** — searched GitHub, Sourcegraph, pkg.go.dev (2026-08-02), zero matches. Likely private. Use with `--type-aware`. Run in every dir with a `go.mod`. Related: [`github.com/larsartmann/go-error-family`](https://github.com/LarsArtmann/go-error-family) (verified, v0.10.0). See the skill's verification-status block. |
-| `firebase` CLI                                                                             | `website-launch`                        | Firebase Hosting site management                                                                                                                                                                                                                                                                                                                                                                           |
-| `terraform` / `opentofu`                                                                   | `website-launch`                        | DNS record management                                                                                                                                                                                                                                                                                                                                                                                      |
-| `go-nix-helpers`                                                                           | `nix-private-go-repos`                  | Private repo (`git+ssh`) providing `mkPreparedSource` and `flakeModules.go-standard`. **Status: private** — not publicly cloneable; verify option names against local source before relying on them. See the skill's verification-status block.                                                                                                                                                            |
-| `branching-flow/pkg/doanalyzerv2`                                                          | `samber-do-best-practices`              | Private repo (`git+ssh`) providing the DO-1 → DO-6 analyzer rules. **Status: private** — not publicly cloneable; the anti-patterns themselves are durable DI principles. See the skill's verification-status block.                                                                                                                                                                                        |
-| `samber-do-auditlog`                                                                       | `samber-do-best-practices`              | Private repo (`git+ssh`) providing audit hooks for samber/do registration, invocation, health check, and shutdown events. **Status: private.**                                                                                                                                                                                                                                                             |
-| `goreleaser` v2, `gh` CLI                                                                  | `go-release`                            | Release automation + GitHub Releases; `allowed-tools: goreleaser gh` pre-approved; syntax verified against GoReleaser source 2026-08-12.                                                                                                                                                                                                                                                                   |
-| `benchstat`, `goleak`, `x/sys/cpu`, `klauspost/compress`, `automaxprocs`, `fieldalignment` | `how-to-golang` (performance-tuning.md) | Profiling/benchmark/cache tooling; verified public 2026-08-16 (see the reference's verification-status table).                                                                                                                                                                                                                                                                                             |
-| `jj` v0.45+ CLI, `gh` CLI                                                                  | `jj-fork-pr-workflow`                   | Jujutsu VCS for the fork + multi-PR upstream workflow (plus `gh` for fork creation and PRs). All commands verified against local jj 0.45.1 on 2026-09-08; `jj mergemerge` does **not** exist — the real sync loop is fetch + rebase + push.                                                                                                                                                                |
-
-**Note:** `how-to-golang` snippets were accuracy-corrected 2026-08-04 and **compile-checked 2026-08-21** (all 31 Go blocks in `references/` built in a scratch module; fixes: branded-ID imports moved to `go-branded-id` + `sixafter/nanoid`, koanf env via `providers/env/v2`, go-snaps `/snaps` package path + `GinkgoT()`, `db.ExecContext`, fabricated uniflow pipeline removed — uniflow is `github.com/LarsArtmann/uniflow`, uncompilable at @latest as of 2026-08-21). The `govalid` generator flow is **execution-verified** (2026-09-08, v1.9.0: generate → build → validate/unvalidated runs all correct). Correct markers are `minlength`/`maxlength`; the `min_len`/`max_len` form is **silently ignored** by the generator (no error, no check) — the references use the correct form (fixes verified in `key-patterns.md` + `key-patterns-08/main.go`).
+Skills reference external CLIs and private repos that are **not** bundled here; verify availability before relying on them, and treat private tools (`erraudit`, `go-nix-helpers`, `branching-flow` analyzers, `samber-do-auditlog`) as unverifiable until checked against local source. Full tool table + verification notes: [docs/external-dependencies.md](docs/external-dependencies.md).
 
 ## 11. Feedback Loop — `docs/feedback/`
 
-### The Problem This Section Solves
-
-Prior to 2026-07-13, agents wrote detailed feedback files after sessions,
-documenting what went wrong and what skills would have prevented it. **None
-of those feedback files were ever converted into skills.** Each subsequent
-session ignored the feedback, repeated the same research, made the same
-mistakes, and wrote the same feedback. Six sessions created the same
-website-launch workflow, each wasting 45-90 minutes rediscovering the
-pattern. The feedback loop was broken: feedback was written but never
-acted upon.
-
-### How the Feedback Loop Works Now
-
-```
-Session produces feedback  →  Feedback lives in docs/feedback/new/
-                             ↓
-Agent reads feedback       →  Before starting similar work, scan docs/feedback/
-                             ↓
-Feedback converted to skill →  When a pattern appears 2+ times, create a skill
-                             ↓
-Feedback archived           →  Move to docs/feedback/processed/
-```
-
-### Directory Structure
-
-```
-docs/feedback/
-├── new/           # Unprocessed feedback — read before starting similar work
-└── processed/     # Feedback that has been converted into a skill or resolved
-```
-
-### Agent Instructions
-
-1. **Before starting work** on a multi-step task (website creation, Firebase
-   setup, DNS configuration, CI pipeline setup), scan `docs/feedback/new/`
-   for relevant feedback. The feedback files contain hard-won knowledge
-   about what goes wrong.
-
-2. **After creating a skill** from feedback, move the source feedback files
-   from `new/` to `processed/` to indicate they have been acted upon.
-
-3. **When a pattern appears 2+ times** across feedback files, convert it
-   into a skill. Do not write a third feedback file saying "we should
-   create a skill for this" — create the skill instead.
-
-4. **Feedback files are not status reports.** A feedback file documents
-   what went wrong and what would prevent it. A status report documents
-   what was done. Write feedback only when there are actionable lessons
-   that should be encoded into skills.
-
-### What Makes Good Feedback
-
-Good feedback is specific enough to act on:
-
-- **What happened** — the exact symptom, error message, or time sink
-- **Why it's a problem** — the impact (wasted time, broken output, missed
-  step)
-- **What a skill should contain** — the exact commands, decision trees,
-  checklists, or pitfalls that would prevent it
-- **Impact estimate** — minutes saved per session, number of sessions
-  affected
-
-Bad feedback is vague: "The process was inefficient and could be improved."
+Unprocessed feedback lives in `docs/feedback/new/`, resolved feedback in `docs/feedback/processed/`. Scan `new/` before starting multi-step work. When a pattern appears 2+ times across feedback files, create the skill — never a third feedback file proposing one — then move the sources to `processed/`. Full doctrine: [docs/feedback-loop.md](docs/feedback-loop.md).
 
 ## Note
 

@@ -120,8 +120,8 @@ concepts, but specific external tooling is not publicly confirmable:
 | samber-do-best-practices | `doanalyzerv2` (private)   | Private `git+ssh` repo; anti-patterns are durable principles                  |
 
 Related: `github.com/larsartmann/go-error-family` v0.10.0 is verified real
-(searched and confirmed 2026-08-02). See AGENTS.md §10 for the full external
-dependencies table.
+(searched and confirmed 2026-08-02). See docs/external-dependencies.md for the
+full external dependencies table (pointer at AGENTS.md §10).
 
 ## Known Gaps (honest assessment)
 

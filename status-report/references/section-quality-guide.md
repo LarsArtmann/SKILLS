@@ -91,7 +91,7 @@ Process and design improvements — not bugs (those go in (d)).
 
 **Pitfall:** This section is the harvest ground for skills and tooling. If the
 same improvement appears in 2+ reports, it should become a skill (see the
-feedback loop in AGENTS.md §11).
+feedback loop in docs/feedback-loop.md, pointer at AGENTS.md §11).
 
 ---
 

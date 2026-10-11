@@ -1,0 +1,10 @@
+# Docs-only content repo (AGENTS.md §1): the product is markdown skills plus
+# self-contained scripts. There is deliberately no Go build system (§9) — the
+# Go files here are single-file skill tools (`go run <file>.go`) and
+# intentionally non-compiling reference snippets, not packages. Repo-level
+# Go-project rules (mandatory go.mod / .golangci.yml / internal/ layout)
+# therefore do not apply. Recorded deliberate non-fix per buildflow skill
+# step 7; per-file Go quality is verified per convention (go vet + gofmt +
+# --self-test).
+skip_steps:
+  - go-structure-linter

@@ -94,7 +94,8 @@ reference is worse than no code.
 Raw ideas:
 
 - A tiny `how-to-golang/scripts/check-snippets.sh` that compiles all fenced Go
-  snippets in references (would pay down the AGENTS.md §10 caveat repo-wide)
+  snippets in references (would pay down the docs/external-dependencies.md
+  caveat repo-wide, pointer at AGENTS.md §10)
 - A "code snippet accuracy" convention: snippets cite the source they were
   verified against, with a date stamp
 - If more machines get GOMAXPROCS-knee measurements, record the numbers
