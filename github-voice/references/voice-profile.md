@@ -4,8 +4,8 @@
 > authored since 2016 — 9,397 issues + 623 PRs, post-verified complete —
 > plus 4,158 comments: 979 external-repo comments in full, own-repo
 > follow-ups sampled to the most recent 1,500 of 6,508 threads — and 271
-> items with edit histories). Refresh: `scripts/collect-corpus.py` then
-> `scripts/analyze-corpus.py`. Corpus lives at `~/.cache/github-voice-corpus/`.
+> items with edit histories). Refresh: `scripts/collect-corpus/collect-corpus.go` then
+> `scripts/analyze-corpus/analyze-corpus.go`. Corpus lives at `~/.cache/github-voice-corpus/`.
 
 ## Table of contents
 
@@ -32,7 +32,7 @@
 | Own-repo comments            | 3,179  | 668 chars                                    | mix of natural voice and automation formulas                        |
 | Items with 2+ revisions      | 271    | —                                            | revision diffs analyzed separately                                  |
 
-Era-split medians are reproducible: `scripts/analyze-corpus.py --since
+Era-split medians are reproducible: `scripts/analyze-corpus/analyze-corpus.go --since
 2025-09-01` → `analysis-since-*.json` in the corpus dir.
 
 ### The two registers (the 2025→2026 shift)
@@ -131,7 +131,7 @@ criteria" sections) and are **not** his natural voice.
     agent ticks+stamps it only on an explicit publish order after
     Lars's review. It complements the footer (provenance up top,
     attribution at the bottom) and never appears on comments.
-    `check-draft.py --unsolicited` enforces it mechanically.
+    `check-draft.go --unsolicited` enforces it mechanically.
 
 ## 3. External bug report
 
@@ -242,7 +242,7 @@ review reports (`> [!NOTE] PR review done with Crush and GLM-4.6`) —
 the ONLY comment genre where headers, emoji headers, "Hi," openers, and
 AI-attribution footers appear. Everything else stays plain. When
 checking a draft of this shape, use `--kind announcement` in
-`scripts/check-draft.py`.
+`scripts/check-draft/check-draft.go`.
 
 Real crowd check-in opener (rare but his):
 `Hey guys, for me 0.13.7 fixed this issue. Did anybody else try it?
@@ -378,7 +378,7 @@ Method: 555 external texts (bodies + comments, ≥ 2024) scanned for
 classic assistant-prose phrases. Everything below has **0 corpus hits**
 (verified 2026-09-12) — if a draft contains one, it is machine voice,
 not Lars. The machine-checkable list lives canonically in
-`scripts/check-draft.py` (run it on every draft; `--list` prints the
+`scripts/check-draft/check-draft.go` (run it on every draft; `--list` prints the
 lists) — this section documents the classes; do not maintain a second
 copy of the full list here.
 

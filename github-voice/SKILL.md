@@ -40,7 +40,7 @@ its content is right.
 the one that reads more human and less machine: every corpus trend
 points toward human-scale writing (terse comments, evidence over
 adjectives, no boilerplate warmth). A reader must never smell the
-assistant. The AI-tell ban list lives in `scripts/check-draft.py` —
+assistant. The AI-tell ban list lives in `scripts/check-draft/check-draft.go` —
 every banned phrase has zero corpus hits (≥2024 texts); do not extend
 it without re-verifying against the corpus.
 
@@ -81,8 +81,8 @@ it without re-verifying against the corpus.
    fix every FAIL, weigh every WARN:
 
    ```bash
-   ./scripts/check-draft.py --kind comment draft.md          # exit 1 = fix
-   ./scripts/check-draft.py --kind body-issue --ai-drafted draft.md
+   go run scripts/check-draft/check-draft.go --kind comment draft.md          # exit 1 = fix
+   go run scripts/check-draft/check-draft.go --kind body-issue --ai-drafted draft.md
    # unsolicited AI-found filings add --unsolicited (banner required)
    # release posts / AI-assisted review reports: --kind announcement
    ```
@@ -100,10 +100,10 @@ it without re-verifying against the corpus.
    the piped form can fail silently (no stdout, no stderr, no issue —
    2026-10-07, two silent no-ops before the working form was found).
    Confirm with `gh issue list` / `issue view <n>` before claiming the
-   filing exists. Extract fenced bodies with python
-   `split`/`rsplit` on the fence markers, never sed ranges (sed stops
-   at the first inner fence and truncates nested-fence bodies), and
-   byte-count the extracted body before posting.
+   filing exists. Extract fenced bodies by splitting on the fence
+   markers (python `split`/`rsplit`, not sed ranges — sed stops at the
+   first inner fence and truncates nested-fence bodies), and byte-count
+   the extracted body before posting.
 
 ## Quick rules (full detail in the profile)
 
@@ -191,11 +191,11 @@ Each file's frontmatter carries `kind`, `repo`, `own_repo`, `created`,
 The corpus is a snapshot. After months of activity (or on a new machine):
 
 ```bash
-./scripts/collect-corpus.py                 # ~45 min, gh CLI, rate-limit aware
-./scripts/analyze-corpus.py                 # regenerates analysis.json + ANALYSIS.md
+go run scripts/collect-corpus/collect-corpus.go     # ~45 min, gh CLI, rate-limit aware
+go run scripts/analyze-corpus/analyze-corpus.go     # regenerates analysis.json + ANALYSIS.md
 ```
 
-`collect-corpus.py` re-fetches everything (REST search windowed by date —
+`collect-corpus.go` re-fetches everything (REST search windowed by date —
 search caps at 1000/query; GraphQL `userContentEdits` for revisions —
 the REST `versions` endpoints 404). If the profile's claims drift from a
 fresh `ANALYSIS.md`, update the profile's numbers and examples from the
