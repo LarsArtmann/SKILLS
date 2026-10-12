@@ -71,12 +71,23 @@ Keep wording consistent within a single file:
 ~~<line>~~ done (existing rule)                       # already existed; or: done (covered by C019)
 ~~<line>~~ **Won't implement — <one-line reason>.**   # investigated, decided against
 **NOT-DO/DUPLICATE — <line>** <one-line reason>       # subsumed by / duplicates another item
+<line> → routed — <destination>                       # no strike; the item MOVED, it did not close
 ```
 
 `done at` means it shipped. `Won't implement` means you investigated and
 decided against. `NOT-DO/DUPLICATE` means it overlaps another item so it was
 never separately actioned. All three are **closed**; the reader needs to know
 whether an item shipped or was closed without shipping — not merely forgotten.
+
+The routed form (annotate.go's `r` kind) is the fourth verdict: the item is
+not closed but RE-HOMED — harvested into `TODO_LIST.md`, parked as a raw idea
+in `ROADMAP.md`, or answered by a decision doc. Strike nothing: the row stays
+readable, the arrow points at the new home (`→ routed — TODO_LIST (auth-diff
+row)`), and absence of an arrow still means open. It exists because striking
+a routed item destroys the one thing the reader needs — where the work went.
+Fleet provenance: the nix-international-telephony archive convention
+(per-item routed verdicts in open-work sections), upstreamed into this
+catalog 2026-10-12; its marker gates count arrows as first-class verdicts.
 
 ## Rules for the strikethrough pattern
 
