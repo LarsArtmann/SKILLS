@@ -144,4 +144,30 @@ cmp -s "$WORK/bold.pristine" "$WORK/bold.md" && {
 	exit 1
 }
 
+# --- check-rows exit contract (2026-10-13 fix): a PARTIAL table row must
+# exit 1, a uniformly-open table must exit 0 — gate consumers
+# (docs-archive-sweep) branch on the exit code, and silent-exit-0 had them
+# archiving files the tool had just flagged.
+cat >"$WORK/partial.md" <<'EOF'
+| # | Item | Verdict |
+| --- | --- | --- |
+| 1 | half-done | open |
+| 2 | done-thing | ~~struck~~ |
+EOF
+rc=0
+go run "$GO" check-rows "$WORK/partial.md" >"$WORK/checkrows.out" 2>&1 || rc=$?
+expect "check-rows PARTIAL exits 1" "1" "$rc"
+grep -q "PARTIAL row" "$WORK/checkrows.out"
+expect "check-rows names the partial row" "0" "$?"
+pass=$((pass + 1))
+
+cat >"$WORK/open-table.md" <<'EOF'
+| Item | Status |
+| --- | --- |
+| legitimately open | pending |
+EOF
+go run "$GO" check-rows "$WORK/open-table.md" >/dev/null 2>&1
+expect "check-rows untouched table exits 0" "0" "$?"
+pass=$((pass + 1))
+
 echo "annotator fixtures OK ($pass assertions)"

@@ -895,16 +895,26 @@ func cmdCheckRows(argv []string) error {
 		os.Exit(2)
 	}
 	failures := 0
+	incomplete := 0
 	for _, arg := range argv {
 		f, err := checkFile(arg)
 		if err != nil {
 			return err
 		}
 		failures |= f
+		if f != 0 {
+			incomplete++
+		}
 	}
-	if failures == 0 {
-		fmt.Printf("check-rows: %d file(s) complete\n", len(argv))
+	if failures != 0 {
+		// The documented contract is "exit 1 on PARTIAL table rows" — the
+		// problems were already printed by checkFile; carry the verdict to
+		// the exit code so gate callers can rely on it (silent-exit-0 was
+		// the 2026-10-13 sweep-wiring discovery: consumers archived files
+		// the tool had just flagged).
+		return fmt.Errorf("check-rows: %d/%d file(s) incomplete", incomplete, len(argv))
 	}
+	fmt.Printf("check-rows: %d file(s) complete\n", len(argv))
 	return nil
 }
 
