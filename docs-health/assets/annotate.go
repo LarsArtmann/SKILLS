@@ -1066,6 +1066,17 @@ func selfTest() error {
 	check("dry-run wrote nothing", string(dryOut), sample)
 	check("dry-run reported", strings.Contains(buf.String(), "would annotate 1 items"), true)
 
+	// check-rows conventions (2026-10-14 fixes, both found on the
+	// go-credentials-store archived set): escaped pipes stay INSIDE one
+	// cell, and a routed row counts as resolved in a struck table.
+	check("escaped pipe keeps one cell",
+		len(splitCells("| x | example: `\\| - \\| --- \\|` inline |")), 2)
+	check("plain separator still detected", isSeparator("| --- | --- |"), true)
+	check("routed row is ROUTED", classifyRow("| ~~2~~ | **→ routed** to TODO | `x.md` |"), "ROUTED")
+	check("plain routed arrow is ROUTED", classifyRow("| 3 | item — → routed | `x.md` |"), "ROUTED")
+	check("open row stays CLEAN", classifyRow("| 4 | still open | `x.md` |"), "CLEAN")
+	check("partial row stays PARTIAL", classifyRow("| 5 | ~~half~~ rest open | `x.md` |"), "PARTIAL")
+
 	if len(failures) > 0 {
 		return fail("self-test FAILED (%d):\n  %s", len(failures), strings.Join(failures, "\n  "))
 	}
