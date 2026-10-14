@@ -766,21 +766,50 @@ func cmdEmitKeys(argv []string) error {
 
 // ---------- check-rows ----------
 
+// splitCells splits a table row into cells on UNESCAPED pipes: `\|` inside
+// a cell (escaped-pipe code spans showing table syntax — the 2026-10-13
+// 20-17 report carried one) must not become a cell boundary. The sentinel
+// is restored after the split so cell text stays byte-faithful.
+func splitCells(line string) []string {
+	const sentinel = "\x00"
+
+	masked := strings.ReplaceAll(strings.TrimSpace(line), "\\|", sentinel)
+	parts := strings.Split(strings.Trim(masked, "|"), "|")
+
+	for i, p := range parts {
+		parts[i] = strings.TrimSpace(strings.ReplaceAll(p, sentinel, "\\|"))
+	}
+
+	return parts
+}
+
 func isSeparator(line string) bool {
-	cells := strings.Split(strings.Trim(strings.TrimSpace(line), "|"), "|")
-	for _, c := range cells {
-		if !reTableSepCell.MatchString(strings.TrimSpace(c)) {
+	for _, c := range splitCells(line) {
+		if !reTableSepCell.MatchString(c) {
 			return false
 		}
 	}
+
 	return true
 }
 
+// reRoutedArrow matches the routed-verdict convention: the tool's own
+// r-marker renders `**→ verdict**`, and hand-routed rows carry a plain
+// `→ routed` arrow (2026-10-13 20-17 §f18). A routed row is INTENTIONALLY
+// unstruck — a completeness gate must count it as resolved.
+var reRoutedArrow = regexp.MustCompile(`\*\*→[^*]+\*\*`)
+
+func isRouted(line string) bool {
+	stripped := outsideCodeSpansCheck(strings.TrimSpace(line))
+
+	return strings.Contains(stripped, "→ routed") || reRoutedArrow.MatchString(stripped)
+}
+
 func classifyRow(line string) string {
-	cells := strings.Split(strings.Trim(strings.TrimSpace(line), "|"), "|")
+	cells := splitCells(line)
 	states := make([]bool, len(cells))
 	for i, c := range cells {
-		states[i] = strings.Contains(outsideCodeSpansCheck(strings.TrimSpace(c)), "~~")
+		states[i] = strings.Contains(outsideCodeSpansCheck(c), "~~")
 	}
 	all := true
 	any := false
@@ -791,6 +820,8 @@ func classifyRow(line string) string {
 	switch {
 	case all:
 		return "STRUCK"
+	case isRouted(line):
+		return "ROUTED"
 	case !any:
 		return "CLEAN"
 	default:
@@ -833,11 +864,15 @@ func checkFile(path string) (int, error) {
 		}
 		var classified []cls
 		struckRows := 0
+		routedRows := 0
 		for _, e := range data[1:] {
 			state := classifyRow(e.str)
 			classified = append(classified, cls{e.no, state})
 			if state == "STRUCK" {
 				struckRows++
+			}
+			if state == "ROUTED" {
+				routedRows++
 			}
 		}
 		var partial []struct {
@@ -849,7 +884,7 @@ func checkFile(path string) (int, error) {
 				partial = append(partial, e)
 			}
 		}
-		mixedTable := struckRows > 0 && struckRows < len(classified)
+		mixedTable := struckRows > 0 && struckRows+routedRows < len(classified)
 		if len(partial) > 0 || mixedTable {
 			problems = append(problems, fmt.Sprintf("%s: table at line %d INCOMPLETE (%d/%d rows struck)",
 				name, headerNo, struckRows, len(classified)))
@@ -862,7 +897,7 @@ func checkFile(path string) (int, error) {
 			}
 			if mixedTable && len(partial) == 0 {
 				for _, c := range classified {
-					if c.state != "STRUCK" {
+					if c.state != "STRUCK" && c.state != "ROUTED" {
 						problems = append(problems, fmt.Sprintf("  line %d: %s row in a struck table", c.no, c.state))
 					}
 				}
