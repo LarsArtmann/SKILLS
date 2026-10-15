@@ -12,7 +12,9 @@
 //	prose [--dry-run] <file> <section-prefix> <row-id>:<kind>:<value>...
 //	status-items [--verify] <file> <specfile>          (spec lines: key<TAB>verdict)
 //	emit-keys <file> <lineno> [<lineno>...]            (paste-ready N@substring keys)
-//	check-rows <file>...                               (exit 1 on PARTIAL table rows)
+//	check-rows <file>...                               (exit 1 on PARTIAL table rows;
+//	                                                   a <!-- check-rows:ledger --> line
+//	                                                   above a table exempts it)
 //	self-test
 //
 // Marker kinds (shared vocabulary, docs-health SKILL.md ANNOTATE):
@@ -83,7 +85,7 @@ usage: go run annotate.go <subcommand> ...
   prose [--dry-run] <file> <section-prefix> <row-id>:<kind>:<value>...
   status-items [--verify] <file> <specfile>
   emit-keys <file> <lineno> [<lineno>...]
-  check-rows [--normalize] <file>...
+  check-rows [--normalize] <file>...   (<!-- check-rows:ledger --> above a table exempts it)
   repair [--dry-run] <specfile>        (spec: path<TAB>lines<TAB>kind[<TAB>value])
   unwrap [--dry-run] <file>:<lines>...  (rebuild formatter-wrapped struck rows)
   self-test
@@ -800,6 +802,14 @@ func emitKeyFor(line string) (string, bool, error) {
 
 // ---------- check-rows ----------
 
+// ledgerMarker exempts exactly the NEXT table from the completeness gate.
+// A ledger table intentionally mixes struck-resolved and open rows
+// (per-row inline verdicts are the point of a ledger — the 2026-10-14
+// go-credentials-store decision). The marker line sits above the table;
+// blank lines in between are allowed; any other non-blank non-table line
+// cancels it.
+const ledgerMarker = "<!-- check-rows:ledger -->"
+
 // splitCells splits a table row into cells on UNESCAPED pipes: `\|` inside
 // a cell (escaped-pipe code spans showing table syntax — the 2026-10-13
 // 20-17 report carried one) must not become a cell boundary. The sentinel
@@ -870,6 +880,9 @@ func checkFile(path string) (int, error) {
 	}
 	name := baseName(path)
 	var problems []string
+	var notes []string
+	pendingLedger := false
+	blockLedger := false
 	var block []struct {
 		no  int
 		str string
@@ -878,6 +891,8 @@ func checkFile(path string) (int, error) {
 		if len(block) == 0 {
 			return
 		}
+		wasLedger := blockLedger
+		blockLedger = false
 		var data []struct {
 			no  int
 			str string
@@ -892,6 +907,12 @@ func checkFile(path string) (int, error) {
 			return
 		}
 		headerNo := data[0].no
+		if wasLedger {
+			notes = append(notes, fmt.Sprintf(
+				"%s: table at line %d LEDGER-EXEMPT (check-rows:ledger marker)",
+				name, headerNo))
+			return
+		}
 		type cls struct {
 			no    int
 			state string
@@ -940,6 +961,10 @@ func checkFile(path string) (int, error) {
 	}
 	for i, line := range lines {
 		if strings.HasPrefix(strings.TrimLeft(line, " \t"), "|") {
+			if len(block) == 0 && pendingLedger {
+				blockLedger = true
+				pendingLedger = false
+			}
 			block = append(block, struct {
 				no  int
 				str string
@@ -947,8 +972,17 @@ func checkFile(path string) (int, error) {
 			continue
 		}
 		flush()
+		switch t := strings.TrimSpace(line); {
+		case t == ledgerMarker:
+			pendingLedger = true
+		case t != "":
+			pendingLedger = false
+		}
 	}
 	flush()
+	for _, n := range notes {
+		fmt.Println(n)
+	}
 	for _, p := range problems {
 		fmt.Println(p)
 	}
@@ -1686,6 +1720,47 @@ func selfTest() error {
 	check("plain routed arrow is ROUTED", classifyRow("| 3 | item — → routed | `x.md` |"), "ROUTED")
 	check("open row stays CLEAN", classifyRow("| 4 | still open | `x.md` |"), "CLEAN")
 	check("partial row stays PARTIAL", classifyRow("| 5 | ~~half~~ rest open | `x.md` |"), "PARTIAL")
+
+	// ----- check-rows ledger exemption (2026-10-15): a
+	// <!-- check-rows:ledger --> line above a table exempts exactly that
+	// table — blank lines between marker and table are allowed, and the
+	// exemption never leaks to a following table. -----
+	ledDir, mkErr := os.MkdirTemp("", "annotate-ledger")
+	if mkErr != nil {
+		return mkErr
+	}
+	defer os.RemoveAll(ledDir)
+
+	ledFile := ledDir + "/ledger.md"
+	ledSample := "# R\n\n" +
+		"<!-- check-rows:ledger -->\n\n" +
+		"| ID | Verdict |\n| --- | --- |\n" +
+		"| ~~1~~ | ~~resolved~~ |\n| 2 | open ledger row |\n\n" +
+		"| ID | Verdict |\n| --- | --- |\n" +
+		"| ~~3~~ | ~~resolved~~ |\n| 4 | open in a plain table |\n"
+	if err := os.WriteFile(ledFile, []byte(ledSample), 0o644); err != nil {
+		return err
+	}
+
+	ledCode, ledErr := checkFile(ledFile)
+	if ledErr != nil {
+		return ledErr
+	}
+	check("ledger table exempt, following mixed table still flagged", ledCode, 1)
+
+	ledOnly := ledDir + "/ledger-only.md"
+	ledOnlySample := "<!-- check-rows:ledger -->\n\n" +
+		"| ID | Verdict |\n| --- | --- |\n" +
+		"| ~~1~~ | ~~resolved~~ |\n| 2 | open ledger row |\n"
+	if err := os.WriteFile(ledOnly, []byte(ledOnlySample), 0o644); err != nil {
+		return err
+	}
+
+	ledOnlyCode, ledOnlyErr := checkFile(ledOnly)
+	if ledOnlyErr != nil {
+		return ledOnlyErr
+	}
+	check("sole ledger-marked table passes", ledOnlyCode, 0)
 
 	// ----- repair: spec-driven batch pass (2026-10-15 corpus class) -----
 	repairDir, err := os.MkdirTemp("", "annotate-repair")
