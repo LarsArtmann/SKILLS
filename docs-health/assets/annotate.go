@@ -1273,12 +1273,13 @@ func repairFile(path string, specs []repairSpec, dry bool) (int, error) {
 		}
 
 		bare := strings.TrimRight(l, "\n")
+		strike := s.kind != "r"
 
 		var out string
 		if strings.HasPrefix(strings.TrimSpace(bare), "|") {
-			out = strikeRepairRow(bare, verdict)
+			out = strikeRepairRow(bare, verdict, strike)
 		} else {
-			out = repairProse(bare, verdict)
+			out = repairProse(bare, verdict, strike)
 		}
 
 		out = withNewline(out, l)
@@ -1330,24 +1331,37 @@ func cwdOrDot() string {
 // strikeRepairRow per-cell strikes a table row and appends the verdict in
 // the first cell. A malformed placeholder first cell ("~~" alone — the
 // pre-repair corpus shape) is dropped: striking it would produce the
-// "| ~~~~ |" noise check-rows then flags as PARTIAL.
-func strikeRepairRow(line, verdict string) string {
+// "| ~~~~ |" noise check-rows then flags as PARTIAL. With strike=false
+// (the routed kind) the verdict is appended and no cell is struck —
+// routed rows are INTENTIONALLY unstruck (the house ROUTED grammar).
+func strikeRepairRow(line, verdict string, strike bool) string {
 	cs := splitCells(line)
 	if strings.TrimSpace(cs[0]) == "~~" {
 		cs = cs[1:]
 	}
 
-	for i := range cs {
-		cs[i] = " ~~" + strings.TrimSpace(cs[i]) + "~~ "
+	if !strike {
+		cs[0] = strings.TrimSpace(cs[0]) + " " + verdict
+
+		return "| " + strings.Join(cs, " | ") + " |"
 	}
 
-	cs[0] = strings.TrimRight(cs[0], " ") + " " + verdict + " "
+	for i := range cs {
+		cs[i] = "~~" + strings.TrimSpace(cs[i]) + "~~"
+	}
 
-	return "| " + strings.Join(cs, "| ") + " |"
+	cs[0] = cs[0] + " " + verdict
+
+	return "| " + strings.Join(cs, " | ") + " |"
 }
 
-// repairProse wraps a whole prose line: ~~line~~ verdict.
-func repairProse(line, verdict string) string {
+// repairProse wraps a whole prose line: ~~line~~ verdict. With strike=false
+// (routed) the verdict is appended, nothing is struck.
+func repairProse(line, verdict string, strike bool) string {
+	if !strike {
+		return strings.TrimRight(line, " ") + " " + verdict
+	}
+
 	return "~~" + strings.TrimRight(line, " ") + "~~ " + verdict
 }
 
@@ -1379,16 +1393,20 @@ func repairActionLine(l string) bool {
 	return reNumItem.MatchString(l)
 }
 
-// repairAlreadyDone skips lines the pass must not re-annotate: fully
-// wrapped prose strikes, hash/done-at verdicts, and routed arrows.
+// repairAlreadyDone skips lines the pass must not re-annotate. It defers
+// to the house alreadyAnnotated guard (~~ or **→ outside code spans) —
+// EXCEPT for the malformed "| ~~ |" placeholder row, whose only tildes are
+// the placeholder itself and which the pass exists to strike (the
+// 2026-10-15 corpus shape). Without the exception the pass would skip its
+// own target; without the deferral a second pass double-strikes (the
+// self-test caught exactly that).
 func repairAlreadyDone(l string) bool {
-	if strings.HasPrefix(strings.TrimSpace(l), "~~") && strings.HasSuffix(strings.TrimSpace(l), "~~") {
-		return true
+	t := strings.TrimSpace(l)
+	if strings.HasPrefix(t, "|") && strings.TrimSpace(splitCells(t)[0]) == "~~" {
+		return false
 	}
 
-	stripped := outsideCodeSpansRows(l)
-
-	return strings.Contains(stripped, "done at `") || isRouted(l)
+	return alreadyAnnotated(l)
 }
 
 // ---------- unwrap (formatter-damage repair) ----------
@@ -1708,9 +1726,9 @@ func selfTest() error {
 
 	rOut, _ := os.ReadFile(rTarget)
 	rOutS := string(rOut)
-	check("repair struck table row", strings.Contains(rOutS, "| ~~F1~~ | ~~ship the thing~~ done at `abc1234` | ~~High~~ |"), true)
+	check("repair struck table row", strings.Contains(rOutS, "| ~~F1~~ done at `abc1234` | ~~ship the thing~~ | ~~High~~ |"), true)
 	check("repair dropped placeholder cell", strings.Contains(rOutS, "| ~~malformed placeholder~~ **NOT-DO — never wanted.** | ~~Low~~ |"), true)
-	check("repair routed prose", strings.Contains(rOutS, "1. prose item one **→ owner lane**"), true)
+	check("repair routed prose unstruck", strings.Contains(rOutS, "1. prose item one **→ owner lane**"), true)
 	check("repair struck prose", strings.Contains(rOutS, "~~2. prose item two~~ done — shipped"), true)
 
 	rAgain, _ := os.ReadFile(rTarget)
