@@ -166,6 +166,29 @@ Always include a dependencies table — it builds trust:
 | [`fsnotify/fsnotify`](https://github.com/fsnotify/fsnotify) | Core file watching |
 ```
 
+## Error Handling Section Pattern (Go projects)
+
+Section 20 in the standard order. Lead with one sentence on the error
+model, then list the domain roots with their meaning, and link the
+generated Error Reference page — the page carries the full hierarchy, the
+README carries only the mental model:
+
+```markdown
+## Error Handling
+
+All errors are coded sentinels wrapping one of four domain roots:
+
+- `ErrInput` — the caller supplied something invalid
+- `ErrAnalysis` — the source could not be analyzed
+
+The full generated hierarchy (every sentinel, every wrap):
+[Error Reference](https://{subdomain}.lars.software/guides/errors/)
+```
+
+Generate the page from the code with erraudit — recipe and rules in
+[`content-patterns.md`](./content-patterns.md) §8. Never hand-write the
+sentinel list; it drifts the first week.
+
 ## What to Remove
 
 If the existing README has any of these, remove them:
@@ -190,5 +213,7 @@ Before declaring the README done:
 - [ ] Time units correct (`time.Millisecond` not `time.Second`)
 - [ ] Import path matches `go.mod` (include `/v2` if applicable)
 - [ ] Dependencies table with links
+- [ ] Error Handling section (Go): domain roots + link to the generated
+      Error Reference page (see [`content-patterns.md`](./content-patterns.md) §8)
 - [ ] No emojis
 - [ ] License section at the bottom

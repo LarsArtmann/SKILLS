@@ -358,6 +358,27 @@ Common README errors for applications:
 - Listing CLI flags that don't match `flag.StringVar` / `flag.BoolVar` calls
 - License mismatches between `.goreleaser.yaml` and `LICENSE` file
 
+### Error-Surface Inventory (Go projects)
+
+The error surface (sentinels, wrap hierarchy, codes, families) is
+documentation-grade data — extract it with erraudit, never reconstruct it
+by hand. Full recipe and rules: [content-patterns.md §8](./references/content-patterns.md) (Generated Error Reference page).
+
+```bash
+GOWORK=off GOEXPERIMENT=jsonv2 erraudit tree . --markdown --no-position
+GOWORK=off GOEXPERIMENT=jsonv2 erraudit . --disable-extensions
+```
+
+- `GOEXPERIMENT=jsonv2` is REQUIRED on Go 1.26+ — without it, erraudit
+  silently returns 0 findings for the 81% of modules importing
+  `encoding/json/v2`
+- Exit codes: 0 clean, 2 findings found (SUCCESS, not an error), 1
+  analysis error
+- Check the `Coverage:` line — "0 files scanned" means a wrong
+  directory/pattern, not a clean codebase
+- Sentinels marked `· unreferenced` are dead-error candidates — verify
+  they are real API before documenting them
+
 ---
 
 ## Phase 2: README Rewrite
@@ -540,6 +561,23 @@ Run type checking and HTML validation:
 nix shell nixpkgs#nodejs -c pnpm dlx astro check          # 0 errors, 0 warnings
 nix shell nixpkgs#nodejs -c pnpm dlx html-validate "dist/**/*.html"
 ```
+
+### Error-Reference Readiness Gate (Go projects)
+
+The site must render the project's error surface truthfully before
+go-live:
+
+```bash
+GOWORK=off GOEXPERIMENT=jsonv2 erraudit . --disable-extensions
+```
+
+- rc ≤ 2 required (rc 2 = findings exist — triage and reflect them in
+  the docs, never hide them)
+- If a generated Error Reference page exists (content-patterns.md §8),
+  spot-check three of its entries against a fresh `erraudit tree` run —
+  the page must list every public sentinel the code declares
+- Never document an error the code does not define; never omit a public
+  sentinel from the reference
 
 ### Visual QA Gate (mandatory — Phase 4 does not start until this passes)
 

@@ -186,6 +186,44 @@ so it costs zero authoring effort and is always accurate.
 
 ---
 
+## 8. Generated Error Reference page (Go projects)
+
+For Go projects, the error surface — sentinels, wrap hierarchy, codes,
+families — is documentation-grade data. Generate it; never hand-write it.
+erraudit renders the exact hierarchy the compiler sees:
+
+```bash
+GOWORK=off GOEXPERIMENT=jsonv2 erraudit tree . --markdown --no-position
+```
+
+Paste the tree into a docs page (e.g. `/guides/errors/`) with one sentence
+of framing per root ("domain errors wrap `ErrInput`"), and link the page
+from the README's Error Handling section. The page stays truthful because
+it is regenerated, not remembered. Embedding example (page body):
+
+```markdown
+## Error Reference
+
+Generated from the source tree — regenerate with the command above.
+
+- ErrInput [family.new]
+  - ErrConfigInvalid wraps ErrInput — config could not be parsed
+    ...
+```
+
+Rules:
+
+- `GOEXPERIMENT=jsonv2` is required on Go 1.26+ — without it, erraudit
+  silently returns 0 findings for modules importing `encoding/json/v2`.
+- Exit codes: 0 clean, 2 findings (SUCCESS — triage them), 1 analysis
+  error. A CI gate must treat rc ≤ 2 as success.
+- Sentinels marked `· unreferenced` are dead-error candidates — verify
+  they are real API before documenting them.
+- Never hand-add an error the tree does not show. If the tree misses a
+  public sentinel, that is an erraudit bug to file, not a page to patch.
+
+---
+
 ## Launch-post copy (mini-template)
 
 The launch post reuses the one narrative — never a fresh pitch. Derive it
@@ -215,7 +253,7 @@ two ▶ markers, and no claims that the README cannot back.
 ## Retrofitting existing sites
 
 When the skill runs against an _existing_ website (maintenance mode,
-SKILL.md Phase 0.0), check each docs page and the README for these eight
+SKILL.md Phase 0.0), check each docs page and the README for these nine
 patterns and add the missing ones. This is how every existing
 implementation inherits the improvements without a rebuild:
 
@@ -226,6 +264,9 @@ implementation inherits the improvements without a rebuild:
 - [ ] `editLink` is enabled in Starlight config
 - [ ] Warnings/tips use callouts, not bold text
 - [ ] `lastUpdated: true` is set in Starlight config
+- [ ] Go projects: docs include a generated Error Reference page
+      (`erraudit tree`, regenerated on change — not hand-maintained) and
+      the README's Error Handling section links it (§8)
 - [ ] Demo video: present, selling (poster + `#demo` anchor + README
       "Watch the demo" link in the documentation bar), and still matches the
       README "Why?" — videos rot; audit the narrative, not just the
