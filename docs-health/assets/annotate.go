@@ -15,6 +15,10 @@
 //	check-rows <file>...                               (exit 1 on PARTIAL table rows;
 //	                                                   a <!-- check-rows:ledger --> line
 //	                                                   above a table exempts it)
+//	repair-mangle [--dry-run] <file>...                (repair the mechanical strike
+//	                                                   mangles a formatter pass inflicts
+//	                                                   on struck table rows; exit 1 when a
+//	                                                   content-loss mangle needs hand repair)
 //	self-test
 //
 // Marker kinds (shared vocabulary, docs-health SKILL.md ANNOTATE):
@@ -63,6 +67,8 @@ func main() {
 		err = cmdRepair(os.Args[2:])
 	case "unwrap":
 		err = cmdUnwrap(os.Args[2:])
+	case "repair-mangle":
+		err = cmdRepairMangle(os.Args[2:])
 	case "self-test":
 		err = selfTest()
 	case "-h", "--help", "help":
@@ -1599,6 +1605,146 @@ func unwrapRow(line string) (string, bool) {
 
 // ---------- self-test (ports of annotate-rows_test.py + annotate-prose_test.py) ----------
 
+// ---------- repair-mangle: mechanical strike-mangle repair ----------
+//
+// Damage class (2026-10-15 corpus: a dprint format pass over
+// docs/{status,planning,reviews} mangled 7 archived files): struck table
+// rows came out with doubled strikes, lone tildes, and collapsed cells.
+// Shapes and rules:
+//
+//	quad around text   ~~done~~~~x~~~~ ok    → ~~done~~x~~ ok (paired quads
+//	                   lose one pair per match)
+//	glued quads        x~~~~y                → x~~ ~~y (single space inserted)
+//	lone strike cell   | ~~ |                → | ~~ ~~ | (the formatter-stable form)
+//	empty struck cell  | ~~x~~ ||            → | ~~x~~ | ~~ ~~ |
+//	boundary quad      gosec ~~~~ |          → NOT repaired: the tildes swallowed
+//	                   cell content (the 21:00 pass recovered `+ ` by hand from
+//	                   context a tool does not have) — reported, exit 1.
+//
+// Only table rows containing ~~ are touched; header separators never carry
+// ~~ and are structurally excluded. Writes are atomic (tmp + rename).
+
+var (
+	quadAroundText = regexp.MustCompile(`~~~~([^~|]+?)~~~~`)
+	cellBoundary   = regexp.MustCompile(`~~~~[ \t]*\||\|[ \t]*~~~~`)
+	loneStrikeCell = regexp.MustCompile(`(\|)[ \t]*~~[ \t]*(\|)`)
+	emptyStruckCel = regexp.MustCompile(`(\|)[ \t]*(\|)`)
+	gluedQuads     = regexp.MustCompile(`~~~~`)
+)
+
+// repairMangleLine returns the repaired line, whether it changed, and
+// whether it carries a content-loss mangle (boundary quad) that only a
+// human can repair.
+func repairMangleLine(line string) (string, bool, bool) {
+	t := strings.TrimSpace(line)
+	if !strings.HasPrefix(t, "|") || !strings.Contains(t, "~~") {
+		return line, false, false
+	}
+
+	if cellBoundary.MatchString(t) {
+		return line, false, true
+	}
+
+	out := quadAroundText.ReplaceAllString(t, "~~$1~~")
+	out = gluedQuads.ReplaceAllString(out, "~~ ~~")
+	out = loneStrikeCell.ReplaceAllString(out, "$1 ~~ ~~ $2")
+	out = emptyStruckCel.ReplaceAllString(out, "$1 ~~ ~~ $2")
+
+	return out, out != t, false
+}
+
+func cmdRepairMangle(argv []string) error {
+	return repairMangleRun(argv, os.Stdout)
+}
+
+func repairMangleRun(argv []string, out io.Writer) error {
+	dry := false
+
+	var targets []string
+
+	for _, a := range argv {
+		if a == "--dry-run" {
+			dry = true
+
+			continue
+		}
+
+		targets = append(targets, a)
+	}
+
+	if len(targets) == 0 {
+		return fail("usage: repair-mangle [--dry-run] <file>...")
+	}
+
+	totalManual := 0
+
+	for _, path := range targets {
+		repaired, manual, err := repairMangleFile(path, dry)
+		if err != nil {
+			return err
+		}
+
+		totalManual += manual
+
+		verb := "repaired"
+		if dry {
+			verb = "would repair"
+		}
+
+		fmt.Fprintf(out, "repair-mangle: %s: %s %d row(s), %d manual finding(s)\n", path, verb, repaired, manual)
+	}
+
+	if totalManual > 0 {
+		return fail("repair-mangle: %d content-loss mangle(s) (tilde quad at a cell boundary) need hand repair — the swallowed text is not recoverable mechanically", totalManual)
+	}
+
+	return nil
+}
+
+// repairMangleFile applies repairMangleLine to every line; writes are
+// atomic and skipped entirely under dry-run.
+func repairMangleFile(path string, dry bool) (int, int, error) {
+	_, lines, err := readLines(path)
+	if err != nil {
+		return 0, 0, err
+	}
+
+	repaired := 0
+	manual := 0
+
+	for i, ln := range lines {
+		fixed, changed, needsHand := repairMangleLine(strings.TrimRight(ln, "\n"))
+		if needsHand {
+			manual++
+			fmt.Printf("repair-mangle: %s:%d: content-loss mangle (boundary quad) — hand repair required\n", path, i+1)
+
+			continue
+		}
+
+		if !changed {
+			continue
+		}
+
+		lines[i] = withNewline(fixed, ln)
+		repaired++
+	}
+
+	if dry || repaired == 0 {
+		return repaired, manual, nil
+	}
+
+	tmp := path + ".repair-mangle-tmp"
+	if err := os.WriteFile(tmp, []byte(strings.Join(lines, "")), 0o644); err != nil {
+		return 0, 0, err
+	}
+
+	if err := os.Rename(tmp, path); err != nil {
+		return 0, 0, err
+	}
+
+	return repaired, manual, nil
+}
+
 func selfTest() error {
 	failures := []string{}
 	check := func(name string, got, want any) {
@@ -1628,6 +1774,39 @@ func selfTest() error {
 	check("clean row passes", alreadyAnnotated("| M1 | task | High |"), false)
 	check("routed row trips", alreadyAnnotated("| M1 | task **→ open — owner lane** | High |"), true)
 	check("prose arrow passes", alreadyAnnotated("| M19 | rewrite `x` → new `--flag` arg | High |"), false)
+
+	// repair-mangle: the 2026-10-15 corpus damage shapes (synthetic
+	// fixtures; the real corpus is repaired and stays repaired)
+	mangle := func(in string) (string, bool, bool) { return repairMangleLine(in) }
+	got, changed, manual := mangle("| ~~done~~~~x~~~~ ok |")
+	check("mangle paired quads", got, "| ~~done~~x~~ ok |")
+	check("mangle paired quads changed", changed, true)
+	check("mangle paired quads not manual", manual, false)
+
+	got, _, _ = mangle("| x~~~~y |")
+	check("mangle glued quads", got, "| x~~ ~~y |")
+
+	got, _, _ = mangle("| ~~a~~ | ~~ |")
+	check("mangle lone strike cell", got, "| ~~a~~ | ~~ ~~ |")
+
+	got, _, _ = mangle("| ~~a~~ || ~~b~~ |")
+	check("mangle empty struck cell", got, "| ~~a~~ | ~~ ~~ | ~~b~~ |")
+
+	got, changed, manual = mangle("| ~~T21~~ done — gosec ~~~~ | govulncheck |")
+	check("mangle boundary quad untouched", got, "| ~~T21~~ done — gosec ~~~~ | govulncheck |")
+	check("mangle boundary quad unchanged", changed, false)
+	check("mangle boundary quad is manual", manual, true)
+
+	got, changed, manual = mangle("| a | b |")
+	check("mangle clean row untouched", changed, false)
+	check("mangle clean row not manual", manual, false)
+
+	got, _, manual = mangle("prose with ~~ emphasis and a separator | here")
+	check("mangle non-table line untouched", got, "prose with ~~ emphasis and a separator | here")
+	check("mangle non-table line not manual", manual, false)
+
+	got, _, _ = mangle("| ~~a~~ | ~~ ~~ |")
+	check("mangle canonical form idempotent", got, "| ~~a~~ | ~~ ~~ |")
 
 	// marker vocabulary
 	check("v plain", mustMarker("v", "verified live 2026-08-29"), "done — verified live 2026-08-29")
