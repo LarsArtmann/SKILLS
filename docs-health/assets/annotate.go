@@ -1617,6 +1617,10 @@ func unwrapRow(line string) (string, bool) {
 //	glued quads        x~~~~y                → x~~ ~~y (single space inserted)
 //	lone strike cell   | ~~ |                → | ~~ ~~ | (the formatter-stable form)
 //	empty struck cell  | ~~x~~ ||            → | ~~x~~ | ~~ ~~ |
+//	lone quad cell     | ~~~~ |              → | ~~ ~~ | (a struck EMPTY cell the
+//	                   formatter collapsed — 2026-10-15 corpus: the T7/T9 rows of
+//	                   the chatstore plan; a cell that was empty cannot have lost
+//	                   content, so the repair is safe)
 //	boundary quad      gosec ~~~~ |          → NOT repaired: the tildes swallowed
 //	                   cell content (the 21:00 pass recovered `+ ` by hand from
 //	                   context a tool does not have) — reported, exit 1.
@@ -1630,6 +1634,7 @@ var (
 	loneStrikeCell = regexp.MustCompile(`(\|)[ \t]*~~[ \t]*(\|)`)
 	emptyStruckCel = regexp.MustCompile(`(\|)[ \t]*(\|)`)
 	gluedQuads     = regexp.MustCompile(`~~~~`)
+	loneQuadCell   = regexp.MustCompile(`(\|)[ \t]*~~~~[ \t]*(\|)`)
 )
 
 // repairMangleLine returns the repaired line, whether it changed, and
@@ -1641,11 +1646,15 @@ func repairMangleLine(line string) (string, bool, bool) {
 		return line, false, false
 	}
 
-	if cellBoundary.MatchString(t) {
+	// A cell containing ONLY the quad is a collapsed empty struck cell —
+	// repair it first so it cannot read as a boundary quad below.
+	out := loneQuadCell.ReplaceAllString(t, "$1 ~~ ~~ $2")
+
+	if cellBoundary.MatchString(out) {
 		return line, false, true
 	}
 
-	out := quadAroundText.ReplaceAllString(t, "~~$1~~")
+	out = quadAroundText.ReplaceAllString(out, "~~$1~~")
 	out = gluedQuads.ReplaceAllString(out, "~~ ~~")
 	out = loneStrikeCell.ReplaceAllString(out, "$1 ~~ ~~ $2")
 	out = emptyStruckCel.ReplaceAllString(out, "$1 ~~ ~~ $2")
@@ -1791,6 +1800,11 @@ func selfTest() error {
 
 	got, _, _ = mangle("| ~~a~~ || ~~b~~ |")
 	check("mangle empty struck cell", got, "| ~~a~~ | ~~ ~~ | ~~b~~ |")
+
+	got, changed, manual = mangle("| ~~T7~~ done — shipped | ~~text~~ | ~~ ~~ | ~~~~ |")
+	check("mangle lone quad cell", got, "| ~~T7~~ done — shipped | ~~text~~ | ~~ ~~ | ~~ ~~ |")
+	check("mangle lone quad cell changed", changed, true)
+	check("mangle lone quad cell not manual", manual, false)
 
 	got, changed, manual = mangle("| ~~T21~~ done — gosec ~~~~ | govulncheck |")
 	check("mangle boundary quad untouched", got, "| ~~T21~~ done — gosec ~~~~ | govulncheck |")
