@@ -1299,13 +1299,16 @@ func repairFile(path string, specs []repairSpec, dry bool) (int, error) {
 		return 0, err
 	}
 
-	written, _, err := readLines(tmp)
+	written, writtenLines, err := readLines(tmp)
 	if err != nil {
 		return 0, err
 	}
 
-	if len(strings.Split(strings.TrimSuffix(written, "\n"), "\n")) != len(lines) {
-		return 0, fail("repair %s: read-back line count mismatch (newline-collapse guard)", path)
+	// Like-for-like counting: both sides are splitKeepEnds (the raw-content
+	// Split(TrimSuffix(...)) variant counts one fewer on files ending in a
+	// newline — the 2026-10-15 self-test finding).
+	if len(writtenLines) != len(lines) {
+		return 0, fail("repair %s: read-back line count mismatch (newline-collapse guard): wrote %d bytes, read back %d", path, len(out), len(written))
 	}
 
 	if err := os.Rename(tmp, abs); err != nil {
@@ -1682,10 +1685,10 @@ func selfTest() error {
 	specFile := repairDir + "/specs.tsv"
 	specContent := strings.Join([]string{
 		"# path\tlines\tkind\tvalue",
-		rTarget + "\t4-4\th\tabc1234",
-		rTarget + "\t5-5\tn\tnever wanted",
-		rTarget + "\t8-8\tr\towner lane",
-		rTarget + "\t9-9\tv\tshipped",
+		rTarget + "\t7-7\th\tabc1234",
+		rTarget + "\t8-8\tn\tnever wanted",
+		rTarget + "\t10-10\tr\towner lane",
+		rTarget + "\t11-11\tv\tshipped",
 	}, "\n")
 	if err := os.WriteFile(specFile, []byte(specContent), 0o644); err != nil {
 		return err
