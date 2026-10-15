@@ -1223,11 +1223,11 @@ func repairRun(argv []string, out io.Writer) error {
 				return fail("repair: bad linespec %q", parts[1])
 			}
 		} else {
-			spec.hi = spec.lo
-
 			if _, err := fmt.Sscanf(parts[1], "%d", &spec.lo); err != nil {
 				return fail("repair: bad linespec %q", parts[1])
 			}
+
+			spec.hi = spec.lo
 		}
 
 		if spec.lo < 1 || spec.hi < spec.lo {
