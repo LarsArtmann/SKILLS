@@ -163,10 +163,10 @@ What is the second argument to errors.Is?
 
 erraudit carries TWO directives and TWO auditors, and they PERMANENTLY disagree (fixture-proven 2026-10-11 against the `~/.local/bin/erraudit` binary — both claims below reproduced in a two-file fixture):
 
-| Directive | Honored by | Audited by |
-| --- | --- | --- |
-| `//nolint:legacyerrors` | `lint` (suppresses the `errors.As`→`AsType` finding) | `nolint-audit` reports it **STALE forever** |
-| `//nolint:erraudit` | (the main analyzer's own suppression) | `nolint-audit` (its ONLY audited token — staleness-checks these) |
+| Directive               | Honored by                                           | Audited by                                                       |
+| ----------------------- | ---------------------------------------------------- | ---------------------------------------------------------------- |
+| `//nolint:legacyerrors` | `lint` (suppresses the `errors.As`→`AsType` finding) | `nolint-audit` reports it **STALE forever**                      |
+| `//nolint:erraudit`     | (the main analyzer's own suppression)                | `nolint-audit` (its ONLY audited token — staleness-checks these) |
 
 1. **`lint` honors `//nolint:legacyerrors` only ON the `errors.As` call-start line.** Same-line trailing or line-leading on the call's own line suppresses (fixture: `ok := errors.As(err, &target) //nolint:legacyerrors // reason` → 0 findings, exit 0). A directive on the line ABOVE the call does NOT suppress — the finding fires anyway. When a suppression "doesn't work", check the line first.
 2. **`nolint-audit` audits ONLY the `erraudit` token.** A file carrying a `legacyerrors` directive reports `1 directives: 0 needed, 1 stale` (exit 2, action "safe to remove"). This is a **permanent tool disagreement, not debt**: the audit's scope is the main analyzer's suppressions; the `legacyerrors` directive belongs to the `lint` subcommand's analyzer and will read "stale" on every audit, forever.
