@@ -32,6 +32,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"regexp"
 	"sort"
 	"strconv"
@@ -56,6 +57,10 @@ func main() {
 		err = cmdEmitKeys(os.Args[2:])
 	case "check-rows":
 		err = cmdCheckRows(os.Args[2:])
+	case "repair":
+		err = cmdRepair(os.Args[2:])
+	case "unwrap":
+		err = cmdUnwrap(os.Args[2:])
 	case "self-test":
 		err = selfTest()
 	case "-h", "--help", "help":
@@ -78,7 +83,9 @@ usage: go run annotate.go <subcommand> ...
   prose [--dry-run] <file> <section-prefix> <row-id>:<kind>:<value>...
   status-items [--verify] <file> <specfile>
   emit-keys <file> <lineno> [<lineno>...]
-  check-rows <file>...
+  check-rows [--normalize] <file>...
+  repair [--dry-run] <specfile>        (spec: path<TAB>lines<TAB>kind[<TAB>value])
+  unwrap [--dry-run] <file>:<lines>...  (rebuild formatter-wrapped struck rows)
   self-test
 kinds: h hashes | v evidence | p pass-date ('-' = today) | w wont-implement
        | n NOT-DO | r routed verdict (no strike)
@@ -728,40 +735,67 @@ func cmdEmitKeys(argv []string) error {
 			return fail("--emit-keys: line %d out of range (file has %d lines)", no, len(lines))
 		}
 		line := strings.TrimSuffix(lines[no-1], "\n")
-		var tok, rest string
-		switch {
-		case reNumItem.MatchString(line):
-			m := reNumItem.FindStringSubmatchIndex(line)
-			tok = line[m[4]:m[5]]
-			rest = strings.TrimSpace(line[m[1]:])
-		case reTableRowKey.MatchString(line):
-			m := reTableRowKey.FindStringSubmatchIndex(line)
-			tok = line[m[2]:m[3]]
-			rest = strings.TrimSpace(line[m[1]:])
-		case reCheckbox.MatchString(line):
-			m := reCheckbox.FindStringSubmatch(line)
-			rest = strings.TrimSpace(m[2])
-		default:
+
+		key, ok, kerr := emitKeyFor(line)
+		if kerr != nil {
+			return fail("--emit-keys: line %d: %v", no, kerr)
+		}
+
+		if !ok {
 			fmt.Fprintf(os.Stderr, "--emit-keys: line %d is not a numbered row, table row, or checkbox; use an `any:` key manually if warranted\n", no)
+
 			continue
 		}
-		rest = strings.TrimSpace(strings.SplitN(rest, "\t", 2)[0])
-		runes := []rune(rest)
-		if len(runes) > 32 {
-			runes = runes[:32]
-		}
-		substr := strings.TrimSpace(string(runes))
-		if substr == "" {
-			return fail("--emit-keys: line %d has no text after its marker", no)
-		}
-		key := substr
-		if tok != "" {
-			key = tok + "@" + substr
-		}
+
 		fmt.Println(key)
 		fmt.Fprintf(os.Stderr, "%d: %.100s\n", no, strings.TrimSpace(line))
 	}
+
 	return nil
+}
+
+// emitKeyFor builds one paste-ready key from a line: "<tok>@<substr>" (or a
+// bare substr). ok=false when the line is not a numbered row, table row, or
+// checkbox. Extracted so the self-test can pin the 2026-10-15 07-21 lesson
+// (spec line numbers must come from emit-keys, never from a hand-typed
+// view): every emitted key must match back into the EXACT line it was
+// emitted from.
+func emitKeyFor(line string) (string, bool, error) {
+	var tok, rest string
+
+	switch {
+	case reNumItem.MatchString(line):
+		m := reNumItem.FindStringSubmatchIndex(line)
+		tok = line[m[4]:m[5]]
+		rest = strings.TrimSpace(line[m[1]:])
+	case reTableRowKey.MatchString(line):
+		m := reTableRowKey.FindStringSubmatchIndex(line)
+		tok = line[m[2]:m[3]]
+		rest = strings.TrimSpace(line[m[1]:])
+	case reCheckbox.MatchString(line):
+		m := reCheckbox.FindStringSubmatch(line)
+		rest = strings.TrimSpace(m[2])
+	default:
+		return "", false, nil
+	}
+
+	rest = strings.TrimSpace(strings.SplitN(rest, "\t", 2)[0])
+
+	runes := []rune(rest)
+	if len(runes) > 32 {
+		runes = runes[:32]
+	}
+
+	substr := strings.TrimSpace(string(runes))
+	if substr == "" {
+		return "", true, fail("line has no text after its marker")
+	}
+
+	if tok == "" {
+		return substr, true, nil
+	}
+
+	return tok + "@" + substr, true, nil
 }
 
 // ---------- check-rows ----------
@@ -925,32 +959,574 @@ func checkFile(path string) (int, error) {
 }
 
 func cmdCheckRows(argv []string) error {
-	if len(argv) < 1 {
+	normalize := false
+
+	var files []string
+
+	for _, a := range argv {
+		if a == "--normalize" {
+			normalize = true
+
+			continue
+		}
+
+		files = append(files, a)
+	}
+
+	if len(files) < 1 {
 		usage()
 		os.Exit(2)
 	}
+
 	failures := 0
 	incomplete := 0
-	for _, arg := range argv {
+	for _, arg := range files {
+		if normalize {
+			if err := normalizeFile(arg); err != nil {
+				return err
+			}
+		}
+
 		f, err := checkFile(arg)
 		if err != nil {
 			return err
 		}
+
 		failures |= f
 		if f != 0 {
 			incomplete++
 		}
 	}
+
 	if failures != 0 {
 		// The documented contract is "exit 1 on PARTIAL table rows" — the
 		// problems were already printed by checkFile; carry the verdict to
 		// the exit code so gate callers can rely on it (silent-exit-0 was
 		// the 2026-10-13 sweep-wiring discovery: consumers archived files
 		// the tool had just flagged).
-		return fmt.Errorf("check-rows: %d/%d file(s) incomplete", incomplete, len(argv))
+		return fmt.Errorf("check-rows: %d/%d file(s) incomplete", incomplete, len(files))
 	}
-	fmt.Printf("check-rows: %d file(s) complete\n", len(argv))
+
+	fmt.Printf("check-rows: %d file(s) complete\n", len(files))
+
 	return nil
+}
+
+// normalizeFile repairs the formatter-damage class that made check-rows and
+// `dprint`-style formatters fight (2026-10-15 go-aichat discovery): the
+// formatter re-aligns a struck table and APPENDS empty cells to some rows,
+// so those rows carry more cells than the table's separator and classify
+// PARTIAL (an empty trailing cell has no strike). The repair is
+// conservative — trailing empty cells beyond the separator's column count
+// are dropped; nothing else is touched. Atomic; no-op when clean.
+func normalizeFile(path string) error {
+	_, lines, err := readLines(path)
+	if err != nil {
+		return err
+	}
+
+	type block struct {
+		start int
+		rows  []int
+	}
+
+	var (
+		blocks  []block
+		inBlock bool
+		changed int
+	)
+
+	for i, line := range lines {
+		bare := strings.TrimRight(line, "\n")
+		if strings.HasPrefix(strings.TrimLeft(bare, " \t"), "|") {
+			if !inBlock {
+				blocks = append(blocks, block{start: i + 1})
+				inBlock = true
+			}
+
+			blocks[len(blocks)-1].rows = append(blocks[len(blocks)-1].rows, i)
+
+			continue
+		}
+
+		inBlock = false
+	}
+
+	for _, b := range blocks {
+		cols := -1
+
+		for _, ri := range b.rows {
+			if isSeparator(strings.TrimRight(lines[ri], "\n")) {
+				cols = len(splitCells(strings.TrimRight(lines[ri], "\n")))
+
+				break
+			}
+		}
+
+		if cols < 1 {
+			continue
+		}
+
+		for _, ri := range b.rows {
+			bare := strings.TrimRight(lines[ri], "\n")
+			if isSeparator(bare) {
+				continue
+			}
+
+			cs := splitCells(bare)
+			if len(cs) <= cols {
+				continue
+			}
+
+			excess := cs[cols:]
+			extraEmpty := true
+			for _, c := range excess {
+				if strings.TrimSpace(c) != "" {
+					extraEmpty = false
+
+					break
+				}
+			}
+
+			if !extraEmpty {
+				continue
+			}
+
+			trimmed := cs[:cols]
+			out := "| " + strings.Join(trimmed, " | ") + " |"
+			lines[ri] = withNewline(out, lines[ri])
+			changed++
+
+			fmt.Printf("normalize: %s:%d dropped %d trailing empty cell(s)\n", path, ri+1, len(excess))
+		}
+	}
+
+	if changed == 0 {
+		return nil
+	}
+
+	tmp := path + ".normalize-tmp"
+	if err := os.WriteFile(tmp, []byte(strings.Join(lines, "")), 0o644); err != nil {
+		return err
+	}
+
+	if err := os.Rename(tmp, path); err != nil {
+		return err
+	}
+
+	fmt.Printf("normalize: %s: %d row(s) repaired\n", path, changed)
+
+	return nil
+}
+
+// ---------- repair (spec-driven batch annotate) ----------
+
+// repairSpec is one line of a repair spec file:
+//
+//	<path><TAB><linespec><TAB><kind>[<TAB><value>]
+//
+// linespec is "18" or "18-27". Kinds share the marker vocabulary (h/v/p/w/n/r
+// via markerFor), so the batch pass cannot drift from the single-line
+// commands. Ranges annotate every action line inside them; a later spec for
+// the same line overrides earlier ones (specific lines override ranges).
+// Table rows get per-cell strikes; a malformed "| ~~ |" placeholder first
+// cell (the 2026-10-15 go-aichat corpus had them) is dropped, not struck.
+// Prose action lines are wrapped whole: ~~line~~ verdict.
+//
+// The command exists because per-line `rows`/`prose` invocations don't scale
+// to a 26-file corpus pass, and hand-rolled session scripts (the
+// 2026-10-15 /tmp/docrepair throwaway) don't survive reboot or review.
+func cmdRepair(argv []string) error {
+	dry := false
+
+	var files []string
+
+	for _, a := range argv {
+		if a == "--dry-run" {
+			dry = true
+
+			continue
+		}
+
+		files = append(files, a)
+	}
+
+	if len(files) != 1 {
+		return fail("usage: repair [--dry-run] <specfile>")
+	}
+
+	raw, err := os.ReadFile(files[0])
+	if err != nil {
+		return err
+	}
+
+	byFile := map[string][]repairSpec{}
+
+	for _, ln := range strings.Split(strings.TrimSpace(string(raw)), "\n") {
+		if strings.TrimSpace(ln) == "" || strings.HasPrefix(ln, "#") {
+			continue
+		}
+
+		parts := strings.Split(ln, "\t")
+		if len(parts) < 3 {
+			return fail("repair: bad spec line %q (want path\\tlines\\tkind[\\tvalue])", ln)
+		}
+
+		spec := repairSpec{path: parts[0], kind: parts[2]}
+		if len(parts) > 3 {
+			spec.value = parts[3]
+		}
+
+		if strings.Contains(parts[1], "-") {
+			if _, err := fmt.Sscanf(parts[1], "%d-%d", &spec.lo, &spec.hi); err != nil {
+				return fail("repair: bad linespec %q", parts[1])
+			}
+		} else {
+			spec.hi = spec.lo
+
+			if _, err := fmt.Sscanf(parts[1], "%d", &spec.lo); err != nil {
+				return fail("repair: bad linespec %q", parts[1])
+			}
+		}
+
+		if spec.lo < 1 || spec.hi < spec.lo {
+			return fail("repair: linespec %q out of range", parts[1])
+		}
+
+		byFile[spec.path] = append(byFile[spec.path], spec)
+	}
+
+	names := make([]string, 0, len(byFile))
+	for p := range byFile {
+		names = append(names, p)
+	}
+
+	sort.Strings(names)
+
+	total := 0
+
+	for _, p := range names {
+		n, err := repairFile(p, byFile[p], dry)
+		if err != nil {
+			return err
+		}
+
+		total += n
+
+		verb := "annotated"
+		if dry {
+			verb = "would annotate"
+		}
+
+		fmt.Printf("repair: %s: %s %d action line(s)\n", p, verb, n)
+	}
+
+	return nil
+}
+
+type repairSpec struct {
+	path   string
+	lo, hi int
+	kind   string
+	value  string
+}
+
+// repairFile applies one file's specs. Returns the number of lines changed
+// (or that would change). Atomic per file: write to a temp sibling, rename.
+func repairFile(path string, specs []repairSpec, dry bool) (int, error) {
+	abs := path
+
+	if !filepath.IsAbs(abs) {
+		abs = filepath.Join(cwdOrDot(), path)
+	}
+
+	_, lines, err := readLines(abs)
+	if err != nil {
+		return 0, err
+	}
+
+	apply := map[int]repairSpec{}
+	for _, s := range specs {
+		for i := s.lo; i <= s.hi; i++ {
+			apply[i] = s
+		}
+	}
+
+	changed := 0
+
+	for i, l := range lines {
+		s, ok := apply[i+1]
+		if !ok || !repairActionLine(l) || repairAlreadyDone(l) {
+			continue
+		}
+
+		verdict, err := markerFor(s.kind, s.value)
+		if err != nil {
+			return 0, fail("repair %s line %d: %v", path, i+1, err)
+		}
+
+		bare := strings.TrimRight(l, "\n")
+
+		var out string
+		if strings.HasPrefix(strings.TrimSpace(bare), "|") {
+			out = strikeRepairRow(bare, verdict)
+		} else {
+			out = repairProse(bare, verdict)
+		}
+
+		out = withNewline(out, l)
+		if out != l {
+			lines[i] = out
+			changed++
+		}
+	}
+
+	if dry || changed == 0 {
+		return changed, nil
+	}
+
+	out := strings.Join(lines, "")
+
+	tmp := abs + ".repair-tmp"
+	if err := os.WriteFile(tmp, []byte(out), 0o644); err != nil {
+		return 0, err
+	}
+
+	written, err := readLines(tmp)
+	if err != nil {
+		return 0, err
+	}
+
+	if len(strings.Split(strings.TrimSuffix(written, "\n"), "\n")) != len(lines) {
+		return 0, fail("repair %s: read-back line count mismatch (newline-collapse guard)", path)
+	}
+
+	if err := os.Rename(tmp, abs); err != nil {
+		return 0, err
+	}
+
+	return changed, nil
+}
+
+func cwdOrDot() string {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return "."
+	}
+
+	return cwd
+}
+
+// strikeRepairRow per-cell strikes a table row and appends the verdict in
+// the first cell. A malformed placeholder first cell ("~~" alone — the
+// pre-repair corpus shape) is dropped: striking it would produce the
+// "| ~~~~ |" noise check-rows then flags as PARTIAL.
+func strikeRepairRow(line, verdict string) string {
+	cs := splitCells(line)
+	if strings.TrimSpace(cs[0]) == "~~" {
+		cs = cs[1:]
+	}
+
+	for i := range cs {
+		cs[i] = " ~~" + strings.TrimSpace(cs[i]) + "~~ "
+	}
+
+	cs[0] = strings.TrimRight(cs[0], " ") + " " + verdict + " "
+
+	return "| " + strings.Join(cs, "| ") + " |"
+}
+
+// repairProse wraps a whole prose line: ~~line~~ verdict.
+func repairProse(line, verdict string) string {
+	return "~~" + strings.TrimRight(line, " ") + "~~ " + verdict
+}
+
+// repairActionLine decides which lines a repair spec may touch: table data
+// rows (never the header or separator) and numbered/bulleted list items.
+// Header-shape first cells (#, ID, B#, Item, Task) are never action lines.
+func repairActionLine(l string) bool {
+	t := strings.TrimSpace(l)
+	if t == "" {
+		return false
+	}
+
+	if strings.HasPrefix(t, "|") {
+		if isSeparator(t) {
+			return false
+		}
+
+		first := strings.Trim(strings.TrimPrefix(strings.TrimSpace(splitCells(t)[0]), "~~"), "~~")
+		first = strings.TrimSpace(first)
+
+		switch first {
+		case "#", "ID", "B#", "T#", "Item", "Task", "ID  ", "Task  ":
+			return false
+		}
+
+		return true
+	}
+
+	return reNumItem.MatchString(l)
+}
+
+// repairAlreadyDone skips lines the pass must not re-annotate: fully
+// wrapped prose strikes, hash/done-at verdicts, and routed arrows.
+func repairAlreadyDone(l string) bool {
+	if strings.HasPrefix(strings.TrimSpace(l), "~~") && strings.HasSuffix(strings.TrimSpace(l), "~~") {
+		return true
+	}
+
+	stripped := outsideCodeSpansRows(l)
+
+	return strings.Contains(stripped, "done at `") || isRouted(l)
+}
+
+// ---------- unwrap (formatter-damage repair) ----------
+
+// cmdUnwrap repairs struck table rows that a formatter re-wrapped: the
+// verdict text spilled from the first cell into following cells, so
+// check-rows classifies the row PARTIAL (unstruck fragment cells). For
+// each flagged line, rebuild: cell 1 carries "~~N~~ <verdict...>";
+// subsequent cells that do NOT start with ~~ are wrap fragments of the
+// verdict; the first ~~-starting cell begins the struck content cells
+// (kept as-is); empty cells are dropped.
+//
+// Args are path:lines pairs, lines comma-separated: report.md:14,15 other.md:3
+func cmdUnwrap(argv []string) error {
+	dry := false
+
+	var targets []string
+
+	for _, a := range argv {
+		if a == "--dry-run" {
+			dry = true
+
+			continue
+		}
+
+		targets = append(targets, a)
+	}
+
+	if len(targets) == 0 {
+		return fail("usage: unwrap [--dry-run] <file>:<lines>... (lines comma-separated)")
+	}
+
+	for _, arg := range targets {
+		i := strings.LastIndex(arg, ":")
+
+		path := arg
+		lineList := ""
+
+		if i >= 0 {
+			path, lineList = arg[:i], arg[i+1:]
+		}
+
+		var lns []int
+
+		for _, n := range strings.Split(lineList, ",") {
+			v, err := strconv.Atoi(strings.TrimSpace(n))
+			if err != nil {
+				return fail("unwrap: bad line %q in %q", n, arg)
+			}
+
+			lns = append(lns, v)
+		}
+
+		n, err := unwrapFile(path, lns, dry)
+		if err != nil {
+			return err
+		}
+
+		verb := "rebuilt"
+		if dry {
+			verb = "would rebuild"
+		}
+
+		fmt.Printf("unwrap: %s: %s %d row(s)\n", path, verb, n)
+	}
+
+	return nil
+}
+
+func unwrapFile(path string, lns []int, dry bool) (int, error) {
+	_, lines, err := readLines(path)
+	if err != nil {
+		return 0, err
+	}
+
+	rebuilt := 0
+
+	for _, ln := range lns {
+		if ln < 1 || ln > len(lines) {
+			return 0, fail("unwrap %s: line %d out of range (file has %d lines)", path, ln, len(lines))
+		}
+
+		out, ok := unwrapRow(strings.TrimRight(lines[ln-1], "\n"))
+		if !ok {
+			fmt.Printf("unwrap: %s:%d: not a wrapped struck row, skip\n", path, ln)
+
+			continue
+		}
+
+		lines[ln-1] = withNewline(out, lines[ln-1])
+		rebuilt++
+	}
+
+	if dry || rebuilt == 0 {
+		return rebuilt, nil
+	}
+
+	tmp := path + ".unwrap-tmp"
+	if err := os.WriteFile(tmp, []byte(strings.Join(lines, "")), 0o644); err != nil {
+		return 0, err
+	}
+
+	if err := os.Rename(tmp, path); err != nil {
+		return 0, err
+	}
+
+	return rebuilt, nil
+}
+
+// unwrapRow rebuilds one wrapped struck row; ok=false when the line is not
+// a table row or cell 1 carries no strike to rebuild around.
+func unwrapRow(line string) (string, bool) {
+	t := strings.TrimSpace(line)
+	if !strings.HasPrefix(t, "|") {
+		return "", false
+	}
+
+	cs := splitCells(t)
+	c1 := cs[0]
+
+	end := strings.Index(c1[2:], "~~")
+	if !strings.HasPrefix(c1, "~~") || end < 0 {
+		return "", false
+	}
+
+	rowid := c1[:end+4]
+
+	verdict := strings.TrimSpace(c1[end+4:])
+
+	var content []string
+
+	for _, c := range cs[1:] {
+		switch {
+		case c == "" || strings.Trim(c, " ") == "" || c == "~~~~":
+			continue
+		case strings.HasPrefix(c, "~~"):
+			content = append(content, c)
+		default:
+			verdict = strings.TrimSpace(verdict + " " + c)
+		}
+	}
+
+	nb := "| " + rowid + " " + verdict + " "
+	for _, c := range content {
+		nb += "| " + c + " "
+	}
+
+	return nb + "|", true
 }
 
 // ---------- self-test (ports of annotate-rows_test.py + annotate-prose_test.py) ----------
