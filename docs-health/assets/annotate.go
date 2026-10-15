@@ -1137,6 +1137,13 @@ func normalizeFile(path string) error {
 // to a 26-file corpus pass, and hand-rolled session scripts (the
 // 2026-10-15 /tmp/docrepair throwaway) don't survive reboot or review.
 func cmdRepair(argv []string) error {
+	return repairRun(argv, os.Stdout)
+}
+
+// repairRun applies a repair spec file. Spec line: path<TAB>lines<TAB>kind[<TAB>value];
+// --dry-run inside argv reports without writing. out receives the per-file
+// report (self-test passes a buffer).
+func repairRun(argv []string, out io.Writer) error {
 	dry := false
 
 	var files []string
@@ -1218,7 +1225,7 @@ func cmdRepair(argv []string) error {
 			verb = "would annotate"
 		}
 
-		fmt.Printf("repair: %s: %s %d action line(s)\n", p, verb, n)
+		fmt.Fprintf(out, "repair: %s: %s %d action line(s)\n", p, verb, n)
 	}
 
 	return nil
@@ -1292,7 +1299,7 @@ func repairFile(path string, specs []repairSpec, dry bool) (int, error) {
 		return 0, err
 	}
 
-	written, err := readLines(tmp)
+	written, _, err := readLines(tmp)
 	if err != nil {
 		return 0, err
 	}
@@ -1393,6 +1400,12 @@ func repairAlreadyDone(l string) bool {
 //
 // Args are path:lines pairs, lines comma-separated: report.md:14,15 other.md:3
 func cmdUnwrap(argv []string) error {
+	return unwrapRun(argv, os.Stdout)
+}
+
+// unwrapRun repairs formatter-wrapped struck rows; out receives the
+// per-file report (self-test passes a buffer).
+func unwrapRun(argv []string, out io.Writer) error {
 	dry := false
 
 	var targets []string
@@ -1442,7 +1455,7 @@ func cmdUnwrap(argv []string) error {
 			verb = "would rebuild"
 		}
 
-		fmt.Printf("unwrap: %s: %s %d row(s)\n", path, verb, n)
+		fmt.Fprintf(out, "unwrap: %s: %s %d row(s)\n", path, verb, n)
 	}
 
 	return nil
@@ -1652,6 +1665,125 @@ func selfTest() error {
 	check("plain routed arrow is ROUTED", classifyRow("| 3 | item — → routed | `x.md` |"), "ROUTED")
 	check("open row stays CLEAN", classifyRow("| 4 | still open | `x.md` |"), "CLEAN")
 	check("partial row stays PARTIAL", classifyRow("| 5 | ~~half~~ rest open | `x.md` |"), "PARTIAL")
+
+	// ----- repair: spec-driven batch pass (2026-10-15 corpus class) -----
+	repairDir, err := os.MkdirTemp("", "annotate-repair")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(repairDir)
+
+	rTarget := repairDir + "/report.md"
+	rSample := "# Report\n\n## f) Next\n\n| ID | Task | Prio |\n| --- | --- | --- |\n| F1 | ship the thing | High |\n| ~~ | malformed placeholder | Low |\n\n1. prose item one\n2. prose item two\n"
+	if err := os.WriteFile(rTarget, []byte(rSample), 0o644); err != nil {
+		return err
+	}
+
+	specFile := repairDir + "/specs.tsv"
+	specContent := strings.Join([]string{
+		"# path\tlines\tkind\tvalue",
+		rTarget + "\t4-4\th\tabc1234",
+		rTarget + "\t5-5\tn\tnever wanted",
+		rTarget + "\t8-8\tr\towner lane",
+		rTarget + "\t9-9\tv\tshipped",
+	}, "\n")
+	if err := os.WriteFile(specFile, []byte(specContent), 0o644); err != nil {
+		return err
+	}
+
+	var rbuf bytes.Buffer
+	if err := repairRun([]string{specFile, "--dry-run"}, &rbuf); err != nil {
+		failures = append(failures, "repair dry-run: unexpected error "+err.Error())
+	}
+
+	rDry, _ := os.ReadFile(rTarget)
+	check("repair dry-run wrote nothing", string(rDry), rSample)
+
+	if err := repairRun([]string{specFile}, io.Discard); err != nil {
+		failures = append(failures, "repair run: unexpected error "+err.Error())
+	}
+
+	rOut, _ := os.ReadFile(rTarget)
+	rOutS := string(rOut)
+	check("repair struck table row", strings.Contains(rOutS, "| ~~F1~~ | ~~ship the thing~~ done at `abc1234` | ~~High~~ |"), true)
+	check("repair dropped placeholder cell", strings.Contains(rOutS, "| ~~malformed placeholder~~ **NOT-DO — never wanted.** | ~~Low~~ |"), true)
+	check("repair routed prose", strings.Contains(rOutS, "1. prose item one **→ owner lane**"), true)
+	check("repair struck prose", strings.Contains(rOutS, "~~2. prose item two~~ done — shipped"), true)
+
+	rAgain, _ := os.ReadFile(rTarget)
+	if err := repairRun([]string{specFile}, io.Discard); err != nil {
+		failures = append(failures, "repair re-run: unexpected error "+err.Error())
+	}
+
+	rAfter, _ := os.ReadFile(rTarget)
+	check("repair re-run is a no-op (already-done guard)", string(rAfter), string(rAgain))
+
+	// ----- unwrap: formatter-wrapped struck rows -----
+	uTarget := repairDir + "/wrapped.md"
+	uSample := "| ~~M7~~ | done — evidence spilled | into this cell | ~~task~~ | ~~High~~ |\n"
+	if err := os.WriteFile(uTarget, []byte(uSample), 0o644); err != nil {
+		return err
+	}
+
+	if err := unwrapRun([]string{uTarget + ":1"}, io.Discard); err != nil {
+		failures = append(failures, "unwrap run: unexpected error "+err.Error())
+	}
+
+	uOut, _ := os.ReadFile(uTarget)
+	check("unwrap rebuilt the wrapped row",
+		string(uOut), "| ~~M7~~ done — evidence spilled into this cell | ~~task~~ | ~~High~~ |\n")
+
+	// ----- check-rows --normalize: trailing empty cells from formatter alignment -----
+	nTarget := repairDir + "/padded.md"
+	nSample := "| A | B |\n| --- | --- |\n| ~~x~~ | ~~y~~ | | |\n| ~~keep~~ | ~~me~~ | |\n"
+	if err := os.WriteFile(nTarget, []byte(nSample), 0o644); err != nil {
+		return err
+	}
+
+	if err := normalizeFile(nTarget); err != nil {
+		failures = append(failures, "normalize: unexpected error "+err.Error())
+	}
+
+	nOut, _ := os.ReadFile(nTarget)
+	check("normalize trimmed padded struck rows",
+		string(nOut), "| A | B |\n| --- | --- |\n| ~~x~~ | ~~y~~ |\n| ~~keep~~ | ~~me~~ |\n")
+
+	// ----- emit-keys: every emitted key must match back into its own line
+	// (the 2026-10-15 07-21 off-by-one lesson, as a regression pin) -----
+	kFixture := []string{
+		"1. first prose item",
+		"",
+		"| T3 | table row text | Low |",
+		"",
+		"- [ ] checkbox item here",
+	}
+	for i, l := range kFixture {
+		key, ok, kerr := emitKeyFor(l)
+		if kerr != nil {
+			failures = append(failures, fmt.Sprintf("emitKeyFor(%d): unexpected error %v", i+1, kerr))
+
+			continue
+		}
+
+		if !ok {
+			continue
+		}
+
+		tok := key
+		substr := key
+
+		if at := strings.Index(key, "@"); at >= 0 {
+			tok, substr = key[:at], key[at+1:]
+		}
+
+		if !strings.Contains(l, tok) || !strings.Contains(l, substr) {
+			failures = append(failures, fmt.Sprintf("emitKeyFor line %d: key %q does not round-trip into %q", i+1, key, l))
+		}
+	}
+
+	if _, ok, _ := emitKeyFor("plain paragraph line"); ok {
+		failures = append(failures, "emitKeyFor: plain paragraph reported ok")
+	}
 
 	if len(failures) > 0 {
 		return fail("self-test FAILED (%d):\n  %s", len(failures), strings.Join(failures, "\n  "))
