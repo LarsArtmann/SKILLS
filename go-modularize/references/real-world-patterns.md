@@ -8,7 +8,9 @@
 - [Dual Strategy: go.work + replace Together](#dual-strategy-gowork--replace-together)
 - [CI Verification Patterns](#ci-verification-patterns)
 - [Version Management](#version-management)
+  - [Version Train: published multi-module libraries](#version-train-published-multi-module-libraries)
 - [Interface Extraction Patterns](#interface-extraction-patterns)
+  - [Extraction without breakage: re-export shims and tombstone modules](#extraction-without-breakage-re-export-shims-and-tombstone-modules)
 - [Test Infrastructure Patterns](#test-infrastructure-patterns)
 - [Error Architecture Patterns](#error-architecture-patterns)
 - [Layer Enforcement](#layer-enforcement)
@@ -43,13 +45,31 @@ after every local change, and the shared build cache is lost.
 4. **Add a sync check**: verify `go.work` `use` directives match the actual `go.mod`
    files on disk — no stale entries, no missing modules
 
-### Anti-pattern: go.work-only
+### Dual strategy scope: application monorepos only
 
-A project with `go.work` but no `replace` directives works locally but breaks for:
+The dual strategy applies when the modules are **never fetched from the proxy** —
+internal applications, CLI monorepos, service fleets. If any module in the repo
+is (or will be) `go get`-able, committed `go.mod` replaces are poison: replaces
+are **ignored when your module is consumed as a dependency**, so a sibling
+require at `v0.0.0` cannot resolve and consumer builds fail. Published repos use
+the [Version Train](#version-train-published-multi-module-libraries) instead.
 
-- CI builds that set `GOWORK=off` (common in Nix, Docker, release pipelines)
-- External consumers who `go get` the module (go.work is ignored by consumers)
-- `go mod tidy` run without the workspace active
+### When go.work-only is right (published libraries)
+
+A project with `go.work` but no `replace` directives "breaks" for the three
+cases above — CI that sets `GOWORK=off`, consumers who `go get` the module,
+and bare `go mod tidy` — **only if you do nothing else**. For proxy-published
+multi-module libraries, go.work-only is the correct end state, and those three
+cases are handled deliberately:
+
+- CI runs workspace mode (or per-module `GOWORK=off` at release time, when
+  sibling tags exist)
+- Consumers resolve real tagged versions from the proxy — they never see
+  go.work, and replace-free go.mods keep the published graph honest
+- `go mod tidy` is a release-time step, not a mid-cycle one
+
+See [Version Train](#version-train-published-multi-module-libraries) for the
+workspace mechanics that make this work.
 
 ---
 
@@ -137,6 +157,12 @@ Since `replace` makes the version irrelevant for resolution, `v0.0.0` eliminates
 pseudo-version churn (e.g., `v0.0.0-20240115120000-abcdef123456`) that pollutes
 every `go mod tidy` and PR diff.
 
+**Never in a proxy-published module**: `v0.0.0` + `replace` only works while the
+module is the main module. Consumed as a dependency, the replace is ignored and
+`v0.0.0` is unresolvable — consumer `go get` breaks. v0.0.0 normalization is an
+application-monorepo technique; published repos use the
+[Version Train](#version-train-published-multi-module-libraries).
+
 Automate with a normalization script (replace `github.com/org` with your module prefix):
 
 ```bash
@@ -152,6 +178,40 @@ done
 A single `v*` git tag bumps all modules together. Simpler than independent module
 versioning, appropriate when modules are tightly coupled and consumers typically
 import multiple modules.
+
+### Version train: published multi-module libraries
+
+All modules share one version number (the train) and each gets its own tag
+(`entitytag/v0.6.1`, `server/v0.6.1`, ...), released bottom-up in dependency
+order. Validated end-to-end by go-etag (five modules: root tombstone,
+`entitytag`, `server`, `client`, `metrics`; v0.6.0+):
+
+- **go.mod files stay replace-free.** Sibling requires point at the shared train
+  version — unreleased mid-cycle, which is expected and harmless.
+- **go.work carries version-qualified replaces** for each sibling:
+  `replace github.com/org/repo/sub v0.6.1 => ./sub`. Two non-obvious rules,
+  both learned the hard way:
+  - `use` alone is NOT enough: once any external dependency forces module-graph
+    resolution, the unreleased sibling version fails with
+    `unknown revision repo/sub/v0.6.0`.
+  - Unqualified replaces (`replace .../sub => ./sub`) conflict with `use`
+    ("replaced at all versions") — version qualification is what lets both
+    coexist.
+- **Commit go.work** — consumers and the proxy never see it, so every published
+  go.mod still resolves cleanly from the proxy once the train is tagged.
+- **`go mod tidy` is release-time-only.** Mid-cycle tidy tries to resolve the
+  unreleased train version and fails; workspace builds/tests/lint never need it.
+- **Sync gate**: a pre-release check enforces one internal version everywhere
+  and a matching go.work replace for every sibling require — the train moves in
+  a single commit, never piecemeal.
+
+Cost (deliberate): per-module `GOWORK=off` verification only works when
+dependency tags exist — i.e., during the release staircase, not mid-cycle. CI
+tests workspace mode mid-cycle. That is the trade: publishable go.mods in
+exchange for staircase-time standalone verification. The staircase procedure
+itself (tag each module at the commit where its go.mod/go.sum finalized,
+dependency-first, root last) is owned by the go-release skill's multi-module
+reference — load it for the release mechanics.
 
 ### Major version in module path
 
@@ -238,6 +298,39 @@ type Tool struct {
 func (t *Tool) CanDetect() bool  { return t.Detector != nil }
 func (t *Tool) CanRepair() bool  { return t.Repairer != nil }
 ```
+
+### Extraction without breakage: re-export shims and tombstone modules
+
+Moving a type or a whole package across a module boundary does not have to
+break importers. Two levels, both validated by go-etag's `entitytag` extraction:
+
+**In-module re-export shim** — when a shared domain type moves to a new
+zero-dep module so two consumers (`server → entitytag ← client`) can share it
+without either importing the other, the old location keeps the historical
+surface compiling via type aliases and thin wrappers:
+
+```go
+// server/entity_tag.go — after the domain type moved to entitytag/
+type (
+    ETag     = entitytag.ETag
+    Strength = entitytag.Strength
+)
+
+func ParseETag(s string) (ETag, bool) { return entitytag.ParseETag(s) }
+```
+
+One rule keeps the shim from rotting into a split brain: **new domain logic
+goes to the new home, never the shim.** The shim is a compatibility surface,
+not a second implementation.
+
+**Root tombstone module** — when the package itself moved (`go-etag` root →
+`go-etag/server`), the old import path survives as a deprecated alias module:
+full alias surface of the new package, every symbol carrying
+`// Deprecated: import .../server instead`, pinned by an export-parity test
+(compile-time type-identity assertions + wrapper smoke tests) so the shim
+cannot silently drift, and deleted at the next major (v1.0.0) with a
+migration note in the release. Consumers keep compiling; the removal is a
+planned, loudly-announced forcing function — not a surprise.
 
 ---
 

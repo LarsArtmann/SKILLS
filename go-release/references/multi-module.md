@@ -5,6 +5,7 @@ Table of Contents:
 - [The problem](#the-problem)
 - [The chicken-and-egg solution](#the-chicken-and-egg-solution)
 - [Phase-by-phase: releasing a multi-module monorepo](#phase-by-phase-releasing-a-multi-module-monorepo)
+- [Alternative: the bottom-up tag staircase](#alternative-the-bottom-up-tag-staircase)
 - [The go.work interplay](#the-gowork-interplay)
 - [GORELEASER_CURRENT_TAG](#goreleaser_current_tag)
 - [Verification strategy](#verification-strategy)
@@ -247,6 +248,62 @@ If any `go get` fails with `unknown revision 000000000000`, a sub-module go.mod 
 
 ---
 
+## Alternative: the bottom-up tag staircase
+
+The same-commit procedure above has a structural weakness: the tagged commit's
+`go.sum` is repaired only in a **post-push follow-up commit** (Step 7), so the
+tag itself carries a provisionally-broken `GOWORK=off` state — a CI run on the
+frozen tag goes red in standalone mode until the checksum fix lands.
+
+The staircase eliminates that window: **each module's tag points at the commit
+where its own `go.mod`/`go.sum` finalized**, and modules are tagged in
+dependency order — dependencies first, root last. By the time module N is
+tagged, its dependencies' tags already exist on the proxy, so its tidy resolves
+real versions and its tag is exactly what consumers fetch. Validated by
+go-etag v0.6.0 (five modules: `entitytag` → `server` → `client` → `metrics` →
+root).
+
+Per module, in dependency order, from the module's directory:
+
+```bash
+VERSION="0.6.1"
+cd entitytag/   # the dependency-free module goes first
+go mod tidy && go mod verify
+GOWORK=off go build ./... && GOWORK=off go test -race -count=1 ./...
+# commit the tidy result if go.mod/go.sum changed, wait for CI green on THAT commit,
+# then create the annotated tag:
+git tag -a "entitytag/v${VERSION}" -m "Release entitytag/v${VERSION}"
+```
+
+Then the next module up (`tidy` there resolves the just-pushed
+`entitytag/vX.Y.Z`), and so on. The **root tag goes last** — it is the release
+commit whose CHANGELOG cut the release.
+
+Rules that make the staircase work:
+
+- **Mid-cycle bootstrap is expected**: sibling requires point at the
+  unreleased train version until its tag exists. Workspace mode (go.work)
+  keeps every gate green. Never "fix" the unresolvable requires with `go.mod`
+  replace directives — banned in published repos (Step 2's replace check), and
+  they break consumers.
+- **go.work carries version-qualified replaces** (`…/sub v0.6.1 => ./sub`) so
+  workspace builds resolve the unreleased train version locally; `use` alone
+  fails once any external dependency forces graph resolution, and unqualified
+  replaces conflict with `use`. See [The go.work interplay](#the-gowork-interplay).
+- **Bump the train as one commit**: after tagging, sibling requires in go.mod
+  files and replace versions in go.work move to the next version together —
+  a sync gate (single internal version everywhere, every require with its
+  matching replace) enforces agreement.
+- **Consumer gates run per module tag**: proxy `.info` hash == tagged commit,
+  sum.golang.org entry, clean-room `go get .../sub@sub/vX.Y.Z`.
+
+Choose same-commit tags when modules are consumed only in lockstep and a red
+standalone run on the frozen tag is acceptable; choose the staircase when each
+module tag must be independently, exactly consumable — which is the entire
+point of publishing modules separately.
+
+---
+
 ## The go.work interplay
 
 `go.work` is for **local development only**. It is never published. It overrides
@@ -262,10 +319,15 @@ Key behaviors:
   proxy resolution of local tags. Don't create tags until ready to push.
 - If the project has `go.work`, consumers never see it — they use `go.mod` directly
   with `GOWORK=off` (the default outside the workspace).
+- **Version-train repos commit go.work with version-qualified replaces**
+  (`replace github.com/org/repo/sub v0.6.1 => ./sub`): plain `use` cannot
+  divert the merged module graph once an external dependency forces
+  resolution of the unreleased sibling version (`unknown revision`), and
+  unqualified replaces conflict with `use` ("replaced at all versions"). The
+  replaces stay invisible to consumers, keeping every go.mod replace-free.
+  See the go-modularize skill's §Version Train for the full strategy.
 
 ---
-
-## GORELEASER_CURRENT_TAG
 
 When multiple tags point at the same commit, GoReleaser uses `git describe` to
 determine the current tag. If tags `v1.2.4`, `viz/v1.2.4`, and `live/v1.2.4` all

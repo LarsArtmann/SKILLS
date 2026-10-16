@@ -17,7 +17,7 @@ For HOW, read the library docs.
 - **Type safety first** — make impossible states unrepresentable
 - **Composition over inheritance** — always
 - **Generated over handwritten** — sqlc, templ, govalid for boilerplate
-- **Observability built-in** — OpenTelemetry from day one
+- **Observability built-in** — OpenTelemetry from day one (services); for reusable libraries: nil-default hooks, never a telemetry dependency
 
 ## Process
 

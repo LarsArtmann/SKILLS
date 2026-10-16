@@ -57,6 +57,12 @@ The system should behave exactly as it appears.
 If you need to debug in production, you've already lost.
 
 - OpenTelemetry from day one: traces, metrics, logs
+- Libraries are the exception: **nil-default hooks, not telemetry deps** —
+  synchronous `OnX func(...)` callbacks (zero cost when nil) make the library
+  OTEL/Prometheus-ready without importing otel; if ready-made counters are
+  wanted, ship them as an optional companion module that depends on the
+  library — the library never depends on the metrics stack (validated:
+  go-etag's `OnETagGenerated`/`On304`/`OnBufferOverflow` hooks + leaf `metrics` module)
 - Architecture linting: enforce layer boundaries automatically
 - Visualizations: if nobody knows how data flows, the architecture is broken
 - Continuous benchmarking: performance budgets in CI

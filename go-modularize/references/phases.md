@@ -277,22 +277,30 @@ AND `replace` directives — not one or the other.
 | `replace` directives   | All modules in same repo, not yet published | `replace github.com/org/mod => ./mod` in each go.mod             |
 | `go.work` file         | 3+ modules, developer convenience           | Single `go.work` at repo root listing all modules                |
 | Versioned imports      | Modules published to proxy                  | Remove all `replace`, use proper semver tags                     |
-| **Dual (recommended)** | **Both replace + go.work**                  | **go.work for dev, replace for `GOWORK=off` CI/consumer builds** |
+| **Dual (recommended)** | **App monorepos — never proxy-published**   | **go.work for dev, replace for `GOWORK=off` CI/consumer builds** |
+| **Version train**      | **Modules published to the proxy**          | **Replace-free go.mods + version-qualified replaces in go.work** |
 
-**Recommendation: use both.** `go.work` provides fast local development (shared
-build cache, no `go mod tidy` churn). `replace` directives ensure every module
-builds standalone with `GOWORK=off` — essential for CI, Nix builds, Docker, and
-external consumers who clone the repo. See [./real-world-patterns.md](./real-world-patterns.md)
-§Dual Strategy for the full rationale and maintenance workflow.
+**Recommendation depends on publication.** For application monorepos (modules
+never `go get`-able): use both — `go.work` for fast local development (shared
+build cache, no `go mod tidy` churn), `replace` directives so every module
+builds standalone with `GOWORK=off`. For proxy-published multi-module
+libraries: replace-free go.mods + version-qualified go.work replaces (the
+version train) — committed replaces in a published go.mod break consumer
+`go get`. See [./real-world-patterns.md](./real-world-patterns.md)
+§Dual Strategy and §Version Train for the full rationale and maintenance
+workflow.
 
 Rules:
 
 - **Every module with internal deps gets replace directives** for each sibling
-  it imports (directly or transitively)
+  it imports (directly or transitively) — dual strategy only; the version
+  train instead puts version-qualified replaces in `go.work`
 - **go.work lists every module** with `use ./mod` directives
 - **CI tests both modes**: `go build ./...` (workspace) AND `GOWORK=off go build ./...` per module
 - **Keep go.work and replace directives in sync** — a CI sync check verifies they agree
-- `go.work` belongs in `.gitignore` only if every consumer uses published versions
+- **Commit `go.work`** when it carries version-qualified replaces (version
+  train) or when CI runs workspace mode; gitignore it only when it is a purely
+  local convenience and every build path works without it
 - Always commit `go.work` and `go.work.sum` together
 
 ### 3.4 Plan test dependency isolation
