@@ -56,7 +56,14 @@ defensible reason to exist.
 - An abstraction would take more parameters than the duplicated code has lines
 
 When accepting, leave a one-line rationale so the next reader knows it was
-deliberate.
+deliberate — and for repos with recurring dedup audits, make acceptance a
+**gate, not prose**: record the accepted groups in a committed baseline
+report and fail the release/CI gate unless art-dupl shows exactly that group
+count (validated: go-etag pins its four accepted groups this way — a fifth
+group appears, the gate goes red). Each accepted group documents why
+extraction loses (distinct spec rules behind a similar shape, shared logic
+shorter than the helper's parameter list, a test double whose similarity IS
+its purpose). An enforced count cannot be relitigated; a prose note can.
 
 ## Done
 

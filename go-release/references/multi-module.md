@@ -329,6 +329,8 @@ Key behaviors:
 
 ---
 
+## GORELEASER_CURRENT_TAG
+
 When multiple tags point at the same commit, GoReleaser uses `git describe` to
 determine the current tag. If tags `v1.2.4`, `viz/v1.2.4`, and `live/v1.2.4` all
 point at one commit, `git describe` returns the alphabetically-last tag

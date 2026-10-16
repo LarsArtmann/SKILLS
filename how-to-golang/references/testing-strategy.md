@@ -236,6 +236,23 @@ It("returns expected user API response", func() {
 })
 ```
 
+## Spec-Implementation Testing (RFC Conformance)
+
+When the code implements an external spec (RFC, protocol, standard), the test
+suite should be an auditable requirements map — not just green checks
+(validated: go-etag's RFC 9111 client suite):
+
+- **Cite the section in every test** — name or comment (`// RFC 9111 §4.3.4`)
+  so any test can be traced to its requirement and any requirement to its test
+- **Keep a conformance doc** — requirement-by-requirement account
+  (`docs/rfcNNNN-conformance.md`): each MUST/SHOULD with its test or its
+  deliberate omission
+- **Fuzz parsers with a soundness property**, not just crash-hunting (e.g., "a
+  literal top-level `no-store` directive is always detected")
+- **Document deliberate gaps** to preempt coverage audits ("no fuzz target for
+  pure atomic counters — no oracle to violate, no crash surface") — a
+  documented non-fix stops the next audit from re-flagging it
+
 ## Test Quality Metrics
 
 | Metric               | Target        | Tool                             |
