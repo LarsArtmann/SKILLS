@@ -24,6 +24,10 @@ readable layout, sticky sidebar TOC, and issue-card vocabulary fit this report t
 Copy the template, keep the CSS design tokens and component styles intact, and write
 the report-specific content into the body.
 
+Never assemble the file by line-count splicing (`head -n N template.html > out && cat body >> out`):
+a later template edit shifts the boundary and silently corrupts the report. Copy the
+template to the output path, then edit its body in place.
+
 ---
 
 ## Report Sections
