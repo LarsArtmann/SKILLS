@@ -46,6 +46,12 @@ The user names a library (e.g. "deep dive into Zod", "are we using GORM to the m
 
 READ, UNDERSTAND, RESEARCH, REFLECT before each phase. The depth of research is the entire point — do not shortcut it.
 
+### Phase 0: Prior Reports — Read the Series First
+
+Before auditing, list `docs/research/` (or wherever the project keeps point-in-time reports) and skim every earlier report that overlaps this library — a whole-dependency study counts as overlap. Read the project's `AGENTS.md` for what it already knows about the library, too.
+
+Re-auditing what a prior report already covered produces a duplicate, and the two then contradict each other silently. Cite the prior report and state where the new one supersedes it: **newer and narrower wins**. If `docs/research/README.md` exists it is the index — add a row for the new report when you finish.
+
 ### Phase 1: Project Discovery — Understand Current Usage
 
 Catalog exactly how the project uses the library today. This is the baseline for the gap analysis.
@@ -107,6 +113,8 @@ Every "Partially Used", "Missed Opportunity", and "Misused" finding must include
 - **The impact** — what improves by adopting it (performance, correctness, less code, better DX)
 - **A concrete code example** showing the recommended usage
 
+**"Not Applicable" is a claim, not an escape hatch.** Every N/A row must carry a one-line reason (why this capability cannot apply to this project). An unexplained N/A reads as "not checked" and silently inflates the adoption score.
+
 ### Phase 4: Scoring & Prioritization
 
 Synthesize the gap analysis into an actionable assessment.
@@ -115,6 +123,16 @@ Synthesize the gap analysis into an actionable assessment.
 2. **Version Currency**: Is the project on the latest? How many minor/major versions behind? What notable features are in the gap?
 3. **Top Opportunities**: Rank all findings by (impact × ease) — the Pareto set that delivers the most value for the least effort.
 4. **Risk Assessment**: Are any usages actively dangerous (deprecated APIs, known security issues, footguns)?
+
+**Scoring rubric — a bare `88/100` is a judgement dressed as a measurement. Derive it and show the inputs:**
+
+1. Count the capability-inventory rows: that is `N`.
+2. Subtract the rows graded **Not Applicable** (out of scope): that leaves the applicable count `A`.
+3. Score each applicable row: Fully Leveraged = 1, Partially Used = 0.5, Missed Opportunity = 0, Misused = 0 (Misused also raises a risk finding).
+4. `score = round(100 × Σ row scores / A)`.
+
+Publish the score together with its inputs (`M` leveraged of `A` applicable) and a
+band: **very high** ≥ 85, **high** 70–84, **moderate** 50–69, **low** < 50.
 
 ### Phase 5: Write the HTML Report
 
@@ -128,6 +146,12 @@ Use `date` CLI for the filename date. Use kebab-case for the library name.
 2. Start from the **editorial light** template (best for long-form research findings): [./assets/html-report-kit/assets/report-template-editorial.html](./assets/html-report-kit/assets/report-template-editorial.html)
 3. For the report-specific section structure, content guidance, and component mapping, load [./references/output-guide.md](./references/output-guide.md)
 4. Write the full report with real evidence — every claim cited to code or docs.
+5. **Compose the file by copying the template and editing it in place.** Never build it by line-count splicing (`head -n 849 template.html > out && cat body >> out`): a later template edit shifts the boundary and corrupts the report silently. Copy the template to the output path, then replace its demo body.
+6. **Run the self-consistency gate before shipping.** Two self-inflicted errors are common enough to be checks:
+   - **Denominator drift.** Every `X/N` in the prose must use the same `N` as the capability inventory. Re-count the appendix and reconcile each number.
+   - **Unsorted tables.** Every table that claims a sort ("sorted by impact × ease", "descending priority") must actually be sorted by that key. Re-read the column and verify the order.
+   - Spot-check every `path:line` citation: a missing file or an out-of-range line means the citation went stale while you were writing.
+7. **Close with a "How to verify" appendix** — the exact paths and commands a reader runs to re-derive the score and the top findings (count the appendix rows, `grep -rn <lib> src`, `git -C <dep> describe --tags`). A report nobody can re-check rots into folklore.
 
 ### Phase 6: Cross-Skill References
 

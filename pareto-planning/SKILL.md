@@ -13,6 +13,18 @@ allowed-tools: d2
 
 ## Process
 
+### Step 0: Read Prior Plans and Reports First
+
+Before ranking anything, read the living backlog (`TODO_LIST.md`, `ROADMAP.md`)
+and the most recent 2–3 plans/reports in `docs/planning/` and `docs/status/`.
+A plan written without reading the last one re-dispatches work that already
+shipped — the classic failure mode.
+
+For every task you are about to rank, verify it is still open: grep the
+`CHANGELOG.md` and the code for evidence it already exists. Drop or re-frame
+anything already done, and record the correction in the plan's errata section so
+the next session is not misled by a stale backlog.
+
 ### Step 1: Pareto Breakdown
 
 - What are the 20% that deliver 80% of the result??! — BREAK IT DOWN!
