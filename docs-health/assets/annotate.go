@@ -69,6 +69,8 @@ func main() {
 		err = cmdUnwrap(os.Args[2:])
 	case "repair-mangle":
 		err = cmdRepairMangle(os.Args[2:])
+	case "repair-partial":
+		err = cmdRepairPartial(os.Args[2:])
 	case "self-test":
 		err = selfTest()
 	case "-h", "--help", "help":
@@ -94,6 +96,7 @@ usage: go run annotate.go <subcommand> ...
   check-rows [--normalize] <file>...   (<!-- check-rows:ledger --> above a table exempts it)
   repair [--dry-run] <specfile>        (spec: path<TAB>lines<TAB>kind[<TAB>value])
   unwrap [--dry-run] <file>:<lines>...  (rebuild formatter-wrapped struck rows)
+  repair-partial [--dry-run] <file>... (strike bare cells of partially-struck rows)
   self-test
 kinds: h hashes | v evidence | p pass-date ('-' = today) | w wont-implement
        | n NOT-DO | r routed verdict (no strike)
@@ -1754,6 +1757,129 @@ func repairMangleFile(path string, dry bool) (int, int, error) {
 	return repaired, manual, nil
 }
 
+// ---------- repair-partial: strike the bare cells of partially-struck rows ----------
+
+func cmdRepairPartial(argv []string) error {
+	return repairPartialRun(argv, os.Stdout)
+}
+
+func repairPartialRun(argv []string, out io.Writer) error {
+	dry := false
+
+	var targets []string
+
+	for _, a := range argv {
+		if a == "--dry-run" {
+			dry = true
+
+			continue
+		}
+
+		targets = append(targets, a)
+	}
+
+	if len(targets) == 0 {
+		return fail("usage: repair-partial [--dry-run] <file>...")
+	}
+
+	total := 0
+
+	for _, path := range targets {
+		repaired, err := repairPartialFile(path, dry)
+		if err != nil {
+			return err
+		}
+
+		total += repaired
+
+		verb := "repaired"
+		if dry {
+			verb = "would repair"
+		}
+
+		fmt.Fprintf(out, "repair-partial: %s: %s %d row(s)\n", path, verb, repaired)
+	}
+
+	return nil
+}
+
+// repairPartialRow wraps every bare cell of a PARTIAL table row (some cells
+// struck, some not — the pre-canon cell-strike debt) in ~~...~~ so
+// classifyRow sees STRUCK. Cells already carrying a strike — and their
+// embedded verdicts — are untouched; empty cells get the canonical
+// formatter-stable `~~ ~~` form. CLEAN/STRUCK/ROUTED rows and non-table
+// lines are returned unchanged, so re-runs are no-ops.
+func repairPartialRow(line string) (string, bool) {
+	t := strings.TrimSpace(line)
+	if !strings.HasPrefix(t, "|") || isSeparator(t) {
+		return line, false
+	}
+
+	if classifyRow(line) != "PARTIAL" {
+		return line, false
+	}
+
+	cs := splitCells(line)
+	changed := false
+
+	for i, c := range cs {
+		if strings.Contains(outsideCodeSpansCheck(c), "~~") {
+			continue
+		}
+
+		trimmed := strings.TrimSpace(c)
+		if trimmed == "" {
+			cs[i] = "~~ ~~"
+		} else {
+			cs[i] = "~~" + trimmed + "~~"
+		}
+
+		changed = true
+	}
+
+	if !changed {
+		return line, false
+	}
+
+	return "| " + strings.Join(cs, " | ") + " |", true
+}
+
+// repairPartialFile applies repairPartialRow to every line; writes are
+// atomic and skipped entirely under dry-run.
+func repairPartialFile(path string, dry bool) (int, error) {
+	_, lines, err := readLines(path)
+	if err != nil {
+		return 0, err
+	}
+
+	repaired := 0
+
+	for i, ln := range lines {
+		fixed, changed := repairPartialRow(strings.TrimRight(ln, "\n"))
+		if !changed {
+			continue
+		}
+
+		lines[i] = withNewline(fixed, ln)
+		repaired++
+	}
+
+	if dry || repaired == 0 {
+		return repaired, nil
+	}
+
+	tmp := path + ".repair-partial-tmp"
+	if err := os.WriteFile(tmp, []byte(strings.Join(lines, "")), 0o644); err != nil {
+		return 0, err
+	}
+
+	if err := os.Rename(tmp, path); err != nil {
+		return 0, err
+	}
+
+	return repaired, nil
+}
+
 func selfTest() error {
 	failures := []string{}
 	check := func(name string, got, want any) {
@@ -1813,6 +1939,40 @@ func selfTest() error {
 
 	got, changed, manual = mangle("| a | b |")
 	check("mangle clean row untouched", changed, false)
+
+	// repair-partial: strike only the BARE cells of a partially-struck row
+	// (the pre-canon cell-strike debt class); struck cells and their verdicts
+	// are preserved byte-for-byte, empty cells get the canonical `~~ ~~`.
+	partial := func(in string) (string, bool) { return repairPartialRow(in) }
+	got, changed = partial("| F62 | ~~Update `Size`~~ done at `094de50` | 5m |")
+	check("partial strikes bare cells", got, "| ~~F62~~ | ~~Update `Size`~~ done at `094de50` | ~~5m~~ |")
+	check("partial strikes bare cells changed", changed, true)
+
+	got, changed = partial("| F62 | ~~a~~ done | |")
+	check("partial empty cell canonical form", got, "| ~~F62~~ | ~~a~~ done | ~~ ~~ |")
+	check("partial empty cell changed", changed, true)
+
+	got, changed = partial("| F65 | ~~Add `SizeResult` example~~ **still open — routed to TODO_LIST** |")
+	check("partial strikes id cell keeps routed verdict", got, "| ~~F65~~ | ~~Add `SizeResult` example~~ **still open — routed to TODO_LIST** |")
+	check("partial id-cell strike changed", changed, true)
+
+	got, changed = partial("| a | b |")
+	check("partial clean row untouched", changed, false)
+
+	got, changed = partial("| a | b |")
+	check("partial clean row value", got, "| a | b |")
+
+	got, changed = partial("| ~~a~~ | ~~b~~ |")
+	check("partial struck row untouched", changed, false)
+
+	got, changed = partial("| a | → routed to ROADMAP |")
+	check("partial routed row untouched", changed, false)
+
+	got, changed = partial("not a table")
+	check("partial prose untouched", changed, false)
+
+	got, changed = partial("| --- | --- |")
+	check("partial separator untouched", changed, false)
 	check("mangle clean row not manual", manual, false)
 
 	got, _, manual = mangle("prose with ~~ emphasis and a separator | here")
