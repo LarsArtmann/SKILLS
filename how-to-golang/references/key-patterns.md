@@ -107,6 +107,15 @@ huma.Register(api, huma.Operation{
 }, CreateUserHandler)
 ```
 
+**Header maps are canonicalized — `Etag`, not `ETag`.** `http.Header.Get/Set`
+canonicalize keys on every access (`textproto.CanonicalMIMEHeaderKey`), so a
+map literal carrying an `"ETag"` key is invisible to `Get`. Build stub headers
+via `Set` in tests; real transports canonicalize on both sides. Note the
+`canonicalheader` linter and the runtime are DIFFERENT authorities — the
+linter judges the literal spelling in source, the runtime canonicalizes
+whatever you pass. Do not "fix" one to match the other (validated: go-etag's
+`headerETag = "ETag"` constant vs `Etag` on the wire).
+
 ## Validation (govalid)
 
 Marker names matter: `minlength`/`maxlength` are real, `min_len`/`max_len`

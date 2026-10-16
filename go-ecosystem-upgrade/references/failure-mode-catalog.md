@@ -29,6 +29,7 @@ and then happened again in a later session because the lesson wasn't encoded int
 - [F16 — Downgrade risk not flagged](#f16)
 - [F17 — No tags on consumer releases](#f17)
 - [F18 — Pseudo-versions in published go.mod](#f18)
+- [F19 — Bumping only the nested module of a split multi-module repo](#f19)
 
 ---
 
@@ -524,3 +525,35 @@ The Go module proxy cannot resolve `00010101000000` versions — they're sentine
   versions, (3) verifies no `00010101` pseudo-versions remain, (4) tags, (5) restores the
   local replaces for continued development
 - Add a CI check that rejects pseudo-versions in any `go.mod` on the default branch
+- Or eliminate dev replaces entirely: the version-train workspace pattern (go-modularize
+  skill, real-world-patterns.md §Version Train) keeps every go.mod replace-free by moving
+  version-qualified replaces into a committed `go.work` — which consumers and the proxy
+  never see
+
+## F19 — Bumping only the nested module of a split multi-module repo
+
+**Reports:** go-etag v0.6.0 ecosystem sweep (2026-09-23)
+
+**What happens:** A library split into multiple modules (root + `…/server`,
+`…/client`, ...) is bumped in a consumer with `go get github.com/org/repo/server@vX`
+alone. The consumer fails to build: the OLD root version still physically contains
+the nested packages, so both the old root module and the new nested module provide
+the same import path — ambiguous imports.
+
+**Root cause:** Module splits do not rewrite history. Pre-split root tags keep
+their nested package directories forever; only bumping both module paths in one
+resolution lets MVS drop the old root from the graph. Second trap in the same
+operation: `go get` can silently rewrite the consumer's `go` directive DOWN
+(e.g. `go 1.27.1` → `go 1.27`), which then fails against vendored deps that
+declare a patch floor.
+
+**Prevention:**
+
+- Bump the root and the nested module in ONE `go get` resolution:
+  `go get github.com/org/repo@vX github.com/org/repo/server@vX`
+- Re-check the consumer's `go` directive after the bump; restore a silently
+  lowered one with `go mod edit -go=X.Y.Z`
+- Expect consumer `go mod tidy` to DROP the root require entirely once nothing
+  imports root packages — that is the composability win, not drift
+- Verify workspace-repo consumers in BOTH modes: hermetic `GOWORK=off` and
+  workspace MVS

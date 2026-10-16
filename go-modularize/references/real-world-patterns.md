@@ -93,6 +93,22 @@ This catches:
 - Version mismatches (module references an old version of a sibling)
 - Stale `go.work` entries (workspace masks a deleted module)
 
+### Per-module tool scoping
+
+Two common gates have NO workspace mode — a repo-root run silently covers only
+the root module. Loop them per module (validated: go-etag's five-module loop):
+
+```bash
+GOTOOLCHAIN=auto golangci-lint run                 # root module ONLY
+for m in sub1 sub2; do (cd "$m" && GOTOOLCHAIN=auto golangci-lint run --config ../.golangci.yml); done
+```
+
+- `golangci-lint run` resolves the module of the CWD; nested modules need
+  their own invocation with the shared config
+- `erraudit` (and its `nolint-audit` subcommand) refuses to cross nested
+  `go.mod` boundaries — it takes a path (`.`), not `./...`; run it from inside
+  each module, or a repo-root scan misjudges nested directives as stale
+
 ### Workspace sync idempotency
 
 Verify `go work sync` + `go mod tidy` produces no changes:

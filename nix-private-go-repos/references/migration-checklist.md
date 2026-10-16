@@ -38,6 +38,7 @@ Use this checklist when moving a Go project from committed `vendor/` to a hermet
   ```
 
 - [ ] Remove `!vendor/` overrides from `.gitignore`.
+- [ ] Keep any NEEDED manual `.gitignore` entries (e.g. `!go.work` negations in version-train repos) OUTSIDE tool-managed marker blocks — `gitignore-check` regenerates its block and silently drops lines inside it; an untracked `go.work` cost go-etag a fully red CI run (2026-09-23).
 - [ ] Commit the flake changes separately from the vendor deletion so each step is reviewable.
 
 ## Resolve build

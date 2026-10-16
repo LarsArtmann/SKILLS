@@ -203,7 +203,10 @@ The memory hierarchy is the real machine: registers ~ns-free, L1 ~4 cycles, L2 ~
   One pad removed 80% of the op time with a p-value that says it is signal,
   not noise. That is the whole benchstat workflow in miniature: identical
   benchmark name + package on both sides, `-count≥6`, and only the delta
-  benchstat marks significant counts as the result.
+  benchstat marks significant counts as the result. Commit the before/after
+  files under a dated path (`reports/bench/<date>_<name>.txt`, validated by
+  go-etag) so every perf claim stays auditable after the fact — smoke-run
+  `-count=1` for sanity checks only, never as evidence.
 - **Field ordering:** group fields by size/alignment to cut struct padding. The `fieldalignment` analyzer (golang.org/x/tools) reports wasteful layouts. Apply where it matters (hot, high-volume types) — don't churn domain types for a few bytes.
 - **SoA over AoS:** if a loop touches one field across many records, `[]field` beats `[]struct` — you stream exactly the bytes you use instead of dragging whole cache lines per record.
 - **Tile/chunk:** process data in blocks sized to L2/L3 so each byte is loaded from DRAM once and reused from cache. This converts DRAM-bound (doesn't scale with cores) into cache-bound (does).
