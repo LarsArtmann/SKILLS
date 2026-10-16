@@ -185,7 +185,7 @@ var (
 	reNumItem          = regexp.MustCompile(`^(\s*)(?:[-*]\s*)?([A-Za-z]{0,3}\d{1,3}[a-z]?|[A-Za-z]+#\d+|\d+)\.\s`)
 	reTableRowKey      = regexp.MustCompile(`^\|\s*\*{0,2}([A-Za-z]{0,3}\d{1,3}[a-z]?)\*{0,2}\s*\|`)
 	reCheckbox         = regexp.MustCompile(`^(\s*)- \[ \] (.*)$`)
-	reTableSepCell     = regexp.MustCompile(`^:?-{2,}:?$`)
+	reTableSepCell     = regexp.MustCompile(`^:?-+:?$`)
 	reDoubledSpanCheck = regexp.MustCompile("``[^`]+``")
 	reIndentRest       = regexp.MustCompile(`^(\s*)(.*)$`)
 )
@@ -2073,6 +2073,9 @@ func selfTest() error {
 	check("plain routed arrow is ROUTED", classifyRow("| 3 | item — → routed | `x.md` |"), "ROUTED")
 	check("open row stays CLEAN", classifyRow("| 4 | still open | `x.md` |"), "CLEAN")
 	check("partial row stays PARTIAL", classifyRow("| 5 | ~~half~~ rest open | `x.md` |"), "PARTIAL")
+	check("single-dash separator recognized", isSeparator("| - | --- | :---: |"), true)
+	check("multi-dash separator recognized", isSeparator("| --- | --- |"), true)
+	check("data row not separator", isSeparator("| 1 | x |"), false)
 
 	// ----- check-rows ledger exemption (2026-10-15): a
 	// <!-- check-rows:ledger --> line above a table exempts exactly that
