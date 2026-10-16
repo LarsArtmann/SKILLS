@@ -21,5 +21,4 @@ Adjacent: #45 (go-mod-update's compile gate silently reverting go.mod/go.sum) is
 
 **Default dev-mode repair steps to dry (findings only), with mutation behind an explicit `--fix`** — mirroring the deliberate contract in `format_cmd.go`, where `AutoFix = true` is set explicitly because formatters always fix. If fix-by-default for dev stays, surface it at Info/Warn with a per-step file-count summary instead of Debugf. Pre-commit fixing (like lint-staged) may be legitimate — but it deserves the same visibility.
 
-
 💘 Generated with Crush

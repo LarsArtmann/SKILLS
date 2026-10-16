@@ -116,28 +116,28 @@
 
 ## f) Next tasks (ranked, cumulative)
 
-| # | Task | Impact | Effort |
-| - | ---- | ------ | ------ |
-| 1 | Read TODO_LIST.md + ROADMAP.md; reconcile against all 15 edited files (mark/dedupe pre-existing ideas) | High | S |
-| 2 | Run docs-health HARVEST over the three 2026-10-17 reports (then ANNOTATE the executed (f) items) | High | M |
-| 3 | Encode the edit-before-read 3× pattern + bash-output-≠-read rule where session process lives (feedback doc or AGENTS §5 candidate) | High | S |
-| 4 | Add 2026-10-17 dated note to how-to-golang FEATURES row (4 additions, 5 files) | Low | S |
-| 5 | markdownlint diff-check: no NEW violations in the 15 edited files vs baseline | Medium | S |
-| 6 | Full `--signal` output review covering my edited skills specifically | Medium | S |
-| 7 | Consider go-release FEATURES row naming the staircase (row currently generic "multi-module") | Low | S |
-| 8 | Encode "lesson × skill coverage matrix before editing" into how-to-write-skills.md as an authoring step | Medium | S |
-| 9 | Verify F19's `go get` directive-down-rewrite claim wording against Go toolchain source (corroborated in-repo by SKILL.md:118-125, not externally) | Medium | S |
-| 10 | Split-repo consumer sweep recipe: add "audit fleet with `rg -l 'repo\" v' -g go.mod`" pre-major pattern to go-ecosystem-upgrade (from go-etag v1.0.0 plan) | Medium | S |
-| 11 | bdd-testing: optional cross-ref to how-to-golang §Spec-Implementation Testing (if Q1 says yes) | Low | S |
-| 12 | collector-extraction: optional cross-ref to go-modularize §Extraction without breakage (if Q1 says yes) | Low | S |
-| 13 | Worked full-go.work example in §Version Train | Low | S |
-| 14 | go-release quick-reference.md: one-line staircase pointer | Low | S |
-| 15 | Verify "replaced at all versions" error wording against Go source (single-sourced from go-etag AGENTS.md) | Medium | S |
-| 16 | art-dupl `--expect-groups N` or wrapper to mechanize enforced-count acceptance | Medium | M |
-| 17 | CHANGELOG expectations check for skill edits | Low | S |
-| 18 | Visual GitHub-render pass over the 3 structurally-edited reference files | Low | S |
-| 19 | Consider CI-mode table (workspace mid-cycle vs GOWORK=off at release) for §Version Train cost paragraph | Low | S |
-| 20 | go-modularize eval for version-train strategy decisions | Low | L |
+| #  | Task                                                                                                                                                       | Impact | Effort |
+| -- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ |
+| 1  | Read TODO_LIST.md + ROADMAP.md; reconcile against all 15 edited files (mark/dedupe pre-existing ideas)                                                     | High   | S      |
+| 2  | Run docs-health HARVEST over the three 2026-10-17 reports (then ANNOTATE the executed (f) items)                                                           | High   | M      |
+| 3  | Encode the edit-before-read 3× pattern + bash-output-≠-read rule where session process lives (feedback doc or AGENTS §5 candidate)                         | High   | S      |
+| 4  | Add 2026-10-17 dated note to how-to-golang FEATURES row (4 additions, 5 files)                                                                             | Low    | S      |
+| 5  | markdownlint diff-check: no NEW violations in the 15 edited files vs baseline                                                                              | Medium | S      |
+| 6  | Full `--signal` output review covering my edited skills specifically                                                                                       | Medium | S      |
+| 7  | Consider go-release FEATURES row naming the staircase (row currently generic "multi-module")                                                               | Low    | S      |
+| 8  | Encode "lesson × skill coverage matrix before editing" into how-to-write-skills.md as an authoring step                                                    | Medium | S      |
+| 9  | Verify F19's `go get` directive-down-rewrite claim wording against Go toolchain source (corroborated in-repo by SKILL.md:118-125, not externally)          | Medium | S      |
+| 10 | Split-repo consumer sweep recipe: add "audit fleet with `rg -l 'repo\" v' -g go.mod`" pre-major pattern to go-ecosystem-upgrade (from go-etag v1.0.0 plan) | Medium | S      |
+| 11 | bdd-testing: optional cross-ref to how-to-golang §Spec-Implementation Testing (if Q1 says yes)                                                             | Low    | S      |
+| 12 | collector-extraction: optional cross-ref to go-modularize §Extraction without breakage (if Q1 says yes)                                                    | Low    | S      |
+| 13 | Worked full-go.work example in §Version Train                                                                                                              | Low    | S      |
+| 14 | go-release quick-reference.md: one-line staircase pointer                                                                                                  | Low    | S      |
+| 15 | Verify "replaced at all versions" error wording against Go source (single-sourced from go-etag AGENTS.md)                                                  | Medium | S      |
+| 16 | art-dupl `--expect-groups N` or wrapper to mechanize enforced-count acceptance                                                                             | Medium | M      |
+| 17 | CHANGELOG expectations check for skill edits                                                                                                               | Low    | S      |
+| 18 | Visual GitHub-render pass over the 3 structurally-edited reference files                                                                                   | Low    | S      |
+| 19 | Consider CI-mode table (workspace mid-cycle vs GOWORK=off at release) for §Version Train cost paragraph                                                    | Low    | S      |
+| 20 | go-modularize eval for version-train strategy decisions                                                                                                    | Low    | L      |
 
 ## g) Questions (cannot self-answer)
 
@@ -153,5 +153,6 @@
    resolution markers): now, end of session, or next session?
 
 ---
-*Report ends. Session is WAITING FOR INSTRUCTIONS. No commit made (harness
-contract; auto-commit daemon sweeps).*
+
+_Report ends. Session is WAITING FOR INSTRUCTIONS. No commit made (harness
+contract; auto-commit daemon sweeps)._

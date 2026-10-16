@@ -112,28 +112,28 @@
 
 ## f) Next tasks (ranked)
 
-| # | Task | Impact | Effort |
-| - | ---- | ------ | ------ |
-| 1 | Reconcile today's 4-skill edits against TODO_LIST.md + ROADMAP.md (mark/dedupe pre-existing ideas) | High | S |
-| 2 | Add go-modularize ↔ go-release pairing entry to AGENTS.md §5.5 graph | High | S |
-| 3 | Run docs-health HARVEST over both 2026-10-17 reports (after your go-ahead) | High | S |
-| 4 | Encode go-etag canonical-header gotcha (runtime canonicalizes to `Etag`; `"ETag"` map literals invisible to Header.Get/Set; linter vs runtime are different authorities) into how-to-golang | High | S |
-| 5 | Verify go-ecosystem-upgrade covers split-era consumer bumps; encode the one-`go get`-root+nested + `go mod edit -go` restore recipe if missing | High | M |
-| 6 | Record the session-start-skip recurrence in docs/feedback if no entry exists | Medium | S |
-| 7 | Full `--signal` + markdownlint review of the 8 edited files | Medium | S |
-| 8 | Encode benchmark-baseline discipline into how-to-golang performance-tuning.md | Medium | S |
-| 9 | Check go-error-modernization for the `nolint-audit`-from-inside-module + documented-suppression pattern; add if absent | Medium | S |
-| 10 | Add dated note to how-to-golang FEATURES row (2026-10-17 additions) | Low | S |
-| 11 | nix-private-go-repos/buildflow: go.work-untracking gotcha (`.gitignore` negation lines outside the managed marker block) | Medium | S |
-| 12 | Add a full worked go.work example to §Version Train | Low | S |
-| 13 | go-release quick-reference.md: one-line staircase pointer | Low | S |
-| 14 | bdd-testing: cross-ref the new spec-implementation testing section | Low | S |
-| 15 | Verify the `use`+replace conflict error wording ("replaced at all versions") against Go source — currently single-sourced from go-etag's AGENTS.md | Medium | S |
-| 16 | art-dupl `--expect-groups N` (or wrapper) to make enforced-count acceptance mechanical | Medium | M |
-| 17 | Visual GitHub-render pass over multi-module.md (tables, anchors) | Low | S |
-| 18 | Third-adoption check for `doc-snippet-refs` → pick a skill home | Low | M |
-| 19 | Consider a CI-mode table (workspace mid-cycle vs GOWORK=off at release) in §Version Train's cost paragraph | Low | S |
-| 20 | Consider an eval for go-modularize version-train strategy decisions | Low | L |
+| #  | Task                                                                                                                                                                                        | Impact | Effort |
+| -- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ |
+| 1  | Reconcile today's 4-skill edits against TODO_LIST.md + ROADMAP.md (mark/dedupe pre-existing ideas)                                                                                          | High   | S      |
+| 2  | Add go-modularize ↔ go-release pairing entry to AGENTS.md §5.5 graph                                                                                                                        | High   | S      |
+| 3  | Run docs-health HARVEST over both 2026-10-17 reports (after your go-ahead)                                                                                                                  | High   | S      |
+| 4  | Encode go-etag canonical-header gotcha (runtime canonicalizes to `Etag`; `"ETag"` map literals invisible to Header.Get/Set; linter vs runtime are different authorities) into how-to-golang | High   | S      |
+| 5  | Verify go-ecosystem-upgrade covers split-era consumer bumps; encode the one-`go get`-root+nested + `go mod edit -go` restore recipe if missing                                              | High   | M      |
+| 6  | Record the session-start-skip recurrence in docs/feedback if no entry exists                                                                                                                | Medium | S      |
+| 7  | Full `--signal` + markdownlint review of the 8 edited files                                                                                                                                 | Medium | S      |
+| 8  | Encode benchmark-baseline discipline into how-to-golang performance-tuning.md                                                                                                               | Medium | S      |
+| 9  | Check go-error-modernization for the `nolint-audit`-from-inside-module + documented-suppression pattern; add if absent                                                                      | Medium | S      |
+| 10 | Add dated note to how-to-golang FEATURES row (2026-10-17 additions)                                                                                                                         | Low    | S      |
+| 11 | nix-private-go-repos/buildflow: go.work-untracking gotcha (`.gitignore` negation lines outside the managed marker block)                                                                    | Medium | S      |
+| 12 | Add a full worked go.work example to §Version Train                                                                                                                                         | Low    | S      |
+| 13 | go-release quick-reference.md: one-line staircase pointer                                                                                                                                   | Low    | S      |
+| 14 | bdd-testing: cross-ref the new spec-implementation testing section                                                                                                                          | Low    | S      |
+| 15 | Verify the `use`+replace conflict error wording ("replaced at all versions") against Go source — currently single-sourced from go-etag's AGENTS.md                                          | Medium | S      |
+| 16 | art-dupl `--expect-groups N` (or wrapper) to make enforced-count acceptance mechanical                                                                                                      | Medium | M      |
+| 17 | Visual GitHub-render pass over multi-module.md (tables, anchors)                                                                                                                            | Low    | S      |
+| 18 | Third-adoption check for `doc-snippet-refs` → pick a skill home                                                                                                                             | Low    | M      |
+| 19 | Consider a CI-mode table (workspace mid-cycle vs GOWORK=off at release) in §Version Train's cost paragraph                                                                                  | Low    | S      |
+| 20 | Consider an eval for go-modularize version-train strategy decisions                                                                                                                         | Low    | L      |
 
 ## g) Questions (cannot self-answer)
 
@@ -148,5 +148,6 @@
    WAIT. Pull it into TODO_LIST/ROADMAP on your signal, or leave entombed?
 
 ---
-*Report ends. Session is WAITING FOR INSTRUCTIONS. No commit made (harness
-contract; auto-commit daemon picks this file up).*
+
+_Report ends. Session is WAITING FOR INSTRUCTIONS. No commit made (harness
+contract; auto-commit daemon picks this file up)._

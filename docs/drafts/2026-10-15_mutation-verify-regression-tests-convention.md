@@ -6,5 +6,4 @@ The best test-quality practice in this fleet is oral tradition: revert the fix, 
 
 **One bullet in AGENTS.md testing conventions:** every regression test is mutation-verified — fix temporarily reverted, test must fail with the original message (not merely compile or fail vaguely), then restored. Measured cost when the 06-16 session did it: ~3 minutes. It converts "I wrote a test" into "the test catches the bug".
 
-
 💘 Generated with Crush

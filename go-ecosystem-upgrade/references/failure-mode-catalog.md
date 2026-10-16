@@ -531,6 +531,7 @@ The Go module proxy cannot resolve `00010101000000` versions — they're sentine
   never see
 
 <a id="f19"></a>
+
 ## F19 — Bumping only the nested module of a split multi-module repo
 
 **Reports:** go-etag v0.6.0 ecosystem sweep (2026-09-23)

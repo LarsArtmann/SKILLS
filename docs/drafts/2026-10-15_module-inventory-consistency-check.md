@@ -10,5 +10,4 @@ The 2026-09-23 `httputil/etagmetrics` → go-etag move left a dependabot entry p
 
 **A detect-only step** that enumerates the module inventory from go.work and verifies every other surface references only live modules — and the reverse direction where coverage is expected (a go.work module absent from `PACKAGES`-style patterns is the same drift class). Findings, not repairs: which surface is stale is always a human decision.
 
-
 💘 Generated with Crush

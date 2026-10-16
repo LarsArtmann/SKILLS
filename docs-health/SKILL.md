@@ -160,7 +160,6 @@ Old reports contain numbered items (lists `1. 2. 3.` or table rows). **You must 
 
 **Batch repair (2026-10-15, ported from the go-aichat corpus pass):** `go run ./assets/annotate.go repair [--dry-run] <specfile>` applies a whole corpus of verdicts from one TSV spec (`path<TAB>lines<TAB>kind[<TAB>value]`, lines `18` or `18-27`, ranges allowed, later specs override earlier per line). It strikes table rows per-cell (dropping the malformed `| ~~ |` placeholder first cell the 2026-10-15 corpus carried), wraps prose items whole, honors the routed kind (append, no strike), and skips already-annotated lines — re-runs are no-ops. `go run ./assets/annotate.go unwrap [--dry-run] <file>:<lines>...` rebuilds struck rows a formatter re-wrapped (verdict fragments spilled into extra cells — the dprint-damage class that makes check-rows flag PARTIAL). `check-rows --normalize` repairs the sibling damage conservatively: trailing EMPTY cells beyond the table's separator column count are dropped, nothing else. All three are atomic and dry-run-first; `annotate.go self-test` covers them (placeholder drop, unwrapped rebuild, normalize trim, re-run no-op, and the emit-keys line-accuracy pin: every emitted key must round-trip into the exact line it came from — the 2026-10-15 07-21 off-by-one lesson, now a regression test).
 
-
 **Doc-damage triage: inspect raw bytes first (`cat -A`), then pick the tool.** The three repair paths are for three DIFFERENT shapes and a wrong choice makes the state worse: `--normalize` for beyond-count trailing empties (padding), `unwrap` for formatter re-wraps (verdict fragments in extra cells), `repair-mangle` for double-strike/collapse shapes. `unwrap` on double-strike damage makes it worse (learned 2026-10-15); hand-rolled sed/perl against an unrecorded shape is how the corpus got 7 files deep before anyone noticed — extend `repair-mangle` with a fixture instead. Canonical empty-struck-cell form: `~~ ~~` — VERIFIED formatter-stable 2026-10-15 (a `buildflow format` pass left it byte-intact); the corpus `| ~~~~ |` collapse came from the original 19-22 mangling event, not a reproducible dprint bug, so no upstream issue — re-run the repro only if a fresh format pass ever produces `~~~~` from `~~ ~~`.
 `go run ./assets/annotate.go repair-mangle [--dry-run] <file>...` repairs the THIRD damage class (2026-10-15 corpus, 7 archived files): a formatter pass doubling strikes (`~~~~x~~~~`), collapsing empty struck cells (`||`, `| ~~~~ |`), and gluing quad boundaries — the mechanical shapes repair to `~~ ~~`/single pairs; a tilde quad AT a cell boundary (`gosec ~~~~ |`) is content-loss (the swallowed text is unrecoverable mechanically) and is reported, exit 1, for hand repair. Idempotent. `self-test` covers all shapes; it validated clean against the repaired go-aichat corpus and found + repaired 8 REAL leftover mangles the corpus-wide check-rows gate cannot see (it proves uniformity, not shape).
 
@@ -168,12 +167,12 @@ Old reports contain numbered items (lists `1. 2. 3.` or table rows). **You must 
 
 ### Classify each file before annotating
 
-| Decision    | Apply when                                                |
-| ----------- | --------------------------------------------------------- |
-| ANNOTATE    | A reader would benefit; value not already present         |
+| Decision    | Apply when                                                                                                                                                                                                |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ANNOTATE    | A reader would benefit; value not already present                                                                                                                                                         |
 | ARCHIVE     | EVERY item resolved → run `check-rows` on the file FIRST (gate BEFORE `git mv` — the 21:00 2026-10-15 pass moved 9 files and only gated after, hiding shape damage) → `git mv` to `<dir>/archived/<file>` |
-| SKIP        | Already clear — has its own resolution or correct content |
-| LEAVE ALONE | Describes rejected / deferred work where a note misleads  |
+| SKIP        | Already clear — has its own resolution or correct content                                                                                                                                                 |
+| LEAVE ALONE | Describes rejected / deferred work where a note misleads                                                                                                                                                  |
 
 **Archive manifest for bulk audits (2026-10-01):** when an AUDIT/ANNOTATE
 sweep archives MORE THAN ONE file in one pass, the sweep's report (or the
