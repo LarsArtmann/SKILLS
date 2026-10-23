@@ -1,23 +1,29 @@
 ## Why
 
-Reviewed the wrapper-vs-upstream split of webphone's NixOS wiring (stack `modules/telephony/{default,web,options}.nix` vs webphone `package/nixos-module.nix`) and the rules that settled "which assertions belong where" are generalizable module design — exactly what the nix-review skill's `NixOS Modules` checklist should teach. Today it has "Assertions for constraints — port ranges, required services, incompatible options" (presence, common-problems #26) but nothing about PLACEMENT when two modules are stacked.
+The nix-review checklist teaches WHEN to assert (its NixOS Modules bullet; common-problems #26 "Missing Assertions") but not WHERE an assertion belongs when a repo ships a NixOS module that a downstream stack wraps. Today's webphone↔telephony-stack review derived the placement rules from first principles; the skill should carry them.
 
-The rules that decided today's case:
+The rules that settled it:
 
-- **Assertions live with the module that owns the options.** The stack's `!services.telephony.webphone.dashboard.enable || services.telephony.webphone.enable` (`modules/telephony/default.nix:299`) cannot move upstream: it asserts wrapper options whose invalid state is a stack artifact — the two nginx locations that "would proxy to nothing" (`web.nix:431`). On webphone's side the same config is merely inert (`settings.*` under `mkIf enable`).
-- **Upstream modules can never reference consumer options.** They must stay evaluable standalone (flake checks evaluate with stand-in options; a bare `config.services.consumer.*` reference is an undefined-option eval error).
-- **Wrapper option = passthrough + invariant → grow a typed option upstream.** Freeform settings cannot carry assertions; typed options can. Webphone shows the pattern both ways: `backup.*`/`caddy.*` are typed options with assertions, while `dashboard`/`crm` are raw `settings` subtrees whose both-or-neither rules live only in the stack plus boot-time Go validation.
-- **Rule of thumb:** upstream iff every input and consequence is upstream-namespaced (unit, user, own vhost generator); wrapper iff it reads consumer data (extensions, domains, SSO) or writes consumer surfaces (proxy locations, backup indexes, env-file renders).
-- **Eval-time mirrors of boot-time validation are a legitimate wrapper value-add** when defaults derive from consumer data (passkey rpId defaults to the stack's domain; upstream validatePasskey catches it only at boot — `default.nix:364`).
+- **Assertions live with the module that owns the options.** The stack's `services.telephony.webphone.dashboard` assertion ("requires the webphone service … the vhost location would proxy to nothing") cannot move upstream: the invalid state is a stack artifact — two nginx locations the wrapper option emits. Upstream, the same config (`services.webphone.settings.dashboard.enable` with the service off) is merely inert: freeform settings under `mkIf enable` carry no invalid state.
+- **Upstream modules can never reference consumer options** — they must stay evaluable standalone (flake checks evaluate modules with stand-in options; `config.services.consumer.*` is an undefined-option eval error there).
+- **Even typed upstream options cannot host cross-module assertions.** Webphone's `caddy.*` is typed, yet the "stack vhost collides with the upstream Caddy generator" guard lives in the stack — only the consumer sees both sides.
+- **Wrapper option = passthrough + invariant → grow a typed option upstream.** Freeform settings cannot carry assertions; typed options can (`services.webphone.backup.*` proves it: option + assertion upstream, wrapper just sets it).
+- **Rule of thumb:** upstream iff every input and consequence is upstream-namespaced (unit, user, own vhost generator, settings); wrapper iff it reads consumer data (extensions, domains, SSO) or writes consumer surfaces (proxy locations, backup indexes, env-file renders).
+- **Eval-time mirrors of boot-time validation are a legitimate wrapper value-add** when defaults derive from consumer data (passkey rpId defaults to the stack's domain; upstream validatePasskey catches it only at boot).
 
 ## Proposal
 
-- [ ] `nix-review/SKILL.md` — one checklist bullet in `#### NixOS Modules (if applicable)`, next to the existing assertions bullet: ownership rule + standalone-evaluability constraint + the typed-option-upgrade signal, pointer to the reference entry.
-- [ ] `nix-review/references/best-practices.md` — subsection under `## NixOS Module Structure`: "Assertion ownership: wrapper vs upstream modules" with the five rules above and the webphone evidence. (Dismissed alternative: numbered entry in common-problems.md `## NixOS Module Issues` next to #26 — costs renumbering #27-63 for no gain.)
-- [ ] `scripts/check-skills.sh` green (checklist↔reference drift guards; nix-review already has its FEATURES.md row).
+- [ ] `nix-review/SKILL.md` — add next to the existing assertions bullet in `#### NixOS Modules (if applicable)`:
+
+  > - [ ] **Assertions live with the option owner** — a module asserts only options it defines: wrapper/stack modules assert wrapper options, upstream modules theirs; an upstream module must stay evaluable standalone (it can never reference consumer options). A wrapper option that is pure passthrough + invariant is the signal to grow a typed option upstream — freeform `settings.*` cannot carry assertions (detail: `references/best-practices.md` § NixOS Module Structure).
+
+- [ ] `nix-review/references/best-practices.md` — new `### Assertion ownership: wrapper vs upstream modules` under `## NixOS Module Structure` (TOC lists only `##` level, so no TOC edit), carrying the six rules above with the webphone evidence. Dismissed: numbered entry in common-problems.md next to #26 — renumbers #27-63 for no gain.
+- [ ] `scripts/check-skills.sh` green (internal-link guard covers the new best-practices pointer).
 
 ## To verify
 
-The next "should this assertion/config move upstream?" question is answered by the checklist without re-deriving the standalone-evaluation argument from first principles.
+- The bullet exists verbatim as a checklist item and names all three: ownership, standalone evaluability, typed-option upgrade.
+- `scripts/check-skills.sh` exit 0.
+- Pose the webphone dashboard assertion question to a fresh session with the updated skill loaded: answer comes from the skill, not first-principles re-derivation.
 
 💘 Generated with Crush
