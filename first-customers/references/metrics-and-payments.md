@@ -5,16 +5,19 @@
 | Stage | Benchmark | Source |
 | --- | --- | --- |
 | Landing page visitor → signup/trial | SaaS median **3.8%**; 5th-7th grade reading level pages hit ~12.9% | Unbounce 2024 (41k pages) |
-| Visitor → free account (freemium) | 12% median | ProductLed survey (600+ SaaS) |
-| Visitor → trial start | 5% median | ProductLed |
-| Free account → paid | **~9% median** overall; $1-5k ACV products ~10%; PQL-qualified ~25% | ProductLed |
+| Visitor → free account (freemium) | 12% median | ProductLed 2022 survey (600+ SaaS) |
+| Visitor → trial start | 5% median | ProductLed 2022 |
+| Free account → paid | **~9% median** overall; $1-5k ACV products ~10%; PQL-qualified ~25% | ProductLed 2022 |
 | Signup → ever returns | 40-60% churn silently | ProductLed-cited onboarding stats |
 | Product Hunt launch | ~10k visits good outcome; <10% even try the product | levels.io |
 
 Read medians as diagnostic anchors, not targets: a 0→1 funnel with 50 visitors
-is noise. Below ~1,000 visitors/month, optimize qualitatively (watch sessions,
-ask the 5 who signed up why the 45 didn't) — A/B testing needs volumes you
-don't have to reach significance.
+is noise. The A/B floor is arithmetic, not opinion: detecting a relative 20%
+lift on a 4% baseline at standard significance/power needs roughly **10,000
+visitors PER VARIANT** (~20k total per test) — a 0→1 site never has that. Below
+that volume, optimize qualitatively (watch sessions, ask the 5 who signed up
+why the 45 didn't). When volume arrives, sequential testing tools shrink the
+sample need but not by 100×.
 
 ## The diagnosis tree (where "no sales" actually leaks)
 
@@ -92,7 +95,9 @@ bare processor only if checkout customization or unit economics dominate.
 ## Sources
 
 - Unbounce SaaS benchmarks: <https://unbounce.com/conversion-benchmark-report/saas-conversion-rate/>
-- ProductLed benchmarks: <https://productled.com/blog/product-led-growth-benchmarks>
+- ProductLed benchmarks (2022 survey): <https://productled.com/blog/product-led-growth-benchmarks>
+- A/B sample-size arithmetic: standard two-proportion power calculation; see
+  Evan Miller's classic essay <https://www.evanmiller.org/ab-testing/>
 - MoR definition + Stripe/Lemon Squeezy consolidation:
   <https://www.lemonsqueezy.com/blog/stripe-acquires-lemon-squeezy>,
   <https://www.lemonsqueezy.com/blog/2026-update>,

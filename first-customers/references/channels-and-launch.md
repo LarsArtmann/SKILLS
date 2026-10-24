@@ -40,10 +40,10 @@ repeatable number of customers, then add the second.
 - Mechanics: launch early in the day PT so the full day accumulates
   engagement; the maker posts a first comment telling the build story; answer
   every comment for 24h; badge on the site afterward.
-- Prepare: assets (GIF demo, gallery), a shipped product (not a waitlist — PH
-  now downranks non-launchable pages), and your warm audience notified WITHOUT
-  asking for upvotes (asking friends to upvote is against HN/PH culture and
-  backfires algorithmically).
+- Prepare: assets (GIF demo, gallery), a shipped product (not a waitlist —
+  launch-day visitors must be able to actually try it), and your warm audience
+  notified WITHOUT asking for upvotes (asking friends to upvote is against
+  HN/PH culture and backfires algorithmically).
 
 ## Hacker News — Show HN (official rules, news.ycombinator.com/showhn.html)
 
