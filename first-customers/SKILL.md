@@ -108,7 +108,7 @@ action (cohort divergence or watching 5 sessions), compress time-to-value, run
 the five onboarding practices (desire-driven copy, progress, human welcome,
 bumpers, helpful empty states) and the 4-email trigger sequence. Personal
 check-in with every activated trial user — at 0→1, you ARE the sales team
-(PQL ~25% conversion vs 9% baseline).
+(PQL ~25% conversion vs 9% baseline, ProductLed 2022).
 
 ## Step 8 — Measure and iterate
 
@@ -116,10 +116,10 @@ Instrument the five events (visit → signup_start → signed_up → activated �
 paid) + session replay. Compare against the benchmark table weekly; when a
 stage leaks, apply the diagnosis tree in
 [./references/metrics-and-payments.md](./references/metrics-and-payments.md)
-top-down. Below ~1,000 visitors/month: qualitative only (watch sessions, email
-the leak) — do not A/B test noise. Feed every observed blocker back into the
-page FAQ and headline vocabulary: page, onboarding, and email are one
-conversation.
+top-down. A/B testing needs ~10k visitors per variant to detect a 20% lift —
+before that, qualitative only (watch sessions, email the leak) — do not A/B
+test noise. Feed every observed blocker back into the page FAQ and headline
+vocabulary: page, onboarding, and email are one conversation.
 
 ## Honesty rules (always)
 

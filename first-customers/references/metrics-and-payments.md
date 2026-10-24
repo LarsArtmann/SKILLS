@@ -64,7 +64,7 @@ The structural choice for a solo founder:
 | You are | the seller of record | the supplier; the MoR sells to the customer |
 | Sales tax/VAT | **you** register, collect, remit per country (EU: destination-based VAT via OSS for digital services; US: economic nexus rules) | MoR handles global sales tax/VAT/compliance ("global sales tax & compliance handled for you" — Lemon Squeezy) |
 | Fraud/chargebacks | yours | largely MoR's risk ops |
-| Fees | ~2.9%+30¢ class | +~2pts over processor fees (check current pricing) |
+| Fees | ~2.9%+30¢ class | MoR example: Lemon Squeezy **5% + 50¢/transaction** (verified 2026-10, [pricing](https://www.lemonsqueezy.com/pricing)); Paddle posts its current fees at [paddle.com/pricing](https://www.paddle.com/pricing) |
 | Control/branding | full checkout control | hosted checkout, less control |
 
 2026 state of the market (verified 2026-10): **Stripe acquired Lemon Squeezy**
@@ -104,3 +104,5 @@ bare processor only if checkout customization or unit economics dominate.
   <https://www.lemonsqueezy.com/reporting/merchant-of-record>
 - EU VAT for SaaS background: <https://www.lemonsqueezy.com/blog/eu-saas-vat>
   (tax rules drift — confirm current obligations for your own situation)
+- Vendor pricing pages (fees drift; check before committing):
+  <https://www.lemonsqueezy.com/pricing>, <https://www.paddle.com/pricing>

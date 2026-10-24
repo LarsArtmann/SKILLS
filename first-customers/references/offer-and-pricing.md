@@ -17,8 +17,8 @@ Pick trial vs freemium vs demo with four questions, not habit:
 | **T**ime-to-value: how fast can a NEW user hit the "aha" moment unaided? | Fast TTV → trial/freemium; slow or data-heavy → demo or paid pilot |
 
 Model definitions: free trial = partial/full product for limited time;
-freemium = limited product forever. Benchmarks (ProductLed survey of 600+ SaaS,
-[PLG benchmarks](https://productled.com/blog/product-led-growth-benchmarks)):
+freemium = limited product forever. Benchmarks (ProductLed 2022 survey of 600+
+SaaS, [PLG benchmarks](https://productled.com/blog/product-led-growth-benchmarks)):
 median free→paid conversion ≈ **9%** overall; visitor→signup converts at 12%
 median for freemium vs 5% for free trials; PQL-driven free trials convert ~25%
 (3×). Jason Lemkin's counterpoint (SaaStr): freemium needs massive volume to
