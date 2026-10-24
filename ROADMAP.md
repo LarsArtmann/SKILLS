@@ -161,7 +161,9 @@ These are blockers that need a human decision before they can become tasks:
   third-party skills stay upstream-managed forever, or do you want any of them
   eventually vendored/forked into this repo (e.g. if you start customizing
   `skill-creator` or `copywriting`)? Decides whether edits to them are ever
-  legitimate.
+  legitimate. Note (2026-10-24): `first-customers` now layers over
+  `copywriting` (strategy-vs-prose split, AGENTS §5.5) — if `copywriting` is
+  ever forked, preserve that boundary.
 - **Link-state enforcement level** (`2026-08-14_15-04` g3): is
   `link-skills-to-agents.sh --check` as a manual command enough, or do you
   want a pre-commit hook / minimal GitHub Action that fails on drift?

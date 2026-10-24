@@ -13,6 +13,25 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-10-24 — first-customers: the 0→1 online sales playbook)
+
+- New `first-customers/` skill (SKILL.md + 8 references, ~1,400 lines of
+  reference material): the full 0→1 sales loop for (micro-)SaaS — stage
+  diagnosis, VoC market research (Copyhackers review-mining, Sales Safari,
+  Mom Test), positioning (Dunford's five steps, ProductLed ICP), offer and
+  pricing (MOAT trial-vs-freemium framework, Van Westendorp, Hormozi value
+  equation, LTD tradeoffs), sales-page anatomy (9-section arc anchored in
+  Unbounce 2024 benchmark + CXL/Wistia evidence), proof/trust ladder for
+  zero-customer products, launch channels (Show HN rules fetched from the
+  official page; Walling/30x500/Levels/Marc Lou playbooks; IH 497-interview
+  channel aggregate), activation (ProductLed onboarding + benchmarks:
+  9% median free→paid, PQL ~25%), and metrics/payments (diagnosis tree; MoR
+  vs processor with the 2026 Stripe-acquired-Lemon-Squeezy state verified
+  from lemonsqueezy.com). Boundary wiring: description two-way disambiguates
+  against third-party `copywriting` (page prose), `website-launch` (docs
+  deployment), and `product-launch-video` (promo asset); AGENTS §5.5 graph
+  entry added.
+
 ### Added (2026-10-11 — go-error-modernization two-token suppression topology)
 
 - go-error-modernization SKILL.md gains the `lint` vs `nolint-audit`

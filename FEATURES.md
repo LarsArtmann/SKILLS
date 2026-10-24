@@ -83,6 +83,12 @@
 | ----------------- | --------------------- | ---------- | --------------------------------------------------- |
 | library-deep-dive | 🟢 `FULLY_FUNCTIONAL` | ✅         | Audits library utilization to the max → HTML report |
 
+## Skill Collection — Growth & Sales
+
+| Skill           | Status  | References   | Notes                                                                                                                                                                                     |
+| --------------- | ------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| first-customers | 🆕 `NEW` | ✅ (8 files) | 0→1 sales loop: diagnose → research (VoC/Schwartz) → position (Dunford) → offer (MOAT/Hormozi) → page (9-section arc, Unbounce/CXL evidence) → channels (Show HN official, IH patterns) → activation (ProductLed) → metrics/payments (MoR; Stripe-acquired-LemonSqueezy verified 2026-10). Aged from 🆕 only after a real launch run |
+
 ## Skill Collection — Communication & Email
 
 | Skill        | Status     | References   | Notes                                                                                                                                                                                                                                                                                                                                          |

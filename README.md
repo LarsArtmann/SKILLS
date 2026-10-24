@@ -84,6 +84,12 @@ Skills organized by domain — live count via `scripts/check-skills.sh` (never h
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------ |
 | **jj-fork-pr-workflow** | Fork + multi-PR upstream workflow with jj — the sync loop (fetch + rebase + push) keeps every open PR current; charmbracelet-ready | 🆕 New |
 
+### Growth & Sales
+
+| Skill               | What It Does                                                                                                                                               | Status |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| **first-customers** | 0→1 online sales playbook for (micro-)SaaS — market research, positioning, offer/pricing, sales page anatomy, launch channels, activation, funnel diagnosis | 🆕 New  |
+
 ### Communication & Email
 
 | Skill            | What It Does                                                                                                               | Status   |
