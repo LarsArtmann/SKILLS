@@ -32,6 +32,34 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   deployment), and `product-launch-video` (promo asset); AGENTS §5.5 graph
   entry added.
 
+### Changed (2026-10-24 — first-customers depth + verify-hygiene wave 2)
+
+- Depth: +3 references and +2 assets — `references/worked-example.md`
+  (fictional StatusHawk status-page micro-SaaS carried through all 8 steps
+  with concrete artifacts: phrase bank, positioning statement, offer card,
+  9-section page outline, launch calendar, activation definition, metrics
+  rituals; invented outcome numbers explicitly labeled as teaching values),
+  `references/cold-outreach.md` (B2B no-audience channel: 50-prospect list,
+  3-5-sentence anatomy, 3-touch sequence, Mom-Test replies, compliance
+  floor), `references/waitlist-emails.md` (6-email capture→launch sequence,
+  copy skeletons, labeled open/click heuristics, boundary vs activation.md's
+  post-signup sequence), `assets/launch-checklist.md` (T-14 → T+7), and
+  `assets/copy-brief.md` (the strategy→copywriting handoff template).
+- SKILL.md: new "Mode: page teardown" (audit order for existing pages,
+  fix-list output ordered by the diagnosis tree, no rewriting during
+  teardown); all new files wired into steps 4 and 6; demo-video hook ==
+  headline alignment note (closes the website-launch cross-check — no split
+  brain found, one-way link added).
+- Verify-hygiene: deleted the unsourced "PH downranks non-launchable pages"
+  claim; ProductLed benchmarks date-stamped 2022 in all three files citing
+  them; the "~1,000 visitors/mo A/B floor" replaced with the underlying
+  arithmetic (~10k visitors per variant for a 20% relative lift on a 4%
+  baseline, Evan Miller reference); Lemon Squeezy fee verified live from
+  lemonsqueezy.com/pricing (5% + 50¢/txn, 2026-10) and pinned with both
+  vendor pricing URLs.
+- ROADMAP: new Theme 8 records the "Growth & Sales category" decision —
+  deferred until a second GTM skill is requested twice (feedback-loop rule).
+
 ### Added (2026-10-11 — go-error-modernization two-token suppression topology)
 
 - go-error-modernization SKILL.md gains the `lint` vs `nolint-audit`

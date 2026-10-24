@@ -23,7 +23,10 @@ Take a (micro-)SaaS from zero to first paying customers. The loop is
 diagnose → research → position → offer → page → channels → activation →
 measure → repeat. Marketing is not a step after building: "if you build it,
 they will come" is false by default (Rob Walling) — the only real validation
-is someone paying (Pieter Levels).
+is someone paying (Pieter Levels). A complete fictional walkthrough of all
+steps (StatusHawk, a status-page micro-SaaS):
+[./references/worked-example.md](./references/worked-example.md) — imitate its
+artifacts, not its invented numbers.
 
 ## Step 0 — Diagnose the stage first
 
@@ -77,7 +80,11 @@ subhead (mechanism) + product visual + value-stating CTA + micro-proof.
 Evidence anchors: SaaS median LP conversion 3.8%; 5th-7th grade reading level
 pages convert ~12.9% vs 2.1% professional; 250-725 words; one CTA goal; load
 <2s; FAQ written from mined objections. For line-by-line prose craft once the
-structure is set, hand off to the copywriting skill (page prose is its lane).
+structure is set, hand off to the copywriting skill (page prose is its lane)
+with [./assets/copy-brief.md](./assets/copy-brief.md) filled in. If a demo
+video exists or is planned (product-launch-video / website-launch), its hook
+must restate the headline promise — video and page telling different stories
+depress both.
 
 ## Step 5 — Wire proof, trust, and payment
 
@@ -99,7 +106,12 @@ community) → public launches (Product Hunt, Show HN, Reddit — each with its
 own post; Show HN requires something playable, no landing pages, maker
 answering comments, no vote-asking) → re-launch every meaningful update. First
 10 customers come from warm network + one niche community + a launch spike —
-not ads, not SEO (both later). One channel at a time until repeatable.
+not ads, not SEO (both later). One channel at a time until repeatable. B2B
+with no audience and no community: founder-to-founder
+[./references/cold-outreach.md](./references/cold-outreach.md). The waitlist
+sequence that primes launch day:
+[./references/waitlist-emails.md](./references/waitlist-emails.md); execute
+the two weeks with [./assets/launch-checklist.md](./assets/launch-checklist.md).
 
 ## Step 7 — Activate
 
@@ -120,6 +132,23 @@ top-down. A/B testing needs ~10k visitors per variant to detect a 20% lift —
 before that, qualitative only (watch sessions, email the leak) — do not A/B
 test noise. Feed every observed blocker back into the page FAQ and headline
 vocabulary: page, onboarding, and email are one conversation.
+
+## Mode: page teardown (page already exists)
+
+When the user shows an existing page instead of asking for a new one, audit
+before proposing anything. Order: (1) 5-second test — what is it, for whom,
+what next, in one glance; (2) headline vs the traffic's actual awareness
+stage; (3) gaps in the 9-section arc
+([./references/sales-page-anatomy.md](./references/sales-page-anatomy.md));
+(4) proof claimed vs proof legitimately available
+([./references/proof-and-trust.md](./references/proof-and-trust.md)); (5)
+offer sharpness — value metric, anchor, guarantee
+([./references/offer-and-pricing.md](./references/offer-and-pricing.md));
+(6) friction — CTA count, form fields, load speed; (7) FAQ: researched
+objections or invented? Output: a numbered fix list ordered by the diagnosis
+tree — leakiest reachable stage first, one fix per item, each citing the
+finding that motivated it. Do not rewrite the page during a teardown; that
+is Step 4 (or the copywriting skill, for prose) after the user picks fixes.
 
 ## Honesty rules (always)
 

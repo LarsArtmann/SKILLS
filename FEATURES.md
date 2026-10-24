@@ -87,7 +87,7 @@
 
 | Skill           | Status  | References   | Notes                                                                                                                                                                                     |
 | --------------- | ------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| first-customers | 🆕 `NEW` | ✅ (8 files) | 0→1 sales loop: diagnose → research (VoC/Schwartz) → position (Dunford) → offer (MOAT/Hormozi) → page (9-section arc, Unbounce/CXL evidence) → channels (Show HN official, IH patterns) → activation (ProductLed) → metrics/payments (MoR; Stripe-acquired-LemonSqueezy verified 2026-10). Aged from 🆕 only after a real launch run |
+| first-customers | 🆕 `NEW` | ✅ (11 refs + 2 assets) | 0→1 sales loop: diagnose → research (VoC/Schwartz) → position (Dunford) → offer (MOAT/Hormozi) → page (9-section arc, Unbounce/CXL evidence; teardown mode) → channels (Show HN official, IH patterns, cold outreach, waitlist emails) → activation (ProductLed) → metrics/payments (MoR; LemonSqueezy 5%+50¢ verified 2026-10). Worked example (StatusHawk) runs all 8 steps. Aged from 🆕 only after a real launch run |
 
 ## Skill Collection — Communication & Email
 
