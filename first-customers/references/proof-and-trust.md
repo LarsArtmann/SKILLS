@@ -47,11 +47,12 @@ blurbs.
 Purpose: move the risk of a wrong decision from buyer to seller. Standard
 ladder:
 
-1. **Unconditional money-back** (14/30/60 days) — maximum conversion lift;
-   refund rates on software are typically low single digits, and the guarantee
-   pays for itself in added conversions (long-standing direct-response
-   doctrine; 37signals/Basecamp famously ran unconditional guarantees as a
-   core positioning weapon).
+1. **Unconditional money-back** (14/30/60 days) — maximum conversion lift.
+   Widely reported practitioner experience puts software refund rates in the
+   low single digits (heuristic — no rigorous public dataset; track your own
+   from day one), and long-standing direct-response doctrine holds the
+   guarantee pays for itself in added conversions (37signals/Basecamp
+   famously ran unconditional guarantees as a core positioning weapon).
 2. **Conditional / results guarantee** — "hit outcome X within 30 days or
    full refund". Stronger copy than #1 but requires the outcome to be
    observable and partially in your control; state the conditions plainly.

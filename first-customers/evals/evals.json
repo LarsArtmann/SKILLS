@@ -1,0 +1,23 @@
+{
+  "skill_name": "first-customers",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I built a small SaaS — an invoice-reminder tool for freelance designers (designerpayments.com). It's been live 3 months: ~150 visitors/month from a few Reddit posts, 22 trial signups, zero upgrades to the $9/mo plan. What do I do?",
+      "expected_output": "Step 0 diagnosis first (signups exist, activation/offer bottleneck — not a traffic or page-from-scratch problem), then activation + offer work: find the aha action, check trial users ever reached value, personal check-in with the activated ones (PQL-style), review offer/wall placement — not a full page redesign, not ads/SEO advice",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Launching my micro-SaaS next month: uptime monitoring for WordPress agencies (uptimehawk.io). I have an MVP, no landing page yet, never done marketing. Where do I even start with the sales page and pricing?",
+      "expected_output": "The loop in order: market research (review-mine WordPress monitoring competitors) → positioning (Dunford, narrow the ICP) → offer/pricing (MOAT questions, likely trial; founding-member terms) → 9-section page architecture with awareness-stage-matched headline — then hand prose to the copywriting skill via assets/copy-brief.md rather than writing final copy inline; ends pointing at the launch checklist",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Here's my current landing page (https://taskflow.example.com — task tracker for small teams). It gets ~800 visitors a month from HN posts but converts at 0.8%. Can you look at it and tell me what's wrong before I rebuild it?",
+      "expected_output": "Teardown mode, not a rebuild: audit in the prescribed order (5-second test, headline vs awareness stage, 9-section arc gaps, proof claimed vs legitimately available, offer sharpness, friction, FAQ sourced from research), output a numbered fix list ordered by the diagnosis tree (leakiest reachable stage first), each fix citing its finding; no full rewrite during teardown",
+      "files": []
+    }
+  ]
+}

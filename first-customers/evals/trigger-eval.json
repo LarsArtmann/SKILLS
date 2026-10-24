@@ -1,0 +1,22 @@
+[
+  {"query": "launched 3 weeks ago, 400 visitors, 9 signups, 0 paid. why is nobody signing up to my saas? it's a chrome extension for tracking freelance hours", "should_trigger": true},
+  {"query": "how do I get my first 10 paying customers for my micro saas? it's a wiki tool for restaurant managers, $15/mo, I have a landing page and a waitlist of 40 emails", "should_trigger": true},
+  {"query": "should I do freemium or a 14-day free trial for my b2b tool? scheduling app for barbershops, no idea which converts better", "should_trigger": true},
+  {"query": "need to design the pricing page for uptimeguru.io — 3 tiers or one? per seat or flat rate? also is a lifetime deal a good idea for launch or does it cheapen the product", "should_trigger": true},
+  {"query": "launching on product hunt next tuesday. first launch, solo dev, task automation tool. any playbook so I don't waste it?", "should_trigger": true},
+  {"query": "I have an idea for a CRM for dog groomers. how do I validate demand before building? should I put up a pre-sell page first", "should_trigger": true},
+  {"query": "my landing page gets decent traffic from a hacker news post but converts at 0.8%, something is wrong with the page itself I think. here's the URL", "should_trigger": true},
+  {"query": "thinking of doing a Show HN for my open source log viewer. what are the actual rules and how do I not get buried", "should_trigger": true},
+  {"query": "I have 300 people on my waitlist and the product ships in 3 weeks — what emails should I send so they actually show up on launch day?", "should_trigger": true},
+  {"query": "just finished building a status page tool for web agencies. whats the playbook for going from 0 to my first customers? I suck at marketing", "should_trigger": true},
+  {"query": "rewrite the hero copy on my landing page to be punchier. current headline is 'Supercharge your workflows with AI' — it feels generic", "should_trigger": false},
+  {"query": "write 5 headline options for my SaaS landing page, it's a time tracker for remote teams", "should_trigger": false},
+  {"query": "improve the copy on my pricing section, the buttons say 'Sign Up' and they feel weak", "should_trigger": false},
+  {"query": "help me write a cold email to pitch a potential client for my design agency, I found them on clutch.co", "should_trigger": false},
+  {"query": "write google ads copy for our B2B analytics platform, we spend $50k/month on ads and need better CTR", "should_trigger": false},
+  {"query": "proofread and tighten the intro paragraph of my devtool blog post, it rambles", "should_trigger": false},
+  {"query": "set up a documentation website for my Go library using astro starlight and deploy it to firebase hosting with a custom domain", "should_trigger": false},
+  {"query": "make a 30 second promo video for my app launch, something with the UI and a voiceover", "should_trigger": false},
+  {"query": "our monthly churn went from 2% to 7% at 400 customers, how do I diagnose and fix retention before it kills us", "should_trigger": false},
+  {"query": "how do I run A/B tests properly on our marketing site? we get 200k visitors a month and I want to test headline variants", "should_trigger": false}
+]
