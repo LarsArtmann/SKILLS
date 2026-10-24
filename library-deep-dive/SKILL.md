@@ -167,3 +167,23 @@ After the report, consider which related skills add value:
 2. Stage the report: `git add docs/research/<file>.html`.
 3. Commit with a VERY DETAILED message describing the library reviewed, the adoption score, key findings, and missed opportunities.
 4. Do not push unless the user explicitly requests it.
+
+### Phase 8: Done bar (added 2026-10-24, from the go-cqrs-lite run)
+
+A deep-dive is DONE only when ALL FOUR of these hold — the 2026-10-24 run
+shipped the report and missed the rest, and each gap cost a same-day closeout:
+
+- [ ] **Gate:** the project's quality gate is green at the report's HEAD
+  (the audit claims must hold on a healthy tree, and `rg -r`-class
+  quoting accidents surface as real findings).
+- [ ] **Index:** the report is REACHABLE — if `docs/research/README.md` (or
+  the project's equivalent index) exists, it gains a row (subject, date,
+  refresh trigger); if no index exists, note that in the report handoff. A
+  report no fresh session can find is folklore with styling.
+- [ ] **Memory:** the project's AGENTS.md (or memory file) carries the
+  durable outcome — the adoption verdict line and the deferral/refresh
+  triggers — not just the report path.
+- [ ] **Browser:** the committed HTML is screenshot-verified in a headless
+  browser (renders, no broken layout, score cards show the derived numbers).
+  An unrendered report has shipped with broken markup before; the screenshot
+  is the run trace.
