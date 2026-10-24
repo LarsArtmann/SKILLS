@@ -21,46 +21,46 @@ deciding the three open questions autonomously.
 ### Verify-hygiene (all six items closed)
 
 - **PH downrank claim**: deleted from `channels-and-launch.md` (unsourced;
-   replaced with the honest "launch-day visitors must be able to try it").
+  replaced with the honest "launch-day visitors must be able to try it").
 - **ProductLed benchmarks**: date-stamped "2022" in all three citing files
-   (`metrics-and-payments.md` table, `offer-and-pricing.md`, SKILL.md Step 7).
+  (`metrics-and-payments.md` table, `offer-and-pricing.md`, SKILL.md Step 7).
 - **A/B floor**: the "~1,000 visitors/mo" heuristic replaced with the
-   arithmetic it stands on — ~10k visitors PER VARIANT to detect a 20%
-   relative lift on a 4% baseline, Evan Miller essay linked. SKILL.md Step 8
-   synced.
+  arithmetic it stands on — ~10k visitors PER VARIANT to detect a 20%
+  relative lift on a 4% baseline, Evan Miller essay linked. SKILL.md Step 8
+  synced.
 - **Refund-rate claim**: relabeled an explicit heuristic (no rigorous public
-   dataset; track your own) in `proof-and-trust.md`.
+  dataset; track your own) in `proof-and-trust.md`.
 - **Payments URLs**: Lemon Squeezy **5% + 50¢/txn verified live** from
-   lemonsqueezy.com/pricing (2026-10) and pinned in the fee table;
-   paddle.com/pricing cited as the verify point (page is JS-rendered, number
-   deliberately NOT claimed).
+  lemonsqueezy.com/pricing (2026-10) and pinned in the fee table;
+  paddle.com/pricing cited as the verify point (page is JS-rendered, number
+  deliberately NOT claimed).
 - **Research retry**: 3 spaced `agentic_fetch` attempts across the session,
-   ALL 429 (synthetic.new subscription-level cap, not a transient window).
-   Every research-dependent claim is now sourced, deleted, date-stamped,
-   arithmetic, or labeled — nothing ships on an unverified number.
+  ALL 429 (synthetic.new subscription-level cap, not a transient window).
+  Every research-dependent claim is now sourced, deleted, date-stamped,
+  arithmetic, or labeled — nothing ships on an unverified number.
 
 ### Depth (5 new files + SKILL.md teardown mode)
 
 - `references/worked-example.md` (175 lines): fictional StatusHawk
-   status-page-for-agencies micro-SaaS through all 8 steps — diagnosis,
-   phrase bank, positioning statement, offer card, 9-section page outline,
-   proof plan, 14-day launch calendar, activation definition, metrics
-   rituals + a deliverables checklist. Invented outcome numbers explicitly
-   labeled as teaching values; real medians cited to their sources.
+  status-page-for-agencies micro-SaaS through all 8 steps — diagnosis,
+  phrase bank, positioning statement, offer card, 9-section page outline,
+  proof plan, 14-day launch calendar, activation definition, metrics
+  rituals + a deliverables checklist. Invented outcome numbers explicitly
+  labeled as teaching values; real medians cited to their sources.
 - `references/cold-outreach.md` (80): B2B no-audience channel — 50-prospect
-   cap, 3-5-sentence anatomy, 3-touch sequence, Mom-Test replies, compliance
-   floor, anti-patterns. Heuristics labeled.
+  cap, 3-5-sentence anatomy, 3-touch sequence, Mom-Test replies, compliance
+  floor, anti-patterns. Heuristics labeled.
 - `references/waitlist-emails.md` (90): 6-email capture→launch sequence,
-   launch-email skeleton, labeled open/click expectations, boundary drawn vs
-   activation.md's post-signup sequence.
+  launch-email skeleton, labeled open/click expectations, boundary drawn vs
+  activation.md's post-signup sequence.
 - `assets/launch-checklist.md` (58): T-14 → T+7 tick-box checklist.
 - `assets/copy-brief.md` (60): the strategy→copywriting handoff template
-   (empty-field gate: no prose before strategy).
+  (empty-field gate: no prose before strategy).
 - SKILL.md: new **"Mode: page teardown"** (audit order, diagnosis-tree-
-   ordered fix list, no rewriting during teardown); worked-example pointer in
-   the intro; copy-brief handoff + demo-video-hook==headline alignment in
-   Step 4; cold-outreach/waitlist-emails/launch-checklist wiring in Step 6.
-   166 lines total (limit 500).
+  ordered fix list, no rewriting during teardown); worked-example pointer in
+  the intro; copy-brief handoff + demo-video-hook==headline alignment in
+  Step 4; cold-outreach/waitlist-emails/launch-checklist wiring in Step 6.
+  166 lines total (limit 500).
 
 ### Wiring
 

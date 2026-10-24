@@ -12,14 +12,14 @@ the first product signup on, use the trigger sequence in
 
 ## The sequence
 
-| # | Trigger | Job | One CTA |
-| --- | --- | --- | --- |
-| 0 | Signup | Confirm + deliver the promised thing (checklist, early access date, teaser) | confirm |
-| 1 | Signup +5 min | The story: why this exists, what problem it kills (phrase-bank words) | reply "does this match your situation?" |
-| 2 | Every 1-2 weeks until launch | Build-in-public update: one real detail (screenshot, number, mistake learned) | reply / nothing |
-| 3 | Launch day, morning | "It's live" + founding offer + what to try first | try the product |
-| 4 | Launch day, evening or +24h | The receipt: rank/numbers/thank-you ("we hit #7 on PH, 214 people tried it") | try the product |
-| 5 | Offer deadline −48h | Last call on the founding price/bonus (a REAL deadline only) | upgrade/buy |
+| # | Trigger                      | Job                                                                           | One CTA                                 |
+| - | ---------------------------- | ----------------------------------------------------------------------------- | --------------------------------------- |
+| 0 | Signup                       | Confirm + deliver the promised thing (checklist, early access date, teaser)   | confirm                                 |
+| 1 | Signup +5 min                | The story: why this exists, what problem it kills (phrase-bank words)         | reply "does this match your situation?" |
+| 2 | Every 1-2 weeks until launch | Build-in-public update: one real detail (screenshot, number, mistake learned) | reply / nothing                         |
+| 3 | Launch day, morning          | "It's live" + founding offer + what to try first                              | try the product                         |
+| 4 | Launch day, evening or +24h  | The receipt: rank/numbers/thank-you ("we hit #7 on PH, 214 people tried it")  | try the product                         |
+| 5 | Offer deadline −48h          | Last call on the founding price/bonus (a REAL deadline only)                  | upgrade/buy                             |
 
 Rules that hold the sequence together:
 

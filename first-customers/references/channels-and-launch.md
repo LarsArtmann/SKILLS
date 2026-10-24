@@ -8,12 +8,12 @@ spike**. Paid ads and SEO pay later, not at 0→1
 
 ## Channel decision (audience you already have?)
 
-| Situation | First channel | Second |
-| --- | --- | --- |
-| You have an audience/followers/list | Launch post to them (email ≈ 19.3% LP conversion — Unbounce 2024) | Product Hunt after the soft launch |
-| No audience, niche community exists for the problem | Participate (weeks), then share as a member | Directories |
-| No audience, no community, B2B | Founder cold outreach (personalized, tiny volume) | Communities of your ICP |
-| Developer tool | Show HN + relevant subreddits | Open source a piece |
+| Situation                                           | First channel                                                     | Second                             |
+| --------------------------------------------------- | ----------------------------------------------------------------- | ---------------------------------- |
+| You have an audience/followers/list                 | Launch post to them (email ≈ 19.3% LP conversion — Unbounce 2024) | Product Hunt after the soft launch |
+| No audience, niche community exists for the problem | Participate (weeks), then share as a member                       | Directories                        |
+| No audience, no community, B2B                      | Founder cold outreach (personalized, tiny volume)                 | Communities of your ICP            |
+| Developer tool                                      | Show HN + relevant subreddits                                     | Open source a piece                |
 
 One channel at a time (Rob Walling's stair-stepper rule) until it produces a
 repeatable number of customers, then add the second.

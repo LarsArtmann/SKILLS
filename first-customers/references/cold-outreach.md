@@ -44,11 +44,11 @@ Sent from the founder's personal address, plain text, no tracking pixels
 
 ## The 3-touch sequence (standard heuristic)
 
-| Touch | When | Content |
-| --- | --- | --- |
-| 1 | day 0 | the email above |
-| 2 | day 4-5 | one-line reply in the same thread: "any thoughts?" + one NEW angle or proof bit |
-| 3 | day 10 | breakup: "closing the loop — one question before I do: what would have made this relevant?" (replies from breakup emails are disproportionately the yeses) |
+| Touch | When    | Content                                                                                                                                                    |
+| ----- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1     | day 0   | the email above                                                                                                                                            |
+| 2     | day 4-5 | one-line reply in the same thread: "any thoughts?" + one NEW angle or proof bit                                                                            |
+| 3     | day 10  | breakup: "closing the loop — one question before I do: what would have made this relevant?" (replies from breakup emails are disproportionately the yeses) |
 
 Then stop. A non-reply is an answer.
 

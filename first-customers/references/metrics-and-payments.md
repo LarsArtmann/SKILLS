@@ -2,14 +2,14 @@
 
 ## Funnel benchmarks (know what "normal" is)
 
-| Stage | Benchmark | Source |
-| --- | --- | --- |
-| Landing page visitor → signup/trial | SaaS median **3.8%**; 5th-7th grade reading level pages hit ~12.9% | Unbounce 2024 (41k pages) |
-| Visitor → free account (freemium) | 12% median | ProductLed 2022 survey (600+ SaaS) |
-| Visitor → trial start | 5% median | ProductLed 2022 |
-| Free account → paid | **~9% median** overall; $1-5k ACV products ~10%; PQL-qualified ~25% | ProductLed 2022 |
-| Signup → ever returns | 40-60% churn silently | ProductLed-cited onboarding stats |
-| Product Hunt launch | ~10k visits good outcome; <10% even try the product | levels.io |
+| Stage                               | Benchmark                                                           | Source                             |
+| ----------------------------------- | ------------------------------------------------------------------- | ---------------------------------- |
+| Landing page visitor → signup/trial | SaaS median **3.8%**; 5th-7th grade reading level pages hit ~12.9%  | Unbounce 2024 (41k pages)          |
+| Visitor → free account (freemium)   | 12% median                                                          | ProductLed 2022 survey (600+ SaaS) |
+| Visitor → trial start               | 5% median                                                           | ProductLed 2022                    |
+| Free account → paid                 | **~9% median** overall; $1-5k ACV products ~10%; PQL-qualified ~25% | ProductLed 2022                    |
+| Signup → ever returns               | 40-60% churn silently                                               | ProductLed-cited onboarding stats  |
+| Product Hunt launch                 | ~10k visits good outcome; <10% even try the product                 | levels.io                          |
 
 Read medians as diagnostic anchors, not targets: a 0→1 funnel with 50 visitors
 is noise. The A/B floor is arithmetic, not opinion: detecting a relative 20%
@@ -59,13 +59,13 @@ traffic first, then page, then activation, then offer.
 
 The structural choice for a solo founder:
 
-| | Bare processor (Stripe directly) | Merchant of Record (Paddle, Lemon Squeezy) |
-| --- | --- | --- |
-| You are | the seller of record | the supplier; the MoR sells to the customer |
-| Sales tax/VAT | **you** register, collect, remit per country (EU: destination-based VAT via OSS for digital services; US: economic nexus rules) | MoR handles global sales tax/VAT/compliance ("global sales tax & compliance handled for you" — Lemon Squeezy) |
-| Fraud/chargebacks | yours | largely MoR's risk ops |
-| Fees | ~2.9%+30¢ class | MoR example: Lemon Squeezy **5% + 50¢/transaction** (verified 2026-10, [pricing](https://www.lemonsqueezy.com/pricing)); Paddle posts its current fees at [paddle.com/pricing](https://www.paddle.com/pricing) |
-| Control/branding | full checkout control | hosted checkout, less control |
+|                   | Bare processor (Stripe directly)                                                                                                | Merchant of Record (Paddle, Lemon Squeezy)                                                                                                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| You are           | the seller of record                                                                                                            | the supplier; the MoR sells to the customer                                                                                                                                                                    |
+| Sales tax/VAT     | **you** register, collect, remit per country (EU: destination-based VAT via OSS for digital services; US: economic nexus rules) | MoR handles global sales tax/VAT/compliance ("global sales tax & compliance handled for you" — Lemon Squeezy)                                                                                                  |
+| Fraud/chargebacks | yours                                                                                                                           | largely MoR's risk ops                                                                                                                                                                                         |
+| Fees              | ~2.9%+30¢ class                                                                                                                 | MoR example: Lemon Squeezy **5% + 50¢/transaction** (verified 2026-10, [pricing](https://www.lemonsqueezy.com/pricing)); Paddle posts its current fees at [paddle.com/pricing](https://www.paddle.com/pricing) |
+| Control/branding  | full checkout control                                                                                                           | hosted checkout, less control                                                                                                                                                                                  |
 
 2026 state of the market (verified 2026-10): **Stripe acquired Lemon Squeezy**
 (2024) and is converging it into **Stripe Managed Payments** (Lemon Squeezy

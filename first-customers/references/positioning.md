@@ -7,7 +7,7 @@ is the foundation of great marketing and sales"
 ([aprildunford.com](https://aprildunford.com/)). Default positioning (vague
 "all-in-one platform for everyone") is why pages read like everyone else's.
 
-## Dunford's positioning process (*Obviously Awesome*, 2019)
+## Dunford's positioning process (_Obviously Awesome_, 2019)
 
 Run the five steps in order; each feeds the next:
 
@@ -57,7 +57,7 @@ what the product is, for whom, the primary benefit, and why you instead of
 alternatives. Uniqueness test: "the only \<category\> that \<unique
 attribute\> for \<segment\>". Quantify whenever honest: "cut month-end close
 from 10 days to 3" beats "faster close" (specificity principle, Claude
-Hopkins, *Scientific Advertising*: numbers beat adjectives, and every claim
+Hopkins, _Scientific Advertising_: numbers beat adjectives, and every claim
 needs a "because").
 
 Where it lives on the page: headline = outcome/who, subhead = mechanism/how
@@ -77,7 +77,7 @@ Where it lives on the page: headline = outcome/who, subhead = mechanism/how
 ## Sources
 
 - April Dunford (methodology, positioning statement form):
-  <https://aprildunford.com/> — full 10-step process in *Obviously Awesome*
+  <https://aprildunford.com/> — full 10-step process in _Obviously Awesome_
   and her free workbook via newsletter signup.
 - Target customer profile 5-step framework:
   <https://productled.com/blog/how-to-create-your-target-customer-profile>

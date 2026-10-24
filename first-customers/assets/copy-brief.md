@@ -25,22 +25,22 @@ that <key benefit>. Unlike <alternative>, <product> <differentiation>.
 ## Phrase bank (verbatim mined phrases — reuse, don't paraphrase)
 
 | Pain | Outcome | Objections |
-| --- | --- | --- |
-|  |  |  |
+| ---- | ------- | ---------- |
+|      |         |            |
 
 ## Page architecture (from Step 4)
 
-| # | Section | Thesis (one line each) |
-| --- | --- | --- |
-| 1 Hero | |  |
-| 2 Proof strip | |  |
-| 3 Problem | |  |
-| 4 Mechanism | |  |
-| 5 Features→benefits | |  |
-| 6 Proof | |  |
-| 7 Pricing/offer | |  |
-| 8 FAQ | |  |
-| 9 Final CTA + PS | |  |
+| #                   | Section | Thesis (one line each) |
+| ------------------- | ------- | ---------------------- |
+| 1 Hero              |         |                        |
+| 2 Proof strip       |         |                        |
+| 3 Problem           |         |                        |
+| 4 Mechanism         |         |                        |
+| 5 Features→benefits |         |                        |
+| 6 Proof             |         |                        |
+| 7 Pricing/offer     |         |                        |
+| 8 FAQ               |         |                        |
+| 9 Final CTA + PS    |         |                        |
 
 ## Offer summary (from Step 3)
 

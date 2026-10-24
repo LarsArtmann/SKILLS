@@ -85,8 +85,8 @@
 
 ## Skill Collection — Growth & Sales
 
-| Skill           | Status  | References   | Notes                                                                                                                                                                                     |
-| --------------- | ------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Skill           | Status   | References              | Notes                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| --------------- | -------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | first-customers | 🆕 `NEW` | ✅ (11 refs + 2 assets) | 0→1 sales loop: diagnose → research (VoC/Schwartz) → position (Dunford) → offer (MOAT/Hormozi) → page (9-section arc, Unbounce/CXL evidence; teardown mode) → channels (Show HN official, IH patterns, cold outreach, waitlist emails) → activation (ProductLed) → metrics/payments (MoR; LemonSqueezy 5%+50¢ verified 2026-10). Worked example (StatusHawk) runs all 8 steps. Aged from 🆕 only after a real launch run |
 
 ## Skill Collection — Communication & Email

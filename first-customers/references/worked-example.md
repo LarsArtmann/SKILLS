@@ -11,13 +11,13 @@ agencies managing 5-20 client sites. Solo EU-based developer, MVP built over
 
 ## Step 0 — Diagnose
 
-| Fact | Value |
-| --- | --- |
-| Product | built (MVP) |
+| Fact       | Value                                             |
+| ---------- | ------------------------------------------------- |
+| Product    | built (MVP)                                       |
 | Sales page | exists, generic: "Uptime monitoring for everyone" |
-| Traffic | ~40 visitors/month (founder's own posts) |
-| Signups | 3 (two are friends) |
-| Payers | 0 |
+| Traffic    | ~40 visitors/month (founder's own posts)          |
+| Signups    | 3 (two are friends)                               |
+| Payers     | 0                                                 |
 
 Diagnosis: under 100 visitors/month AND under 2% signup → the bottleneck is
 **channel first, then page/positioning**. Nothing downstream (onboarding,
@@ -29,11 +29,11 @@ the step most founders skip — they redesign the pricing page nobody reaches.
 Review-mined ~200 reviews of StatusCake, UptimeRobot, BetterStack on
 G2/TrustPilot + r/webdev and r/agency threads (Sales Safari). Harvest:
 
-| Bucket | Mined phrases (verbatim) |
-| --- | --- |
-| Pain | "client called ME when their site was down", "checking 30 dashboards every morning", "I look unprofessional forwarding Cloudflare emails" |
-| Outcome | "one place for all client sites", "client stops asking me if it's them or the host", "look like a real agency" |
-| Objections | "another dashboard to babysit", "SMS alerts cost extra everywhere", "what happens when YOU go down?" |
+| Bucket     | Mined phrases (verbatim)                                                                                                                  |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Pain       | "client called ME when their site was down", "checking 30 dashboards every morning", "I look unprofessional forwarding Cloudflare emails" |
+| Outcome    | "one place for all client sites", "client stops asking me if it's them or the host", "look like a real agency"                            |
+| Objections | "another dashboard to babysit", "SMS alerts cost extra everywhere", "what happens when YOU go down?"                                      |
 
 Awareness: **solution aware** (agencies know monitoring exists; they use
 spreadsheet + Cloudflare pings) → headline leads with the MECHANISM.
@@ -105,7 +105,7 @@ ocean, makers (agency owners try before buying), TTV ~10 minutes →
    counter), annual $190.
 8. FAQ: every mined objection as a question ("Do alerts cost extra?",
    "What happens if StatusHawk itself is down?" → hosted on separate infra
-   + export).
+   - export).
 9. Final CTA + P.S. restating the guarantee.
 
 ## Step 5 — Proof, trust, payment ([./proof-and-trust.md](./proof-and-trust.md))
@@ -122,15 +122,15 @@ ocean, makers (agency owners try before buying), TTV ~10 minutes →
 
 Two-week calendar:
 
-| When | Action |
-| --- | --- |
-| T-14 | Page rewritten to the arc above; founding offer published |
-| T-10 | Warm soft launch: 14 personal emails to agency contacts from the beta ("you're in the first 25") |
-| T-7 | r/agency + r/webdev build-story post (problem → numbers → demo link in comments) |
-| T-3 | Waitlist emailed: launch date, founding offer count |
-| Day 0 | Show HN morning (playable product, maker answering all day) |
-| Day +3 | Product Hunt (GIF demo, maker first comment, warm audience notified — no upvote asks) |
-| Day +7 | Directories batch (Uneed, SaaSHub, AlternativeTo, niche lists); retro |
+| When   | Action                                                                                           |
+| ------ | ------------------------------------------------------------------------------------------------ |
+| T-14   | Page rewritten to the arc above; founding offer published                                        |
+| T-10   | Warm soft launch: 14 personal emails to agency contacts from the beta ("you're in the first 25") |
+| T-7    | r/agency + r/webdev build-story post (problem → numbers → demo link in comments)                 |
+| T-3    | Waitlist emailed: launch date, founding offer count                                              |
+| Day 0  | Show HN morning (playable product, maker answering all day)                                      |
+| Day +3 | Product Hunt (GIF demo, maker first comment, warm audience notified — no upvote asks)            |
+| Day +7 | Directories batch (Uneed, SaaSHub, AlternativeTo, niche lists); retro                            |
 
 Expected shape (illustrative): warm + community ≈ 60 visitors and 2-3
 trials; Show HN spike ≈ 800-2,000 visitors, 3-8% try it; PH spike ≈ 1-3k
@@ -153,11 +153,11 @@ not failure.
 Weekly cohort ritual, 30 minutes: visitors → signups → activated → paid,
 vs medians (SaaS LP 3.8% Unbounce 2024; free→paid ~9% ProductLed 2022):
 
-| Week reality (illustrative) | Diagnosis | Move |
-| --- | --- | --- |
-| 1,400 visitors, 41 signups (2.9%) | page slightly under median | watch 5 replays; clarity fix, not redesign |
-| 41 signups, 9 activated (22%) | onboarding leak | shorten checklist; blocker email rewrite |
-| 9 activated, 2 paid (22% of activated) | at/better than ~25% PQL shape | keep going; ask the 7 why not |
+| Week reality (illustrative)            | Diagnosis                     | Move                                       |
+| -------------------------------------- | ----------------------------- | ------------------------------------------ |
+| 1,400 visitors, 41 signups (2.9%)      | page slightly under median    | watch 5 replays; clarity fix, not redesign |
+| 41 signups, 9 activated (22%)          | onboarding leak               | shorten checklist; blocker email rewrite   |
+| 9 activated, 2 paid (22% of activated) | at/better than ~25% PQL shape | keep going; ask the 7 why not              |
 
 At these volumes: NO A/B tests (10k visitors per variant needed) — replays
 and replies only. First month target: **3 paying agencies**, not 30.

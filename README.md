@@ -86,9 +86,9 @@ Skills organized by domain — live count via `scripts/check-skills.sh` (never h
 
 ### Growth & Sales
 
-| Skill               | What It Does                                                                                                                                               | Status |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| **first-customers** | 0→1 online sales playbook for (micro-)SaaS — market research, positioning, offer/pricing, sales page anatomy (incl. teardown mode), launch channels, activation, funnel diagnosis; full worked example + launch checklist | 🆕 New  |
+| Skill               | What It Does                                                                                                                                                                                                              | Status |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| **first-customers** | 0→1 online sales playbook for (micro-)SaaS — market research, positioning, offer/pricing, sales page anatomy (incl. teardown mode), launch channels, activation, funnel diagnosis; full worked example + launch checklist | 🆕 New |
 
 ### Communication & Email
 

@@ -6,14 +6,14 @@ how to present it, and how to reverse risk so trying costs nothing.
 
 ## The proof ladder (use the highest rung you legitimately have)
 
-| Rung | Proof | Legitimate at |
-| --- | --- | --- |
-| 1 | Paid customer testimonials with numbers | first paying users |
-| 2 | Beta/pilot user quotes ("tested by 12 agencies on real audits") | pre-launch |
-| 3 | Your own build-in-public receipts (usage numbers, revenue screenshots, changelog cadence) | day one |
-| 4 | Live demo / interactive product on the page ("the product is the proof") | day one |
-| 5 | Founder identity: real name, face, personal domain, about page | day one |
-| 6 | Open-source code, transparent status page, public roadmap | day one |
+| Rung | Proof                                                                                     | Legitimate at      |
+| ---- | ----------------------------------------------------------------------------------------- | ------------------ |
+| 1    | Paid customer testimonials with numbers                                                   | first paying users |
+| 2    | Beta/pilot user quotes ("tested by 12 agencies on real audits")                           | pre-launch         |
+| 3    | Your own build-in-public receipts (usage numbers, revenue screenshots, changelog cadence) | day one            |
+| 4    | Live demo / interactive product on the page ("the product is the proof")                  | day one            |
+| 5    | Founder identity: real name, face, personal domain, about page                            | day one            |
+| 6    | Open-source code, transparent status page, public roadmap                                 | day one            |
 
 At 0→1 rungs 3-5 ARE the social proof — a named human with a face and a public
 track record converts where an anonymous "trusted by 10,000 teams" (fabricated)
@@ -94,9 +94,9 @@ provider's known mark (Stripe/PayPal) at checkout is the one that matters.
 1. Over-deliver on onboarding for users 1-10 personally.
 2. At the first success signal, ask the specific-outcome question.
 3. Request permission to quote with attribution; offer founding-member
-  treatment (locked price, name in changelog) as the exchange.
+   treatment (locked price, name in changelog) as the exchange.
 4. Ship the quote to the page the same day; tell them they're on it. The
-  gesture itself generates goodwill → referral.
+   gesture itself generates goodwill → referral.
 
 ## Sources
 
@@ -105,5 +105,5 @@ provider's known mark (Stripe/PayPal) at checkout is the one that matters.
 - Wyzowl trust/video stats: <https://www.wyzowl.com/video-marketing-statistics/>
 - Design-first-impressions stat via CXL hero-image research:
   <https://cxl.com/blog/hero-image/>
-- Basecamp guarantee history: 37signals/*Rework* and basecamp.com pricing page
+- Basecamp guarantee history: 37signals/_Rework_ and basecamp.com pricing page
   (book-level citation; verify current terms on the live site before quoting).

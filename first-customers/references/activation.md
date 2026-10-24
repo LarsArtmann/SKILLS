@@ -67,12 +67,12 @@ feeds personalization AND your ICP data), and trigger-based emails.
 
 ## Onboarding email sequence (day 0-7, trigger-based beats time-based)
 
-| Trigger | Email job |
-| --- | --- |
-| Signup (day 0) | One action to reach aha; personal founder voice |
-| Not activated +24-48h | Address the top blocker (from watching sessions); offer help |
-| Activated | Upgrade path tied to the value they just experienced |
-| Day 7 dormant | One-line "does X still matter to you?" honesty beats drip spam |
+| Trigger               | Email job                                                      |
+| --------------------- | -------------------------------------------------------------- |
+| Signup (day 0)        | One action to reach aha; personal founder voice                |
+| Not activated +24-48h | Address the top blocker (from watching sessions); offer help   |
+| Activated             | Upgrade path tied to the value they just experienced           |
+| Day 7 dormant         | One-line "does X still matter to you?" honesty beats drip spam |
 
 Every email: one CTA, plain text vibes, from the founder's name. Open rates
 25-40% are achievable to a warm signup list (30x500 benchmark) — the sequence

@@ -33,15 +33,15 @@ artifacts, not its invented numbers.
 Ask: what exists today (product? page? traffic? signups? payers?). Then jump
 to the failing stage — never optimize a stage the funnel never reaches:
 
-| Situation | Bottleneck | Go to |
-| --- | --- | --- |
-| Nothing built yet | demand unknown | Step 1, then pre-sell before building |
-| Built, no page/offer | no way to buy | Steps 3-5 |
-| Page, <100 visitors/mo | channel | Step 6 |
-| Visitors, <2% signup | page/positioning | Steps 2, 4, 5 |
-| Signups, no activation | onboarding | Step 7 |
-| Activated, no upgrades | offer/wall | Steps 3, 7 |
-| Full diagnosis tree + benchmarks: [./references/metrics-and-payments.md](./references/metrics-and-payments.md) | | |
+| Situation                                                                                                      | Bottleneck       | Go to                                 |
+| -------------------------------------------------------------------------------------------------------------- | ---------------- | ------------------------------------- |
+| Nothing built yet                                                                                              | demand unknown   | Step 1, then pre-sell before building |
+| Built, no page/offer                                                                                           | no way to buy    | Steps 3-5                             |
+| Page, <100 visitors/mo                                                                                         | channel          | Step 6                                |
+| Visitors, <2% signup                                                                                           | page/positioning | Steps 2, 4, 5                         |
+| Signups, no activation                                                                                         | onboarding       | Step 7                                |
+| Activated, no upgrades                                                                                         | offer/wall       | Steps 3, 7                            |
+| Full diagnosis tree + benchmarks: [./references/metrics-and-payments.md](./references/metrics-and-payments.md) |                  |                                       |
 
 ## Step 1 — Mine the market's words (before any copy)
 

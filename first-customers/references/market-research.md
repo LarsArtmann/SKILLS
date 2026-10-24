@@ -9,13 +9,13 @@ part of the work, 99% of the time it means you're doing it wrong" (Joanna Wiebe,
 
 ## Signal-strength ladder (use the highest rung available)
 
-| Rung | Source | Why it beats the rung below |
-| --- | --- | --- |
-| 1 | Sales-call / demo transcripts (yours or competitors') | Real buying language, spoken under intent |
-| 2 | Customer interviews | Depth, but self-reported |
-| 3 | Support tickets, win/loss notes, live-chat logs | Unfiltered pain vocabulary |
-| 4 | Onboarding/thank-you surveys | Structured, but prompted |
-| 5 | Review mining (competitors' reviews) | Available at day zero — the 0→1 default |
+| Rung | Source                                                | Why it beats the rung below               |
+| ---- | ----------------------------------------------------- | ----------------------------------------- |
+| 1    | Sales-call / demo transcripts (yours or competitors') | Real buying language, spoken under intent |
+| 2    | Customer interviews                                   | Depth, but self-reported                  |
+| 3    | Support tickets, win/loss notes, live-chat logs       | Unfiltered pain vocabulary                |
+| 4    | Onboarding/thank-you surveys                          | Structured, but prompted                  |
+| 5    | Review mining (competitors' reviews)                  | Available at day zero — the 0→1 default   |
 
 ## Review mining — the zero-customer recipe (Copyhackers)
 
@@ -48,12 +48,12 @@ Rules:
 Passive observation of communities (subreddits, Slack/Discord groups, forums,
 GitHub discussions) collecting four things:
 
-| Quadrant | Collect |
-| --- | --- |
-| Pain | First- and second-level pain (what they complain about, and why it matters enough to discuss) |
-| Jargon | Their exact vocabulary, abbreviations, tool names |
-| Worldview | What they believe about the problem, what they blame |
-| Recommendations | What they tell each other to use — your real competitor list |
+| Quadrant        | Collect                                                                                       |
+| --------------- | --------------------------------------------------------------------------------------------- |
+| Pain            | First- and second-level pain (what they complain about, and why it matters enough to discuss) |
+| Jargon          | Their exact vocabulary, abbreviations, tool names                                             |
+| Worldview       | What they believe about the problem, what they blame                                          |
+| Recommendations | What they tell each other to use — your real competitor list                                  |
 
 Sell to people who ALREADY pay for solutions in this space. "Validation is
 backwards" (30x500): don't ask the market to validate your idea; find pain
@@ -89,17 +89,17 @@ Run post-signup / post-purchase, open-ended, max 2 questions at a time:
   your differentiation.
 - "What would you tell a friend on the fence about this?" → testimonial seeds.
 
-## Awareness stage — diagnose before writing (Eugene Schwartz, *Breakthrough Advertising*)
+## Awareness stage — diagnose before writing (Eugene Schwartz, _Breakthrough Advertising_)
 
 Awareness = how much the visitor knows. It sets where the page starts.
 
-| Stage | Visitor state | Headline must lead with |
-| --- | --- | --- |
-| 1 Unaware | Doesn't know the problem exists | Identity / call-out of the market; never the product |
-| 2 Problem aware | Feels the pain, no solution known | The problem, in their words ("If you've tried everything for X...") |
-| 3 Solution aware | Knows solutions exist, not yours | Your MECHANISM — the new way you deliver the outcome |
-| 4 Product aware | Knows you, not convinced | Proof: numbers, testimonials, comparison |
-| 5 Most aware | Ready to buy | The offer: price, bonus, CTA |
+| Stage            | Visitor state                     | Headline must lead with                                             |
+| ---------------- | --------------------------------- | ------------------------------------------------------------------- |
+| 1 Unaware        | Doesn't know the problem exists   | Identity / call-out of the market; never the product                |
+| 2 Problem aware  | Feels the pain, no solution known | The problem, in their words ("If you've tried everything for X...") |
+| 3 Solution aware | Knows solutions exist, not yours  | Your MECHANISM — the new way you deliver the outcome                |
+| 4 Product aware  | Knows you, not convinced          | Proof: numbers, testimonials, comparison                            |
+| 5 Most aware     | Ready to buy                      | The offer: price, bonus, CTA                                        |
 
 Diagnose from three signals:
 
@@ -118,13 +118,13 @@ seconds, under-educating costs the visitor.
 
 Sophistication is market-level fatigue, and it sets what the page argues:
 
-| Stage | Market state | Winning argument |
-| --- | --- | --- |
-| 1 | Nothing like you exists | State the claim plainly |
-| 2 | Claim is repeated everywhere | Enlarge it with numbers/speed |
-| 3 | Claims are disbelieved | Introduce a named MECHANISM (most markets sit here) |
-| 4 | Mechanism copied | Better/faster mechanism, or narrow to a specific audience |
-| 5 | Cynical, saturated | Sell identity — who they become |
+| Stage | Market state                 | Winning argument                                          |
+| ----- | ---------------------------- | --------------------------------------------------------- |
+| 1     | Nothing like you exists      | State the claim plainly                                   |
+| 2     | Claim is repeated everywhere | Enlarge it with numbers/speed                             |
+| 3     | Claims are disbelieved       | Introduce a named MECHANISM (most markets sit here)       |
+| 4     | Mechanism copied             | Better/faster mechanism, or narrow to a specific audience |
+| 5     | Cynical, saturated           | Sell identity — who they become                           |
 
 Diagnose: read the top 10 competitors' headlines. Shared dead words
 ("AI-powered", "all-in-one") = stage 2-3+. Everyone selling a branded framework

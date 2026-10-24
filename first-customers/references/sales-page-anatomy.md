@@ -7,17 +7,17 @@ levels, e.g. "Start free trial" + "View demo") must point at the same journey
 
 ## The persuasion arc (top to bottom)
 
-| # | Section | Job | Skip when |
-| --- | --- | --- | --- |
-| 1 | Hero: headline + subhead + CTA + product visual | Who it's for, what outcome, how — 5-second test | never |
-| 2 | Social proof strip | Instant credibility under the promise | you have zero proof (use founder/BiP identity instead) |
-| 3 | Problem agitation | Pain in the customer's exact words + cost of inaction | audience is most-aware (they know the pain) |
-| 4 | Mechanism / how it works | WHY the outcome is believable — your named mechanism + demo GIF/video | never |
-| 5 | Feature → benefit blocks | Concrete capabilities, each tied to an outcome | never (devs buy features, but translate them) |
-| 6 | Proof: testimonials, numbers | Specific outcomes from matching ICPs | never — borrow trust if young (see proof-and-trust.md) |
-| 7 | Pricing / offer | What you get, enumerated; simple tiers; anchor; guarantee | page goal is waitlist/trial signup |
-| 8 | FAQ / objections | Answer the real hesitations (security, migration, "can it do X", cancel) | never |
-| 9 | Final CTA + P.S. | Restate offer + risk reversal; last-chitchance summary | never |
+| # | Section                                         | Job                                                                      | Skip when                                              |
+| - | ----------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------ |
+| 1 | Hero: headline + subhead + CTA + product visual | Who it's for, what outcome, how — 5-second test                          | never                                                  |
+| 2 | Social proof strip                              | Instant credibility under the promise                                    | you have zero proof (use founder/BiP identity instead) |
+| 3 | Problem agitation                               | Pain in the customer's exact words + cost of inaction                    | audience is most-aware (they know the pain)            |
+| 4 | Mechanism / how it works                        | WHY the outcome is believable — your named mechanism + demo GIF/video    | never                                                  |
+| 5 | Feature → benefit blocks                        | Concrete capabilities, each tied to an outcome                           | never (devs buy features, but translate them)          |
+| 6 | Proof: testimonials, numbers                    | Specific outcomes from matching ICPs                                     | never — borrow trust if young (see proof-and-trust.md) |
+| 7 | Pricing / offer                                 | What you get, enumerated; simple tiers; anchor; guarantee                | page goal is waitlist/trial signup                     |
+| 8 | FAQ / objections                                | Answer the real hesitations (security, migration, "can it do X", cancel) | never                                                  |
+| 9 | Final CTA + P.S.                                | Restate offer + risk reversal; last-chitchance summary                   | never                                                  |
 
 This is the long-form direct-response skeleton (promise → problem → agitation
 → empathy → solution → offer → features-to-benefits → distributed proof →
@@ -48,13 +48,13 @@ hype: "Join 46,700 others" / "Save $3,500 in 16 weeks".
 
 ### Headline by awareness stage (Schwartz)
 
-| Audience stage | Headline leads with |
-| --- | --- |
-| Unaware | Identity call-out / story, never product |
-| Problem aware | The pain, their words |
-| Solution aware | The mechanism (new way to the promise) |
-| Product aware | Proof (numbers, users, comparison) |
-| Most aware | The offer itself |
+| Audience stage | Headline leads with                      |
+| -------------- | ---------------------------------------- |
+| Unaware        | Identity call-out / story, never product |
+| Problem aware  | The pain, their words                    |
+| Solution aware | The mechanism (new way to the promise)   |
+| Product aware  | Proof (numbers, users, comparison)       |
+| Most aware     | The offer itself                         |
 
 ## Above the fold — evidence
 

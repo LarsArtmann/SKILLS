@@ -2,19 +2,19 @@
 
 The offer is what the visitor actually buys; the page merely communicates it.
 A mediocre page with a sharp offer beats a great page with a foggy one.
-Hormozi's framing (*$100M Offers*): make the offer so good people feel stupid
+Hormozi's framing (_$100M Offers_): make the offer so good people feel stupid
 saying no — then the page only has to be clear.
 
 ## Free model choice — the MOAT framework (Wes Bush / ProductLed)
 
 Pick trial vs freemium vs demo with four questions, not habit:
 
-| Question | Answer pushes toward |
-| --- | --- |
-| **M**arket strategy: dominant (better AND cheaper, huge TAM) / differentiated (specialized, pricier, small TAM) / disruptive (simpler + cheaper for over-served users) | Dominant + disruptive → freemium-friendly; differentiated → trial/demo |
-| **O**cean: red (existing demand, buyers know the category) vs blue (you must educate) | Red ocean → self-serve product-led; blue ocean → sales/marketing-led first |
-| **A**udience: makers (end users who try before buying) vs shakers (execs who buy big-picture) | Makers → self-serve; shakers → demo/sales |
-| **T**ime-to-value: how fast can a NEW user hit the "aha" moment unaided? | Fast TTV → trial/freemium; slow or data-heavy → demo or paid pilot |
+| Question                                                                                                                                                               | Answer pushes toward                                                       |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| **M**arket strategy: dominant (better AND cheaper, huge TAM) / differentiated (specialized, pricier, small TAM) / disruptive (simpler + cheaper for over-served users) | Dominant + disruptive → freemium-friendly; differentiated → trial/demo     |
+| **O**cean: red (existing demand, buyers know the category) vs blue (you must educate)                                                                                  | Red ocean → self-serve product-led; blue ocean → sales/marketing-led first |
+| **A**udience: makers (end users who try before buying) vs shakers (execs who buy big-picture)                                                                          | Makers → self-serve; shakers → demo/sales                                  |
+| **T**ime-to-value: how fast can a NEW user hit the "aha" moment unaided?                                                                                               | Fast TTV → trial/freemium; slow or data-heavy → demo or paid pilot         |
 
 Model definitions: free trial = partial/full product for limited time;
 freemium = limited product forever. Benchmarks (ProductLed 2022 survey of 600+
@@ -86,12 +86,12 @@ Van Westendorp 1976; standard reference in pricing research.)
 Perceived value = (Dream outcome × Perceived likelihood of success) ÷
 (Time delay × Effort & sacrifice). Four levers to pull before touching price:
 
-| Lever | Page/offer move |
-| --- | --- |
-| Dream outcome | Name the specific end-state, quantified |
-| Perceived likelihood | Proof: testimonials, demos, guarantees, "here's exactly how it works" |
-| Time delay | "First result in 10 minutes" — compress promised time-to-value honestly |
-| Effort & sacrifice | "We migrate your data", templates included, "no code, no config" |
+| Lever                | Page/offer move                                                         |
+| -------------------- | ----------------------------------------------------------------------- |
+| Dream outcome        | Name the specific end-state, quantified                                 |
+| Perceived likelihood | Proof: testimonials, demos, guarantees, "here's exactly how it works"   |
+| Time delay           | "First result in 10 minutes" — compress promised time-to-value honestly |
+| Effort & sacrifice   | "We migrate your data", templates included, "no code, no config"        |
 
 Guarantees (see [./proof-and-trust.md](./proof-and-trust.md) for evidence):
 unconditional money-back (conversion-max), conditional/results-based
@@ -126,5 +126,5 @@ specifically need cash/validation NOW and cap the count (real scarcity again).
 - PLG conversion benchmarks: <https://productled.com/blog/product-led-growth-benchmarks>
 - SaaStr freemium caution: <https://www.saastr.com/you-need-50-million-users-for-freemium-to-actually-work/>
 - Pricing model overview: <https://www.lemonsqueezy.com/blog/saas-pricing-models>
-- Hormozi: *$100M Offers* (2021) — value equation + guarantee stack are book
+- Hormozi: _$100M Offers_ (2021) — value equation + guarantee stack are book
   content; cite the book, not blog summaries.
