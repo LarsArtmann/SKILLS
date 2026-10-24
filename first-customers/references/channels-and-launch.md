@@ -22,7 +22,8 @@ repeatable number of customers, then add the second.
 
 1. **Pre-launch page** with email capture (the Buffer move: pricing buttons on
    a page with no product — Pieter Levels' favorite demand test; "the only
-   real validation is people paying").
+   real validation is people paying"). The capture→launch email sequence:
+   [./waitlist-emails.md](./waitlist-emails.md).
 2. **Warm soft launch**: personal network + tiny community post. First 5-20
    users, fix what breaks, collect the first testimonials.
 3. **Public launch**: Product Hunt / Show HN / Reddit, one per week, never the
@@ -91,15 +92,11 @@ re-submit.
 
 ## Founder cold outreach (B2B with no audience)
 
-- Tiny volume, high personalization: research each prospect, reference their
-  specific situation, 3-5 sentences, one clear ask (often "can I show you this
-  for 10 minutes?" not "buy").
-- Send from a personal address as the founder; spam tooling kills both
-  deliverability and the founder-voice advantage.
-- Realistic: reply rates in single digits; 20 thoughtful emails/day beats 2000
-  blasted — at 0→1 you need 10 customers, not 10,000 leads.
-- Follow the Mom Test inside the conversation: ask about their current process
-  before pitching.
+Tiny volume, high personalization — the full recipe (list building, email
+anatomy, 3-touch sequence, Mom-Test replies, compliance floor) lives in
+[./cold-outreach.md](./cold-outreach.md). The one rule that survives
+summarization: at 0→1 you need 10 customers, not 10,000 leads — 20
+researched emails/day beats 2000 blasted.
 
 ## What NOT to spend on at 0→1
 
