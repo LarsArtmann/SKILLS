@@ -43,6 +43,12 @@ Rules:
 - "Declined" rows need a reason a future session can re-evaluate against.
 - The ledger lives in the pass report (a timestamped artifact), NOT in
   TODO_LIST — it records the pass, it is not a backlog.
+- Pending OWNER decisions harvested from a report are MINTED, not hand-rowed:
+  in the CV repo, `bash scripts/mint-owner-row.sh` (with its self-test)
+  scaffolds one decision onto all three homes — the owner sheet's dated family
+  section, the TODO row, and the queue's decision index — with idempotence
+  against twins. Hand-minting drifts the three homes; use the scaffolder and
+  extend its rows instead of writing fresh ones.
 
 ## Anti-patterns (not already stated in the body)
 
