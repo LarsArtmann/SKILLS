@@ -63,6 +63,12 @@ When working on a Go project:
 - API request validation → Huma struct tags
 - Everything else is banned (go-playground/validator, ozzo, zog, asaskevich)
 
+### Choosing a GLEIF LEI library
+
+- LEI checksum/format validation → in-domain mod-97-10 (whole 20-char code mod 97 == 1, no "00" append) with shared test vectors
+- LEI registry lookup/freshness → stdlib GET `api.gleif.org/api/v1/lei-records/{lei}` (unauthenticated JSON:API, ~40 lines)
+- Everything else is banned (`trisacrypto/lei` = offline-only, cannot answer registration freshness; `tamnd/gleif-cli` = internal package of a personal CLI, kit-framework drag-in)
+
 ### Choosing JSON handling
 
 - Go 1.25+ → `encoding/json/v2`
