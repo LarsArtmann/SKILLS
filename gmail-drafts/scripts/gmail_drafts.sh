@@ -6,7 +6,10 @@
 #
 #   sudo -u inboxclean gmail_drafts.sh --account work --spec /tmp/spec.json
 #
-# Spec JSON: array of {"to", "cc"?, "bcc"?, "subject", "body"} objects.
+# Spec JSON: array of {"to", "cc"?, "bcc"?, "subject", "body",
+# "from"?, "headers"?} objects. "from" bakes a send-as alias into the
+# draft; "headers" (object, single-line names/values) appends extra headers
+# such as In-Reply-To/References for a threaded reply.
 # Creation is idempotent per subject (an existing draft with the same
 # subject is skipped), headers are RFC 2047 B-encoded when non-ASCII (raw
 # UTF-8 header bytes are read as Latin-1 by Gmail -> mojibake), and the
@@ -187,17 +190,22 @@ get_access_token() {
 	[[ -n $TOKEN ]] || die "token refresh returned no access_token"
 }
 
-# build_raw <to> <cc> <bcc> <subject> <body-file>: RFC822 message, base64url
-# (Gmail drafts.create raw format).
+# build_raw <to> <cc> <bcc> <subject> <body-file> [from] [headers-file]:
+# RFC822 message, base64url (Gmail drafts.create raw format). `from` bakes
+# the send-as alias into the draft; `headers-file` carries extra headers,
+# one "Name: value" per line (LF-terminated) - names/values must be
+# single-line (validated by the caller before this runs).
 build_raw() {
-	local to=$1 cc=$2 bcc=$3 subject=$4 bodyfile=$5
+	local to=$1 cc=$2 bcc=$3 subject=$4 bodyfile=$5 from=${6:-} hdrfile=${7:-}
 	local msg
 	msg=$(mktemp)
 	{
+		[[ -n $from ]] && printf 'From: %s\r\n' "$from"
 		printf 'To: %s\r\n' "$to"
 		[[ -n $cc ]] && printf 'Cc: %s\r\n' "$cc"
 		[[ -n $bcc ]] && printf 'Bcc: %s\r\n' "$bcc"
 		printf 'Subject: %s\r\n' "$(rfc2047_encode "$subject")"
+		[[ -n $hdrfile && -s $hdrfile ]] && awk '{printf "%s\r\n", $0}' "$hdrfile"
 		printf 'MIME-Version: 1.0\r\n'
 		printf 'Content-Type: text/plain; charset=utf-8\r\n'
 		printf 'Content-Transfer-Encoding: base64\r\n'
@@ -264,6 +272,17 @@ self_test() {
 	check "raw has To" "$(extract_header "$decoded" To)" "to@x"
 	check "raw subject decodes" "$(rfc2047_decode "$(extract_header "$decoded" Subject)")" "Betreff Präzise"
 	check "raw body intact" "$(awk '{ sub(/\r$/, "") } f {print} /^$/{f=1}' "$decoded" | base64 -d)" "$(cat "$bodyfile")"
+	hdrfile2=$(mktemp)
+	printf 'In-Reply-To: <parent@x>\n' >"$hdrfile2"
+	raw=$(build_raw "to@x" "" "" "Threaded" "$bodyfile" "from@x" "$hdrfile2")
+	pad=$(((4 - ${#raw} % 4) % 4))
+	{
+		printf '%s' "$raw" | sed 's#-#+#g; s#_#/#g'
+		printf '%.*s' "$pad" ''
+	} | base64 -d >"$decoded"
+	check "raw has From" "$(extract_header "$decoded" From)" "from@x"
+	check "raw has In-Reply-To" "$(extract_header "$decoded" In-Reply-To)" "<parent@x>"
+	rm -f "$hdrfile2"
 	rm -f "$msgfile" "$bodyfile" "$decoded"
 	if ((failures)); then exit 1; fi
 	echo "gmail_drafts self-test: all passed"
@@ -345,10 +364,16 @@ for ((i = 0; i < n; i++)); do
 	fi
 	cc=$(jq -r ".[$i].cc // [] | join(\", \")" "$SPEC")
 	bcc=$(jq -r ".[$i].bcc // [] | join(\", \")" "$SPEC")
+	from=$(jq -r ".[$i].from // \"\"" "$SPEC")
+	if jq -e ".[$i].headers? // {} | to_entries[] | select((.key + (.value | tostring)) | test(\"[\\r\\n]\"))" "$SPEC" >/dev/null 2>&1; then
+		die "spec entry $i: header names/values must be single-line"
+	fi
+	hdrfile=$(mktemp)
+	jq -r ".[$i].headers // {} | to_entries[] | \"\(.key): \(.value | tostring)\"" "$SPEC" >"$hdrfile"
 	bodyfile=$(mktemp)
 	jq -j ".[$i].body // \"\"" "$SPEC" >"$bodyfile"
-	raw=$(build_raw "$to" "$cc" "$bcc" "$subject" "$bodyfile")
-	rm -f "$bodyfile"
+	raw=$(build_raw "$to" "$cc" "$bcc" "$subject" "$bodyfile" "$from" "$hdrfile")
+	rm -f "$bodyfile" "$hdrfile"
 	resp=$(http POST "$API_BASE/users/me/drafts" "{\"message\": {\"raw\": \"$raw\"}}")
 	draft_id=$(jq -r '.id' <<<"$resp")
 	mid=$(jq -r '.message.id' <<<"$resp")
@@ -356,8 +381,12 @@ for ((i = 0; i < n; i++)); do
 	msgfile=$(mktemp)
 	b64url_decode "$raw" >"$msgfile"
 	rendered=$(rfc2047_decode "$(extract_header "$msgfile" Subject)")
+	stored_from=$(extract_header "$msgfile" From)
+	stored_irt=$(extract_header "$msgfile" In-Reply-To)
 	rm -f "$msgfile"
 	moji=OK
 	[[ $rendered == *"Ã"* || $rendered == *"Ä"* ]] && moji="[MOJIBAKE!]"
 	echo "$moji $draft_id -> $to :: $rendered"
+	[[ -n ${from:-} ]] && echo "  from: $stored_from$([[ $stored_from == "$from" ]] || echo '  [WARNING: Gmail stored a different From - check the alias]')"
+	[[ -n $stored_irt ]] && echo "  in-reply-to: $stored_irt"
 done
