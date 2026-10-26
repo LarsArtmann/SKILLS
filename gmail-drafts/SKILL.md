@@ -69,7 +69,12 @@ the permission boundary — it is deliberate systemd hardening.
    ```
 2. **Write a spec file** `/tmp/gmail-drafts-spec.json`: a JSON array of
    `{"to": "...", "cc": ["..."], "subject": "...", "body": "..."}` objects.
-   `cc`/`bcc` are optional arrays. Subjects are bilingual too
+   `cc`/`bcc` are optional arrays; optional `"from": "..."` bakes a send-as
+   alias into the draft (post-create readback warns if Gmail stored a different
+   From - check the alias); optional `"headers": {"In-Reply-To": "...",
+   "References": "..."}` makes the draft a true threaded reply (values must be
+   single-line; get the parent Message-ID/References via
+   `scripts/gmail_eml_export.sh`). Subjects are bilingual too
    (`EN subject / PL subject`).
 3. **Syntax-check the script and the spec** (no bytecode, no root needed):
 
@@ -120,6 +125,17 @@ the permission boundary — it is deliberate systemd hardening.
 - **Verify the mailbox line first.** The script prints the account's address
   via `getProfile` before creating anything — confirm the drafts are landing
   in the intended mailbox.
+- **Threaded replies**: `In-Reply-To` = the parent's `Message-ID`;
+`References` = the parent's `References` + its `Message-ID`. Export the
+parent via `gmail_eml_export.sh` first — Gmail web UI pastes never show
+`Message-ID`. Same subject + `In-Reply-To` lands the draft in the original
+conversation; subject alone also groups in Gmail, but external clients rely
+on the headers.
+- **Bake `from` when it matters** (legal sends, alias discipline): the spec's
+`from` field writes the header into the draft server-side, so the compose
+window cannot be sent from the wrong identity by a missed From-selector
+click. The `[OK]` line's `from:` readback is the verification - a WARNING
+there means Gmail rejected the alias and defaulted.
 
 ## Failure modes
 

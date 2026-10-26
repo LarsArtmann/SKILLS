@@ -365,8 +365,9 @@ for ((i = 0; i < n; i++)); do
 	cc=$(jq -r ".[$i].cc // [] | join(\", \")" "$SPEC")
 	bcc=$(jq -r ".[$i].bcc // [] | join(\", \")" "$SPEC")
 	from=$(jq -r ".[$i].from // \"\"" "$SPEC")
-	if jq -e ".[$i].headers? // {} | to_entries[] | select((.key + (.value | tostring)) | test(\"[\\r\\n]\"))" "$SPEC" >/dev/null 2>&1; then
-		die "spec entry $i: header names/values must be single-line"
+	badhdr=$(jq -r ".[$i].headers? // {} | to_entries[] | select((.key + (.value | tostring)) | test(\"[\\r\\n]\")) | .key" "$SPEC" 2>/dev/null || true)
+	if [[ -n $badhdr ]]; then
+		die "spec entry $i: header names/values must be single-line (offending: $badhdr)"
 	fi
 	hdrfile=$(mktemp)
 	jq -r ".[$i].headers // {} | to_entries[] | \"\(.key): \(.value | tostring)\"" "$SPEC" >"$hdrfile"

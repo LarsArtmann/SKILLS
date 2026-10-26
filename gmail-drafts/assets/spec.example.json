@@ -3,6 +3,11 @@
     "to": "bok@example.pl",
     "cc": [],
     "subject": "Formal complaint - undelivered items / Reklamacja - brak zgodności towaru z umową - Order 12345, 27 Sep 2026",
+    "from": "sender@example.com",
+    "headers": {
+      "In-Reply-To": "<parent-message-id@example.com>",
+      "References": "<first@example.com> <parent-message-id@example.com>"
+    },
     "body": "[DATE]\n\nTo whom it may concern,\n\n(English body ...)\n\n----- Polish version / Wersja polska -----\n\nSzanowni Państwo,\n\n(Treść polska ...)\n\nMit freundlichen Grüßen | Best regards,\nLars Artmann\nCEO of Artmann Holding GmbH & Artmann Technologies GmbH\nTech-Consultant for over a decade.\n\nTel: +49 173 155 9729 | +1 (408) 475-7593\n\nE-mail: sender@example.com | [ADRES]"
   }
 ]
