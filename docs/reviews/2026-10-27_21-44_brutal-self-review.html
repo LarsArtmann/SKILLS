@@ -1,0 +1,1197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report Title</title>
+    <style>
+      /* =========================================================================
+         BAUHAUS DARK — Dashboard template
+         Design language: form follows function. Primary colors on graphite.
+         Zero external dependencies: system fonts, no CDN, no build step.
+         Token architecture: see references/bauhaus-tokens.md
+         ========================================================================= */
+
+      :root {
+        /* --- Primitive palette (Bauhaus Dark) --- */
+        --color-graphite: #0e0e10;
+        --color-graphite-2: #18181d;
+        --color-graphite-3: #16161a;
+        --color-bone: #f4f4f0;
+        --color-red: #ff6b6b;
+        --color-blue: #6eb5ff;
+        --color-yellow: #f4d35e;
+        --color-amber: #ffb347;
+        --color-hairline: rgba(244, 244, 240, 0.12);
+        --color-hairline-strong: rgba(244, 244, 240, 0.25);
+
+        /* --- Semantic layer (shared vocabulary with editorial template) --- */
+        --surface: var(--color-graphite);
+        --surface-raised: var(--color-graphite-2);
+        --surface-sunken: var(--color-graphite-3);
+        --text: var(--color-bone);
+        --text-muted: rgba(244, 244, 240, 0.72);
+        --text-faint: rgba(244, 244, 240, 0.45);
+        --border: var(--color-hairline);
+        --border-strong: var(--color-hairline-strong);
+        --accent: var(--color-amber);
+        --problem: var(--color-red);
+        --solution: var(--color-blue);
+        --warning: var(--color-yellow);
+
+        /* --- Backward-compatible aliases (do not break consumer skills) --- */
+        --bg: var(--surface);
+        --bg-elevated: var(--surface-raised);
+        --bg-sunken: var(--surface-sunken);
+        --bg-card: var(--surface-raised);
+        --bg-code: var(--surface-sunken);
+        --ink: var(--text);
+        --ink-secondary: var(--text-muted);
+        --ink-muted: var(--text-faint);
+        --rose: var(--problem);
+        --rose-glow: color-mix(in srgb, var(--problem) 15%, transparent);
+        --emerald: var(--solution);
+        --emerald-glow: color-mix(in srgb, var(--solution) 15%, transparent);
+        --amber-glow: color-mix(in srgb, var(--warning) 15%, transparent);
+        --coral: var(--problem);
+        --coral-light: color-mix(in srgb, var(--problem) 15%, transparent);
+        --teal: var(--solution);
+        --teal-light: color-mix(in srgb, var(--solution) 15%, transparent);
+        --amber-light: color-mix(in srgb, var(--warning) 20%, transparent);
+
+        /* --- Shape --- */
+        --radius: 0px; /* Bauhaus default: sharp corners */
+        --radius-sm: 0px;
+
+        /* --- Type stacks (system only — zero external fonts) --- */
+        --font-heading:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --font-body:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --font-mono:
+          ui-monospace, "Cascadia Code", "Source Code Pro", "JetBrains Mono",
+          Menlo, Consolas, monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      /* Sticky-header offset for anchor jumps */
+      section[id],
+      [id] {
+        scroll-margin-top: 60px;
+      }
+
+      body {
+        background: var(--surface);
+        color: var(--text);
+        font-family: var(--font-body);
+        font-size: 15px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* --- Accessibility: keyboard focus --- */
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      a:focus-visible {
+        outline-offset: -1px;
+      }
+
+      /* --- Full-bleed top bar --- */
+      .top-bar {
+        background: var(--text);
+        color: var(--surface);
+        padding: 0.6rem 2rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* --- Layout: optional sticky sidebar TOC --- */
+      .layout {
+        display: flex;
+        gap: 2.5rem;
+        padding: 2rem;
+      }
+      .sidebar {
+        width: 220px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 1rem;
+        align-self: flex-start;
+        height: calc(100vh - 2rem);
+        overflow-y: auto;
+        display: none;
+      }
+      .sidebar nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .sidebar .label {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--accent);
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 2px solid var(--border-strong);
+      }
+      .sidebar a {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        padding: 0.45rem 0.75rem;
+        border-left: 2px solid transparent;
+        transition: all 0.15s ease;
+        line-height: 1.4;
+        font-weight: 500;
+      }
+      .sidebar a:hover,
+      .sidebar a.active {
+        color: var(--accent);
+        border-left-color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 8%, transparent);
+      }
+      .main {
+        flex: 1;
+        min-width: 0;
+      }
+
+      /* --- Headings --- */
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      h1 {
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+        line-height: 1.1;
+        margin: 0 0 0.6rem;
+      }
+      h2 {
+        font-size: 1.4rem;
+        margin: 2.5rem 0 1rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 2px solid var(--border-strong);
+        display: flex;
+        align-items: baseline;
+        gap: 0.6rem;
+      }
+      h2 .num {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--accent);
+        font-weight: 700;
+        letter-spacing: 0.06em;
+      }
+      h3 {
+        font-size: 1.1rem;
+        margin: 0 0 0.4rem;
+        font-weight: 700;
+      }
+      h4 {
+        font-size: 0.98rem;
+        margin: 0 0 0.3rem;
+        font-weight: 700;
+      }
+      p {
+        margin: 0 0 1rem;
+      }
+
+      /* --- Hero --- */
+      .hero {
+        padding: 1.5rem 0 1.5rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid var(--border-strong);
+      }
+      .hero-badge {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--surface);
+        background: var(--accent);
+        padding: 0.3rem 0.7rem;
+        margin-bottom: 0.9rem;
+      }
+      .hero-subtitle {
+        font-size: 1.05rem;
+        color: var(--text-muted);
+        max-width: 70ch;
+        margin: 0;
+      }
+
+      /* Bauhaus signature: geometric shape cluster (optional) */
+      .hero-shapes {
+        position: relative;
+        height: 80px;
+        margin-bottom: 1rem;
+      }
+      .hero-shapes .circle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 56px;
+        height: 56px;
+        background: var(--problem);
+        border-radius: 50%;
+      }
+      .hero-shapes .square {
+        position: absolute;
+        top: 24px;
+        left: 72px;
+        width: 48px;
+        height: 48px;
+        background: var(--solution);
+      }
+      .hero-shapes .tri {
+        position: absolute;
+        top: 8px;
+        left: 140px;
+        width: 0;
+        height: 0;
+        border-left: 28px solid transparent;
+        border-right: 28px solid transparent;
+        border-bottom: 48px solid var(--warning);
+      }
+
+      /* --- General cards --- */
+      .card {
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        padding: 1.1rem 1.3rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid var(--border-strong);
+      }
+      .card-problem {
+        border-left-color: var(--problem);
+        background: color-mix(
+          in srgb,
+          var(--problem) 8%,
+          var(--surface-raised)
+        );
+      }
+      .card-solution {
+        border-left-color: var(--solution);
+        background: color-mix(
+          in srgb,
+          var(--solution) 8%,
+          var(--surface-raised)
+        );
+      }
+      .card-warning {
+        border-left-color: var(--warning);
+        background: color-mix(
+          in srgb,
+          var(--warning) 8%,
+          var(--surface-raised)
+        );
+      }
+
+      /* --- Issue cards --- */
+      .issue {
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        padding: 1.1rem 1.3rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid var(--border-strong);
+      }
+      .issue-critical {
+        border-left-color: var(--problem);
+        background: color-mix(
+          in srgb,
+          var(--problem) 8%,
+          var(--surface-raised)
+        );
+      }
+      .issue-important {
+        border-left-color: var(--warning);
+        background: color-mix(
+          in srgb,
+          var(--warning) 8%,
+          var(--surface-raised)
+        );
+      }
+      .issue-nice {
+        border-left-color: var(--solution);
+        background: color-mix(
+          in srgb,
+          var(--solution) 8%,
+          var(--surface-raised)
+        );
+      }
+      .issue h3 {
+        margin-bottom: 0.3rem;
+      }
+      .issue .where {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--text-faint);
+        margin: 0.2rem 0 0.6rem;
+      }
+      .issue p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* --- Severity badges (used inside issue cards) --- */
+      .severity {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.2rem 0.55rem;
+        margin-bottom: 0.6rem;
+        color: var(--surface);
+      }
+      .severity-critical {
+        background: var(--problem);
+      }
+      .severity-important {
+        background: var(--warning);
+      }
+      .severity-nice {
+        background: var(--solution);
+      }
+
+      /* --- Inline badges (used in tables) --- */
+      .badge {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 0.18rem 0.5rem;
+        border: 1px solid var(--border-strong);
+        color: var(--text-muted);
+      }
+      .badge-critical {
+        color: var(--problem);
+        border-color: var(--problem);
+      }
+      .badge-high {
+        color: var(--warning);
+        border-color: var(--warning);
+      }
+      .badge-medium {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .badge-low {
+        color: var(--text-muted);
+      }
+      .badge-fixed {
+        color: var(--solution);
+        border-color: var(--solution);
+      }
+
+      /* --- Callouts (used inside issues or standalone) --- */
+      .callout {
+        margin: 0.8rem 0 0;
+        padding: 0.7rem 0.9rem;
+        border-left: 3px solid var(--border-strong);
+        background: color-mix(in srgb, var(--text) 5%, transparent);
+        font-size: 0.9rem;
+      }
+      .callout strong {
+        display: inline-block;
+        margin-right: 0.4rem;
+      }
+      .callout-solution {
+        border-left-color: var(--solution);
+        background: color-mix(in srgb, var(--solution) 10%, transparent);
+      }
+      .callout-warning {
+        border-left-color: var(--warning);
+        background: color-mix(in srgb, var(--warning) 10%, transparent);
+      }
+
+      /* --- Stat cards / scorecards (aliased vocabulary) --- */
+      .stat-grid,
+      .scorecard {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.75rem;
+        margin: 1rem 0 1.5rem;
+      }
+      .stat-card,
+      .score-card {
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        padding: 1.1rem 1rem;
+        position: relative;
+      }
+      .stat-card::before,
+      .score-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--border-strong);
+      }
+      .stat-bad,
+      .score-bad {
+        /* default top bar already set */
+      }
+      .stat-bad::before,
+      .score-bad::before {
+        background: var(--problem);
+      }
+      .stat-good::before,
+      .score-good::before {
+        background: var(--solution);
+      }
+      .stat-warn::before,
+      .score-warn::before {
+        background: var(--warning);
+      }
+      .stat-value,
+      .score {
+        font-family: var(--font-heading);
+        font-size: 2rem;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        color: var(--text);
+      }
+      .stat-bad .stat-value,
+      .score-bad .score {
+        color: var(--problem);
+      }
+      .stat-good .stat-value,
+      .score-good .score {
+        color: var(--solution);
+      }
+      .stat-warn .stat-value,
+      .score-warn .score {
+        color: var(--warning);
+      }
+      .stat-label,
+      .score-card .label {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-faint);
+        margin-top: 0.5rem;
+      }
+
+      /* --- Strengths list --- */
+      .strengths {
+        display: grid;
+        gap: 0.5rem;
+        margin: 1rem 0 1.5rem;
+      }
+      .strength {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.8rem;
+        padding: 0.7rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .strength .check {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        color: var(--solution);
+        font-size: 1.1rem;
+        line-height: 1.4;
+      }
+      .strength .text strong {
+        display: block;
+        margin-bottom: 0.15rem;
+      }
+      .strength .text span {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      /* --- Tables --- */
+      .table-wrap {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0 1.5rem;
+        font-size: 0.9rem;
+      }
+      th {
+        text-align: left;
+        padding: 0.6rem 0.9rem;
+        background: var(--surface-raised);
+        color: var(--text-faint);
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border-bottom: 1px solid var(--border-strong);
+      }
+      td {
+        padding: 0.6rem 0.9rem;
+        border-bottom: 1px solid var(--border);
+      }
+      tr:hover td {
+        background: var(--surface-raised);
+      }
+
+      /* --- Before/After comparison --- */
+      .compare-header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin: 1rem 0 0.5rem;
+      }
+      .compare-before,
+      .compare-after {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 0.4rem 0.7rem;
+        color: var(--surface);
+      }
+      .compare-before {
+        background: var(--problem);
+      }
+      .compare-after {
+        background: var(--solution);
+      }
+      .compare-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .compare-row pre {
+        margin: 0;
+      }
+
+      /* --- Code blocks + syntax highlighting --- */
+      pre {
+        background: var(--surface-sunken);
+        border: 1px solid var(--border);
+        padding: 1rem 1.2rem;
+        margin: 1rem 0;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        line-height: 1.65;
+        overflow-x: auto;
+      }
+      code {
+        font-family: var(--font-mono);
+      }
+      p code,
+      li code,
+      td code {
+        font-size: 0.88em;
+        background: var(--surface-sunken);
+        padding: 0.1rem 0.35rem;
+      }
+      .tok-keyword {
+        color: var(--accent);
+      } /* func, type, struct, if, return */
+      .tok-type {
+        color: var(--warning);
+      } /* int, string, bool, error */
+      .tok-string {
+        color: var(--solution);
+      } /* "quoted strings" */
+      .tok-comment {
+        color: var(--text-faint);
+        font-style: italic;
+      }
+      .tok-func {
+        color: #74a9ff;
+      } /* function names */
+      .tok-number {
+        color: var(--accent);
+      } /* 42, 3.14 */
+      .tok-generic {
+        color: var(--problem);
+      } /* T, ID in generics */
+      .tok-builtin {
+        color: #4dd9ff;
+      } /* make, len, append */
+      .tok-punct {
+        color: var(--text-muted);
+      } /* { } ( ) ; = : */
+      .tok-attr {
+        color: var(--accent);
+      } /* Nix attribute names */
+
+      /* --- Dependency tree / ASCII diagrams --- */
+      .dep-tree {
+        background: var(--surface-sunken);
+        border: 1px solid var(--border);
+        padding: 1rem 1.2rem;
+        margin: 1rem 0;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        line-height: 1.7;
+        white-space: pre;
+        overflow-x: auto;
+      }
+      .dep-tree .root {
+        color: var(--accent);
+        font-weight: 700;
+      }
+      .dep-tree .ok {
+        color: var(--solution);
+      }
+      .dep-tree .unwanted {
+        color: var(--problem);
+      }
+
+      /* --- Inline node-and-arrow diagrams --- */
+      .diagram {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        margin: 1rem 0;
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+      }
+      .node {
+        display: inline-block;
+        padding: 0.35rem 0.7rem;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        font-weight: 600;
+        background: var(--surface-sunken);
+        border: 1px solid var(--border-strong);
+      }
+      .node-core {
+        background: var(--accent);
+        color: var(--surface);
+        border-color: var(--accent);
+      }
+      .node-problem {
+        background: var(--problem);
+        color: var(--surface);
+        border-color: var(--problem);
+      }
+      .node-good {
+        background: var(--solution);
+        color: var(--surface);
+        border-color: var(--solution);
+      }
+      .arrow {
+        color: var(--text-faint);
+        font-family: var(--font-mono);
+      }
+
+      /* --- Grids (responsive) --- */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+
+      /* --- Inline TOC (alternative to sidebar) --- */
+      .toc {
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--accent);
+        padding: 1rem 1.3rem;
+        margin: 1rem 0 1.5rem;
+      }
+      .toc h3 {
+        margin-bottom: 0.5rem;
+      }
+      .toc ul {
+        list-style: none;
+        padding: 0;
+      }
+      .toc li {
+        margin: 0.25rem 0;
+      }
+      .toc a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+      .toc a:hover {
+        color: var(--accent);
+      }
+
+      /* --- Migration / numbered steps --- */
+      .migration-step {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        gap: 1rem;
+        margin: 1rem 0;
+        padding: 1rem;
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--accent);
+      }
+      .migration-num {
+        font-family: var(--font-mono);
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: var(--accent);
+        line-height: 1;
+      }
+      .migration-content h4 {
+        margin-bottom: 0.2rem;
+      }
+      .migration-content p {
+        margin-bottom: 0;
+        color: var(--text-muted);
+        font-size: 0.92rem;
+      }
+
+      /* --- Footer --- */
+      .footer {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+        font-size: 0.8rem;
+        color: var(--text-faint);
+        font-family: var(--font-mono);
+      }
+
+      /* --- Responsive --- */
+      @media (min-width: 1024px) {
+        .sidebar {
+          display: block;
+        }
+      }
+      @media (max-width: 768px) {
+        .layout {
+          flex-direction: column;
+          padding: 1rem;
+        }
+        .top-bar {
+          padding: 0.6rem 1rem;
+          flex-wrap: wrap;
+          gap: 0.3rem;
+        }
+        .grid-2,
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+        .compare-header,
+        .compare-row {
+          grid-template-columns: 1fr;
+        }
+        .stat-grid,
+        .scorecard {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .migration-step {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Full-bleed top bar (optional — remove for quieter reports) -->
+<div class="top-bar">
+      <span>BRUTAL SELF-REVIEW</span>
+      <span>2026-10-27</span>
+      <span>SKILLS / stack-selection session</span>
+    </div>
+
+    <div class="layout">
+      <aside class="sidebar" data-nav>
+        <nav>
+          <div class="label">Contents</div>
+          <a href="#summary">Summary</a>
+          <a href="#defects">Defects Found</a>
+          <a href="#questions">The 11 Questions</a>
+          <a href="#plan">Improvement Plan</a>
+          <a href="#strengths">Preserve</a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <div class="hero">
+          <div class="hero-shapes">
+            <div class="circle"></div>
+            <div class="square"></div>
+            <div class="tri"></div>
+          </div>
+          <div class="hero-badge">Brutal Self-Review</div>
+          <h1>stack-selection: What We Got Wrong</h1>
+          <p class="hero-subtitle">
+            Honest review of the 2026-10-27 skill-authoring session. Every finding
+            below was measured against command output before it was written down;
+            the two defects were fixed the same evening.
+          </p>
+        </div>
+
+        <nav class="toc">
+          <h3>Contents</h3>
+          <ul>
+            <li><a href="#summary">Summary</a></li>
+            <li><a href="#defects">Defects Found</a></li>
+            <li><a href="#questions">The 11 Questions</a></li>
+            <li><a href="#plan">Improvement Plan</a></li>
+            <li><a href="#strengths">Preserve</a></li>
+          </ul>
+        </nav>
+
+        <h2 id="summary"><span class="num">00</span>Summary</h2>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-value">11</div>
+            <div class="stat-label">Questions answered</div>
+          </div>
+          <div class="stat-card stat-bad">
+            <div class="stat-value">2</div>
+            <div class="stat-label">Defects found &amp; fixed</div>
+          </div>
+          <div class="stat-card stat-warn">
+            <div class="stat-value">1</div>
+            <div class="stat-label">Ghost system (STACK.md unread)</div>
+          </div>
+          <div class="stat-card stat-good">
+            <div class="stat-value">4</div>
+            <div class="stat-label">TODO items filed (T60&ndash;T63)</div>
+          </div>
+        </div>
+
+        <h2 id="defects"><span class="num">01</span>Defects Found</h2>
+
+        <div class="issue issue-critical">
+          <span class="severity severity-critical">Shipped &amp; fixed</span>
+          <h3>Adoption signal was shipped on n=1 evidence</h3>
+          <div class="where">stack-selection/SKILL.md &sect;Phase 1 (before fix)</div>
+          <p>
+            The skill told every future reader that <code>meta list --tags &lt;name&gt;</code>
+            reveals a library's consumers, "verified" by one example (cmdguard&rarr;timesheets).
+            Measured this evening: of 58 lib-tagged projects, exactly <strong>one</strong> lib
+            name appears as a tag anywhere in the 279-project inventory. The signal I shipped
+            as a rule is noise. The real signal was sitting next to it the whole time:
+            go.mod grep &mdash; <code>grep -l "larsartmann/&lt;name&gt;" ~/projects/*/go.mod</code>
+            &mdash; which measures cmdguard at 27 consumers, go-output at 43, go-cqrs-lite at 45.
+          </p>
+          <div class="callout callout-solution">
+            <strong>Fixed same session:</strong> Phase 1 now leads with the go.mod grep
+            (numbers cited), demotes meta tags to "sparse secondary signal &mdash; an empty
+            result means nothing". Status report corrected with a note that it was corrected.
+          </div>
+        </div>
+
+        <div class="issue issue-important">
+          <span class="severity severity-important">Shipped &amp; fixed</span>
+          <h3>Count errors in the CHANGELOG</h3>
+          <div class="where">CHANGELOG.md, session status report</div>
+          <p>
+            Shipped "~60 libs in 10 categories". Counted programmatically after the fact:
+            <strong>67 lib rows in 11 categories</strong>. Both numbers wrong in the same
+            sentence &mdash; authored from vibed recollection of a file I had just written,
+            not from counting it. The repo's own doctrine (counts are verified by
+            check-skills, never hand-duplicated) was violated by its own author.
+          </p>
+          <div class="callout callout-solution">
+            <strong>Fixed:</strong> exact counts in CHANGELOG and status report.
+            Lesson: when writing a count, derive it with a command, even for a file
+            you wrote five minutes ago.
+          </div>
+        </div>
+
+        <div class="issue issue-important">
+          <span class="severity severity-important">Open &rarr; T62</span>
+          <h3>Ghost system: STACK.md is written once and never read</h3>
+          <div class="where">stack-selection output artifact (target projects)</div>
+          <p>
+            The skill's entire output contract is a living STACK.md &mdash; but no consumer
+            exists. Nothing checks that go.mod stays a subset of STACK.md's choices; no
+            review skill reads it as declared-architecture ground truth. Without a reader,
+            every STACK.md rots into a well-formatted lie, and the skill's core value
+            (deliberate vs accumulated dependencies) silently evaporates.
+          </p>
+          <div class="callout callout-solution">
+            <strong>Plan:</strong> drift check (go.mod &sube; STACK.md) as a script asset
+            or buildflow step, plus full-code-review reading STACK.md &mdash; filed as T62.
+          </div>
+        </div>
+
+        <div class="issue issue-nice">
+          <span class="severity severity-nice">Open &rarr; T60</span>
+          <h3>The hard eval was the one skipped</h3>
+          <div class="where">stack-selection/evals/evals.json</div>
+          <p>
+            The degraded self-run exercised eval 3 (one-shot script &mdash; the easy case,
+            where the correct answer is mostly exclusions). Eval 2, the cqrs-htmx /
+            go-cqrs-lite / templ-components boundary case where multiple first-party libs
+            genuinely compete, never ran. Testing the easy path and skipping the hard one
+            is not testing.
+          </p>
+        </div>
+
+        <h2 id="questions"><span class="num">02</span>The 11 Questions</h2>
+
+        <div class="card card-problem">
+          <h4>1. What did you forget?</h4>
+          <p>
+            TODO_LIST.md. Open items went into the status report's prose &mdash; the exact
+            "routing debt" pattern the 2026-10-24 report flagged as compounding. Second
+            consecutive deferral. Fixed this evening: T60&ndash;T63 filed with evidence
+            columns. Also forgot: the meta-tag adoption claim needed measuring before
+            shipping (see defect 1), and STACK.md needed a consumer at birth (see ghost).
+          </p>
+        </div>
+
+        <div class="card card-problem">
+          <h4>2. What is stupid that we do anyway?</h4>
+          <p>
+            The capability map's inline importance numbers (96, 90, 63...) are a snapshot
+            of a value meta owns and re-derives on every query &mdash; a mini split brain
+            against the skill's own "meta is truth" rule. Kept deliberately (dated, useful
+            for read-time triage, covered by an explicit drift caveat) but it is an accepted
+            inconsistency, not a clean design. If it bites, strip the numbers and let meta
+            speak.
+          </p>
+        </div>
+
+        <div class="card card-solution">
+          <h4>3. What could you have done better?</h4>
+          <p>
+            Measured the adoption heuristic before encoding it (one command, 10 seconds).
+            Run eval 2 degraded instead of eval 3. Counted the map rows programmatically
+            at authoring time. Each failure shares one root: wrote prose about evidence
+            faster than re-checking the evidence.
+          </p>
+        </div>
+
+        <div class="card card-warning">
+          <h4>4. What could you still improve?</h4>
+          <p>
+            T60&ndash;T63: run the hard eval with assertions; build the trigger-eval set
+            (near-misses vs how-to-golang and library-deep-dive) and run description
+            optimization; wire the STACK.md drift check; commit the aggregation-layer
+            symlink when master is checked out there. The map will drift &mdash; it knows
+            this and says so; a periodic re-verify pass against READMEs would make that
+            honest maintenance instead of documented neglect.
+          </p>
+        </div>
+
+        <div class="card card-problem">
+          <h4>5. Did you lie?</h4>
+          <p>
+            Not deliberately &mdash; but two factual errors shipped as fact (n=1 signal
+            sold as a rule; wrong category and lib counts). Both were honest-mistake lies
+            in effect: prose asserted as measurement. Both fixed; both now labeled as
+            corrected in the artifacts that carried them. Everything else in the session
+            report traces to quoted command output.
+          </p>
+        </div>
+
+        <div class="card card-solution">
+          <h4>6. How can we be less stupid?</h4>
+          <p>
+            Institute the rule this review enforced retroactively: any number or
+            generalization in skill prose gets derived by command in the same breath it is
+            written &mdash; counts, coverage, adoption, existence. The session already did
+            this for repos (actaflow) and commands; it failed exactly where verification
+            felt redundant (things "just written" or "just seen"). Verification is never
+            redundant.
+          </p>
+        </div>
+
+        <div class="card card-warning">
+          <h4>7. Ghost systems?</h4>
+          <p>
+            One, by the skill's own definition: STACK.md has no reader (detailed above,
+            T62). Not ghosts: the evals are staged-but-unrun (tracked as T60, the same
+            gap first-customers shipped with); the workspace fixture is committed and
+            cited. The aggregation-repo symlink is live and verified through the fan-out
+            path &mdash; its uncommitted status is documented-cosmetic (T63).
+          </p>
+        </div>
+
+        <div class="card card-solution">
+          <h4>8. Scope creep?</h4>
+          <p>
+            Resisted where it mattered: no back-pointers added to go-release,
+            go-ecosystem-upgrade, or the six per-SDK skills (one-way pointers from the
+            lifecycle table suffice). One on-sight fix outside scope (stale README
+            &ne;-count prose) &mdash; documented, justified. No creep.
+          </p>
+        </div>
+
+        <div class="card card-solution">
+          <h4>9. Did we remove something useful?</h4>
+          <p>
+            No removals. The 33-char description trim cut only redundancy; every trigger
+            phrase survived (gate re-run confirmed STRONG, 11 markers).
+          </p>
+        </div>
+
+        <div class="card card-warning">
+          <h4>10. Split brains?</h4>
+          <p>
+            Two accepted duplications, both with owners: (a) the lifecycle chain appears
+            in full in stack-selection's Related Skills table AND AGENTS &sect;5.5 &mdash;
+            &sect;5.5 is the graph registry, the skill table is the user-facing copy; if a
+            stage is ever added, &sect;5.5 wins. (b) the map's importance numbers vs meta
+            (see Q2). The CHANGELOG's "10 categories" vs the map's 11 was a born-split
+            brain &mdash; caught and fixed this evening, before it could drift.
+          </p>
+        </div>
+
+        <div class="card card-warning">
+          <h4>11. How are we doing on tests?</h4>
+          <p>
+            Structural gates: green and earning their keep &mdash; the description-length
+            check caught a real load-breaking defect (1057 &gt; 1024 chars) before ship.
+            Behavioral: 1 of 3 evals run, degraded (author-executed, no subagents, full
+            context contamination), zero assertions drafted. This is the weakest quadrant
+            of the whole skill and T60 exists specifically to close it.
+          </p>
+        </div>
+
+        <h2 id="plan"><span class="num">03</span>Improvement Plan</h2>
+
+        <div class="migration-step">
+          <div class="migration-num">1</div>
+          <div class="migration-content">
+            <h4>T62 &mdash; Give STACK.md a reader (High &times; S-M)</h4>
+            <p>
+              Drift check: every go.mod dependency must appear in STACK.md (chosen or
+              excluded-with-reason). Ship as a script asset in the skill; consider a
+              buildflow step and full-code-review wiring. Kills the ghost system.
+            </p>
+          </div>
+        </div>
+        <div class="migration-step">
+          <div class="migration-num">2</div>
+          <div class="migration-content">
+            <h4>T60 &mdash; Run evals 1&ndash;2 in subagent mode (High &times; S)</h4>
+            <p>
+              Eval 2 is the one that matters: the multi-lib competition case. Draft
+              assertions while runs execute (skill-creator loop). Aging &ne; until then.
+            </p>
+          </div>
+        </div>
+        <div class="migration-step">
+          <div class="migration-num">3</div>
+          <div class="migration-content">
+            <h4>T61 &mdash; Trigger-eval set + description optimization (Medium &times; S)</h4>
+            <p>
+              20 queries with genuinely tricky near-misses (vs how-to-golang "which JSON
+              lib", vs library-deep-dive "deep dive into X for a new project").
+            </p>
+          </div>
+        </div>
+        <div class="migration-step">
+          <div class="migration-num">4</div>
+          <div class="migration-content">
+            <h4>T63 &mdash; Aggregation-repo commit (Low &times; S)</h4>
+            <p>
+              One commit of the stack-selection symlink once master is checked out in
+              ~/.agents/skills. Cosmetic by doctrine; do not mix with the stale
+              docs-health-verify-legs WIP.
+            </p>
+          </div>
+        </div>
+
+        <h2 id="strengths">Preserve</h2>
+        <div class="strengths">
+          <div class="strength">
+            <div class="check">+</div>
+            <div class="text">The verify-don't-trust reflex worked on repos (actaflow: importance 63, not on disk) and commands (every meta invocation executed) &mdash; extend it to counts and generalizations.</div>
+          </div>
+          <div class="strength">
+            <div class="check">+</div>
+            <div class="text">The structural gate caught the 1057-char description before it could silently refuse to load &mdash; quote exit codes, re-run after every fix worked as designed.</div>
+          </div>
+          <div class="strength">
+            <div class="check">+</div>
+            <div class="text">No hardcoded lib inventory in SKILL.md; meta stays the source of truth and the map self-declares as navigation &mdash; the anti-drift doctrine held where it was applied.</div>
+          </div>
+          <div class="strength">
+            <div class="check">+</div>
+            <div class="text">This review measured before it accused: adoption coverage, exact row counts, symlink resolution, and collision checks all re-derived from commands, not memory.</div>
+          </div>
+        </div>
+
+        <footer class="footer">
+          Generated 2026-10-27 &middot; All claims verified against command output quoted
+          in the session &middot; Fixes applied in the same session &middot; Open work
+          filed as T60&ndash;T63
+        </footer>
+      </main>
+    </div>
+
+    <!-- Progressive-enhancement scrollspy. Nav still works without JS via anchor links. -->
+    <script>
+      (function () {
+        if (!("IntersectionObserver" in window)) return;
+        var nav = document.querySelector("[data-nav]");
+        if (!nav) return;
+        var links = nav.querySelectorAll('a[href^="#"]');
+        var ids = Array.from(links).map(function (l) {
+          return l.getAttribute("href").slice(1);
+        });
+        var sections = ids
+          .map(function (id) {
+            return document.getElementById(id);
+          })
+          .filter(Boolean);
+        if (!sections.length) return;
+        var observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                links.forEach(function (link) {
+                  link.classList.toggle(
+                    "active",
+                    link.getAttribute("href") === "#" + entry.target.id,
+                  );
+                });
+              }
+            });
+          },
+          { rootMargin: "-80px 0px -60% 0px", threshold: 0 },
+        );
+        sections.forEach(function (s) {
+          observer.observe(s);
+        });
+      })();
+    </script>
+  </body>
+</html>
