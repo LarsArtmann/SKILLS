@@ -160,36 +160,29 @@ These are blockers that need a human decision before they can become tasks:
   allowlisted past the 500-line guideline (trimmed 1106 → 799 in 2026-08-04,
   regrew to 848 with the sales-video expansion; 797 measured 2026-10-11).
   Trim path exists (TODO T11); it keeps losing to feature work.
-  **Decision package ready (2026-10-11):** the template-repo + CLI overhaul
-  (TODO T57–T59, `docs/status/2026-10-11_08-30_*` reconciliation) relocates
-  the load instead of deleting it — close this question when T59 lands.
-- **Backup retention** (`2026-08-14_15-04` g1): trash
-  `~/.agents/.backup-skills-20260814/` (25 full skill copies) and the lockfile
-  `.bak` now that symlinks are verified, or keep for N days? Deletion is
-  irreversible — user's call.
-- **Third-party policy long-term** (`2026-08-14_15-04` g2): should the 5
-  third-party skills stay upstream-managed forever, or do you want any of them
-  eventually vendored/forked into this repo (e.g. if you start customizing
-  `skill-creator` or `copywriting`)? Decides whether edits to them are ever
-  legitimate. Note (2026-10-24): `first-customers` now layers over
-  `copywriting` (strategy-vs-prose split, AGENTS §5.5) — if `copywriting` is
-  ever forked, preserve that boundary.
-- **Link-state enforcement level** (`2026-08-14_15-04` g3): is
-  `link-skills-to-agents.sh --check` as a manual command enough, or do you
-  want a pre-commit hook / minimal GitHub Action that fails on drift?
+  **Decision package answered (2026-10-27):** Q0 = Go SSG baseline,
+  repo `website-template`, Go stdlib CLI, gogenfilter rebuilt on the template
+  later, private visibility — `docs/decisions/2026-10-27_open-decisions.md`
+  §A. Close this question when T59 lands.
+- **DECIDED 2026-10-27** (`docs/decisions/2026-10-27_open-decisions.md` §D):
+  backup retention (trashed), third-party policy (stay upstream-managed,
+  fork only on first hard need), link-state enforcement (pre-commit hook in
+  this repo — see T66), status-report format (default .md, HTML for
+  dashboard-shaped content). Former `2026-08-14_15-04` g1–g3 + `2026-08-16`
+  g2 — closed.
 - **Performance-tuning granularity** (`2026-08-16` g1): stay a reference
   inside `how-to-golang`, or graduate to its own `go-performance-tuning` skill
   owning triggers like "profile my service", "why is p99 high", "GC tuning"?
   Splitting adds a trigger surface; keeping it adds depth.
-- **Status-report default format** (`2026-08-16` g2, `2026-08-21` e5,
-  recurred `2026-09-08`, `2026-09-16`, **8 documented recurrences by
-  2026-09-18**): the skill's canonical output is a styled HTML dashboard,
-  but recent reports were `.md` per explicit user request. One-off
-  overrides, or change the default?
-- **Glossary lockstep: verbatim or semantic?** (`2026-09-18` g2): Principle 7
-  demands "wording identical" to the house-jargon table; the seven shipped
-  first-use glosses paraphrase. (a) verbatim lockstep + align all 7, or
-  (b) amend the rule to "meaning identical, table canonical"? Gates TODO T51.
+- **Status-report default format — DECIDED 2026-10-27**: default `.md`;
+  HTML on explicit request or dashboard-shaped content (metric-heavy
+  reviews/audits). The skill default was amended (P14 executed same day);
+  decision record: `docs/decisions/2026-10-27_open-decisions.md` §D.g4.
+  (Formerly `2026-08-16` g2 with 8 documented recurrences — closed.)
+- **Glossary lockstep — DECIDED 2026-10-27: verbatim.** Align the seven
+  shipped first-use glosses word-for-word to the Principle 7 table (T51,
+  unblocked). Decision record: `docs/decisions/2026-10-27_open-decisions.md`
+  §C. (Formerly `2026-09-18` g2 — closed.)
 - **Aggressive prompt-voice boundary** (`2026-09-18` g3): energy lines that
   name a real instruction survived the signal pass; pure noise was deleted.
   Confirm the boundary (energy welcome where it names an instruction,

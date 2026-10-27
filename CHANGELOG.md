@@ -13,6 +13,116 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Changed (2026-10-27 — decision execution: glosses, linter direction, report format, link hook)
+
+- **T51 (glossary verbatim):** all shipped first-use glosses aligned
+  word-for-word to the Principle 7 house-jargon table across 6 skills
+  (brutal-self-review ×2, status-report ×2, architecture-review,
+  full-code-review, nix-review, naming-review): "maintained in two places"
+  → "defined or configured in two places", "code that exists"/"code in the
+  repo" → "a capability that exists in the repo but was never wired into
+  the product", "named two ways, drifting apart" → table wording. Residual
+  grep: zero paraphrases outside historical docs. `check-skills.sh --signal`
+  EXIT 0. (User chose verbatim over the semantic recommendation.)
+- **T34 (linter-building direction):** Go-first scope note recorded in
+  SKILL.md (with the decision's evidence); two-stage aging convention
+  (synthetic eval → 🟡, real run → 🟢) added to the FEATURES legend;
+  commit-ownership rule (agent commits session artifacts with detailed
+  messages; daemon is the floor) added to AGENTS §7.
+- **g2/P14 (status-report format):** default flipped to `.md` at the
+  docs/status convention; HTML reserved for dashboard-shaped
+  (metric-heavy) reports; historical note records the 8-recurrence
+  inversion. FEATURES row updated.
+- **T66 (link-state guard):** `.git/hooks/pre-commit` runs
+  `link-skills-to-agents.sh --check` and blocks commits on fan-out drift
+  (local-only by nature; recreate after fresh clones). Verified green.
+
+### Changed (2026-10-27 — capability-map re-verify pass, T65)
+
+- New `stack-selection/scripts/capability-map-diff.sh`: diffs the map's lib
+  rows against the live `meta list --format json` inventory and classifies
+  deltas (mapped-but-gone / new-in-meta-unmapped; exit 0 always — a diff is
+  information). First run reconciled the map: +13 rows (go-retry 63 — the
+  lib eval-1 chose but the map missed, smart-configs, go-sqlitestore,
+  go-credentials-store, go-graph-rag, go-hotspot, code-duplicate-analyzer,
+  go-humanize-linter, go-auto-upgrade 90, go-version-auto-configure,
+  go-workflow-auditlog, go-paperless, go-website-template), 0 stale rows,
+  Known-gaps section extended (template-* ceremony family, collector-utils
+  as Rust-only, experiments incl. buildflow-pr44 worktree artifact,
+  combined-row script note). Map now 68 rows; re-run cadence recorded in
+  AGENTS §5.5: after every meta lib-tag/importance change batch.
+
+### Changed (2026-10-27 — aggregation-layer commit, T63)
+
+- `~/.agents/skills` (agent-skills repo): `stack-selection` symlink committed
+  on `master` (4100313) via a temporary worktree — the main checkout stays
+  on `docs-health-verify-legs` with its 67 third-party WIP files untouched.
+  Worktree removed after commit; `link-skills-to-agents.sh --check` EXIT 0.
+  Not pushed (no explicit request).
+
+### Added (2026-10-27 — stack-selection trigger-eval set, T61)
+
+- `stack-selection/evals/trigger-eval.json`: 10 should-trigger queries
+  (typos, casual lowercase, inception AND re-align phrasings) + 10
+  near-miss negatives vs how-to-golang (per-decision policy), library-
+  deep-dive (post-adoption audits), go-ecosystem-upgrade (version bumps),
+  plus module-shaping/per-SDK/performance boundaries. Round 1 via subagent
+  matcher simulation: **20/20** (all positives fired, all negatives routed
+  elsewhere or NONE) — plateau at round 1, description unchanged, rounds
+  2–3 skipped per the stop-when-plateau rule. `check-skills.sh --triggers`
+  still EXIT 0 with STRONG (11 markers) preserved. Evidence:
+  `evals/trigger-eval-results.json` (method + known limits recorded).
+
+### Added (2026-10-27 — STACK.md drift check, T62)
+
+- `stack-selection/scripts/stack-drift-check.sh`: enforces go.mod ⊆ STACK.md
+  for direct `larsartmann/*` requires (exit 0 clean / 1 undeclared or
+  contradicted / 2 no STACK.md). Kills the ghost-system finding from the
+  2026-10-27 self-review (STACK.md written once, never read): the check is
+  now wired into the skill's Phase 5 + done bar, the STACK-template header,
+  and full-code-review (declared-architecture ground truth step). Fixtures:
+  `stack-selection/scripts/testdata/` (clean/undeclared/contradiction/
+  no-stack — all four exit codes verified). Validated against the eval-1
+  STACK.md fixture (PASS, exit 0). Real-world baseline measured 2026-10-27:
+  0 of 163 larsartmann-consuming projects have a STACK.md — every one would
+  exit 2 today; new projects get the record at inception instead.
+
+### Changed (2026-10-27 — stack-selection behavioral evals, T60)
+
+- `stack-selection` evals 1–2 executed in subagent mode (with-skill +
+  baseline pairs, same turn): **16/16 assertions PASS**. Eval 1
+  (lib-watching CLI): chose go-filewatcher/cmdguard/go-output/go-retry/
+  go-atomic-write, honored every how-to-golang ban the baseline violated
+  (fsnotify, yaml.v3, testify), 16-row excluded table incl. segment-buffer
+  rejected for failing the existence check. Eval 2 (event-sourced web app,
+  the hard multi-lib competition case): chose cqrs-htmx v4 + go-cqrs-lite
+  system/metaengine + templ-components + Money + branded IDs, excluded 19
+  libs incl. six 90+-importance ones, applied adoption-beats-importance
+  (go-business-rules, 80, zero consumers → excluded). Both baselines
+  confirmed the contrast (banned libs, hand-rolled event store, roll-your-
+  own-auth). Two skill improvements applied from eval findings: meta-
+  unavailable fallback ladder in SKILL.md Phase 1; out-of-repo owning-skills
+  note in capability-map legend. Evidence:
+  `stack-selection-workspace/iteration-2/` (4 outputs + grading.json).
+  Skill status 🆕→🟡 (eval'd) per the two-stage aging decision — real
+  triggered run still required for 🟢.
+
+### Decided (2026-10-27 — consolidated decision package, T64)
+
+- `docs/decisions/2026-10-27_open-decisions.md`: all 14 open user decisions
+  answered in one sitting (17-day-old blocker). Verdicts: website-launch
+  baseline = **Go SSG** extracted to private repo **`website-template`**,
+  `websitelaunch` CLI in **Go stdlib-only**, gogenfilter rebuilt on the
+  template later, T33 kept separate; linter-building **stays Go-first** with
+  **two-stage aging** (synthetic eval → 🟡, real run → 🟢) and **agent-owned
+  detailed commits** for session artifacts; glossary lockstep = **verbatim**
+  (T51 unblocked, overrides the semantic recommendation); backup dir
+  **trashed** (executed via `trash`), third-party skills **stay
+  upstream-managed**, link-state enforcement = **pre-commit hook** (new T66),
+  status-report default = **`.md`** (HTML for dashboard-shaped content).
+  Routing: T34/T51/T57 unblocked, T64 closed, ROADMAP 2026-08-14 g1–g3 +
+  2026-08-16 g2 + 2026-09-18 g2 closed with decided-notes, T66 added.
+
 ### Added (2026-10-27 — stack-selection: foundation selection for new projects)
 
 - New `stack-selection/` skill (SKILL.md + `references/capability-map.md` +

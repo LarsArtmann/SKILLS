@@ -19,13 +19,21 @@ metadata:
 
 For the full checklist of questions to ask per file, load [./references/architect-checklist.md](references/architect-checklist.md).
 
+**Declared-architecture ground truth:** if the repo has a `STACK.md` (the
+stack-selection skill's decision record), treat its Chosen foundation /
+Deliberately excluded tables as the declared architecture: a
+`larsartmann/*` require in `go.mod` with no STACK.md row is an unmade
+decision — report it (or run the owning check:
+`stack-selection/scripts/stack-drift-check.sh <repo-dir>`; exit 1 findings
+map to review items, exit 2 means the foundation was never declared).
+
 ## Planning Phase
 
 1. Before you start, make sure our repo/git is clean. Run `git status`, then commit any pending work with a very detailed message.
 
 2. **Delegate planning to the `pareto-planning` skill.** Do not re-implement Pareto
    breakdown, task splitting, or the D2 execution graph here — that duplication is a
-   split brain (the same concept maintained in two places, so the two drift apart). Load
+   split brain (the same concept defined or configured in two places, so the two drift apart). Load
    `pareto-planning/SKILL.md` and follow its process. It produces a
    styled HTML plan with stat cards, badge-coded task tables, and an inline D2 execution
    graph at `docs/planning/<YYYY-MM-DD_HH_MM-NAME>.html`.

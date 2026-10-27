@@ -1,0 +1,92 @@
+[
+  {
+    "query": "starting a new go project tonight — a cli that syncs some files around. what should I even build it on?",
+    "should_trigger": true
+  },
+  {
+    "query": "new service, empty repo. which of my own libs fit a file-processing daemon?",
+    "should_trigger": true
+  },
+  {
+    "query": "what stack should I use for a new event-sourced webapp with login?",
+    "should_trigger": true
+  },
+  {
+    "query": "beginning a fresh project — help me pick the dependencies and foundation before I write any code",
+    "should_trigger": true
+  },
+  {
+    "query": "what sdk's do I have that would fit an invoice app with an htmx ui? new repo",
+    "should_trigger": true
+  },
+  {
+    "query": "gonna scaffold a new collector tomorrow. what do I build on top of",
+    "should_trigger": true
+  },
+  {
+    "query": "project-x's deps accumulated randomly over 2 years — I want a proper foundation decision and a record of it, re-align from scratch",
+    "should_trigger": true
+  },
+  {
+    "query": "new library repo: what should the foundation be — testing, linting, ci setup, all of it",
+    "should_trigger": true
+  },
+  {
+    "query": "empty go.mod, new idea: a markdown notes server with sse. pick my stack",
+    "should_trigger": true
+  },
+  {
+    "query": "which libraries of mine should this new chat thing use before I start",
+    "should_trigger": true
+  },
+  {
+    "query": "should I use testify or ginkgo for the tests in my project?",
+    "should_trigger": false,
+    "not_it_because": "single per-decision policy question → how-to-golang owns it; stack-selection is whole-foundation, this is one cell of it"
+  },
+  {
+    "query": "is viper ok for config or should I switch to koanf?",
+    "should_trigger": false,
+    "not_it_because": "one third-party swap decision → how-to-golang decision tree"
+  },
+  {
+    "query": "are we using go-cqrs-lite to the max? deep dive into what features we're missing",
+    "should_trigger": false,
+    "not_it_because": "post-adoption utilization audit → library-deep-dive; stack-selection selects before adoption"
+  },
+  {
+    "query": "audit how well we use templ-components in crm — we adopted it last year",
+    "should_trigger": false,
+    "not_it_because": "library-deep-dive (adopted, utilization); explicit adoption language in query"
+  },
+  {
+    "query": "bump go-cqrs-lite to the newest version across all my projects",
+    "should_trigger": false,
+    "not_it_because": "consumer-side dependency upgrade → go-ecosystem-upgrade; no selection happening"
+  },
+  {
+    "query": "go-output v0.39 is out — upgrade my consumers and fix what breaks",
+    "should_trigger": false,
+    "not_it_because": "go-ecosystem-upgrade"
+  },
+  {
+    "query": "should this project be split into multiple go modules? it's getting big",
+    "should_trigger": false,
+    "not_it_because": "module-boundary shaping → go-modularize; dependencies already chosen"
+  },
+  {
+    "query": "add a rate-limit subcommand with its own flags to my cmdguard CLI",
+    "should_trigger": false,
+    "not_it_because": "per-SDK integration work → cmdguard skill; the foundation is already wired"
+  },
+  {
+    "query": "why is my service's p99 latency so high? profile it",
+    "should_trigger": false,
+    "not_it_because": "performance diagnosis; no foundation selection involved"
+  },
+  {
+    "query": "what's the best go library for parsing command-line arguments in general?",
+    "should_trigger": false,
+    "not_it_because": "generic third-party single-lib question with no first-party/project-inception context → how-to-golang territory, not whole-foundation selection over the user's ecosystem"
+  }
+]

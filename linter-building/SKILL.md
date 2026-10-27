@@ -23,9 +23,11 @@ allowed-tools: bash view grep
 # Linter Building
 
 How to build linters, analyzers, and lint-adjacent tooling that developers
-keep turned on. Go-first (that is where the verified experience lives), but
-the finding model, trust engineering, and distribution doctrine apply to any
-language.
+keep turned on. Go-first (DECIDED 2026-10-27, T34 g1: 8 of 10 evidence
+projects are Go and the local linter repos — go-finding, go-linter-sdk, the
+auto-configure pair — are all Go; add a first-class non-Go authoring
+reference only when a real non-Go linter request occurs), but the finding
+model, trust engineering, and distribution doctrine apply to any language.
 
 **tl;dr — Trust is the product.** The #1 failure mode is shipping false
 positives: one crying-wolf rule and users uninstall the whole tool or drown

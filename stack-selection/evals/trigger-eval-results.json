@@ -1,0 +1,17 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "date": "2026-10-27",
+      "description_state": "as shipped 2026-10-27 (post 1024-char trim)",
+      "method": "subagent matcher simulation: agent viewed the four live frontmatter descriptions (stack-selection, how-to-golang, library-deep-dive, go-ecosystem-upgrade) and picked one skill or NONE per query, queries pre-shuffled",
+      "results": {
+        "should_trigger_hits": "10/10 — every inception/re-align phrasing fired stack-selection, incl. typo ('sdk's'), lowercase casual ('gonna scaffold'), and the re-align case ('deps accumulated randomly, want a record of it')",
+        "near_miss_correct_negatives": "10/10 — stack-selection never fired on per-decision policy (testify/ginkgo, viper/koanf → how-to-golang), utilization audits (→ library-deep-dive), version bumps (→ go-ecosystem-upgrade), module shaping, per-SDK wiring, performance, generic third-party questions",
+        "score": "20/20"
+      },
+      "decision": "perfect score at round 1 → plateau reached, description unchanged, rounds 2-3 skipped per stop-when-plateau rule (running them would be ritual, not measurement)"
+    }
+  ],
+  "known_limits": "single matcher simulation, single run (no 3x stability sampling this iteration — the 20/20 margin and the unambiguous routing comments make variance unlikely, but a future iteration may sample 3x per query per skill-creator guidance)"
+}

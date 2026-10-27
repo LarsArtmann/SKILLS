@@ -63,6 +63,13 @@ meta list --tags <name>             # adoption evidence: projects tagged with it
 meta search <query>                 # name search
 ```
 
+If `meta` is unavailable (no shell, broken install), fall back IN THIS
+ORDER and say so in STACK.md: `ls ~/projects/` + the capability map +
+`grep -l "larsartmann/<name>" ~/projects/*/go.mod` for adoption. Never
+answer from memory — the inventory is on disk even when the CLI is not.
+(Metadata the CLI reads lives at `~/projects/<name>/.config/metadata.yaml`;
+some tools skip hidden dirs when globbing — read it by explicit path.)
+
 Filter the full inventory down to candidates:
 
 - **Tag hygiene is inconsistent — never trust a single tag filter.** The `lib`
@@ -95,7 +102,11 @@ The map is navigation, not truth: it was verified against READMEs on
 2026-10-27 and drifts. A category in the map with no matching profile need is
 a SKIP, not a gap to fill. A lib in `meta` that the map misses is a
 candidate to evaluate by hand (README + `meta get`) — the map's "Known map
-gaps" section lists known blind spots.
+gaps" section lists known blind spots. The owning-skill column names skills
+that may live OUTSIDE this repo (cmdguard, go-cqrs-lite, cqrs-htmx,
+go-aichat, templ-components, typesafe-ai — one-offs per AGENTS §5.10); if a
+named skill is not in the SKILLS repo, point at the lib's README/docs
+instead of treating the map as wrong.
 
 ## Phase 3 — Third-party policy
 
@@ -132,6 +143,12 @@ Hard requirements, enforced by re-reading before finishing:
 - Every "why this, not that" names the rejected alternative.
 - Every third-party choice is consistent with how-to-golang (no banned lib).
 
+Then enforce it: run
+[./scripts/stack-drift-check.sh](scripts/stack-drift-check.sh) `<project-dir>`
+(exit 0 = go.mod first-party deps ⊆ STACK.md; exit 1 = undeclared or
+contradicted dep; exit 2 = no STACK.md). STACK.md without this check is a
+decorative document — the drift check is what makes it enforceable.
+
 ## Phase 6 — Wire up
 
 The selection is not done until the wiring path is named. Per selection:
@@ -147,6 +164,9 @@ The selection is not done until the wiring path is named. Per selection:
   start single-module and link it.
 - Then register the new project with `meta` (`meta set --project <name>`,
   tags matching the profile) so the next project's discovery finds it.
+- The drift check stays part of the project's hygiene loop: re-run
+  `stack-drift-check.sh` after adding any larsartmann/* require — a new
+  first-party dep without a STACK.md row is an unmade decision.
 
 ## Related skills — the dependency lifecycle
 
@@ -171,3 +191,4 @@ disambiguate both ways:
 - [ ] No banned third-party lib (how-to-golang checked).
 - [ ] Owning skill named per chosen lib; wiring order is executable as written.
 - [ ] New project registered in `meta` (or the reason it wasn't).
+- [ ] `scripts/stack-drift-check.sh <project-dir>` exits 0.

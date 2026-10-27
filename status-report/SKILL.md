@@ -32,23 +32,24 @@ must apply extra routing rigor to them. See the HARVEST anti-patterns in
 
 ## Output
 
-Write a **self-contained styled HTML dashboard** — not a flat Markdown file. A status
-report is a point-in-time snapshot meant for human consumption, so it gets the full visual
-treatment: stat cards, severity badges, color-coded sections.
+Write the report as a **Markdown file** at the repo's
+`docs/status/YYYY-MM-DD_HH-MM_*.md` convention (DECIDED 2026-10-27, D.g4 —
+`docs/decisions/2026-10-27_open-decisions.md` §D: the user demanded `.md`
+explicitly twice and the pattern recurred 8×; `.md` is now the default, not
+an override).
 
-> **HTML is the canonical format.** If the user explicitly requests another
-> format (e.g. `.md`), honor it — the user's explicit instruction wins. Flag
-> the override in your closing message so the spec/usage divergence is
-> visible, and do **not** propagate a one-off override back into this skill
+> **HTML is for dashboard-shaped content.** When the report is metric-heavy —
+> scores, counts, severity matrices, before/after visuals — write a
+> self-contained styled HTML dashboard instead (stat cards, severity badges,
+> color-coded sections) via the design-system steps below. Plain narrative
+> status → `.md`; dashboard → HTML. Either way the user's explicit format
+> request wins; do **not** propagate a one-off override back into this skill
 > as a new default.
 >
-> **Standing exception — task-queue dispatch reports (recorded 2026-10-01):**
-> reports for task-queue dispatches (`Task-Queue-ID:` prompts) are `.md`
-> files at the repo's `docs/status/YYYY-MM-DD_HH-MM_*.md` convention — the
-> operator's observed standing preference (recurred 2026-09-19 in the 00-51
-> and 03-16 dispatch reports, both `.md` at explicit path demand). When the
-> dispatch prompt names its `.md` path, that is not an override to flag; it
-> is the expected shape. All other status reports stay HTML-canonical.
+> **Historical note:** before 2026-10-27 HTML was the canonical format and
+> `.md` the flagged exception (8 documented recurrences); the decision
+> inverted the default. The Bauhaus HTML kit remains in
+> `assets/html-report-kit/` for dashboard use.
 
 1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
 2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
@@ -88,8 +89,9 @@ treatment: stat cards, severity badges, color-coded sections.
 ## Related Skills
 
 - **brutal-self-review** — critique of recent work quality (what was forgotten,
-  ghost systems (code in the repo never wired into the product), split brains
-  (the same concept maintained in two places, so the two drift apart),
+  ghost systems (a capability that exists in the repo but was never wired into
+  the product), split brains
+  (the same concept defined or configured in two places, so the two drift apart),
   improvement plan), not a state inventory. Sessions
   often run both: this report answers "where are we", the self-review answers
   "what did we get wrong". Their output sections do not overlap.

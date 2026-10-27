@@ -5,6 +5,10 @@
 > (profile: <shape>, e.g. "Go CLI tool" / "event-sourced web service").
 > This is a LIVING document — update the row when the reason changes, delete
 > the row when the dependency goes.
+> Enforced by `stack-selection/scripts/stack-drift-check.sh <project-dir>`:
+> every direct github.com/larsartmann/* require must have a Chosen foundation
+> row. Exit 0 = consistent; exit 1 = undeclared or contradicted dep; exit 2 =
+> this file is missing.
 
 ## Profile
 
