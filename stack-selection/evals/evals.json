@@ -1,0 +1,23 @@
+{
+  "skill_name": "stack-selection",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to build a new Go CLI tool that watches a folder of markdown files and syncs parsed frontmatter to a Notion-style REST API. Gonna start from scratch tonight — empty repo. What should I build it on?",
+      "expected_output": "Runs the meta inventory (not training data) and returns a foundation: go-filewatcher (watching), go-ndjson or encoding/json/v2 for parsing, cmdguard for CLI shape, go-output for output, go-localsync/segment-buffer considered and reasoned about for the sync side (local-first mirror vs buffer), how-to-golang policy for third-party picks, YAGNI-excludes event sourcing/CQRS explicitly, and produces a STACK.md with chosen + deliberately-excluded tables and wiring order",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "New project: an event-sourced web app for managing my consulting invoices with a server-rendered UI and login. Which of my own libs should this be built on?",
+      "expected_output": "Selects the cqrs-htmx + go-cqrs-lite system composition root path (web app with commands/events and auth via usermgmt), cmdguard only if a CLI is needed, go-composable-business-types for Money/IDs, names the owning skills to load next (cqrs-htmx, go-cqrs-lite), verifies repos exist before selecting, and excludes irrelevant high-importance libs (go-commit, universal-workflow) with reasons",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Starting a tiny throwaway script that converts one CSV to JSON once. Do I need my whole ecosystem for this?",
+      "expected_output": "Says no — profiles it as a one-shot script, selects a near-empty stack (stdlib encoding/json/v2, maybe go-must for init), and records the deliberately-excluded table showing the high-importance libs (cmdguard, go-output, etc.) rejected BECAUSE one-shot scope — demonstrating the YAGNI guard instead of maximal adoption",
+      "files": []
+    }
+  ]
+}
