@@ -22,8 +22,9 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   documents the tag-hygiene trap — the `lib` tag misses `go-daemon`,
   `erraudit`, `template-*` — and the importance-is-aspiration trap:
   `actaflow` rates 63 and is not on disk at all), matches them against a
-  README-verified capability map (2026-10-27, ~60 libs in 10 categories with
-  owning-skill pointers and when-NOT-to-use columns), applies the
+  README-verified capability map (2026-10-27, 67 libs in 11 categories with
+  owning-skill pointers and when-NOT-to-use columns; adoption evidence via
+  go.mod grep — go-cqrs-lite 45 consumers, go-output 43, cmdguard 27), applies the
   how-to-golang policy for third-party choices (never restated), and emits a
   STACK.md decision record (chosen foundation + deliberately-excluded +
   wiring order + revisit triggers). Positioned as the head of the dependency

@@ -75,9 +75,14 @@ Filter the full inventory down to candidates:
   non-empty README + `go.mod` + a tagged version (`git -C ~/projects/<name>
   describe --tags 2>/dev/null`). An unverifiable lib is a "deliberately
   excluded, revisit when mature" row, not a foundation.
-- **Adoption evidence beats importance.** `meta list --tags cmdguard` shows
-  which projects use a lib — a lib with 5 consumers has survived contact with
-  reality; a 95-importance lib with none is a bet.
+- **Adoption evidence beats importance.** The reliable signal is go.mod
+  grep — projects that actually import the lib:
+  `grep -l "larsartmann/<name>" ~/projects/*/go.mod | wc -l` (measured
+  2026-10-27: go-cqrs-lite 45, go-output 43, cmdguard 27). A lib with many
+  consumers has survived contact with reality; a 95-importance lib with none
+  is a bet. `meta list --tags <name>` is a sparse secondary signal — most
+  projects do NOT tag their deps (only `cmdguard`→timesheets does today), so
+  an empty result there means nothing.
 
 ## Phase 2 — Capability match
 
