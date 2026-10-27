@@ -141,7 +141,7 @@ profile plausibly touches them (this list itself drifts; re-derive from meta):
   `cyberdom`, `stoptube`, `ai-router-implementation`, `wise-transaction-visualization`.
 - Infrastructure/config, not importable libs: `systemnix`, `private-cloud`,
   `pbx-artmann`, websites (`lars.software`, `artmann-holding`, `blog`).
-- Early/empty repos — `actaflow` (importance 63 but empty checkout as of
+- Early/missing repos — `actaflow` (importance 63 but NOT ON DISK as of
   2026-10-27): importance is aspiration, not maturity. ALWAYS verify the repo
   has a README + go.mod before selecting.
 - Placeholder/untracked experiments: `berrybig` (8), `darknet-monitor`,

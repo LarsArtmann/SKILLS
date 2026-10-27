@@ -21,7 +21,7 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   project inventory (`meta list --format json`, 279 tracked projects;
   documents the tag-hygiene trap — the `lib` tag misses `go-daemon`,
   `erraudit`, `template-*` — and the importance-is-aspiration trap:
-  `actaflow` rates 63 with an empty checkout), matches them against a
+  `actaflow` rates 63 and is not on disk at all), matches them against a
   README-verified capability map (2026-10-27, ~60 libs in 10 categories with
   owning-skill pointers and when-NOT-to-use columns), applies the
   how-to-golang policy for third-party choices (never restated), and emits a

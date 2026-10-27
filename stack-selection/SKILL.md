@@ -2,20 +2,20 @@
 name: stack-selection
 description: >
   Use this skill when starting a NEW project (especially Go) and deciding what
-  to build it on — the full foundation of first-party LarsArtmann libraries/SDKs
+  to build it on — the full foundation: first-party LarsArtmann libraries/SDKs
   (cmdguard, go-output, go-cqrs-lite, cqrs-htmx, go-aichat, ...) plus
   third-party libraries. Triggers on "new project", "start a new
   service/CLI/library/tool", "what stack should I use", "what should I build
   this on", "which of my libraries fit this", "which SDKs do I have for X",
-  "foundation", "pick the dependencies", "scaffold the stack", an empty or
-  missing go.mod at project inception, or re-aligning an existing project whose
-  dependencies accumulated ad-hoc. Discovers candidates from the `meta` project
-  inventory (first-party), applies the how-to-golang policy (third-party), and
-  emits a STACK.md decision record that names the owning skill per chosen lib.
-  Distinct from how-to-golang (single-category policy lookup — this skill
-  orchestrates whole-foundation selection and consults it), library-deep-dive
+  "foundation", "pick the dependencies", "scaffold the stack", an empty
+  go.mod at inception, or re-aligning an existing project whose dependencies
+  accumulated ad-hoc. Discovers candidates from the `meta` project inventory
+  (first-party), applies the how-to-golang policy (third-party), and emits a
+  STACK.md decision record that names the owning skill per chosen lib.
+  Distinct from how-to-golang (per-decision policy — this skill orchestrates
+  whole-foundation selection and consults it), library-deep-dive
   (post-adoption utilization audit), and go-ecosystem-upgrade (bumping
-  already-chosen deps).
+  chosen deps).
 metadata:
   tags: stack, foundation, new-project, go, golang, libraries, sdk, dependencies, selection, architecture, meta, inception
 allowed-tools: bash view write edit grep
