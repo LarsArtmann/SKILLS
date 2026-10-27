@@ -68,6 +68,7 @@
 | bdd-testing              | 🟡 `PARTIALLY_FUNCTIONAL` | ✅ (assets)   | Ginkgo BDD tests; works but thin                                                                                                                                                                             |
 | go-error-modernization   | 🆕 `NEW`                  | ✅ (3 files)  | errors.As→AsType modernization; `erraudit` CLI not publicly findable                                                                                                                                         |
 | samber-do-best-practices | 🆕 `NEW`                  | ✅            | samber/do v2 DI; references private `doanalyzerv2` analyzer rules                                                                                                                                            |
+| stack-selection          | 🆕 `NEW`                  | ✅            | Project-inception foundation selection: `meta` inventory discovery (first-party), how-to-golang policy (third-party), capability map with owning-skill pointers, STACK.md decision record; head of the select→wire→audit→upgrade→release lifecycle; lib descriptions README-verified 2026-10-27 |
 
 ## Skill Collection — Nix & DevOps
 

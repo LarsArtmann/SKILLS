@@ -158,6 +158,7 @@ Use `date` CLI for the filename date. Use kebab-case for the library name.
 After the report, consider which related skills add value:
 
 - If the library is Go and the project needs better type safety around it → `data-model-review`
+- If the project's foundation was never deliberately selected (dependencies accumulated ad-hoc, no STACK.md) → `stack-selection` — the inception counterpart of this audit: it selects the foundation before adoption, this skill audits utilization after
 - If hand-rolled code duplicates library functionality → `deduplicate-code`
 - If the codebase needs a broader quality pass → `code-quality-scan` or `full-code-review`
 

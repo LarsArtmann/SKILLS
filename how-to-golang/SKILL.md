@@ -21,6 +21,8 @@ For HOW, read the library docs.
 
 ## Process
 
+Starting a NEW project and choosing a whole foundation (which of the LarsArtmann first-party libs + third-party libs to build on)? That orchestration belongs to the `stack-selection` skill — it discovers first-party candidates from the `meta` inventory and consults THIS skill for the third-party policy below. This skill is the per-decision policy, not the selection loop.
+
 When working on a Go project:
 
 1. Check `go.mod` against the banned libraries list — load [./references/banned-libraries.md](references/banned-libraries.md) and verify no banned dependencies are present. This catches security CVEs and deprecated packages before they cause problems.

@@ -13,6 +13,32 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-10-27 — stack-selection: foundation selection for new projects)
+
+- New `stack-selection/` skill (SKILL.md + `references/capability-map.md` +
+  `assets/STACK-template.md` + `evals/evals.json`): project-inception
+  foundation selection. Discovers first-party candidates from the `meta`
+  project inventory (`meta list --format json`, 279 tracked projects;
+  documents the tag-hygiene trap — the `lib` tag misses `go-daemon`,
+  `erraudit`, `template-*` — and the importance-is-aspiration trap:
+  `actaflow` rates 63 with an empty checkout), matches them against a
+  README-verified capability map (2026-10-27, ~60 libs in 10 categories with
+  owning-skill pointers and when-NOT-to-use columns), applies the
+  how-to-golang policy for third-party choices (never restated), and emits a
+  STACK.md decision record (chosen foundation + deliberately-excluded +
+  wiring order + revisit triggers). Positioned as the head of the dependency
+  lifecycle: select (this) → policy (`how-to-golang`) → wire (per-SDK
+  skills, `buildflow`, `nix-private-go-repos`) → shape (`go-modularize`) →
+  audit (`library-deep-dive`) → upgrade (`go-ecosystem-upgrade`) → release
+  (`go-release`).
+- Interconnected both ways with the pair skills: `how-to-golang` Process now
+  routes whole-foundation/new-project questions to `stack-selection`;
+  `library-deep-dive` Phase 6 names `stack-selection` as the inception
+  counterpart of its post-adoption audit.
+- `meta` CLI added to `docs/external-dependencies.md` (public
+  `project-meta` repo, verified on PATH).
+- AGENTS.md §5.5: graph entry for the dependency-lifecycle chain.
+
 ### Added (2026-10-24 — first-customers: the 0→1 online sales playbook)
 
 - New `first-customers/` skill (SKILL.md + 8 references, ~1,400 lines of
