@@ -126,16 +126,16 @@ the permission boundary — it is deliberate systemd hardening.
   via `getProfile` before creating anything — confirm the drafts are landing
   in the intended mailbox.
 - **Threaded replies**: `In-Reply-To` = the parent's `Message-ID`;
-`References` = the parent's `References` + its `Message-ID`. Export the
-parent via `gmail_eml_export.sh` first — Gmail web UI pastes never show
-`Message-ID`. Same subject + `In-Reply-To` lands the draft in the original
-conversation; subject alone also groups in Gmail, but external clients rely
-on the headers.
+  `References` = the parent's `References` + its `Message-ID`. Export the
+  parent via `gmail_eml_export.sh` first — Gmail web UI pastes never show
+  `Message-ID`. Same subject + `In-Reply-To` lands the draft in the original
+  conversation; subject alone also groups in Gmail, but external clients rely
+  on the headers.
 - **Bake `from` when it matters** (legal sends, alias discipline): the spec's
-`from` field writes the header into the draft server-side, so the compose
-window cannot be sent from the wrong identity by a missed From-selector
-click. The `[OK]` line's `from:` readback is the verification - a WARNING
-there means Gmail rejected the alias and defaulted.
+  `from` field writes the header into the draft server-side, so the compose
+  window cannot be sent from the wrong identity by a missed From-selector
+  click. The `[OK]` line's `from:` readback is the verification - a WARNING
+  there means Gmail rejected the alias and defaulted.
 
 ## Failure modes
 

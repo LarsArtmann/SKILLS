@@ -13,12 +13,12 @@ dependency lifecycle. Nothing previously covered project-inception selection:
 adoption, the per-SDK skills (cmdguard, go-cqrs-lite, cqrs-htmx, go-aichat,
 templ-components) assume the lib is already chosen.
 
-| File                                          | Content                                                                 |
-| --------------------------------------------- | ----------------------------------------------------------------------- |
-| `stack-selection/SKILL.md`                    | 168 lines, 7 phases: profile → meta discovery → capability match → policy → decide → emit STACK.md → wire |
+| File                                           | Content                                                                                                       |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `stack-selection/SKILL.md`                     | 168 lines, 7 phases: profile → meta discovery → capability match → policy → decide → emit STACK.md → wire     |
 | `stack-selection/references/capability-map.md` | 67 first-party libs in 11 categories, README-verified 2026-10-27, with owning-skill + when-NOT-to-use columns |
-| `stack-selection/assets/STACK-template.md`    | Living decision record: profile, chosen foundation (why-this-not-that), deliberately-excluded, wiring order |
-| `stack-selection/evals/evals.json`            | 3 evals (lib-watching CLI, event-sourced web app, one-shot YAGGI script) |
+| `stack-selection/assets/STACK-template.md`     | Living decision record: profile, chosen foundation (why-this-not-that), deliberately-excluded, wiring order   |
+| `stack-selection/evals/evals.json`             | 3 evals (lib-watching CLI, event-sourced web app, one-shot YAGGI script)                                      |
 
 ## Research findings encoded in the skill (the "review all" part)
 

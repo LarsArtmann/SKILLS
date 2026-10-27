@@ -15,12 +15,12 @@ this session).
 one evidence-verified recommendation each, answered by the user in one
 sitting (3 question batches):
 
-| Cluster | Verdicts |
-| ------- | -------- |
-| website-launch Q0–Q5 | Go SSG baseline → private `website-template` repo; `websitelaunch` CLI in Go stdlib-only; gogenfilter rebuilt on template later; T33 kept separate (user: "do what the smartest is") |
-| linter-building B.g1–g3 | Stay Go-first; two-stage aging (synthetic eval → 🟡, real run → 🟢); agent commits session artifacts with detailed messages (daemon = floor) |
-| Glossary C/T51 | **VERBATIM lockstep** (user overrode the semantic recommendation) |
-| ROADMAP D.g1–g4 | Backup trashed (executed via `trash`); third-party stays upstream-managed; pre-commit link hook; status-report default `.md` |
+| Cluster                 | Verdicts                                                                                                                                                                             |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| website-launch Q0–Q5    | Go SSG baseline → private `website-template` repo; `websitelaunch` CLI in Go stdlib-only; gogenfilter rebuilt on template later; T33 kept separate (user: "do what the smartest is") |
+| linter-building B.g1–g3 | Stay Go-first; two-stage aging (synthetic eval → 🟡, real run → 🟢); agent commits session artifacts with detailed messages (daemon = floor)                                         |
+| Glossary C/T51          | **VERBATIM lockstep** (user overrode the semantic recommendation)                                                                                                                    |
+| ROADMAP D.g1–g4         | Backup trashed (executed via `trash`); third-party stays upstream-managed; pre-commit link hook; status-report default `.md`                                                         |
 
 Routing executed: verdicts table filled; ROADMAP g-questions closed with
 decided-notes (2026-08-14 g1–g3, 2026-08-16 g2, 2026-09-18 g2); TODO_LIST

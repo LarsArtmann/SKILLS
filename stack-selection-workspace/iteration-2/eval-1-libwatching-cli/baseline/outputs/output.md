@@ -8,21 +8,21 @@
 
 ## 1. RECOMMENDED STACK
 
-| Concern | Choice | Why |
-|---|---|---|
-| Language | Go 1.22+ (stdlib `slog`, `net/http`, `context`) | Everything you need for a CLI + REST is already in the stdlib |
-| CLI framework | `spf13/cobra` | De-facto standard; subcommands, flags, help text for free |
-| Config | `env` (caarlos0/env) or plain `os.Getenv` | API token in an env var (`NOTION_TOKEN`); skip heavyweight config for v1 |
-| Folder watching | `fsnotify/fsnotify` | Canonical inotify-based watcher on Linux/macOS |
-| Frontmatter parsing | `adrg/frontmatter` (or `yaml.v3` + manual split on `---`) | Handles YAML/JSON/TOML frontmatter and hands back the body in one call |
-| YAML | `gopkg.in/yaml.v3` | The maintained YAML lib (comes as a dependency anyway) |
-| Notion client | `makenotion/notion-sdk-go` (official) OR raw `net/http` | Official SDK covers pagination & types; raw HTTP is fine if you only hit 2–3 endpoints |
-| Rate limiting | `golang.org/x/time/rate` | Notion's API is ~3 req/s; a token-bucket limiter avoids 429 pain |
-| State/dedup | JSON file on disk (e.g. `~/.config/yourtool/state.json`) | Track file path → Notion page ID so re-syncs update instead of duplicate |
-| Debounce | Small goroutine + `time.After` timer | Editors fire many write events; collapse them |
-| Markdown → blocks (optional) | `yuin/goldmark` | Only if you push body content to Notion, not just frontmatter |
-| Build/release | `goreleaser` | Cross-compile binaries without thinking |
-| Tests | stdlib `testing` + `net/http/httptest` | Mock the Notion API with an httptest server; `testify` optional |
+| Concern                      | Choice                                                    | Why                                                                                    |
+| ---------------------------- | --------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Language                     | Go 1.22+ (stdlib `slog`, `net/http`, `context`)           | Everything you need for a CLI + REST is already in the stdlib                          |
+| CLI framework                | `spf13/cobra`                                             | De-facto standard; subcommands, flags, help text for free                              |
+| Config                       | `env` (caarlos0/env) or plain `os.Getenv`                 | API token in an env var (`NOTION_TOKEN`); skip heavyweight config for v1               |
+| Folder watching              | `fsnotify/fsnotify`                                       | Canonical inotify-based watcher on Linux/macOS                                         |
+| Frontmatter parsing          | `adrg/frontmatter` (or `yaml.v3` + manual split on `---`) | Handles YAML/JSON/TOML frontmatter and hands back the body in one call                 |
+| YAML                         | `gopkg.in/yaml.v3`                                        | The maintained YAML lib (comes as a dependency anyway)                                 |
+| Notion client                | `makenotion/notion-sdk-go` (official) OR raw `net/http`   | Official SDK covers pagination & types; raw HTTP is fine if you only hit 2–3 endpoints |
+| Rate limiting                | `golang.org/x/time/rate`                                  | Notion's API is ~3 req/s; a token-bucket limiter avoids 429 pain                       |
+| State/dedup                  | JSON file on disk (e.g. `~/.config/yourtool/state.json`)  | Track file path → Notion page ID so re-syncs update instead of duplicate               |
+| Debounce                     | Small goroutine + `time.After` timer                      | Editors fire many write events; collapse them                                          |
+| Markdown → blocks (optional) | `yuin/goldmark`                                           | Only if you push body content to Notion, not just frontmatter                          |
+| Build/release                | `goreleaser`                                              | Cross-compile binaries without thinking                                                |
+| Tests                        | stdlib `testing` + `net/http/httptest`                    | Mock the Notion API with an httptest server; `testify` optional                        |
 
 ## 2. ALTERNATIVES CONSIDERED
 

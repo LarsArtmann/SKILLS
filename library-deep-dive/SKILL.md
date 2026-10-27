@@ -175,16 +175,16 @@ A deep-dive is DONE only when ALL FOUR of these hold — the 2026-10-24 run
 shipped the report and missed the rest, and each gap cost a same-day closeout:
 
 - [ ] **Gate:** the project's quality gate is green at the report's HEAD
-  (the audit claims must hold on a healthy tree, and `rg -r`-class
-  quoting accidents surface as real findings).
+      (the audit claims must hold on a healthy tree, and `rg -r`-class
+      quoting accidents surface as real findings).
 - [ ] **Index:** the report is REACHABLE — if `docs/research/README.md` (or
-  the project's equivalent index) exists, it gains a row (subject, date,
-  refresh trigger); if no index exists, note that in the report handoff. A
-  report no fresh session can find is folklore with styling.
+      the project's equivalent index) exists, it gains a row (subject, date,
+      refresh trigger); if no index exists, note that in the report handoff. A
+      report no fresh session can find is folklore with styling.
 - [ ] **Memory:** the project's AGENTS.md (or memory file) carries the
-  durable outcome — the adoption verdict line and the deferral/refresh
-  triggers — not just the report path.
+      durable outcome — the adoption verdict line and the deferral/refresh
+      triggers — not just the report path.
 - [ ] **Browser:** the committed HTML is screenshot-verified in a headless
-  browser (renders, no broken layout, score cards show the derived numbers).
-  An unrendered report has shipped with broken markup before; the screenshot
-  is the run trace.
+      browser (renders, no broken layout, score cards show the derived numbers).
+      An unrendered report has shipped with broken markup before; the screenshot
+      is the run trace.

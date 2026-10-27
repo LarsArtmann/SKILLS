@@ -53,17 +53,17 @@ Skills organized by domain — live count via `scripts/check-skills.sh` (never h
 
 ### Go Ecosystem
 
-| Skill                        | What It Does                                                                                                                                | Status           |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| **bdd-testing**              | BDD tests with `onsi/ginkgo` for Go projects                                                                                                | 🟡 Functional    |
-| **go-ecosystem-upgrade**     | Protocol for bumping/releasing/migrating Go library versions across many consumers — 18 failure modes extracted from 14 real self-reviews   | 🟢 Comprehensive |
-| **go-modularize**            | Splits Go monorepos into semi-independent sub-modules                                                                                       | 🟢 Comprehensive |
-| **go-release**               | Cuts, pushes, and verifies Go module releases — single-module, multi-module, and binary. Tag immutability, recovery, GoReleaser, CI         | 🟢 Comprehensive |
-| **go-error-modernization**   | Go 1.26+ error-matching modernization — prevents cargo-cult `errors.As`/`errors.Is` regressions (`erraudit` CLI not publicly findable)      | 🆕 New           |
-| **how-to-golang**            | Go development decision guide — what to use, not how                                                                                        | 🟢 Comprehensive |
-| **linter-building**          | Build linters, analyzers, and lint-adjacent tools — mechanism decision tree, finding model, FP control, suppressions, autofix, distribution | 🆕 New (evald)   |
+| Skill                        | What It Does                                                                                                                                                                 | Status           |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **bdd-testing**              | BDD tests with `onsi/ginkgo` for Go projects                                                                                                                                 | 🟡 Functional    |
+| **go-ecosystem-upgrade**     | Protocol for bumping/releasing/migrating Go library versions across many consumers — 18 failure modes extracted from 14 real self-reviews                                    | 🟢 Comprehensive |
+| **go-modularize**            | Splits Go monorepos into semi-independent sub-modules                                                                                                                        | 🟢 Comprehensive |
+| **go-release**               | Cuts, pushes, and verifies Go module releases — single-module, multi-module, and binary. Tag immutability, recovery, GoReleaser, CI                                          | 🟢 Comprehensive |
+| **go-error-modernization**   | Go 1.26+ error-matching modernization — prevents cargo-cult `errors.As`/`errors.Is` regressions (`erraudit` CLI not publicly findable)                                       | 🆕 New           |
+| **how-to-golang**            | Go development decision guide — what to use, not how                                                                                                                         | 🟢 Comprehensive |
+| **linter-building**          | Build linters, analyzers, and lint-adjacent tools — mechanism decision tree, finding model, FP control, suppressions, autofix, distribution                                  | 🆕 New (evald)   |
 | **stack-selection**          | Foundation selection for NEW projects — first-party lib discovery via the `meta` inventory + how-to-golang policy, emits a STACK.md decision record with owning-skill wiring | 🆕 New (evald)   |
-| **samber-do-best-practices** | Correct samber/do v2 DI usage — lifecycle, scopes, anti-patterns DO-1 → DO-6                                                                | 🆕 New           |
+| **samber-do-best-practices** | Correct samber/do v2 DI usage — lifecycle, scopes, anti-patterns DO-1 → DO-6                                                                                                 | 🆕 New           |
 
 ### Nix & DevOps
 
@@ -102,7 +102,7 @@ Skills organized by domain — live count via `scripts/check-skills.sh` (never h
 | Skill              | What It Does                                                                                                              | Status           |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | **docs-health**    | Creates, verifies, and maintains all project docs (living AND historical) — BUILD, HARVEST, VERIFY, ANNOTATE modes        | 🟢 Solid         |
-| **status-report**  | Full project status updates as Markdown reports (HTML dashboards for metric-heavy reports)                                 | 🟡 Functional    |
+| **status-report**  | Full project status updates as Markdown reports (HTML dashboards for metric-heavy reports)                                | 🟡 Functional    |
 | **website-launch** | Launches documentation websites (Astro + Starlight + Firebase) with a HyperFrames demo video as the launch's sales engine | 🟢 Comprehensive |
 
 ## Quick Start

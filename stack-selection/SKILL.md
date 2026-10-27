@@ -173,15 +173,15 @@ The selection is not done until the wiring path is named. Per selection:
 This skill is the head of a chain; each stage owns its phase and they
 disambiguate both ways:
 
-| Stage     | Skill                                          |
-| --------- | ---------------------------------------------- |
-| SELECT    | `stack-selection` (this skill) — inception     |
-| POLICY    | `how-to-golang` — consulted during selection   |
-| WIRE      | per-SDK skills, `buildflow`, `nix-private-go-repos` |
-| SHAPE     | `go-modularize` — module boundaries            |
-| AUDIT     | `library-deep-dive` — utilization after adoption |
-| UPGRADE   | `go-ecosystem-upgrade` — consumer-side bumps   |
-| RELEASE   | `go-release` — supply side                     |
+| Stage   | Skill                                               |
+| ------- | --------------------------------------------------- |
+| SELECT  | `stack-selection` (this skill) — inception          |
+| POLICY  | `how-to-golang` — consulted during selection        |
+| WIRE    | per-SDK skills, `buildflow`, `nix-private-go-repos` |
+| SHAPE   | `go-modularize` — module boundaries                 |
+| AUDIT   | `library-deep-dive` — utilization after adoption    |
+| UPGRADE | `go-ecosystem-upgrade` — consumer-side bumps        |
+| RELEASE | `go-release` — supply side                          |
 
 ## Done bar
 

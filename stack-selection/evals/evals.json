@@ -5,13 +5,19 @@
       "id": 1,
       "prompt": "I want to build a new Go CLI tool that watches a folder of markdown files and syncs parsed frontmatter to a Notion-style REST API. Gonna start from scratch tonight — empty repo. What should I build it on?",
       "expected_output": "Runs the meta inventory (not training data) and returns a foundation: go-filewatcher (watching), go-ndjson or encoding/json/v2 for parsing, cmdguard for CLI shape, go-output for output, go-localsync/segment-buffer considered and reasoned about for the sync side (local-first mirror vs buffer), how-to-golang policy for third-party picks, YAGNI-excludes event sourcing/CQRS explicitly, and produces a STACK.md with chosen + deliberately-excluded tables and wiring order",
-      "files": ["../stack-selection-workspace/iteration-2/eval-1-libwatching-cli/with_skill/outputs/output.md", "../stack-selection-workspace/iteration-2/eval-1-libwatching-cli/baseline/outputs/output.md"]
+      "files": [
+        "../stack-selection-workspace/iteration-2/eval-1-libwatching-cli/with_skill/outputs/output.md",
+        "../stack-selection-workspace/iteration-2/eval-1-libwatching-cli/baseline/outputs/output.md"
+      ]
     },
     {
       "id": 2,
       "prompt": "New project: an event-sourced web app for managing my consulting invoices with a server-rendered UI and login. Which of my own libs should this be built on?",
       "expected_output": "Selects the cqrs-htmx + go-cqrs-lite system composition root path (web app with commands/events and auth via usermgmt), cmdguard only if a CLI is needed, go-composable-business-types for Money/IDs, names the owning skills to load next (cqrs-htmx, go-cqrs-lite), verifies repos exist before selecting, and excludes irrelevant high-importance libs (go-commit, universal-workflow) with reasons",
-      "files": ["../stack-selection-workspace/iteration-2/eval-2-event-sourced-webapp/with_skill/outputs/output.md", "../stack-selection-workspace/iteration-2/eval-2-event-sourced-webapp/baseline/outputs/output.md"]
+      "files": [
+        "../stack-selection-workspace/iteration-2/eval-2-event-sourced-webapp/with_skill/outputs/output.md",
+        "../stack-selection-workspace/iteration-2/eval-2-event-sourced-webapp/baseline/outputs/output.md"
+      ]
     },
     {
       "id": 3,

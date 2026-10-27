@@ -14,18 +14,18 @@
 
 ### Q0 — Extraction baseline: Go SSG or Astro?
 
-| Option | What it means |
-| ------ | ------------- |
+| Option                                 | What it means                                                                                                                                                                                                                                                                                                                                 |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **(a) Go SSG** (templ-components site) | Matches your stated "standard stack" direction; 8 of 22 documented pitfalls die (all Node/pnpm/MDX classes); 186 lines of prose version-pins die → go.mod/lockfile; golden tests + CSP hash-pinning + link checker built in. Cost: parity gaps first (editLink, per-page lastUpdated), and 18 live Astro sites get no new tooling short-term. |
-| (b) Astro (gogenfilter) | 18 live Astro sites → `retrofit` has immediate consumers; Starlight features complete without new code. Cost: keeps the entire Node/pnpm pitfall class the skill documents; contradicts the Go-everywhere direction; eventual Go pivot = double extraction. |
+| (b) Astro (gogenfilter)                | 18 live Astro sites → `retrofit` has immediate consumers; Starlight features complete without new code. Cost: keeps the entire Node/pnpm pitfall class the skill documents; contradicts the Go-everywhere direction; eventual Go pivot = double extraction.                                                                                   |
 
 **Recommendation: (a) Go SSG.** Stack direction is the durable fact; tooling
 (`doctor`/`check`) is stack-agnostic and benefits everyone immediately.
 Astro sites keep the existing manual §0.0 audit — they are live and stable.
 
-*Verified 2026-10-27: fleet is now 19 sites with `website/` — 18 Astro/JS +
+_Verified 2026-10-27: fleet is now 19 sites with `website/` — 18 Astro/JS +
 1 Go SSG (templ-components). One new Astro site since the 2026-10-11 count;
-split unchanged in kind.*
+split unchanged in kind._
 
 ### Q1 — Template repo name?
 
@@ -96,9 +96,9 @@ shipped first-use glosses paraphrase (verified again 2026-10-27: e.g.
 nix-review glosses "the same rule maintained in two places" vs the table's
 "the same concept defined or configured in two places").
 
-| Option | Consequence |
-| ------ | ----------- |
-| (a) Verbatim lockstep | Align all 7 glosses to the table (P10, ~30 min); future glosses are copy-paste. Stiffest wording in prose. |
+| Option                                                   | Consequence                                                                                                   |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| (a) Verbatim lockstep                                    | Align all 7 glosses to the table (P10, ~30 min); future glosses are copy-paste. Stiffest wording in prose.    |
 | **(b) Amend rule: "meaning identical, table canonical"** | Rule edit only; glosses stay; drift risk stays low because the table remains the single canonical definition. |
 
 **Recommendation: (b).** The paraphrases are clear, the table is canonical,
@@ -110,8 +110,8 @@ is preserved by "table canonical".
 
 ### g1 — Backup retention: trash `~/.agents/.backup-skills-20260814/`?
 
-*Verified 2026-10-27: dir exists, 25 skill copies; the lockfile `.bak`
-mentioned in the ROADMAP is already gone — only the dir remains.*
+_Verified 2026-10-27: dir exists, 25 skill copies; the lockfile `.bak`
+mentioned in the ROADMAP is already gone — only the dir remains._
 
 **Recommendation: trash it.** Symlinks verified green across four months of
 `link-skills-to-agents.sh --check` runs and multiple `skills update -g`
@@ -141,21 +141,21 @@ remains for reviews/audits where the Bauhaus layout earns its keep (the
 
 ## Verdicts (answered 2026-10-27, one sitting)
 
-| Q  | Verdict                             | Routed                                            |
-| -- | ----------------------------------- | ------------------------------------------------- |
-| Q0 | **Go SSG** (recommendation accepted) | T57 unblocked; ROADMAP 848-line note updated       |
-| Q1 | **`website-template`**              | T57                                               |
-| Q2 | **Go (stdlib-only)**                | T58                                               |
-| Q3 | **Rebuild on template later**       | ROADMAP note                                      |
-| Q4 | **Private, publishable later**      | T57                                               |
-| Q5 | **Keep T33 separate** (user delegated: "do what the smartest is" → recommendation stands) | T33 stays independent TODO                        |
-| B.g1 | **Stay Go-first**                 | T34 unblocked; linter-building refs stay as-is    |
-| B.g2 | **Two-stage: eval→🟡, real→🟢**   | T34 unblocked; FEATURES legend note; settles stack-selection's aging too |
-| B.g3 | **Agent commits artifacts, detailed messages; daemon is floor** | AGENTS §7 note                        |
-| C (T51) | **Verbatim lockstep** (overrides semantic recommendation) | T51 unblocked → align all 7 glosses to the table |
-| D.g1 | **Trash the backup** (executed 2026-10-27 via `trash`) | ROADMAP g1 closed                    |
-| D.g2 | **Stay upstream-managed**           | ROADMAP g2 closed                                 |
-| D.g3 | **Pre-commit hook in this repo**    | ROADMAP g3 closed; hook task created              |
-| D.g4 | **Default .md**                     | status-report skill default amended; ROADMAP g2 (2026-08-16) closed |
+| Q       | Verdict                                                                                   | Routed                                                                   |
+| ------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Q0      | **Go SSG** (recommendation accepted)                                                      | T57 unblocked; ROADMAP 848-line note updated                             |
+| Q1      | **`website-template`**                                                                    | T57                                                                      |
+| Q2      | **Go (stdlib-only)**                                                                      | T58                                                                      |
+| Q3      | **Rebuild on template later**                                                             | ROADMAP note                                                             |
+| Q4      | **Private, publishable later**                                                            | T57                                                                      |
+| Q5      | **Keep T33 separate** (user delegated: "do what the smartest is" → recommendation stands) | T33 stays independent TODO                                               |
+| B.g1    | **Stay Go-first**                                                                         | T34 unblocked; linter-building refs stay as-is                           |
+| B.g2    | **Two-stage: eval→🟡, real→🟢**                                                           | T34 unblocked; FEATURES legend note; settles stack-selection's aging too |
+| B.g3    | **Agent commits artifacts, detailed messages; daemon is floor**                           | AGENTS §7 note                                                           |
+| C (T51) | **Verbatim lockstep** (overrides semantic recommendation)                                 | T51 unblocked → align all 7 glosses to the table                         |
+| D.g1    | **Trash the backup** (executed 2026-10-27 via `trash`)                                    | ROADMAP g1 closed                                                        |
+| D.g2    | **Stay upstream-managed**                                                                 | ROADMAP g2 closed                                                        |
+| D.g3    | **Pre-commit hook in this repo**                                                          | ROADMAP g3 closed; hook task created                                     |
+| D.g4    | **Default .md**                                                                           | status-report skill default amended; ROADMAP g2 (2026-08-16) closed      |
 
 Every question has a verdict. Package complete; execution per plan P7–P14.

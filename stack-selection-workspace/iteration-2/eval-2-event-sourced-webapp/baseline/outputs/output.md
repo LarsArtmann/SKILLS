@@ -4,28 +4,28 @@
 
 ## RAW SUBAGENT OUTPUT (verbatim)
 
-**Honest caveat up front:** I can't see your personal libraries from here, so I can't tell you which of *your* libs fit. Below is the stack I'd pick as a senior Go engineer for this app (event-sourced, server-rendered, login), with seams clearly marked where your own libs could slot in if they cover the same job.
+**Honest caveat up front:** I can't see your personal libraries from here, so I can't tell you which of _your_ libs fit. Below is the stack I'd pick as a senior Go engineer for this app (event-sourced, server-rendered, login), with seams clearly marked where your own libs could slot in if they cover the same job.
 
 ## 1. RECOMMENDED STACK
 
-| Concern | Pick | Why (one line) |
-|---|---|---|
-| Language/runtime | Go + `net/http` (1.22+ routing) | Method+path pattern routing is now in stdlib; no framework needed |
-| Router (if you want middleware niceties) | `go-chi/chi` v5 | Idiomatic stdlib-compatible router, tiny, great middleware story |
-| Event store | Postgres append-only `events` table, hand-rolled (~200 lines) | Go has no dominant ES library; a `stream_id / version / type / payload` table with optimistic-concurrency `ON CONFLICT` check is the standard pragmatic move |
-| Events plumbing | `ThreeDotsLabs/watermill` *(only if you outgrow in-process dispatch)* | Clean pub/sub abstractions; skip it at first — in-process handler map is fine |
-| DB driver | `jackc/pgx` v5 (pool) | De facto fastest, most correct Postgres driver |
-| Migrations | `pressly/goose` | Simple embedded SQL migrations |
-| Queries/read model | `sqlc-dev/sqlc` | Type-safe SQL for projections, zero ORM weight |
-| Serialization | `goccy/go-json` or stdlib `encoding/json` for event payloads | Keep event schemas dumb and stable |
-| Templating | `a-h/templ` + `htmx` | Type-checked components, great DX, htmx covers interactivity without a SPA |
-| Auth | `alexedwards/scs` sessions + `alexedwards/argon2id` | Battle-tested session manager; correct password hashing by default |
-| CSRF | `gorilla/csrf` | Drop-in middleware for form posts |
-| Money | `shopspring/decimal` | Never floats on invoice lines; handles VAT/rounding properly |
-| PDF invoices | Render `text/template` HTML → PDF via `chromedp`, or `go-pdf/fpdf` | HTML→PDF gives you the same template as the web view |
-| Live reload | `air-verse/air` (backend) + `templ generate --watch` | Tight feedback loop while building UI |
-| Testing | `testify` + `testcontainers-go` (Postgres) | ES tests need the real DB; parity matters |
-| Deploy | Single binary + Postgres on Fly.io / small VPS | Go binary + one DB is the whole ops story |
+| Concern                                  | Pick                                                                  | Why (one line)                                                                                                                                               |
+| ---------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Language/runtime                         | Go + `net/http` (1.22+ routing)                                       | Method+path pattern routing is now in stdlib; no framework needed                                                                                            |
+| Router (if you want middleware niceties) | `go-chi/chi` v5                                                       | Idiomatic stdlib-compatible router, tiny, great middleware story                                                                                             |
+| Event store                              | Postgres append-only `events` table, hand-rolled (~200 lines)         | Go has no dominant ES library; a `stream_id / version / type / payload` table with optimistic-concurrency `ON CONFLICT` check is the standard pragmatic move |
+| Events plumbing                          | `ThreeDotsLabs/watermill` _(only if you outgrow in-process dispatch)_ | Clean pub/sub abstractions; skip it at first — in-process handler map is fine                                                                                |
+| DB driver                                | `jackc/pgx` v5 (pool)                                                 | De facto fastest, most correct Postgres driver                                                                                                               |
+| Migrations                               | `pressly/goose`                                                       | Simple embedded SQL migrations                                                                                                                               |
+| Queries/read model                       | `sqlc-dev/sqlc`                                                       | Type-safe SQL for projections, zero ORM weight                                                                                                               |
+| Serialization                            | `goccy/go-json` or stdlib `encoding/json` for event payloads          | Keep event schemas dumb and stable                                                                                                                           |
+| Templating                               | `a-h/templ` + `htmx`                                                  | Type-checked components, great DX, htmx covers interactivity without a SPA                                                                                   |
+| Auth                                     | `alexedwards/scs` sessions + `alexedwards/argon2id`                   | Battle-tested session manager; correct password hashing by default                                                                                           |
+| CSRF                                     | `gorilla/csrf`                                                        | Drop-in middleware for form posts                                                                                                                            |
+| Money                                    | `shopspring/decimal`                                                  | Never floats on invoice lines; handles VAT/rounding properly                                                                                                 |
+| PDF invoices                             | Render `text/template` HTML → PDF via `chromedp`, or `go-pdf/fpdf`    | HTML→PDF gives you the same template as the web view                                                                                                         |
+| Live reload                              | `air-verse/air` (backend) + `templ generate --watch`                  | Tight feedback loop while building UI                                                                                                                        |
+| Testing                                  | `testify` + `testcontainers-go` (Postgres)                            | ES tests need the real DB; parity matters                                                                                                                    |
+| Deploy                                   | Single binary + Postgres on Fly.io / small VPS                        | Go binary + one DB is the whole ops story                                                                                                                    |
 
 **Where your own libs slot in:** if you maintain a router, event-store package, config loader, or template helper lib, it almost certainly replaces chi / the hand-rolled event store / viper-equivalents above — the architecture doesn't change, only the import paths.
 

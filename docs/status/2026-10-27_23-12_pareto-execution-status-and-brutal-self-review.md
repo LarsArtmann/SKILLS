@@ -9,30 +9,30 @@
 
 ## a) FULLY DONE (verified, exit codes / commits cited)
 
-| # | Item | Evidence |
-| - | ---- | -------- |
-| 1 | **P1/T64 decision package**: 14/14 open decisions answered in one sitting, routed (ROADMAP closed-notes, TODO flips, CHANGELOG, backup trashed via `trash`) | `docs/decisions/2026-10-27_open-decisions.md` verdicts table; commit 3b5af2e |
-| 2 | **P2/T60 behavioral evals**: evals 1–2 × (with-skill + baseline) subagents; assertions graded | `stack-selection-workspace/iteration-2/` (4 outputs + grading.json) |
-| 3 | **P3/T62 drift check**: `stack-drift-check.sh` (exit 0/1/2 contract), 4 fixtures pass, wired into SKILL done-bar + STACK template + full-code-review consumer | fixtures 0/1/1/2 exact; real-world run recorded (0/163 STACK.md) |
-| 4 | **P4/T61 trigger eval**: 20-query set + subagent matcher round → 20/20 | `evals/trigger-eval.json`, `trigger-eval-results.json` |
-| 5 | **P5/T63 aggregation commit**: symlink on master 4100313 via worktree; WIP branch untouched; worktree removed | `link-skills-to-agents.sh --check` EXIT 0 |
-| 6 | **P6/T65 map re-verify**: `capability-map-diff.sh`; +13 rows, 0 stale, Known-gaps extended; map 55→68 rows | script output in session; cadence note in AGENTS §5.5 |
-| 7 | **T51/P10 glosses VERBATIM**: 6 skills aligned to the house-jargon table; residual grep zero | `--signal` EXIT 0 |
-| 8 | **T34/P11 linter direction**: Go-first note, two-stage-aging legend, commit-ownership rule | linter-building SKILL.md, FEATURES, AGENTS §7 |
-| 9 | **P14 status-report default `.md`** | status-report/SKILL.md + FEATURES + README rows |
-| 10 | **T66 pre-commit link guard** | `.git/hooks/pre-commit` runs green |
-| 11 | Gates all green at close: struct 0, triggers 0, signal 0, link 0; tree clean | quoted in session; commits 3b5af2e, dd6707c |
-| 12 | Session status report written (and its timestamp defect fixed — see d1) | `docs/status/2026-10-27_23-10_*` |
+| #  | Item                                                                                                                                                          | Evidence                                                                     |
+| -- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| 1  | **P1/T64 decision package**: 14/14 open decisions answered in one sitting, routed (ROADMAP closed-notes, TODO flips, CHANGELOG, backup trashed via `trash`)   | `docs/decisions/2026-10-27_open-decisions.md` verdicts table; commit 3b5af2e |
+| 2  | **P2/T60 behavioral evals**: evals 1–2 × (with-skill + baseline) subagents; assertions graded                                                                 | `stack-selection-workspace/iteration-2/` (4 outputs + grading.json)          |
+| 3  | **P3/T62 drift check**: `stack-drift-check.sh` (exit 0/1/2 contract), 4 fixtures pass, wired into SKILL done-bar + STACK template + full-code-review consumer | fixtures 0/1/1/2 exact; real-world run recorded (0/163 STACK.md)             |
+| 4  | **P4/T61 trigger eval**: 20-query set + subagent matcher round → 20/20                                                                                        | `evals/trigger-eval.json`, `trigger-eval-results.json`                       |
+| 5  | **P5/T63 aggregation commit**: symlink on master 4100313 via worktree; WIP branch untouched; worktree removed                                                 | `link-skills-to-agents.sh --check` EXIT 0                                    |
+| 6  | **P6/T65 map re-verify**: `capability-map-diff.sh`; +13 rows, 0 stale, Known-gaps extended; map 55→68 rows                                                    | script output in session; cadence note in AGENTS §5.5                        |
+| 7  | **T51/P10 glosses VERBATIM**: 6 skills aligned to the house-jargon table; residual grep zero                                                                  | `--signal` EXIT 0                                                            |
+| 8  | **T34/P11 linter direction**: Go-first note, two-stage-aging legend, commit-ownership rule                                                                    | linter-building SKILL.md, FEATURES, AGENTS §7                                |
+| 9  | **P14 status-report default `.md`**                                                                                                                           | status-report/SKILL.md + FEATURES + README rows                              |
+| 10 | **T66 pre-commit link guard**                                                                                                                                 | `.git/hooks/pre-commit` runs green                                           |
+| 11 | Gates all green at close: struct 0, triggers 0, signal 0, link 0; tree clean                                                                                  | quoted in session; commits 3b5af2e, dd6707c                                  |
+| 12 | Session status report written (and its timestamp defect fixed — see d1)                                                                                       | `docs/status/2026-10-27_23-10_*`                                             |
 
 ## b) PARTIALLY DONE
 
-| Item | Done | Missing |
-| ---- | ---- | ------- |
-| stack-selection hardening (plan 4%→64% tier) | evals, triggers, drift-check, map — all executed | real user-triggered run (the 🟡→🟢 half of two-stage aging); meta registration never exercised (Phase 6 last bullet still untested — no real new project existed) |
-| Decision routing | TODO/ROADMAP/CHANGELOG reflect all 14 verdicts | execution of the decisions themselves is only STARTED: P7–P9 (the website-template build the Q0–Q5 answers unblock) not begun |
-| Trigger-eval rigor | 20/20 on one matcher round, STRONG preserved | single run, no 3× stability sampling; evaluator (me) also designed the queries (recorded as known limit) |
-| Eval grading rigor | 16/16 with evidence pointers | grader was NOT blind — assertions drafted after outputs were in hand (anchored on yesterday's evals.json expected_output, but still; see e2) |
-| Fan-out ledger | stack-selection committed on master | aggregation repo NOT pushed (correct — no request); main checkout still on WIP branch `docs-health-verify-legs` with 67 dirty files (pre-existing, not mine to fix) |
+| Item                                         | Done                                             | Missing                                                                                                                                                             |
+| -------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| stack-selection hardening (plan 4%→64% tier) | evals, triggers, drift-check, map — all executed | real user-triggered run (the 🟡→🟢 half of two-stage aging); meta registration never exercised (Phase 6 last bullet still untested — no real new project existed)   |
+| Decision routing                             | TODO/ROADMAP/CHANGELOG reflect all 14 verdicts   | execution of the decisions themselves is only STARTED: P7–P9 (the website-template build the Q0–Q5 answers unblock) not begun                                       |
+| Trigger-eval rigor                           | 20/20 on one matcher round, STRONG preserved     | single run, no 3× stability sampling; evaluator (me) also designed the queries (recorded as known limit)                                                            |
+| Eval grading rigor                           | 16/16 with evidence pointers                     | grader was NOT blind — assertions drafted after outputs were in hand (anchored on yesterday's evals.json expected_output, but still; see e2)                        |
+| Fan-out ledger                               | stack-selection committed on master              | aggregation repo NOT pushed (correct — no request); main checkout still on WIP branch `docs-health-verify-legs` with 67 dirty files (pre-existing, not mine to fix) |
 
 ## c) NOT STARTED (from the plan; nothing silently skipped)
 
@@ -56,7 +56,7 @@
 2. **Timestamps/counts by command, always.** `date` for report headers, `git show -s --format=%ci` for commit-referencing claims. One line in SESSION-START.md would codify it (it already does this for exit codes — extend the same rule).
 3. **Register `docs/decisions/` as a convention.** A new directory + genre appeared (decision records) with no entry in AGENTS' Project Documentation Files table and no mention in §2 structure. Future sessions will discover it only by luck. Add: purpose (enduring decision records with verdicts), NOT-for (plans, status).
 4. **Cross-check FEATURES rows after EVERY SKILL.md edit** (SESSION-START step 6 says this; I checked 3 of 8 edited skills). The other five (brutal-self-review, architecture-review, naming-review, nix-review, full-code-review) had gloss-wording edits only — their FEATURES rows very likely don't mention glosses, but "very likely" is not verification.
-5. **drift-check false negative**: a lib mentioned in STACK.md prose ABOVE the excluded split (e.g. in the profile or wiring-order text) counts as "declared chosen" though it has no chosen-table row. Tighten: grep only between `## Chosen foundation` and the next `## ` heading.
+5. **drift-check false negative**: a lib mentioned in STACK.md prose ABOVE the excluded split (e.g. in the profile or wiring-order text) counts as "declared chosen" though it has no chosen-table row. Tighten: grep only between `## Chosen foundation` and the next `##` heading.
 6. **Trigger-eval 3× sampling** + a query set authored by someone other than the judge (second subagent can draft near-misses).
 7. **Commit-race handling**: the auto-daemon took index.lock mid-commit (62c6ac0 landed between my add and commit). Rule of thumb: commit session artifacts immediately after each P-block instead of one mega-commit at the end — smaller races, better history.
 8. **The status-report format rule now lives in 5 places** (skill canonical, decision doc, ROADMAP note, FEATURES, CHANGELOG). The four non-canonical ones all cite the decision — acceptable — but the NEXT format change must edit exactly one canonical + pointers, or this becomes the next 8-recurrence fight.
@@ -64,6 +64,7 @@
 ## f) NEXT — up to 50, ranked (impact/effort)
 
 **Unblocked builds (the 20%→100% tail of the plan):**
+
 1. P7/T57: create `~/projects/website-template` (private) from templ-components Go SSG; strip specifics; parametrize name/assets (Q1/Q4 decided).
 2. P7: close parity gaps in template (editLink, per-page lastUpdated; pin standalone tailwindcss, nodeless CI).
 3. P7: clean-checkout acceptance build (local clone → build → dry-run) — no push needed for THIS acceptance.
@@ -131,4 +132,4 @@
 
 Forgot: FEATURES re-checks for 5 of 8 edited skills; `docs/decisions/` convention registration; the report timestamp (caught late). Stupid-we-do-anyway: mega-commit at session end (daemon race bait); timestamps from memory. Better: blind grading, immediate per-block commits. Still improve: e1–e8 above. Lied: no — but two accuracy defects (d1, d2) were fabricated-adjacent and both fixed before anyone relied on them; the grading caveat (d5) is disclosed here rather than hidden. Less stupid: codify the timestamp rule (f22). Ghost systems: none created — every new artifact (drift-check, map-diff, hook, decisions doc) has a wired reader; the pre-existing ghost (STACK.md unread anywhere) is exactly what T62 killed. Scope creep: resisted P7 execution at session tail (Verschlimmbesserung guard held). Removed-useful: nothing removed. Split brains: minor — the format rule restated in 5 places (all citing canonical), aging rule in 3 (same pattern); flagged as e8. Tests: no new test harness beyond the 4 drift fixtures + fixture-tested gates; the drift fixtures are the model to copy for future script assets.
 
-*Verschlimmbesserung guard held: the only mid-report edit was fixing my own fresh timestamp defect (d1, fix-on-sight rule, AGENTS "Trivial, already-understood doc staleness"). Everything else waits for instructions.*
+_Verschlimmbesserung guard held: the only mid-report edit was fixing my own fresh timestamp defect (d1, fix-on-sight rule, AGENTS "Trivial, already-understood doc staleness"). Everything else waits for instructions._

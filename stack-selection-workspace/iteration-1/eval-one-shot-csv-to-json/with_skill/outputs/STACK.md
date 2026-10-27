@@ -6,32 +6,32 @@
 
 ## Profile
 
-| Axis          | Answer                              |
-| ------------- | ----------------------------------- |
-| Shape         | one-shot CLI script                 |
-| Domain        | convert one CSV file to JSON once   |
-| Persistence   | none                                |
-| Interfaces    | terminal (argv in, stdout out)      |
-| Scale target  | single run, then discard            |
-| Constraints   | throwaway — minimize ceremony       |
+| Axis         | Answer                            |
+| ------------ | --------------------------------- |
+| Shape        | one-shot CLI script               |
+| Domain       | convert one CSV file to JSON once |
+| Persistence  | none                              |
+| Interfaces   | terminal (argv in, stdout out)    |
+| Scale target | single run, then discard          |
+| Constraints  | throwaway — minimize ceremony     |
 
 ## Chosen foundation
 
-| Category         | Choice (first-party = ★) | Why this, not that                                          | Owning skill / docs | Revisit when          |
-| ---------------- | ------------------------ | ----------------------------------------------------------- | ------------------- | --------------------- |
+| Category         | Choice (first-party = ★) | Why this, not that                                           | Owning skill / docs | Revisit when          |
+| ---------------- | ------------------------ | ------------------------------------------------------------ | ------------------- | --------------------- |
 | CSV reading      | stdlib `encoding/csv`    | stdlib is sufficient; no first-party CSV lib exists in meta  | Go stdlib           | format quirks emerge  |
 | JSON writing     | `encoding/json/v2`       | Go 1.25+ policy (how-to-golang); all third-party JSON banned | how-to-golang       | —                     |
 | Init error style | ★ go-must (marginal)     | 2-3 `must.Must(...)` calls vs `if err != nil` noise in main  | README + pkg.go.dev | grows beyond one file |
 
 ## Deliberately excluded
 
-| Candidate          | Reason                                                                              |
-| ------------------ | ------------------------------------------------------------------------------------ |
-| ★ cmdguard (92)    | one-shot script — no durable flag structure, no config files; stdlib `flag` suffices |
-| ★ go-output (90)   | single fixed output format (JSON to stdout); go-output's multi-format power is dead weight here |
-| ★ go-ndjson (63)   | input is CSV, not newline-delimited JSON                                             |
-| ★ universal-workflow (92) | zero workflow — single linear conversion                                       |
-| ★ go-taskqueue (63) | single file, no queue                                                              |
+| Candidate                 | Reason                                                                                          |
+| ------------------------- | ----------------------------------------------------------------------------------------------- |
+| ★ cmdguard (92)           | one-shot script — no durable flag structure, no config files; stdlib `flag` suffices            |
+| ★ go-output (90)          | single fixed output format (JSON to stdout); go-output's multi-format power is dead weight here |
+| ★ go-ndjson (63)          | input is CSV, not newline-delimited JSON                                                        |
+| ★ universal-workflow (92) | zero workflow — single linear conversion                                                        |
+| ★ go-taskqueue (63)       | single file, no queue                                                                           |
 
 ## Wiring order
 

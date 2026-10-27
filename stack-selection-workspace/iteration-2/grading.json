@@ -8,40 +8,134 @@
       "id": 1,
       "prompt_summary": "lib-watching markdown→Notion CLI, empty repo tonight",
       "assertions": [
-        {"id": "A1", "claim": "consults the meta inventory (or adapted equivalent), not training data", "verdict": "PASS", "evidence": "with_skill §2 Inventory Evidence: 9 projects inspected with README/go.mod verification + go.mod adoption greps; adaptation (metadata.yaml + map) self-reported"},
-        {"id": "A2", "claim": "go-filewatcher chosen for watching", "verdict": "PASS", "evidence": "Chosen foundation row: go-filewatcher/v2 v2.4.2, 16-consumer evidence"},
-        {"id": "A3", "claim": "parsing avoids banned yaml.v2/v3", "verdict": "PASS", "evidence": "stdlib delimiter split + go-faster/yaml v0.4.6; fsnotify AND yaml.v3 bans found via banned-libraries.md"},
-        {"id": "A4", "claim": "cmdguard chosen for CLI shape", "verdict": "PASS", "evidence": "cmdguard/v4 v4.1.0, 35+ consumer pins"},
-        {"id": "A5", "claim": "go-output chosen for output", "verdict": "PASS", "evidence": "go-output v0.38.7, ~45 consumers"},
-        {"id": "A6", "claim": "sync side reasons about go-localsync AND segment-buffer", "verdict": "PASS", "evidence": "both present: go-localsync rejected (pull-direction + license + 1 consumer, README-verified), segment-buffer rejected (failed Phase 1 verification — no go.mod)"},
-        {"id": "A7", "claim": "how-to-golang policy applied for third-party picks", "verdict": "PASS", "evidence": "banned-libraries.md + required-libraries.md loaded; zero banned libs in chosen stack; govalid-class choices routed via policy"},
-        {"id": "A8", "claim": "YAGNI-excludes event sourcing/CQRS explicitly", "verdict": "PASS", "evidence": "excluded row: go-cqrs-lite (70) 'No invariants/event-history — plain sync loop (skill's own example of over-pull)'"},
-        {"id": "A9", "claim": "produces STACK.md with chosen + deliberately-excluded + wiring order", "verdict": "PASS", "evidence": "full STACK.md rendered per template: profile table, chosen-foundation table (why-this-not-that + revisit-when), 12-row excluded table, wiring order 1-8, decision log"}
+        {
+          "id": "A1",
+          "claim": "consults the meta inventory (or adapted equivalent), not training data",
+          "verdict": "PASS",
+          "evidence": "with_skill §2 Inventory Evidence: 9 projects inspected with README/go.mod verification + go.mod adoption greps; adaptation (metadata.yaml + map) self-reported"
+        },
+        {
+          "id": "A2",
+          "claim": "go-filewatcher chosen for watching",
+          "verdict": "PASS",
+          "evidence": "Chosen foundation row: go-filewatcher/v2 v2.4.2, 16-consumer evidence"
+        },
+        {
+          "id": "A3",
+          "claim": "parsing avoids banned yaml.v2/v3",
+          "verdict": "PASS",
+          "evidence": "stdlib delimiter split + go-faster/yaml v0.4.6; fsnotify AND yaml.v3 bans found via banned-libraries.md"
+        },
+        {
+          "id": "A4",
+          "claim": "cmdguard chosen for CLI shape",
+          "verdict": "PASS",
+          "evidence": "cmdguard/v4 v4.1.0, 35+ consumer pins"
+        },
+        {
+          "id": "A5",
+          "claim": "go-output chosen for output",
+          "verdict": "PASS",
+          "evidence": "go-output v0.38.7, ~45 consumers"
+        },
+        {
+          "id": "A6",
+          "claim": "sync side reasons about go-localsync AND segment-buffer",
+          "verdict": "PASS",
+          "evidence": "both present: go-localsync rejected (pull-direction + license + 1 consumer, README-verified), segment-buffer rejected (failed Phase 1 verification — no go.mod)"
+        },
+        {
+          "id": "A7",
+          "claim": "how-to-golang policy applied for third-party picks",
+          "verdict": "PASS",
+          "evidence": "banned-libraries.md + required-libraries.md loaded; zero banned libs in chosen stack; govalid-class choices routed via policy"
+        },
+        {
+          "id": "A8",
+          "claim": "YAGNI-excludes event sourcing/CQRS explicitly",
+          "verdict": "PASS",
+          "evidence": "excluded row: go-cqrs-lite (70) 'No invariants/event-history — plain sync loop (skill's own example of over-pull)'"
+        },
+        {
+          "id": "A9",
+          "claim": "produces STACK.md with chosen + deliberately-excluded + wiring order",
+          "verdict": "PASS",
+          "evidence": "full STACK.md rendered per template: profile table, chosen-foundation table (why-this-not-that + revisit-when), 12-row excluded table, wiring order 1-8, decision log"
+        }
       ],
       "score": "9/9",
       "baseline_contrast": "baseline picks fsnotify (banned), yaml.v3 (banned), testify-optional (banned), cobra over cmdguard, notion-sdk over first-party stack, JSON-state over go-atomic-write; no STACK.md, no excluded table, no verification — the delta is the skill's entire value",
-      "residuals": ["meta registration step impossible without shell (deferred, self-reported)", "cmdguard owning-skill location not found in SKILLS repo — correctly flagged unverified (it lives outside the repo, AGENTS §5.10)"]
+      "residuals": [
+        "meta registration step impossible without shell (deferred, self-reported)",
+        "cmdguard owning-skill location not found in SKILLS repo — correctly flagged unverified (it lives outside the repo, AGENTS §5.10)"
+      ]
     },
     {
       "id": 2,
       "prompt_summary": "event-sourced consulting-invoice web app, server-rendered + login",
       "assertions": [
-        {"id": "A1", "claim": "selects cqrs-htmx path (commands/events + auth via usermgmt)", "verdict": "PASS", "evidence": "Chosen foundation: cqrs-htmx v4 (v4.14.1 pinned) + usermgmt/loginpage verified on disk and in consumers"},
-        {"id": "A2", "claim": "go-cqrs-lite system composition root path", "verdict": "PASS", "evidence": "go-cqrs-lite system+metaengine per ADR-0123 (read from go-cqrs-lite's own SKILL.md); sqliteengine chosen over Postgres engines for single-user"},
-        {"id": "A3", "claim": "cmdguard only if CLI needed (excluded here)", "verdict": "PASS", "evidence": "excluded row: cmdguard (92) 'No CLI concern in profile (YAGNI); revisit when an admin CLI appears'"},
-        {"id": "A4", "claim": "go-composable-business-types for Money/IDs", "verdict": "PASS", "evidence": "Money/Cents chosen (96, ~20 consumers incl. journal+bank-sync /money) + go-branded-id for InvoiceID/CustomerID"},
-        {"id": "A5", "claim": "names owning skills to load next", "verdict": "PASS", "evidence": "go-cqrs-lite + templ-components + buildflow named with file paths; nix chain (go-nix-helpers, nix-private-go-repos) named"},
-        {"id": "A6", "claim": "verifies repos exist before selecting", "verdict": "PASS", "evidence": "every BUILD-ON row carries 'verified y (README + go.mod + submodule list)'; failed verification precedent applied to segment-buffer in eval 1"},
-        {"id": "A7", "claim": "excludes irrelevant high-importance libs with reasons", "verdict": "PASS", "evidence": "19-row excluded table incl. invoices (90), timesheets (91), cmdguard (92), go-output (90), universal-workflow (92), go-commit (95), erraudit (90) — every row has a reason; go-business-rules (80) excluded for ZERO adoption despite high importance (adoption-beats-importance rule applied)"}
+        {
+          "id": "A1",
+          "claim": "selects cqrs-htmx path (commands/events + auth via usermgmt)",
+          "verdict": "PASS",
+          "evidence": "Chosen foundation: cqrs-htmx v4 (v4.14.1 pinned) + usermgmt/loginpage verified on disk and in consumers"
+        },
+        {
+          "id": "A2",
+          "claim": "go-cqrs-lite system composition root path",
+          "verdict": "PASS",
+          "evidence": "go-cqrs-lite system+metaengine per ADR-0123 (read from go-cqrs-lite's own SKILL.md); sqliteengine chosen over Postgres engines for single-user"
+        },
+        {
+          "id": "A3",
+          "claim": "cmdguard only if CLI needed (excluded here)",
+          "verdict": "PASS",
+          "evidence": "excluded row: cmdguard (92) 'No CLI concern in profile (YAGNI); revisit when an admin CLI appears'"
+        },
+        {
+          "id": "A4",
+          "claim": "go-composable-business-types for Money/IDs",
+          "verdict": "PASS",
+          "evidence": "Money/Cents chosen (96, ~20 consumers incl. journal+bank-sync /money) + go-branded-id for InvoiceID/CustomerID"
+        },
+        {
+          "id": "A5",
+          "claim": "names owning skills to load next",
+          "verdict": "PASS",
+          "evidence": "go-cqrs-lite + templ-components + buildflow named with file paths; nix chain (go-nix-helpers, nix-private-go-repos) named"
+        },
+        {
+          "id": "A6",
+          "claim": "verifies repos exist before selecting",
+          "verdict": "PASS",
+          "evidence": "every BUILD-ON row carries 'verified y (README + go.mod + submodule list)'; failed verification precedent applied to segment-buffer in eval 1"
+        },
+        {
+          "id": "A7",
+          "claim": "excludes irrelevant high-importance libs with reasons",
+          "verdict": "PASS",
+          "evidence": "19-row excluded table incl. invoices (90), timesheets (91), cmdguard (92), go-output (90), universal-workflow (92), go-commit (95), erraudit (90) — every row has a reason; go-business-rules (80) excluded for ZERO adoption despite high importance (adoption-beats-importance rule applied)"
+        }
       ],
       "score": "7/7",
       "baseline_contrast": "baseline hand-rolls the event store (~200 lines + dispatcher + projections), rolls its own auth sessions (policy: never), shopspring/decimal instead of first-party Money, testify (banned), Postgres+goose+sqlc instead of metaengine — though it independently converged on templ+htmx, confirming the ecosystem direction",
-      "residuals": ["capability-map names a cqrs-htmx skill that does not exist in this repo — map drift found by the eval (improvement item I1)", "meta registration deferred (no shell)"]
+      "residuals": [
+        "capability-map names a cqrs-htmx skill that does not exist in this repo — map drift found by the eval (improvement item I1)",
+        "meta registration deferred (no shell)"
+      ]
     }
   ],
   "improvements_applied_after_iteration": [
-    {"id": "I1", "finding": "capability-map owning-skill column points at skills that live OUTSIDE this repo (cmdguard, go-cqrs-lite, cqrs-htmx, go-aichat, templ-components, typesafe-ai) — eval-2 flagged cqrs-htmx as missing", "fix": "capability-map header now carries an out-of-repo owning-skills note listing them (AGENTS §5.10 one-offs)"},
-    {"id": "I2", "finding": "when meta CLI is unavailable, the skill gives no explicit fallback; subagents improvised (metadata.yaml glob misses hidden dirs for some tools)", "fix": "SKILL.md Phase 2 now states the fallback ladder: meta CLI → ls ~/projects + capability-map + go.mod greps; never answer from memory"}
+    {
+      "id": "I1",
+      "finding": "capability-map owning-skill column points at skills that live OUTSIDE this repo (cmdguard, go-cqrs-lite, cqrs-htmx, go-aichat, templ-components, typesafe-ai) — eval-2 flagged cqrs-htmx as missing",
+      "fix": "capability-map header now carries an out-of-repo owning-skills note listing them (AGENTS §5.10 one-offs)"
+    },
+    {
+      "id": "I2",
+      "finding": "when meta CLI is unavailable, the skill gives no explicit fallback; subagents improvised (metadata.yaml glob misses hidden dirs for some tools)",
+      "fix": "SKILL.md Phase 2 now states the fallback ladder: meta CLI → ls ~/projects + capability-map + go.mod greps; never answer from memory"
+    }
   ],
   "verdict": "16/16 assertions PASS across both with-skill runs; both baselines confirm the contrast (banned libs, double foundations, no decision record). Skill is behaviorally evidenced; re-run not required (no failures). Residuals are environmental (no shell in subagents), not skill defects."
 }

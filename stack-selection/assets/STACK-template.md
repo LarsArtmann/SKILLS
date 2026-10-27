@@ -12,23 +12,23 @@
 
 ## Profile
 
-| Axis          | Answer |
-| ------------- | ------ |
-| Shape         | <CLI / library / HTTP service / web app / daemon / collector> |
-| Domain        | <one line> |
-| Persistence   | <none / SQLite / Postgres / event store> |
-| Interfaces    | <terminal / HTTP+HTMX / JSON API / SSE / unix socket> |
-| Scale target  | <single user / small team / production service> |
-| Constraints   | <nix build, private deps, offline, ...> |
+| Axis         | Answer                                                        |
+| ------------ | ------------------------------------------------------------- |
+| Shape        | <CLI / library / HTTP service / web app / daemon / collector> |
+| Domain       | <one line>                                                    |
+| Persistence  | <none / SQLite / Postgres / event store>                      |
+| Interfaces   | <terminal / HTTP+HTMX / JSON API / SSE / unix socket>         |
+| Scale target | <single user / small team / production service>               |
+| Constraints  | <nix build, private deps, offline, ...>                       |
 
 ## Chosen foundation
 
-| Category              | Choice (first-party = ★)          | Why this, not that                                     | Owning skill / docs              | Revisit when                       |
-| --------------------- | --------------------------------- | ------------------------------------------------------ | -------------------------------- | ---------------------------------- |
-| CLI framework         | ★ cmdguard                        | typed flags + DI + exit-code contract; raw cobra leaks | `cmdguard` skill                 | command set stabilizes differently |
-| Output rendering      | ★ go-output                       | one data structure → every format                      | README + pkg.go.dev              | output needs exceed its formats    |
-| Validation            | sivchari/govalid                  | codegen, zero allocs (how-to-golang policy)            | how-to-golang                    | —                                  |
-| ...                   | ...                               | ...                                                     | ...                              | ...                                 |
+| Category         | Choice (first-party = ★) | Why this, not that                                     | Owning skill / docs | Revisit when                       |
+| ---------------- | ------------------------ | ------------------------------------------------------ | ------------------- | ---------------------------------- |
+| CLI framework    | ★ cmdguard               | typed flags + DI + exit-code contract; raw cobra leaks | `cmdguard` skill    | command set stabilizes differently |
+| Output rendering | ★ go-output              | one data structure → every format                      | README + pkg.go.dev | output needs exceed its formats    |
+| Validation       | sivchari/govalid         | codegen, zero allocs (how-to-golang policy)            | how-to-golang       | —                                  |
+| ...              | ...                      | ...                                                    | ...                 | ...                                |
 
 Rules for this table:
 
@@ -41,10 +41,10 @@ Rules for this table:
 
 ## Deliberately excluded
 
-| Candidate        | Reason                                                                 |
-| ---------------- | ---------------------------------------------------------------------- |
-| go-cqrs-lite     | CRUD without event-history invariants — sqlc is simpler (YAGNI)        |
-| ...              | ...                                                                     |
+| Candidate    | Reason                                                          |
+| ------------ | --------------------------------------------------------------- |
+| go-cqrs-lite | CRUD without event-history invariants — sqlc is simpler (YAGNI) |
+| ...          | ...                                                             |
 
 Every high-importance candidate the profile plausibly touched belongs here
 with a reason — silence about a known candidate is an unmade decision, not a
