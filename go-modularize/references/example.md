@@ -129,3 +129,32 @@ replace github.com/org/eventstore/domain/v3 => ../domain
 | `replace` + `go.work` both used           | go.work for development, replace for `GOWORK=off` CI/consumer builds (see real-world-patterns.md) |
 | `v0.0.0` for internal requires            | Eliminates pseudo-version churn — replace makes the version irrelevant for resolution             |
 | Compile-time assertions in impl modules   | `var _ domain.Store = (*Store)(nil)` catches missing methods at build time                        |
+
+## When the gate fails — a worked gate-2 dissolution
+
+A developer proposes extracting a `validate` engine into its own module:
+"validation is reusable, someone will want it someday." Run the gate, not the
+vibe:
+
+| Step              | Evidence requested                                        | What the proposal has                      |
+| ----------------- | --------------------------------------------------------- | ------------------------------------------ |
+| Gate 2, "real"    | A consumer in code that imports `validate` alone           | Only `validate`'s own tests import it       |
+| Gate 2, "planned" | A NAMED consumer in a committed artifact, with a trigger   | "Someone might" — no artifact, no trigger   |
+
+Verdict: FAIL. "Someone will want it someday" is not a credibly planned
+consumer — the evidence bar demands a committed plan row, ADR, issue, or TODO
+that names the consumer and the trigger that fires it. Dissolve: keep
+`validate` as a package inside the parent (gates 1–4 still police it — one
+purpose, enumerable surface, clean direction), and delete the module
+boilerplate (go.mod, CI job, replace directives) that priced a boundary
+nobody composes across.
+
+The same seam PASSES six months later when the committed plan row "dashboard
+consumes the engine via wire types only (pipe test)" lands its consumer:
+now a real second composition exists that imports `validate` without any
+sibling — the boundary earns its keep, and the extraction is mechanical
+because the packages already passed gates 1–4.
+
+Lesson: gates fail boundaries, not ambitions. A failed gate 2 is a deferral
+with a named trigger, not a rejection — re-run the gate when the trigger
+fires.

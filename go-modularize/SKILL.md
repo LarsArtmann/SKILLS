@@ -74,6 +74,15 @@ to siblings". No gate is waived by project size.
 | 4   | Surface    | Everything `internal/` by default; the exported contract is enumerable at a glance                   | Shrink the surface or extract a contract module    |
 | 5   | Solo build | `GOWORK=off go build ./... && GOWORK=off go test ./...` green inside the module alone               | The module is a workspace fiction — fix or merge it |
 
+**Gate 2 evidence bar.** "Real" means the consumer exists in code today.
+"Credibly planned" means a NAMED consumer in a committed artifact — a plan
+row, ADR, issue, or TODO that states what it composes and the trigger that
+fires it (a metric, a date, a second consumer). "Someone might someday" is
+not evidence; neither is a consumer that exists only in the module's own
+tests. When the trigger lapses without the consumer appearing, dissolve the
+seam — the plan's death retires the boundary's justification. A worked
+gate-2 failure and its later pass are in `references/example.md`.
+
 A boundary that passes all five is worth its overhead at almost any project
 size; one that fails is wrong at any size. Size changes how many boundaries
 you can defend, never whether a given boundary is correct.
