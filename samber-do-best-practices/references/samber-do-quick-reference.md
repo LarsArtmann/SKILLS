@@ -34,7 +34,7 @@ type ShutdownerWithContext       interface { Shutdown(context.Context) }
 type ShutdownerWithContextAndError interface { Shutdown(context.Context) error }
 ```
 
-`injector.Shutdown()` runs shutdowns in **reverse invocation order** and returns a `*do.ShutdownReport`.
+`injector.Shutdown()` runs a **dependency-aware DAG-wave shutdown** and returns a `*do.ShutdownReport`: it repeatedly shuts down the services with no dependents (in parallel per wave), so consumers stop before their providers. It is NOT reverse invocation order — verified against `Scope.shutdownServicesInParallel` in samber/do v2.1.0 (2026-10-29). Cycles fall back to an unordered parallel shutdown.
 
 ## Scopes
 
