@@ -85,6 +85,7 @@ A green run can still exit non-zero: by default BuildFlow **fails when findings 
 - Findings a verify step confirms repaired don't count; unfixable and detect-only findings do.
 - `--strict` promotes the threshold to `warning`; `--fail-on none` opts out; `--fail-on info` is maximally strict.
 - When the gate trips, the message names each tool with its remaining count. Follow up with `buildflow -s <tool> --format finding`.
+- **Severity mapping nuance** — a step's EXIT CODE and its finding SEVERITIES are independent: a green-exit run can still carry warning-severity findings (e.g. a formatter's check-mode style diff), and a single step's summary block reports them even when the gate does not trip. Read the summary's findings section, not just the exit code, before claiming "clean" (lesson recorded 2026-10-29 after a green battery reported a dprint emphasis-style finding in check mode that no gate surfaced).
 - **gitleaks and codespell are on-demand only** — they never run in pipeline modes; invoke explicitly (`buildflow -s gitleaks`) when you want them.
 
 ## What the project still owns

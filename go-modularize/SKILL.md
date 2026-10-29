@@ -59,7 +59,24 @@ These principles guide every decision in this skill. When in doubt, return here.
 | **Fail noisily**               | Build failures at module boundaries are _good_ — they catch coupling early. Do not suppress them with `replace` hacks or clever workarounds.                |
 | **Opaque internals**           | Every module exposes a thin surface (interfaces + types). Internals are opaque, like file descriptors hide implementation. Use `internal/` to enforce this. |
 
-**Litmus test for every proposed module:** Does it do one thing well? Can I compose it with other modules like Unix pipes? If not, redraw the boundary.
+### The Unix gate — where the decision weight lives
+
+Principles without tests are decoration. Every proposed module must pass all
+five gates. Gates 1–4 apply verbatim to packages inside a monolith (a
+god-package is FM#11 at a smaller scale); gate 5 becomes "no hidden coupling
+to siblings". No gate is waived by project size.
+
+| #   | Gate       | Pass condition                                                                                      | On failure                                         |
+| --- | ---------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| 1   | Purpose    | The module's responsibility is one sentence with one verb                                           | Split or merge — the boundary is wrong             |
+| 2   | Pipe test  | At least one consumer, real or credibly planned, composes it without importing any sibling           | No composability payoff — dissolve the seam        |
+| 3   | Direction  | Dependencies run policy → mechanism: app/infra may import domain; domain imports zero infrastructure | You have layering, not modules — redraw            |
+| 4   | Surface    | Everything `internal/` by default; the exported contract is enumerable at a glance                   | Shrink the surface or extract a contract module    |
+| 5   | Solo build | `GOWORK=off go build ./... && GOWORK=off go test ./...` green inside the module alone               | The module is a workspace fiction — fix or merge it |
+
+A boundary that passes all five is worth its overhead at almost any project
+size; one that fails is wrong at any size. Size changes how many boundaries
+you can defend, never whether a given boundary is correct.
 
 ### Direction Neutrality — split and merge are equally valid
 
@@ -89,21 +106,23 @@ Let the evidence decide — never a default bias in either direction.
 
 ## When NOT to Modularize
 
-Modularization adds overhead — more go.mod files, more version management, more CI
-complexity. Before starting Phase 1, check if the project actually benefits:
+Modularization adds overhead — more go.mod files, more version management, more
+CI complexity. But overhead prices a boundary; it does not veto one. The Unix
+gate decides whether a boundary is right. These signals only decide how many
+boundaries to draw now:
 
-| Signal                       | Weight | Why                                                                            |
-| ---------------------------- | ------ | ------------------------------------------------------------------------------ |
-| Small project                | High   | Under 10 packages, single domain — a monolith is simpler                       |
-| No external consumers        | Medium | If nobody imports your packages, module boundaries add friction with no payoff |
-| Prototype / spike            | High   | Modularize after the design stabilizes, not before                             |
-| All packages change together | High   | If every commit touches 80% of packages, boundaries are artificial             |
+| Signal                       | What it actually tells you                                                                        | Action                                                                                          |
+| ---------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Small project (<10 packages) | There is surface for at most one defensible boundary                                              | Draw zero or one, not five. Not a stop.                                                          |
+| No consumer variance         | Every consumer imports A and B together — the seam earns nothing (the FM#8 test)                  | Redraw or dissolve. "No external consumers" is NOT this signal: import bans and per-module CI are payoffs without a single external user. |
+| Prototype / spike            | Seams are not stable yet — boundaries drawn now get drawn wrong                                   | Defer the split; run gates 1–4 on packages now so the later extraction is mechanical.            |
+| Everything changes together  | Co-change: evidence to examine, never a verdict (see Direction Neutrality); normal in young code   | Check consumer variance before concluding anything.                                              |
 
-**Scoring:**
-
-- **3+ High signals** → Stop. Do not modularize. Discuss with the user.
-- **2 High + 1 Medium** → Consider partial modularization — extract only the domain module to establish a clean API surface.
-- **1 High or less** → Proceed with full modularization.
+The old stop-rule ("3+ High signals → stop") is retired: it let monoliths hide
+god-packages behind "too small to modularize". Staying one module is a fine
+outcome — but the Unix gate applies with full force either way. A monolith with
+gate-passing packages is discipline; a monolith with a god-package is FM#11
+waiting to happen.
 
 **Partial modularization** is a valid outcome. If the project only needs a `domain/` module
 to decouple domain types from infrastructure, that's a good result. Not every project
