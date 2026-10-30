@@ -13,6 +13,26 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Changed (2026-10-30 — Modern Web Guidance availability verified, report harvested)
+
+- **Availability verified by measurement:** a fresh Crush session discovers
+  60 skills including `modern-web-guidance` (probe: `crush run` asking for
+  `crush_info` → `0/60`, PRESENT). `crush logs` shows `active_total` moving
+  only at session boundaries (58 → 59 → 60), so skill discovery is a
+  session-start snapshot; AGENTS §5.10 now records the restart rule instead of
+  leaving an install looking broken.
+- Reconciled the §5.10 third-party enumeration: `modern-web-guidance` is a real
+  upstream-owned directory but ships its own installer and lockfile, so it is
+  absent from the skills-CLI lockfile. "Third-party" now means upstream-owned,
+  not "tracked by one particular tool".
+- `buildflow` run over the repo after the doc edits: **exit 0** (markdownlint and
+  shellcheck advisories only; 74 tools not applicable by trigger).
+- Section (f) of `docs/status/2026-10-30_02-29_*` harvested into
+  `TODO_LIST.md` as T60–T65; its three decision questions went to `ROADMAP.md`
+  "Open Questions". Item (f)#19 is closed here: commits `ab35eee` (wrapper plus
+  doc wiring created) and `1c4dee3` (wrapper deleted) are the authored-then-
+  reverted wrapper — do not re-author it from history.
+
 ### Changed (2026-10-30 — Modern Web Guidance installed, wrapper skill rejected)
 
 - **Installed Google Chrome's `modern-web-guidance` skill** rather than
