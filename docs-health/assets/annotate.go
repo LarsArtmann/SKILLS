@@ -182,7 +182,11 @@ var (
 	reOccurrenceSuffix = regexp.MustCompile(`#(\d+)$`)
 	reProseItemHead    = regexp.MustCompile(`^(\s*)(?:\d+\.|\*\*\d+\.\*\*)\s`)
 	reProseItemBody    = regexp.MustCompile(`^(\s*)((?:\*\*)?\d+\.(?:\*\*)?\s*)(.*)$`)
-	reNumItem          = regexp.MustCompile(`^(\s*)(?:[-*]\s*)?([A-Za-z]{0,3}\d{1,3}[a-z]?|[A-Za-z]+#\d+|\d+)\.\s`)
+	// Id shapes verified against the 2026-10-30 go-credentials-store corpus
+	// sweep: range ids ("5-7. text") and missing-space ids ("9.text") both
+	// occur in real reports; a bare digit after the dot still never counts
+	// (version numbers like "3.5" must not parse as item 3).
+	reNumItem          = regexp.MustCompile(`^(\s*)(?:[-*]\s*)?([A-Za-z]{0,3}\d{1,3}(?:-\d{1,3})?[a-z]?|[A-Za-z]+#\d+|\d+(?:-\d{1,3})?)\.(?:\s+|[A-Za-z])`)
 	reTableRowKey      = regexp.MustCompile(`^\|\s*\*{0,2}([A-Za-z]{0,3}\d{1,3}[a-z]?)\*{0,2}\s*\|`)
 	reCheckbox         = regexp.MustCompile(`^(\s*)- \[ \] (.*)$`)
 	reTableSepCell     = regexp.MustCompile(`^:?-+:?$`)
@@ -604,6 +608,32 @@ func loadSpecs(specPath string) (*specSet, error) {
 	return specs, nil
 }
 
+// tokMatchesKey reports whether a scanned line token resolves a spec key:
+// exact match, or a numeric key inside a range token ("12-14" covers "13").
+// Ranges were the 2026-10-30 sweep's loudest silent skip — a third of a
+// corpus can hide behind a parser that only knows single ids.
+func tokMatchesKey(tok, key string) bool {
+	if tok == key {
+		return true
+	}
+
+	lo, hi, ranged := strings.Cut(tok, "-")
+	if !ranged {
+		return false
+	}
+
+	loN, err1 := strconv.Atoi(lo)
+
+	hiN, err2 := strconv.Atoi(hi)
+	if err1 != nil || err2 != nil || hiN < loN {
+		return false
+	}
+
+	keyN, err := strconv.Atoi(key)
+
+	return err == nil && keyN >= loN && keyN <= hiN
+}
+
 // resolve maps every spec key to its line index (first-unstruck-match-wins)
 // or reports the missing keys.
 func resolve(lines []string, specs *specSet) (map[string]int, []string) {
@@ -632,7 +662,7 @@ func resolve(lines []string, specs *specSet) (map[string]int, []string) {
 						matched = true
 						break
 					}
-				} else if tok == key {
+				} else if tokMatchesKey(tok, key) {
 					hits[key] = i
 					matched = true
 					break
@@ -778,7 +808,11 @@ func emitKeyFor(line string) (string, bool, error) {
 	case reNumItem.MatchString(line):
 		m := reNumItem.FindStringSubmatchIndex(line)
 		tok = line[m[4]:m[5]]
-		rest = strings.TrimSpace(line[m[1]:])
+		// Restart after the DOT (m[5] is the token's end), not after the
+		// whole match: the missing-space id shape ("9.text") consumes its
+		// first letter as the dot-terminator, and m[1] would chop it off
+		// ("issing" instead of "Missing").
+		rest = strings.TrimSpace(line[m[5]+1:])
 	case reTableRowKey.MatchString(line):
 		m := reTableRowKey.FindStringSubmatchIndex(line)
 		tok = line[m[2]:m[3]]
