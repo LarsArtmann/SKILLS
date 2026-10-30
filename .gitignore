@@ -74,3 +74,8 @@ htmlcov/
 
 # Eval fixture build artifacts: `go build -o tiny` output from eval runs
 **/fixture/tiny
+
+# Downstream agent-install artifacts, never part of this repo product:
+# a project-scoped `modern-web-guidance install` run here writes both.
+.agents/
+skills-lock.json
