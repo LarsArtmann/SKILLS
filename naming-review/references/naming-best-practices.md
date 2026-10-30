@@ -1003,19 +1003,19 @@ span.SetAttributes(attribute.String("order.orderId", id))
 
 These are the authoritative sources for language-specific naming conventions:
 
-| Language       | Guide                             | URL                                                                        |
-| -------------- | --------------------------------- | -------------------------------------------------------------------------- |
-| **Go**         | Effective Go                      | https://go.dev/doc/effective_go                                            |
-| **Go**         | Go Code Review Comments           | https://github.com/golang/go/wiki/CodeReviewComments                       |
-| **TypeScript** | TypeScript Style Guide            | https://typescriptlang.org/docs/handbook                                   |
-| **TypeScript** | Google TypeScript Style Guide     | https://google.github.io/styleguide/tsguide.html                           |
-| **Rust**       | Rust API Guidelines               | https://rust-lang.github.io/api-guidelines/naming.html                     |
-| **Rust**       | Rust Style Guide                  | https://doc.rust-lang.org/nightly/style-guide/                             |
-| **Python**     | PEP 8                             | https://peps.python.org/pep-0008/                                          |
-| **Python**     | Google Python Style Guide         | https://google.github.io/styleguide/pyguide.html                           |
-| **Java**       | Google Java Style                 | https://google.github.io/styleguide/javaguide.html                         |
-| **Java**       | Oracle Java Conventions           | https://oracle.com/java/technologies/javase/codeconventions-contents.html  |
+| Language       | Guide                             | URL                                                                                          |
+| -------------- | --------------------------------- | -------------------------------------------------------------------------------------------- |
+| **Go**         | Effective Go                      | https://go.dev/doc/effective_go                                                              |
+| **Go**         | Go Code Review Comments           | https://github.com/golang/go/wiki/CodeReviewComments                                         |
+| **TypeScript** | TypeScript Style Guide            | https://typescriptlang.org/docs/handbook                                                     |
+| **TypeScript** | Google TypeScript Style Guide     | https://google.github.io/styleguide/tsguide.html                                             |
+| **Rust**       | Rust API Guidelines               | https://rust-lang.github.io/api-guidelines/naming.html                                       |
+| **Rust**       | Rust Style Guide                  | https://doc.rust-lang.org/nightly/style-guide/                                               |
+| **Python**     | PEP 8                             | https://peps.python.org/pep-0008/                                                            |
+| **Python**     | Google Python Style Guide         | https://google.github.io/styleguide/pyguide.html                                             |
+| **Java**       | Google Java Style                 | https://google.github.io/styleguide/javaguide.html                                           |
+| **Java**       | Oracle Java Conventions           | https://oracle.com/java/technologies/javase/codeconventions-contents.html                    |
 | **C#**         | Microsoft C# Conventions          | https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions |
-| **General**    | Clean Code (Robert C. Martin)     | Book — foundational naming principles                                      |
-| **General**    | Domain-Driven Design (Eric Evans) | Book — ubiquitous language, bounded contexts                               |
-| **General**    | The Pragmatic Programmer          | Book — "Good naming is the heart of clear code"                            |
+| **General**    | Clean Code (Robert C. Martin)     | Book — foundational naming principles                                                        |
+| **General**    | Domain-Driven Design (Eric Evans) | Book — ubiquitous language, bounded contexts                                                 |
+| **General**    | The Pragmatic Programmer          | Book — "Good naming is the heart of clear code"                                              |

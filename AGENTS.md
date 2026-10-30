@@ -277,6 +277,15 @@ design. Per-file Go quality is verified per convention: `go vet` + `gofmt`
   advisories and still exits ✔; shellcheck warns (SC2319, SC2089/SC2090)
   on `jj-fork-pr-workflow` and `naming-review` scripts and still exits ✔.
   Read exit codes, not output tails.
+* lychee's two permanent findings, both unfixable by design: `localhost:4321`
+  (`website-launch` documents the Astro dev server, which only answers while
+  that server runs) and `[REPO_OWNER]` in `originals/` (frozen placeholder,
+  never edited). Attempted 2026-10-30: a repo-level `lychee.toml` /
+  `.lychee.toml` exclude list has **no effect** — the BuildFlow step does not
+  read repo config, so the config was removed rather than left as dead policy.
+  It can also hard-fail the whole run (buildflow exit 69) when a real host is
+  unreachable: `crush.land` did on 2026-10-30 and was replaced with the live
+  upstream URL.
 * `docs-health/assets/annotate.go self-test` runs the ported
   marker/guard/prose assertions; `docs-health/assets/annotate-status-items_test.sh`
   is the 26-assertion fixture harness against the Go program; both gmail

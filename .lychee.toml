@@ -1,9 +1,0 @@
-# Link-check policy for this docs-only repo (buildflow runs lychee over the
-# markdown). Two patterns can never resolve by design, so they are excluded
-# rather than reported on every run:
-#
-# - localhost:4321 — website-launch documents the Astro dev server URL; it only
-#   answers while a dev server is running locally.
-# - [REPO_OWNER] — a placeholder inside originals/ (frozen source material,
-#   never edited, per AGENTS.md §5.1).
-exclude = ["localhost", "\\[REPO_OWNER\\]"]
