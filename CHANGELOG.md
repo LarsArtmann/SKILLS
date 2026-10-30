@@ -13,6 +13,30 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-10-30 — `modern-web-guidance` routing skill)
+
+- **New skill `modern-web-guidance/`** — routes browser-facing UI work to
+  Google Chrome's Modern Web Guidance library instead of letting the agent
+  hand-roll legacy patterns (div modals, JS-positioned tooltips,
+  `max-height` animation hacks). Ships the search → retrieve → apply loop,
+  the Baseline/fallback discipline, a 12-row legacy-default → modern-API
+  table, and six named failure modes.
+- Two references: `guide-catalog.md` (192 guide IDs across 16 categories,
+  intent → ID routing, docs-vs-CLI coverage gap) and `cli-reference.md`
+  (verified command surface, per-agent install matrix, upstream
+  troubleshooting, gotchas). Guide prose is deliberately NOT vendored —
+  Google updates it weekly; the CLI stays authoritative.
+- Every external claim verified against the live CLI/npm on 2026-10-30
+  (v0.0.196): `--help` surface, `list` counts, `search` JSON shape,
+  `retrieve` header + comma-separated IDs, exit 1 with
+  `No guide found for use case` on unknown IDs, and the Baseline/fallback
+  sections guides actually contain. `install` paths are marked docs-only
+  because they were read, not executed.
+- Wiring: README section + status counts, FEATURES.md row,
+  `docs/external-dependencies.md` entry, AGENTS.md §5.5 graph paragraph,
+  `link-skills-to-agents.sh` fan-out. Status 🆕 New (no real triggered run
+  yet, per the two-stage aging rule).
+
 ### Changed (2026-10-27 — decision execution: glosses, linter direction, report format, link hook)
 
 - **T51 (glossary verbatim):** all shipped first-use glosses aligned
