@@ -2242,6 +2242,11 @@ func selfTest() error {
 		"| T3 | table row text | Low |",
 		"",
 		"- [ ] checkbox item here",
+		// The 2026-10-30 go-credentials-store sweep's two silent-skip
+		// shapes: a range id and a missing-space id. Both must parse AND
+		// round-trip into their exact line.
+		"5-7. A range item spanning three numbers",
+		"9.Missing space after the dot",
 	}
 	for i, l := range kFixture {
 		key, ok, kerr := emitKeyFor(l)
@@ -2269,6 +2274,19 @@ func selfTest() error {
 
 	if _, ok, _ := emitKeyFor("plain paragraph line"); ok {
 		failures = append(failures, "emitKeyFor: plain paragraph reported ok")
+	}
+
+	// A version number must never parse as an item id ("3.5" is not item 3).
+	if _, ok, _ := emitKeyFor("3.5 pinned version note"); ok {
+		failures = append(failures, "emitKeyFor: version number parsed as an item id")
+	}
+
+	// A numeric key inside a range token resolves: "12" must hit "12-14."
+	// (the resolve-side range semantics, tokMatchesKey).
+	if !tokMatchesKey("12-14", "12") || !tokMatchesKey("12-14", "14") ||
+		tokMatchesKey("12-14", "15") || !tokMatchesKey("12-14", "12-14") ||
+		tokMatchesKey("7", "7-9") {
+		failures = append(failures, "tokMatchesKey: range semantics broken")
 	}
 
 	if len(failures) > 0 {
