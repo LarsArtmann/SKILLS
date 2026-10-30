@@ -60,6 +60,13 @@ Three machine-level questions were answered by the owner, closing
 - **Telemetry: off.** `export DISABLE_TELEMETRY=1` lives in `~/.env.private`,
   which the home-manager `~/.config/zsh/.zshenv` sources (verified:
   `zsh -lc 'printenv DISABLE_TELEMETRY'` → `1`).
+- **Runner: `pnpx` preferred.** `pnpx modern-web-guidance@latest --version` →
+  `0.0.196` in 2.7 s, so AGENTS §5.10 now documents `pnpx` and keeps
+  `npx -y …` as the fallback for machines without pnpm.
+- **Permission allowlist: deliberate non-fix.** A scoped
+  `npx -y modern-web-guidance@latest *` rule was proposed (item f#11), but this
+  machine runs Crush with `permissions.mode = yolo`, so no prompt exists for an
+  allowlist to approve. Recorded instead of adding dead config.
 
 ### Changed (2026-10-30 — Modern Web Guidance installed, wrapper skill rejected)
 
