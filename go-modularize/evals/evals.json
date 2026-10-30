@@ -1,0 +1,23 @@
+{
+  "skill_name": "go-modularize",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our repo imgtool is a single Go module with 8 packages: cmd/imgtool, internal/cli, internal/imaging, internal/codec/png, internal/codec/jpeg, internal/metadata, internal/webserver, pkg/api. The webserver package grew an HTTP API that a second tool (imgtool-server) wants to reuse, and we have a committed plan row for a thumbnail service that will consume the same codec seam next quarter. Should we split this into multiple Go modules, and if so where are the boundaries? Walk me through your decision process.",
+      "expected_output": "Agent runs the five gates FIRST (before proposing boundaries). Identifies that only the server/codec seam has consumers that pass gate 2 (one real, one credibly planned via the committed plan row with a trigger). Draws zero or one boundary now, not five; in-repo packages for anything failing gate 2. No signal-count stop rule appears anywhere in the reasoning. DAG direction and surface/internal rules applied to the proposed module.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I inherited a Go repo split into 4 modules: github.com/acme/foo (domain), github.com/acme/foo-http (transport), github.com/acme/foo-sql (storage), github.com/acme/foo-cli. The http and sql modules have zero consumers outside the CLI; every external user imports only domain. CI runs 4 separate pipelines per release and versioning is a chore. Should we merge any modules back? Which ones and why?",
+      "expected_output": "Direction-neutral analysis: applies the five gates to the EXISTING boundaries, not just to hypothetical splits. Pipe test fails for foo-http and foo-sql as standalone modules (single consumer, no composability payoff) so they are merge candidates; domain survives (or is examined, not protected by assumption). No counting rule ('4 modules is too many', '3+ signals') appears. Merge proposal addresses go.work/replace cleanup, version-tag collapse, and CI consolidation as consequences.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I want to extract my project's validation logic into its own module github.com/acme/validate. Right now nothing else imports it, but we might build a second CLI next year that could use it. Convince me whether this extraction is justified.",
+      "expected_output": "Agent applies the gate 2 evidence bar precisely: 'might build next year' is 'someone might someday' — not a consumer in code and not a credibly-planned consumer (no named consumer, no committed artifact, no trigger). Verdict: dissolve to packages now. The agent states exactly what would flip the verdict (a committed plan row or ADR naming the second consumer and the trigger that fires the extraction) and does not soften the no.",
+      "files": []
+    }
+  ]
+}

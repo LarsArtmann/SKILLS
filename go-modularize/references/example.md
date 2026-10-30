@@ -158,3 +158,34 @@ because the packages already passed gates 1–4.
 Lesson: gates fail boundaries, not ambitions. A failed gate 2 is a deferral
 with a named trigger, not a rejection — re-run the gate when the trigger
 fires.
+
+## When gate 5 fails — a workspace fiction caught by the solo build
+
+A team splits a monolith into `acme-core` and `acme-tools`. The proposal
+reads well: two sentences of purpose, clean direction, everything sensible
+`internal/`. Gate 5 is the mechanical one — run it, don't debate it:
+
+```bash
+cd acme-tools && GOWORK=off go build ./... && GOWORK=off go test ./...
+```
+
+It fails: `acme-tools` imports `github.com/acme/acme-core/internal/config`.
+Inside the workspace the import resolves and everything builds — the split
+LOOKS done. Outside it, the module cannot compile at all: the boundary only
+exists while `go.work` is holding it up. That is the "workspace fiction"
+failure: the module never earned independence, it borrowed it.
+
+Two honest outcomes:
+
+1. **Fix, then keep the split.** Promote the needed config to a real
+   exported contract in `acme-core` (the consumer imports `config`, not
+   `internal/config`), re-run gate 5 inside `acme-tools` until it is green
+   with `GOWORK=off`. The module now stands alone — the workspace is
+   convenience, not a load-bearing wall.
+2. **Merge.** If nothing can be promoted without dragging half the parent's
+   internals along, the seam has no surface of its own — fold `acme-tools`
+   back as a package and re-run the gates on a smaller proposal.
+
+Lesson: gate 5 is the cheapest gate and the one teams skip most, because the
+workspace masks it. A module that only builds inside `go.work` is not a
+module — it is a directory with a go.mod.

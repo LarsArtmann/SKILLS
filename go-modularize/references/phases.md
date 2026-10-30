@@ -6,6 +6,7 @@
 
 ## Table of Contents
 
+- [Phase 0 — Run the Five Gates First](#phase-0--run-the-five-gates-first)
 - [Phase 1 — Detect Current State](#phase-1--detect-current-state)
 - [Phase 2 — Research & Analysis](#phase-2--research--analysis)
 - [Phase 3 — Draft Proposal](#phase-3--draft-proposal)
@@ -13,6 +14,32 @@
 - [Phase 5 — Execution Plan](#phase-5--execution-plan)
 - [Phase 6 — Execute](#phase-6--execute)
 - [Phase 7 — Final Reflection](#phase-7--final-reflection)
+
+---
+
+## Phase 0 — Run the Five Gates First
+
+**Goal:** Decide WHETHER a boundary is justified before investing in HOW to
+draw it. The signal table in SKILL.md only sizes how many boundaries to
+examine — the five gates decide. (The old "3+ High signals → stop" rule
+is retired; count-based verdicts let monoliths hide god-packages.)
+
+1. For each candidate boundary, evaluate the five gates from SKILL.md's
+   Unix-gate section (Purpose, Pipe test, Direction, Surface, Solo build)
+   against real codebase evidence gathered in Phase 2. Gates 1–4 apply to
+   packages inside a monolith with full force; gate 5 means `GOWORK=off`
+   build/test green for an existing module.
+2. A boundary that fails gate 2 at the evidence bar (consumer neither in
+   code today nor a NAMED consumer in a committed artifact with a trigger)
+   **dissolves to packages**: record the dissolution and stop — do not
+   carry the proposal through Phases 1–7 hoping evidence appears later.
+   The proposal can return only when the trigger lands in a committed
+   artifact. Worked example:
+   [../references/example.md](../references/example.md) ("When the gate
+   fails").
+3. Record every gate verdict; Phase 3's proposal reuses them as its
+   evidence section, and Phase 4's self-review checks the proposal against
+   them.
 
 ---
 
