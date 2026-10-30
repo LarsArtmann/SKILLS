@@ -2,7 +2,7 @@
 
 > _Context for AI agents working in this repository._
 
-**Project:** A collection of [Agent Skills](https://agentskills.io) for [Crush](https://crush.land) — structured, discoverable skill directories converted from raw prompt snippets.
+**Project:** A collection of [Agent Skills](https://agentskills.io) for [Crush](https://github.com/charmbracelet/crush) — structured, discoverable skill directories converted from raw prompt snippets.
 
 ---
 

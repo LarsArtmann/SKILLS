@@ -134,7 +134,7 @@ answer it with data export + escrow-style promises you can keep.
 - CXL above-the-fold: <https://cxl.com/blog/above-the-fold/>
 - CXL forms: <https://cxl.com/blog/reduce-form-fields/>, <https://cxl.com/blog/form-design/>
 - CXL CTAs: <https://cxl.com/blog/call-to-action/>,
-  <https://unbounce.com/conversion-rate-optimization/how-to-write-a-call-to-action-that-converts-with-case-studies/>
+  <https://unbounce.com/conversion-benchmark-report/how-to-write-a-call-to-action-that-converts/>
 - CXL visual cues: <https://cxl.com/blog/visual-cues/>
 - Unbounce benchmark (SaaS): <https://unbounce.com/conversion-benchmark-report/saas-conversion-rate/>
 - Wistia LP video: <https://wistia.com/learn/marketing/landing-page-video>

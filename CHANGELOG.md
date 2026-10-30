@@ -13,6 +13,18 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Fixed (2026-10-30 — dead links found by lychee)
+
+- `https://crush.land` (AGENTS.md, README.md) no longer resolves; both now point
+  at the live upstream, `https://github.com/charmbracelet/crush`.
+- Two 404 sources replaced with verified live pages: the Microsoft C# coding
+  conventions URL in `naming-review/references/naming-best-practices.md`
+  (now `…/coding-style/coding-conventions`) and the Unbounce CTA case-study
+  article in `first-customers/references/sales-page-anatomy.md` (now under
+  `…/conversion-benchmark-report/how-to-write-a-call-to-action-that-converts/`).
+- `originals/brutal-self-review.md` keeps its `[REPO_OWNER]` placeholder 404 on
+  purpose: frozen source material, never edited.
+
 ### Changed (2026-10-30 — Modern Web Guidance availability verified, report harvested)
 
 - **Availability verified by measurement:** a fresh Crush session discovers

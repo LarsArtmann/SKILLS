@@ -1,6 +1,6 @@
 # SKILLS
 
-A curated collection of [Agent Skills](https://agentskills.io) for [Crush](https://crush.land) — structured, discoverable skill directories that turn raw expertise into repeatable, high-quality agent workflows.
+A curated collection of [Agent Skills](https://agentskills.io) for [Crush](https://github.com/charmbracelet/crush) — structured, discoverable skill directories that turn raw expertise into repeatable, high-quality agent workflows.
 
 ## What Are Agent Skills?
 

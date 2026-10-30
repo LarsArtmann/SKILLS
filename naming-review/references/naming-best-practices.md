@@ -1015,7 +1015,7 @@ These are the authoritative sources for language-specific naming conventions:
 | **Python**     | Google Python Style Guide         | https://google.github.io/styleguide/pyguide.html                           |
 | **Java**       | Google Java Style                 | https://google.github.io/styleguide/javaguide.html                         |
 | **Java**       | Oracle Java Conventions           | https://oracle.com/java/technologies/javase/codeconventions-contents.html  |
-| **C#**         | Microsoft C# Conventions          | https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/ |
+| **C#**         | Microsoft C# Conventions          | https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions |
 | **General**    | Clean Code (Robert C. Martin)     | Book — foundational naming principles                                      |
 | **General**    | Domain-Driven Design (Eric Evans) | Book — ubiquitous language, bounded contexts                               |
 | **General**    | The Pragmatic Programmer          | Book — "Good naming is the heart of clear code"                            |
