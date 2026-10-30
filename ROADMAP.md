@@ -224,16 +224,12 @@ These are blockers that need a human decision before they can become tasks:
   answer.
 
 - **Modern Web Guidance install scope & lifecycle** (`2026-10-30_02-29` g1–g3):
-  the installed third-party skill is global (`~/.agents/skills/`, lockfile at
-  `~/skills-lock.json`), but its installer is project-scoped by design. Is the
-  global install the pattern for every project, or should website repos get
-  their own project-scoped install (each pinning its own guide set — changes
-  both `.gitignore` policy and §5.10)? Related decisions parked with it: float
-  on `npx … update` vs pin `computedHash`; commit the 1.9 MB directory to the
-  `agent-skills` aggregation repo or leave it untracked because its own CLI owns
-  the lifecycle; set `DISABLE_TELEMETRY=1` or accept Google's anonymous
-  collection; and whether this Go-heavy repo's README should mention a
-  web-platform skill at all. User-only answers.
+  **DECIDED 2026-10-30** — global-only install at `$HOME` (no per-site
+  installs), committed to the `agent-skills` aggregation repo (`3479122`),
+  telemetry off via `DISABLE_TELEMETRY=1` in `~/.env.private`. Recorded in
+  AGENTS §5.10. Still open from the same batch: float on `npx … update` vs pin
+  `computedHash` in `~/skills-lock.json`, and whether this Go-heavy repo's
+  README should mention a web-platform skill at all.
 
 ## Non-goals
 

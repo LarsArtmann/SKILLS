@@ -45,6 +45,22 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   doc wiring created) and `1c4dee3` (wrapper deleted) are the authored-then-
   reverted wrapper — do not re-author it from history.
 
+### Changed (2026-10-30 — Modern Web Guidance policy decided)
+
+Three machine-level questions were answered by the owner, closing
+`docs/status/2026-10-30_02-29_*` section (g):
+
+- **Install scope: global only.** One install at `$HOME` serves every project;
+  no per-site installs (each would duplicate the 1.9 MB guide tree and its own
+  lockfile). Recorded in AGENTS §5.10.
+- **Aggregation repo: commit it.** `~/.agents/skills/modern-web-guidance`
+  (194 files) is now tracked in `agent-skills` (`3479122`) so that repo stays a
+  complete inventory of the skills on this machine. Upstream's CLI still owns
+  the content; the commit is an inventory snapshot, refreshed by future updates.
+- **Telemetry: off.** `export DISABLE_TELEMETRY=1` lives in `~/.env.private`,
+  which the home-manager `~/.config/zsh/.zshenv` sources (verified:
+  `zsh -lc 'printenv DISABLE_TELEMETRY'` → `1`).
+
 ### Changed (2026-10-30 — Modern Web Guidance installed, wrapper skill rejected)
 
 - **Installed Google Chrome's `modern-web-guidance` skill** rather than
