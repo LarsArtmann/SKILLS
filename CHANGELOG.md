@@ -67,6 +67,12 @@ Three machine-level questions were answered by the owner, closing
   `npx -y modern-web-guidance@latest *` rule was proposed (item f#11), but this
   machine runs Crush with `permissions.mode = yolo`, so no prompt exists for an
   allowlist to approve. Recorded instead of adding dead config.
+- **Lifecycle probes (closing report items f#9, f#13–f#15, f#33):**
+  `update` is a 4 s "All project skills are up to date" no-op when current;
+  `pnpx --offline modern-web-guidance@latest retrieve dialog` returns the guide
+  from pnpm's package cache, so retrieval survives a network outage while the
+  installed `guides/` tree is not what serves it (the skill shells out to the
+  CLI). Only `uninstall` remains untested — kept as T60.
 
 ### Changed (2026-10-30 — Modern Web Guidance installed, wrapper skill rejected)
 
