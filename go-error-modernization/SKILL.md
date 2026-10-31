@@ -57,6 +57,25 @@ The word **if** in "consider ... **if** you are matching by type rather than by 
 
 **Do not reach for a concrete pointer return type (`*MyError`) to clear the finding.** A nil `*MyError` converts to a non-nil `error` interface at any caller that reuses an earlier `error`-typed variable under `:=` — the typed-nil landmine (paid for 2026-10-27 in pbx-lens; see crush-config `references/lessons.md`). The pattern that satisfies the rule AND makes the trap unrepresentable: keep the idiomatic `error` return, construct an unexported carrier struct through a `newXxxError` constructor, and implement `Unwrap` so `errors.Is`/`errors.AsType`/classification reach the cause. Package-level sentinels (`var ErrFoo = errors.New(...)`) are idiomatic and outside the rule entirely (no function body).
 
+#### The callback-bound identity FP + the per-module disable posture (cqrs-htmx gotcha 44, 2026-10-31)
+
+Two gotchas learned in cqrs-htmx's round-42/45 erraudit passes:
+
+1. **The canonical strict audit is `--max --disable generic_return`, per module.**
+   `--max` bypasses EVERY `//nolint:erraudit` (no exceptions), and the
+   `generic_return` check has a standing false-positive class: a decoder
+   option whose callback RETURNS ITS INPUT UNCHANGED (`func(c C) (C, error)
+   { return c, nil }`) is flagged as a generic return although the identity
+   IS the contract (the pipeline supports both identity and enriching
+   callbacks). Suppression there is a per-site `//nolint:erraudit` +
+   an invariant-backed test annotation — never the reverse.
+2. **A disable flag is a recorded posture, not an escape hatch.** When a
+   module's `.golangci.yml`/runbook documents `--disable generic_return`,
+   the disable is the DECISION; new occurrences of the actual problem class
+   (real generic error returns) still belong in code review and the
+   inventory sweep (`erraudit-inventory.sh --strict` in cqrs-htmx keeps the
+   raw count visible, advisory-first).
+
 Caveat verified 2026-10-27: the OTHER `--enforce-*` checks (`go-error-family`, `samber-oops`, `coded-errors`, `deferred-close`) currently produce zero findings under `lint` (runner drops them); a clean `lint --max` is evidence about `generic_return` and the legacy analyzers only.
 
 ## The safe workflow
