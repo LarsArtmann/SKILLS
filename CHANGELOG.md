@@ -13,6 +13,23 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-11-01 — docs-health annotate-gate lessons from the nix-email corridor pass)
+
+- **Metadata-table rule (Pattern C)** in
+  `docs-health/references/resolving-items.md`: header Field/Value tables take
+  the RESOLVED-append form, never strikes — the check-rows uniformity gate
+  makes partial strikes there guaranteed rework (learned 2026-11-01).
+- **Verify-read-IN-FULL mandate** in `docs-health/SKILL.md`: verdict maps are
+  built FROM the `--verify` output's emitted keys and matched lines, never
+  from remembered greps or output tails (a one-line-off mapping survived a
+  tails-only read and was caught only by a full re-read).
+- **check-rows continuation-row blind-spot note** in `docs-health/SKILL.md`:
+  rows with empty leading cells (spill-over continuations of the row above)
+  inherit the parent's meaning for the reader but are classified
+  independently by the gate; the note prescribes the explicit
+  `→ (row N verdict covers this continuation)` form plus row-count audits
+  until a stricter mode exists (proposal parked since 2026-10-31).
+
 ### Fixed (2026-10-30 — dead links found by lychee)
 
 - `https://crush.land` (AGENTS.md, README.md) no longer resolves; both now point

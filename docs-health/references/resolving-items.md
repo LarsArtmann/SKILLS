@@ -155,3 +155,24 @@ scannable:
 Either way: **every numbered row gets a verdict** — `done`, `Won't implement`,
 or left untouched (open). A table with 30 rows and zero inline markers is the
 appendix-only trap, just in table form.
+
+### Pattern C — header/metadata tables (Field/Value): append, never strike
+
+Header metadata tables (the `| Field | Value |` block at the top of a
+report) are not item lists: their rows describe the document, and only
+some rows ever become stale. Strike grammar is the WRONG tool there —
+`check-rows` demands uniformity per row, so striking one cell of a
+metadata row flags it PARTIAL, and striking the whole row destroys field
+names the reader still needs. The form that survives both the gate and
+the reader is the RESOLVED-append (learned 2026-11-01 in the nix-email
+corridor pass: partial strikes there were guaranteed rework):
+
+```markdown
+| Status | Open **RESOLVED 2026-11-01 — landed at `2bdc395`** |
+| Owner | agent (sitting pending) |
+```
+
+The stale value stays legible, the verdict is inline, and the row never
+trips the uniformity gate. Routed verdicts in any table row use the
+bold-arrow form (`**→ routed — TODO row**`) so the gate classifies the
+row ROUTED rather than PARTIAL.
