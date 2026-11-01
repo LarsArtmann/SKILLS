@@ -206,3 +206,25 @@ func NewMyService(i do.Injector) (*MyService, error) {
 ```
 
 This is the pattern the official `samber/do` docs explicitly recommend.
+
+## Case study: CLI vs container — when NOT to adopt samber/do (project-meta, 2026-11-01)
+
+A deep review (`project-meta/docs/architecture-understanding/2026-11-01_01-11_samber-do-and-self-health.md`)
+verified samber/do was absent from a LarsArtmann CLI project and ruled the
+absence CORRECT. The audit pattern is reusable:
+
+- **Premise-verify before auditing.** Prove absence four ways (go.mod, both
+  go.sums, source grep, `git log --all -S`) before running DO-1→DO-6 checks —
+  the audit is vacuously clean, and saying so is the honest verdict.
+- **Structural equivalents ≠ container smell.** Manual constructor injection
+  via mixins (`apiMixin`/`configMixin`), one composition root, and
+  CLI-idiomatic package globals (`quiet`, `debugMode`, `logger.SetDefault`)
+  are accepted tradeoffs — document them as deliberate non-fixes.
+- **Adoption triggers are the deliverable.** Long-running mode, multiple
+  interchangeable implementations, shutdown-order correctness. If none fires,
+  a container is YAGNI. The triggers fired in the SIBLING daemon repo
+  (project-discovery-daemon) — record the raw idea THERE, not in the CLI.
+- **Self-health is orthogonal.** A CLI can score well on resilience (error
+  families, cancellation → exit 130, atomic writes) while self-health starts
+  weak (a doctor that always exits 0); the fix was an explicit `--ci` gate
+  with e2e-pinned survey-vs-gate semantics, not a container.
