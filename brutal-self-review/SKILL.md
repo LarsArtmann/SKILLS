@@ -24,6 +24,7 @@ Answer every question with full honesty:
 9. Did we remove something that was actually useful?
 10. Did we create ANY split brains (the same concept defined or configured in two places, so the two drift apart)? Even small things that could be considered split brain!
 11. How are we doing on tests? What can we do better, regarding automated testing?
+12. When re-reviewing earlier work (yours or another session's): did you RE-VERIFY each inherited claim against the source it was about, or did you re-read the document? A review's verdict is a claim, not a fact — process-discipline claims ("every X has Y") are the class most often asserted falsely and most expensive to inherit as truth. When one fails re-verification: annotate the ORIGINAL in place, fix forward, and gate it mechanically in the same change.
 
 ## Execution Plan
 
