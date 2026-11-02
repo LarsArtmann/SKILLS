@@ -2043,6 +2043,10 @@ func selfTest() error {
 	check("r done", mustMarker("r", "done — landed at 4cea337"), "**→ done — landed at 4cea337**")
 	check("r strips leading arrow", mustMarker("r", "→ routed to ROADMAP"), "**→ routed to ROADMAP**")
 	check("r empty", mustMarker("r", ""), "**→ resolved**")
+	check("s pointer", mustMarker("s", "2026-11-01_go-cqrs-lite-deep-dive.html"), "**Superseded — 2026-11-01_go-cqrs-lite-deep-dive.html.**")
+	if _, err := markerFor("s", ""); err == nil {
+		failures = append(failures, "marker(s, empty): expected error for missing successor pointer")
+	}
 	if _, err := markerFor("x", "y"); err == nil {
 		failures = append(failures, "bad kind: no error raised")
 	}
