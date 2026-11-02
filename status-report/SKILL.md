@@ -21,6 +21,14 @@ INCLUDE WORK:
 - f) Top #25 things we should get done next!
 - g) Ask your Top #1 question you can NOT figure out yourself!
 
+**Every report opens with a scope line.** State what this report VERIFIED
+(and with which command/artifact) and, just as explicitly, what it did NOT
+verify and why (blocked, out of scope, or simply not attempted). A report
+that only lists what was checked reads as a warranty it cannot back, and
+the reader has no way to tell a fresh command output from a remembered
+claim. Naming the gaps is the difference between a status report and a
+sales pitch.
+
 For what each section should contain and common pitfalls, see
 [./references/section-quality-guide.md](./references/section-quality-guide.md).
 
