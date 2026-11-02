@@ -5,14 +5,35 @@
 
 ## Contents
 
-1. [a) FULLY DONE](#a-fully-done)
-2. [b) PARTIALLY DONE](#b-partially-done)
-3. [c) NOT STARTED](#c-not-started)
-4. [d) TOTALLY FUCKED UP](#d-totally-fucked-up)
-5. [e) WHAT WE SHOULD IMPROVE](#e-what-we-should-improve)
-6. [f) Top N next tasks](#f-top-n-next-tasks)
-7. [g) Top question](#g-top-question)
-8. [Common pitfalls](#common-pitfalls)
+1. [The scope line](#the-scope-line)
+2. [a) FULLY DONE](#a-fully-done)
+3. [b) PARTIALLY DONE](#b-partially-done)
+4. [c) NOT STARTED](#c-not-started)
+5. [d) TOTALLY FUCKED UP](#d-totally-fucked-up)
+6. [e) WHAT WE SHOULD IMPROVE](#e-what-we-should-improve)
+7. [f) Top N next tasks](#f-top-n-next-tasks)
+8. [g) Top question](#g-top-question)
+9. [Common pitfalls](#common-pitfalls)
+
+---
+
+## The scope line
+
+**Every report opens with a scope line** (the rule lives in `SKILL.md`; this
+is what it looks like when done well). Two halves, both mandatory:
+
+- **Verified here.** Name the artifact, not the impression: the command and
+  its exit status, the run id, the file and the lines read, the probe and
+  its output. "CI is green" is not evidence; "`ci.yml` green on `9343193`,
+  read back from the run list at 07:10" is.
+- **NOT verified here.** Say what you did not check and why (blocked on a
+  credential, out of scope, a remembered command rather than a fresh one).
+  A gap named in advance is a fact; a gap discovered by the reader is a
+  defect.
+
+The test: could a reader reproduce the "verified" list from the text alone,
+and would they know exactly which claims rest on memory? If not, the report
+is a sales pitch.
 
 ---
 
