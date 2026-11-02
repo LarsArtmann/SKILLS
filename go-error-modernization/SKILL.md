@@ -82,7 +82,7 @@ Caveat verified 2026-10-27: the OTHER `--enforce-*` checks (`go-error-family`, `
 
 Use the `fix` subcommand as your primary tool (if your linter has one). The `fix` subcommand in the reported tool has a semantic guard that `lint` lacks: `fix` understands that `errors.Is` matches by value and refuses to auto-migrate it. `lint` reports `errors.Is` at the same severity as `errors.As`, with a message that reads as a recommendation.
 
-> **Note:** The workflow below uses `erraudit` (renamed from `hierarchical-errors` in 2026-08-02). Always pass `--type-aware`. Run in every directory containing a `go.mod` — monorepos often have multiple modules. The workflow logic is: apply safe `errors.As` migrations first, then review `errors.Is` findings manually, then gate CI.
+> **Note:** The workflow below uses `erraudit` (renamed from `hierarchical-errors` in 2026-08-02). Pass `--type-aware` on `lint` — the `fix` subcommand takes NO `--type-aware` (it belongs to lint only; verified 2026-11-02 against the then-current binary). Run in every directory containing a `go.mod` — monorepos often have multiple modules. The workflow logic is: apply safe `errors.As` migrations first, then review `errors.Is` findings manually, then gate CI.
 
 ### Step 1: `fix` dry-run
 
@@ -90,19 +90,21 @@ Run `erraudit` in **every directory containing a `go.mod`** — a monorepo may h
 
 ```bash
 find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
-  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit fix ./... --type-aware)
+  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit fix ./...)
 done
 ```
 
-Always pass `--type-aware` — it enables type information to reduce false positives on `errors.Is` sentinel matches. Shows a diff of every `errors.As` → `errors.AsType` transformation it WOULD apply. Will not touch `errors.Is` calls. Review the diff.
+Dry-run is the DEFAULT for `fix` — no flag needed. It shows a diff of every `errors.As` → `errors.AsType` transformation it WOULD apply and will not touch `errors.Is` calls. (`fix` accepts no `--type-aware`; that flag exists on `lint` only — passing it to `fix` errors out. Verified 2026-11-02.) Review the diff.
 
 ### Step 2: Apply the fixes
 
 ```bash
 find . -name go.mod -not -path "*/vendor/*" | while read gomod; do
-  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit fix ./... --type-aware --write)
+  (cd "$(dirname "$gomod")" && GOEXPERIMENT=jsonv2 erraudit fix ./... -w)
 done
 ```
+
+`-w` (short form; `--write` is NOT a recognized flag on `fix`, verified 2026-11-02) applies the dry-run's preview.
 
 Applies only the safe `errors.As` transformations. It explicitly refuses `errors.Is`:
 
@@ -225,13 +227,21 @@ The flag table below combines the original source feedback (2026-07-21, when the
 
 | Flag                        | Subcommand  | Behavior                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | --------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--type-aware`              | both        | Uses type information to reduce `errors.Is` false positives on sentinel matches. **Recommended on every invocation.**                                                                                                                                                                                                                                                                                                                                                                                                |
+| `--type-aware`              | `lint`      | Uses type information to reduce `errors.Is` false positives on sentinel matches. **Recommended on every `lint` invocation.** NOT accepted by `fix` (verified 2026-11-02 — `fix` dry-runs syntactically and has no use for it; passing it there errors out).        |
+| `-w`                        | `fix`       | Applies the dry-run preview (short form ONLY — `--write` is not a recognized `fix` flag, verified 2026-11-02). Without it, `fix` is a pure dry-run.                                                                                                   |
 | `--type legacy_as`          | `lint`      | Filters to only `errors.As` findings. Exits 0 if none. **Reliable CI filter (fallback if `--type-aware` is insufficient).**                                                                                                                                                                                                                                                                                                                                                                                          |
 | `--enforce-go-error-family` | both        | **Unverified.** Reported to enforce errors conform to the `go-error-family` library pattern. Behavior not confirmed against a binary.                                                                                                                                                                                                                                                                                                                                                                                |
 | `--violations-only`         | `lint`      | Shows only violations, no summary. Cosmetic but works. The **full-analyzer wart** (verified 2026-10-27): `erraudit . --violations-only --type-aware` (ROOT invocation) re-surfaces residual findings that `lint ./...` does not — the audit mode runs every analyzer, so expect dispositioned FPs to re-appear there; use `lint` for the gate, root `--violations-only` for the exhaustive sweep.                                                                                                                    |
 | `--max <n>`                 | `lint`      | **Audit surface, not a gate (verified 2026-10-27).** Implies `--no-suppress` (re-surfaces every suppression by design, so it can never "pass" once anything is suppressed) AND enables `--enforce-generic-return`, whose own docs mark it off-by-default ("returning error is standard Go practice"). A `lint --max` run with generic-return findings is NOT a red gate — triage each finding; framework-fixed signatures (cobra `RunE`, DI interfaces) and sentinel-carrying public APIs legitimately keep `error`. |
 | `--no-suppress`             | root        | **Verified 2026-09-11.** Bypasses nolint suppression and surfaces suppressed findings (A/B on a real repo: default run 0 violations, `--no-suppress` run surfaced the exact nolint'd findings at their lines). Audit mode by design: expect documented suppressions to appear. The `lint` subcommand path is separately still unverified.                                                                                                                                                                            |
 | `//nolint:legacyerrors`     | source code | Suppresses the finding on that line. Recognized by both `lint` and `fix`.                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+
+**Non-Go scanning (verified 2026-11-02):** `erraudit lint` also analyzes JS/TS files
+(`.js .mjs .cjs .jsx .ts .tsx .mts .cts`) below the target patterns — empty catch
+blocks, `.catch` handlers that discard the rejection, and floating `fetch()` promises.
+`//nolint:erraudit` suppresses findings in BOTH languages. Deliberate swallows should
+still carry an intent comment (the tool's own prescribed remedy) so the directive never
+has to explain alone; see templ-components' `docs/house-style.md` for the house format.
 
 ### Flags reported BROKEN or INEFFECTIVE (verify before relying on)
 
