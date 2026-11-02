@@ -25,6 +25,8 @@
 // h = done at `hash`   v = done — <evidence>   p = done (docs-health pass <date>)
 // w = **Won't implement — <reason>.**   n = **NOT-DO — <reason>.**
 // r = **→ <verdict>** (routed, NO strike — 2026-09-29+ house grammar)
+// s = **Superseded — <pointer>.** (this artifact/section is superseded by a
+//     newer one; the value names the successor)
 //
 // Invariants carried over from the Python originals: all specs must match
 // exactly once before anything is written (atomic); already-annotated guards
@@ -99,7 +101,7 @@ usage: go run annotate.go <subcommand> ...
   repair-partial [--dry-run] <file>... (strike bare cells of partially-struck rows)
   self-test
 kinds: h hashes | v evidence | p pass-date ('-' = today) | w wont-implement
-       | n NOT-DO | r routed verdict (no strike)
+       | n NOT-DO | r routed verdict (no strike) | s superseded-by <pointer>
 `)
 }
 
@@ -166,8 +168,14 @@ func markerFor(kind, value string) (string, error) {
 			return "**→ resolved**", nil
 		}
 		return "**→ " + verdict + "**", nil
+	case "s":
+		pointer := strings.TrimSpace(value)
+		if pointer == "" {
+			return "", fail("superseded kind requires the successor pointer (path or id)")
+		}
+		return "**Superseded — " + pointer + ".**", nil
 	default:
-		return "", fail("bad kind %q (use h/v/p/w/n/r)", kind)
+		return "", fail("bad kind %q (use h/v/p/w/n/r/s)", kind)
 	}
 }
 
