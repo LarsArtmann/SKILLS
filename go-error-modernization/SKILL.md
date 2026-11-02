@@ -21,7 +21,7 @@ Canonical block format per `verify-external-claims/SKILL.md` §5. Web-verificati
 | The `erraudit` CLI binary (formerly `hierarchical-errors`)                                                                                                           | ✅ Verified                         | Source at `~/projects/erraudit` (own repo); installed binary reports version `61a744c`; flags/exit codes live-verified 2026-10-27 (`--help` + probe-module repros)                                      |
 | The `--enforce-go-error-family` flag                                                                                                                                 | ❌ Unverified                       | Not found in any public codebase; presumably relates to [`github.com/larsartmann/go-error-family`](https://github.com/LarsArtmann/go-error-family) v0.10.0 (a verified library with six error families) |
 | The `legacyerrors` analyzer name (used in `//nolint:legacyerrors`)                                                                                                   | ✅ Verified                         | Present in erraudit source (`~/projects/erraudit`, read 2026-10-27)                                                                                                                                     |
-| Exit codes, error messages, and the "0% precision" statistic in [./references/cli-and-flags.md](./references/cli-and-flags.md)                                       | ❌ Unverified — reported            | Reproduced from the original source feedback (2026-07-21); not re-verified against the renamed `erraudit` binary                                                                                        |
+| Exit codes in [./references/cli-and-flags.md](./references/cli-and-flags.md) and below                                                                                                                                                | ✅ Verified                         | Live-probed against the fixed `erraudit` binary 2026-11-03 (commit d19cca1e): lint 0/1/2 + `--severity-threshold` shapes the exit. Error messages and the "0% precision" statistic remain reproduced from the original feedback (2026-07-21) |
 | The `GOEXPERIMENT=jsonv2` prefix on every command being a hard requirement                                                                                           | ✅ Verified NOT required for `lint` | Probe 2026-10-27: `erraudit lint ./... --max` exits 0 with identical output with and without the env var; keep the prefix only where a build/toolchain quirk demands it                                 |
 
 ---
@@ -252,17 +252,20 @@ has to explain alone; see templ-components' `docs/house-style.md` for the house 
 | `--severity-threshold error`              | Shows `errors.Is` advisories regardless of threshold value | `--type-aware` or `--type legacy_as` |
 | `--severity error` / `--severity warning` | Both produce identical output                              | `--type-aware` or `--type legacy_as` |
 
-## Exit code reference (unverified — see verification status above)
+## Exit code reference (live-verified 2026-11-03 against the fixed binary, erraudit d19cca1e)
 
 | Scenario                                                     | Exit code |
 | ------------------------------------------------------------ | --------- |
 | `lint` with no violations                                    | 0         |
-| `lint` with any violation (including advisory `errors.Is`)   | 1         |
+| `lint` with any violation (including advisory `errors.Is`)   | 2         |
+| `lint` with all findings below `--severity-threshold`        | 0         |
 | `fix` dry-run with fixable violations + remaining advisories | 2         |
 | `fix --write` with fixes applied + remaining advisories      | 2         |
 | `fix` with only advisory violations (nothing fixable)        | 0         |
 
-There is no way to get exit 0 from `lint` when `errors.Is` advisories are present, short of suppressing them with `//nolint:legacyerrors` or filtering with `--type legacy_as`.
+Exit code 1 is reserved for operational errors (bad path, missing toolchain, render error). Violations are data, not errors: exit 2 is a successful run. The 2026-07-era shape (lint-with-advisories exits 1) is GONE — the binary exits 2 for any finding.
+
+To get exit 0 from `lint` while advisories are present, run with `--severity-threshold critical` (verified: advisory-only findings exit 0, output empty) — no suppression or `--type` filtering needed. `//nolint:legacyerrors` and `--type legacy_as` still work.
 
 ## CI integration
 
@@ -344,7 +347,7 @@ Load on demand:
 
 - [./references/sentinel-declarations.md](./references/sentinel-declarations.md) — Declare package-level sentinels with the `error` interface type (`var ErrX error = ...`), never a concrete type: erraudit's sentinel recognition and the standard idiom both require it; includes the verified contract and the compile-time guard-test pattern (2026-10-08)
 - [./references/decision-tree.md](./references/decision-tree.md) — Background on Go's three error-matching APIs, the full decision tree with code examples, and how to suppress correctly
-- [./references/cli-and-flags.md](./references/cli-and-flags.md) — Full flag reliability table, the `--no-suppress` history (broken 2026-07-21, re-verified working on the root invocation 2026-09-11), the remove-and-restore verification technique, exit codes. Flag behaviors reflect the original feedback (2026-07-21, when the tool was called `hierarchical-errors`) and have not all been re-verified against the renamed `erraudit` binary — see verification status at the top of this file.
+- [./references/cli-and-flags.md](./references/cli-and-flags.md) — Full flag reliability table, the `--no-suppress` history (broken 2026-07-21, re-verified working on the root invocation 2026-09-11), the remove-and-restore verification technique, exit codes. Flag behaviors reflect the original feedback (2026-07-21, when the tool was called `hierarchical-errors`); exit codes were re-verified 2026-11-03 against the fixed binary (erraudit d19cca1e) — see verification status at the top of this file.
 - [./references/anti-patterns.md](./references/anti-patterns.md) — All four anti-patterns with full code, plus the agent-specific "fix-to-zero" trap guidance
 - [../how-to-golang/SKILL.md](../how-to-golang/SKILL.md) — Broader Go development decision guide (what libraries to use, what to avoid)
 - [../linter-building/references/ecosystem.md](../linter-building/references/ecosystem.md) — Map of the local linter-building stack, including the erraudit row and the go-finding finding model erraudit targets

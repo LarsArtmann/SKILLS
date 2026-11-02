@@ -221,12 +221,13 @@ This means the two subcommands disagree on what constitutes a fixable problem. I
 | Scenario                                                     | Exit code |
 | ------------------------------------------------------------ | --------- |
 | `lint` with no violations                                    | 0         |
-| `lint` with any violation (including advisory `errors.Is`)   | 1         |
+| `lint` with any violation (including advisory `errors.Is`)   | 2         |
+| `lint` with all findings below `--severity-threshold`        | 0         |
 | `fix` dry-run with fixable violations + remaining advisories | 2         |
 | `fix --write` with fixes applied + remaining advisories      | 2         |
 | `fix` with only advisory violations (nothing fixable)        | 0         |
 
-Note: `lint` exits 1 for BOTH severity levels. With `--type-aware`, the false-positive rate on `errors.Is` should drop significantly. If `errors.Is` advisories remain, suppress them with `//nolint:legacyerrors` or filter with `--type legacy_as`.
+Live-verified 2026-11-03 against the fixed binary (erraudit d19cca1e): `lint` exits 2 for ANY finding (violations are data, not errors — exit 1 is operational failure only), and `--severity-threshold critical` turns an advisory-only run into exit 0 with empty output. If advisories must still SURFACE while CI passes, suppress them with `//nolint:legacyerrors` or filter with `--type legacy_as`.
 
 ---
 
