@@ -25,7 +25,7 @@ Skills organized by domain — live count via `scripts/check-skills.sh` (never h
 | **architecture-review**        | Reviews architecture for scalability, modularity, and composability | 🟡 Thin          |
 | **architecture-visualization** | Generates D2 architecture diagrams — current state vs. ideal target | 🟢 Solid         |
 | **data-model-review**          | Reviews and redesigns data models using Go's type system            | 🟢 Comprehensive |
-| **design-to-code**             | Bridges a design direction into production code: token encoding (`@theme` vs `:root`), the utility-first abstraction ladder, quality-floor audits, verified Tailwind v4 gotchas | 🟡 New (evald)   |
+| **design-to-code**             | Bridges a design direction into production code: token encoding (`@theme` vs `:root`), the utility-first abstraction ladder, quality-floor audits, verified Tailwind v4 gotchas | 🆕 New (evald)   |
 | **pareto-planning**            | 80/20 execution plans with D2 dependency graphs                     | 🟢 Comprehensive |
 
 ### Code Quality & Review

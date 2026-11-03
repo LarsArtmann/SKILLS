@@ -1,0 +1,11 @@
+{
+  "assertions": [
+    "Entry CSS imports Tailwind via @import \"tailwindcss\"; and contains no @tailwind directives",
+    "Brand color #4f46e5 is defined inside a top-level @theme block as a --color-* variable (not nested under a selector, not defined only in :root)",
+    "The brand color literal #4f46e5 appears exactly once across all deliverables (single source of truth)",
+    "Markup applies the brand via a generated utility class or var(--color-...) reference rather than a hardcoded hex"
+  ],
+  "eval_id": 0,
+  "eval_name": "theme-token-encoding",
+  "prompt": "Set up the styling foundation for a new marketing page: an index.html with a simple hero section (headline, subheadline, one CTA button) plus the Tailwind v4 entry CSS file. Brand color is #4f46e5; we also need a neutral surface tone for the page background. The brand color must be set up so we can change it in one place later and every use across the site follows."
+}

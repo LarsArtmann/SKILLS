@@ -1,0 +1,12 @@
+{
+  "assertions": [
+    "Migrated CSS uses @import \"tailwindcss\"; and no @tailwind directive remains",
+    "No v3 important prefix (!bg-, !text-) remains; important modifiers are suffix form (e.g. bg-white!)",
+    "No v3 bracket-variable class bg-[--...] remains; variable usage uses v4 parens form bg-(--...)",
+    "No dynamic class construction remains (no template literals or string concatenation building Tailwind class names); complete class names exist statically",
+    "All four tone variants remain reachable and the migrated files are internally consistent (badge colors, important flags, hover behavior preserved)"
+  ],
+  "eval_id": 1,
+  "eval_name": "v3-to-v4-migration",
+  "prompt": "Our app is upgrading from Tailwind CSS v3 to v4. Migrate the two files card-v3.html and card-v3.css (paths given at run time) to Tailwind v4. Keep the rendered result and behavior identical. Anything that would silently stop working under the v4 compiler matters as much as loud errors. Write the migrated files into the outputs directory."
+}

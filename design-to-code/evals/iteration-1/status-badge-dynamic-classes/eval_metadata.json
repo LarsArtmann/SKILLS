@@ -1,0 +1,11 @@
+{
+  "assertions": [
+    "No dynamic Tailwind class construction: no template literals or string concatenation assemble class names",
+    "Complete class names for all four statuses appear statically in the source",
+    "No hardcoded hex colors in the component (Tailwind palette classes or project tokens only)",
+    "TypeScript prop type is the status union, and the component renders the status text"
+  ],
+  "eval_id": 2,
+  "eval_name": "status-badge-dynamic-classes",
+  "prompt": "Build a small React component in a file called StatusBadge.tsx, styled with Tailwind, for a large existing Tailwind v4 app. Props: a status field of type 'success' | 'warning' | 'error' | 'info'. Each status gets its own badge color (green, amber, red, blue). The badge shows the status text in a rounded pill. Write the file into the outputs directory."
+}
