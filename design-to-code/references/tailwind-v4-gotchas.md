@@ -11,23 +11,23 @@ wrong code here.
 
 ## Verification status
 
-| Claim                                                              | Status      | Source (tailwindlabs/tailwindcss.com, `src/docs/`) |
-| ------------------------------------------------------------------ | ----------- | ---------------------------------------------------- |
-| v4 imports Tailwind with `@import "tailwindcss";` (no `@tailwind` directives) | ✅ Verified | `upgrade-guide.mdx` (fetched 2026-11-03)  |
-| Important modifier moved to the END of the class: `bg-red-500!`, `flex!` | ✅ Verified | `upgrade-guide.mdx` |
-| Arbitrary CSS variables use parens: `bg-(--brand-color)` (not `bg-[--brand-color]`) | ✅ Verified | `upgrade-guide.mdx` |
-| Stacked variants apply left-to-right in v4 (v3: right-to-left)     | ✅ Verified | `upgrade-guide.mdx` |
-| `hover:` compiles to `@media (hover: hover)`                       | ✅ Verified | `hover-focus-and-other-states.mdx` |
-| `@theme` defines design tokens that generate utility classes; variables must be top-level, not nested; `:root` for plain CSS variables | ✅ Verified | `theme.mdx` |
-| `@utility` adds custom utilities that work with variants (`hover`, `focus`, `lg`) | ✅ Verified | `functions-and-directives.mdx` |
-| `@source` explicitly registers source files missed by automatic content detection | ✅ Verified | `functions-and-directives.mdx` |
-| `@reference` needed to use `@apply`/`@variant` in Vue/Svelte `<style>` blocks or CSS modules | ✅ Verified | `functions-and-directives.mdx` |
-| Class detection treats source files as plain text — dynamic concatenation/interpolation is not detected | ✅ Verified | `detecting-classes-in-source-files.mdx` |
-| Component classes go in `@layer components` (still overridable by utilities) | ✅ Verified | `adding-custom-styles.mdx` |
-| Browser support floor: Chrome 111, Safari 16.4, Firefox 128        | ✅ Verified | `compatibility.mdx` |
-| Bare `shadow`/`rounded`/`blur` renamed: bare still compiles but renders at the `-sm` size; the old v3 look is now `-xs` | ✅ Verified | `upgrade-guide.mdx` (rows added 2026-11-03 after eval iteration-1 caught the gap) |
-| v4 preflight sets buttons to `cursor: default` (v3: `pointer`); restore via `@layer base` styles | ✅ Verified | `upgrade-guide.mdx` "Buttons use the default cursor" (added 2026-11-03) |
-| Prefix syntax: `@import "tailwindcss" prefix(tw);` with `tw:` class prefix | ✅ Verified | `upgrade-guide.mdx` |
+| Claim                                                                                                                                  | Status      | Source (tailwindlabs/tailwindcss.com, `src/docs/`)                                |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ----------- | --------------------------------------------------------------------------------- |
+| v4 imports Tailwind with `@import "tailwindcss";` (no `@tailwind` directives)                                                          | ✅ Verified | `upgrade-guide.mdx` (fetched 2026-11-03)                                          |
+| Important modifier moved to the END of the class: `bg-red-500!`, `flex!`                                                               | ✅ Verified | `upgrade-guide.mdx`                                                               |
+| Arbitrary CSS variables use parens: `bg-(--brand-color)` (not `bg-[--brand-color]`)                                                    | ✅ Verified | `upgrade-guide.mdx`                                                               |
+| Stacked variants apply left-to-right in v4 (v3: right-to-left)                                                                         | ✅ Verified | `upgrade-guide.mdx`                                                               |
+| `hover:` compiles to `@media (hover: hover)`                                                                                           | ✅ Verified | `hover-focus-and-other-states.mdx`                                                |
+| `@theme` defines design tokens that generate utility classes; variables must be top-level, not nested; `:root` for plain CSS variables | ✅ Verified | `theme.mdx`                                                                       |
+| `@utility` adds custom utilities that work with variants (`hover`, `focus`, `lg`)                                                      | ✅ Verified | `functions-and-directives.mdx`                                                    |
+| `@source` explicitly registers source files missed by automatic content detection                                                      | ✅ Verified | `functions-and-directives.mdx`                                                    |
+| `@reference` needed to use `@apply`/`@variant` in Vue/Svelte `<style>` blocks or CSS modules                                           | ✅ Verified | `functions-and-directives.mdx`                                                    |
+| Class detection treats source files as plain text — dynamic concatenation/interpolation is not detected                                | ✅ Verified | `detecting-classes-in-source-files.mdx`                                           |
+| Component classes go in `@layer components` (still overridable by utilities)                                                           | ✅ Verified | `adding-custom-styles.mdx`                                                        |
+| Browser support floor: Chrome 111, Safari 16.4, Firefox 128                                                                            | ✅ Verified | `compatibility.mdx`                                                               |
+| Bare `shadow`/`rounded`/`blur` renamed: bare still compiles but renders at the `-sm` size; the old v3 look is now `-xs`                | ✅ Verified | `upgrade-guide.mdx` (rows added 2026-11-03 after eval iteration-1 caught the gap) |
+| v4 preflight sets buttons to `cursor: default` (v3: `pointer`); restore via `@layer base` styles                                       | ✅ Verified | `upgrade-guide.mdx` "Buttons use the default cursor" (added 2026-11-03)           |
+| Prefix syntax: `@import "tailwindcss" prefix(tw);` with `tw:` class prefix                                                             | ✅ Verified | `upgrade-guide.mdx`                                                               |
 
 ## v3 → v4 syntax moves
 
@@ -54,7 +54,7 @@ Agents trained mostly on v3 produce illegal v4. The six moves that bite:
 ## Scanning behavior (the silent-failure class)
 
 - Tailwind reads source files as **plain text** — it does not parse your code.
-  Any token that *looks* like a class name is picked up; nothing else is.
+  Any token that _looks_ like a class name is picked up; nothing else is.
 - **Dynamic class names do not exist**: `` `text-${color}-600` ``, string
   concatenation, and prop-driven construction produce classes the build never
   sees — the page silently loses the style. Fix: write every complete class

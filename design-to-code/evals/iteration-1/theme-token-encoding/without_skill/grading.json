@@ -1,10 +1,28 @@
 {
   "expectations": [
-    {"text": "Entry CSS imports Tailwind via @import \"tailwindcss\"; and contains no @tailwind directives", "passed": true, "evidence": "app.css line 1: `@import \"tailwindcss\";`; no @tailwind directives"},
-    {"text": "Brand color #4f46e5 is defined inside a top-level @theme block as a --color-* variable (not nested under a selector, not defined only in :root)", "passed": true, "evidence": "app.css: top-level `@theme { --color-brand: #4f46e5; --color-surface: #fafafa; }`"},
-    {"text": "The brand color literal #4f46e5 appears exactly once across all deliverables (single source of truth)", "passed": true, "evidence": "rg -c '4f46e5': app.css 1, index.html 0; total exactly 1"},
-    {"text": "Markup applies the brand via a generated utility class or var(--color-...) reference rather than a hardcoded hex", "passed": true, "evidence": "index.html CTA: `bg-brand ... focus-visible:outline-brand`"}
+    {
+      "text": "Entry CSS imports Tailwind via @import \"tailwindcss\"; and contains no @tailwind directives",
+      "passed": true,
+      "evidence": "app.css line 1: `@import \"tailwindcss\";`; no @tailwind directives"
+    },
+    {
+      "text": "Brand color #4f46e5 is defined inside a top-level @theme block as a --color-* variable (not nested under a selector, not defined only in :root)",
+      "passed": true,
+      "evidence": "app.css: top-level `@theme { --color-brand: #4f46e5; --color-surface: #fafafa; }`"
+    },
+    {
+      "text": "The brand color literal #4f46e5 appears exactly once across all deliverables (single source of truth)",
+      "passed": true,
+      "evidence": "rg -c '4f46e5': app.css 1, index.html 0; total exactly 1"
+    },
+    {
+      "text": "Markup applies the brand via a generated utility class or var(--color-...) reference rather than a hardcoded hex",
+      "passed": true,
+      "evidence": "index.html CTA: `bg-brand ... focus-visible:outline-brand`"
+    }
   ],
-  "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0},
-  "qualitative_notes": ["Baseline (model priors) already encodes v4 @theme correctly on this greenfield task; no compile-verification step was performed"]
+  "summary": { "passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0 },
+  "qualitative_notes": [
+    "Baseline (model priors) already encodes v4 @theme correctly on this greenfield task; no compile-verification step was performed"
+  ]
 }

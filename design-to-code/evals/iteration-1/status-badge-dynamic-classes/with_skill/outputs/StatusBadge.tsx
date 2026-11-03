@@ -11,7 +11,5 @@ const BASE_CLASSES =
   "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize";
 
 export function StatusBadge({ status }: { status: BadgeStatus }) {
-  return (
-    <span className={`${BASE_CLASSES} ${STATUS_STYLES[status]}`}>{status}</span>
-  );
+  return <span className={`${BASE_CLASSES} ${STATUS_STYLES[status]}`}>{status}</span>;
 }

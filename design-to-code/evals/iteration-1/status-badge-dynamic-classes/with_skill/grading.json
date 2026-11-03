@@ -1,10 +1,28 @@
 {
   "expectations": [
-    {"text": "No dynamic Tailwind class construction: no template literals or string concatenation assemble class names", "passed": true, "evidence": "STATUS_STYLES: Record<BadgeStatus, string> with four complete static class strings; the className template literal only interpolates complete static strings"},
-    {"text": "Complete class names for all four statuses appear statically in the source", "passed": true, "evidence": "bg-green-100 text-green-800 / bg-amber-100 text-amber-800 / bg-red-100 text-red-800 / bg-blue-100 text-blue-800 all literal in source"},
-    {"text": "No hardcoded hex colors in the component (Tailwind palette classes or project tokens only)", "passed": true, "evidence": "rg '#[0-9a-fA-F]{3,6}' on StatusBadge.tsx: 0 matches; palette utilities only"},
-    {"text": "TypeScript prop type is the status union, and the component renders the status text", "passed": true, "evidence": "`export type BadgeStatus = \"success\" | \"warning\" | \"error\" | \"info\";` + `<span ...>{status}</span>`"}
+    {
+      "text": "No dynamic Tailwind class construction: no template literals or string concatenation assemble class names",
+      "passed": true,
+      "evidence": "STATUS_STYLES: Record<BadgeStatus, string> with four complete static class strings; the className template literal only interpolates complete static strings"
+    },
+    {
+      "text": "Complete class names for all four statuses appear statically in the source",
+      "passed": true,
+      "evidence": "bg-green-100 text-green-800 / bg-amber-100 text-amber-800 / bg-red-100 text-red-800 / bg-blue-100 text-blue-800 all literal in source"
+    },
+    {
+      "text": "No hardcoded hex colors in the component (Tailwind palette classes or project tokens only)",
+      "passed": true,
+      "evidence": "rg '#[0-9a-fA-F]{3,6}' on StatusBadge.tsx: 0 matches; palette utilities only"
+    },
+    {
+      "text": "TypeScript prop type is the status union, and the component renders the status text",
+      "passed": true,
+      "evidence": "`export type BadgeStatus = \"success\" | \"warning\" | \"error\" | \"info\";` + `<span ...>{status}</span>`"
+    }
   ],
-  "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0},
-  "qualitative_notes": ["With-arm explicitly reasoned from Step 4.3 and Step 1 (inspected for existing design system, found none, declined to invent tokens)"]
+  "summary": { "passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0 },
+  "qualitative_notes": [
+    "With-arm explicitly reasoned from Step 4.3 and Step 1 (inspected for existing design system, found none, declined to invent tokens)"
+  ]
 }

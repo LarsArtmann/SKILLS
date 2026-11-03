@@ -28,13 +28,13 @@ language always wins over the generic one you would produce from memory.
 
 ## When this skill is the right tool
 
-| Task                                                                    | Use            |
-| ----------------------------------------------------------------------- | -------------- |
-| Distinctive aesthetic direction, palette/type choices, avoiding AI-default looks | `frontend-design` |
-| Implement that direction in markup + CSS, tokens, Tailwind mechanics    | **this skill** |
-| Which web-platform API fits (dialog, container queries, View Transitions) | `modern-web-guidance` |
-| Deploying a docs site, Firebase, DNS                                    | `website-launch` |
-| Styling a point-in-time HTML report with the shared Bauhaus system      | `html-report-kit` |
+| Task                                                                             | Use                   |
+| -------------------------------------------------------------------------------- | --------------------- |
+| Distinctive aesthetic direction, palette/type choices, avoiding AI-default looks | `frontend-design`     |
+| Implement that direction in markup + CSS, tokens, Tailwind mechanics             | **this skill**        |
+| Which web-platform API fits (dialog, container queries, View Transitions)        | `modern-web-guidance` |
+| Deploying a docs site, Firebase, DNS                                             | `website-launch`      |
+| Styling a point-in-time HTML report with the shared Bauhaus system               | `html-report-kit`     |
 
 ## Step 1 — Inspect the project's design system first
 

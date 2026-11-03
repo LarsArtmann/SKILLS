@@ -1,11 +1,33 @@
 {
   "expectations": [
-    {"text": "Migrated CSS uses @import \"tailwindcss\"; and no @tailwind directive remains", "passed": true, "evidence": "card-v4.css line 1: `@import \"tailwindcss\";`; rg '@tailwind': 0 matches"},
-    {"text": "No v3 important prefix (!bg-, !text-) remains; important modifiers are suffix form (e.g. bg-white!)", "passed": true, "evidence": "card-v4.html: `bg-white!`, `bg-indigo-600! hover:bg-indigo-700!`; rg '!bg-|!text-': 0 matches"},
-    {"text": "No v3 bracket-variable class bg-[--...] remains; variable usage uses v4 parens form bg-(--...)", "passed": true, "evidence": "card-v4.html: `text-(--card-muted)`; rg '\\[--': 0 matches"},
-    {"text": "No dynamic class construction remains (no template literals or string concatenation building Tailwind class names); complete class names exist statically", "passed": true, "evidence": "script now uses a `toneClasses` map with four complete static class names (bg-green-500/bg-amber-500/bg-red-500/bg-slate-500); the `\"bg-\" + tone + \"-500\"` concatenation is gone"},
-    {"text": "All four tone variants remain reachable and the migrated files are internally consistent (badge colors, important flags, hover behavior preserved)", "passed": true, "evidence": "transcript: compile-verified against real Tailwind v4.3.4 CLI; all four tone classes generated; shadow-sm/rounded-sm renames preserve v3 radii; extra fidelity: restored button cursor:pointer dropped by v4 preflight via @layer base"}
+    {
+      "text": "Migrated CSS uses @import \"tailwindcss\"; and no @tailwind directive remains",
+      "passed": true,
+      "evidence": "card-v4.css line 1: `@import \"tailwindcss\";`; rg '@tailwind': 0 matches"
+    },
+    {
+      "text": "No v3 important prefix (!bg-, !text-) remains; important modifiers are suffix form (e.g. bg-white!)",
+      "passed": true,
+      "evidence": "card-v4.html: `bg-white!`, `bg-indigo-600! hover:bg-indigo-700!`; rg '!bg-|!text-': 0 matches"
+    },
+    {
+      "text": "No v3 bracket-variable class bg-[--...] remains; variable usage uses v4 parens form bg-(--...)",
+      "passed": true,
+      "evidence": "card-v4.html: `text-(--card-muted)`; rg '\\[--': 0 matches"
+    },
+    {
+      "text": "No dynamic class construction remains (no template literals or string concatenation building Tailwind class names); complete class names exist statically",
+      "passed": true,
+      "evidence": "script now uses a `toneClasses` map with four complete static class names (bg-green-500/bg-amber-500/bg-red-500/bg-slate-500); the `\"bg-\" + tone + \"-500\"` concatenation is gone"
+    },
+    {
+      "text": "All four tone variants remain reachable and the migrated files are internally consistent (badge colors, important flags, hover behavior preserved)",
+      "passed": true,
+      "evidence": "transcript: compile-verified against real Tailwind v4.3.4 CLI; all four tone classes generated; shadow-sm/rounded-sm renames preserve v3 radii; extra fidelity: restored button cursor:pointer dropped by v4 preflight via @layer base"
+    }
   ],
-  "summary": {"passed": 5, "failed": 0, "total": 5, "pass_rate": 1.0},
-  "qualitative_notes": ["With-arm verified two silent v4 changes NOT in the gotchas reference (shadow->shadow-sm, rounded->rounded-sm, preflight cursor drop) against live docs before writing — the skill's inspect-first posture driving extra verification"]
+  "summary": { "passed": 5, "failed": 0, "total": 5, "pass_rate": 1.0 },
+  "qualitative_notes": [
+    "With-arm verified two silent v4 changes NOT in the gotchas reference (shadow->shadow-sm, rounded->rounded-sm, preflight cursor drop) against live docs before writing — the skill's inspect-first posture driving extra verification"
+  ]
 }

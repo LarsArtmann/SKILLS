@@ -8,11 +8,11 @@ Claude-Code subagent (Crush's subagent tool cannot write files).
 
 ## Results (iteration-1)
 
-| Eval | With-skill | Baseline | Discriminating? |
-| ---- | ---------- | -------- | ---------------- |
-| theme-token-encoding | 4/4 | 4/4 | no — model priors already produce correct v4 `@theme` |
-| v3-to-v4-migration | 5/5 | 4/5 | **yes** — baseline kept runtime class concatenation (safelisted around, trap intact) |
-| status-badge-dynamic-classes | 4/4 | 4/4 | no — baseline independently knows the scanner gotcha |
+| Eval                         | With-skill | Baseline | Discriminating?                                                                      |
+| ---------------------------- | ---------- | -------- | ------------------------------------------------------------------------------------ |
+| theme-token-encoding         | 4/4        | 4/4      | no — model priors already produce correct v4 `@theme`                                |
+| v3-to-v4-migration           | 5/5        | 4/5      | **yes** — baseline kept runtime class concatenation (safelisted around, trap intact) |
+| status-badge-dynamic-classes | 4/4        | 4/4      | no — baseline independently knows the scanner gotcha                                 |
 
 Aggregate: with-skill **13/13 (1.00)** vs baseline **12/13 (0.93)**, n=1 per
 arm (directional, not significant — iteration-2 should run 3× per arm).
@@ -21,7 +21,7 @@ arm (directional, not significant — iteration-2 should run 3× per arm).
 
 1. **On greenfield idiom production the baseline is already strong.** Ten of
    thirteen assertions pass in both arms. The skill's value on these tasks is
-   not correctness — it is *process*: the with-arm compile-verified its token
+   not correctness — it is _process_: the with-arm compile-verified its token
    utilities (eval 1), reasoned explicitly from Step 4.3 (eval 3), and
    declined to invent tokens after a Step 1 inspection found no existing
    system (eval 3).
@@ -30,7 +30,7 @@ arm (directional, not significant — iteration-2 should run 3× per arm).
    class names at runtime (`"bg-" + tone + "-500"`) and papers over it with
    `@source inline(...)` — exactly the silent-failure class the skill exists
    to kill. The with-arm replaced it with complete static class names and
-   additionally caught two silent v4 changes *not in the reference*
+   additionally caught two silent v4 changes _not in the reference_
    (`shadow`→`shadow-sm`, `rounded`→`rounded-sm`, preflight dropping
    `cursor: pointer`) by verifying against live docs — the inspect-first
    posture generalizing past the shipped reference.

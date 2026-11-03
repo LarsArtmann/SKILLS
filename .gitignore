@@ -53,23 +53,21 @@ vendor/
 go.work
 go.work.sum
 
-## Python
-__pycache__/
-*.py[cod]
-*.egg-info/
-*.egg
-.venv/
-venv/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.tox/
-.nox/
-.ipynb_checkpoints/
-.hypothesis/
-cython_debug/
-.coverage
-htmlcov/
+## Javascript and typescript
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+.next/
+.nuxt/
+.docusaurus/
+.eslintcache
+.cache/
+.parcel-cache/
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 # <<< buildflow-managed (.gitignore) <<<
 
 # Eval fixture build artifacts: `go build -o tiny` output from eval runs
