@@ -54,6 +54,32 @@ If ambiguous, default to AUDIT.
 
 ---
 
+## The battery tool (docs-gates, extracted 2026-11-03)
+
+The five standing gates behind this skill's ritual — freshness (newest
+report's open §f items harvested), annotate (struck items carry resolvable
+verdicts + rule F inline-code spacing), routing (non-§f rows represented in
+the living docs), cadence (struck-row backlog + archive age) — are one
+standalone stdlib-only Go binary: [docs-gates](https://github.com/Artmann-Technologies/docs-gates).
+
+```console
+nix run github:Artmann-Technologies/docs-gates -- run .   # the whole battery, one matrix
+docs-gates freshness . --audit-all --audit-max=0          # single verbs for targeted runs
+```
+
+Exit codes: 0 clean, 1 findings, 2 usage. Every threshold is per-repo
+configurable via an optional `.docs-gates.json` (unknown keys warn,
+malformed values exit 2 — never silently wrong thresholds). Without a
+config file the binary applies the fleet-proven defaults. The historical
+standalone names (`docs-freshness`, `docs-annotate`, `docs-routing`,
+`docs-cadence`, `docs-strike`) ride that repo's flake wrappers and keep
+working. A repo adopting the ritual: install the binary, optionally seed
+`.docs-gates.json`, wire one command into the repo's quality gate (see
+pbx-artmann's `scripts/docs-gates.sh` for the composition shape — dprint
+first, battery, then repo-specific gates).
+
+---
+
 ## HARVEST — pull forward items from status reports
 
 _The primary mode for most runs._ Status reports capture what a session did AND what should happen next. The "next" part is forward-looking intent. If it lives only in the timestamped report, it is lost — subsequent sessions never read old reports as a backlog source.
