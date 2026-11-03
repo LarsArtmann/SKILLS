@@ -1,0 +1,10 @@
+{
+  "expectations": [
+    {"text": "No dynamic Tailwind class construction: no template literals or string concatenation assemble class names", "passed": true, "evidence": "STATUS_STYLES: Record<Status, string> with four complete static class strings"},
+    {"text": "Complete class names for all four statuses appear statically in the source", "passed": true, "evidence": "all four `bg-*-100 text-*-800 ring-*-600/20` strings literal in source"},
+    {"text": "No hardcoded hex colors in the component (Tailwind palette classes or project tokens only)", "passed": true, "evidence": "no hex literals; palette utilities only"},
+    {"text": "TypeScript prop type is the status union, and the component renders the status text", "passed": true, "evidence": "`type Status = \"success\" | \"warning\" | \"error\" | \"info\";` + renders `{status}`"}
+  ],
+  "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0},
+  "qualitative_notes": ["Baseline independently knows the scanner gotcha (its transcript says the static map is 'required so Tailwind v4's scanner generates every variant') and even added ring-inset styling"]
+}

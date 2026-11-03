@@ -1,0 +1,11 @@
+{
+  "expectations": [
+    {"text": "Migrated CSS uses @import \"tailwindcss\"; and no @tailwind directive remains", "passed": true, "evidence": "card-v4.css line 1: `@import \"tailwindcss\";`; no @tailwind directives"},
+    {"text": "No v3 important prefix (!bg-, !text-) remains; important modifiers are suffix form (e.g. bg-white!)", "passed": true, "evidence": "card-v4.html: `bg-white!`, `bg-indigo-600! hover:bg-indigo-700!`"},
+    {"text": "No v3 bracket-variable class bg-[--...] remains; variable usage uses v4 parens form bg-(--...)", "passed": true, "evidence": "card-v4.html: `text-(--card-muted)` (emits color: var(--card-muted))"},
+    {"text": "No dynamic class construction remains (no template literals or string concatenation building Tailwind class names); complete class names exist statically", "passed": false, "evidence": "card-v4.html script keeps `\"bg-\" + tone + \"-500\"` concatenation; styles only generate because of `@source inline(\"bg-{green,amber,red,slate}-500\")` safelist added in CSS. Works today, but the source still constructs class names dynamically: any future tone outside the safelist, or a refactor dropping the @source line, silently loses styles. The complete-class-names doctrine avoids exactly this trap"},
+    {"text": "All four tone variants remain reachable and the migrated files are internally consistent (badge colors, important flags, hover behavior preserved)", "passed": true, "evidence": "transcript: compile-verified with Tailwind v4.3.4; four tones safelisted; shadow-sm/rounded-sm renames applied (also in JS class string)"}
+  ],
+  "summary": {"passed": 4, "failed": 1, "total": 5, "pass_rate": 0.8},
+  "qualitative_notes": ["Baseline chose safelist compensation over eliminating the trap; did not address the v4 preflight cursor:pointer drop"]
+}

@@ -1,0 +1,1 @@
+Wrote `outputs/index.html` (hero: headline, subheadline, brand CTA) and `outputs/app.css` (Tailwind v4 entry: `@theme` defines `--color-brand: #4f46e5` once, so `bg-brand`/`outline-brand` etc. all follow it, plus `--color-surface: #fafafa` for the page background).

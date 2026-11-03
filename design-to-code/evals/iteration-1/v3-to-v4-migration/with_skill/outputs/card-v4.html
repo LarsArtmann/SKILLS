@@ -1,0 +1,27 @@
+<!-- card.html — Tailwind v4 syntax, migrated from the v3 fixture -->
+<article class="card bg-white! p-6 rounded-lg shadow-sm">
+  <h3 class="text-lg font-semibold text-slate-900">Plan name</h3>
+  <p class="text-sm text-(--card-muted)">Everything you need to get started.</p>
+  <div class="mt-4">
+    <span id="tone-badge"
+          class="inline-block px-2 py-1 rounded-sm text-xs font-medium bg-slate-500 text-white">
+      availability
+    </span>
+  </div>
+  <button class="mt-6 w-full bg-indigo-600! hover:bg-indigo-700! text-white py-2 rounded-sm">
+    Choose plan
+  </button>
+</article>
+
+<script>
+  // Badge tone is chosen at runtime from data.
+  const toneClasses = {
+    green: "bg-green-500",
+    amber: "bg-amber-500",
+    red: "bg-red-500",
+    slate: "bg-slate-500",
+  };
+  const tone = "green"; // one of: green | amber | red | slate
+  document.getElementById("tone-badge").className =
+    "inline-block px-2 py-1 rounded-sm text-xs font-medium " + toneClasses[tone] + " text-white";
+</script>

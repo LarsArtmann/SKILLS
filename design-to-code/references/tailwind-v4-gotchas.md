@@ -25,11 +25,13 @@ wrong code here.
 | Class detection treats source files as plain text — dynamic concatenation/interpolation is not detected | ✅ Verified | `detecting-classes-in-source-files.mdx` |
 | Component classes go in `@layer components` (still overridable by utilities) | ✅ Verified | `adding-custom-styles.mdx` |
 | Browser support floor: Chrome 111, Safari 16.4, Firefox 128        | ✅ Verified | `compatibility.mdx` |
+| Bare `shadow`/`rounded`/`blur` renamed: bare still compiles but renders at the `-sm` size; the old v3 look is now `-xs` | ✅ Verified | `upgrade-guide.mdx` (rows added 2026-11-03 after eval iteration-1 caught the gap) |
+| v4 preflight sets buttons to `cursor: default` (v3: `pointer`); restore via `@layer base` styles | ✅ Verified | `upgrade-guide.mdx` "Buttons use the default cursor" (added 2026-11-03) |
 | Prefix syntax: `@import "tailwindcss" prefix(tw);` with `tw:` class prefix | ✅ Verified | `upgrade-guide.mdx` |
 
 ## v3 → v4 syntax moves
 
-Agents trained mostly on v3 produce illegal v4. The four moves that bite:
+Agents trained mostly on v3 produce illegal v4. The six moves that bite:
 
 1. **Import**: `@import "tailwindcss";` — `@tailwind base/components/utilities`
    directives are gone.
@@ -41,6 +43,13 @@ Agents trained mostly on v3 produce illegal v4. The four moves that bite:
 4. **Stacked variant order**: v4 applies left-to-right (`dark:hover:*` reads
    like CSS nesting); order-sensitive stacks written for v3 are backwards in
    v4.
+5. **Scale renames**: bare `shadow`, `rounded`, `blur` still compile but
+   render at the `-sm` size — code that migrates 1:1 silently renders
+   smaller. The old v3 look is the new `-xs` (`shadow-xs`, `rounded-xs`).
+6. **Button cursor**: v4 preflight sets buttons to `cursor: default` (v3
+   preflight used `pointer`). Silent UX regression; restore with a
+   `@layer base` rule setting `button:not(:disabled) { cursor: pointer; }`
+   if you want v3 behavior.
 
 ## Scanning behavior (the silent-failure class)
 

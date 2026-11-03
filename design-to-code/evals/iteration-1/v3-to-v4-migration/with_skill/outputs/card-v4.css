@@ -1,0 +1,14 @@
+/* card.css — Tailwind v4 syntax, migrated from the v3 fixture */
+@import "tailwindcss";
+
+:root {
+  --card-muted: #64748b;
+  --card-bg: #ffffff;
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}

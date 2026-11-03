@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+/*
+  Design tokens (Tailwind v4 CSS-first theme).
+
+  Every utility that references the brand color (bg-brand, text-brand,
+  outline-brand, ring-brand, ...) is generated from --color-brand below.
+  Change the value here once and every use across the site follows.
+*/
+@theme {
+  --color-brand: #4f46e5;
+  --color-surface: #fafafa;
+}

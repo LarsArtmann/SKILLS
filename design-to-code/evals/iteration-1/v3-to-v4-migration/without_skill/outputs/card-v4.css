@@ -1,0 +1,9 @@
+/* card.css — Tailwind v4 syntax, migrated from card-v3.css */
+@import "tailwindcss";
+
+@source inline("bg-{green,amber,red,slate}-500");
+
+:root {
+  --card-muted: #64748b;
+  --card-bg: #ffffff;
+}
