@@ -150,10 +150,17 @@ syntax, quality-floor audits).
    What remains: behavioral eval (with/without) + a first real triggered run
    (the two-stage aging rule, T34 g2, 🆕→🟡→🟢). Blocker: none — time only.
    Effort: M.
+   → RESOLVED m3 `4558d75`/`a060bce`: eval iteration-1 ran (with-skill 13/13
+   vs baseline 12/13; discriminating assertion = static-class-names
+   doctrine; baseline safelisted around runtime concatenation, leaving the
+   trap) + gotchas gained 2 claims the eval surfaced. Evidence:
+   `design-to-code/evals/`. 🟢 still requires a genuine user-triggered run.
 
 2. **Live discovery unproven.** Symlink + fan-out `--check` OK, but no fresh
    session has loaded it. Blocker: session-snapshot limitation (can't
    observe from inside). Effort: S — one `crush run` probe.
+   → RESOLVED m3 `4f83906`: probe PASS — fresh `crush run` lists
+   `design-to-code` (61 skills).
 
 3. **frontend-design "improvement" is partial by construction.** Its
    *content* is now current, but the engineering bridge lives only in our
@@ -179,8 +186,10 @@ syntax, quality-floor audits).
 3. **Behavioral eval for design-to-code** (2–3 prompts, with/without,
    `evals/iteration-1/` + `grading.json` on disk). Not started: skill shipped
    this session; eval is the documented next stage. Priority High.
+   → RESOLVED m3 `4558d75` (see (b)1).
 4. **Fresh-session discovery probe.** Not started: same-session limitation.
    Priority High (cheap, closes (b)2).
+   → RESOLVED m3 `4f83906` (see (b)2).
 5. **Drift-check cadence for the 13 verified claims.** No script exists;
    claims are dated 2026-11-03 in the reference table. Not started: needs an
    owner decision on cadence (see question 3). Priority Medium.
@@ -265,14 +274,14 @@ flagged it). Both fixed pre-commit.
 
 | #   | Task                                                                                                                                          | Impact | Effort | Category      | Source |
 | --- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | ------------- | ------ |
-| 1   | Fresh-session discovery probe: `crush run` asking for `crush_info`, confirm `design-to-code` PRESENT (mechanism proven 2026-10-30)            | High   | S      | Quality       | NEW    |
-| 2   | Behavioral eval for design-to-code: 2–3 real prompts, with/without, persist `evals/iteration-1/` + `grading.json` (eval not done until on disk) | High   | M      | Quality       | NEW    |
-| 3   | First real triggered design-to-code run on a live UI task; document it; age 🆕→🟡 (two-stage rule)                                            | High   | M      | Quality       | NEW    |
-| 4   | Upstream issue to the skills CLI: `update` false green (hash-only lockfile, no ref pin) — verify-before-filing gate first                     | High   | S–M    | Bug (upstream)| NEW    |
+| 1   | Fresh-session discovery probe: `crush run` asking for `crush_info`, confirm `design-to-code` PRESENT (mechanism proven 2026-10-30) — m3 `4f83906` | High   | S      | Quality       | NEW    |
+| 2   | Behavioral eval for design-to-code: 2–3 real prompts, with/without, persist `evals/iteration-1/` + `grading.json` (eval not done until on disk) — m3 `4558d75`/`a060bce` | High   | M      | Quality       | NEW    |
+| 3   | First real triggered design-to-code run on a live UI task; document it; age 🆕→🟡 (two-stage rule) — partial m3 `4f83906` (natural trigger observed in a probe session; 🟢 needs genuine user work) | High   | M      | Quality       | NEW    |
+| 4   | Upstream issue to the skills CLI: `update` false green (hash-only lockfile, no ref pin) — verify-before-filing gate first — Won't implement m3 `71b4afb` (gate FAILED the premise: current `vercel-labs/skills` source compares live tree SHAs + supports ref pinning; a live `skills check -g` correctly flags stale skills. 2026-11-03 mechanism claim corrected in AGENTS §5.10; re-evaluate only if it recurs on the current CLI) | High   | S–M    | Bug (upstream)| NEW    |
 | 5   | Upstream PR to anthropics/skills: propose token-encoding + gotcha-pointer paragraphs for frontend-design (jj fork loop + github-voice)         | High   | M–L    | Feature (upstream) | NEW |
-| 6   | Commit the aggregation repo wave: frontend-design refresh diff + design-to-code symlink (owner ritual per §5.10)                              | Medium | S      | Cleanup       | NEW    |
+| 6   | Commit the aggregation repo wave: frontend-design refresh diff + design-to-code symlink (owner ritual per §5.10) — m3 `3e05e02` (agent-skills repo, `docs-health-verify-legs` branch; 65 files incl. the hyperframes upstream restructure) | Medium | S      | Cleanup       | NEW    |
 | 7   | Re-verify the 13 gotcha claims after the next Tailwind minor release; bump the verification table date                                        | Medium | S      | Documentation | NEW    |
-| 8   | Boundary test: one real web task where design-to-code AND modern-web-guidance both plausibly trigger; record the routing (pairs with T63)     | High   | M      | Quality       | NEW    |
+| 8   | Boundary test: one real web task where design-to-code AND modern-web-guidance both plausibly trigger; record the routing (pairs with T63) — partial m3 `4f83906` (probe session loaded both; clean complement, no collision — `evals/iteration-1/trigger-probe.md`; a live-work case still open) | High   | M      | Quality       | NEW    |
 | 9   | T70 execution: AGENTS.md trim pass — must absorb this session's +1.45 KB (42,857 B vs 30 KB threshold)                                        | Medium | M      | Cleanup       | carried|
 | 10  | T62: land the "install, don't wrap" rule in how-to-write-skills.md — design-to-code §5.5 entry is now a worked example to cite                | High   | M      | Documentation | carried|
 | 11  | T63: first real triggered MWG web task (modal/`<dialog>` case end-to-end)                                                                     | High   | M      | Quality       | carried|
@@ -283,8 +292,8 @@ flagged it). Both fixed pre-commit.
 | 16  | Fleet-wide third-party freshness audit: diff all 15 lockfile skills vs upstream HEAD (gh api loop); report stale ones (frontend-design was 7 months stale — others may be too) | High | M | Quality | NEW |
 | 17  | Decide design-to-code's README section: keep under "Architecture & Design" or open a "Frontend & Web" domain section (see question 3)          | Low    | S      | Documentation | NEW    |
 | 18  | Audit repo skills for Tailwind-mechanics restatements (website-launch, html-report-kit) that would violate the install-don't-wrap rule         | Medium | S      | Cleanup       | NEW    |
-| 19  | Add design-to-code to docs/external-dependencies.md (references public tailwindcss.com docs; table currently has 0 mention)                   | Low    | S      | Documentation | NEW    |
-| 20  | After items 2–3: update FEATURES note + README paragraph to 🆕 (eval'd) status                                                                | Low    | S      | Documentation | NEW    |
+| 19   | Add design-to-code to docs/external-dependencies.md (references public tailwindcss.com docs; table currently has 0 mention) — m3 `4f83906` | Low    | S      | Documentation | NEW    |
+| 20   | After items 2–3: update FEATURES note + README paragraph to 🆕 (eval'd) status — m3 `4f83906`/`a060bce` (README marker stays 🆕 per gate convention; aging nuance lives in prose) | Low    | S      | Documentation | NEW    |
 | 21  | T30: flip README status 🆕→🟢 after the first real upstream PR kept green via the jj sync loop                                                | Low    | S      | Documentation | carried|
 | 22  | T33: site-repo follow-ups (emeet composition from MP4, og:image, CI deploy workflow)                                                          | Medium | M+     | Feature       | carried|
 | 23  | T57: extract templ-components Go SSG into canonical private `website-template` repo                                                           | High   | M      | Feature       | carried|
