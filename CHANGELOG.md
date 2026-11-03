@@ -13,6 +13,27 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-11-03 — design-to-code skill + frontend-design upstream refresh)
+
+- **`design-to-code`** (new skill): the engineering layer between a design
+  direction and production frontend code — token encoding (`@theme` vs
+  `:root`, promote criteria), the 6-rung utility-first abstraction ladder,
+  quality-floor audits (screenshot when available, DOM-audit fallback), and
+  `references/tailwind-v4-gotchas.md` with 13 claims verified against the
+  official docs (`tailwindlabs/tailwindcss.com` `src/docs/`, fetched
+  2026-11-03, v4.3). Companion layer under the third-party `frontend-design`
+  skill (its aesthetic direction ends where code begins) — restates none of
+  it, honoring the T62 "install, don't wrap" rule; one-way disambiguation
+  against `modern-web-guidance`, `website-launch`, `html-report-kit` (the
+  first two are upstream-owned and cannot name it back).
+- **Third-party `frontend-design` refreshed to upstream HEAD**
+  (`anthropics/skills` `ca45fc496a`, 2026-10-28): +2 calibration clusters
+  (SaaS-card kit, template-chrome tells), typographic default warnings,
+  line-length guidance, richer quality floor. Lesson recorded in AGENTS
+  §5.10: `skills update -g` printed "All global skills are up to date" while
+  the installed copy differed from upstream HEAD (lockfile carries only a
+  content hash, no ref); re-add via `skills add` fetches HEAD.
+
 ### Added (2026-11-01 — docs-health annotate-gate lessons from the nix-email corridor pass)
 
 - **Metadata-table rule (Pattern C)** in

@@ -1,19 +1,19 @@
 ---
 name: design-to-code
 description: >-
-  Turn a design direction into production frontend code: encode the design
-  plan as real tokens (@theme vs :root), pick the right abstraction level,
-  and avoid Tailwind v4 syntax traps. Use WHEN writing CSS/HTML/Tailwind for
-  a page or component, WHEN the user says "implement the design", "encode
-  the design tokens", "set up the theme", "why isn't my Tailwind class
-  working", "audit my CSS", "make the UI production-ready", or WHEN a
-  frontend-design plan exists and it is time to write code. Owns the
-  design-to-code bridge: token encoding, the utility-first abstraction
-  ladder, quality-floor audits, and verified Tailwind v4 gotchas. Distinct
-  from frontend-design (aesthetic direction, ends before code),
-  modern-web-guidance (web-platform APIs, not framework mechanics),
-  website-launch (docs-site deployment pattern), and html-report-kit
-  (its own report-specific design system).
+  Use WHEN writing CSS/HTML/Tailwind for a page or component, implementing a
+  design plan, encoding design tokens, or debugging why a Tailwind class
+  doesn't work — turn the design direction into production frontend code:
+  encode the plan as real tokens (@theme vs :root), pick the right abstraction
+  level, and avoid Tailwind v4 syntax traps. Also WHEN the user says
+  "implement the design", "encode the design tokens", "set up the theme",
+  "audit my CSS", "make the UI production-ready", or WHEN a frontend-design
+  plan exists and it is time to write code. Owns the design-to-code bridge:
+  token encoding, the utility-first abstraction ladder, quality-floor audits,
+  and verified Tailwind v4 gotchas. Distinct from frontend-design (aesthetic
+  direction, ends before code), modern-web-guidance (web-platform APIs, not
+  framework mechanics), website-launch (docs-site deployment pattern), and
+  html-report-kit (its own report-specific design system).
 metadata:
   tags: frontend, css, tailwind, design-systems, tokens, quality-audit
 ---
@@ -45,8 +45,9 @@ language always wins over the generic one you would produce from memory.
    definitions, `@layer components` classes, and the spacing/type conventions
    in real markup.
 3. Reuse beats invention. A new token that duplicates an existing one is a
-   split brain (the same value defined in two places, so the copies drift
-   apart) — extend the existing scale instead of adding a parallel one.
+   split brain (the same concept defined or configured in two places, so the
+   two drift apart) — extend the existing scale instead of adding a parallel
+   one.
 
 ## Step 2 — Encode the design plan as tokens
 
