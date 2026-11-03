@@ -1,0 +1,1 @@
+Wrote `outputs/StatusBadge.tsx` — a typed `StatusBadge` using a static `Record<Status, string>` class map (required so Tailwind v4's scanner generates every variant) rendering a `rounded-full` pill with green/amber/red/blue styles per status.

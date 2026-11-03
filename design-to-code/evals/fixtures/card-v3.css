@@ -1,0 +1,9 @@
+/* card.css — Tailwind v3 syntax, pre-migration fixture */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --card-muted: #64748b;
+  --card-bg: #ffffff;
+}
