@@ -1,0 +1,96 @@
+{
+  "skill_name": "design-to-code",
+  "iteration": 1,
+  "date": "2026-11-03",
+  "harness": {
+    "runner": "crush run (fresh session per arm)",
+    "with_skill_prefix": "First read <skill-dir>/SKILL.md and follow it for this task; if the task involves Tailwind v4 syntax, also load the reference file it points to. Task: ",
+    "without_skill_prefix": "Do not consult or load any skills for this task; work from your own knowledge only. Task: ",
+    "shared_suffix": " Write all deliverables into the given outputs directory (create it if needed). Print a one-line summary of the files you wrote.",
+    "adaptation_note": "skill-creator's Claude-Code subagent harness adapted to Crush: the agent tool cannot write files, so each arm is a fresh `crush run` session with full tools. Baseline arms additionally forbid skill use (skill-creator: baseline = no skill at all). With-skill arms use the explicit skill-path instruction from skill-creator's own run template."
+  },
+  "evals": [
+    {
+      "id": 0,
+      "name": "theme-token-encoding",
+      "prompt": "Set up the styling foundation for a new marketing page: an index.html with a simple hero section (headline, subheadline, one CTA button) plus the Tailwind v4 entry CSS file. Brand color is #4f46e5; we also need a neutral surface tone for the page background. The brand color must be set up so we can change it in one place later and every use across the site follows.",
+      "expected_output": "Entry CSS imports Tailwind v4 via @import \"tailwindcss\"; brand color lives exactly once in a top-level @theme block as a --color-* variable (so utilities are generated and one change re-themes the site); markup consumes the token via generated utility or var(); no @tailwind directives; no repeated raw hex in markup.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "Entry CSS imports Tailwind via @import \"tailwindcss\"; and contains no @tailwind directives",
+          "kind": "programmatic"
+        },
+        {
+          "text": "Brand color #4f46e5 is defined inside a top-level @theme block as a --color-* variable (not nested under a selector, not defined only in :root)",
+          "kind": "programmatic"
+        },
+        {
+          "text": "The brand color literal #4f46e5 appears exactly once across all deliverables (single source of truth)",
+          "kind": "programmatic"
+        },
+        {
+          "text": "Markup applies the brand via a generated utility class or var(--color-...) reference rather than a hardcoded hex",
+          "kind": "programmatic"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "v3-to-v4-migration",
+      "prompt": "Our app is upgrading from Tailwind CSS v3 to v4. Migrate the two files card-v3.html and card-v3.css (paths given at run time) to Tailwind v4. Keep the rendered result and behavior identical. Anything that would silently stop working under the v4 compiler matters as much as loud errors. Write the migrated files into the outputs directory.",
+      "expected_output": "CSS: @import \"tailwindcss\" replaces the three @tailwind directives. HTML: important prefixes become suffixes (bg-white!, hover:bg-indigo-700!); bg-[--card-bg] bracket-var becomes bg-(--card-bg) parens; the JS template/concat class construction (bg- + tone + -500) is replaced with complete static class names selected via a map; visual intent (tones, colors, layout) preserved.",
+      "files": [
+        "fixtures/card-v3.html",
+        "fixtures/card-v3.css"
+      ],
+      "assertions": [
+        {
+          "text": "Migrated CSS uses @import \"tailwindcss\"; and no @tailwind directive remains",
+          "kind": "programmatic"
+        },
+        {
+          "text": "No v3 important prefix (!bg-, !text-) remains; important modifiers are suffix form (e.g. bg-white!)",
+          "kind": "programmatic"
+        },
+        {
+          "text": "No v3 bracket-variable class bg-[--...] remains; variable usage uses v4 parens form bg-(--...)",
+          "kind": "programmatic"
+        },
+        {
+          "text": "No dynamic class construction remains (no template literals or string concatenation building Tailwind class names); complete class names exist statically",
+          "kind": "programmatic"
+        },
+        {
+          "text": "All four tone variants remain reachable and the migrated files are internally consistent (badge colors, important flags, hover behavior preserved)",
+          "kind": "manual"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "status-badge-dynamic-classes",
+      "prompt": "Build a small React component in a file called StatusBadge.tsx, styled with Tailwind, for a large existing Tailwind v4 app. Props: a status field of type 'success' | 'warning' | 'error' | 'info'. Each status gets its own badge color (green, amber, red, blue). The badge shows the status text in a rounded pill. Write the file into the outputs directory.",
+      "expected_output": "The four badge classes are written as complete static class names (a record/map from status to full class string); no template-literal or concatenation-built Tailwind classes (v4 scans sources as plain text and silently drops those); no invented hex colors in the component; TypeScript union type for status.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "No dynamic Tailwind class construction: no template literals or string concatenation assemble class names",
+          "kind": "programmatic"
+        },
+        {
+          "text": "Complete class names for all four statuses appear statically in the source",
+          "kind": "programmatic"
+        },
+        {
+          "text": "No hardcoded hex colors in the component (Tailwind palette classes or project tokens only)",
+          "kind": "programmatic"
+        },
+        {
+          "text": "TypeScript prop type is the status union, and the component renders the status text",
+          "kind": "manual"
+        }
+      ]
+    }
+  ]
+}
