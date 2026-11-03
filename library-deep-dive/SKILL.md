@@ -171,8 +171,9 @@ After the report, consider which related skills add value:
 
 ### Phase 8: Done bar (added 2026-10-24, from the go-cqrs-lite run)
 
-A deep-dive is DONE only when ALL FOUR of these hold — the 2026-10-24 run
-shipped the report and missed the rest, and each gap cost a same-day closeout:
+A deep-dive is DONE only when ALL SIX of these hold — the 2026-10-24 run
+shipped the report and missed the rest, and each gap cost a same-day closeout
+(items 5–6 added 2026-11-03 from the go-aichat fleet-libs run):
 
 - [ ] **Gate:** the project's quality gate is green at the report's HEAD
       (the audit claims must hold on a healthy tree, and `rg -r`-class
@@ -188,3 +189,11 @@ shipped the report and missed the rest, and each gap cost a same-day closeout:
       browser (renders, no broken layout, score cards show the derived numbers).
       An unrendered report has shipped with broken markup before; the screenshot
       is the run trace.
+- [ ] **Verify blocks executed:** every "how to verify" command block in the
+      report is replayed literally as written before shipping — an audit
+      whose own verify commands fail on first run (`rg --g`-class typos)
+      is self-refuting, and the replay is the cheapest way to guarantee a
+      fresh reader can re-derive every claim.
+- [ ] **Screenshot preserved in-repo:** the render screenshot is copied into
+      the project's docs assets and linked from the report or index, never
+      left only in /tmp — run traces in /tmp die with the next reboot.
