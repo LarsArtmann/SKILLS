@@ -2504,6 +2504,6 @@ func selfTest() error {
 	if len(failures) > 0 {
 		return fail("self-test FAILED (%d):\n  %s", len(failures), strings.Join(failures, "\n  "))
 	}
-	fmt.Println("self-tests: all passed (markers + rows guards + prose strikes + atomic dry-run)")
+	fmt.Println("self-tests: all passed (markers + rows guards + prose strikes + atomic dry-run + strict/bare-rows gates)")
 	return nil
 }

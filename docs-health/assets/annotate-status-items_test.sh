@@ -170,4 +170,66 @@ go run "$GO" check-rows "$WORK/open-table.md" >/dev/null 2>&1
 expect "check-rows untouched table exits 0" "0" "$?"
 pass=$((pass + 1))
 
+# --- check-rows --strict + bare-rows (2026-11-04 corpus sweep gates): a
+# wholly-unstruck table is UNTOUCHED under --strict (default mode keeps
+# passing it — bare rows in struck tables are OPEN by design), and
+# bare-rows lists every CLEAN data row outside ledger tables, exiting 1 —
+# the moved-file archive gate.
+cat >"$WORK/gates.md" <<'EOF'
+| # | Task | Status |
+| --- | --- | --- |
+| 1 | open item one | open |
+| 2 | open item two | open |
+
+<!-- check-rows:ledger -->
+
+| # | Note |
+| --- | --- |
+| 1 | narrative ledger row stays open |
+EOF
+rc=0
+go run "$GO" check-rows "$WORK/gates.md" >"$WORK/gates.out" 2>&1 || rc=$?
+expect "check-rows default passes untouched table" "0" "$rc"
+rc=0
+go run "$GO" check-rows --strict "$WORK/gates.md" >"$WORK/strict.out" 2>&1 || rc=$?
+expect "check-rows strict flags untouched table" "1" "$rc"
+grep -q "UNTOUCHED (0/2 rows struck)" "$WORK/strict.out"
+expect "strict output names UNTOUCHED with counts" "0" "$?"
+pass=$((pass + 1))
+rc=0
+go run "$GO" bare-rows "$WORK/gates.md" >"$WORK/bare.out" 2>&1 || rc=$?
+expect "bare-rows exits 1 on bare rows" "1" "$rc"
+grep -q "gates.md:3: BARE row:" "$WORK/bare.out"
+expect "bare-rows names line 3" "0" "$?"
+grep -q "2 bare row(s)" "$WORK/bare.out"
+expect "bare-rows counts only non-ledger rows" "0" "$?"
+pass=$((pass + 1))
+
+cat >"$WORK/ledgeronly.md" <<'EOF'
+<!-- check-rows:ledger -->
+
+| # | Note |
+| --- | --- |
+| 1 | narrative ledger row stays open |
+EOF
+go run "$GO" check-rows --strict "$WORK/ledgeronly.md" >/dev/null 2>&1
+expect "strict passes ledger-marked untouched table" "0" "$?"
+go run "$GO" bare-rows "$WORK/ledgeronly.md" >"$WORK/bareledger.out" 2>&1
+expect "bare-rows passes ledger table" "0" "$?"
+grep -q "1 file(s) clean" "$WORK/bareledger.out"
+expect "bare-rows clean summary present" "0" "$?"
+pass=$((pass + 1))
+
+cat >"$WORK/strucktable.md" <<'EOF'
+| # | Task |
+| --- | --- |
+| ~~1~~ | ~~done~~ |
+EOF
+go run "$GO" check-rows --strict "$WORK/strucktable.md" >/dev/null 2>&1
+expect "strict passes struck table" "0" "$?"
+rc=0
+go run "$GO" bare-rows "$WORK/strucktable.md" >"$WORK/barestruck.out" 2>&1 || rc=$?
+expect "bare-rows passes struck table" "0" "$rc"
+pass=$((pass + 1))
+
 echo "annotator fixtures OK ($pass assertions)"
