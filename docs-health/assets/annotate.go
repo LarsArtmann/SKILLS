@@ -73,6 +73,8 @@ func main() {
 		err = cmdCheckRows(os.Args[2:])
 	case "bare-rows":
 		err = cmdBareRows(os.Args[2:])
+	case "prose-items":
+		err = cmdProseItems(os.Args[2:])
 	case "repair":
 		err = cmdRepair(os.Args[2:])
 	case "unwrap":
@@ -106,6 +108,8 @@ usage: go run annotate.go <subcommand> ...
   check-rows [--strict] [--normalize] <file>...  (<!-- check-rows:ledger --> above a table exempts it;
                                                  --strict flags wholly-unstruck UNTOUCHED tables)
   bare-rows <file>...                 (exit 1 lists bare data rows outside ledger tables)
+  prose-items <file>...               (list bare numbered/checkbox PROSE lines — the
+                                       narrative-vs-item classification scanner)
   repair [--dry-run] <specfile>        (spec: path<TAB>lines<TAB>kind[<TAB>value])
   unwrap [--dry-run] <file>:<lines>...  (rebuild formatter-wrapped struck rows)
   repair-partial [--dry-run] <file>... (strike bare cells of partially-struck rows)
@@ -1228,6 +1232,79 @@ func bareRowsRun(argv []string, w io.Writer) error {
 
 func cmdBareRows(argv []string) error {
 	return bareRowsRun(argv, os.Stdout)
+}
+
+// reProseItem matches a bare prose ITEM line: a numbered list entry (`1.`,
+// `12)`) or an open checkbox (`- [ ]`), with non-empty text. Struck lines
+// (`~~`), routed verdicts (`**→`), inline `done —` records, table rows, and
+// anything inside a code fence are not items — the corpus verdict grammar
+// annotates in exactly those shapes, so what remains bare is either
+// accomplishment narrative or a genuinely unresolved item.
+var reProseItem = regexp.MustCompile(`^\s*(?:\d+[.)]\s+|[-*+]\s+\[ \]\s+)\S`)
+
+// proseItemsRun lists bare prose item lines per file — the classification
+// scanner behind the archived-corpus prose ledger (plan M3, 2026-11-04).
+// A file whose hits are accomplishment narrative gets one ledger line in
+// the corpus report; hits that look like genuinely unresolved items are
+// annotated (prose/repair) or routed to TODO_LIST. Exit code stays 0: this
+// is a measurement pass, not a gate — the tables have check-rows/bare-rows.
+func proseItemsRun(argv []string, w io.Writer) error {
+	if len(argv) < 1 {
+		usage()
+		os.Exit(2)
+	}
+
+	for _, path := range argv {
+		_, lines, err := readLines(path)
+		if err != nil {
+			return err
+		}
+
+		name := baseName(path)
+		fenced := false
+		count := 0
+
+		for i, line := range lines {
+			bare := strings.TrimRight(line, "\n")
+
+			if strings.HasPrefix(strings.TrimSpace(bare), "```") {
+				fenced = !fenced
+
+				continue
+			}
+
+			if fenced || strings.HasPrefix(strings.TrimLeft(bare, " \t"), "|") {
+				continue
+			}
+
+			if !reProseItem.MatchString(bare) {
+				continue
+			}
+
+			stripped := outsideCodeSpansCheck(bare)
+			if strings.Contains(stripped, "~~") || strings.Contains(stripped, "**→") ||
+				strings.Contains(stripped, "done —") || strings.Contains(stripped, "**Won't implement") ||
+				strings.Contains(stripped, "**NOT-DO") || strings.Contains(stripped, "**Superseded") {
+				continue
+			}
+
+			snippet := bare
+			if len(snippet) > 120 {
+				snippet = snippet[:120]
+			}
+
+			fmt.Fprintf(w, "%s:%d: PROSE item: %s\n", name, i+1, snippet)
+			count++
+		}
+
+		fmt.Fprintf(w, "%s: %d bare prose item(s)\n", name, count)
+	}
+
+	return nil
+}
+
+func cmdProseItems(argv []string) error {
+	return proseItemsRun(argv, os.Stdout)
 }
 
 // normalizeFile repairs the formatter-damage class that made check-rows and
@@ -2363,6 +2440,36 @@ func selfTest() error {
 		failures = append(failures, "bare-rows: struck file reported dirty: "+cleanErr.Error())
 	}
 	check("bare-rows clean summary", strings.Contains(cbuf.String(), "1 file(s) clean"), true)
+
+	// ----- prose-items: the narrative-vs-item classification scanner.
+	// Bare numbered/checkbox lines are listed; struck, routed, inline-done,
+	// table, and code-fenced lines are not. -----
+	piFile := ledDir + "/prose.md"
+	piSample := "1. bare item one\n" +
+		"2. ~~struck item~~ done at `abc`\n" +
+		"3. routed item **→ open — owner lane**\n" +
+		"- [ ] bare checkbox\n" +
+		"- [x] ~~done checkbox~~\n" +
+		"| 5 | table row not prose | x |\n" +
+		"```go\n1. fenced not prose\n```\n" +
+		"4. done — inline evidence record\n"
+	if err := os.WriteFile(piFile, []byte(piSample), 0o644); err != nil {
+		return err
+	}
+
+	var pbuf bytes.Buffer
+	if piErr := proseItemsRun([]string{piFile}, &pbuf); piErr != nil {
+		failures = append(failures, "prose-items: unexpected error "+piErr.Error())
+	}
+	check("prose-items lists bare item", strings.Contains(pbuf.String(), "prose.md:1: PROSE item: 1. bare item one"), true)
+	check("prose-items lists bare checkbox", strings.Contains(pbuf.String(), "prose.md:4: PROSE item: - [ ] bare checkbox"), true)
+	check("prose-items skips struck", strings.Contains(pbuf.String(), ":2: PROSE"), false)
+	check("prose-items skips routed", strings.Contains(pbuf.String(), ":3: PROSE"), false)
+	check("prose-items skips done checkbox", strings.Contains(pbuf.String(), ":5: PROSE"), false)
+	check("prose-items skips table row", strings.Contains(pbuf.String(), ":6: PROSE"), false)
+	check("prose-items skips fenced", strings.Contains(pbuf.String(), ":8: PROSE"), false)
+	check("prose-items skips inline-done", strings.Contains(pbuf.String(), ":9: PROSE"), false)
+	check("prose-items per-file count", strings.Contains(pbuf.String(), "prose.md: 2 bare prose item(s)"), true)
 
 	// ----- repair: spec-driven batch pass (2026-10-15 corpus class) -----
 	repairDir, err := os.MkdirTemp("", "annotate-repair")
