@@ -12,9 +12,14 @@
 //	prose [--dry-run] <file> <section-prefix> <row-id>:<kind>:<value>...
 //	status-items [--verify] <file> <specfile>          (spec lines: key<TAB>verdict)
 //	emit-keys <file> <lineno> [<lineno>...]            (paste-ready N@substring keys)
-//	check-rows <file>...                               (exit 1 on PARTIAL table rows;
-//	                                                   a <!-- check-rows:ledger --> line
-//	                                                   above a table exempts it)
+//	check-rows [--strict] [--normalize] <file>...     (exit 1 on PARTIAL rows;
+//	                                                   wholly-unstruck tables are
+//	                                                   flagged under --strict;
+//	                                                   a <!-- check-rows:ledger -->
+//	                                                   line above a table exempts it)
+//	bare-rows <file>...                                (exit 1 lists BARE data rows
+//	                                                   outside ledger tables — the
+//	                                                   moved-file archive gate)
 //	repair-mangle [--dry-run] <file>...                (repair the mechanical strike
 //	                                                   mangles a formatter pass inflicts
 //	                                                   on struck table rows; exit 1 when a
@@ -26,7 +31,8 @@
 // w = **Won't implement — <reason>.**   n = **NOT-DO — <reason>.**
 // r = **→ <verdict>** (routed, NO strike — 2026-09-29+ house grammar)
 // s = **Superseded — <pointer>.** (this artifact/section is superseded by a
-//     newer one; the value names the successor)
+//
+//	newer one; the value names the successor)
 //
 // Invariants carried over from the Python originals: all specs must match
 // exactly once before anything is written (atomic); already-annotated guards
@@ -65,6 +71,8 @@ func main() {
 		err = cmdEmitKeys(os.Args[2:])
 	case "check-rows":
 		err = cmdCheckRows(os.Args[2:])
+	case "bare-rows":
+		err = cmdBareRows(os.Args[2:])
 	case "repair":
 		err = cmdRepair(os.Args[2:])
 	case "unwrap":
@@ -95,7 +103,9 @@ usage: go run annotate.go <subcommand> ...
   prose [--dry-run] <file> <section-prefix> <row-id>:<kind>:<value>...
   status-items [--verify] <file> <specfile>
   emit-keys <file> <lineno> [<lineno>...]
-  check-rows [--normalize] <file>...   (<!-- check-rows:ledger --> above a table exempts it)
+  check-rows [--strict] [--normalize] <file>...  (<!-- check-rows:ledger --> above a table exempts it;
+                                                 --strict flags wholly-unstruck UNTOUCHED tables)
+  bare-rows <file>...                 (exit 1 lists bare data rows outside ledger tables)
   repair [--dry-run] <specfile>        (spec: path<TAB>lines<TAB>kind[<TAB>value])
   unwrap [--dry-run] <file>:<lines>...  (rebuild formatter-wrapped struck rows)
   repair-partial [--dry-run] <file>... (strike bare cells of partially-struck rows)
@@ -924,26 +934,52 @@ func classifyRow(line string) string {
 	}
 }
 
-func checkFile(path string) (int, error) {
+// scanTable is one markdown table found by scanTables: the header line's
+// number, whether a check-rows:ledger marker exempted it, and every data
+// row with its classification. Separator rows are excluded.
+type scanTable struct {
+	headerNo int
+	ledger   bool
+	rows     []scanRow
+}
+
+// scanRow is one data row of a scanned table.
+type scanRow struct {
+	no    int
+	str   string
+	state string
+}
+
+// scanTables walks a file's markdown tables with the exact block/ledger
+// adjacency semantics check-rows has always used: a
+// <!-- check-rows:ledger --> line exempts the NEXT table only, blank lines
+// between marker and table are allowed, and any other non-blank line resets
+// the pending exemption. Both gates (check-rows, bare-rows) consume this so
+// their ledger semantics cannot drift apart.
+func scanTables(path string) ([]scanTable, error) {
 	_, lines, err := readLines(path)
 	if err != nil {
-		return 1, err
+		return nil, err
 	}
-	name := baseName(path)
-	var problems []string
-	var notes []string
-	pendingLedger := false
-	blockLedger := false
-	var block []struct {
-		no  int
-		str string
-	}
+
+	var (
+		tables        []scanTable
+		pendingLedger bool
+		blockLedger   bool
+		block         []struct {
+			no  int
+			str string
+		}
+	)
+
 	flush := func() {
 		if len(block) == 0 {
 			return
 		}
+
 		wasLedger := blockLedger
 		blockLedger = false
+
 		var data []struct {
 			no  int
 			str string
@@ -953,76 +989,38 @@ func checkFile(path string) (int, error) {
 				data = append(data, e)
 			}
 		}
+
 		block = nil
+
 		if len(data) < 2 {
 			return
 		}
-		headerNo := data[0].no
-		if wasLedger {
-			notes = append(notes, fmt.Sprintf(
-				"%s: table at line %d LEDGER-EXEMPT (check-rows:ledger marker)",
-				name, headerNo))
-			return
-		}
-		type cls struct {
-			no    int
-			state string
-		}
-		var classified []cls
-		struckRows := 0
-		routedRows := 0
+
+		t := scanTable{headerNo: data[0].no, ledger: wasLedger}
 		for _, e := range data[1:] {
-			state := classifyRow(e.str)
-			classified = append(classified, cls{e.no, state})
-			if state == "STRUCK" {
-				struckRows++
-			}
-			if state == "ROUTED" {
-				routedRows++
-			}
+			t.rows = append(t.rows, scanRow{no: e.no, str: e.str, state: classifyRow(e.str)})
 		}
-		var partial []struct {
-			no  int
-			str string
-		}
-		for i, e := range data[1:] {
-			if classified[i].state == "PARTIAL" {
-				partial = append(partial, e)
-			}
-		}
-		mixedTable := struckRows > 0 && struckRows+routedRows < len(classified)
-		if len(partial) > 0 || mixedTable {
-			problems = append(problems, fmt.Sprintf("%s: table at line %d INCOMPLETE (%d/%d rows struck)",
-				name, headerNo, struckRows, len(classified)))
-			for _, e := range partial {
-				snippet := e.str
-				if len(snippet) > 100 {
-					snippet = snippet[:100]
-				}
-				problems = append(problems, fmt.Sprintf("  line %d: PARTIAL row: %s", e.no, snippet))
-			}
-			if mixedTable && len(partial) == 0 {
-				for _, c := range classified {
-					if c.state != "STRUCK" && c.state != "ROUTED" {
-						problems = append(problems, fmt.Sprintf("  line %d: %s row in a struck table", c.no, c.state))
-					}
-				}
-			}
-		}
+
+		tables = append(tables, t)
 	}
+
 	for i, line := range lines {
 		if strings.HasPrefix(strings.TrimLeft(line, " \t"), "|") {
 			if len(block) == 0 && pendingLedger {
 				blockLedger = true
 				pendingLedger = false
 			}
+
 			block = append(block, struct {
 				no  int
 				str string
 			}{i + 1, strings.TrimRight(line, "\n")})
+
 			continue
 		}
+
 		flush()
+
 		switch t := strings.TrimSpace(line); {
 		case t == ledgerMarker:
 			pendingLedger = true
@@ -1030,27 +1028,108 @@ func checkFile(path string) (int, error) {
 			pendingLedger = false
 		}
 	}
+
 	flush()
+
+	return tables, nil
+}
+
+func checkFile(path string, strict bool) (int, error) {
+	tables, err := scanTables(path)
+	if err != nil {
+		return 1, err
+	}
+
+	name := baseName(path)
+	var problems []string
+	var notes []string
+
+	for _, t := range tables {
+		if t.ledger {
+			notes = append(notes, fmt.Sprintf(
+				"%s: table at line %d LEDGER-EXEMPT (check-rows:ledger marker)",
+				name, t.headerNo))
+
+			continue
+		}
+
+		struckRows := 0
+		routedRows := 0
+		var partial []scanRow
+
+		for _, r := range t.rows {
+			switch r.state {
+			case "STRUCK":
+				struckRows++
+			case "ROUTED":
+				routedRows++
+			case "PARTIAL":
+				partial = append(partial, r)
+			}
+		}
+
+		mixedTable := struckRows > 0 && struckRows+routedRows < len(t.rows)
+
+		// --strict: a table with NOT ONE struck or routed row was never
+		// inventoried (the wholly-unstruck class check-rows silently passed
+		// because bare rows in struck tables are OPEN by design — the
+		// 2026-11-04 corpus sweep's blind-spot lesson). Default mode keeps
+		// passing such tables; only the archive decision flips on --strict.
+		if strict && struckRows == 0 && routedRows == 0 {
+			problems = append(problems, fmt.Sprintf(
+				"%s: table at line %d UNTOUCHED (0/%d rows struck)",
+				name, t.headerNo, len(t.rows)))
+		}
+
+		if len(partial) > 0 || mixedTable {
+			problems = append(problems, fmt.Sprintf("%s: table at line %d INCOMPLETE (%d/%d rows struck)",
+				name, t.headerNo, struckRows, len(t.rows)))
+			for _, r := range partial {
+				snippet := r.str
+				if len(snippet) > 100 {
+					snippet = snippet[:100]
+				}
+				problems = append(problems, fmt.Sprintf("  line %d: PARTIAL row: %s", r.no, snippet))
+			}
+
+			if mixedTable && len(partial) == 0 {
+				for _, r := range t.rows {
+					if r.state != "STRUCK" && r.state != "ROUTED" {
+						problems = append(problems, fmt.Sprintf("  line %d: %s row in a struck table", r.no, r.state))
+					}
+				}
+			}
+		}
+	}
+
 	for _, n := range notes {
 		fmt.Println(n)
 	}
 	for _, p := range problems {
 		fmt.Println(p)
 	}
+
 	if len(problems) > 0 {
 		return 1, nil
 	}
+
 	return 0, nil
 }
 
 func cmdCheckRows(argv []string) error {
 	normalize := false
+	strict := false
 
 	var files []string
 
 	for _, a := range argv {
-		if a == "--normalize" {
+		switch a {
+		case "--normalize":
 			normalize = true
+
+			continue
+		case "--strict":
+			strict = true
 
 			continue
 		}
@@ -1072,7 +1151,7 @@ func cmdCheckRows(argv []string) error {
 			}
 		}
 
-		f, err := checkFile(arg)
+		f, err := checkFile(arg, strict)
 		if err != nil {
 			return err
 		}
@@ -1095,6 +1174,60 @@ func cmdCheckRows(argv []string) error {
 	fmt.Printf("check-rows: %d file(s) complete\n", len(files))
 
 	return nil
+}
+
+// bareRowsRun lists every BARE (CLEAN, non-ledger) data row of every table
+// so an operator sees exactly which lines still need a verdict. Where
+// check-rows judges table-level completeness, bare-rows is the row-level
+// moved-file gate: an archived file must carry ZERO bare rows outside
+// ledger-marked tables (whose open rows are the point). PARTIAL rows are
+// check-rows' jurisdiction and are not repeated here.
+func bareRowsRun(argv []string, w io.Writer) error {
+	if len(argv) < 1 {
+		usage()
+		os.Exit(2)
+	}
+
+	dirty := 0
+	for _, path := range argv {
+		tables, err := scanTables(path)
+		if err != nil {
+			return err
+		}
+
+		name := baseName(path)
+		for _, t := range tables {
+			if t.ledger {
+				continue
+			}
+
+			for _, r := range t.rows {
+				if r.state != "CLEAN" {
+					continue
+				}
+
+				snippet := r.str
+				if len(snippet) > 100 {
+					snippet = snippet[:100]
+				}
+
+				fmt.Fprintf(w, "%s:%d: BARE row: %s\n", name, r.no, snippet)
+				dirty++
+			}
+		}
+	}
+
+	if dirty > 0 {
+		return fmt.Errorf("bare-rows: %d bare row(s) across %d file(s) — annotate or ledger-mark before archiving", dirty, len(argv))
+	}
+
+	fmt.Fprintf(w, "bare-rows: %d file(s) clean\n", len(argv))
+
+	return nil
+}
+
+func cmdBareRows(argv []string) error {
+	return bareRowsRun(argv, os.Stdout)
 }
 
 // normalizeFile repairs the formatter-damage class that made check-rows and
@@ -2144,7 +2277,7 @@ func selfTest() error {
 		return err
 	}
 
-	ledCode, ledErr := checkFile(ledFile)
+	ledCode, ledErr := checkFile(ledFile, false)
 	if ledErr != nil {
 		return ledErr
 	}
@@ -2158,11 +2291,78 @@ func selfTest() error {
 		return err
 	}
 
-	ledOnlyCode, ledOnlyErr := checkFile(ledOnly)
+	ledOnlyCode, ledOnlyErr := checkFile(ledOnly, false)
 	if ledOnlyErr != nil {
 		return ledOnlyErr
 	}
 	check("sole ledger-marked table passes", ledOnlyCode, 0)
+
+	// ----- check-rows --strict: a table with NOT ONE struck or routed row
+	// is UNTOUCHED (never inventoried) under --strict; default mode keeps
+	// passing it (bare rows in struck tables are OPEN by design), and a
+	// ledger-marked untouched table is exempt even under --strict. -----
+	untouchedFile := ledDir + "/untouched.md"
+	untouchedSample := "| ID | Task |\n| --- | --- |\n| 1 | open item one |\n| 2 | open item two |\n"
+	if err := os.WriteFile(untouchedFile, []byte(untouchedSample), 0o644); err != nil {
+		return err
+	}
+
+	untouchedDefault, untouchedDefaultErr := checkFile(untouchedFile, false)
+	if untouchedDefaultErr != nil {
+		return untouchedDefaultErr
+	}
+	check("untouched table passes in default mode", untouchedDefault, 0)
+
+	untouchedStrict, untouchedStrictErr := checkFile(untouchedFile, true)
+	if untouchedStrictErr != nil {
+		return untouchedStrictErr
+	}
+	check("untouched table flagged under --strict", untouchedStrict, 1)
+
+	struckFile := ledDir + "/struck.md"
+	struckSample := "| ID | Task |\n| --- | --- |\n| ~~1~~ | ~~done~~ |\n"
+	if err := os.WriteFile(struckFile, []byte(struckSample), 0o644); err != nil {
+		return err
+	}
+
+	struckStrict, struckStrictErr := checkFile(struckFile, true)
+	if struckStrictErr != nil {
+		return struckStrictErr
+	}
+	check("struck table passes under --strict", struckStrict, 0)
+
+	ledUntouchedFile := ledDir + "/ledger-untouched.md"
+	ledUntouchedSample := "<!-- check-rows:ledger -->\n\n| ID | Note |\n| --- | --- |\n| 1 | narrative open row |\n"
+	if err := os.WriteFile(ledUntouchedFile, []byte(ledUntouchedSample), 0o644); err != nil {
+		return err
+	}
+
+	ledUntouchedStrict, ledUntouchedStrictErr := checkFile(ledUntouchedFile, true)
+	if ledUntouchedStrictErr != nil {
+		return ledUntouchedStrictErr
+	}
+	check("ledger table exempt from --strict", ledUntouchedStrict, 0)
+
+	// ----- bare-rows: the row-level moved-file gate. Bare (CLEAN) rows
+	// outside ledger tables are listed with line numbers; struck files and
+	// ledger tables come back clean. -----
+	var bbuf bytes.Buffer
+	bareErr := bareRowsRun([]string{untouchedFile, struckFile, ledUntouchedFile}, &bbuf)
+	if bareErr == nil {
+		failures = append(failures, "bare-rows: expected error for bare rows in untouched.md")
+	} else {
+		check("bare-rows names untouched.md", strings.Contains(bareErr.Error(), "2 bare row(s)"), true)
+	}
+	check("bare-rows lists line 3", strings.Contains(bbuf.String(), "untouched.md:3: BARE row:"), true)
+	check("bare-rows lists line 4", strings.Contains(bbuf.String(), "untouched.md:4: BARE row:"), true)
+	check("bare-rows skips struck file", strings.Contains(bbuf.String(), "struck.md:"), false)
+	check("bare-rows skips ledger table", strings.Contains(bbuf.String(), "ledger-untouched.md:"), false)
+
+	var cbuf bytes.Buffer
+	if cleanErr := bareRowsRun([]string{struckFile}, &cbuf); cleanErr != nil {
+		failures = append(failures, "bare-rows: struck file reported dirty: "+cleanErr.Error())
+	}
+	check("bare-rows clean summary", strings.Contains(cbuf.String(), "1 file(s) clean"), true)
 
 	// ----- repair: spec-driven batch pass (2026-10-15 corpus class) -----
 	repairDir, err := os.MkdirTemp("", "annotate-repair")
