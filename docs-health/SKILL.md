@@ -65,6 +65,11 @@ standalone stdlib-only Go binary: [docs-gates](https://github.com/Artmann-Techno
 ```console
 nix run github:Artmann-Technologies/docs-gates -- run .   # the whole battery, one matrix
 docs-gates freshness . --audit-all --audit-max=0          # single verbs for targeted runs
+docs-gates freshness . --pre-flight < candidate-lines.txt # would these living-doc lines flip a historical item?
+docs-gates freshness . --pre-flight --replace="OLD LINE" < new-line  # rewrite-mode: judge the new words only
+docs-gates freshness . --margins                          # near-bar token budget report (proactive)
+docs-gates freshness . --dump-items docs/status/<report>.md  # §f extraction dump (why an item parsed or didn't)
+docs-gates freshness . --explain-item <needle>            # token table for ANY matching open item
 ```
 
 Exit codes: 0 clean, 1 findings, 2 usage. Every threshold is per-repo
@@ -77,6 +82,16 @@ working. A repo adopting the ritual: install the binary, optionally seed
 `.docs-gates.json`, wire one command into the repo's quality gate (see
 pbx-artmann's `scripts/docs-gates.sh` for the composition shape — dprint
 first, battery, then repo-specific gates).
+
+Battery behavior notes (2026-11-05): each gate prints a wall-time
+heartbeat and the verdict matrix carries durations; audit-all prints its
+replay shape (reports × living lines) with a worst-case estimate BEFORE
+replaying — size a foreign corpus before launching; every gate runs
+under a per-gate wall-clock cap (`gate_timeout_sec`, default 300, 0 =
+off) so a wedged gate becomes a FAIL row (`rc=timeout`) instead of
+hanging the run. Run `docs-gates --help`-equivalent knowledge: the
+pre-flight MUST run before writing candidate lines (post-write runs
+refuse — the additions-only model needs the pre-edit tree).
 
 ---
 
