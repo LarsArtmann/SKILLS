@@ -75,7 +75,8 @@ it without re-verifying against the corpus.
 5. **Revise once, his way**:
    [./references/revision-lessons.md](./references/revision-lessons.md)
    — add status word, add `file:line` precision, swap promises for
-   existing proof, bold the recommendation. Do NOT grammar-polish
+   existing proof (never write a future-work promise in the first place,
+   see quick rules), bold the recommendation. Do NOT grammar-polish
    comments.
 6. **Double-check (mechanical)** — run the draft through the checker;
    fix every FAIL, weigh every WARN:
@@ -168,6 +169,14 @@ it without re-verifying against the corpus.
   at-failure fix (better error messages) are being asked for, name
   both — the at-failure fix is often the one that would have saved
   the reporter (a hard-failing program never sees a warning).
+- **Never promise future work** — no "happy to PR this", "I can PR a
+  fix", "willing to contribute", in any register, even conditionally
+  (owner mandate 2026-11-05, after a-h/templ#1517 shipped "happy to PR
+  this"). Offer what already exists — link the ready PR, the failing
+  test, the repro — or say nothing. A promise that never lands burns
+  maintainer trust, and the pattern's only corpus hits (samber/do#317,
+  go-cqrs-lite#28) are AI-drafted bodies: it is a drafting-AI tell.
+  Enforced by the checker's `future-work promise` FAIL.
 - Quote-reply with `>` when answering a specific point; `@mention` the
   addressee at the start.
 

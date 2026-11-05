@@ -64,7 +64,12 @@ forward-looking paragraph is deleted, and a **verification statement
 replaces the roadmap**.
 
 **Draft rule:** end with proof that exists now, not with what will
-exist next.
+exist next. And never write the promise at all: "happy to PR this",
+"I can PR a fix", "willing to contribute" are banned in every register,
+even conditionally (owner mandate 2026-11-05, after a-h/templ#1517
+shipped one). Link the ready PR or say nothing — the pattern's only
+corpus hits are two AI-drafted bodies, so it reads as a drafting-AI
+tell, and an unfulfilled promise burns maintainer trust.
 
 ## 5. He restructures into labeled verdicts
 

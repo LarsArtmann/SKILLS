@@ -85,6 +85,16 @@ var warnPhrases = []struct {
 }
 
 var (
+	// prPromiseRe: never promise future work (owner mandate 2026-11-05,
+	// after a-h/templ#1517 shipped "happy to PR this"). Matches the offer
+	// class, not just the literal phrase: "happy/willing/glad/love to
+	// PR/open a PR/submit a PR/send a PR/contribute" and "I'll/I will/
+	// I can/I could/I might PR...". Corpus: the only hits are two Sep-2026
+	// AI-drafted bodies (samber/do#317, go-cqrs-lite#28) — the pattern is
+	// a drafting-AI tell, not Lars's voice. Link the ready PR or say nothing.
+	prPromiseRe = regexp.MustCompile(`(?i)\b(happy|willing|glad|love) to (pr|open a pr|submit a pr|send a pr|contribute)\b` +
+		`|\bi('ll| will| can| could| might) (pr|open a pr|submit a pr|send a pr)\b`)
+
 	signoffRe = regexp.MustCompile(`(?i)^(thanks!?|thank you!?$|best regards.*|kind regards.*|` +
 		`cheers!?$|sincerely.*|regards,?.*)\s*$`)
 	greetingRe    = regexp.MustCompile(`(?i)^\s*(hi|hello|hey|dear|greetings)\b`)
@@ -141,6 +151,13 @@ func check(kind, text string, aiDrafted, unsolicited bool) []finding {
 	if doubleHedgeRe.MatchString(text) {
 		findings = append(findings, finding{"FAIL", "double hedge",
 			"two hedges in one sentence — corpus has zero"})
+	}
+
+	if prPromiseRe.MatchString(text) {
+		findings = append(findings, finding{"FAIL", "future-work promise",
+			"never promise a PR/contribution ('happy to PR', 'I can open a PR') — " +
+				"link the ready PR or say nothing. Owner mandate 2026-11-05; the only " +
+				"corpus hits are two Sep-2026 AI-drafted bodies with this exact pattern"})
 	}
 
 	if len(lines) > 0 {
@@ -239,6 +256,19 @@ func selfTest() int {
 		"> - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`\n\n" +
 		"## Symptom\n\n" + strings.Repeat("x", 300)
 	missing := "## Symptom\n\n" + strings.Repeat("x", 300)
+	// future-work promise cases (owner mandate 2026-11-05)
+	promiseCases := []struct {
+		name string
+		text string
+		hit  bool
+	}{
+		{"offer caught", "### Possible directions (happy to PR whichever fits)", true},
+		{"modal promise caught", "if that is not intended, I can PR a fix", true},
+		{"contraction caught", "I'll PR this later today", true},
+		{"contribute caught", "we are happy to contribute it", true},
+		{"plain PR noun not flagged", "see PR #802 for the design", false},
+		{"prevent not flagged", "this can prevent the header commit", false},
+	}
 	cases := []struct {
 		name     string
 		body     string
@@ -256,10 +286,17 @@ func selfTest() int {
 			failures++
 		}
 	}
+	for _, c := range promiseCases {
+		got := prPromiseRe.MatchString(c.text)
+		if got != c.hit {
+			fmt.Printf("SELF-TEST FAIL: promise rule %q (hit=%v, want=%v)\n", c.name, got, c.hit)
+			failures++
+		}
+	}
 	if failures > 0 {
 		return 1
 	}
-	fmt.Println("SELF-TEST PASSED: banner regex accepts both documented layouts")
+	fmt.Println("SELF-TEST PASSED: banner layouts + future-work promise rule")
 	return 0
 }
 
