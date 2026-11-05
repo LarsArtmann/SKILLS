@@ -104,7 +104,14 @@ it without re-verifying against the corpus.
    filing exists. Extract fenced bodies by splitting on the fence
    markers (python `split`/`rsplit`, not sed ranges — sed stops at the
    first inner fence and truncates nested-fence bodies), and byte-count
-   the extracted body before posting.
+   the extracted body before posting. **Re-editing an existing filing
+   (`gh issue/pr edit`): fetch the live body first** (`gh issue view
+   <n> --json body`) and diff it against the draft — the live body is
+   the source of truth and may carry human edits (banner rewordings,
+   maintainer additions) that a stale local draft would silently
+   destroy; merge them into the draft before posting (2026-11-05,
+   a-h/templ#1517: Lars's manual provenance line in the banner was
+   wiped this way; recovered via `userContentEdits` GraphQL history).
 
 ## Quick rules (full detail in the profile)
 
