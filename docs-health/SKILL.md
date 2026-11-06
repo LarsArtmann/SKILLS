@@ -83,15 +83,29 @@ working. A repo adopting the ritual: install the binary, optionally seed
 pbx-artmann's `scripts/docs-gates.sh` for the composition shape — dprint
 first, battery, then repo-specific gates).
 
-Battery behavior notes (2026-11-05): each gate prints a wall-time
-heartbeat and the verdict matrix carries durations; audit-all prints its
-replay shape (reports × living lines) with a worst-case estimate BEFORE
-replaying — size a foreign corpus before launching; every gate runs
-under a per-gate wall-clock cap (`gate_timeout_sec`, default 300, 0 =
-off) so a wedged gate becomes a FAIL row (`rc=timeout`) instead of
-hanging the run. Run `docs-gates --help`-equivalent knowledge: the
-pre-flight MUST run before writing candidate lines (post-write runs
-refuse — the additions-only model needs the pre-edit tree).
+Battery behavior notes (2026-11-05, updated 2026-11-06): each gate prints
+a wall-time heartbeat and the verdict matrix carries durations; audit-all
+prints its replay shape (reports × living lines) with a worst-case
+estimate BEFORE replaying — size a foreign corpus before launching; every
+gate runs under a per-gate wall-clock cap (`gate_timeout_sec`, default
+300, 0 = off) so a wedged gate becomes a FAIL row (`rc=timeout`) instead
+of hanging the run; a gate burning past HALF its budget prints a live
+half-budget warning before that. Run `docs-gates --help`-equivalent
+knowledge: the pre-flight MUST run before writing candidate lines
+(post-write runs refuse — the additions-only model needs the pre-edit
+tree).
+
+Machine face (2026-11-06): `docs-gates run [root] --json` puts EXACTLY
+one snake_case JSON document on stdout (per-gate
+name/verdict/exit_code/skipped/timed_out/duration_ms + the embedded
+gate stdout/stderr verbatim); every human line detours to stderr; the
+exit contract is unchanged. Tooling parses THIS face, never the human
+matrix (a matrix-shape change is not a contract; the JSON document is).
+The half-budget warning rides stderr in JSON mode so the stdout document
+stays pure. Sub-second durations render at honest µs precision
+(`est ~105µs` style), never a lying `0s`. `docs-gates purge [root]
+[--apply]` collects struck TODO rows into a CHANGELOG purge entry as one
+pre-flighted command (dry-run default).
 
 ---
 
