@@ -37,6 +37,12 @@ The `Artifact` decision rule (see `how-to-write-skills.md`):
 ## Design Requirements
 
 - **Single file**, zero external dependencies (no CDN, no build step, no external fonts)
+- **Replace every template placeholder before shipping** — the snippets below show
+  `Report Title` / `Report Type` as fill-ins, and both must go: the `<title>` element
+  AND the hero `<h1>`. A report shipped with the literal placeholder reads as broken in
+  the fleet lib-review summary (this exact bug shipped to go-aichat and Code-To-CV-Agent
+  on 2026-11-04 and needed hand-patches). Search your output for `Report Title` as the
+  last step before writing the file.
 - **Responsive** — sidebar collapses below 1024px, grids collapse to single column on mobile
 - **Self-contained** — anyone can open the `.html` file in a browser with no server
 - **Manual CSS syntax highlighting** via language-agnostic `.tok-*` classes
