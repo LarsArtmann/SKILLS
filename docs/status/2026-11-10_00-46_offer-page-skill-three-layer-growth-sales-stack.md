@@ -19,17 +19,18 @@
 - Anatomy/copy-brief move: `git mv` (rename detection), inbound references
   updated in first-customers SKILL.md + positioning.md + worked-example.md;
   no dangling `[./sales-page-anatomy.md]` links remain (link-check green).
-- Trigger probe: dispatched in a fresh `crush run` session (probe pending at
-  write time — see NOT verified).
+- Trigger probe: PASSED — a fresh `crush run` session asked to build a
+  sales page loaded `offer-page` (final line: `SKILLS-USED: offer-page`) and
+  produced doctrine-conformant output: the 9-section arc WITH the skip rule
+  for warm cheap traffic, cut-list items, and the copywriting handoff.
 - Pre-existing gate FAIL fixed: how-to-golang description 1242 → 955 chars
   (gate exit 0 after).
 
 **NOT verified, and why:**
 
-- **Trigger probe result** — the `crush run` probe was still running at
-  report-writing time; the probe transcript is not persisted to disk.
-  `evals/trigger-eval.json` is authored but NOT executed (FEATURES row says
-  so explicitly).
+- **Trigger-eval execution** — `evals/trigger-eval.json` is authored but NOT
+  executed (the natural-trigger probe above passed; FEATURES row says so
+  explicitly).
 - **Conversion numbers marked secondary/unverified** — Deloitte 0.1s → +8.4%
   (primary unreachable this session; number was already repo-pinned),
   Runyon carousel figures (primary site offline; listicle-only), HubSpot
@@ -48,6 +49,7 @@
 | Split brains?                                    | None created, one prevented — page knowledge now has exactly one owner    |
 | Research quality?                                | Every number primary-traced or explicitly flagged; one circulating myth corrected (+68% → +213.16%) |
 | Biggest save                                     | The voice agent caught that the repo's existing "+68%" CTA figure contradicts the archived primary |
+| Trigger check                                    | Natural-trigger probe PASSED in a fresh session (SKILLS-USED: offer-page) |
 | Biggest operational annoyance                    | 3 provider failures in a row for the cut-list agent (zai rate-limit → gemini prepay-depleted → huggingface prepay-depleted → zai flash worked) |
 | Repo state at write time                         | Gates green; trigger probe pending; commits by this session listed below   |
 
@@ -90,9 +92,10 @@
 
 ## Open items / handoff
 
-- **Trigger probe result** (pending at write time) and **trigger-eval
-  execution** — offer-page stays 🆕 until a real triggered run; the aging
-  rule from first-customers applies ("aged only after a real launch run").
+- **Trigger-eval execution** — natural-trigger probe passed (above); the
+  20-query formal eval remains unexecuted. offer-page stays 🆕 until a real
+  production page run; the aging rule from first-customers applies ("aged
+  only after a real launch run").
 - **Aggregation-layer commit** — `~/.agents/skills` shows the new untracked
   symlink; commit it there (`git -C ~/.agents/skills status --short`).
 - first-customers FEATURES row now claims 10 refs + 1 asset — re-verify
