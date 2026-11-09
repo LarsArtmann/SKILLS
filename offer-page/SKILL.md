@@ -1,9 +1,9 @@
 ---
 name: offer-page
 description: >-
-  Build, rewrite, or tear down a page that SELLS one paid offer — sales page,
-  offer page, landing page, pricing page, waitlist page. Triggers on "offer
-  page", "sales page", "landing page", "pricing page", "build a page that
+  Use when the user asks to build, rewrite, or tear down a page that SELLS
+  one paid offer — sales page, offer page, landing page, pricing page,
+  waitlist page. Triggers on "offer page", "sales page", "landing page", "pricing page", "build a page that
   sells/converts", "perfect offer page", "what does my page need", "what
   should I remove from my page", "nobody buys from my page", "tear down this
   sales page", "why doesn't my page convert". Delivers the non-negotiable

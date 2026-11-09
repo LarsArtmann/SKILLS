@@ -13,6 +13,37 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-11-10 — offer-page skill: the page-assembly layer of the Growth & Sales stack)
+
+- **`offer-page`** (new skill): build/audit a page that SELLS one paid offer
+  — the middle layer between `first-customers` (offer/positioning/pricing
+  strategy) and third-party `copywriting` (line-level prose). Owns: the
+  9-section persuasion arc with skip rules + length-by-traffic-temperature
+  (`page-anatomy.md`), the three-tier **cut list** (A measurably hurts /
+  B wasted attention / C refuse on principle; Baymard 40% extra-costs +
+  23.48-vs-12-14 form elements + 70.22% abandonment, NN/g carousels,
+  Unbounce attention ratio, EU DSA Art. 25, FTC 16 CFR 465 — fetched live
+  2026-11-10), and 10 mechanical **voice gates** (grade ≤ 7, you ≥ 3× we,
+  verbatim customer phrase, specificity, CTA shape, skim path, rhythm,
+  honesty; Unbounce 12.9%-vs-2.1% verified live). Plus an audit mode for
+  existing pages and the copy-brief handoff to copywriting.
+- **Restructure (split-brain prevention):** `first-customers`' page anatomy
+  and copy-brief assets moved into `offer-page` (git mv) so page knowledge
+  has exactly one owner; `first-customers` Step 4 + teardown mode now hand
+  off by skill name, keeping only funnel-level rules (demo-video/headline
+  alignment; page-onboarding-email as one conversation). Two-way description
+  disambiguation in both skills.
+- **Myth corrected:** the widely-quoted "+68%" gym-CTA lift is wrong — the
+  archived ContentVerve primary says **+213.16%**; "+38.26%" is the
+  sister-site replication of a +14.79% test. All three now stated accurately
+  in `page-anatomy.md`, and the unverified-number ledger in
+  `voice-and-gates.md` bans citing HubSpot "+202%", Crazy Egg "+64%",
+  Basecamp "60 seconds", and Spiegel "270%".
+- Deep research was fan-out (3 subagents: needs / cut-list / voice), each
+  required to trace every number to a primary source or mark it unverified;
+  one agent survived three provider failures (zai rate-limit, gemini
+  prepay-depleted, huggingface prepay-depleted → zai flash).
+
 ### Added (2026-11-03 — design-to-code skill + frontend-design upstream refresh)
 
 - **`design-to-code`** (new skill): the engineering layer between a design

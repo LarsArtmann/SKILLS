@@ -139,15 +139,19 @@ Raw ideas:
   wrapping, theme variants) makes it a product, not a script; premature
   generalization
 
-### 8. Growth & Sales category (2026-10-24)
+### 8. Growth & Sales category (2026-10-24; second skill landed 2026-11-10)
 
 `first-customers` (2026-10-24) opened a "Growth & Sales" section in
 README/FEATURES. One skill is not a theme: **deferred** until a second
-GTM-adjacent skill is actually requested twice (feedback-loop rule).
-Candidates if demand ever appears: a retention/churn playbook, a
-launch-analytics deep-dive — both deliberately outside first-customers'
-0→1 scope. The strategy-vs-prose boundary with third-party `copywriting`
-lives under Open Questions g2 + AGENTS §5.5.
+GTM-adjacent skill is actually requested — that happened 2026-11-10
+(direct user request: "a skill on how to build pages that SELL"), and
+`offer-page` now exists as the page-assembly layer under first-customers
+(strategy) and over third-party `copywriting` (prose); the page anatomy
+moved with it (AGENTS §5.5). Remaining candidates if demand ever appears:
+a retention/churn playbook, a launch-analytics deep-dive — both
+deliberately outside first-customers' 0→1 scope. The strategy-vs-prose
+boundary with third-party `copywriting` lives under Open Questions g2 +
+AGENTS §5.5.
 
 ## Open Questions
 
