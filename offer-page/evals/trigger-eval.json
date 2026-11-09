@@ -1,0 +1,82 @@
+[
+  {
+    "query": "building a sales page for my $29 notion template pack, stripe checkout is ready. what sections do I actually need?",
+    "should_trigger": true
+  },
+  {
+    "query": "here's my draft offer page for a $499 cohort course — what am I missing? it lists the modules but nobody pre-ordered yet",
+    "should_trigger": true
+  },
+  {
+    "query": "tear down my pricing page before we ship next week, I think the tiers are confusing. URL in the next message",
+    "should_trigger": true
+  },
+  {
+    "query": "rewrite my sales page — it's a feature tour, reads like documentation, and visitors don't buy",
+    "should_trigger": true
+  },
+  {
+    "query": "plan the landing page structure for my chrome extension's pro plan: one goal, what goes where",
+    "should_trigger": true
+  },
+  {
+    "query": "how long should my sales page be? selling a $499 course to a warm email list of 2000 people",
+    "should_trigger": true
+  },
+  {
+    "query": "my waitlist page gets traffic but converts at 1% and friends say they can't tell what the product does in 5 seconds",
+    "should_trigger": true
+  },
+  {
+    "query": "what should I REMOVE from my landing page? it feels cluttered — nav, blog links, a slider, three different buttons",
+    "should_trigger": true
+  },
+  {
+    "query": "turn my homepage into something that actually SELLS the product instead of describing the company",
+    "should_trigger": true
+  },
+  {
+    "query": "does my offer page need exit-intent popup and a countdown timer to create urgency? launching monday",
+    "should_trigger": true
+  },
+  {
+    "query": "how do I get my first 10 paying customers for my micro saas? no pricing picked yet, no page either",
+    "should_trigger": false
+  },
+  {
+    "query": "freemium or a 14-day free trial for my b2b scheduling tool — which converts better?",
+    "should_trigger": false
+  },
+  {
+    "query": "rewrite the hero copy on my page to be punchier, current headline is 'Supercharge your workflows with AI' and it feels generic",
+    "should_trigger": false
+  },
+  {
+    "query": "set up a documentation website for my Go library using astro starlight, deploy to firebase with a custom domain",
+    "should_trigger": false
+  },
+  {
+    "query": "make a 30 second promo video for my app launch with the UI and a voiceover",
+    "should_trigger": false
+  },
+  {
+    "query": "implement this landing page design in react with tailwind — tokens are in the figma file",
+    "should_trigger": false
+  },
+  {
+    "query": "we get 200k visitors a month, how do I run proper A/B tests on headline variants?",
+    "should_trigger": false
+  },
+  {
+    "query": "launching on product hunt next tuesday, solo dev, first launch — any playbook so I don't waste it?",
+    "should_trigger": false
+  },
+  {
+    "query": "help me write a cold email pitching my design agency to a clinic I found on clutch",
+    "should_trigger": false
+  },
+  {
+    "query": "monthly churn went from 2% to 7% at 400 customers, how do I diagnose retention before it kills us",
+    "should_trigger": false
+  }
+]
