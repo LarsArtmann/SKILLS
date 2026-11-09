@@ -2,21 +2,22 @@
 
 Fill this in, then hand the page's PROSE to the copywriting skill with
 this file. The brief pins WHAT the page argues; copywriting decides HOW
-each line reads. If a field is empty, the strategy work (steps 1-3) is
-not done — do not start prose.
+each line reads. If a field is empty, the strategy work is not done —
+run the first-customers skill's steps (or gather what already exists) —
+do not start prose.
 
 ## Product one-liner
 
 What it is, for whom, primary outcome — one sentence.
 
-## Positioning statement (from Step 2)
+## Positioning statement (first-customers Step 2)
 
 ```
 For <target> who <trigger/situation>, <product> is a <category>
 that <key benefit>. Unlike <alternative>, <product> <differentiation>.
 ```
 
-## Audience state (from Step 1)
+## Audience state (first-customers Step 1)
 
 - Awareness stage: unaware / problem / solution / product / most aware
 - Market sophistication: 1-5 (3 = named mechanism needed)
@@ -28,7 +29,9 @@ that <key benefit>. Unlike <alternative>, <product> <differentiation>.
 | ---- | ------- | ---------- |
 |      |         |            |
 
-## Page architecture (from Step 4)
+## Page architecture (from this skill's build procedure)
+
+Full section table + skip rules: [../references/page-anatomy.md](../references/page-anatomy.md).
 
 | #                   | Section | Thesis (one line each) |
 | ------------------- | ------- | ---------------------- |
@@ -42,13 +45,13 @@ that <key benefit>. Unlike <alternative>, <product> <differentiation>.
 | 8 FAQ               |         |                        |
 | 9 Final CTA + PS    |         |                        |
 
-## Offer summary (from Step 3)
+## Offer summary (first-customers Step 3)
 
 - Model / price / founding terms:
 - Guarantee:
 - The one CTA (goal of the page):
 
-## Proof assets available (from Step 5)
+## Proof assets available (first-customers Step 5)
 
 Ladder rungs usable TODAY (founder identity, demo, beta quotes...) —
 copywriting may only claim what is listed here.

@@ -3,15 +3,15 @@ name: first-customers
 description: >-
   Use when the user wants their FIRST paying customers for a (micro-)SaaS or
   indie product — the full 0-to-1 online sales loop: demand research,
-  positioning, offer/pricing design, sales page, proof & trust, launch
-  channels, activation, funnel diagnosis. Triggers on: "get my first
-  customers", "first 10 paying users", "nobody is signing up", "nobody buys",
-  "sales page", "landing page", "pricing page", "not converting", "launch my
-  SaaS", "validate demand", "pre-sell", "waitlist", "freemium vs free trial",
-  "lifetime deal?", "Product Hunt launch", "build in public", "0 to 1 sales".
-  For the page PROSE once strategy is set, use the copywriting skill; for docs
+  positioning, offer/pricing design, proof & trust, launch channels,
+  activation, funnel diagnosis. Triggers on: "get my first customers", "first
+  10 paying users", "nobody is signing up", "nobody buys", "not converting",
+  "launch my SaaS", "validate demand", "pre-sell", "waitlist", "freemium vs
+  free trial", "lifetime deal?", "Product Hunt launch", "build in public",
+  "0 to 1 sales". This skill owns the strategy, the offer, and the measurement
+  loop. For BUILDING or REWRITING the sales/offer/landing/pricing page itself
+  use the offer-page skill; for page prose polish use copywriting; for docs
   site deployment use website-launch; for promo videos use product-launch-video.
-  This skill owns the strategy, the offer, and the measurement loop.
 metadata:
   tags: sales, saas, conversion, pricing, launch, marketing, indie, growth
 allowed-tools: view bash edit write fetch grep
@@ -74,17 +74,14 @@ likelihood, time, effort. Refuse fake countdowns — real scarcity only.
 
 ## Step 4 — Build the sales page
 
-Load [./references/sales-page-anatomy.md](./references/sales-page-anatomy.md).
-Follow the 9-section persuasion arc; hero = headline (awareness-stage match) +
-subhead (mechanism) + product visual + value-stating CTA + micro-proof.
-Evidence anchors: SaaS median LP conversion 3.8%; 5th-7th grade reading level
-pages convert ~12.9% vs 2.1% professional; 250-725 words; one CTA goal; load
-<2s; FAQ written from mined objections. For line-by-line prose craft once the
-structure is set, hand off to the copywriting skill (page prose is its lane)
-with [./assets/copy-brief.md](./assets/copy-brief.md) filled in. If a demo
-video exists or is planned (product-launch-video / website-launch), its hook
-must restate the headline promise — video and page telling different stories
-depress both.
+Page assembly belongs to the **offer-page** skill: it owns the section
+anatomy, the cut list, the voice gates, and page QA — run it with this
+funnel's outputs (phrase bank, positioning statement, offer, proof ladder).
+Two rules stay here because they are funnel-level, not page-level: (1) a
+demo video (product-launch-video / website-launch) must restate the page
+headline promise — video and page telling different stories depress both;
+(2) page, onboarding, and email are one conversation — feed every observed
+objection back into the page FAQ and headline vocabulary.
 
 ## Step 5 — Wire proof, trust, and payment
 
@@ -135,20 +132,16 @@ vocabulary: page, onboarding, and email are one conversation.
 
 ## Mode: page teardown (page already exists)
 
-When the user shows an existing page instead of asking for a new one, audit
-before proposing anything. Order: (1) 5-second test — what is it, for whom,
-what next, in one glance; (2) headline vs the traffic's actual awareness
-stage; (3) gaps in the 9-section arc
-([./references/sales-page-anatomy.md](./references/sales-page-anatomy.md));
-(4) proof claimed vs proof legitimately available
-([./references/proof-and-trust.md](./references/proof-and-trust.md)); (5)
-offer sharpness — value metric, anchor, guarantee
-([./references/offer-and-pricing.md](./references/offer-and-pricing.md));
-(6) friction — CTA count, form fields, load speed; (7) FAQ: researched
-objections or invented? Output: a numbered fix list ordered by the diagnosis
-tree — leakiest reachable stage first, one fix per item, each citing the
-finding that motivated it. Do not rewrite the page during a teardown; that
-is Step 4 (or the copywriting skill, for prose) after the user picks fixes.
+First diagnose the FUNNEL stage (Step 0 table) — never optimize a stage the
+funnel never reaches. If the leak is the page itself, run the **offer-page**
+skill's audit mode (5-second test, awareness match, section gaps, proof
+claimed vs legitimately available, offer sharpness, friction, FAQ sourcing)
+and keep only the funnel framing here: which stage leaks, and which upstream
+inputs (mined words, positioning, offer) each page fix presupposes. Output: a
+numbered fix list ordered by the diagnosis tree — leakiest reachable stage
+first, one fix per item, each citing the finding that motivated it. Do not
+rewrite the page during a teardown; that is Step 4 (or the copywriting skill,
+for prose) after the user picks fixes.
 
 ## Honesty rules (always)
 
@@ -159,8 +152,9 @@ is Step 4 (or the copywriting skill, for prose) after the user picks fixes.
 
 ## Related skills
 
-- **copywriting** — page/section prose once strategy and structure are set
-  (this skill defines WHAT the page argues; copywriting polishes HOW it reads).
+- **offer-page** — page assembly (sections, cut list, voice gates, QA) once
+  this skill's strategy work has produced the offer, the reader, and the
+  proof ladder; hands line-level prose to copywriting.
 - **website-launch** — docs-site build/deploy; **product-launch-video** — the
   promo video asset.
 - **find-skills** — when the user wants additional GTM-adjacent skills.

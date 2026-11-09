@@ -83,7 +83,7 @@ ocean, makers (agency owners try before buying), TTV ~10 minutes →
   time ("first status page live in 10 minutes"), effort ("we import your
   UptimeRobot monitors").
 
-## Step 4 — Sales page ([./sales-page-anatomy.md](./sales-page-anatomy.md))
+## Step 4 — Sales page (offer-page skill's page-anatomy reference)
 
 9-section arc, each section's draft thesis:
 

@@ -61,7 +61,7 @@ Hopkins, _Scientific Advertising_: numbers beat adjectives, and every claim
 needs a "because").
 
 Where it lives on the page: headline = outcome/who, subhead = mechanism/how
-(see [./sales-page-anatomy.md](./sales-page-anatomy.md)).
+(page anatomy is owned by the offer-page skill).
 
 ## Micro-SaaS defaults
 
