@@ -115,10 +115,18 @@ hype: "Join 46,700 others" / "Save $3,500 in 16 weeks".
 
 ## CTA buttons — evidence
 
-- "Value + Relevance = More Conversions" (Michael Aagaard): "Order" → "Get"
-  +38.26%; "Get membership" → "Find gym and get membership" +68%.
-- First-person, outcome-stating, ≤5 words: "Send me the free guide", "Start my
-  free trial" — the button completes the thought in the visitor's head.
+- Name the get, not the action (Michael Aagaard, ContentVerve button tests,
+  archived primary): "Order Information and Prices" → "Get Information and
+  Prices" = +14.79% clicks, +38.26% on the sister-site replication.
+  "Get Membership" → "Find Your Gym & Get Membership" (names the scenario)
+  = **+213.16%** clickthrough — the "+68%" figure circulating for this test
+  is not in the primary source.
+- "Start your free 30 day trial" → "Start **my** free 30 day trial" = +90%
+  CTR; direction varies by page (reversed −24.9% on a forum payment page) —
+  flag "my vs your" for a cheap A/B, default to first person for
+  trials/accounts.
+- Outcome-stating, ≤5 words: "Send me the free guide", "Start my free trial"
+  — the button completes the thought in the visitor's head.
 - Ask of every CTA: what does the prospect want, and what do they GET when
   clicking? Name the get.
 
