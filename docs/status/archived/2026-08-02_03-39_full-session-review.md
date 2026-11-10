@@ -66,32 +66,32 @@
 
 ## f) Next Tasks (up to 50, sorted by impact)
 
-| #  | Task                                                                                 | Impact   | Effort  |
-| -- | ------------------------------------------------------------------------------------ | -------- | ------- |
-| ~~1~~ done at `50ecd7d` | ~~Run trigger collision analysis across all 25 skills~~ | ~~Critical~~ | ~~Medium~~ |
-| ~~2~~ done at `50ecd7d` | ~~Add disambiguation between `code-quality-scan` vs `full-code-review`~~ | ~~High~~ | ~~Low~~ |
-| ~~3~~ done at `50ecd7d` | ~~Add disambiguation between `deduplicate-code` vs `code-quality-scan`~~ | ~~High~~ | ~~Low~~ |
-| ~~4~~ done — audited — e50929d + 2026-09-18 fix-on-sight `686536d` | ~~Audit `verify-before-filing/SKILL.md` body and claims~~ | ~~High~~ | ~~Low~~ |
-| ~~5~~ done — partial per appendix + 2026-10-27 source read (SKILL.md:22,79) | ~~Read `go-error-family` README and improve `--enforce-go-error-family` docs~~ | ~~High~~ | ~~Low~~ |
-| 6 **→ routed to ROADMAP 2026-11-10** | Run skill-creator evals on the 9 rewritten descriptions | High | Medium |
-| ~~7~~ done at `50ecd7d` | ~~Add disambiguation between `architecture-review` vs `full-code-review`~~ | ~~Medium~~ | ~~Low~~ |
-| ~~8~~ done at `50ecd7d` | ~~Add disambiguation between `status-report` vs `docs-health`~~ | ~~Medium~~ | ~~Low~~ |
-| ~~9~~ done — Pattern 11 (how-to-write-skills.md:527) | ~~Add "competing skills" section to `how-to-write-skills.md`~~ | ~~Medium~~ | ~~Medium~~ |
-| ~~10~~ done at `06bf01e` | ~~Update phase 1 planning doc with completion markers~~ | ~~Low~~ | ~~Trivial~~ |
-| ~~11~~ **Won't implement — retroactive plans never written.** | ~~Create retroactive planning docs for phases 2 and 3~~ | ~~Low~~ | ~~Low~~ |
-| ~~12~~ done — verified 2026-10-27 (SKILL.md:23) | ~~Investigate whether `//nolint:legacyerrors` changed after rename~~ | ~~Medium~~ | ~~Low~~ |
-| ~~13~~ **Won't implement — 353 lines, within the 500 gate; flag detail in references/cli-and-flags.md.** | ~~Consider moving flag tables from SKILL.md to references/cli-and-flags.md~~ | ~~Low~~ | ~~Low~~ |
-| ~~14~~ done — decision-tree carries its own Verification status section (`04b7a2c`); errorfamily = verified-real go-error-family v0.10.0 | ~~Verify `errorfamily.NewConflict(...)` example in decision-tree.md matches actual API~~ | ~~Medium~~ | ~~Low~~ |
-| 15 **→ routed to ROADMAP 2026-11-10** | Run description-optimization loop (`run_loop.py`) on 5 thinnest descriptions | Medium | High |
-| ~~16~~ **Won't implement — never evaluated; tree hardened by real-use rounds instead.** | ~~Consider whether `--type-aware` makes the decision tree simpler~~ | ~~Low~~ | ~~Medium~~ |
-| ~~17~~ **Won't implement — subsumed by the 2026-08-04 collision analysis + ROADMAP empirical-validation theme.** | ~~Audit whether any description accidentally excludes valid use cases~~ | ~~Low~~ | ~~Medium~~ |
-| ~~17~~ done — desc now 529 chars, was 342 (verified 2026-11-10) | ~~Consider whether `brutal-self-review` (342 chars) needs more triggers~~ | ~~Low~~ | ~~Low~~ |
-| ~~18~~ done — desc now 598 chars, was 424 (verified 2026-11-10) | ~~Consider whether `architecture-visualization` (424 chars) needs more triggers~~ | ~~Low~~ | ~~Low~~ |
-| ~~19~~ done — rich trigger-first desc now (verified 2026-11-10) | ~~Consider whether `nix-private-go-repos` (434 chars) needs more triggers~~ | ~~Low~~ | ~~Low~~ |
-| ~~20~~ **Won't implement — never added; erraudit owned by its own skill, buildflow gates covered repos.** | ~~Add `erraudit` to `code-quality-scan` as an optional check for Go projects~~ | ~~Low~~ | ~~Medium~~ |
-| ~~21~~ done at `b3a27ac` | ~~Verify exit code table against `erraudit` binary if it becomes available~~ | ~~Low~~ | ~~Low~~ |
-| ~~22~~ **Won't implement — declined — library documented in the skill's verification table; not an operational dependency (absent from AGENTS §10, verified 2026-11-10).** | ~~Consider adding `go-error-family` to AGENTS.md external deps table~~ | ~~Low~~ | ~~Trivial~~ |
-| ~~23~~ **Won't implement — review not demanded; block kept as the honest record.** | ~~Review whether the verification-status block is too long now~~ | ~~Low~~ | ~~Low~~ |
+| #                                                                                                                                                                          | Task                                                                                     | Impact       | Effort      |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------ | ----------- |
+| ~~1~~ done at `50ecd7d`                                                                                                                                                    | ~~Run trigger collision analysis across all 25 skills~~                                  | ~~Critical~~ | ~~Medium~~  |
+| ~~2~~ done at `50ecd7d`                                                                                                                                                    | ~~Add disambiguation between `code-quality-scan` vs `full-code-review`~~                 | ~~High~~     | ~~Low~~     |
+| ~~3~~ done at `50ecd7d`                                                                                                                                                    | ~~Add disambiguation between `deduplicate-code` vs `code-quality-scan`~~                 | ~~High~~     | ~~Low~~     |
+| ~~4~~ done — audited — e50929d + 2026-09-18 fix-on-sight `686536d`                                                                                                         | ~~Audit `verify-before-filing/SKILL.md` body and claims~~                                | ~~High~~     | ~~Low~~     |
+| ~~5~~ done — partial per appendix + 2026-10-27 source read (SKILL.md:22,79)                                                                                                | ~~Read `go-error-family` README and improve `--enforce-go-error-family` docs~~           | ~~High~~     | ~~Low~~     |
+| 6 **→ routed to ROADMAP 2026-11-10**                                                                                                                                       | Run skill-creator evals on the 9 rewritten descriptions                                  | High         | Medium      |
+| ~~7~~ done at `50ecd7d`                                                                                                                                                    | ~~Add disambiguation between `architecture-review` vs `full-code-review`~~               | ~~Medium~~   | ~~Low~~     |
+| ~~8~~ done at `50ecd7d`                                                                                                                                                    | ~~Add disambiguation between `status-report` vs `docs-health`~~                          | ~~Medium~~   | ~~Low~~     |
+| ~~9~~ done — Pattern 11 (how-to-write-skills.md:527)                                                                                                                       | ~~Add "competing skills" section to `how-to-write-skills.md`~~                           | ~~Medium~~   | ~~Medium~~  |
+| ~~10~~ done at `06bf01e`                                                                                                                                                   | ~~Update phase 1 planning doc with completion markers~~                                  | ~~Low~~      | ~~Trivial~~ |
+| ~~11~~ **Won't implement — retroactive plans never written.**                                                                                                              | ~~Create retroactive planning docs for phases 2 and 3~~                                  | ~~Low~~      | ~~Low~~     |
+| ~~12~~ done — verified 2026-10-27 (SKILL.md:23)                                                                                                                            | ~~Investigate whether `//nolint:legacyerrors` changed after rename~~                     | ~~Medium~~   | ~~Low~~     |
+| ~~13~~ **Won't implement — 353 lines, within the 500 gate; flag detail in references/cli-and-flags.md.**                                                                   | ~~Consider moving flag tables from SKILL.md to references/cli-and-flags.md~~             | ~~Low~~      | ~~Low~~     |
+| ~~14~~ done — decision-tree carries its own Verification status section (`04b7a2c`); errorfamily = verified-real go-error-family v0.10.0                                   | ~~Verify `errorfamily.NewConflict(...)` example in decision-tree.md matches actual API~~ | ~~Medium~~   | ~~Low~~     |
+| 15 **→ routed to ROADMAP 2026-11-10**                                                                                                                                      | Run description-optimization loop (`run_loop.py`) on 5 thinnest descriptions             | Medium       | High        |
+| ~~16~~ **Won't implement — never evaluated; tree hardened by real-use rounds instead.**                                                                                    | ~~Consider whether `--type-aware` makes the decision tree simpler~~                      | ~~Low~~      | ~~Medium~~  |
+| ~~17~~ **Won't implement — subsumed by the 2026-08-04 collision analysis + ROADMAP empirical-validation theme.**                                                           | ~~Audit whether any description accidentally excludes valid use cases~~                  | ~~Low~~      | ~~Medium~~  |
+| ~~17~~ done — desc now 529 chars, was 342 (verified 2026-11-10)                                                                                                            | ~~Consider whether `brutal-self-review` (342 chars) needs more triggers~~                | ~~Low~~      | ~~Low~~     |
+| ~~18~~ done — desc now 598 chars, was 424 (verified 2026-11-10)                                                                                                            | ~~Consider whether `architecture-visualization` (424 chars) needs more triggers~~        | ~~Low~~      | ~~Low~~     |
+| ~~19~~ done — rich trigger-first desc now (verified 2026-11-10)                                                                                                            | ~~Consider whether `nix-private-go-repos` (434 chars) needs more triggers~~              | ~~Low~~      | ~~Low~~     |
+| ~~20~~ **Won't implement — never added; erraudit owned by its own skill, buildflow gates covered repos.**                                                                  | ~~Add `erraudit` to `code-quality-scan` as an optional check for Go projects~~           | ~~Low~~      | ~~Medium~~  |
+| ~~21~~ done at `b3a27ac`                                                                                                                                                   | ~~Verify exit code table against `erraudit` binary if it becomes available~~             | ~~Low~~      | ~~Low~~     |
+| ~~22~~ **Won't implement — declined — library documented in the skill's verification table; not an operational dependency (absent from AGENTS §10, verified 2026-11-10).** | ~~Consider adding `go-error-family` to AGENTS.md external deps table~~                   | ~~Low~~      | ~~Trivial~~ |
+| ~~23~~ **Won't implement — review not demanded; block kept as the honest record.**                                                                                         | ~~Review whether the verification-status block is too long now~~                         | ~~Low~~      | ~~Low~~     |
 
 ---
 
@@ -121,12 +121,12 @@ See CHANGELOG "2026-08-02" milestone for what shipped from this session.
 
 ### Still open (harvested into TODO_LIST)
 
-| Report item                                               | TODO_LIST ID | Notes                           |
-| --------------------------------------------------------- | ------------ | ------------------------------- |
-| ~~Trigger collision analysis (f #1)~~ done at `50ecd7d` | ~~T1~~ | ~~Critical — never run~~ |
-| ~~Disambiguate code-quality-scan vs full-code-review (f #2)~~ done at `50ecd7d` | ~~T2~~ | ~~ ~~ |
-| ~~Disambiguate deduplicate-code vs code-quality-scan (f #3)~~ done at `50ecd7d` | ~~T2~~ | ~~ ~~ |
-| ~~Audit verify-before-filing/SKILL.md (f #4)~~ done — audited — e50929d + 2026-09-18 fix-on-sight `686536d` | ~~T3~~ | ~~Committed blind, never reviewed~~ |
+| Report item                                                                                                 | TODO_LIST ID | Notes                               |
+| ----------------------------------------------------------------------------------------------------------- | ------------ | ----------------------------------- |
+| ~~Trigger collision analysis (f #1)~~ done at `50ecd7d`                                                     | ~~T1~~       | ~~Critical — never run~~            |
+| ~~Disambiguate code-quality-scan vs full-code-review (f #2)~~ done at `50ecd7d`                             | ~~T2~~       | ~~ ~~                               |
+| ~~Disambiguate deduplicate-code vs code-quality-scan (f #3)~~ done at `50ecd7d`                             | ~~T2~~       | ~~ ~~                               |
+| ~~Audit verify-before-filing/SKILL.md (f #4)~~ done — audited — e50929d + 2026-09-18 fix-on-sight `686536d` | ~~T3~~       | ~~Committed blind, never reviewed~~ |
 
 ### Routed to ROADMAP (vague / long-term / blockers)
 

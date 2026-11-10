@@ -12,35 +12,35 @@ Converted two feedback files describing the **same failure pattern** (filing pre
 
 ## a) FULLY DONE ✅
 
-| # | Work item                                               | Evidence                                                                                                                                                                                                  |
-| - | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ~~1~~ done at `3a7cc56` | ~~**Created `verify-before-filing/SKILL.md`** (193 lines)~~ | ~~Merged the best of both feedback files: gate-based workflow from the polished draft + the "Red Flags" quick-triage table unique to the raw proposal. 9 sections, under the 500-line gate.~~ |
-| ~~2~~ done — name/tags/allowed-tools present; check-skills gates green (CHANGELOG 2026-09-18 `686536d`) | ~~**Frontmatter valid**~~ | ~~`name: verify-before-filing` matches directory; description is a real trigger (567 chars, well under 1024); `allowed-tools` + `tags` set. `check-skills.sh` confirms.~~ |
-| ~~3~~ done at `3a7cc56` | ~~**README.md inventory updated**~~ | ~~Added row to "Skill Authoring & Verification" table; bumped count `24 → 25`; updated Quality & Status breakdown (Four → Five 🆕 New). Count guard passes.~~ |
-| ~~4~~ done at `3a7cc56`, `e8b20bb` | ~~**Bidirectional inter-skill link**~~ | ~~New skill §8 references `verify-external-claims` (outbound); `verify-external-claims/SKILL.md:13` now references `verify-before-filing` (inbound). Both directions confirmed via grep.~~ |
-| ~~5~~ done — both files live in docs/feedback/processed/2026-08-02_*; new/ empty (verified 2026-11-10) | ~~**Feedback archived**~~ | ~~Both files `git mv`'d from `new/` to `processed/` with date-prefixed descriptive names. `docs/feedback/new/` is empty. Feedback-loop staleness check clean.~~ |
-| ~~6~~ done — check-skills green 2026-09-18 (30 skills) `686536d` | ~~**`check-skills.sh` passes**~~ | ~~All 25 skills valid, 0 thin skills, backlink integrity OK, count guard satisfied.~~ |
-| ~~7~~ done — re-verified 2026-11-10: gh search issues supports --repo/--state | ~~**Verified the embedded `gh` CLI command**~~ | ~~`gh search issues --repo OWNER/REPO --state closed "keyword"` — confirmed `--repo` (`-R`) and `--state` flags exist via `--help`. The verification skill does not itself contain an unverified CLI claim.~~ |
+| #                                                                                                       | Work item                                                   | Evidence                                                                                                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ~~1~~ done at `3a7cc56`                                                                                 | ~~**Created `verify-before-filing/SKILL.md`** (193 lines)~~ | ~~Merged the best of both feedback files: gate-based workflow from the polished draft + the "Red Flags" quick-triage table unique to the raw proposal. 9 sections, under the 500-line gate.~~                 |
+| ~~2~~ done — name/tags/allowed-tools present; check-skills gates green (CHANGELOG 2026-09-18 `686536d`) | ~~**Frontmatter valid**~~                                   | ~~`name: verify-before-filing` matches directory; description is a real trigger (567 chars, well under 1024); `allowed-tools` + `tags` set. `check-skills.sh` confirms.~~                                     |
+| ~~3~~ done at `3a7cc56`                                                                                 | ~~**README.md inventory updated**~~                         | ~~Added row to "Skill Authoring & Verification" table; bumped count `24 → 25`; updated Quality & Status breakdown (Four → Five 🆕 New). Count guard passes.~~                                                 |
+| ~~4~~ done at `3a7cc56`, `e8b20bb`                                                                      | ~~**Bidirectional inter-skill link**~~                      | ~~New skill §8 references `verify-external-claims` (outbound); `verify-external-claims/SKILL.md:13` now references `verify-before-filing` (inbound). Both directions confirmed via grep.~~                    |
+| ~~5~~ done — both files live in docs/feedback/processed/2026-08-02_*; new/ empty (verified 2026-11-10)  | ~~**Feedback archived**~~                                   | ~~Both files `git mv`'d from `new/` to `processed/` with date-prefixed descriptive names. `docs/feedback/new/` is empty. Feedback-loop staleness check clean.~~                                               |
+| ~~6~~ done — check-skills green 2026-09-18 (30 skills) `686536d`                                        | ~~**`check-skills.sh` passes**~~                            | ~~All 25 skills valid, 0 thin skills, backlink integrity OK, count guard satisfied.~~                                                                                                                         |
+| ~~7~~ done — re-verified 2026-11-10: gh search issues supports --repo/--state                           | ~~**Verified the embedded `gh` CLI command**~~              | ~~`gh search issues --repo OWNER/REPO --state closed "keyword"` — confirmed `--repo` (`-R`) and `--state` flags exist via `--help`. The verification skill does not itself contain an unverified CLI claim.~~ |
 
 ---
 
 ## b) PARTIALLY DONE ⚠️
 
-| # | Item                                 | What's missing                                                                                                                                                                                                                                                                                                              |
-| - | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ~~1~~ done — AGENTS.md:156 documents the inbound/outbound pair | ~~**Inter-skill graph documentation**~~ | ~~I added the bidirectional _link_ between the skills, but did NOT record the new pair in **AGENTS.md §5.5** ("Inter-Skill References") — the canonical place agents check before adding cross-references. Future agents won't know this link exists and could duplicate or break it. **This is the biggest gap.**~~ |
+| #                                                                                                                            | Item                                     | What's missing                                                                                                                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ~~1~~ done — AGENTS.md:156 documents the inbound/outbound pair                                                               | ~~**Inter-skill graph documentation**~~  | ~~I added the bidirectional _link_ between the skills, but did NOT record the new pair in **AGENTS.md §5.5** ("Inter-Skill References") — the canonical place agents check before adding cross-references. Future agents won't know this link exists and could duplicate or break it. **This is the biggest gap.**~~            |
 | ~~2~~ **Won't implement — nuance never demanded; README now points at FEATURES.md as the status authority (README.md:155).** | ~~**README "Quality & Status" nuance**~~ | ~~I bumped "Four → Five 🆕 New" correctly, and "Three of these carry verification-status blocks" remains accurate (the new skill has no unverified claims). But I did not add a sentence explaining _why_ `verify-before-filing` has no verification-status block while its sibling does — a future reader may wonder. Minor.~~ |
 
 ---
 
 ## c) NOT STARTED ⏭️
 
-| # | Item                                              | Why                                                                                  | Should it be done?                               |
-| - | ------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------ |
-| ~~1~~ done at `3a7cc56`, `e8b20bb` | ~~**Git commit**~~ | ~~User did not ask.~~ | ~~Awaiting instruction.~~ |
-| 2 **→ routed to ROADMAP 2026-11-10** | **Trigger-description testing** | Out of session scope; skill-creator eval loop not run. | Valuable but optional for a 🆕 New skill. |
-| ~~3~~ done — repo+installed consistent via symlinks (AGENTS §5.10) | ~~**Sync installed `~/.config/crush/skills/` copy**~~ | ~~The repo is the canonical source; the installed copy I edited is a separate concern.~~ | ~~User manages their own install.~~ |
-| ~~4~~ **Superseded — 2026-09-18 docs-health full audit (`686536d`).** | ~~**Add to a comprehensive audit doc**~~ | ~~No new audit was requested.~~ | ~~Next time `docs-health` or `status-report` runs.~~ |
+| #                                                                     | Item                                                  | Why                                                                                      | Should it be done?                                   |
+| --------------------------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| ~~1~~ done at `3a7cc56`, `e8b20bb`                                    | ~~**Git commit**~~                                    | ~~User did not ask.~~                                                                    | ~~Awaiting instruction.~~                            |
+| 2 **→ routed to ROADMAP 2026-11-10**                                  | **Trigger-description testing**                       | Out of session scope; skill-creator eval loop not run.                                   | Valuable but optional for a 🆕 New skill.            |
+| ~~3~~ done — repo+installed consistent via symlinks (AGENTS §5.10)    | ~~**Sync installed `~/.config/crush/skills/` copy**~~ | ~~The repo is the canonical source; the installed copy I edited is a separate concern.~~ | ~~User manages their own install.~~                  |
+| ~~4~~ **Superseded — 2026-09-18 docs-health full audit (`686536d`).** | ~~**Add to a comprehensive audit doc**~~              | ~~No new audit was requested.~~                                                          | ~~Next time `docs-health` or `status-report` runs.~~ |
 
 ---
 
@@ -113,15 +113,15 @@ Converted two feedback files describing the **same failure pattern** (filing pre
 
 ## Appendix: Files Touched This Session
 
-| File                                                                | Change                                  | Mine?                                       |
-| ------------------------------------------------------------------- | --------------------------------------- | ------------------------------------------- |
-| ~~`verify-before-filing/SKILL.md`~~ done at `3a7cc56` | ~~Created (193 lines)~~ | ~~✅~~ |
-| ~~`README.md`~~ done at `3a7cc56` | ~~Inventory + counts + quality section~~ | ~~✅~~ |
-| ~~`verify-external-claims/SKILL.md`~~ done at `e8b20bb` | ~~+1 line inbound/outbound scope note~~ | ~~✅~~ |
-| ~~`docs/feedback/processed/2026-08-02_external-issue-discipline-*.md`~~ done at `3a7cc56` | ~~Renamed from `new/`~~ | ~~✅~~ |
-| ~~`docs/feedback/processed/2026-08-02_verify-before-filing-*.md`~~ done at `3a7cc56` | ~~Renamed from `new/`~~ | ~~✅~~ |
-| ~~`~/.config/crush/skills/verify-external-claims/SKILL.md`~~ done — repo-installed consistency via symlinks (AGENTS §5.10) | ~~Same +1 line (installed copy)~~ | ~~✅ (process slip — edited before repo copy)~~ |
-| ~~13 other modified files + `docs/planning/`~~ done — pre-existing; committed since (f#12) | ~~Pre-existing, not authored this session~~ | ~~❌~~ |
+| File                                                                                                                       | Change                                      | Mine?                                           |
+| -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- | ----------------------------------------------- |
+| ~~`verify-before-filing/SKILL.md`~~ done at `3a7cc56`                                                                      | ~~Created (193 lines)~~                     | ~~✅~~                                          |
+| ~~`README.md`~~ done at `3a7cc56`                                                                                          | ~~Inventory + counts + quality section~~    | ~~✅~~                                          |
+| ~~`verify-external-claims/SKILL.md`~~ done at `e8b20bb`                                                                    | ~~+1 line inbound/outbound scope note~~     | ~~✅~~                                          |
+| ~~`docs/feedback/processed/2026-08-02_external-issue-discipline-*.md`~~ done at `3a7cc56`                                  | ~~Renamed from `new/`~~                     | ~~✅~~                                          |
+| ~~`docs/feedback/processed/2026-08-02_verify-before-filing-*.md`~~ done at `3a7cc56`                                       | ~~Renamed from `new/`~~                     | ~~✅~~                                          |
+| ~~`~/.config/crush/skills/verify-external-claims/SKILL.md`~~ done — repo-installed consistency via symlinks (AGENTS §5.10) | ~~Same +1 line (installed copy)~~           | ~~✅ (process slip — edited before repo copy)~~ |
+| ~~13 other modified files + `docs/planning/`~~ done — pre-existing; committed since (f#12)                                 | ~~Pre-existing, not authored this session~~ | ~~❌~~                                          |
 
 ---
 
@@ -143,10 +143,10 @@ Forward-looking items harvested into `TODO_LIST.md` and `ROADMAP.md`.
 
 ### Still open (harvested into TODO_LIST)
 
-| Report item                                                      | TODO_LIST ID | Notes                                        |
-| ---------------------------------------------------------------- | ------------ | -------------------------------------------- |
-| ~~Audit verify-before-filing body, tags, cross-refs (e #5, f #5–8)~~ done — audited — e50929d + 2026-09-18 fix-on-sight `686536d` | ~~T3~~ | ~~Committed blind; never properly reviewed~~ |
-| ~~check-skills.sh guard for new cross-skill links (f #3)~~ done — covered — check 12 check-skill-links (2026-08-21) + link --check wired into check-skills (2026-09-24, T41) | ~~T7~~ | ~~Related to marker-vocabulary / handoff guard~~ |
+| Report item                                                                                                                                                                  | TODO_LIST ID | Notes                                            |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------ |
+| ~~Audit verify-before-filing body, tags, cross-refs (e #5, f #5–8)~~ done — audited — e50929d + 2026-09-18 fix-on-sight `686536d`                                            | ~~T3~~       | ~~Committed blind; never properly reviewed~~     |
+| ~~check-skills.sh guard for new cross-skill links (f #3)~~ done — covered — check 12 check-skill-links (2026-08-21) + link --check wired into check-skills (2026-09-24, T41) | ~~T7~~       | ~~Related to marker-vocabulary / handoff guard~~ |
 
 ### Routed to ROADMAP
 
