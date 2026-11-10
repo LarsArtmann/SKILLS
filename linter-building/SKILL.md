@@ -70,8 +70,9 @@ shared finding type instead of inventing a converter layer.
    [./references/distribution.md](references/distribution.md).
 8. **Reuse the local stack before building anything.**
    [./references/ecosystem.md](references/ecosystem.md) maps Lars's existing
-   linter-building blocks (go-finding, go-linter-sdk, the auto-configure
-   pair) and which reference linter to copy for each architecture.
+   linter-building blocks (go-finding, go-linter-sdk, toolsdk, the
+   auto-configure pair) and which reference linter to copy for each
+   architecture.
 
 ## Decision tree (summary)
 
