@@ -43,17 +43,17 @@
 
 ## a) FULLY DONE
 
-| Item                                                                                                     | Evidence                                                                    |
-| -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| `offer-page` skill: 108-line SKILL.md, 3 references, 1 asset, trigger-eval fixture                        | gates green; tree committed                                                 |
-| Deep research, 3 streams (needs / cut-list / voice), per-claim provenance + unverified-ledgers             | subagent reports; encoded in references with source URLs                    |
-| Restructure without split brain: anatomy + copy-brief git-mv'd into offer-page; first-customers Step 4 + teardown hand off by skill name; two-way description disambiguation | link-check green; no dangling intra-skill paths        |
-| CTA myth corrected repo-wide (+68% → +213.16%, archived primary; +38.26% identified as replication)       | page-anatomy.md, voice-and-gates.md ledger                                  |
-| Full wiring: README row + count, FEATURES rows (both skills), CHANGELOG, AGENTS §5.5 graph entry, ROADMAP §8 | files committed                                                            |
-| Runtime: symlink linked + aggregation repo committed                                                      | `link-skills-to-agents.sh --check` OK                                        |
-| Pre-existing gate FAIL fixed en route (how-to-golang description 1242 → 955 chars, triggers preserved)    | gate exit 0                                                                 |
-| Positive trigger probe PASSED in a fresh session                                                          | `SKILLS-USED: offer-page` (transcript caveat above)                         |
-| Build-session status report written + committed                                                           | `2026-11-10_00-46_*`                                                        |
+| Item                                                                                                                                                                         | Evidence                                                 |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `offer-page` skill: 108-line SKILL.md, 3 references, 1 asset, trigger-eval fixture                                                                                           | gates green; tree committed                              |
+| Deep research, 3 streams (needs / cut-list / voice), per-claim provenance + unverified-ledgers                                                                               | subagent reports; encoded in references with source URLs |
+| Restructure without split brain: anatomy + copy-brief git-mv'd into offer-page; first-customers Step 4 + teardown hand off by skill name; two-way description disambiguation | link-check green; no dangling intra-skill paths          |
+| CTA myth corrected repo-wide (+68% → +213.16%, archived primary; +38.26% identified as replication)                                                                          | page-anatomy.md, voice-and-gates.md ledger               |
+| Full wiring: README row + count, FEATURES rows (both skills), CHANGELOG, AGENTS §5.5 graph entry, ROADMAP §8                                                                 | files committed                                          |
+| Runtime: symlink linked + aggregation repo committed                                                                                                                         | `link-skills-to-agents.sh --check` OK                    |
+| Pre-existing gate FAIL fixed en route (how-to-golang description 1242 → 955 chars, triggers preserved)                                                                       | gate exit 0                                              |
+| Positive trigger probe PASSED in a fresh session                                                                                                                             | `SKILLS-USED: offer-page` (transcript caveat above)      |
+| Build-session status report written + committed                                                                                                                              | `2026-11-10_00-46_*`                                     |
 
 ## b) PARTIALLY DONE
 

@@ -48,13 +48,13 @@
 
 ## TL;DR
 
-| Question                                        | Answer                                                                                   |
-| ----------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Did the skill survive contact with reality?      | Yes — discovery PASS, natural trigger PASS, eval 13/13 vs 12/13, clean MWG routing        |
-| Did anything break?                              | Nothing at HEAD; four honest failures caught and either fixed or documented (section d)   |
-| Biggest save                                     | verify-before-filing gate **rejected the upstream issue** the 20:39 report had scheduled  |
-| Biggest miss                                     | A wrong mechanism claim sat in AGENTS.md §5.10 as a "lesson" for ~2 hours before correction |
-| Repo state at write time                         | Gates green, tree carries 3 foreign hunks (noted above), 2 authored commits this session   |
+| Question                                    | Answer                                                                                      |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Did the skill survive contact with reality? | Yes — discovery PASS, natural trigger PASS, eval 13/13 vs 12/13, clean MWG routing          |
+| Did anything break?                         | Nothing at HEAD; four honest failures caught and either fixed or documented (section d)     |
+| Biggest save                                | verify-before-filing gate **rejected the upstream issue** the 20:39 report had scheduled    |
+| Biggest miss                                | A wrong mechanism claim sat in AGENTS.md §5.10 as a "lesson" for ~2 hours before correction |
+| Repo state at write time                    | Gates green, tree carries 3 foreign hunks (noted above), 2 authored commits this session    |
 
 ---
 
@@ -74,7 +74,7 @@
      kept `"bg-" + tone + "-500"` runtime concatenation and compensated with
      `@source inline(...)`; the skill's doctrine replaces it with complete
      static class names. With-arm additionally caught two silent v4 changes
-     *not in the reference* (`shadow`→`shadow-sm`, `rounded`→`rounded-sm`,
+     _not in the reference_ (`shadow`→`shadow-sm`, `rounded`→`rounded-sm`,
      preflight dropping `cursor: pointer`) by verifying against live docs,
      and restored the cursor via `@layer base`.
    - `status-badge-dynamic-classes`: 4/4 vs 4/4 (baseline independently knows
@@ -135,7 +135,7 @@
    in a live project. The two-stage rule's 🟢 step therefore remains open by
    the rule's own wording. FEATURES honestly says so.
 2. **Boundary test (f8 residue).** Routing recorded for one probe session
-   (`trigger-probe.md`); the report's actual ask — a *real work* web task
+   (`trigger-probe.md`); the report's actual ask — a _real work_ web task
    where both skills plausibly trigger (pairs with T63) — still open.
 3. **Eval rigor.** n=1 per arm (no variance estimate); tokens uncollected;
    10 of 13 assertions pass both arms (they test v4 competence the model
@@ -149,7 +149,7 @@
    `copywriting`, `hyperframes`, `hyperframes-cli`, `hyperframes-registry`,
    `media-use`); 7 hyperframes-suite skills are warned "deleted upstream"
    after the restructure (fail-closed in non-interactive mode — but an
-   *interactive* future `skills update -g` could remove local copies).
+   _interactive_ future `skills update -g` could remove local copies).
 6. **False-green root cause.** Symptom real, mechanism narrowed to three
    candidates, none confirmed (see scope line). A definitive answer would
    need the npm version timeline of 2026-11-03 morning — one `gh api`/npm
@@ -188,7 +188,7 @@ radical-honesty bar:
 
 1. **The repo's own memory briefly poisoned me — and I had poisoned it.** The
    20:39 session asserted a CLI mechanism ("compares installed-folder hashes,
-   no ref pin") from *behavior*, never from source, wrote it into AGENTS.md
+   no ref pin") from _behavior_, never from source, wrote it into AGENTS.md
    §5.10 as a lesson, and scheduled an upstream issue on top of it. This
    session the verify-before-filing gate caught the premise against
    `src/update.ts` before filing — the exact failure the skill exists to
@@ -211,7 +211,7 @@ radical-honesty bar:
    eval_metadata.json generator loop was gated behind a jq syntax probe whose
    failure I routed to `/dev/null 2>&1`; the loop never ran and the files
    were missing until the final JSON validation caught it. This is the
-   *same* failure mode the 20:39 report's improvement e5 already encoded
+   _same_ failure mode the 20:39 report's improvement e5 already encoded
    ("quote exit codes, not output tails") — violated again, same day, by the
    same author. Twice in one day is a pattern, not a slip.
 4. **I invented a status-marker convention the gate immediately rejected.**
@@ -230,7 +230,7 @@ radical-honesty bar:
    sessions. Encode in `evals/README.md` (harness note) so iteration-2
    doesn't repeat d2.
 2. **Mechanism claims need source citations before they enter AGENTS.md.**
-   A §5.10 lesson that describes *why* something fails must either cite the
+   A §5.10 lesson that describes _why_ something fails must either cite the
    source file it read or be explicitly marked "behavioral observation,
    mechanism unconfirmed". The corrected §5.10 entry now models this; make it
    the rule, not the exception.
@@ -240,7 +240,7 @@ radical-honesty bar:
    recurred. If it recurs again, promote from improvement to a hard rule.)
 4. **Design eval assertions around the skill's unique doctrine.** 10/13
    assertions were non-discriminating on this model. Iteration-2 assertions
-   should target what the skill claims *only it* teaches (trap elimination,
+   should target what the skill claims _only it_ teaches (trap elimination,
    verification posture), not general v4 competence — otherwise the eval
    measures the model, not the skill.
 5. **Run gates immediately after each artifact batch, not at the end.** The
@@ -266,38 +266,38 @@ radical-honesty bar:
 > m3 markers — HARVEST must skip them); 22–30 are ROADMAP fuel. Skip any
 > item already carrying a resolution marker.
 
-| #   | Task                                                                                                                                                            | Impact | Effort | Category      | Source  |
-| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | ------------- | ------- |
-| 1   | Eval iteration-2 for design-to-code: 3× per arm, trap-targeted assertions, serialized launches (rate-limit ceiling), then re-grade                                     | High   | M      | Quality       | NEW     |
-| 2   | First genuine user-triggered design-to-code run on live UI work; age 🆕→🟢 (residue of 20:39 row 3)                                                              | High   | M      | Quality       | carried |
-| 3   | Run docs-health HARVEST over both 2026-11-03 reports' (f) sections into TODO_LIST/ROADMAP (skip m3-marked rows)                                                         | High   | S      | Documentation | NEW     |
-| 4   | Answer the three owner questions (20:39 g1–g3): upstream PR, claim-freshness policy, README "Frontend & Web" section                                                   | High   | S      | Decision      | carried |
-| 5   | Fleet freshness wave: update the 6 stale third-party skills; resolve the 7 hyperframes "deleted upstream" warnings (re-add per skill) before an interactive update does it wrong                                                       | High   | M      | Cleanup       | NEW     |
-| 6   | T70: AGENTS.md trim pass — must now absorb the 20:39 session's +1.45 KB *and* this session's §5.10 rewrite (file grew again)                                            | Medium | M      | Cleanup       | carried |
-| 7   | T62: land install-don't-wrap in how-to-write-skills.md, citing design-to-code + the §5.10 correction as worked examples                                                 | High   | M      | Documentation | carried |
-| 8   | f8 residue: live-work boundary case where design-to-code AND modern-web-guidance both plausibly trigger (pairs with T63)                                                | High   | M      | Quality       | carried |
-| 9   | T67: markdown-table pipe-safety rule (never raw pipe in inline code + `git diff -w` after formatter runs)                                                               | High   | S      | Quality       | carried |
-| 10  | f13: concrete DOM-audit fallback script for design-to-code (grep-based interactive-element/focus/reduced-motion checker)                                                 | Medium | S–M    | Feature       | carried |
-| 11  | f14: worked-example reference — one real v3→v4 before/after (important-suffix, var parens, dynamic-class fix)                                                            | Medium | S      | Documentation | carried |
-| 12  | Append eval iteration-1 results + gate outcome to the CHANGELOG design-to-code entry                                                                                    | Low    | S      | Documentation | NEW     |
-| 13  | Encode the eval-fleet concurrency ceiling + retry policy in design-to-code/evals/README.md (harness section)                                                            | Medium | S      | Documentation | NEW     |
-| 14  | Mechanism-claims-need-citations rule: decide where it lives (how-to-write-skills.md vs AGENTS.md lesson discipline) and encode it                                       | High   | S      | Documentation | NEW     |
-| 15  | Settle the eval-viewer question: attempt `generate_review.py --static` once, or document the deliberate skip in evals/README.md                                          | Low    | S      | Quality       | NEW     |
-| 16  | Confirm the 2026-11-03 morning false-green trigger: query the npm `skills` version timeline for that morning (one `gh api`/npm query)                                   | Low    | S      | Quality       | NEW     |
-| 17  | f16: full fleet freshness audit (diff all lockfile skills vs upstream HEAD via gh api loop) — this session's live check was a partial sample                            | High   | M      | Quality       | carried |
-| 18  | f18: audit repo skills (website-launch, html-report-kit) for Tailwind-mechanics restatements that would violate install-don't-wrap                                       | Medium | S      | Cleanup       | carried |
-| 19  | T63: first real triggered MWG web task (modal/`<dialog>` end-to-end)                                                                                                    | High   | M      | Quality       | carried |
-| 20  | After item 2: update FEATURES/README to 🟢 (or the convention-appropriate marker) per the two-stage rule                                                                 | Low    | S      | Documentation | carried |
-| 21  | Consider upgrading the inventory vocabulary so 🟡-eval'd is machine-readable (the gate couples `NEW`↔🆕; eval'd states live in prose only)                               | Low    | S      | Documentation | NEW     |
-| 22  | T60: MWG uninstall proof (snapshot, uninstall, verify, restore)                                                                                                         | Low    | S      | Quality       | carried |
-| 23  | T69: triage standing advisory findings (art-dupl 6, jscpd 3, file-size-check 4) into deliberate non-fixes                                                               | Medium | S      | Cleanup       | carried |
-| 24  | T30: flip README status after first upstream PR kept green via jj sync loop                                                                                             | Low    | S      | Documentation | carried |
-| 25  | T33: site-repo follow-ups (emeet composition, og:image, CI deploy)                                                                                                      | Medium | M+     | Feature       | carried |
-| 26  | T57: extract templ-components Go SSG into canonical private `website-template` repo                                                                                     | High   | M      | Feature       | carried |
-| 27  | T58/T59 (blocked by T57): `websitelaunch` CLI, then website-launch slim + evals re-run                                                                                  | Medium | M      | Feature       | carried |
-| 28  | T68 (blocked): agent-skills branch policy decision — this session committed the wave onto `docs-health-verify-legs`, making the question concrete                        | High   | S      | Decision      | carried |
-| 29  | ROADMAP: design-memory convention (tiny shared design-notes file) — revisit once design-to-code has real runs                                                            | Low    | S      | Idea          | carried |
-| 30  | ROADMAP: Lombiq-style tailwind docs-snapshot skill with staleness gate — only if static claims prove insufficient (g2 decides)                                            | Low    | M      | Idea          | carried |
+| #  | Task                                                                                                                                                                             | Impact | Effort | Category      | Source  |
+| -- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | ------------- | ------- |
+| 1  | Eval iteration-2 for design-to-code: 3× per arm, trap-targeted assertions, serialized launches (rate-limit ceiling), then re-grade                                               | High   | M      | Quality       | NEW     |
+| 2  | First genuine user-triggered design-to-code run on live UI work; age 🆕→🟢 (residue of 20:39 row 3)                                                                              | High   | M      | Quality       | carried |
+| 3  | Run docs-health HARVEST over both 2026-11-03 reports' (f) sections into TODO_LIST/ROADMAP (skip m3-marked rows)                                                                  | High   | S      | Documentation | NEW     |
+| 4  | Answer the three owner questions (20:39 g1–g3): upstream PR, claim-freshness policy, README "Frontend & Web" section                                                             | High   | S      | Decision      | carried |
+| 5  | Fleet freshness wave: update the 6 stale third-party skills; resolve the 7 hyperframes "deleted upstream" warnings (re-add per skill) before an interactive update does it wrong | High   | M      | Cleanup       | NEW     |
+| 6  | T70: AGENTS.md trim pass — must now absorb the 20:39 session's +1.45 KB _and_ this session's §5.10 rewrite (file grew again)                                                     | Medium | M      | Cleanup       | carried |
+| 7  | T62: land install-don't-wrap in how-to-write-skills.md, citing design-to-code + the §5.10 correction as worked examples                                                          | High   | M      | Documentation | carried |
+| 8  | f8 residue: live-work boundary case where design-to-code AND modern-web-guidance both plausibly trigger (pairs with T63)                                                         | High   | M      | Quality       | carried |
+| 9  | T67: markdown-table pipe-safety rule (never raw pipe in inline code + `git diff -w` after formatter runs)                                                                        | High   | S      | Quality       | carried |
+| 10 | f13: concrete DOM-audit fallback script for design-to-code (grep-based interactive-element/focus/reduced-motion checker)                                                         | Medium | S–M    | Feature       | carried |
+| 11 | f14: worked-example reference — one real v3→v4 before/after (important-suffix, var parens, dynamic-class fix)                                                                    | Medium | S      | Documentation | carried |
+| 12 | Append eval iteration-1 results + gate outcome to the CHANGELOG design-to-code entry                                                                                             | Low    | S      | Documentation | NEW     |
+| 13 | Encode the eval-fleet concurrency ceiling + retry policy in design-to-code/evals/README.md (harness section)                                                                     | Medium | S      | Documentation | NEW     |
+| 14 | Mechanism-claims-need-citations rule: decide where it lives (how-to-write-skills.md vs AGENTS.md lesson discipline) and encode it                                                | High   | S      | Documentation | NEW     |
+| 15 | Settle the eval-viewer question: attempt `generate_review.py --static` once, or document the deliberate skip in evals/README.md                                                  | Low    | S      | Quality       | NEW     |
+| 16 | Confirm the 2026-11-03 morning false-green trigger: query the npm `skills` version timeline for that morning (one `gh api`/npm query)                                            | Low    | S      | Quality       | NEW     |
+| 17 | f16: full fleet freshness audit (diff all lockfile skills vs upstream HEAD via gh api loop) — this session's live check was a partial sample                                     | High   | M      | Quality       | carried |
+| 18 | f18: audit repo skills (website-launch, html-report-kit) for Tailwind-mechanics restatements that would violate install-don't-wrap                                               | Medium | S      | Cleanup       | carried |
+| 19 | T63: first real triggered MWG web task (modal/`<dialog>` end-to-end)                                                                                                             | High   | M      | Quality       | carried |
+| 20 | After item 2: update FEATURES/README to 🟢 (or the convention-appropriate marker) per the two-stage rule                                                                         | Low    | S      | Documentation | carried |
+| 21 | Consider upgrading the inventory vocabulary so 🟡-eval'd is machine-readable (the gate couples `NEW`↔🆕; eval'd states live in prose only)                                       | Low    | S      | Documentation | NEW     |
+| 22 | T60: MWG uninstall proof (snapshot, uninstall, verify, restore)                                                                                                                  | Low    | S      | Quality       | carried |
+| 23 | T69: triage standing advisory findings (art-dupl 6, jscpd 3, file-size-check 4) into deliberate non-fixes                                                                        | Medium | S      | Cleanup       | carried |
+| 24 | T30: flip README status after first upstream PR kept green via jj sync loop                                                                                                      | Low    | S      | Documentation | carried |
+| 25 | T33: site-repo follow-ups (emeet composition, og:image, CI deploy)                                                                                                               | Medium | M+     | Feature       | carried |
+| 26 | T57: extract templ-components Go SSG into canonical private `website-template` repo                                                                                              | High   | M      | Feature       | carried |
+| 27 | T58/T59 (blocked by T57): `websitelaunch` CLI, then website-launch slim + evals re-run                                                                                           | Medium | M      | Feature       | carried |
+| 28 | T68 (blocked): agent-skills branch policy decision — this session committed the wave onto `docs-health-verify-legs`, making the question concrete                                | High   | S      | Decision      | carried |
+| 29 | ROADMAP: design-memory convention (tiny shared design-notes file) — revisit once design-to-code has real runs                                                                    | Low    | S      | Idea          | carried |
+| 30 | ROADMAP: Lombiq-style tailwind docs-snapshot skill with staleness gate — only if static claims prove insufficient (g2 decides)                                                   | Low    | M      | Idea          | carried |
 
 ## g) Top 3 questions I cannot figure out myself
 
@@ -307,7 +307,7 @@ radical-honesty bar:
    verification posture), and frontend-design itself was 7 months stale
    upstream before today. Does that push you toward proposing the bridge
    paragraphs upstream after all — or does the measured staleness of the
-   upstream repo argue *stronger* for keeping the layer first-party where it
+   upstream repo argue _stronger_ for keeping the layer first-party where it
    can't drift?
 2. **How much eval rigor do you want, per skill?** Iteration-1 cost ~7 agent
    sessions and produced a directional delta (13/13 vs 12/13, n=1). Rigorous
@@ -318,7 +318,7 @@ radical-honesty bar:
 3. **Claim-freshness policy (carried from 20:39 g2, now 15 claims).** Manual
    re-verification after each Tailwind minor release vs a Lombiq-style local
    docs-snapshot sync with a staleness gate. Today's eval sharpened the
-   stakes: the reference was *missing* two claims the eval surfaced, which
+   stakes: the reference was _missing_ two claims the eval surfaced, which
    argues the claims list itself needs a maintenance trigger, not just a
    re-verification cadence. Static table, sync script, or something in
    between — your call.

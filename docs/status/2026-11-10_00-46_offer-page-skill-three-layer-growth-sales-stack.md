@@ -42,16 +42,16 @@
 
 ## TL;DR
 
-| Question                                        | Answer                                                                     |
-| ----------------------------------------------- | -------------------------------------------------------------------------- |
-| What was built?                                  | `offer-page` skill — page assembly for any paid offer (108-line SKILL.md, 3 references, 1 asset) |
-| What changed around it?                          | first-customers' page anatomy + copy-brief git-mv'd in; Step 4 + teardown now hand off by skill name; two-way description disambiguation |
-| Split brains?                                    | None created, one prevented — page knowledge now has exactly one owner    |
-| Research quality?                                | Every number primary-traced or explicitly flagged; one circulating myth corrected (+68% → +213.16%) |
-| Biggest save                                     | The voice agent caught that the repo's existing "+68%" CTA figure contradicts the archived primary |
-| Trigger check                                    | Natural-trigger probe PASSED in a fresh session (SKILLS-USED: offer-page) |
-| Biggest operational annoyance                    | 3 provider failures in a row for the cut-list agent (zai rate-limit → gemini prepay-depleted → huggingface prepay-depleted → zai flash worked) |
-| Repo state at write time                         | Gates green; trigger probe pending; commits by this session listed below   |
+| Question                      | Answer                                                                                                                                         |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| What was built?               | `offer-page` skill — page assembly for any paid offer (108-line SKILL.md, 3 references, 1 asset)                                               |
+| What changed around it?       | first-customers' page anatomy + copy-brief git-mv'd in; Step 4 + teardown now hand off by skill name; two-way description disambiguation       |
+| Split brains?                 | None created, one prevented — page knowledge now has exactly one owner                                                                         |
+| Research quality?             | Every number primary-traced or explicitly flagged; one circulating myth corrected (+68% → +213.16%)                                            |
+| Biggest save                  | The voice agent caught that the repo's existing "+68%" CTA figure contradicts the archived primary                                             |
+| Trigger check                 | Natural-trigger probe PASSED in a fresh session (SKILLS-USED: offer-page)                                                                      |
+| Biggest operational annoyance | 3 provider failures in a row for the cut-list agent (zai rate-limit → gemini prepay-depleted → huggingface prepay-depleted → zai flash worked) |
+| Repo state at write time      | Gates green; trigger probe pending; commits by this session listed below                                                                       |
 
 ## What the session did
 

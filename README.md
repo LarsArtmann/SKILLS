@@ -88,10 +88,10 @@ Skills organized by domain — live count via `scripts/check-skills.sh` (never h
 
 ### Growth & Sales
 
-| Skill               | What It Does                                                                                                                                                                                                              | Status |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| **first-customers** | 0→1 online sales playbook for (micro-)SaaS — market research, positioning, offer/pricing, launch channels, activation, funnel diagnosis; full worked example + launch checklist (page assembly hands off to offer-page)    | 🆕 New |
-| **offer-page**      | Build/audit a page that SELLS one paid offer — 9-section persuasion arc, evidence-backed cut list (what to remove), 10 mechanical voice gates, pre-launch QA; owns page assembly for any offer type                        | 🆕 New |
+| Skill               | What It Does                                                                                                                                                                                                            | Status |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| **first-customers** | 0→1 online sales playbook for (micro-)SaaS — market research, positioning, offer/pricing, launch channels, activation, funnel diagnosis; full worked example + launch checklist (page assembly hands off to offer-page) | 🆕 New |
+| **offer-page**      | Build/audit a page that SELLS one paid offer — 9-section persuasion arc, evidence-backed cut list (what to remove), 10 mechanical voice gates, pre-launch QA; owns page assembly for any offer type                     | 🆕 New |
 
 ### Communication & Email
 

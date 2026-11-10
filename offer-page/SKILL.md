@@ -28,12 +28,12 @@ foggy one; if the offer is the problem, stop and fix it upstream
 
 ## Inputs — do not start prose without them
 
-| Missing input                       | Get it from                                        |
-| ----------------------------------- | -------------------------------------------------- |
-| The offer: what they get, price, guarantee | first-customers Step 3 (offer-and-pricing)   |
-| ONE reader: ICP, their verbatim words, awareness stage | first-customers Steps 1-2 (research, positioning) |
+| Missing input                                           | Get it from                                                         |
+| ------------------------------------------------------- | ------------------------------------------------------------------- |
+| The offer: what they get, price, guarantee              | first-customers Step 3 (offer-and-pricing)                          |
+| ONE reader: ICP, their verbatim words, awareness stage  | first-customers Steps 1-2 (research, positioning)                   |
 | ONE goal: buy / start trial / join waitlist / book demo | decide now — exactly one; a page for two goals converts for neither |
-| Proof that actually exists today    | the proof ladder — borrow trust if zero customers  |
+| Proof that actually exists today                        | the proof ladder — borrow trust if zero customers                   |
 
 ## Build procedure
 
