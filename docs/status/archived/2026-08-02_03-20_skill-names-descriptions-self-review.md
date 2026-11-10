@@ -72,7 +72,7 @@
 | ~~11~~ done — desc now 529 chars, was 342 (verified 2026-11-10) | ~~Consider deeper description improvements for `brutal-self-review` (342 chars — thinnest now)~~ | ~~Low~~ | ~~Low~~ |
 | ~~12~~ done — desc now 598 chars, was 424 (verified 2026-11-10) | ~~Consider deeper description improvements for `architecture-visualization` (424 chars)~~ | ~~Low~~ | ~~Low~~ |
 | ~~13~~ done — rich trigger-first desc now (verified 2026-11-10) | ~~Consider deeper description improvements for `nix-private-go-repos` (434 chars)~~ | ~~Low~~ | ~~Low~~ |
-| ~~14~~ done at `e50929d`, ` 50ecd7d` | ~~Review whether `verify-external-claims` ↔ `verify-before-filing` split is clear in both descriptions~~ | ~~Medium~~ | ~~Low~~ |
+| ~~14~~ done at `e50929d`, `50ecd7d` | ~~Review whether `verify-external-claims` ↔ `verify-before-filing` split is clear in both descriptions~~ | ~~Medium~~ | ~~Low~~ |
 | ~~15~~ done — all skills carry allowed-tools; frontmatter validated by check-skills (verified 2026-11-10) | ~~Check if `allowed-tools` fields need updating after description changes (new trigger contexts may need new tools)~~ | ~~Low~~ | ~~Low~~ |
 | ~~16~~ done at `580df98` | ~~Add a "competing skills" section to `how-to-write-skills.md` documenting how to disambiguate~~ | ~~Medium~~ | ~~Medium~~ |
 | 17 **→ routed to ROADMAP 2026-11-10** | Run the full description-optimization loop (skill-creator's `run_loop.py`) on the 5 thinnest descriptions | Medium | High |
