@@ -67,7 +67,7 @@ the permission boundary — it is deliberate systemd hardening.
 
    Tel: +49 173 155 9729 | +1 (408) 475-7593
    ```
-2. **Write a spec file** `/tmp/gmail-drafts-spec.json`: a JSON array of
+2. **Write a spec file** `/tmp/gmail-drafts-spec-<case-slug>.json` (UNIQUE per staging wave, e.g. `-pea-inquiry`, `-glovo-letters`; the stem should match the persistent home's file stem): a JSON array of
    `{"to": "...", "cc": ["..."], "subject": "...", "body": "..."}` objects.
    `cc`/`bcc` are optional arrays; optional `"from": "..."` bakes a send-as
    alias into the draft (post-create readback warns if Gmail stored a different
@@ -79,7 +79,7 @@ the permission boundary — it is deliberate systemd hardening.
 3. **Syntax-check the script and the spec** (no bytecode, no root needed):
 
    ```bash
-   bash -n /home/lars/projects/SKILLS/gmail-drafts/scripts/gmail_drafts.sh && jq empty /tmp/gmail-drafts-spec.json && echo OK
+   bash -n /home/lars/projects/SKILLS/gmail-drafts/scripts/gmail_drafts.sh && jq empty /tmp/gmail-drafts-spec-<case-slug>.json && echo OK
    ```
 
 4. **Hand the user the one-liner** (never run it yourself). The script and the
@@ -89,7 +89,10 @@ the permission boundary — it is deliberate systemd hardening.
 
    ```bash
    cp /home/lars/projects/SKILLS/gmail-drafts/scripts/gmail_drafts.sh /tmp/gmail_drafts.sh
-   sudo -u inboxclean /tmp/gmail_drafts.sh --account work --spec /tmp/gmail-drafts-spec.json
+   sudo -u inboxclean /tmp/gmail_drafts.sh --account work --spec /tmp/gmail-drafts-spec-<case-slug>.json
+   ```
+
+   NEVER reuse one fixed spec filename across waves: sibling sessions stage drafts on this box CONCURRENTLY, and a second write to the shared name silently replaces the first session's unsent spec (2026-11-10 CV session: the fixed-name design was flagged by the owner after two sessions used the identical path on the same day).
    ```
 
    `--account main` targets the personal mailbox. Useful companions:
@@ -149,6 +152,7 @@ the permission boundary — it is deliberate systemd hardening.
 | `400` from drafts.create                    | Base64 not URL-safe or message not RFC 2822 — use the bundled builder                                                                                                                                                                                                                                                                                                                                                         |
 | `401 invalid_grant`                         | Token expired/revoked (testing-mode tokens die after 7 days) — see the auth runbook in `SystemNix/modules/nixos/services/inboxclean.nix`; re-auth needs the user's browser                                                                                                                                                                                                                                                    |
 | `429` User-rate limit exceeded (Retry-After in the error body) | Gmail per-user quota, SHARED by everything API-active on the same mailbox: sibling sessions staging drafts AND the InboxClean timers running on the account (verified 2026-11-10 on the CV box: `inboxclean-canary-metrics` every ~2 min + `inboxclean-sync` every 30 min via `systemctl list-timers`), so a one-off create keeps colliding with a saturated window. Convert the Retry-After timestamp (UTC!) to local time, wait past it, then rerun the SAME command unchanged: staging is idempotent by subject, so a partial run needs no cleanup. Pre-probe with `--list` before staging batches: a free read that reveals existing drafts AND the quota posture (2026-11-10 CV session: first staging attempt died 429 after sibling sessions had staged several drafts into the same mailbox the same morning) |
+| Fixed shared `/tmp/gmail-drafts-spec.json` across waves | Cross-session CLOBBER: the next session's spec write silently replaces an unsent earlier spec under the name everyone copies from the template. Use `-<case-slug>`-suffixed names, keep the persistent-home stem identical, and `jq empty` the /tmp copy immediately before handing off the one-liner |
 | `404 notFound` on `--delete`                | Gmail **rotated the draft id**: heavy in-window editing re-saves the draft under a NEW id and the old entity vanishes. Recover the current id from the `SKIP (subject exists as draft <id>)` line or `--list`; have the user close the open compose window first (open windows re-save zombie drafts), then `--delete` the CURRENT id (2026-10-28, case-fuehrerschein-ersatz: `r3436467442618789518` → `r940217367725733071`) |
 
 ## Exporting messages as .eml (forensic evidence layer)
