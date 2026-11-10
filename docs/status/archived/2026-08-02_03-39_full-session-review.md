@@ -124,8 +124,8 @@ See CHANGELOG "2026-08-02" milestone for what shipped from this session.
 | Report item                                               | TODO_LIST ID | Notes                           |
 | --------------------------------------------------------- | ------------ | ------------------------------- |
 | ~~Trigger collision analysis (f #1)~~ done at `50ecd7d` | ~~T1~~ | ~~Critical — never run~~ |
-| ~~Disambiguate code-quality-scan vs full-code-review (f #2)~~ done at `50ecd7d` | ~~T2~~ | ~~~~ |
-| ~~Disambiguate deduplicate-code vs code-quality-scan (f #3)~~ done at `50ecd7d` | ~~T2~~ | ~~~~ |
+| ~~Disambiguate code-quality-scan vs full-code-review (f #2)~~ done at `50ecd7d` | ~~T2~~ | ~~ ~~ |
+| ~~Disambiguate deduplicate-code vs code-quality-scan (f #3)~~ done at `50ecd7d` | ~~T2~~ | ~~ ~~ |
 | ~~Audit verify-before-filing/SKILL.md (f #4)~~ done — audited — e50929d + 2026-09-18 fix-on-sight `686536d` | ~~T3~~ | ~~Committed blind, never reviewed~~ |
 
 ### Routed to ROADMAP (vague / long-term / blockers)
