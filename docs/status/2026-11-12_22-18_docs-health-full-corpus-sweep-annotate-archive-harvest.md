@@ -7,8 +7,8 @@
 ## TL;DR
 
 Executed the docs-health skill end-to-end over the whole documentation
-corpus: **77 historical files annotated and archived**, **51 new TODO rows
-(T71–T121)** and 8 new ROADMAP Open Questions harvested, **9+ drift fixes
+corpus: **77 historical files annotated and archived**, **49 new TODO rows
+(T71–T121; T73/T82 folded into done-work, never minted)** and 8 new ROADMAP Open Questions harvested, **9+ drift fixes
 landed on sight**, and the **docs-gates battery adopted repo-side** —
 freshness, routing, cadence, and audit-all (104 reports replayed) all
 PASS; annotate pinned at its measured pre-canon debt (`annotate_max: 372`,
@@ -22,7 +22,7 @@ AGENTS §5.13). All six living docs re-verified against the tree.
 | 77 files archived via `git mv`, every item struck-with-verdict / w / n / s / routed; `check-rows --strict` + `bare-rows` green per file | manifest below; battery annotate corpus 4175 struck items |
 | docs-gates battery: freshness PASS, routing PASS (0 unrouted), cadence PASS (5 unarchived, oldest 9d), audit-all FRESH (104 reports, 0 unharvested) | `nix run github:Artmann-Technologies/docs-gates -- run .` |
 | `.docs-gates.json` annotate ratchet pinned (372) with drain policy | AGENTS §5.13 |
-| TODO_LIST T71–T121 (51 rows) + ROADMAP 8 Open Questions + themes 1/2/6/9/10 additions; every candidate row pre-flighted SAFE | pre-flight caught 7 would-drift tokens on draft 1 |
+| TODO_LIST T71–T121 (49 rows) + ROADMAP 8 Open Questions + themes 1/2/6/9/10 additions; every candidate row pre-flighted SAFE | pre-flight caught 7 would-drift tokens on draft 1 |
 | Fix-on-sight: toolsdk step-8 parenthetical; FEATURES dated note + 4 drift fixes; README counts claim; AGENTS §5.10 rule-7 repoint + aggregation-commit rule; textstat external-deps row; `.gitignore` pycache; 3 rule-F spacing fixes | commits 2493c64, c386bab, 551e09b + daemon bundles |
 | June HTML obligations routed (T95–T98 + ROADMAP theme 9); reviews HTML archived (all four plan items executed) | corpus-a + corpus-g2 inventories |
 | Reconciliation decision doc annotated: Q0 answered 2026-10-27 §A (quoted before routing), plan steps → T57–T59, evidence tables ledger-exempt | `2026-10-11_08-30_*` |
