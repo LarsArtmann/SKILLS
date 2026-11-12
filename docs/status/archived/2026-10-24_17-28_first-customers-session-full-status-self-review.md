@@ -150,7 +150,7 @@ propagated back (same precedent as 2026-10-17_00-52 report).
 ~~7. Worked end-to-end example reference (one fictional micro-SaaS through all 8 steps) — High, M, Feature.~~ done — references/worked-example.md exists (verified 2026-11-10)
 ~~8. Page-review/teardown mode in SKILL.md (audit an existing page vs build) — High, S/M, Feature.~~ done — SKILL.md "Mode: page teardown" exists (verified 2026-11-10)
 ~~9. assets/launch-checklist.md — launch-day runbook (PH/HN/Reddit posts, maker comment, badge) — Medium, S, Feature.~~ done — assets/launch-checklist.md exists (verified 2026-11-10)
-~~10. assets/copy-brief.md — positioning→copywriting handoff template — Medium, S, Feature.~~ routed to TODO_LIST 2026-11-10
+~~10. assets/copy-brief.md — positioning→copywriting handoff template — Medium, S, Feature.~~ done — handoff template landed (later moved to offer-page/assets/copy-brief.md in the 2026-11-10 three-layer split)
 ~~11. Cold-outreach mini-reference (3 templates + reply handling + volume rules) — Medium, S, Feature.~~ routed — references/cold-outreach.md exists (verified 2026-11-10)
 ~~12. Waitlist→launch email sequence reference — Medium, S, Feature.~~ routed — references/waitlist-emails.md exists (verified 2026-11-10)
 ~~13. Cross-check website-launch demo-video doctrine vs first-customers page doctrine; link or de-dupe — Medium, S, Quality.~~ routed to TODO_LIST 2026-11-10

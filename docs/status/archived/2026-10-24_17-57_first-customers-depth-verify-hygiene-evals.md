@@ -7,13 +7,13 @@ deciding the three open questions autonomously.
 
 ## Decisions on the three open questions
 
-1. **First exercising product:** fictional evals. No real product was
+~~1. **First exercising product:** fictional evals. No real product was~~ done — decision recorded and implemented (fictional StatusHawk worked example landed 2026-10-24)
    offered; the worked example (StatusHawk) is the fictional exercise.
-2. **Trigger precedence:** kept as designed — "improve my landing page
+~~2. **Trigger precedence:** kept as designed — "improve my landing page~~ done — collision negatives encoded in evals/trigger-eval.json (verified 2026-11-10)
    copy" (prose-level) belongs to `copywriting`; strategy/diagnosis/funnel
    questions to `first-customers`. The description's disambiguation line and
    the new 6 copywriting-collision negatives in the trigger set encode it.
-3. **Budget:** both research-hardening AND depth/evals were attempted —
+~~3. **Budget:** both research-hardening AND depth/evals were attempted —~~ done — historical: depth + evals completed; research hardening routed to TODO_LIST 2026-11-10
    research was quota-blocked (below); depth and evals completed.
 
 ## What was done
@@ -121,9 +121,9 @@ deciding the three open questions autonomously.
 
 ## Next tasks (HARVEST input)
 
-1. First real run of the skill on an actual product (the 🆕→🟢 gate).
-2. Execute evals.json + trigger-eval.json in a Claude-Code-capable session.
-3. Pin Paddle's fee + Stripe Managed Payments fees when research quota
+~~1. First real run of the skill on an actual product (the 🆕→🟢 gate).~~ routed to TODO_LIST 2026-11-10
+~~2. Execute evals.json + trigger-eval.json in a Claude-Code-capable session.~~ routed to TODO_LIST 2026-11-10
+~~3. Pin Paddle's fee + Stripe Managed Payments fees when research quota~~ routed to TODO_LIST 2026-11-10
    returns; delete the "check the page" pointer for at most one of them.
-4. Aggregation repo: unrelated third-party churn + stash@{0} still
+~~4. Aggregation repo: unrelated third-party churn + stash@{0} still~~ routed to TODO_LIST 2026-11-10
    uncommitted on the WIP branch — user's call, untouched deliberately.

@@ -27,6 +27,7 @@ opportunistic site migration, close the ROADMAP 848-line question). This
 document merges them into one plan gated on a single decision.
 
 ## 1. Verification of the 04:29 Report (all run this session)
+<!-- check-rows:ledger -->
 
 | # | Claim                                        | Verdict                                                                                                                                                                             |
 | - | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -66,6 +67,7 @@ double extraction, double CI, double `init` machinery.
 ## 3. The Decision (Q0) — Evidence Both Ways
 
 **Q0: extract the Go SSG or the Astro site as the canonical template baseline?**
+<!-- check-rows:ledger -->
 
 | For Go SSG baseline (04:28)                                               | For Astro baseline (04:29)                                          |
 | ------------------------------------------------------------------------- | ------------------------------------------------------------------- |
@@ -94,15 +96,15 @@ separate future v2, not a parallel track.
 
 | Step | What                                                                                                                                                                                                                       | Source plan                | Gate    |
 | ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | ------- |
-| 0    | Lars decides **Q0 + Q1–Q5** (04:29 §7: repo name, CLI language, gogenfilter's fate, visibility, T33 sequencing)                                                                                                            | both                       | user    |
-| 1    | Extract chosen baseline → canonical repo; acceptance test: builds from a clean checkout that has never seen the source repo                                                                                                | 04:29 §6.1 + 04:28 Phase A | Q0      |
-| 1a   | _(Go only)_ close parity gaps in the template: editLink, per-page lastUpdated; pin standalone `tailwindcss` in CI (nodeless)                                                                                               | 04:28 §2                   | Q0 = Go |
-| 2    | `websitelaunch doctor` — Phase 0 as code (stack-agnostic, useful day one)                                                                                                                                                  | 04:29 §5.2                 | step 1  |
-| 3    | `init` — scaffold end-to-end; smoke-test = scaffold scratch repo + build                                                                                                                                                   | 04:29 §5.2                 | step 2  |
-| 4    | `check` — DoD + Phase 4 as code (lockfile-or-go.mod consistency, license 4-file check, og:image, mp4 cache headers, hero-snippet compile); run against the source site first — its drift findings validate the checker     | 04:29 §5.2/§6.4            | step 3  |
-| 5    | Skill slim: Phase 3 → scaffold instructions, absorb references per the disposition tables (04:29 §5.3 / 04:28 §6 — same destination either way), update FEATURES row, **re-run `evals/`**, close ROADMAP 848-line question | both                       | step 4  |
-| 6    | Dogfood on the next real launch; fixes flow to the template repo, not the skill                                                                                                                                            | both                       | step 5  |
-| 7    | Fleet: Go baseline → opportunistic per-site migration (04:28 Phase D); Astro baseline → `retrofit` sweep ordered by CSP/security gaps (04:29 §6.7)                                                                         | per Q0                     | step 6  |
+| ~~0~~ done — decided 2026-10-27 — docs/decisions/2026-10-27_open-decisions.md §A (Q0=Go SSG, matching this recommendation; Q1-Q5 all answered) | ~~Lars decides **Q0 + Q1–Q5** (04:29 §7: repo name, CLI language, gogenfilter's fate, visibility, T33 sequencing)~~ | ~~both~~ | ~~user~~ |
+| 1 **→ routed to TODO_LIST 2026-11-10 (T57)** | Extract chosen baseline → canonical repo; acceptance test: builds from a clean checkout that has never seen the source repo | 04:29 §6.1 + 04:28 Phase A | Q0 |
+| 1a **→ routed to TODO_LIST 2026-11-10 (T57)** | _(Go only)_ close parity gaps in the template: editLink, per-page lastUpdated; pin standalone `tailwindcss` in CI (nodeless) | 04:28 §2 | Q0 = Go |
+| 2 **→ routed to TODO_LIST 2026-11-10 (T58)** | `websitelaunch doctor` — Phase 0 as code (stack-agnostic, useful day one) | 04:29 §5.2 | step 1 |
+| 3 **→ routed to TODO_LIST 2026-11-10 (T58)** | `init` — scaffold end-to-end; smoke-test = scaffold scratch repo + build | 04:29 §5.2 | step 2 |
+| 4 **→ routed to TODO_LIST 2026-11-10 (T58)** | `check` — DoD + Phase 4 as code (lockfile-or-go.mod consistency, license 4-file check, og:image, mp4 cache headers, hero-snippet compile); run against the source site first — its drift findings validate the checker | 04:29 §5.2/§6.4 | step 3 |
+| 5 **→ routed to TODO_LIST 2026-11-10 (T59)** | Skill slim: Phase 3 → scaffold instructions, absorb references per the disposition tables (04:29 §5.3 / 04:28 §6 — same destination either way), update FEATURES row, **re-run `evals/`**, close ROADMAP 848-line question | both | step 4 |
+| 6 **→ routed to TODO_LIST 2026-11-10 (dogfood aging on next real launch)** | Dogfood on the next real launch; fixes flow to the template repo, not the skill | both | step 5 |
+| 7 **→ routed to ROADMAP 2026-11-10 (fleet migration, post-template)** | Fleet: Go baseline → opportunistic per-site migration (04:28 Phase D); Astro baseline → `retrofit` sweep ordered by CSP/security gaps (04:29 §6.7) | per Q0 | step 6 |
 
 ## 5. Executed This Session vs Blocked
 

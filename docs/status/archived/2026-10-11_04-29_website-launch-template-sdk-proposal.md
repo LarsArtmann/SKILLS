@@ -48,23 +48,23 @@ of a website into:
 
 | Class            | Count | Mechanism                                              |
 | ---------------- | ----- | ------------------------------------------------------ |
-| Copy verbatim    | ~12   | Copy as-is from `~/projects/gogenfilter/website/`      |
-| Customize fields | ~15   | Copy from gogenfilter, edit name/URLs/accent/sidebar   |
-| Write fresh      | ~20   | Project-specific content, "follow gogenfilter pattern" |
+~~| Copy verbatim    | ~12   | Copy as-is from `~/projects/gogenfilter/website/`      |~~ done — point-in-time verification (2026-10-11); superseded by the 2026-10-27 decision package
+~~| Customize fields | ~15   | Copy from gogenfilter, edit name/URLs/accent/sidebar   |~~ done — point-in-time verification (2026-10-11); superseded by the 2026-10-27 decision package
+~~| Write fresh      | ~20   | Project-specific content, "follow gogenfilter pattern" |~~ done — point-in-time verification (2026-10-11); superseded by the 2026-10-27 decision package
 
 So the de-facto template is **gogenfilter's working tree**, read at launch
 time. Three structural consequences:
 
-1. **The baseline is a moving target.** gogenfilter evolves for
+~~1. **The baseline is a moving target.** gogenfilter evolves for~~ done — structural analysis validated; the drift class dies via TODO T57 (canonical CI-green template)
    gogenfilter. Every launch inherits whatever state that repo happens to
    be in — including stale pins, as pitfall #4 documents ("Pinning
    `vite: 7.3.2` (copied from gogenfilter's older lockfile) causes a build
    failure"). That is not a one-off: it is the _designed_ failure mode of
    copy-from-a-live-repo.
-2. **The version matrix is prose.** `references/dependency-versions.md`
+~~2. **The version matrix is prose.** `references/dependency-versions.md`~~ done — analysis validated; lockfile-as-truth adopted in the template (TODO T57/T58)
    (186 lines) duplicates, in markdown, what a canonical `package.json`
    would say once. Two sources of truth = guaranteed split brain.
-3. **Verification is re-invented per launch.** Phase 4's build check,
+~~3. **Verification is re-invented per launch.** Phase 4's build check,~~ done — analysis validated; `check` codifies DoD/Phase 4 (TODO T58)
    visual QA gate, and `references/definition-of-done.md` (74 lines) are
    executed by agent discipline every time, from instructions, not from a
    tool that fails loudly.
@@ -163,10 +163,10 @@ demo video retrofit…"). With a canonical template:
 
 | # | Option                                                                         | Verdict          | Reason                                                                                                                                                                                                                                                                 |
 | - | ------------------------------------------------------------------------------ | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A | **New `website-template` repo + small purpose-built `websitelaunch` CLI**      | **PICK**         | Fixes drift at the root (canonical, CI-green baseline); pitfall list becomes code; skill shrinks; no coupling to broken ecosystem                                                                                                                                      |
-| B | Build the scaffold **on `template-CLI`** (the literal "actual SDK")            | Reject (for now) | Zero consumers, C+ grade, 0% coverage in 13 packages; wrong first consumer (May review P2 says `templates` goes first). Revisit after that integration lands                                                                                                           |
-| C | **Vendor the template into the skill** as `assets/` (html-report-kit model)    | Reject           | Vendoring exists so per-skill installs work for third parties; website-launch is Lars-machine-only (already assumes `~/projects/domains`, gogenfilter). A 94-file Astro project + `pnpm-lock.yaml` inside a docs-only repo violates §9 spirit and bloats every install |
-| D | Keep skill-only; add `scripts/` (`preflight.sh`, `verify.sh`) to the skill dir | Partial          | The cheap subset of A — but the template _repo_ is the part that fixes the drift class; scripts without a canonical baseline just polish the copy step. Fold into A                                                                                                    |
+~~| A | **New `website-template` repo + small purpose-built `websitelaunch` CLI**      | **PICK**         | Fixes drift at the root (canonical, CI-green baseline); pitfall list becomes code; skill shrinks; no coupling to broken ecosystem                                                                                                                                      |~~ **Superseded — docs/decisions/2026-10-27_open-decisions.md §A (Q0–Q5) + TODO T57–T59.**
+~~| B | Build the scaffold **on `template-CLI`** (the literal "actual SDK")            | Reject (for now) | Zero consumers, C+ grade, 0% coverage in 13 packages; wrong first consumer (May review P2 says `templates` goes first). Revisit after that integration lands                                                                                                           |~~ **Superseded — docs/decisions/2026-10-27_open-decisions.md §A (Q0–Q5) + TODO T57–T59.**
+~~| C | **Vendor the template into the skill** as `assets/` (html-report-kit model)    | Reject           | Vendoring exists so per-skill installs work for third parties; website-launch is Lars-machine-only (already assumes `~/projects/domains`, gogenfilter). A 94-file Astro project + `pnpm-lock.yaml` inside a docs-only repo violates §9 spirit and bloats every install |~~ **Superseded — docs/decisions/2026-10-27_open-decisions.md §A (Q0–Q5) + TODO T57–T59.**
+~~| D | Keep skill-only; add `scripts/` (`preflight.sh`, `verify.sh`) to the skill dir | Partial          | The cheap subset of A — but the template _repo_ is the part that fixes the drift class; scripts without a canonical baseline just polish the copy step. Fold into A                                                                                                    |~~ **Superseded — docs/decisions/2026-10-27_open-decisions.md §A (Q0–Q5) + TODO T57–T59.**
 
 ---
 
@@ -197,10 +197,10 @@ subcommands, each mapping to a skill phase:
 
 | Subcommand | Replaces                                         | What it does                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ---------- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `doctor`   | Phase 0 (§0.0–0.5)                               | Existing-site detection, credential/API-key checks, `firebase projects:list` + hosting-site collision, DNS + `gh repo` name-collision grep, `gh secret list` (pitfall #16 pre-check). Prints blockers as What/Why/Fix                                                                                                                                                                                                               |
-| `init`     | Phase 3 + file-manifest.md                       | Clone/copy template into `{repo}/website/`, substitute flags: `--name --repo --type library\|application --accent --subdomain --site-id --firebase shared\|standalone --branch [--csp] [--og]`. Emits `.npmrc` only when needed (pitfall #5), correct `.firebaserc`/`firebase.json` shape per shared-vs-standalone table (§0.1)                                                                                                     |
-| `check`    | Phase 4 + definition-of-done.md + visual-QA gate | `astro check` = 0 errors, `html-validate`, lockfile present + package-manager consistency (#7, #20), `GOEXPERIMENT=jsonv2` documented if `go.mod` needs it (#8), license consistency across LICENSE/`.goreleaser.yaml`/`flake.nix`/`package.json` (#19), og:image 1200×630, mp4 cache headers, video-present-on-landing. **Advanced:** extract `hero-code.ts` and compile the snippet in a scratch module (pitfall #15, mechanized) |
-| `retrofit` | §0.0 maintenance audit                           | Diff an existing site against current template; report drift as actionable checklist                                                                                                                                                                                                                                                                                                                                                |
+~~| `doctor`   | Phase 0 (§0.0–0.5)                               | Existing-site detection, credential/API-key checks, `firebase projects:list` + hosting-site collision, DNS + `gh repo` name-collision grep, `gh secret list` (pitfall #16 pre-check). Prints blockers as What/Why/Fix                                                                                                                                                                                                               |~~ done — encoded in TODO T58 (websitelaunch CLI: doctor/init/check; decided 2026-10-27, Q2: Go stdlib-only)
+~~| `init`     | Phase 3 + file-manifest.md                       | Clone/copy template into `{repo}/website/`, substitute flags: `--name --repo --type library\|application --accent --subdomain --site-id --firebase shared\|standalone --branch [--csp] [--og]`. Emits `.npmrc` only when needed (pitfall #5), correct `.firebaserc`/`firebase.json` shape per shared-vs-standalone table (§0.1)                                                                                                     |~~ done — encoded in TODO T58 (websitelaunch CLI: doctor/init/check; decided 2026-10-27, Q2: Go stdlib-only)
+~~| `check`    | Phase 4 + definition-of-done.md + visual-QA gate | `astro check` = 0 errors, `html-validate`, lockfile present + package-manager consistency (#7, #20), `GOEXPERIMENT=jsonv2` documented if `go.mod` needs it (#8), license consistency across LICENSE/`.goreleaser.yaml`/`flake.nix`/`package.json` (#19), og:image 1200×630, mp4 cache headers, video-present-on-landing. **Advanced:** extract `hero-code.ts` and compile the snippet in a scratch module (pitfall #15, mechanized) |~~ done — encoded in TODO T58 (websitelaunch CLI: doctor/init/check; decided 2026-10-27, Q2: Go stdlib-only)
+~~| `retrofit` | §0.0 maintenance audit                           | Diff an existing site against current template; report drift as actionable checklist                                                                                                                                                                                                                                                                                                                                                |~~ **NOT-DO — decision package (T58) scopes the CLI to doctor/init/check; retrofit not included.**
 
 All nix-shell wrapping (`pnpm`/`node`/`firebase` not in PATH, pitfall #3;
 re2-vs-bun #11; terraform unfree #2) lives **inside the CLI**, so the
@@ -223,14 +223,14 @@ skill stops repeating invocation shapes per command.
 
 | Skill artifact                           | Lines | Goes where                               |
 | ---------------------------------------- | ----- | ---------------------------------------- |
-| `references/file-manifest.md`            | 196   | `init` (classification becomes code)     |
-| `references/dependency-versions.md`      | 186   | template `pnpm-lock.yaml`                |
-| `references/color-palette.md`            | 314   | template `palettes/` dir                 |
-| `references/definition-of-done.md`       | 74    | `check`                                  |
-| `references/ci-workflow.md`              | 151   | template `.github/workflows/website.yml` |
-| Phase 3 body in SKILL.md                 | ~150  | `init` + "write the fresh files"         |
-| `references/website-creation-details.md` | 119   | mostly (favicon/MDX bits stay)           |
-| `references/common-pitfalls.md`          | 588   | mechanical half → CLI checks             |
+| ~~`references/file-manifest.md`~~ done — absorption encoded in TODO T59 (skill slim per disposition tables) | ~~196~~ | ~~`init` (classification becomes code)~~ |
+| ~~`references/dependency-versions.md`~~ done — absorption encoded in TODO T59 (skill slim per disposition tables) | ~~186~~ | ~~template `pnpm-lock.yaml`~~ |
+| ~~`references/color-palette.md`~~ done — absorption encoded in TODO T59 (skill slim per disposition tables) | ~~314~~ | ~~template `palettes/` dir~~ |
+| ~~`references/definition-of-done.md`~~ done — absorption encoded in TODO T59 (skill slim per disposition tables) | ~~74~~ | ~~`check`~~ |
+~~| `references/ci-workflow.md`              | 151   | template `.github/workflows/website.yml` |~~ done — absorption encoded in TODO T59 (skill slim per disposition tables)
+~~| Phase 3 body in SKILL.md                 | ~150  | `init` + "write the fresh files"         |~~ done — absorption encoded in TODO T59 (skill slim per disposition tables)
+~~| `references/website-creation-details.md` | 119   | mostly (favicon/MDX bits stay)           |~~ done — absorption encoded in TODO T59 (skill slim per disposition tables)
+~~| `references/common-pitfalls.md`          | 588   | mechanical half → CLI checks             |~~ done — absorption encoded in TODO T59 (skill slim per disposition tables)
 
 Fully-absorbed references alone: ~921 lines; with partials, well over
 1,200 lines move out of agent context into executable form. SKILL.md
@@ -247,22 +247,22 @@ get **executed**. Recommend closing that open question with this decision.
 
 ## 6. Migration Plan (incremental, reversible at every step)
 
-1. **Extract** — create `website-template` from gogenfilter's website;
+~~1. **Extract** — create `website-template` from gogenfilter's website;~~ done — step encoded in TODO T57 (extraction + clean-checkout acceptance)
    parameterize; CI green from a clean checkout (this is the
    acceptance test: it must build on a machine that has never seen
    gogenfilter).
-2. **`doctor`** — standalone value even before `init`; Phase 0 as code.
-3. **`init`** — scaffold end-to-end; smoke-test by scaffolding a scratch
+~~2. **`doctor`** — standalone value even before `init`; Phase 0 as code.~~ done — encoded in TODO T58
+~~3. **`init`** — scaffold end-to-end; smoke-test by scaffolding a scratch~~ done — encoded in TODO T58
    repo and building it.
-4. **`check`** — codify DoD + Phase 4; run against gogenfilter itself as
+~~4. **`check`** — codify DoD + Phase 4; run against gogenfilter itself as~~ done — encoded in TODO T58
    the first guinea pig (its drift findings validate the checker).
-5. **Skill slim** — one session: Phase 3 → scaffold instructions, absorb
+~~5. **Skill slim** — one session: Phase 3 → scaffold instructions, absorb~~ done — encoded in TODO T59
    references, update FEATURES.md row, re-run `scripts/check-skills.sh`,
    update ROADMAP (close the 848-lines question) and TODO T33 (fold the
    CI-deploy-workflow item into template work).
-6. **Dogfood** — next real launch uses it exclusively; fixes flow back
+~~6. **Dogfood** — next real launch uses it exclusively; fixes flow back~~ done — gated on T57→T58 chain (TODO_LIST)
    to the template repo, not the skill.
-7. **`retrofit` sweep** — run across the 18 sites; prioritize
+~~7. **`retrofit` sweep** — run across the 18 sites; prioritize~~ **NOT-DO — retrofit dropped from the decided CLI scope (T58: doctor/init/check).**
    security-header/CSP gaps and og:image-from-poster (T33 overlap).
 
 Rollback at any step = keep using the skill as-is; the template repo
@@ -276,25 +276,25 @@ existing harms nothing.
 
 | #  | Risk                                                                  | Mitigation                                                                                                                                            |
 | -- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| R1 | Template itself ossifies into a new stale baseline                    | CI builds every PR; every `init` consumes latest; gogenfilter can later be rebuilt ON the template so there is only one baseline                      |
-| R2 | Two baselines during transition (gogenfilter + template)              | Time-boxed: template becomes the sole baseline at the dogfood launch (step 6); skill drops gogenfilter-as-baseline, keeps it as design reference only |
-| R3 | CLI scope-creeps into a `template-CLI`-scale SDK (51k lines, 0 users) | Hard constraints: stdlib-only, single module, ~<2k lines, four subcommands. The 2026-05-22 review is the cautionary tale pinned in the repo's AGENTS  |
-| R4 | Astro/Tailwind major bumps churn the template                         | That's the point: one PR in one repo replaces N manual per-launch migrations; CI proves each bump                                                     |
-| R5 | Name collision with `go-website-template` confuses humans             | Pick a distinct name (Q1)                                                                                                                             |
+~~| R1 | Template itself ossifies into a new stale baseline                    | CI builds every PR; every `init` consumes latest; gogenfilter can later be rebuilt ON the template so there is only one baseline                      |~~ done — mitigations adopted into the decided T57/T58 constraints (CI-green template, stdlib-only hard cap)
+~~| R2 | Two baselines during transition (gogenfilter + template)              | Time-boxed: template becomes the sole baseline at the dogfood launch (step 6); skill drops gogenfilter-as-baseline, keeps it as design reference only |~~ done — mitigations adopted into the decided T57/T58 constraints (CI-green template, stdlib-only hard cap)
+~~| R3 | CLI scope-creeps into a `template-CLI`-scale SDK (51k lines, 0 users) | Hard constraints: stdlib-only, single module, ~<2k lines, four subcommands. The 2026-05-22 review is the cautionary tale pinned in the repo's AGENTS  |~~ done — mitigations adopted into the decided T57/T58 constraints (CI-green template, stdlib-only hard cap)
+~~| R4 | Astro/Tailwind major bumps churn the template                         | That's the point: one PR in one repo replaces N manual per-launch migrations; CI proves each bump                                                     |~~ done — mitigations adopted into the decided T57/T58 constraints (CI-green template, stdlib-only hard cap)
+~~| R5 | Name collision with `go-website-template` confuses humans             | Pick a distinct name (Q1)                                                                                                                             |~~ done — mitigations adopted into the decided T57/T58 constraints (CI-green template, stdlib-only hard cap)
 
 ### Open questions (need Lars' decision before step 1)
 
-1. **Repo name:** `website-template`? `template-website` (joins the
+~~1. **Repo name:** `website-template`? `template-website` (joins the~~ done — answered 2026-10-27 (decision §A Q1: `website-template`)
    `template-*` family, implies eventual hub integration)? Something
    else that avoids the `go-website-template` collision?
-2. **CLI language:** Go (preferred — flag parsing, Firebase REST calls,
+~~2. **CLI language:** Go (preferred — flag parsing, Firebase REST calls,~~ done — answered 2026-10-27 (decision §A Q2: Go, stdlib-only)
    single binary via nix, matches the repo's stdlib-only Go convention)?
    Or start as plain bash in the template repo (faster, less structure)?
-3. **gogenfilter's fate:** eventually rebuild it on the template (one
+~~3. **gogenfilter's fate:** eventually rebuild it on the template (one~~ done — answered 2026-10-27 (decision §A Q3: rebuild on the template later)
    baseline), or leave it hand-maintained as the "design playground"?
-4. **Visibility:** private (embeds lars.software conventions, domains
+~~4. **Visibility:** private (embeds lars.software conventions, domains~~ done — answered 2026-10-27 (decision §A Q4: private, publishable later)
    repo paths) — publishable later once placeholders are clean?
-5. **Sequencing vs T33:** fold T33's CI-deploy-workflow and og:image
+~~5. **Sequencing vs T33:** fold T33's CI-deploy-workflow and og:image~~ done — answered 2026-10-27 (decision §A Q5: keep T33 separate)
    items into template milestones, or keep them separate?
 
 ---
@@ -303,16 +303,16 @@ existing harms nothing.
 
 | #  | Claim in this report                                                                  | How verified                                                                                                                                  |
 | -- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1  | SKILL.md = 797 lines; 16 references = 3,267; total 4,064                              | `wc -l website-launch/SKILL.md references/*.md`                                                                                               |
-| 2  | Phase 3 copies from live gogenfilter; 94 files on disk                                | `SKILL.md` §3.1/§3.2 + `file-manifest.md`; `find ~/projects/gogenfilter/website -type f` (excl. node_modules/dist/.firebase) = 94             |
-| 3  | Pitfall #4 vite-pin drift documented                                                  | `SKILL.md` lines 742–747                                                                                                                      |
-| 4  | 18 repos have `website/`                                                              | `ls -d ~/projects/*/website \| wc -l` = 18                                                                                                    |
-| 5  | `templates` CLI tests fail on hardcoded macOS paths, today                            | `cd ~/projects/templates && go test ./...` → FAIL (`Expected default templates dir '/Users/larsartmann/projects', got "/home/lars/projects"`) |
-| 6  | `template-CLI` has zero consumers                                                     | `grep -rl LarsArtmann/template-CLI ~/projects/*/go.mod` → only its own go.mod                                                                 |
-| 7  | `go-website-template` is Go+Templ+HTMX on Cloud Run (different stack)                 | its README, read this session                                                                                                                 |
-| 8  | May review grades/quotes (B- templates, C+ template-CLI, "searching for a user base") | `~/projects/review-templates-vs-template-CLI.md` (2026-05-22) — point-in-time doc; items 5 & 6 above re-verified the load-bearing parts       |
-| 9  | ROADMAP open question "848 lines / refactor?"                                         | `ROADMAP.md` ~line 148, quoted this session                                                                                                   |
-| 10 | TODO T33 overlap (CI deploy workflow, og:image)                                       | `TODO_LIST.md`, read this session                                                                                                             |
+~~| 1  | SKILL.md = 797 lines; 16 references = 3,267; total 4,064                              | `wc -l website-launch/SKILL.md references/*.md`                                                                                               |~~ done — point-in-time verification record (2026-10-11)
+~~| 2  | Phase 3 copies from live gogenfilter; 94 files on disk                                | `SKILL.md` §3.1/§3.2 + `file-manifest.md`; `find ~/projects/gogenfilter/website -type f` (excl. node_modules/dist/.firebase) = 94             |~~ done — point-in-time verification record (2026-10-11)
+~~| 3  | Pitfall #4 vite-pin drift documented                                                  | `SKILL.md` lines 742–747                                                                                                                      |~~ done — point-in-time verification record (2026-10-11)
+~~| 4  | 18 repos have `website/`                                                              | `ls -d ~/projects/*/website \| wc -l` = 18                                                                                                    |~~ done — point-in-time verification record (2026-10-11)
+~~| 5  | `templates` CLI tests fail on hardcoded macOS paths, today                            | `cd ~/projects/templates && go test ./...` → FAIL (`Expected default templates dir '/Users/larsartmann/projects', got "/home/lars/projects"`) |~~ done — point-in-time verification record (2026-10-11)
+~~| 6  | `template-CLI` has zero consumers                                                     | `grep -rl LarsArtmann/template-CLI ~/projects/*/go.mod` → only its own go.mod                                                                 |~~ done — point-in-time verification record (2026-10-11)
+~~| 7  | `go-website-template` is Go+Templ+HTMX on Cloud Run (different stack)                 | its README, read this session                                                                                                                 |~~ done — point-in-time verification record (2026-10-11)
+~~| 8  | May review grades/quotes (B- templates, C+ template-CLI, "searching for a user base") | `~/projects/review-templates-vs-template-CLI.md` (2026-05-22) — point-in-time doc; items 5 & 6 above re-verified the load-bearing parts       |~~ done — point-in-time verification record (2026-10-11)
+~~| 9  | ROADMAP open question "848 lines / refactor?"                                         | `ROADMAP.md` ~line 148, quoted this session                                                                                                   |~~ done — point-in-time verification record (2026-10-11)
+~~| 10 | TODO T33 overlap (CI deploy workflow, og:image)                                       | `TODO_LIST.md`, read this session                                                                                                             |~~ done — point-in-time verification record (2026-10-11)
 
 **Not verified this session** (and marked as such above): the template-*
 repo ceremony description is from directory listings only; the May

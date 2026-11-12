@@ -209,6 +209,16 @@ Ideas routed out of the archived 2026-08 status corpus during the
   territory, re-triage there): eval loop, benchmark pass, allowed-tools,
   `--semantic` trim, step catalog, README/HOW_TO_USE fixes, BuildFlow↔AGENTS
   cross-doc
+- jj-fork-pr-workflow (routed 2026-11-10): jj-only vs git-fallback scope
+  decision; MP4 binary-asset policy for the site repos; PIPESTATUS
+  convention; per-org reference scaling; SKILL.md coherence re-read
+- HyperFrames/tooling smalls (routed 2026-11-10): `--quality high` + audio
+  flags, `browser ensure` path, hf-env `--cwd`, retro-audit command
+  reference, eval-2/3 asymmetry check, grader assertion v2, README §6
+  best-example row, AGENTS §10 Referenced-By rows
+- FEATURES vocabulary: exercise the BUILD-mode status vocabulary
+  (FULLY_FUNCTIONAL/PARTIALLY_FUNCTIONAL/DEMAND_GATED/...) on one real
+  run to prove the labels carry (routed 2026-11-10 from 2026-09-16)
 
 ## Open Questions
 

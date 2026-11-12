@@ -15,10 +15,10 @@ templ-components) assume the lib is already chosen.
 
 | File                                           | Content                                                                                                       |
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `stack-selection/SKILL.md`                     | 168 lines, 7 phases: profile → meta discovery → capability match → policy → decide → emit STACK.md → wire     |
-| `stack-selection/references/capability-map.md` | 67 first-party libs in 11 categories, README-verified 2026-10-27, with owning-skill + when-NOT-to-use columns |
-| `stack-selection/assets/STACK-template.md`     | Living decision record: profile, chosen foundation (why-this-not-that), deliberately-excluded, wiring order   |
-| `stack-selection/evals/evals.json`             | 3 evals (lib-watching CLI, event-sourced web app, one-shot YAGGI script)                                      |
+| ~~`stack-selection/SKILL.md`~~ done — stack-selection/SKILL.md present (verified 2026-11-10) | ~~168 lines, 7 phases: profile → meta discovery → capability match → policy → decide → emit STACK.md → wire~~ |
+| ~~`stack-selection/references/capability-map.md`~~ done — references/capability-map.md present (verified 2026-11-10) | ~~67 first-party libs in 11 categories, README-verified 2026-10-27, with owning-skill + when-NOT-to-use columns~~ |
+| ~~`stack-selection/assets/STACK-template.md`~~ done — assets/STACK-template.md present (verified 2026-11-10) | ~~Living decision record: profile, chosen foundation (why-this-not-that), deliberately-excluded, wiring order~~ |
+| ~~`stack-selection/evals/evals.json`~~ done — evals/evals.json present (verified 2026-11-10) | ~~3 evals (lib-watching CLI, event-sourced web app, one-shot YAGGI script)~~ |
 
 ## Research findings encoded in the skill (the "review all" part)
 

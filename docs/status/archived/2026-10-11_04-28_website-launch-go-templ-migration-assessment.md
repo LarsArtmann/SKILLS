@@ -35,24 +35,24 @@ hardcoded landing/sales sections). Phase the migration: extract → parameterize
 
 | Asset                     | Size / state                                                                                                            |
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `website-launch/SKILL.md` | 797 lines (ROADMAP's "848" figure is stale; measured 2026-10-11)                                                        |
-| 15 reference files        | 3,267 lines (4,064 total with SKILL.md)                                                                                 |
-| `evals/iteration-1/`      | old-skill vs new-skill output comparisons + grading — **any stack migration must re-run these**                         |
-| Baseline repo (Phase 3.1) | `gogenfilter/website` (CSP hardening, OG images, two-job CI); `go-atomic-write` is the older simple pattern             |
-| Stack-pinned claims       | description + body name "Astro + Starlight + Tailwind v4 + Firebase Hosting ... shared across all LarsArtmann projects" |
+~~| `website-launch/SKILL.md` | 797 lines (ROADMAP's "848" figure is stale; measured 2026-10-11)                                                        |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| 15 reference files        | 3,267 lines (4,064 total with SKILL.md)                                                                                 |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| `evals/iteration-1/`      | old-skill vs new-skill output comparisons + grading — **any stack migration must re-run these**                         |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| Baseline repo (Phase 3.1) | `gogenfilter/website` (CSP hardening, OG images, two-job CI); `go-atomic-write` is the older simple pattern             |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| Stack-pinned claims       | description + body name "Astro + Starlight + Tailwind v4 + Firebase Hosting ... shared across all LarsArtmann projects" |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
 
 ### 1.2 Where sibling project sites actually live (verified 2026-10-11)
 
 | Repo                  | Stack                                                                                | Evidence                                |
 | --------------------- | ------------------------------------------------------------------------------------ | --------------------------------------- |
-| go-atomic-write       | Astro (pnpm)                                                                         | `website/package.json` exists           |
-| gogenfilter           | Astro (pnpm)                                                                         | `website/package.json` exists           |
-| go-output             | Astro (pnpm)                                                                         | `website/package.json` exists           |
-| go-workflow-auditlog  | Astro (pnpm)                                                                         | `website/package.json` exists           |
-| dynamic-markdown-site | Astro (pnpm)                                                                         | `website/package.json` exists           |
-| art-dupl              | Astro (pnpm)                                                                         | `website/package.json` exists           |
-| samber-do-auditlog    | Astro (pnpm) — plus an unrelated in-app `html.templ` (audit viewer UI, not the site) | `website/package.json` exists           |
-| **templ-components**  | **Pure Go SSG** (since 2026-09-13)                                                   | `website/go.mod`, **no** `package.json` |
+~~| go-atomic-write       | Astro (pnpm)                                                                         | `website/package.json` exists           |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| gogenfilter           | Astro (pnpm)                                                                         | `website/package.json` exists           |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| go-output             | Astro (pnpm)                                                                         | `website/package.json` exists           |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| go-workflow-auditlog  | Astro (pnpm)                                                                         | `website/package.json` exists           |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| dynamic-markdown-site | Astro (pnpm)                                                                         | `website/package.json` exists           |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| art-dupl              | Astro (pnpm)                                                                         | `website/package.json` exists           |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| samber-do-auditlog    | Astro (pnpm) — plus an unrelated in-app `html.templ` (audit viewer UI, not the site) | `website/package.json` exists           |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| **templ-components**  | **Pure Go SSG** (since 2026-09-13)                                                   | `website/go.mod`, **no** `package.json` |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
 
 **7 Astro sites, 1 Go site.** The "shared pattern" claim in the skill is
 already inaccurate, and the one Go site is the newest, most heavily tested
@@ -101,18 +101,18 @@ generalize.
 
 | Starlight feature                       | Go SSG status                                                                                                                                                             |
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Full-text search (Pagefind)             | ✅ Equivalent shape: prebuilt JSON index + section anchors, no third-party binary                                                                                         |
-| Dark mode                               | ✅ `ThemeScript` (FOUC-safe) + `ThemeToggle` from the library                                                                                                             |
-| Syntax highlighting                     | ✅ chroma via goldmark-highlighting                                                                                                                                       |
-| Sidebar docs navigation                 | ✅ `docs.templ` + `SidebarNav`/`Nav` components                                                                                                                           |
-| Sitemap + lastmod                       | ✅ registered per-page (`internal/pages/doc.go`)                                                                                                                          |
-| OG images                               | ✅ per-page `OGImage` (`/og/{slug}.png`, `/og/home.png`, `/og/sales.png`)                                                                                                 |
-| Security headers / CSP                  | ✅ Better: hash-pinned CSP with drift-failing build vs post-hoc `fix-csp.mjs`                                                                                             |
-| `editLink` ("edit this page on GitHub") | ⚠️ **Missing — the only gap that matters.** Trivial to add (repo URL + file path per page)                                                                                 |
-| `lastUpdated` display on page           | ⚠️ Present in sitemap lastmod; per-page display needs wiring to git log                                                                                                    |
-| RSS                                     | ⚠️ Missing; no current site has a blog — defer until one does                                                                                                              |
-| i18n                                    | ❌ Missing; no current site uses it — accept the loss explicitly                                                                                                          |
-| MDX                                     | ❌ Gone — and good riddance: MDX-escaping pitfalls are a recurring pain class in `common-pitfalls.md`; plain goldmark markdown + templ components for rich blocks instead |
+~~| Full-text search (Pagefind)             | ✅ Equivalent shape: prebuilt JSON index + section anchors, no third-party binary                                                                                         |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| Dark mode                               | ✅ `ThemeScript` (FOUC-safe) + `ThemeToggle` from the library                                                                                                             |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| Syntax highlighting                     | ✅ chroma via goldmark-highlighting                                                                                                                                       |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| Sidebar docs navigation                 | ✅ `docs.templ` + `SidebarNav`/`Nav` components                                                                                                                           |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| Sitemap + lastmod                       | ✅ registered per-page (`internal/pages/doc.go`)                                                                                                                          |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| OG images                               | ✅ per-page `OGImage` (`/og/{slug}.png`, `/og/home.png`, `/og/sales.png`)                                                                                                 |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| Security headers / CSP                  | ✅ Better: hash-pinned CSP with drift-failing build vs post-hoc `fix-csp.mjs`                                                                                             |~~ done — point-in-time measurement/verification (re-confirmed in decision pass 2026-10-27)
+~~| `editLink` ("edit this page on GitHub") | ⚠️ **Missing — the only gap that matters.** Trivial to add (repo URL + file path per page)                                                                                 |~~ done — parity gap closes via TODO T57 (close editLink/lastUpdated in extraction)
+~~| `lastUpdated` display on page           | ⚠️ Present in sitemap lastmod; per-page display needs wiring to git log                                                                                                    |~~ done — parity gap closes via TODO T57 (close editLink/lastUpdated in extraction)
+~~| RSS                                     | ⚠️ Missing; no current site has a blog — defer until one does                                                                                                              |~~ done — deferred until a blog exists (plan adopted 2026-10-27)
+~~| i18n                                    | ❌ Missing; no current site uses it — accept the loss explicitly                                                                                                          |~~ done — accepted loss (template scope; no site uses i18n)
+~~| MDX                                     | ❌ Gone — and good riddance: MDX-escaping pitfalls are a recurring pain class in `common-pitfalls.md`; plain goldmark markdown + templ components for rich blocks instead |~~ done — plain goldmark + templ components adopted (decision Q0: Go SSG)
 
 **Verdict:** the parity gap is `editLink` + per-page lastUpdated display.
 Everything else is equal or better. The MDX/i18n losses are features.
@@ -121,26 +121,26 @@ Everything else is equal or better. The MDX/i18n losses are features.
 
 ## 3. Why Migrate (benefits, ranked)
 
-1. **The reference implementation already exists and is live.** This is not a
+~~1. **The reference implementation already exists and is live.** This is not a~~ done — adopted 2026-10-27 (decision §A Q0: Go SSG; TODO T57–T59)
    greenfield bet — the riskiest part (can a pure Go SSG run a production docs
    site well?) was answered 2026-09-13.
-2. **Environment friction disappears.** The skill dedicates a whole section to
+~~2. **Environment friction disappears.** The skill dedicates a whole section to~~ done — adopted 2026-10-27 (decision §A Q0: Go SSG; TODO T57–T59)
    "Nix + Crush constraints": `pnpm`/`node` not in PATH (every build needs
    `nix shell nixpkgs#nodejs -c pnpm ...`), `firebase-tools` shelling, etc. A
    Go SSG builds with `go run ./cmd/site` inside every project's existing
    devShell — same toolchain as the code being documented. CI loses the
    pnpm install/lockfile layers entirely (and can go fully nodeless by pinning
    the standalone `tailwindcss` binary instead of `@tailwindcss/cli`).
-3. **Dogfooding flywheel.** Every project site exercises templ-components —
+~~3. **Dogfooding flywheel.** Every project site exercises templ-components —~~ done — adopted 2026-10-27 (decision §A Q0: Go SSG; TODO T57–T59)
    same argument the library's own README makes. Breaking library changes
    surface as site build failures (compile-time visibility) instead of silent
    runtime drift.
-4. **Dependency rot shrinks by an order of magnitude.** `dependency-versions.md`
+~~4. **Dependency rot shrinks by an order of magnitude.** `dependency-versions.md`~~ done — adopted 2026-10-27 (decision §A Q0: Go SSG; TODO T57–T59)
    (186 lines of hand-verified pnpm pins "known to work together") collapses
    to a Go module matrix + one tailwind CLI pin, all nix-verifiable.
-5. **`llms.txt` for free** — machine-readable site index for AI agents/crawlers;
+~~5. **`llms.txt` for free** — machine-readable site index for AI agents/crawlers;~~ done — adopted 2026-10-27 (decision §A Q0: Go SSG; TODO T57–T59)
    a real edge for an audience of agents reading his libraries' docs.
-6. **Agent-session efficiency.** A large share of `common-pitfalls.md` (588
+~~6. **Agent-session efficiency.** A large share of `common-pitfalls.md` (588~~ done — adopted 2026-10-27 (decision §A Q0: Go SSG; TODO T57–T59)
    lines) is Astro/pnpm/MDX pain. Those sessions get cheaper and the pitfalls
    simply evaporate; new Go-specific pitfalls (templ generation step, `@source`
    scanning, `GOEXPERIMENT=jsonv2`) are already documented in the SSG's own
@@ -148,28 +148,28 @@ Everything else is equal or better. The MDX/i18n losses are features.
 
 ## 4. Costs, Risks, Tradeoffs (eyes open)
 
-1. **Extraction work is the blocker.** The SSG is repo-coupled: `replace`
+~~1. **Extraction work is the blocker.** The SSG is repo-coupled: `replace`~~ done — risk accepted/encoded in TODO T57–T59 (decided 2026-10-27)
    directives to `../`, `--repo-root ..` scanning (its `@source` directives
    scan the _library's_ generated components), hardcoded landing/sales/hero
    sections, `SITE_LIVE_STARS` badge logic tied to one repo. A template needs
    parameterization: project name, accent color, sidebar config, hero content,
    data files — the same "data-driven, copy then customize" contract the skill
    already has for gogenfilter (`src/data/*.ts` → site data).
-2. **7 Astro sites remain on the old stack.** Migration creates a two-pattern
+~~2. **7 Astro sites remain on the old stack.** Migration creates a two-pattern~~ done — risk accepted/encoded in TODO T57–T59 (decided 2026-10-27)
    split brain unless handled like §0.0.1 ("Old Static Site Migration") — an
    explicit "Astro legacy maintenance mode" branch: retrofits still apply,
    sites migrate opportunistically, no big-bang rewrite of live sites.
-3. **Dogfood coupling cuts both ways.** A breaking templ-components change
+~~3. **Dogfood coupling cuts both ways.** A breaking templ-components change~~ done — risk accepted/encoded in TODO T57–T59 (decided 2026-10-27)
    breaks every site build simultaneously. Accepted as a feature (visibility),
    but worth stating: version pins per site, and the replace-directive dev
    pattern catches breakage early.
-4. **Eval regression risk.** `evals/iteration-1` graded this skill. A Phase 3
+~~4. **Eval regression risk.** `evals/iteration-1` graded this skill. A Phase 3~~ done — risk accepted/encoded in TODO T57–T59 (decided 2026-10-27)
    rewrite must re-run the eval harness on the new baseline before the skill's
    claims are honest again.
-5. **One JS-adjacent dependency survives**: the Tailwind v4 CLI. Locally it is
+~~5. **One JS-adjacent dependency survives**: the Tailwind v4 CLI. Locally it is~~ done — risk accepted/encoded in TODO T57–T59 (decided 2026-10-27)
    the standalone binary in the nix devShell (no Node); only CI still installs
    the npm package — solvable by pinning the standalone binary there too.
-6. **Skill-rewrite effort is real but bounded** (see §6 disposition table):
+~~6. **Skill-rewrite effort is real but bounded** (see §6 disposition table):~~ done — risk accepted/encoded in TODO T57–T59 (decided 2026-10-27)
    roughly half the reference corpus survives untouched.
 
 ---
@@ -221,21 +221,21 @@ Everything else is equal or better. The MDX/i18n losses are features.
 
 | Reference                     | Lines | Disposition                                                                                                                            |
 | ----------------------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `readme-template.md`          | 194   | **Survives untouched** (stack-agnostic)                                                                                                |
-| `content-patterns.md`         | 232   | **Survives** — minus Astro-component mentions in retrofit section                                                                      |
-| `dns-terraform.md`            | 238   | **Survives untouched**                                                                                                                 |
-| `firebase-rest-api.md`        | 302   | **Survives untouched**                                                                                                                 |
-| `go-live-runbook.md`          | 145   | **Survives** — build command updated                                                                                                   |
-| `demo-video.md`               | 276   | **Survives untouched** (HyperFrames → MP4 is stack-independent)                                                                        |
-| `social-preview.md`           | 160   | **Survives** — generator script already stack-independent                                                                              |
-| `color-palette.md`            | 314   | **Survives** (Tailwind tokens unchanged)                                                                                               |
-| `definition-of-done.md`       | 74    | **Survives** — add SSG checks (goldens, CSP pin) to the checklist                                                                      |
-| `design-inspiration.md`       | 92    | **Survives** — reframe "Starlight reaches it via theme tuning"                                                                         |
-| `common-pitfalls.md`          | 588   | **Split**: Astro/pnpm/MDX pitfalls evaporate; Go pitfalls (templ gen, `@source`, jsonv2, CSP-pin drift) lifted from the SSG's own docs |
-| `file-manifest.md`            | 196   | **Rewrite** — new baseline = template repo                                                                                             |
-| `dependency-versions.md`      | 186   | **Rewrite** — Go module matrix + tailwind CLI pin                                                                                      |
-| `ci-workflow.md`              | 151   | **Rewrite** — `build.sh` + firebase deploy, no pnpm/lockfile layers                                                                    |
-| `website-creation-details.md` | 119   | **Rewrite** — content contract from `internal/pages/doc.go`                                                                            |
+~~| `readme-template.md`          | 194   | **Survives untouched** (stack-agnostic)                                                                                                |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `content-patterns.md`         | 232   | **Survives** — minus Astro-component mentions in retrofit section                                                                      |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `dns-terraform.md`            | 238   | **Survives untouched**                                                                                                                 |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `firebase-rest-api.md`        | 302   | **Survives untouched**                                                                                                                 |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `go-live-runbook.md`          | 145   | **Survives** — build command updated                                                                                                   |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `demo-video.md`               | 276   | **Survives untouched** (HyperFrames → MP4 is stack-independent)                                                                        |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `social-preview.md`           | 160   | **Survives** — generator script already stack-independent                                                                              |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `color-palette.md`            | 314   | **Survives** (Tailwind tokens unchanged)                                                                                               |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `definition-of-done.md`       | 74    | **Survives** — add SSG checks (goldens, CSP pin) to the checklist                                                                      |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `design-inspiration.md`       | 92    | **Survives** — reframe "Starlight reaches it via theme tuning"                                                                         |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `common-pitfalls.md`          | 588   | **Split**: Astro/pnpm/MDX pitfalls evaporate; Go pitfalls (templ gen, `@source`, jsonv2, CSP-pin drift) lifted from the SSG's own docs |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `file-manifest.md`            | 196   | **Rewrite** — new baseline = template repo                                                                                             |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `dependency-versions.md`      | 186   | **Rewrite** — Go module matrix + tailwind CLI pin                                                                                      |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `ci-workflow.md`              | 151   | **Rewrite** — `build.sh` + firebase deploy, no pnpm/lockfile layers                                                                    |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
+~~| `website-creation-details.md` | 119   | **Rewrite** — content contract from `internal/pages/doc.go`                                                                            |~~ **Superseded — TODO T59 disposition tables (decided 2026-10-27).**
 
 Roughly 2,025 of 3,267 reference lines survive as-is.
 
@@ -243,14 +243,14 @@ Roughly 2,025 of 3,267 reference lines survive as-is.
 
 ## 7. Open Decisions (user calls)
 
-1. **Template shape:** sibling template repo vs `cmd/site init` scaffold
+~~1. **Template shape:** sibling template repo vs `cmd/site init` scaffold~~ done — answered 2026-10-27 (decision §A Q1: canonical private repo `website-template`)
    (Phase A fork in the road).
-2. **Pilot target:** next new launch vs migrating go-output first.
-3. **Fleet policy:** opportunistic-only (recommended) vs time-boxed migration
+2. **Pilot target:** next new launch vs migrating go-output first. **→ routed to ROADMAP 2026-11-10**
+~~3. **Fleet policy:** opportunistic-only (recommended) vs time-boxed migration~~ done — answered 2026-10-27 (decision §A Q0 note: 18 Astro sites keep the manual audit; opportunistic migration)
    of all 7 Astro sites.
-4. **i18n/RSS:** formally accept as out-of-scope for the template (recorded
+4. **i18n/RSS:** formally accept as out-of-scope for the template (recorded **→ routed to ROADMAP 2026-11-10**
    here), or block on them.
-5. Whether this assessment's Phase A starts now — this session made no edits.
+~~5. Whether this assessment's Phase A starts now — this session made no edits.~~ done — routed into TODO T57 (unblocked 2026-10-27)
 
 ## 8. Verification Log (all claims checked against local sources, 2026-10-11)
 

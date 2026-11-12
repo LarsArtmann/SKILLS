@@ -10,22 +10,22 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
 
 ## a) FULLY DONE
 
-1. **Doctrine mapped + bodies fixed** — 15 unique skills edited (12 in daemon
+~~1. **Doctrine mapped + bodies fixed** — 15 unique skills edited (12 in daemon~~ v: verified — CHANGELOG 2026-09-17 enumerates the same edits; daemon commit `a45e9b2` (14 files) verified present
    commit `a45e9b2`, 3 more Tier-2 gloss files in the following daemon
    commits) + 1 new `jj-fork-pr-workflow/references/prior-art.md`, all
    enumerated in the CHANGELOG "signal-only prose pass" entry. Noise deleted,
    magic numbers kept, threats → glossed guardrails, jargon glossed at first
    use, prior-art survey extracted. check-skills.sh exit 0 after every batch
    (quoted, not tailed); internal links OK across 150 md files.
-2. **Concurrent-session collision handled without duplication** — my planned
+~~2. **Concurrent-session collision handled without duplication** — my planned~~ v: verified — `5116703` and `fc60760` both verified present; AGENTS §3.2 documents the rule
    "Pattern 12" was abandoned when the other session's Principle 7 appeared
    (`5116703`); the other session has since appended a signed addendum to my
    09-17 report and closed the AGENTS.md §3.2 pointer gap itself
    (`fc60760`, verified at AGENTS.md:80). Two sessions, one doctrine, zero
    split brains created at the doctrine level.
-3. **CHANGELOG + 09-17 status report written** — the report is now known to
+~~3. **CHANGELOG + 09-17 status report written** — the report is now known to~~ v: verified — the two false claims were inline-corrected in 2026-09-17_21-45 (archived this pass; CHANGELOG 2026-09-18 names the correction)
    contain two false claims (see d1/d2); correction pending (f8).
-4. **This self-review verified against source, not memory** — every defect
+~~4. **This self-review verified against source, not memory** — every defect~~ v: session-log claim — the cited evidence (glossary table, commits) re-verified this pass
    claimed below was re-checked against the live files and git history this
    morning, including re-reading the glossary table after the concurrent
    session's reformat commit (`fc60760` — pure table re-padding, wording
@@ -33,7 +33,7 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
 
 ## b) PARTIALLY DONE
 
-1. **Signal audit** — 18 of 29 audited skills clean (linter-building excluded:
+~~1. **Signal audit** — 18 of 29 audited skills clean (linter-building excluded:~~ v: resolved — the long tail audited by T52 (2026-09-24): remaining prose judged load-bearing; github-voice/go-release compressed
    foreign uncommitted changes at audit time, since committed in `4d62542`;
    its one flagged line was later checked and judged self-glossing). The
    `--signal` long tail (github-voice preamble=28, website-launch 9 prose
@@ -50,19 +50,19 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
 
 ## c) NOT STARTED
 
-1. **Description-level doctrine framing** — the pasted doc's "tell them what
+~~1. **Description-level doctrine framing** — the pasted doc's "tell them what~~ done at `2b81484`
    they get / why it's worth the effort" is not folded into the description
    quick-test table (how-to-write-skills.md §1). Descriptions pass
    trigger-density (all STRONG) but were never audited for outcome-promises.
-2. **`--signal` / check-15 wiring into SESSION-START.md and README.md** —
+~~2. **`--signal` / check-15 wiring into SESSION-START.md and README.md** —~~ v: done — SESSION-START step 5 and README Quality section name --signal + check 15 (2026-09-18 pass; verified present)
    grep-verified absent from both this morning; AGENTS.md was closed by the
    other session, these two were not.
-3. **Gloss alignment** — see d1; 7 glosses need verbatim alignment (or a rule
+~~3. **Gloss alignment** — see d1; 7 glosses need verbatim alignment (or a rule~~ v: done — glossary lockstep DECIDED verbatim 2026-10-27; all glosses aligned (T51; CHANGELOG 2026-10-27)
    amendment, g2).
 
 ## d) TOTALLY FUCKED UP
 
-1. **I claimed "canonical Principle 7 glossary wording" and shipped
+~~1. **I claimed "canonical Principle 7 glossary wording" and shipped~~ v: incident note — mitigated: the alignment executed 2026-10-27 (T51 verbatim; CHANGELOG)
    paraphrases.** Live evidence (grep, this morning): the table says split
    brain = "the same concept **defined or configured** in two places"; my 5
    shipped glosses (full-code-review:28, brutal-self-review:25,
@@ -77,21 +77,21 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
    copy-pasting the table. Severity: low functional (semantically
    equivalent), high ironic (precedent-setting drift on day one of the
    glossary's existence). Mitigation: f1/g2.
-2. **Wrong arithmetic in my closing summary to the user.** I said "fixing 12"
+~~2. **Wrong arithmetic in my closing summary to the user.** I said "fixing 12"~~ v: incident note, no forward work — the corrected counts (15 skills / 18 of 29) are what this report ships
    skills — the true count is 15 unique skills (recounted from `a45e9b2` stat
    - the Tier-2 working-tree batch, which overlapped 3 files with the
      commit). I also wrote "18 of 30 skills needed nothing" — 18 of **29**
      audited (linter-building was excluded). Root cause: counted from the first
      daemon commit instead of the full change set. The CHANGELOG enumerations
      happen to be complete, so no shipped file is wrong — only my chat claim.
-3. **Overclaimed verification strength.** My closing message and 09-17 report
+~~3. **Overclaimed verification strength.** My closing message and 09-17 report~~ v: incident note — the correction shipped inline in 2026-09-17_21-45 (CHANGELOG 2026-09-18)
    said "every removed line was diffed and accounted for". What I actually
    did: full hunk-by-hunk review of full-code-review and pareto-planning,
    stat-level review of the other 13 files, plus post-edit structural gates.
    True for 2 files, statistical for the rest. Root cause: writing the
    strong version of the sentence because it sounded right — the exact
    failure mode the doctrine names.
-4. **Process smell caught by tooling, not by me.** I batched 6 edits having
+~~4. **Process smell caught by tooling, not by me.** I batched 6 edits having~~ v: incident note, no forward work — the guard worked as designed
    View-read only 2 of the files (the rest from bash grep/sed output); the
    edit-guard rejected architecture-review and go-error-modernization. The
    guard turning "you must read first" into an enforced gate is what saved
@@ -99,18 +99,18 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
 
 ## e) WHAT WE SHOULD IMPROVE
 
-1. **Copy-paste canonical wordings; never retype.** Any quoted canonical text
+~~1. **Copy-paste canonical wordings; never retype.** Any quoted canonical text~~ v: process lesson — executed 2026-10-27 (T51 verbatim alignment; no recurrence since)
    (glossaries, marker vocabularies) gets pasted from the source file in the
    same session it's used. Cost of the mistake: 7 files to re-touch (f1).
-2. **Recompute counts from `git show --stat` before stating them.** "12" and
+~~2. **Recompute counts from `git show --stat` before stating them.** "12" and~~ v: process lesson, no forward work
    "18 of 30" were both memory-rounding errors a single stat command would
    have prevented.
-3. **State verification at exactly the strength performed.** "Full hunk
+~~3. **State verification at exactly the strength performed.** "Full hunk~~ v: process lesson, no forward work
    review of the two highest-risk files, stat + gates for the rest" was
    accurate AND sufficient — the inflated version added nothing but risk.
-4. **View every file in a batch edit set, before the batch.** The guard is a
+~~4. **View every file in a batch edit set, before the batch.** The guard is a~~ v: process lesson, no forward work — the edit-guard remains the net
    net, not a plan.
-5. **Check freshness of shared canonical files before planning additions**
+~~5. **Check freshness of shared canonical files before planning additions**~~ v: process lesson, no forward work
    (`git log -1 --format=%cd <file>`). My entire Pattern-12 plan was built
    from a 7-minute-stale read; the guard caught the edit, but the planning
    waste was real.
@@ -119,24 +119,24 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
 
 | #     | Task                                                                                                                                                                          | Impact   | Effort | Cat       |
 | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------ | --------- |
-| 1     | Align all 7 shipped glosses verbatim to the Principle 7 table (or amend rule per g2, then skip)                                                                               | High     | S      | Bug       |
+~~| 1     | Align all 7 shipped glosses verbatim to the Principle 7 table (or amend rule per g2, then skip)                                                                               | High     | S      | Bug       |~~ v: done — T51: all shipped glosses aligned verbatim (decided 2026-10-27; CHANGELOG 2026-10-27)
 | ~~2~~ | ~~ANNOTATE the 09-17 report's two false claims inline (canonical-wording claim; "18 of 30")~~ done — this pass, 2026-09-18 — both claims corrected inline in the 09-17 report | ~~High~~ | ~~S~~  | ~~Doc~~   |
-| 3     | Audit github-voice's preamble=28 lines (largest unexamined `--signal` number)                                                                                                 | High     | S      | Qual      |
-| 4     | Fold "what you get / why worth effort" from the doctrine into the description quick-test table                                                                                | Med      | S      | Doc       |
+~~| 3     | Audit github-voice's preamble=28 lines (largest unexamined `--signal` number)                                                                                                 | High     | S      | Qual      |~~ v: done — T52 audited github-voice preamble=28 and compressed it (2026-09-24; CHANGELOG 2026-09-24)
+~~| 4     | Fold "what you get / why worth effort" from the doctrine into the description quick-test table                                                                                | Med      | S      | Doc       |~~ done at `2b81484`
 | ~~5~~ | ~~SESSION-START.md step 5: mention `--signal` + check 15 alongside `--triggers`~~ done — this pass — SESSION-START step 5 now names --signal + check 15                       | ~~Med~~  | ~~S~~  | ~~Doc~~   |
 | ~~6~~ | ~~README.md: document `--signal` / check 15 (grep-verified absent)~~ done — this pass — README Quality section documents --signal + check 15                                  | ~~Med~~  | ~~S~~  | ~~Doc~~   |
 | ~~7~~ | ~~Run `sync-html-kit.sh --check` (missed this session; near-certainly green)~~ done — run this pass — exit 0                                                                  | ~~Low~~  | ~~S~~  | ~~Verif~~ |
 | ~~8~~ | ~~Run `link-skills-to-agents.sh --check` (missed this session)~~ done — run this pass — exit 0                                                                                | ~~Low~~  | ~~S~~  | ~~Verif~~ |
-| 9     | website-launch long tail: 9 remaining prose blocks in the 797-line allowlisted WARN file                                                                                      | Med      | M      | Qual      |
-| 10    | verify-before-filing: 4 remaining prose hits, spot-check                                                                                                                      | Low      | S      | Qual      |
-| 11    | docs-health / buildflow / go-ecosystem-upgrade / go-release prose hits — one restraint-disciplined pass                                                                       | Low      | M      | Qual      |
-| 12    | Gloss-drift guard (first-use gloss must match table verbatim) — only if g2 answers "verbatim"                                                                                 | Med      | M      | Tool      |
-| 13    | linter-building:105 split-brain line — recheck after its T34 open questions resolve                                                                                           | Low      | S      | Qual      |
-| 14    | Install/provision shellcheck (nix) so the shell gate stops degrading to bash -n                                                                                               | Med      | S      | Tool      |
-| 15    | Trivial: entombed glosses "file no later session reads" → "file **that** no later session reads" (2 files)                                                                    | Low      | XS     | Nit       |
-| 16    | Old TODO rows untouched and still open: T30 (blocked), T33, T34 (blocked), T35 — oldest is T35                                                                                | Med      | M      | Debt      |
-| 17    | If g2 answers "semantic equivalence": add the one-line rationale to Principle 7 (currently says "identical")                                                                  | Low      | XS     | Doc       |
-| 18    | If g1 answers "encode .md default": update status-report (and brutal-self-review?) Output sections                                                                            | Med      | S      | Doc       |
+~~| 9     | website-launch long tail: 9 remaining prose blocks in the 797-line allowlisted WARN file                                                                                      | Med      | M      | Qual      |~~ v: done — T52 audited the website-launch prose blocks and judged them load-bearing (Pattern 10 keep; CHANGELOG 2026-09-24)
+~~| 10    | verify-before-filing: 4 remaining prose hits, spot-check                                                                                                                      | Low      | S      | Qual      |~~ v: done — T52 audited remaining prose hits; load-bearing keeps (CHANGELOG 2026-09-24)
+~~| 11    | docs-health / buildflow / go-ecosystem-upgrade / go-release prose hits — one restraint-disciplined pass                                                                       | Low      | M      | Qual      |~~ v: done — T52 audited docs-health/buildflow/go-ecosystem-upgrade/go-release hits; go-release thesis removed (CHANGELOG 2026-09-24)
+~~| 12    | Gloss-drift guard (first-use gloss must match table verbatim) — only if g2 answers "verbatim"                                                                                 | Med      | M      | Tool      |~~ → routed to TODO_LIST 2026-11-10
+~~| 13    | linter-building:105 split-brain line — recheck after its T34 open questions resolve                                                                                           | Low      | S      | Qual      |~~ v: resolved — T34 decided 2026-10-27 (linter-building Go-first direction; CHANGELOG 2026-10-27); the line was judged self-glossing in the 2026-09-18 pass
+~~| 14    | Install/provision shellcheck (nix) so the shell gate stops degrading to bash -n                                                                                               | Med      | S      | Tool      |~~ v: done — shellcheck run via `nix run nixpkgs#shellcheck` in the 2026-09-24 wave (T55; CHANGELOG 2026-09-24)
+~~| 15    | Trivial: entombed glosses "file no later session reads" → "file **that** no later session reads" (2 files)                                                                    | Low      | XS     | Nit       |~~ done at `2b81484`
+~~| 16    | Old TODO rows untouched and still open: T30 (blocked), T33, T34 (blocked), T35 — oldest is T35                                                                                | Med      | M      | Debt      |~~ v: resolved — T35 closed 2026-09-18; T34 decided 2026-10-27; T30/T33 remain tracked in TODO_LIST
+~~| 17    | If g2 answers "semantic equivalence": add the one-line rationale to Principle 7 (currently says "identical")                                                                  | Low      | XS     | Doc       |~~ v: moot — T51 decided verbatim, so the semantic-equivalence rationale is not needed
+~~| 18    | If g1 answers "encode .md default": update status-report (and brutal-self-review?) Output sections                                                                            | Med      | S      | Doc       |~~ v: resolved — report format decided 2026-10-27 (.md default, HTML for dashboards; CHANGELOG 2026-10-27)
 
 > HARVEST routing (canonical rule lives in docs-health, not restated here):
 > items 1–8, 14 are TODO_LIST-grade; 9–13, 15–17 are ROADMAP-grade unless
@@ -144,13 +144,13 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
 
 ## g) Questions I cannot answer myself (3)
 
-1. **Markdown reports: encode the default?** This is the 8th explicit `.md`
+~~1. **Markdown reports: encode the default?** This is the 8th explicit `.md`~~ v: answered — decided 2026-10-27: markdown is the default for status/self-review reports (CHANGELOG 2026-10-27; ROADMAP records the decision)
    override of status-report's HTML-canonical output. The skill forbids
    propagating one-off overrides — but this stopped being one-off around
    recurrence #4. Should `.md` become this repo's documented default for
    status/self-review reports (edit both skills' Output sections), or do you
    actually want HTML sometimes and the flagging continue?
-2. **Glossary lockstep: verbatim or semantic?** Principle 7 currently demands
+~~2. **Glossary lockstep: verbatim or semantic?** Principle 7 currently demands~~ v: answered — DECIDED 2026-10-27: verbatim lockstep; glosses aligned (T51; ROADMAP)
    "wording identical" to the table. My paraphrases ("maintained in two
    places" vs "defined or configured in two places") are — in my judgment —
    clearer, and AGENTS.md §5.5's older prose used "maintained" historically.
@@ -158,7 +158,7 @@ The body pass worked and all gates are green (check-skills exit 0, 150 links OK,
    f12 guard), or (b) the rule amended to "meaning identical, table is
    canonical" and the paraphrases stand? I cannot infer your preference from
    the repo; the rule and the history point in different directions.
-3. **Your aggressive prompt voice: strip or keep?** I deleted "BE SMART! Use
+~~3. **Your aggressive prompt voice: strip or keep?** I deleted "BE SMART! Use~~ → routed to ROADMAP 2026-11-10
    your Brain!", "UNDERSTAND????!", and rewrote the castration threat,
    judging them instruction-free noise under the doctrine YOU pasted. But
    the register may be load-bearing (energy → compliance —
