@@ -106,13 +106,13 @@ ancestors).
 
 ## b) PARTIALLY DONE
 
-1. **T5 verification scope.** Claims were validated against the installed
+~~1. **T5 verification scope.** Claims were validated against the installed~~ v:closed — T22 executed 2026-09-08/09: real render incl. 9:16 variant, ffprobe-verified (wave-2)
    skill bodies (the authoritative local source), not against a live
    HyperFrames project render. Ground-truth validation (a real launch against
    the updated skill) remains open — tracked since the 08-21 report as
    untested-in-a-real-repo.
 
-2. **T10 eval caveat.** The eval-1 new-skill run detected the real
+~~2. **T10 eval caveat.** The eval-1 new-skill run detected the real~~ v:closed — T24 re-ran eval-1 on a fully fictional repo (go-pixelwand), removing the asymmetry (wave-2)
    go-filewatcher repo on disk and correctly switched to maintenance mode,
    while the old-skill run planned a greenfield build. Assertions target the
    video/sales mechanics, so the asymmetry does not affect the scores, but a
@@ -126,29 +126,29 @@ ancestors).
 > the CHANGELOG "TODO wave T1–T20 fully executed" entries and the `done at`
 > markers in section (f).
 
-1. **T11** — Trim `website-launch/SKILL.md` below 800 via readme-template
+~~1. **T11** — Trim `website-launch/SKILL.md` below 800 via readme-template~~ v:done at `2fc1b46` — T11 executed (840→799 lines; template gained badge variant + {LICENSE} placeholder); CHANGELOG "TODO wave T1–T20 fully executed"
    extraction (~60 lines). (Recurring since 2026-08-14; the T4 fix already
    removed 8 lines.) — **done at 2026-08-21** (799 lines)
-2. **T12** — `scripts/check-skill-links.sh` CI-grade broken-link detector. —
+~~2. **T12** — `scripts/check-skill-links.sh` CI-grade broken-link detector. —~~ v:done at `2fc1b46` — check-skill-links.sh shipped + wired as check 12; found + fixed one genuine broken TOC anchor
    **done at 2026-08-21** (found + fixed one genuine broken TOC anchor)
-3. **T13** — Process lessons in `how-to-write-skills.md` (Questions-tool
+~~3. **T13** — Process lessons in `how-to-write-skills.md` (Questions-tool~~ v:done at `2fc1b46` — Hard-Won Process Lessons + eval-harness shapes in how-to-write-skills.md; chat-time gate in verify-external-claims §0
    200-char limit → review file; "verify before you say" chat-time gate in
    `verify-external-claims`; verification-status-table pattern). —
    **done at 2026-08-21**
-4. **T14** — Real (run, not invented) examples for `performance-tuning.md`
+~~4. **T14** — Real (run, not invented) examples for `performance-tuning.md`~~ v:done at `2fc1b46` — real -cpu sweep (knee 16), benchstat -80.21% p=0.002, false-sharing 56-byte pad pasted in performance-tuning.md
    (`-cpu` sweep with knee, benchstat before/after, false sharing). —
    **done at 2026-08-21** (real outputs pasted; knee at 16, benchstat
    -80.21% p=0.002)
-5. **T15** — Cross-link `bdd-testing` benchmark lens → `performance-tuning.md`. —
+~~5. **T15** — Cross-link `bdd-testing` benchmark lens → `performance-tuning.md`. —~~ v:done at `2fc1b46` — "Benchmarks are not specs" cross-link in bdd-testing
    **done at 2026-08-21** ("Benchmarks are not specs")
-6. **T16** — `trash`-not-`rm -rf` item in `go-release/references/
+~~6. **T16** — `trash`-not-`rm -rf` item in `go-release/references/~~ v:done at `2fc1b46` — trash checklist row in go-release quick-reference.md Phase 6
    quick-reference.md`. — **done at 2026-08-21**
-7. **T19** — og:image (1200×630) guidance where OG images are configured +
+~~7. **T19** — og:image (1200×630) guidance where OG images are configured +~~ v:done at `2fc1b46` — og:image 1200×630 rule in file-manifest.md + launch-post mini-template in content-patterns.md
    launch-post mini-template in `content-patterns.md`. — **done at
    2026-08-21**
-8. **T20** — CONTRIBUTING.md "adding a new skill" flow incl. the
+~~8. **T20** — CONTRIBUTING.md "adding a new skill" flow incl. the~~ v:done at `2fc1b46` — CONTRIBUTING.md add-skill flow incl. link-skills step
    `link-skills-to-agents.sh` step. — **done at 2026-08-21**
-9. **TODO_LIST.md / CHANGELOG.md bookkeeping** — completed items (T1–T10, T17,
+~~9. **TODO_LIST.md / CHANGELOG.md bookkeeping** — completed items (T1–T10, T17,~~ v:done at `2fc1b46` — TODO_LIST rebuilt as T21–T26; CHANGELOG wave entries landed
    T18) not yet removed/logged per the legend. — **done at 2026-08-21**
    (TODO_LIST rebuilt as T21–T26)
 
@@ -190,27 +190,27 @@ ancestors).
 
 ## e) WHAT WE SHOULD IMPROVE
 
-1. **A scratch-dir helper for verification work.** T6 alone created 30+
+~~1. **A scratch-dir helper for verification work.** T6 alone created 30+~~ v:done — scripts/scratch.sh shipped 2026-08-21 (create + manifest + --clean via trash; f14)
    harness directories across two scratch modules. A `scripts/scratch.sh`
    (create /tmp/scratch-<name>, register for later `trash` cleanup) would
    make the trash rule the path of least resistance — see d1.
 
-2. **Make eval artifact persistence part of the eval protocol.** go-release
+~~2. **Make eval artifact persistence part of the eval protocol.** go-release~~ v:encoded — "an eval is not done until it is on disk" rule in how-to-write-skills.md (T13, 22-51 a3)
    iteration-2 wrote outputs+grading immediately per eval; the website-launch
    run didn't. Encode in `how-to-write-skills.md` (T13): "an eval is not done
    until output.md + grading.json exist on disk."
 
-3. **HARVEST premise validation.** When harvesting TODO items, re-verify the
+~~3. **HARVEST premise validation.** When harvesting TODO items, re-verify the~~ r:routed to TODO_LIST 2026-11-10
    evidence column against current state at execution time (T8's 5→14
    lockfile drift proves why). A TODO convention like "premise re-checked
    <date>" would make stale premises visible.
 
-4. **Pin the `-cpu` sweep and benchstat work to the aliasverify pattern.**
+~~4. **Pin the `-cpu` sweep and benchstat work to the aliasverify pattern.**~~ v:done — T14 followed the compile-then-run pattern: real benchmark run, authentic output pasted (2026-08-21)
    T14 should reuse the compile-then-run harness style from T3/T6: write the
    benchmark, run it, paste REAL output. The infrastructure (scratch module,
    go 1.26.5) is proven.
 
-5. **Consider upstreaming the trigger-first guard's blacklist.** The 36-verb
+~~5. **Consider upstreaming the trigger-first guard's blacklist.** The 36-verb~~ v:done — T26 --triggers lint mode shipped (wave-2; WEAK unit test)
    list is heuristic; a lint mode (`--thin`-style) could report near-misses
    (e.g. descriptions passing but scoring low on trigger density) without
    gating.
@@ -221,26 +221,26 @@ ancestors).
 
 | #      | Task                                                                                                                                                                                                                                              | Impact     | Effort |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------ |
-| 1      | ~~T11: extract Phase 2 badge/link-bar markdown into readme-template.md (SKILL.md 840 → <800)~~ done at 2026-08-21 (799 lines; applications badge variant + {LICENSE} placeholder ported to template)                                              |            |        |
-| 2      | ~~T12: `scripts/check-skill-links.sh` (fragment-stripping, TOC-aware, dir-aware)~~ done at 2026-08-21 (inline-code + HTML-anchor aware, dup-slug suffixes, wired into check-skills.sh as check 12; fixed the one real broken TOC anchor it found) |            |        |
-| 3      | ~~T13: process lessons into how-to-write-skills.md (incl. d1's scratch-dir trash lesson)~~ done at 2026-08-21 (Hard-Won Process Lessons section + eval-harness shapes + on-disk rule; chat-time gate added to verify-external-claims §0)          |            |        |
-| 4      | ~~T14: real `-cpu` sweep + benchstat + false-sharing examples in performance-tuning.md~~ done at 2026-08-21 (sweep knee at 16 on 32-thread Ryzen; benchstat -80.21% p=0.002 n=6)                                                                  |            |        |
-| 5      | ~~T15: one-way cross-link bdd-testing → performance-tuning.md~~ done at 2026-08-21 ("Benchmarks are not specs" section)                                                                                                                           |            |        |
-| 6      | ~~T16: trash item in go-release quick-reference.md~~ done at 2026-08-21 (Phase 6 checklist row)                                                                                                                                                   |            |        |
-| 7      | ~~T19: og:image guidance (file-manifest/website-creation-details) + launch-post template in content-patterns~~ done at 2026-08-21 (file-manifest og-sizing rule + content-patterns launch-post mini-template)                                     |            |        |
-| 8      | ~~T20: CONTRIBUTING.md add-skill flow with link-skills step~~ done at 2026-08-21                                                                                                                                                                  |            |        |
-| 9      | ~~Update TODO_LIST.md (remove done T1–T10/T17/T18) + CHANGELOG wave entry for this session~~ done at 2026-08-21 (all of T1–T20 removed; TODO_LIST rebuilt as T21–T26)                                                                             |            |        |
-| 10     | ~~go-release: make `GONOSUMDB=*` explicit in multi-module.md verification (last eval miss)~~ done at 2026-08-21 (Step 9 + rationale; semantics verified against `go help environment`)                                                            |            |        |
-| 11     | ~~Re-check README.md website-launch row + skills-table counts after this wave~~ done at 2026-08-21 (row already mentions sales engine; 25-count accurate — no change needed)                                                                      |            |        |
+| ~~1~~ | ~~T11: extract Phase 2 badge/link-bar markdown into readme-template.md (SKILL.md 840 → <800)~~ done at 2026-08-21 (799 lines; applications badge variant + {LICENSE} placeholder ported to template) | ~~ ~~ | ~~ ~~ |
+| ~~2~~ | ~~T12: `scripts/check-skill-links.sh` (fragment-stripping, TOC-aware, dir-aware)~~ done at 2026-08-21 (inline-code + HTML-anchor aware, dup-slug suffixes, wired into check-skills.sh as check 12; fixed the one real broken TOC anchor it found) | ~~ ~~ | ~~ ~~ |
+| ~~3~~ | ~~T13: process lessons into how-to-write-skills.md (incl. d1's scratch-dir trash lesson)~~ done at 2026-08-21 (Hard-Won Process Lessons section + eval-harness shapes + on-disk rule; chat-time gate added to verify-external-claims §0) | ~~ ~~ | ~~ ~~ |
+| ~~4~~ | ~~T14: real `-cpu` sweep + benchstat + false-sharing examples in performance-tuning.md~~ done at 2026-08-21 (sweep knee at 16 on 32-thread Ryzen; benchstat -80.21% p=0.002 n=6) | ~~ ~~ | ~~ ~~ |
+| ~~5~~ | ~~T15: one-way cross-link bdd-testing → performance-tuning.md~~ done at 2026-08-21 ("Benchmarks are not specs" section) | ~~ ~~ | ~~ ~~ |
+| ~~6~~ | ~~T16: trash item in go-release quick-reference.md~~ done at 2026-08-21 (Phase 6 checklist row) | ~~ ~~ | ~~ ~~ |
+| ~~7~~ | ~~T19: og:image guidance (file-manifest/website-creation-details) + launch-post template in content-patterns~~ done at 2026-08-21 (file-manifest og-sizing rule + content-patterns launch-post mini-template) | ~~ ~~ | ~~ ~~ |
+| ~~8~~ | ~~T20: CONTRIBUTING.md add-skill flow with link-skills step~~ done at 2026-08-21 | ~~ ~~ | ~~ ~~ |
+| ~~9~~ | ~~Update TODO_LIST.md (remove done T1–T10/T17/T18) + CHANGELOG wave entry for this session~~ done at 2026-08-21 (all of T1–T20 removed; TODO_LIST rebuilt as T21–T26) | ~~ ~~ | ~~ ~~ |
+| ~~10~~ | ~~go-release: make `GONOSUMDB=*` explicit in multi-module.md verification (last eval miss)~~ done at 2026-08-21 (Step 9 + rationale; semantics verified against `go help environment`) | ~~ ~~ | ~~ ~~ |
+| ~~11~~ | ~~Re-check README.md website-launch row + skills-table counts after this wave~~ done at 2026-08-21 (row already mentions sales engine; 25-count accurate — no change needed) | ~~ ~~ | ~~ ~~ |
 | ~~12~~ | ~~Retro-audit live sites against the new demo-video Definition of Done (08-21 f10, still open)~~ done — T21 executed 2026-09-08 (23-15 report)                                                                                                    | ~~Medium~~ | ~~M~~  |
 | ~~13~~ | ~~HyperFrames ground-truth: one real demo-video render through the corrected 9:16 guidance~~ done — T22 executed in wave-2 (incl. 9:16 variant)                                                                                                   | ~~High~~   | ~~M~~  |
-| 14     | ~~scratch-dir helper script (e1)~~ done at 2026-08-21 (scripts/scratch.sh: create + manifest + --clean via trash)                                                                                                                                 |            |        |
+| ~~14~~ | ~~scratch-dir helper script (e1)~~ done at 2026-08-21 (scripts/scratch.sh: create + manifest + --clean via trash) | ~~ ~~ | ~~ ~~ |
 
 ---
 
 ## g) Questions I CANNOT figure out myself
 
-1. **go-branded-id as the canonical branded-ID dependency — confirm the
+~~1. **go-branded-id as the canonical branded-ID dependency — confirm the~~ r:routed to ROADMAP 2026-11-10
    stack direction.** T6 proved `go-composable-business-types/{id,nanoid}`
    no longer exist (v0.6.0+) and `github.com/larsartmann/go-branded-id` is
    where the API lives (business-types itself now depends on it). I rewrote
@@ -248,13 +248,13 @@ ancestors).
    intend to re-unify these packages upstream, the skill should track that
    instead.
 
-2. **`skills update -g` side effect.** Verifying T8 updated 10 third-party
+~~2. **`skills update -g` side effect.** Verifying T8 updated 10 third-party~~ r:routed to ROADMAP 2026-11-10
    skills (the HyperFrames suite + others) to latest. This is the documented
    update path, but it changed runtime state as a side effect of a
    verification task. OK to leave as-is, or do you want a pin/rollback
    discipline for third-party skills?
 
-3. **Should T10's old-vs-new comparison become the standing eval pattern for
+~~3. **Should T10's old-vs-new comparison become the standing eval pattern for~~ v:encoded — "Eval harnesses: two shapes" (with/without vs old-vs-new) documented in how-to-write-skills.md:588 (T13)
    skill rewrites?** The go-release pattern (with/without) measures skill vs
    no-skill; this wave needed old-skill vs new-skill to justify a rewrite.
    If yes, T13 should document both harnesses in how-to-write-skills.md.

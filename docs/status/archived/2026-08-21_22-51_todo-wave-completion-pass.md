@@ -107,14 +107,14 @@ committed by the auto-commit daemon (`2fc1b46` tip).
 
 ## b) PARTIALLY DONE
 
-1. **website-launch SKILL.md length** — 799 lines, still above 500 and
+~~1. **website-launch SKILL.md length** — 799 lines, still above 500 and~~ r:routed to TODO_LIST 2026-11-10
    above the original "trim below 800" goal by 1 line of margin. The next
    extraction candidate is identified (Phase 2's 25-item structure list
    duplicates readme-template.md's "Standard Section Order") and tracked
    as T25, but not executed — the wave's goal (below 800) is met, the
    repo's real goal (<500 or a justified allowlist) is not.
 
-2. **T5/T22 HyperFrames ground truth** — unchanged from the first pass:
+~~2. **T5/T22 HyperFrames ground truth** — unchanged from the first pass:~~ v:closed — T22 executed in wave-2: renders + 9:16 resized-composition variant ffprobe-verified (fixtures committed wave-3 f1)
    doc-level verification only (skill bodies read, claims corrected/softened
    against them), no live render has validated the corrected 9:16 guidance.
 
@@ -122,16 +122,16 @@ committed by the auto-commit daemon (`2fc1b46` tip).
 
 ## c) NOT STARTED
 
-1. **T21** — Retro-audit of existing live sites against the new demo-video
+~~1. **T21** — Retro-audit of existing live sites against the new demo-video~~ v:done — T21 executed 2026-09-08 (23-15 report; retro-audit of live sites; f1)
    Definition of Done (open since the 08-21 morning report; not part of
    this wave's scope).
-2. **T23** — govalid generator end-to-end verification (struct tags compile
+~~2. **T23** — govalid generator end-to-end verification (struct tags compile~~ v:done — T23 executed in wave-2 (generate→build→validate on a scratch struct; f3)
    — proven in the T6 pass — but `go generate` output never run).
-3. **T24** — website-launch eval-1 re-run with a fully fictional repo to
+~~3. **T24** — website-launch eval-1 re-run with a fully fictional repo to~~ v:done — T24 executed in wave-2 (fictional go-pixelwand repo, old 4/7 vs new 7/7; f4)
    remove the real-repo/maintenance-mode asymmetry between the two configs.
-4. **T26** — Trigger-density lint mode for check-skills.sh (report
+~~4. **T26** — Trigger-density lint mode for check-skills.sh (report~~ v:done — T26 executed in wave-2 (--triggers lint mode + WEAK unit test; f6)
    near-misses without gating) — follow-up idea from the T1 guard.
-5. **ROADMAP.md sync** — the new T21–T26 numbering and the wave outcome are
+~~5. **ROADMAP.md sync** — the new T21–T26 numbering and the wave outcome are~~ v:done — g1-g3 policy questions routed to ROADMAP Open Questions (f8, video-policy entry)
    in TODO_LIST/CHANGELOG, but ROADMAP was not touched this pass; its open
    questions may now overlap (e.g. g1-g3 of the 08-21 morning report on
    autoplay/social-cut/API-library video policy remain unanswered and are
@@ -177,18 +177,18 @@ committed by the auto-commit daemon (`2fc1b46` tip).
 
 ## e) WHAT WE SHOULD IMPROVE
 
-1. **Adopt-existing-dirs mode for scratch.sh** (`scratch.sh --adopt /tmp/x`)
+~~1. **Adopt-existing-dirs mode for scratch.sh** (`scratch.sh --adopt /tmp/x`)~~ r:routed to TODO_LIST 2026-11-10
    so cleanup of pre-helper scratch dirs goes through the manifest instead
    of ad-hoc trash calls — closes the gap that caused d1.
-2. **New-linter triage rule:** when a freshly written checker reports N
+~~2. **New-linter triage rule:** when a freshly written checker reports N~~ r:routed to TODO_LIST 2026-11-10
    findings, verify 2-3 by hand BEFORE fixing anything; if the sample is
    mostly false positives, fix the checker first. Encode near the T12
    entry in how-to-write-skills.md's lessons section if it recurs.
-3. **benchstat harness recipe:** the correct invariants (same package, same
+~~3. **benchstat harness recipe:** the correct invariants (same package, same~~ r:routed to TODO_LIST 2026-11-10
    benchmark name, count≥6, measure→fix→re-measure) are now implicit in the
    performance-tuning example; consider one sentence stating them as rules
    so the next session doesn't rediscover them via failed pairings (d3).
-4. **ROADMAP/TODO cross-check after wave completion** — this pass updated
+~~4. **ROADMAP/TODO cross-check after wave completion** — this pass updated~~ r:routed to ROADMAP 2026-11-10
    TODO_LIST and CHANGELOG but not ROADMAP; a standing "wave complete"
    checklist item (TODO + CHANGELOG + ROADMAP + status-report annotations)
    would prevent drift. Candidate for how-to-write-skills.md process
@@ -206,18 +206,18 @@ committed by the auto-commit daemon (`2fc1b46` tip).
 | ~~4~~  | ~~T24: website-launch eval-1 re-run with a fully fictional repo~~ done — T24 executed in wave-2 (go-pixelwand, old 4/7 vs new 7/7)                                                                     | ~~Low~~    | ~~S~~      |
 | ~~5~~  | ~~T25: next website-launch trim — extract Phase 2 structure list into readme-template (target <700, then <500)~~ done — T25 executed in wave-2 (799→781 lines)                                         | ~~Low~~    | ~~S~~      |
 | ~~6~~  | ~~T26: trigger-density lint mode for check-skills.sh~~ done — T26 executed in wave-2 (--triggers mode + WEAK unit test)                                                                                | ~~Low~~    | ~~S~~      |
-| 7      | scratch.sh --adopt mode for pre-existing scratch dirs (e1 follow-up, d1)                                                                                                                               | Low        | S          |
+~~| 7      | scratch.sh --adopt mode for pre-existing scratch dirs (e1 follow-up, d1)                                                                                                                               | Low        | S          |~~ r:routed to TODO_LIST 2026-11-10
 | ~~8~~  | ~~ROADMAP sync: route the 08-21 morning report's unanswered g1-g3 policy questions (autoplay, social-cut tier, API-library video)~~ done — g1-g3 routed to ROADMAP Open Questions (video-policy entry) | ~~Medium~~ | ~~S~~      |
-| 9      | benchstat harness invariants as explicit rules in performance-tuning.md (d3)                                                                                                                           | Low        | S          |
-| 10     | skills CLI: lockfile hash drift check — verify `skills update -g` bumps `skillFolderHash` for all 10 updated entries                                                                                   | Low        | S          |
-| 11     | how-to-write-skills.md: add the "new-linter triage" rule if one more session hits it (e2)                                                                                                              | Low        | S          |
+~~| 9      | benchstat harness invariants as explicit rules in performance-tuning.md (d3)                                                                                                                           | Low        | S          |~~ r:routed to TODO_LIST 2026-11-10
+~~| 10     | skills CLI: lockfile hash drift check — verify `skills update -g` bumps `skillFolderHash` for all 10 updated entries                                                                                   | Low        | S          |~~ r:routed to TODO_LIST 2026-11-10
+~~| 11     | how-to-write-skills.md: add the "new-linter triage" rule if one more session hits it (e2)                                                                                                              | Low        | S          |~~ r:routed to TODO_LIST 2026-11-10
 | ~~12~~ | ~~FEATURES.md: add rows for the two eval artifacts (go-release iteration-2, website-launch iteration-1)~~ done — FEATURES rows added for both eval-bearing skills (2026-09-16 rewrite `5dd75e2`)       | ~~Low~~    | ~~S~~      |
 
 ---
 
 ## g) Questions I CANNOT figure out myself
 
-1. **The 500-line gate vs website-launch reality.** The repo rule says
+~~1. **The 500-line gate vs website-launch reality.** The repo rule says~~ r:routed to ROADMAP 2026-11-10
    SKILL.md <500 lines; website-launch is now 799 and only reachable below
    700 with the next extraction, realistically ~600 after two more. Do you
    want a sustained multi-pass push to get under 500 (structural risk:
@@ -225,14 +225,14 @@ committed by the auto-commit daemon (`2fc1b46` tip).
    entry be re-justified permanently at whatever the extraction ceiling
    turns out to be?
 
-2. **Adopt T24's fictional-repo eval (and the old-vs-new harness generally)
+~~2. **Adopt T24's fictional-repo eval (and the old-vs-new harness generally)~~ r:routed to ROADMAP 2026-11-10
    as the standard rewrite gate?** This wave proved the harness twice
    (go-release 79%→95%, website-launch 35%→100%). If yes, I would encode
    "run an old-vs-new eval before merging any substantive skill rewrite"
    into how-to-write-skills.md — which would make evals a blocking step
    for future skill work rather than follow-up debt.
 
-3. **Priority call between T21 (retro-audit of live sites) and T22 (one
+~~3. **Priority call between T21 (retro-audit of live sites) and T22 (one~~ v:moot — both executed (T21 retro-audit 2026-09-08; T22 render wave-2)
    real HyperFrames render).** Both convert doc-verified guidance into
    ground truth; T21 improves existing properties, T22 de-risks every
    future launch. Which first — or should T22 fold INTO the next real

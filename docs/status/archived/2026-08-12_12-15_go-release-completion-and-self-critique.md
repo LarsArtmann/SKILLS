@@ -63,25 +63,25 @@
 
 ## b) PARTIALLY DONE
 
-1. **Evaluations are subagent-based, not skill-creator-runtime-based** — The proper
+~~1. **Evaluations are subagent-based, not skill-creator-runtime-based** — The proper~~ r:routed to ROADMAP 2026-11-10
    skill-creator evaluation loop (`run_eval.py` / `run_loop.py`) requires `claude -p`,
    which is not installed in this environment. I approximated with subagents that read
    the skill files manually. This is directionally correct but lacks trigger-accuracy
    metrics, variance analysis, and blind comparison.
 
-2. **Evals have not been re-run after the v2.0.0 CLI fix** — I fixed the skill so a
+~~2. **Evals have not been re-run after the v2.0.0 CLI fix** — I fixed the skill so a~~ v:done — evals re-run: go-release/evals/iteration-2/ exists on disk (f1)
    binary-only v2.0.0 release no longer triggers `/v2` module migration, but I did not
    re-run the failing eval to confirm the pass rate improves.
 
-3. **Publishing sections are verified against source, not by running GoReleaser** — The
+~~3. **Publishing sections are verified against source, not by running GoReleaser** — The~~ r:routed to ROADMAP 2026-11-10
    Docker, Homebrew, and Scoop examples are structurally correct but were not
    exercised in a real CI pipeline.
 
-4. **Pre-release-check script is tested for core paths only** — Clean, dirty, and
+~~4. **Pre-release-check script is tested for core paths only** — Clean, dirty, and~~ r:routed to ROADMAP 2026-11-10
    replace-directive cases are verified. `--race` and `--lint` flags were syntax-checked
    but not run against a project with actual tests or lint issues.
 
-5. **ToC anchor correctness was generated, not rendered** — I generated anchors using a
+~~5. **ToC anchor correctness was generated, not rendered** — I generated anchors using a~~ v:done — ToC anchors validated by the anchor-aware link checker (check 12; f7)
    Python script that mimics GitHub's algorithm, but I did not render the Markdown
    with a real parser to verify every link resolves.
 
@@ -89,7 +89,7 @@
    done by hand. Some long table rows or code blocks may be slightly off the project's
    preferred style.
 
-7. **Safety rule did not fully propagate to eval outputs** — The with-skill subagent
+~~7. **Safety rule did not fully propagate to eval outputs** — The with-skill subagent~~ r:routed to ROADMAP 2026-11-10
    response for eval 1 used `rm -rf /tmp/release-verify` even though the skill preaches
    `trash`. This is a real failure of the safety guidance to be sticky in generated
    output.
@@ -98,18 +98,18 @@
 
 ## c) NOT STARTED
 
-1. Full skill-creator runtime evaluation with `claude -p` and variance analysis.
-2. HTML eval report using `html-report-kit` (would be nice but not required).
-3. Re-running the fixed evals to measure pass-rate improvement.
-4. Additional eval prompts: version retraction, private-dependency release, v2+ module
+~~1. Full skill-creator runtime evaluation with `claude -p` and variance analysis.~~ r:routed to ROADMAP 2026-11-10
+~~2. HTML eval report using `html-report-kit` (would be nice but not required).~~ r:routed to ROADMAP 2026-11-10
+~~3. Re-running the fixed evals to measure pass-rate improvement.~~ v:done — iteration-2 evals on disk (f1)
+~~4. Additional eval prompts: version retraction, private-dependency release, v2+ module~~ w:duplicate — the eval-expansion matrix is already in ROADMAP §1
    migration, multi-module GoReleaser, release-branch hotfix.
-5. Testing `pre-release-check.sh` with `--race` and `--lint` against a real project.
-6. Testing `pre-release-check.sh` in a multi-module `go.work` repository.
-7. Spell-check and markdown lint across all changed files.
-8. Adding a dedicated "Safety notes" subsection to `SKILL.md`.
-9. Adding CI/workflow examples that use `pre-release-check.sh`.
-10. Adding a note about `GOWORK=off` behavior to the pre-release-check script.
-11. Documenting how to install/use the pre-release-check script outside the skill.
+~~5. Testing `pre-release-check.sh` with `--race` and `--lint` against a real project.~~ r:routed to ROADMAP 2026-11-10
+~~6. Testing `pre-release-check.sh` in a multi-module `go.work` repository.~~ r:routed to ROADMAP 2026-11-10
+~~7. Spell-check and markdown lint across all changed files.~~ r:routed to ROADMAP 2026-11-10
+~~8. Adding a dedicated "Safety notes" subsection to `SKILL.md`.~~ v:done — trash safety item lives in quick-reference.md Phase 6 checklist (T16; f11)
+~~9. Adding CI/workflow examples that use `pre-release-check.sh`.~~ r:routed to ROADMAP 2026-11-10
+~~10. Adding a note about `GOWORK=off` behavior to the pre-release-check script.~~ r:routed to ROADMAP 2026-11-10
+~~11. Documenting how to install/use the pre-release-check script outside the skill.~~ r:routed to ROADMAP 2026-11-10
 12. ~~Verifying that the new `quick-reference.md` file is discovered by the skill-loading~~ done (quick-reference.md is linked from SKILL.md (verified 2026-08-21))
     system and referenced correctly from SKILL.md.
 
@@ -117,13 +117,13 @@
 
 ## d) TOTALLY FUCKED UP
 
-1. **Hypocrisy on `rm -rf` in eval outputs** — I criticized the source skills for using
+~~1. **Hypocrisy on `rm -rf` in eval outputs** — I criticized the source skills for using~~ r:routed to ROADMAP 2026-11-10
    `rm -rf`, replaced all 5 instances in the skill with `trash`, then let the
    with-skill subagent output `rm -rf /tmp/release-verify` and left it in the eval
    artifact. The skill's safety rule did not stick in the generated response. This is
    exactly the kind of failure the rule is supposed to prevent.
 
-2. **I used `rm -rf` in my own test commands** — When validating the pre-release-check
+~~2. **I used `rm -rf` in my own test commands** — When validating the pre-release-check~~ v:closed — the safety expectation is now a graded assertion in iteration-2 (f2)
    script, I cleaned up temp directories with `rm -rf "$TMPDIR"`. I did this twice. The
    AGENTS.md rule says "NEVER use `rm` → ALWAYS use `trash`". I violated it while
    testing a script whose purpose is to enforce release discipline. Embarrassing.
@@ -140,12 +140,12 @@
    load major-versions.md for a binary major bump." I patched the SKILL.md table, but a
    more robust fix would be an explicit decision gate at the top of the response.
 
-5. **Inconsistent subagent behavior** — The with-skill subagents produced noticeably
+~~5. **Inconsistent subagent behavior** — The with-skill subagents produced noticeably~~ r:routed to ROADMAP 2026-11-10
    different levels of detail and made different reference choices (some read
    `major-versions.md`, some didn't). This suggests my prompt did not pin down exactly
    which references to load, or the subagents did not reliably follow the instruction.
 
-6. **Wasted a round trip on a bad bash regex** — I tried to list internal relative
+~~6. **Wasted a round trip on a bad bash regex** — I tried to list internal relative~~ w:process nit — nothing to ship
    links with a shell pipeline that silently returned nothing due to regex escaping
    issues. I had to re-run with the dedicated `grep` tool. This was sloppy and could
    have been avoided by using `grep` directly.
@@ -164,32 +164,32 @@
    binary (needs GoReleaser rules)?" This prevents library-only guidance like
    `/v2` migration from leaking into binary releases.
 
-2. **Add a safety checklist item to the skill and the evals** — Add an explicit
+~~2. **Add a safety checklist item to the skill and the evals** — Add an explicit~~ v:done — trash safety item added to quick-reference.md Phase 6 checklist (f11)
    expectation: "Output uses `trash` for temp directories, never `rm -rf`", and make
    it a checklist item in `quick-reference.md`.
 
-3. **Re-run the evaluations after the v2.0.0 CLI fix** — We need to confirm the
+~~3. **Re-run the evaluations after the v2.0.0 CLI fix** — We need to confirm the~~ v:done — iteration-2 evals on disk (f1)
    pass-rate actually improves and that the safety fix sticks.
 
-4. **Test the pre-release-check script against real projects** — Not just synthetic
+~~4. **Test the pre-release-check script against real projects** — Not just synthetic~~ r:routed to ROADMAP 2026-11-10
    modules. Run it on a multi-module repo with replace directives, vendor directories,
    and a real `golangci-lint` config.
 
-5. **Add a CI workflow example** — Show how to wire `pre-release-check.sh` into
+~~5. **Add a CI workflow example** — Show how to wire `pre-release-check.sh` into~~ r:routed to ROADMAP 2026-11-10
    GitHub Actions so it runs on every PR and blocks tags that fail the gate.
 
-6. **Verify the SKILL.md anchors** — Render the Markdown with a tool or fetch the file
+~~6. **Verify the SKILL.md anchors** — Render the Markdown with a tool or fetch the file~~ v:done — ToC anchors validated by the anchor-aware link checker (f7)
    from GitHub to confirm the ToC links jump to the right sections.
 
-7. **Add more evals for the failure modes** — Retraction, private deps, checksum
+~~7. **Add more evals for the failure modes** — Retraction, private deps, checksum~~ w:duplicate — the eval-expansion matrix is already in ROADMAP §1
    mismatch recovery, and wrong-tag selection are the most expensive failure modes and
    deserve eval coverage.
 
-8. **Normalize the eval subagent prompt** — Give the subagent a stricter, more uniform
+~~8. **Normalize the eval subagent prompt** — Give the subagent a stricter, more uniform~~ r:routed to ROADMAP 2026-11-10
    instruction: read SKILL.md first, then load only the references explicitly indicated
    by the release shape, and answer in the exact checklist format.
 
-9. **Run formatting and spell-check** — When `dprint` is available, run it on all
+~~9. **Run formatting and spell-check** — When `dprint` is available, run it on all~~ r:routed to ROADMAP 2026-11-10
    changed files. Also run a spell-checker to catch typos like the one I noticed in the
    todo description ("import importing rewriting").
 
@@ -197,11 +197,11 @@
     temp cleanup if we add temp-dir usage later. Currently it has no temp dirs, so it's
     fine, but we should decide whether to keep it that way.
 
-11. **Document the eval workspace conventions** — Make it clear that `evals/` contains
+~~11. **Document the eval workspace conventions** — Make it clear that `evals/` contains~~ r:routed to ROADMAP 2026-11-10
     test artifacts and may include `rm -rf` from baseline outputs, while the skill
     source itself is clean.
 
-12. **Review the `go-ecosystem-upgrade` failure-mode catalog** — F7 and F8 still appear
+~~12. **Review the `go-ecosystem-upgrade` failure-mode catalog** — F7 and F8 still appear~~ v:checked 2026-11-10 — F7/F8 remain in the catalog with intact cross-references (go-ecosystem-upgrade SKILL.md:81, 249-250)
     in the catalog even though their inline rules were removed from Phase 6. This is
     fine because they are still valid failure modes, but we should confirm the
     cross-references still point to the right place.
@@ -214,14 +214,14 @@
 
 1. ~~Re-run the 3 evals with the fixed SKILL.md and compare pass rates.~~ done (done — iteration-2 evals on disk (pass-rate improvement measured))
 2. ~~Add a safety assertion to evals: output must not contain `rm -rf`.~~ done (done — safety assertion in iteration-2 grading (rm -rf check present))
-3. Test `pre-release-check.sh --race` against a project with real tests.
-4. Test `pre-release-check.sh --lint` against a project with `golangci-lint`.
-5. Test `pre-release-check.sh` in a multi-module `go.work` repo.
-6. Test `pre-release-check.sh` when `go.mod` contains a valid remote `replace` (not local).
+~~3. Test `pre-release-check.sh --race` against a project with real tests.~~ r:routed to ROADMAP 2026-11-10
+~~4. Test `pre-release-check.sh --lint` against a project with `golangci-lint`.~~ r:routed to ROADMAP 2026-11-10
+~~5. Test `pre-release-check.sh` in a multi-module `go.work` repo.~~ r:routed to ROADMAP 2026-11-10
+~~6. Test `pre-release-check.sh` when `go.mod` contains a valid remote `replace` (not local).~~ r:routed to ROADMAP 2026-11-10
 7. ~~Render SKILL.md and verify all ToC anchor links resolve.~~ done (done — ToC anchors validated by check 12 (anchor-aware link checker))
 8. ~~Run `dprint check` on all changed files when `dprint` is available.~~ done (dprint adopted repo-wide (dprint.json))
-9. Run spell-check on `go-release/` files.
-10. Validate the new GoReleaser publishing examples by running `goreleaser check`.
+~~9. Run spell-check on `go-release/` files.~~ r:routed to ROADMAP 2026-11-10
+~~10. Validate the new GoReleaser publishing examples by running `goreleaser check`.~~ r:routed to ROADMAP 2026-11-10
 
 ### Skill content
 
@@ -262,7 +262,7 @@
 42. ~~Add a blind comparator evaluation (with-skill vs old-skill vs baseline).~~ **Won't implement — duplicate — ROADMAP §1.**
 43. ~~Add trigger-description accuracy tests using `run_eval.py`.~~ **Won't implement — duplicate — ROADMAP §1.**
 44. ~~Improve eval prompts to be more ambiguous and realistic.~~ **Won't implement — duplicate — ROADMAP §1.**
-45. Add grading evidence screenshots or exact line references.
+~~45. Add grading evidence screenshots or exact line references.~~ r:routed to ROADMAP 2026-11-10
 
 ### Repository & maintenance
 
