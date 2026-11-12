@@ -355,7 +355,7 @@ nix shell nixpkgs#nodejs -c pnpm install   # run from website/ directory
 repository is not tracked by Git."
 
 **Cause:** Nix flakes only operate on files tracked by git. A newly created
-`flake.nix` must be `git add`ed before `nix flake lock` can work.
+`flake.nix` must be staged (`git add`) before `nix flake lock` can work.
 
 **Fix:** Always run `git add website/flake.nix` before `nix flake lock`:
 

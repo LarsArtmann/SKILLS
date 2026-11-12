@@ -40,8 +40,9 @@
 Then start the task. A TODO row (or an old audit) is a claim, not a state:
 `find <skill-dir> -type f` + `wc -l` before trusting its framing. At session
 end: run `scripts/check-skills.sh` again, leave `git status` clean (the
-auto-commit daemon handles commits), list `git worktree`s and remove stale
-ones, and — before trashing any scratch — commit as fixtures or explicitly
+auto-commit daemon handles commits), list `git worktree` entries and remove
+stale ones, and — before trashing any scratch — commit as fixtures or
+explicitly
 disclaim every artifact a report cites as evidence (the 2026-09-08 trashed-
 ground-truth incident). Write a status report to `docs/status/` for any
 multi-step session.

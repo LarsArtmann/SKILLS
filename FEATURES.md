@@ -101,13 +101,13 @@
 
 | Skill        | Status     | References   | Notes                                                                                                                                                                                                                                                                                                                                          |
 | ------------ | ---------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| gmail-drafts | 🟢 `SOLID` | ✅ (scripts) | Gmail drafts API via InboxClean's OAuth grants; born from the live 2026-10-04 case-glovo staging run (mojibake, `KeyError: raw`, empty-204 lessons encoded); aged 🆕→🟢 same day — proven end-to-end via its own path (`--list` → `--delete`×6 `+ --spec`, 5 bilingual drafts staged `[OK]`, subjects rendered clean, idempotency check fired) |
+| gmail-drafts | 🟢 `FULLY_FUNCTIONAL` | ✅ (scripts) | Gmail drafts API via InboxClean's OAuth grants; born from the live 2026-10-04 case-glovo staging run (mojibake, `KeyError: raw`, empty-204 lessons encoded); aged 🆕→🟢 same day — proven end-to-end via its own path (`--list` → `--delete`×6 `+ --spec`, 5 bilingual drafts staged `[OK]`, subjects rendered clean, idempotency check fired); stray-fence + Python-era residue repaired 2026-11-12 |
 
 ## Skill Collection — Project Intelligence
 
 | Skill          | Status                    | References    | Notes                                                                                                                                                                                                                                                                 |
 | -------------- | ------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| docs-health    | 🟢 `FULLY_FUNCTIONAL`     | ✅ (10 files) | All docs: BUILD + HARVEST + VERIFY + ANNOTATE + AUDIT; batch annotation tooling (`annotate.go` — Go port of the five Python annotator assets, 2026-10-11)                                                                                                             |
+| docs-health    | 🟢 `FULLY_FUNCTIONAL`     | ✅ (12 files) | All docs: BUILD + HARVEST + VERIFY + ANNOTATE + AUDIT; batch annotation tooling (`annotate.go` — Go port of the five Python annotator assets, 2026-10-11); docs-gates battery adopted repo-side 2026-11-10 |
 | website-launch | 🟢 `FULLY_FUNCTIONAL`     | ✅            | Astro + Starlight + Firebase; HyperFrames demo video as the launch's sales engine (2026-08-18/21); allowlisted over 500-line guideline                                                                                                                                |
 | status-report  | 🟡 `PARTIALLY_FUNCTIONAL` | ✅ (assets)   | Default `.md` at docs/status convention (DECIDED 2026-10-27 D.g4 — was HTML-canonical with 8 recurrences); HTML dashboard reserved for metric-heavy reports via html-report-kit; section-quality guide added 2026-08-04; exercised every session but single reference |
 
@@ -116,7 +116,7 @@
 | Feature                  | Status                    | Evidence                                                                                                                                                       |
 | ------------------------ | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | html-report-kit          | 🟢 `FULLY_FUNCTIONAL`     | Shared Bauhaus design system; vendored into all consumers via sync script                                                                                      |
-| check-skills.sh          | 🟢 `FULLY_FUNCTIONAL`     | Structural validation (14 checks): frontmatter, line gates, `<--` guard, TOC integrity, marker-vocabulary contract, FEATURES coverage guard (added 2026-09-16) |
+| check-skills.sh          | 🟢 `FULLY_FUNCTIONAL`     | Structural validation (15 checks): frontmatter, line gates, `<--` guard, TOC integrity, marker-vocabulary contract, FEATURES coverage guard (2026-09-16), throat-clearing gate (check 15, 2026-09-17) |
 | sync-html-kit.sh         | 🟢 `FULLY_FUNCTIONAL`     | Vendoring automation with `--check` (CI) and `--list` (consumer inventory)                                                                                     |
 | link-skills-to-agents.sh | 🟢 `FULLY_FUNCTIONAL`     | Runtime symlink manager: idempotent repair, `--check` (CI), `--list`, `--force` recovery; replaced rsync copying 2026-08-14                                    |
 | check-agents-md.sh       | 🟢 `FULLY_FUNCTIONAL`     | AGENTS.md quality scorer (temporal pollution, content misplacement, size budget) added 2026-08-04                                                              |
@@ -148,5 +148,5 @@ full external dependencies table (pointer at AGENTS.md §10).
 - **Legacy `how-to-golang` snippet issues fixed 2026-08-04** (gopter, json/v2,
   E2E HTTP, Rule 002). The newer `performance-tuning.md` (2026-08-16) snippets
   are idiomatic but not compile-tested.
-- **website-launch is 797 lines** (allowlisted; trim path: extract §3.11
-  next — the Phase 2 badge/link-bar blocks were already extracted).
+- **website-launch is 835 lines** (allowlisted; 797 measured 2026-10-11, regrown
+  with the demo-video references; trim path exists — TODO T59 stage 3).

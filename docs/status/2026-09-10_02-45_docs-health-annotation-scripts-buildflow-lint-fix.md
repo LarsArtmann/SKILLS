@@ -34,12 +34,12 @@ ruff-check-fix
 
 ## Root cause
 
-1. **EXE001** — `annotate-prose.py` / `annotate-rows.py` were committed as
+~~1. **EXE001** — `annotate-prose.py` / `annotate-rows.py` were committed as~~ done at `5f67dfc` (chmod 100755 on both annotation scripts)
    mode 644 while starting with `#!/usr/bin/env python3`. Repo convention
    is 755 for every shebang script (verified: `git ls-files -s` shows all
    12 other `*.sh`/`*.py`-with-shebang files at 100755; only these two were
    100644). `annotate-rows_test.py` has no shebang and was correctly 644.
-2. **DTZ011** — `marker_for("p", "-")` defaulted to `date.today().isoformat()`
+~~2. **DTZ011** — `marker_for("p", "-")` defaulted to `date.today().isoformat()`~~ done at `5f67dfc` (tz-aware UTC default)
    (timezone-naive). ruff bans `datetime.date.today()`.
 
 ## Fix (commit `5f67dfc`, captured by the auto-commit daemon)
@@ -55,17 +55,17 @@ ruff-check-fix
 
 | Check                                                                    | Result                                                              |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------- |
-| `python3 -m py_compile` both files                                       | OK                                                                  |
-| `annotate-rows_test.py` self-test (docstring's importlib one-liner)      | "all passed" (incl. `p default` case)                               |
-| Direct shebang execution (exec bit effective)                            | usage printed                                                       |
-| Dry-run fixture, rows `1:p:-`                                            | `done (docs-health pass 2026-09-10)` — UTC date rendered            |
-| Live write, rows `2:p:2026-08-01`                                        | annotated, "(shape verified)" — read-back guard intact              |
-| Dry-run fixture, prose `1:p:-`                                           | `1. ~~alpha~~ done (docs-health pass 2026-09-10)`                   |
-| `buildflow -s ruff-check-fix --format finding`                           | exit 0, `"findings": []`, `ruff> All checks passed!`                |
+| ~~`python3 -m py_compile` both files~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~OK~~ |
+| ~~`annotate-rows_test.py` self-test (docstring's importlib one-liner)~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~"all passed" (incl. `p default` case)~~ |
+| ~~Direct shebang execution (exec bit effective)~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~usage printed~~ |
+| ~~Dry-run fixture, rows `1:p:-`~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~`done (docs-health pass 2026-09-10)` — UTC date rendered~~ |
+| ~~Live write, rows `2:p:2026-08-01`~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~annotated, "(shape verified)" — read-back guard intact~~ |
+| ~~Dry-run fixture, prose `1:p:-`~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~`1. ~~alpha~~ done (docs-health pass 2026-09-10)`~~ |
+| ~~`buildflow -s ruff-check-fix --format finding`~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~exit 0, `"findings": []`, `ruff> All checks passed!`~~ |
 | `buildflow format` (~~full~~ _fast mode; ruff n/a — corrected 02-55 d1_) | `FORMAT_EXIT=0`, `18 success, 0 failed, 0 skipped (+25 via config)` |
-| Repo-wide exec-bit audit (`git ls-files -s` on all `*.py`/`*.sh`)        | no further 644-with-shebang files                                   |
-| `scripts/check-skills.sh`                                                | exit 0, 27/27 skills pass, 140 files link-clean                     |
-| `git status` / `git worktree list`                                       | clean / master only (buildflow fsprobe temp file self-cleaned)      |
+| ~~Repo-wide exec-bit audit (`git ls-files -s` on all `*.py`/`*.sh`)~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~no further 644-with-shebang files~~ |
+| ~~`scripts/check-skills.sh`~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~exit 0, 27/27 skills pass, 140 files link-clean~~ |
+| ~~`git status` / `git worktree list`~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~clean / master only (buildflow fsprobe temp file self-cleaned)~~ |
 
 ## Knowledge encoded
 
@@ -81,20 +81,20 @@ ruff-check-fix
 
 ## Residuals (observed, pre-existing, NOT actioned this session)
 
-1. **buildflow preflight warnings (user's global tool env, not repo):**
+~~1. **buildflow preflight warnings (user's global tool env, not repo):**~~ Won't implement — external user-env noise, documented not actioned
    `GOEXPERIMENT=jsonv2` redundant in a `.buildflow.yml` that is NOT in
    this repo; binary built at `a3168a2` vs HEAD (rebuild is a system
    action on Lars' tool, not done unasked); `go-licenses` not in PATH
    (devShell tool).
-2. **shellcheck advisories, steps still ✔:** SC2319 ×6 in
+~~2. **shellcheck advisories, steps still ✔:** SC2319 ×6 in~~ routed to TODO_LIST 2026-11-10
    `jj-fork-pr-workflow/scripts/validate-workflow.sh` (`$?` after a
    condition), SC2089/SC2090 in `naming-review/scripts/naming-smells.sh`
    (quoted-variable-as-opts). Real (if latent) bugs in validation scripts
    — candidate for a future session.
-3. **markdownlint noise:** hundreds of MD013/MD010/MD031 advisories across
+~~3. **markdownlint noise:** hundreds of MD013/MD010/MD031 advisories across~~ Won't implement — stylistic, exit-OK by config, out of scope
    `website-launch/` and others; step exits ✔ as configured. Stylistic
    sweep, out of scope.
-4. **ruff language-detection quirk:** in the full pipeline ruff was
+~~4. **ruff language-detection quirk:** in the full pipeline ruff was~~ Won't implement — external tool; single-step invocation is the canonical ruff check (AGENTS §5.11)
    skipped ("language mismatch: project: go") though the repo is Python +
    markdown. Did not debug buildflow's detector (external tool, binary
    older than HEAD — see residual 1). Single-step invocation is the
