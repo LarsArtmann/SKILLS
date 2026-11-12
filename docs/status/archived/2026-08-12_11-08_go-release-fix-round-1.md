@@ -230,20 +230,20 @@
 37. ~~Add `scripts/pre-release-check.sh` automation~~ done at `56beebe`
 38. ~~Consider HTML release report via html-report-kit~~ done (routed to ROADMAP §6 — HTML eval report idea)
 39. ~~Consider a `go-release-check` CI script~~ **Won't implement — superseded — pre-release-check.sh IS the gate; a wrapper CI step remains a ROADMAP §6 idea.**
-40. Add `--snapshot` testing pattern to goreleaser-and-ci.md (already there — verify completeness)
+~~40. Add `--snapshot` testing pattern to goreleaser-and-ci.md (already there — verify completeness)~~ v:already present — goreleaser-and-ci.md carries a "Snapshot builds for testing" section (line 592, in the ToC)
 41. ~~Add `GORELEASER_CURRENT_TAG` to the Gotchas table in SKILL.md (it's in multi-module.md only)~~ done at `56beebe`
 42. ~~Add `go mod verify` to Phase 4 explicitly (currently implied by tidy)~~ done at `56beebe`
-43. Add section on what to do if pre-commit hooks fail during release
-44. Add `--no-verify` guidance for environment-only hook failures
-45. Add coverage gate mention to Phase 4 (already there — verify consistency)
+~~43. Add section on what to do if pre-commit hooks fail during release~~ r:routed to ROADMAP 2026-11-10
+~~44. Add `--no-verify` guidance for environment-only hook failures~~ r:routed to ROADMAP 2026-11-10
+~~45. Add coverage gate mention to Phase 4 (already there — verify consistency)~~ v:already present — SKILL.md:252 carries "4.2 Coverage check (if the project has a coverage gate)"
 
 ### Cross-references
 
-46. Consider whether nix-review should cross-reference go-release for nix+Go releases
-47. Consider whether nix-private-go-repos should cross-reference go-release
+~~46. Consider whether nix-review should cross-reference go-release for nix+Go releases~~ w:covered — no duplication: AGENTS §5.5 inter-skill graph is clean (verified in the 10-50 report f24)
+~~47. Consider whether nix-private-go-repos should cross-reference go-release~~ w:covered — no duplication: AGENTS §5.5 inter-skill graph is clean (verified in the 10-50 report f24)
 48. ~~Add go-release to the External Dependencies table in AGENTS.md §10~~ done (docs-health pass 2026-08-21)
-49. Consider whether how-to-golang should reference go-release for "how to version"
-50. Write a brief "release readiness checklist" that go-release and how-to-golang share
+~~49. Consider whether how-to-golang should reference go-release for "how to version"~~ r:routed to ROADMAP 2026-11-10
+~~50. Write a brief "release readiness checklist" that go-release and how-to-golang share~~ r:routed to ROADMAP 2026-11-10
 
 ---
 
@@ -278,13 +278,13 @@
 
 | Dimension           | Round 1 Grade | Round 2 Grade | Delta                                          |
 | ------------------- | ------------- | ------------- | ---------------------------------------------- |
-| Research depth      | A             | A             | —                                              |
-| Structural quality  | A             | A             | —                                              |
-| Technical accuracy  | B+            | A-            | Cosign fixed, SLSA fixed, GoReleaser confirmed |
-| Safety compliance   | C             | A             | All `rm -rf` eliminated                        |
-| Writing quality     | B             | A-            | +incompatible rewritten, stale reference fixed |
-| Testing             | F             | F             | Still no test prompts                          |
-| Practical readiness | B             | B+            | Safer, more accurate, still untested           |
+~~| Research depth      | A             | A             | —                                              |~~ v:still accurate — research depth held through round 2
+~~| Structural quality  | A             | A             | —                                              |~~ v:still accurate — check-skills.sh green through all rounds
+~~| Technical accuracy  | B+            | A-            | Cosign fixed, SLSA fixed, GoReleaser confirmed |~~ v:superseded — all claims verified by the 12-10 session (its section d table)
+~~| Safety compliance   | C             | A             | All `rm -rf` eliminated                        |~~ v:accurate — round 2 confirmed all rm -rf eliminated
+~~| Writing quality     | B             | A-            | +incompatible rewritten, stale reference fixed |~~ v:accurate — +incompatible rewritten, stale reference fixed (both in this round)
+~~| Testing             | F             | F             | Still no test prompts                          |~~ v:superseded — evals ran in round 2: 74% with-skill vs 30% baseline (12-10 a6)
+~~| Practical readiness | B             | B+            | Safer, more accurate, still untested           |~~ v:superseded — tested and moved to 🟢 Comprehensive in README (12-10 a10)
 
 **The skill is now structurally excellent and technically verified.** The path
 to "superb" runs through testing (write and run test prompts), split-brain

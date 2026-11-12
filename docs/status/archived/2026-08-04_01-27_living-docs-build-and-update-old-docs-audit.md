@@ -70,7 +70,7 @@ reports with resolution sections. This report covers ONLY this session's work.
 
 ## b) PARTIALLY DONE
 
-1. **update-old-docs annotation: appendix-only, not inline.** I added `##
+~~1. **update-old-docs annotation: appendix-only, not inline.** I added `##~~ v:closed by the 2026-08-04 21-25 pass — the 8 reports were inline-resolved (see f1)
 Resolution` appendices to 8 reports — but I did NOT inline-resolve the
    numbered action items (f-sections) within those reports. Each report has
    20–50 numbered tasks that should have been struck through with `done at
@@ -81,7 +81,7 @@ Resolution` appendices to 8 reports — but I did NOT inline-resolve the
    failure mode"), and then committed it anyway. The inline corrections are
    absent. See (d)#1.
 
-2. **FEATURES.md status claims not deeply verified.** I assigned status based
+~~2. **FEATURES.md status claims not deeply verified.** I assigned status based~~ v:resolved by T11 — README and FEATURES aligned, how-to-golang upgraded to Comprehensive (f2)
    on line counts and general session knowledge, not by opening each SKILL.md
    and confirming its claims work. For example, `how-to-golang` was downgraded
    to PARTIALLY_FUNCTIONAL based on "known code-accuracy issues" cited in old
@@ -91,19 +91,19 @@ Resolution` appendices to 8 reports — but I did NOT inline-resolve the
    "Code is the source of truth" — I used status reports as the source, which
    is a lead, not evidence.
 
-3. **Cross-file consistency: how-to-golang split brain.** README.md says
+~~3. **Cross-file consistency: how-to-golang split brain.** README.md says~~ v:resolved by T11 — README and FEATURES now agree on 🟢 Comprehensive (f2)
    `how-to-golang` is 🟢 Comprehensive. My FEATURES.md says 🟡
    PARTIALLY_FUNCTIONAL. These are different vocabularies (README quality
    indicators vs FEATURES status vocabulary), but the intent conflicts: one
    says "comprehensive," the other says "has known gaps." I introduced this
    without flagging it or reconciling it.
 
-4. **docs-health AUDIT presented informally.** The skill says to present
+~~4. **docs-health AUDIT presented informally.** The skill says to present~~ v:done — the 21-25 pass printed the two-score health report with visible math (f3)
    findings using `health-report-format.md` — two independent scores (Accuracy
    - Fitness) with specific formulas. I gave an informal summary table instead.
      The math was never shown. No prior baseline was established.
 
-5. **Older reports (pre-2026-07-30) not annotated.** I focused on the 8 most
+~~5. **Older reports (pre-2026-07-30) not annotated.** I focused on the 8 most~~ v:done — full-corpus classification, annotation and archiving executed by the 2026-09-18 docs-health pass (f11-13)
    recent reports. The ~20 older reports (2026-05-02 through 2026-07-26) were
    read by a sub-agent for HARVEST extraction, but none were annotated. Some
    may have open items worth resolving; I did not classify them per the
@@ -113,32 +113,32 @@ Resolution` appendices to 8 reports — but I did NOT inline-resolve the
 
 ## c) NOT STARTED
 
-1. **AGENTS.md not updated.** The repo's AGENTS.md has a "High-Value Reference
+~~1. **AGENTS.md not updated.** The repo's AGENTS.md has a "High-Value Reference~~ v:done — AGENTS §8 now mandates reading the living docs (f5)
    Files" table (§6) and "What NOT to Do" table (§9). The four new living docs
    (TODO_LIST, FEATURES, ROADMAP, CHANGELOG) are not referenced from AGENTS.md.
    A fresh session landing in this repo would not know they exist unless they
    `ls` the root.
 
-2. **README.md not updated for new living docs.** The README does not mention
+~~2. **README.md not updated for new living docs.** The README does not mention~~ v:done — README Quality section leads with a FEATURES.md pointer (f6)
    TODO_LIST.md, FEATURES.md, or ROADMAP.md. The "Quality & Status" section
    could point at FEATURES.md as the authoritative inventory. Currently the
    README duplicates the feature inventory inline, creating a second source of
    truth that will drift.
 
-3. **Internal markdown links not verified across ALL docs.** I checked links in
+~~3. **Internal markdown links not verified across ALL docs.** I checked links in~~ v:done — check-skill-links.sh wired as check 12, green every run (f7)
    the 4 new docs only. The docs-health VERIFY checklist says to check every
    internal link across `*.md docs/` — I did not run this across existing files.
 
-4. **docs-health `verify-checklist.md` regression scenarios not run.** The skill
+~~4. **docs-health `verify-checklist.md` regression scenarios not run.** The skill~~ v:done — regression scenarios applied by the 2026-09-18 docs-health pass (f8)
    says to "run the regression scenarios at the bottom of that file." I did not
    load or run them.
 
-5. **The ~20 older status reports were not classified.** Per update-old-docs
+~~5. **The ~20 older status reports were not classified.** Per update-old-docs~~ v:done — full-corpus classification executed 2026-09-18 (f11)
    Step 2, every target file must get exactly one decision: ANNOTATE / ARCHIVE /
    SKIP / LEAVE ALONE. I never produced this classification list for the older
    reports.
 
-6. **No check whether other files in the repo are stale.** I focused on
+~~6. **No check whether other files in the repo are stale.** I focused on~~ v:covered by standing guards — check-skills.sh structural checks + full-corpus docs-health passes since 2026-09
    `docs/status/` and the living docs. The `how-to-write-skills.md` guide, the
    `originals/` directory, and the skill bodies themselves were not checked for
    drift against the new living docs.
@@ -206,43 +206,43 @@ Resolution` sections. Zero inline corrections. Zero strikethrough `done at`
 
 ## e) WHAT WE SHOULD IMPROVE
 
-1. **Inline-resolve the numbered items in the 8 annotated reports.** Go back
+~~1. **Inline-resolve the numbered items in the 8 annotated reports.** Go back~~ v:done — see f1 (21-25 pass inline resolution)
    to each report's f-section and strike through completed items with `done at
 <hash>`. Leave open items untouched. This is the fix for (d)#1. The
    resolution appendices can stay (they provide the TODO_LIST routing), but
    they must not be the ONLY annotation.
 
-2. **Reconcile the how-to-golang status across README and FEATURES.** Either
+~~2. **Reconcile the how-to-golang status across README and FEATURES.** Either~~ v:done — T11 aligned both docs to 🟢 Comprehensive (f2)
    downgrade the README to match FEATURES (🟡 Functional with known issues) or
    upgrade FEATURES to match README (🟢 Comprehensive — the code-accuracy
    issues are in references, not in the core decision guide). Pick one and
    propagate.
 
-3. **Run the docs-health health-report-format properly.** Load
+~~3. **Run the docs-health health-report-format properly.** Load~~ v:done — see f3
    `docs-health/references/health-report-format.md`, compute Accuracy and
    Fitness scores with visible math, present a per-doc findings table. The
    user asked for "SUPERB" — the prescribed format IS the superb version.
 
-4. **Update AGENTS.md to reference the new living docs.** Add TODO_LIST,
+~~4. **Update AGENTS.md to reference the new living docs.** Add TODO_LIST,~~ v:done — see f5
    FEATURES, ROADMAP, CHANGELOG to the "High-Value Reference Files" table or
    create a "Living Documentation" section. A fresh session needs to know these
    exist.
 
-5. **Add the docs-health AUDIT output to the README or a health dashboard.**
+~~5. **Add the docs-health AUDIT output to the README or a health dashboard.**~~ v:done — see f6
    The README's "Quality & Status" section currently duplicates FEATURES.md
    content inline. Point at FEATURES.md as the authoritative source instead.
 
-6. **Verify FEATURES.md claims by opening each skill.** Line count is a proxy,
+~~6. **Verify FEATURES.md claims by opening each skill.** Line count is a proxy,~~ v:done — FEATURES statuses re-verified in the 2026-09-16 rewrite (f9)
    not proof. Open each SKILL.md, check whether it actually delivers what the
    status claims. The how-to-golang code-accuracy issues are the prime example
    — they may be fixed already.
 
-7. **Classify the ~20 older reports.** Run the update-old-docs Step 2
+~~7. **Classify the ~20 older reports.** Run the update-old-docs Step 2~~ v:done — see f11-13
    classification (ANNOTATE / ARCHIVE / SKIP / LEAVE ALONE) on every report in
    `docs/status/`. Many from May–June describe work that is fully superseded —
    they are ARCHIVE candidates.
 
-8. **Deep-link from CHANGELOG to commits.** The milestone-wave format cites
+~~8. **Deep-link from CHANGELOG to commits.** The milestone-wave format cites~~ r:routed to ROADMAP 2026-11-10
    commit ranges. Adding `[link](https://github.com/LarsArtmann/SKILLS/commit/hash)`
    would let a reader verify each claim in one click.
 
@@ -302,20 +302,20 @@ Resolution` sections. Zero inline corrections. Zero strikethrough `done at`
 
 | #      | Task                                                                                                                                                                                            | Impact  | Effort      |
 | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ----------- |
-| 29     | Add commit hyperlinks to CHANGELOG milestone waves                                                                                                                                              | Low     | Low         |
+~~| 29     | Add commit hyperlinks to CHANGELOG milestone waves                                                                                                                                              | Low     | Low         |~~ r:routed to ROADMAP 2026-11-10
 | ~~30~~ | ~~Update the comprehensive audit doc to reflect current state (TODO_LIST T17)~~ done — 05-03 audit carries a resolution header                                                                  | ~~Low~~ | ~~Low~~     |
 | ~~31~~ | ~~Add "competing skills" section to `how-to-write-skills.md` (TODO_LIST T18)~~ done — Pattern 11 in how-to-write-skills.md                                                                      | ~~Low~~ | ~~Low~~     |
 | ~~32~~ | ~~Append appendix-only incident to `case-study.md` (TODO_LIST T10)~~ done — Incident 2 appended to case-study.md (T9)                                                                           | ~~Low~~ | ~~Low~~     |
 | ~~33~~ | ~~Add condensing checklist to `how-to-write-skills.md` (TODO_LIST T11)~~ done — Pattern 10 condensing checklist                                                                                 | ~~Low~~ | ~~Low~~     |
 | ~~34~~ | ~~Check whether `how-to-write-skills.md` should move to a skill directory~~ done — routed to ROADMAP Open Questions — location decision                                                         | ~~Low~~ | ~~Low~~     |
-| 35     | Verify `CONTRIBUTING.md` links resolve                                                                                                                                                          | Low     | Trivial     |
+~~| 35     | Verify `CONTRIBUTING.md` links resolve                                                                                                                                                          | Low     | Trivial     |~~ v:verified 2026-11-10 — CONTRIBUTING.md carries one link, to how-to-write-skills.md, which exists at the repo root
 | ~~36~~ | ~~Add a "Living Documentation" section to README pointing at the 4 new docs~~ **Won't implement — covered — README links the docs indirectly; FEATURES.md is the canonical inventory pointer.** | ~~Low~~ | ~~Low~~     |
-| 37     | Check if the `docs/brainstorming/` HTML file is stale                                                                                                                                           | Low     | Low         |
-| 38     | Verify the `originals/` directory is complete (no missing seed prompts)                                                                                                                         | Low     | Low         |
+~~| 37     | Check if the `docs/brainstorming/` HTML file is stale                                                                                                                                           | Low     | Low         |~~ v:checked 2026-11-10  superseded by the data-model-review skill (canonical)
+~~| 38     | Verify the `originals/` directory is complete (no missing seed prompts)                                                                                                                         | Low     | Low         |~~ v:verified 2026-11-10 — originals/ holds 18 seed files, all harvested originals present
 | ~~39~~ | ~~Add the new living docs to the repo's `.gitignore` exclusions if needed (unlikely)~~ **Won't implement — not applicable — no build artifacts to ignore.**                                     | ~~Low~~ | ~~Trivial~~ |
 | ~~40~~ | ~~Consider whether FEATURES.md should track the `html-report-kit` as a skill or infra~~ done — FEATURES lists the kit under Shared Infrastructure                                               | ~~Low~~ | ~~Trivial~~ |
-| 41     | Add a "last verified" date to FEATURES.md status claims                                                                                                                                         | Low     | Low         |
-| 42     | Cross-reference TODO_LIST items from CHANGELOG entries where applicable                                                                                                                         | Low     | Low         |
+~~| 41     | Add a "last verified" date to FEATURES.md status claims                                                                                                                                         | Low     | Low         |~~ v:done by convention — FEATURES rows carry dated verification notes since 2026-09 (e.g. 'source-verified 2026-10-08', 'README-verified 2026-10-27')
+~~| 42     | Cross-reference TODO_LIST items from CHANGELOG entries where applicable                                                                                                                         | Low     | Low         |~~ v:verified 2026-11-10 — CHANGELOG entries cite TODO_LIST IDs (e.g. 'TODO_LIST.md as T60–T65')
 | ~~43~~ | ~~Add ROADMAP.md to the README table of contents~~ **Won't implement — not applicable — README has no ToC section.**                                                                            | ~~Low~~ | ~~Trivial~~ |
 | ~~44~~ | ~~Check if the feedback loop (`docs/feedback/new/`) has unprocessed items~~ done — feedback loop empty, checked every session since                                                             | ~~Low~~ | ~~Trivial~~ |
 | ~~45~~ | ~~Verify the AGENTS.md §5.5 inter-skill graph is current after this session~~ done — §5.5 maintained through 2026-09-14                                                                         | ~~Low~~ | ~~Low~~     |
@@ -329,7 +329,7 @@ Resolution` sections. Zero inline corrections. Zero strikethrough `done at`
 
 ## g) Questions I CANNOT figure out myself
 
-### Question 1: Should I go back and inline-resolve the numbered items in the 8 reports I annotated?
+~~### Question 1: Should I go back and inline-resolve the numbered items in the 8 reports I annotated?~~ ### Question 1: Should I go back v answered — Option A executed  the 21-25 pass inline-resolved the 8 reports (f1)
 
 I committed the appendix-only trap (d #1). The fix is straightforward but
 labor-intensive: open each of the 8 reports, go through every numbered f-section
@@ -346,7 +346,7 @@ item count is highest and a reader is most likely to land.
 I cannot determine which without your judgment on how much retroactive
 annotation effort is worth investing vs. moving forward to new work.
 
-### Question 2: Should how-to-golang be 🟢 Comprehensive (README) or 🟡 PARTIALLY_FUNCTIONAL (FEATURES)?
+~~### Question 2: Should how-to-golang be 🟢 Comprehensive (README) or 🟡 PARTIALLY_FUNCTIONAL (FEATURES)?~~ ### Question 2: Should how-to-golang v answered — T11 aligned both to 🟢 Comprehensive (f2)
 
 The README says 🟢 Comprehensive (structural richness: 94-line entrypoint + 9
 reference files). My FEATURES.md says 🟡 PARTIALLY_FUNCTIONAL (known code-
@@ -363,7 +363,7 @@ factually partially functional.
 I cannot determine which without knowing whether you consider code-example
 accuracy part of the skill's "functional" rating or a separate quality axis.
 
-### Question 3: Should the older ~20 status reports (2026-05 through 2026-07) be annotated or left alone?
+~~### Question 3: Should the older ~20 status reports (2026-05 through 2026-07) be annotated or left alone?~~ ### Question 3: Should the older v answered — the 2026-09-18 pass classified, annotated and archived the older corpus (f11-13)
 
 I focused on the 8 most recent reports. The older ones describe work that is
 mostly completed or superseded. Some may have open items; most are likely ARCHIVE

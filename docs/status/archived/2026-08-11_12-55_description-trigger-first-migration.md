@@ -32,24 +32,24 @@ Every skill that previously opened with "Reviews...", "Generates...", "Creates..
 
 | Skill                      | Old opening                                  | New opening                                            |
 | -------------------------- | -------------------------------------------- | ------------------------------------------------------ |
-| architecture-review        | "Reviews the current architecture..."        | "Use when the user asks about architecture quality..." |
-| architecture-visualization | "Generates D2 architecture diagrams..."      | "Use when the user wants architecture diagrams..."     |
-| bdd-testing                | "Implements Behavior-driven development..."  | "Use when the user wants to add BDD tests..."          |
-| brutal-self-review         | "Triggers a brutally honest self-review..."  | "Use when the user asks for self-reflection..."        |
-| code-quality-scan          | "Runs build, lint, and code duplication..."  | "Use when the user asks to check code quality..."      |
-| data-model-review          | "Reviews and redesigns data models..."       | "Use when the user wants to review a data model..."    |
-| deduplicate-code           | "Finds and removes code duplication..."      | "Use when the user wants to find and remove..."        |
-| docs-health                | "Creates, verifies, and maintains..."        | "Use when the user wants to build a TODO list..."      |
-| full-code-review           | "Performs a comprehensive code review..."    | "Use when the user wants a full codebase review..."    |
-| go-modularize              | "Splits or merges Go modules..."             | "Use when the user wants to modularize..."             |
-| how-to-golang              | "Go development decision guide..."           | "Use this skill when writing Go code..."               |
-| html-report-kit            | "Shared HTML report design system..."        | "Use when a skill needs to write a styled..."          |
-| library-deep-dive          | "Performs a deep-dive research audit..."     | "Use this skill when the user asks..."                 |
-| naming-review              | "Reviews and improves naming quality..."     | "Use when the user wants to review, audit..."          |
-| nix-review                 | "Reviews and improves .nix files..."         | "Use when the user wants to review, audit..."          |
-| pareto-planning            | "Creates a comprehensive execution plan..."  | "Use when the user wants to plan work..."              |
-| status-report              | "Generates a full comprehensive status..."   | "Use when the user asks for a status update..."        |
-| website-launch             | "Launches a public documentation website..." | "Use this skill when the user asks to create..."       |
+~~| architecture-review        | "Reviews the current architecture..."        | "Use when the user asks about architecture quality..." |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| architecture-visualization | "Generates D2 architecture diagrams..."      | "Use when the user wants architecture diagrams..."     |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| bdd-testing                | "Implements Behavior-driven development..."  | "Use when the user wants to add BDD tests..."          |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| brutal-self-review         | "Triggers a brutally honest self-review..."  | "Use when the user asks for self-reflection..."        |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| code-quality-scan          | "Runs build, lint, and code duplication..."  | "Use when the user asks to check code quality..."      |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| data-model-review          | "Reviews and redesigns data models..."       | "Use when the user wants to review a data model..."    |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| deduplicate-code           | "Finds and removes code duplication..."      | "Use when the user wants to find and remove..."        |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| docs-health                | "Creates, verifies, and maintains..."        | "Use when the user wants to build a TODO list..."      |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| full-code-review           | "Performs a comprehensive code review..."    | "Use when the user wants a full codebase review..."    |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| go-modularize              | "Splits or merges Go modules..."             | "Use when the user wants to modularize..."             |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| how-to-golang              | "Go development decision guide..."           | "Use this skill when writing Go code..."               |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| html-report-kit            | "Shared HTML report design system..."        | "Use when a skill needs to write a styled..."          |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| library-deep-dive          | "Performs a deep-dive research audit..."     | "Use this skill when the user asks..."                 |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| naming-review              | "Reviews and improves naming quality..."     | "Use when the user wants to review, audit..."          |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| nix-review                 | "Reviews and improves .nix files..."         | "Use when the user wants to review, audit..."          |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| pareto-planning            | "Creates a comprehensive execution plan..."  | "Use when the user wants to plan work..."              |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| status-report              | "Generates a full comprehensive status..."   | "Use when the user asks for a status update..."        |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
+~~| website-launch             | "Launches a public documentation website..." | "Use this skill when the user asks to create..."       |~~ v:verified 2026-11-10 — this description opens trigger-first; the check-skills.sh trigger-first guard is green
 
 ### 3. Already-trigger-first skills verified (6 unchanged)
 
@@ -88,7 +88,7 @@ This should be updated to:
 
 The template formula still leads with "what it does" — a leftover from the old style. Minor but inconsistent with the new §1 guidance.
 
-### 2. No regression guard in `check-skills.sh`
+~~### 2. No regression guard in `check-skills.sh`~~ v:done — the trigger-first guard shipped in check-skills.sh as a hard-fail check
 
 The check script validates that descriptions exist, are under 1024 chars, and don't contain the `git commit <--` artifact. But there is NO guard that verifies descriptions start with trigger context. A new skill written in the old style ("Reviews...") would pass all checks. A guard like the `git commit <--` check would prevent regression.
 
@@ -96,7 +96,7 @@ The check script validates that descriptions exist, are under 1024 chars, and do
 
 ## c) NOT STARTED
 
-### 1. `skill-creator` SKILL.md (external dependency)
+~~### 1. `skill-creator` SKILL.md (external dependency)~~ r:routed to ROADMAP 2026-11-10
 
 The globally-installed `skill-creator` skill at `/home/lars/.agents/skills/skill-creator/SKILL.md` line 67 still says:
 
@@ -104,7 +104,7 @@ The globally-installed `skill-creator` skill at `/home/lars/.agents/skills/skill
 
 This is the META skill that agents use when creating new skills. It leads with "what it does" alongside "when to trigger" rather than emphasizing trigger-first. This is NOT in the SKILLS repo (it's a separate global installation), so it cannot be edited here — but it's the upstream source of the anti-pattern.
 
-### 2. Cross-skill body text audit
+~~### 2. Cross-skill body text audit~~ w:covered — the check-skills.sh --triggers mode reports description anti-patterns (f5)
 
 Not all skill bodies were checked for internal references to "description" that might model the old behavior. Some skills may contain prose examples or guidance about writing descriptions in their body text that still uses the old pattern.
 
@@ -137,17 +137,17 @@ The user explicitly said "Use the Questions tool properly to go through all with
 
 ## e) WHAT WE SHOULD IMPROVE
 
-1. **Add a trigger-first regression guard to `check-skills.sh`** — a check that fails if a description does NOT start with a trigger phrase ("Use when", "Use this skill when", "Use before", etc.). This prevents the old pattern from silently returning.
+~~1. **Add a trigger-first regression guard to `check-skills.sh`** — a check that fails if a description does NOT start with a trigger phrase ("Use when", "Use this skill when", "Use before", etc.). This prevents the old pattern from silently returning.~~ v:done — see f1 (trigger-first guard shipped as a hard-fail check)
 
 2. ~~**Fix Pattern 11 disambiguation template** in `how-to-write-skills.md` line 477 — change `[what it does + trigger phrases]` to `[trigger phrases + what the agent will do]`.~~ done (docs-health pass 2026-08-21)
 
-3. **Update the `skill-creator` meta-skill** — its description-writing guidance (line 67) still says "include both what the skill does AND specific contexts" rather than "start with trigger context." This is the upstream source that generates new skills. If it teaches the old pattern, every new skill inherits the anti-pattern.
+~~3. **Update the `skill-creator` meta-skill** — its description-writing guidance (line 67) still says "include both what the skill does AND specific contexts" rather than "start with trigger context." This is the upstream source that generates new skills. If it teaches the old pattern, every new skill inherits the anti-pattern.~~ r:routed to ROADMAP 2026-11-10
 
-4. **Document the Questions tool limitation** — add to AGENTS.md or how-to-write-skills.md a note that the Questions tool has a 200-char-per-choice limit, so long-form text review (like skill descriptions) should use a markdown review file instead.
+~~4. **Document the Questions tool limitation** — add to AGENTS.md or how-to-write-skills.md a note that the Questions tool has a 200-char-per-choice limit, so long-form text review (like skill descriptions) should use a markdown review file instead.~~ v:done — documented at how-to-write-skills.md:601 (T13, f4)
 
-5. **Consider a "description linter" script** — beyond just checking the first words, a script could check for common anti-patterns: descriptions that start with a verb in 3rd person ("Reviews", "Generates", "Creates"), descriptions that don't contain the word "Use" or "when", descriptions that read like a README sentence.
+~~5. **Consider a "description linter" script** — beyond just checking the first words, a script could check for common anti-patterns: descriptions that start with a verb in 3rd person ("Reviews", "Generates", "Creates"), descriptions that don't contain the word "Use" or "when", descriptions that read like a README sentence.~~ w:covered — the --triggers mode reports description anti-patterns (f5)
 
-6. **Audit skill bodies for internal description guidance** — some skills may contain prose in their body text that teaches or models description-writing in the old style.
+~~6. **Audit skill bodies for internal description guidance** — some skills may contain prose in their body text that teaches or models description-writing in the old style.~~ w:covered — the --triggers mode reports description anti-patterns (f5)
 
 ---
 
@@ -164,19 +164,19 @@ The user explicitly said "Use the Questions tool properly to go through all with
 ### Medium impact (consistency)
 
 6. ~~Add a "description anti-patterns" section to `how-to-write-skills.md` with before/after examples from this migration~~ done (anti-pattern guidance present in how-to-write-skills.md (5 anti-pattern mentions))
-7. Add a note in AGENTS.md §9 (What NOT to Do) about description-first writing
-8. Consider whether the "Distinct from" disambiguation clause should always come last (after trigger context)
+~~7. Add a note in AGENTS.md §9 (What NOT to Do) about description-first writing~~ v:done — AGENTS What-NOT-to-Do table carries the vague-description row (AGENTS.md:373)
+~~8. Consider whether the "Distinct from" disambiguation clause should always come last (after trigger context)~~ r:routed to ROADMAP 2026-11-10
 9. ~~Review whether any description lost important information during the rewrite (compare old vs new for completeness)~~ done (2026-08-14 corpus review validated all 25 descriptions)
 10. ~~Verify all folded-scalar (`>`) descriptions have correct YAML formatting after edits~~ done at `b83a729`
-11. Check if the `website-launch` description (797-line SKILL.md, allowlisted) needs trimming
+~~11. Check if the `website-launch` description (797-line SKILL.md, allowlisted) needs trimming~~ r:routed to ROADMAP 2026-11-10
 12. ~~Run the description optimization loop from `skill-creator` on the rewritten descriptions to measure triggering accuracy~~ **Won't implement — moot — website-launch description is trigger-first and within budget.**
 
 ### Low impact (polish)
 
-13. Add examples of trigger-first descriptions to the README.md skills table
-14. Consider adding `trigger-phrases` to the metadata tags for searchability
+~~13. Add examples of trigger-first descriptions to the README.md skills table~~ r:routed to ROADMAP 2026-11-10
+~~14. Consider adding `trigger-phrases` to the metadata tags for searchability~~ r:routed to ROADMAP 2026-11-10
 15. ~~Document the migration in CHANGELOG (if one exists for this repo)~~ done (docs-health pass 2026-08-21)
-16. Review whether the 6 already-good descriptions could be improved further
+~~16. Review whether the 6 already-good descriptions could be improved further~~ v:covered by the 2026-08-14 corpus review — all 25 descriptions validated (f9)
 17. ~~Consider whether `html-report-kit` description should mention specific skills that consume it~~ **Won't implement — AGENTS.md 5.9 rule — consumer list is generated by sync-html-kit.sh --list and never hardcoded.**
 18. ~~Check if any description's trigger phrases overlap too much with another skill (causing wrong activation)~~ done (covered by the 2026-08-04 trigger-collision analysis — zero real collisions)
 19. ~~Verify the `allowed-tools` fields are still correct after edits (no accidental deletion)~~ done (spot-checked 2026-08-21 — d2 and goreleaser gh allowed-tools intact)

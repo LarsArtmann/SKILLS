@@ -85,7 +85,7 @@
    external tools. GoReleaser/cosign/syft are public, but the specific config syntax
    is unverified (see b.2).
 
-6. **No integration with `html-report-kit`** — Some skills produce HTML reports.
+~~6. **No integration with `html-report-kit`** — Some skills produce HTML reports.~~ r:routed to ROADMAP 2026-11-10
    A release report (version, changelog highlights, verification results) could use
    the kit. Not considered.
 
@@ -239,7 +239,7 @@
 47. ~~Consider whether go-release should produce an HTML release report (html-report-kit)~~ done (routed to ROADMAP §6 — HTML eval report idea already listed there)
 48. ~~Consider a `go-release-check` CI script for pre-release gates~~ done (docs-health pass 2026-08-21)
 49. ~~Monitor for Go version changes that affect release mechanics (e.g., Go 1.27+ changes)~~ **Won't implement — standing vigilance — tracked by future Go upgrades, not a bounded task.**
-50. Consider whether the existing project-specific release skills (go-workflow-auditlog,
+~~50. Consider whether the existing project-specific release skills (go-workflow-auditlog,~~ r:routed to ROADMAP 2026-11-10
     go-auto-upgrade) should be refactored to use go-release as a base
 
 ---
@@ -277,13 +277,13 @@ quality gaps:
 
 | Dimension           | Grade | Notes                                                               |
 | ------------------- | ----- | ------------------------------------------------------------------- |
-| Research depth      | A     | Three research agents, Go source code verified                      |
-| Structural quality  | A     | Passes all checks, progressive disclosure, cross-refs               |
-| Technical accuracy  | B+    | Core claims verified against source; peripheral claims unverified   |
-| Safety compliance   | C     | `rm -rf` violations — the exact issue I criticized in source skills |
-| Writing quality     | B     | One stream-of-consciousness paragraph in major-versions.md          |
-| Testing             | F     | No test prompts written or run                                      |
-| Practical readiness | B     | Ready to use, but untested against real releases                    |
+~~| Research depth      | A     | Three research agents, Go source code verified                      |~~ v:still accurate — the research depth held up through rounds 1-2
+~~| Structural quality  | A     | Passes all checks, progressive disclosure, cross-refs               |~~ v:still accurate — check-skills.sh green through all rounds
+~~| Technical accuracy  | B+    | Core claims verified against source; peripheral claims unverified   |~~ v:superseded — all external claims verified in rounds 1-2 (see the 12-10 report section d)
+~~| Safety compliance   | C     | `rm -rf` violations — the exact issue I criticized in source skills |~~ v:superseded — all rm -rf replaced in round 1 (11-08 a1)
+~~| Writing quality     | B     | One stream-of-consciousness paragraph in major-versions.md          |~~ v:superseded — the +incompatible paragraph rewritten in round 1 (11-08 a2)
+~~| Testing             | F     | No test prompts written or run                                      |~~ v:superseded — evals ran in round 2: 74% with-skill vs 30% baseline (12-10 a6)
+~~| Practical readiness | B     | Ready to use, but untested against real releases                    |~~ v:superseded — tested and moved to 🟢 Comprehensive in README (12-10 a10)
 
 **The skill is good. It is not yet superb.** The path to superb runs through: fix
 the safety violations, verify the external claims, write and run test prompts, and

@@ -24,21 +24,21 @@
 
 ## b) PARTIALLY DONE
 
-1. **Guidance is written but NOT verified against a Go compiler.** Every claim in the table (method inheritance, assignability, conversion requirements) is based on my knowledge of the Go spec, not on actual compilation. A small test program would confirm or refute each claim.
-2. **Guidance exists in one reference file but is NOT discoverable from the SKILL.md entrypoint.** The SKILL.md has decision trees for ID types, caches, validation, JSON, testing, and security — but no decision tree or pointer for "alias vs definition". An agent that loads only the SKILL.md body (not the domain-types reference) would still miss this.
-3. **The SKILL.md description does NOT include trigger phrases for this topic.** Words like "type alias", "type definition", "`type X = Y`" are absent. An agent encountering the exact question might not trigger the skill at all — it relies on the generic "go code style" / "go rules" triggers being broad enough.
+~~1. **Guidance is written but NOT verified against a Go compiler.** Every claim in the table (method inheritance, assignability, conversion requirements) is based on my knowledge of the Go spec, not on actual compilation. A small test program would confirm or refute each claim.~~ v:compiler-verified 2026-08-21 — five nuances pass in how-to-golang/references/domain-types.md:78 ("Nuances the table does not show (compiler-verified)")
+~~2. **Guidance exists in one reference file but is NOT discoverable from the SKILL.md entrypoint.** The SKILL.md has decision trees for ID types, caches, validation, JSON, testing, and security — but no decision tree or pointer for "alias vs definition". An agent that loads only the SKILL.md body (not the domain-types reference) would still miss this.~~ v:discoverable — decision-tree entry "Choosing alias vs definition" shipped in how-to-golang/SKILL.md:49 (wave-2 T2)
+~~3. **The SKILL.md description does NOT include trigger phrases for this topic.** Words like "type alias", "type definition", "`type X = Y`" are absent. An agent encountering the exact question might not trigger the skill at all — it relies on the generic "go code style" / "go rules" triggers being broad enough.~~ v:trigger phrases "type alias", "type definition", "type X = Y" present in how-to-golang/SKILL.md description (wave-2 T2)
 
 ---
 
 ## c) NOT STARTED
 
-1. **No Go compilation verification** — Did not write or run a test program to verify the claims.
-2. **No decision tree entry in SKILL.md** — The "Decision Trees" section has no entry for alias-vs-definition.
-3. **No trigger phrase update in SKILL.md description** — The `description` frontmatter doesn't mention type aliases or type definitions.
-4. **No cross-reference to `go-error-modernization`** — The alias-vs-definition distinction is critical for error types: `errors.As`/`errors.Is`/`errors.AsType` behavior depends on whether an error type is an alias or a definition. The section mentions `errors.As`/`errors.Is` in the intro but doesn't link to the `go-error-modernization` skill.
-5. **No cross-reference to `data-model-review`** — That skill covers type design and "make impossible states unrepresentable". The alias-vs-definition choice is a type design decision. No link was added.
-6. **No check of `architecture.md`** for overlap or conflict — `rules.md` says `architecture.md` covers "Strong types only" and "No `any`, no primitives for domains". The new section might overlap or conflict with content there. Not checked.
-7. **No check of other skills/references** for the same alias/definition confusion — Other Go skills (`go-modularize`, `samber-do-best-practices`, `go-error-modernization`) might use type aliases or definitions in examples without explanation.
+~~1. **No Go compilation verification** — Did not write or run a test program to verify the claims.~~ v:2026-08-21 compile pass — all reference Go blocks built (T3/T6; 31 blocks)
+~~2. **No decision tree entry in SKILL.md** — The "Decision Trees" section has no entry for alias-vs-definition.~~ v:decision tree "Choosing alias vs definition" in how-to-golang/SKILL.md:49 (wave-2 T2)
+~~3. **No trigger phrase update in SKILL.md description** — The `description` frontmatter doesn't mention type aliases or type definitions.~~ v:trigger phrases added to description (wave-2 T2)
+~~4. **No cross-reference to `go-error-modernization`** — The alias-vs-definition distinction is critical for error types: `errors.As`/`errors.Is`/`errors.AsType` behavior depends on whether an error type is an alias or a definition. The section mentions `errors.As`/`errors.Is` in the intro but doesn't link to the `go-error-modernization` skill.~~ r:routed to TODO_LIST 2026-11-10
+~~5. **No cross-reference to `data-model-review`** — That skill covers type design and "make impossible states unrepresentable". The alias-vs-definition choice is a type design decision. No link was added.~~ r:routed to TODO_LIST 2026-11-10
+~~6. **No check of `architecture.md`** for overlap or conflict — `rules.md` says `architecture.md` covers "Strong types only" and "No `any`, no primitives for domains". The new section might overlap or conflict with content there. Not checked.~~ v:checked 2026-11-12 — architecture.md carries no alias-vs-definition content; no overlap or conflict
+~~7. **No check of other skills/references** for the same alias/definition confusion — Other Go skills (`go-modularize`, `samber-do-best-practices`, `go-error-modernization`) might use type aliases or definitions in examples without explanation.~~ v:checked 2026-11-12 — go-modularize, samber-do-best-practices, go-error-modernization use no alias/definition constructs needing explanation
 8. ~~**No feedback file created** — Per the AGENTS.md feedback loop, this kind of "I had an issue, what skill should we improve" interaction is feedback-worthy. Though since we immediately improved the skill, the feedback was already converted to action, so a feedback file may be unnecessary.~~ **Won't implement — feedback was immediately converted into the skill improvement — the loop already served its purpose.**
 
 ---
@@ -55,7 +55,7 @@
 
 4. ~~**No sync script exists.** `scripts/check-skills.sh` and `scripts/sync-html-kit.sh` exist, but there is no `scripts/sync-to-agents.sh` or equivalent. The `.agents` copy must be updated manually or via the `skills` CLI. This is a process gap worth documenting.~~ done at `b83a729`, `6efb022`
 
-5. **Missing important nuances in the guidance section.** The comparison table and examples are correct for the common cases but miss several important subtleties:
+~~5. **Missing important nuances in the guidance section.** The comparison table and examples are correct for the common cases but miss several important subtleties:~~ v:all five nuances encoded compiler-verified (T3 2026-08-21, domain-types.md:78-160)
 
    - **Underlying type operations ARE preserved for type definitions.** The table says methods are not inherited (correct), but doesn't mention that arithmetic operators (`+`, `-`, `*`), comparison operators (`==`, `<`), and other built-in operations ARE available on `type MyInt int` because they operate on the underlying type. This is a key difference from methods.
    - **Untyped constants can be assigned to type definitions without conversion.** `var x MyInt = 5` works even though `var x MyInt = intVar` does not. This is a common source of confusion.
@@ -63,17 +63,17 @@
    - **`reflect` behavior differs.** Type aliases produce identical `reflect.Type` values; type definitions produce distinct ones. This matters for serialization, ORM mapping, and any reflection-based code.
    - **Embedding vs aliasing** — not mentioned at all. `type Foo struct { time.Time }` (embedding) vs `type Foo = time.Time` (alias) vs `type Foo time.Time` (definition) are three very different things.
 
-6. **The "common mistake: definition where alias is needed" example may be slightly misleading.** It claims `type UserID id.ID[UserBrand, nanoid.NanoID]` would lose all methods. This is correct per the Go spec (type definitions have empty method sets), but the example doesn't mention that you CAN re-declare methods on the new type — it's just tedious. The guidance implies it's impossible rather than impractical.
+~~6. **The "common mistake: definition where alias is needed" example may be slightly misleading.** It claims `type UserID id.ID[UserBrand, nanoid.NanoID]` would lose all methods. This is correct per the Go spec (type definitions have empty method sets), but the example doesn't mention that you CAN re-declare methods on the new type — it's just tedious. The guidance implies it's impossible rather than impractical.~~ v:re-declare clarification present — domain-types.md:95 "Methods are not forbidden on a definition — they are lost, and you can re-declare them"
 
 ---
 
 ## e) WHAT WE SHOULD IMPROVE
 
-1. **Verify all Go claims with actual compilation.** Write a small test program that demonstrates each claim in the table. This is the `verify-external-claims` principle applied to our own work.
+~~1. **Verify all Go claims with actual compilation.** Write a small test program that demonstrates each claim in the table. This is the `verify-external-claims` principle applied to our own work.~~ v:compile pass 2026-08-21 (31 reference blocks built)
 
-2. **Add interface satisfaction guidance.** The "type definition from an interface" case is one of the most common and dangerous mistakes. It should be a prominent "common mistake" example.
+~~2. **Add interface satisfaction guidance.** The "type definition from an interface" case is one of the most common and dangerous mistakes. It should be a prominent "common mistake" example.~~ v:nuance 1 — domain-types.md:88-99 (compiler-verified)
 
-3. **Add a decision tree entry in SKILL.md.** Something like:
+~~3. **Add a decision tree entry in SKILL.md.** Something like:~~ v:shipped — how-to-golang/SKILL.md:49 (wave-2 T2)
    ```
    ### Choosing alias vs definition
    - Same type, interchangeable → type alias (`type X = Y`)
@@ -81,11 +81,11 @@
    - See [./references/domain-types.md](references/domain-types.md#type-alias--vs-type-definition-no-)
    ```
 
-4. **Add trigger phrases to the SKILL.md description.** Include "type alias", "type definition", "type X = Y", "when to use type alias".
+~~4. **Add trigger phrases to the SKILL.md description.** Include "type alias", "type definition", "type X = Y", "when to use type alias".~~ v:shipped — trigger phrases in description (wave-2 T2)
 
-5. **Cross-reference `go-error-modernization`.** Error types are a domain where the alias-vs-definition distinction is critical. Add a note in both skills.
+~~5. **Cross-reference `go-error-modernization`.** Error types are a domain where the alias-vs-definition distinction is critical. Add a note in both skills.~~ r:routed to TODO_LIST 2026-11-10
 
-6. **Fix `DOMAIN_LANGUAGE.md` in httputil.** It incorrectly calls `type Middleware func(http.Handler) http.Handler` an "alias" when it was a definition. The docs should match the code.
+~~6. **Fix `DOMAIN_LANGUAGE.md` in httputil.** It incorrectly calls `type Middleware func(http.Handler) http.Handler` an "alias" when it was a definition. The docs should match the code.~~ v:T17 executed 2026-08-21 — httputil DOMAIN_LANGUAGE.md now shows the true alias (external repo, 21-57 report a10)
 
 7. ~~**Address the .agents source-of-truth gap.** There is no automated way to sync `/home/lars/projects/SKILLS/` to `/home/lars/.agents/skills/`. Agents editing `.agents` directly create changes that are invisible to git. Options:~~ done at `6efb022`
    - Add a `scripts/sync-skills-to-agents.sh` script that rsyncs/copies the repo to `.agents`
@@ -101,25 +101,25 @@
 | #      | Task                                                                                                                                                                     | Impact     | Effort     |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | ---------- |
 | ~~1~~  | ~~Write a Go test program verifying every claim in the alias-vs-definition table~~ done — claims verified in the 2026-08-21 compile pass (all reference Go blocks built) | ~~High~~   | ~~Low~~    |
-| 2      | Add "interface satisfaction is NOT inherited" common-mistake example to `domain-types.md`                                                                                | High       | Low        |
-| 3      | Add "underlying type operations ARE preserved" note to the table or surrounding text                                                                                     | High       | Low        |
-| 4      | Add "untyped constant assignability" note                                                                                                                                | Medium     | Low        |
-| 5      | Add `reflect` behavior differences note                                                                                                                                  | Medium     | Low        |
+~~| 2      | Add "interface satisfaction is NOT inherited" common-mistake example to `domain-types.md`                                                                                | High       | Low        |~~ v:nuance 1 encoded — domain-types.md:88 (compiler-verified 2026-08-21)
+~~| 3      | Add "underlying type operations ARE preserved" note to the table or surrounding text                                                                                     | High       | Low        |~~ v:nuance 2 encoded — domain-types.md:104 (compiler-verified 2026-08-21)
+~~| 4      | Add "untyped constant assignability" note                                                                                                                                | Medium     | Low        |~~ v:nuance 3 encoded — domain-types.md:118 (compiler-verified 2026-08-21)
+~~| 5      | Add `reflect` behavior differences note                                                                                                                                  | Medium     | Low        |~~ v:nuance 4 encoded — domain-types.md:134 (compiler-verified 2026-08-21)
 | ~~6~~  | ~~Add a decision tree entry in `how-to-golang/SKILL.md` for alias-vs-definition~~ done — decision-tree entry shipped (wave-2 T2)                                         | ~~High~~   | ~~Low~~    |
 | ~~7~~  | ~~Add trigger phrases ("type alias", "type definition") to `how-to-golang/SKILL.md` description~~ done — trigger phrases added (wave-2 T2)                               | ~~High~~   | ~~Low~~    |
 | ~~8~~  | ~~Fix `DOMAIN_LANGUAGE.md` in httputil — it calls a type definition an "alias"~~ **Won't implement — external repo — httputil owns its DOMAIN_LANGUAGE.md fix.**         | ~~High~~   | ~~Low~~    |
 | ~~9~~  | ~~Decide on .agents sync strategy (script, docs, or hook)~~ done at `6efb022`                                                                                            | ~~High~~   | ~~Low~~    |
 | ~~10~~ | ~~Refresh `.agents/skills/` from project repo to eliminate current divergence~~ done at `6efb022`                                                                        | ~~Medium~~ | ~~Medium~~ |
-| 11     | Cross-reference `go-error-modernization` skill — error types depend on alias-vs-definition                                                                               | Medium     | Low        |
-| 12     | Cross-reference `data-model-review` skill — type design decisions                                                                                                        | Low        | Low        |
-| 13     | Check `how-to-golang/references/architecture.md` for overlap or conflict with new section                                                                                | Medium     | Low        |
-| 14     | Check other Go skills (`go-modularize`, `samber-do-best-practices`) for alias/definition usage in examples                                                               | Low        | Low        |
-| 15     | Add embedding-vs-aliasing-vs-definition comparison to `domain-types.md`                                                                                                  | Medium     | Medium     |
-| 16     | Clarify that type definitions CAN have methods re-declared (just not inherited)                                                                                          | Low        | Low        |
-| 17     | Add anchor link (`#type-alias--vs-type-definition-no-`) to any cross-references                                                                                          | Low        | Low        |
-| 18     | Consider whether the `go-error-modernization` skill needs its own alias-vs-definition section                                                                            | Medium     | Medium     |
+~~| 11     | Cross-reference `go-error-modernization` skill — error types depend on alias-vs-definition                                                                               | Medium     | Low        |~~ r:routed to TODO_LIST 2026-11-10
+~~| 12     | Cross-reference `data-model-review` skill — type design decisions                                                                                                        | Low        | Low        |~~ r:routed to TODO_LIST 2026-11-10
+~~| 13     | Check `how-to-golang/references/architecture.md` for overlap or conflict with new section                                                                                | Medium     | Low        |~~ v:no overlap — architecture.md carries no alias-vs-definition content (checked 2026-11-12)
+~~| 14     | Check other Go skills (`go-modularize`, `samber-do-best-practices`) for alias/definition usage in examples                                                               | Low        | Low        |~~ v:checked 2026-11-12 — no alias/definition usage in those skills examples needing explanation
+~~| 15     | Add embedding-vs-aliasing-vs-definition comparison to `domain-types.md`                                                                                                  | Medium     | Medium     |~~ v:nuance 5 comparison table — domain-types.md:156 (compiler-verified 2026-08-21)
+~~| 16     | Clarify that type definitions CAN have methods re-declared (just not inherited)                                                                                          | Low        | Low        |~~ v:done — domain-types.md:95 states definitions CAN re-declare methods (compiler-verified 2026-08-21)
+~~| 17     | Add anchor link (`#type-alias--vs-type-definition-no-`) to any cross-references                                                                                          | Low        | Low        |~~ v:anchor link in use — how-to-golang/SKILL.md:55 links domain-types.md#type-alias--vs-type-definition-no-
+~~| 18     | Consider whether the `go-error-modernization` skill needs its own alias-vs-definition section                                                                            | Medium     | Medium     |~~ r:routed to TODO_LIST 2026-11-10
 | ~~19~~ | ~~Run `go vet` / `golangci-lint` on the Go examples in the guidance to catch syntax errors~~ done — examples compile-checked 2026-08-21                                  | ~~Medium~~ | ~~Low~~    |
-| 20     | Consider adding the alias-vs-definition distinction to the `how-to-write-skills.md` guide as a Go gotcha                                                                 | Low        | Low        |
+~~| 20     | Consider adding the alias-vs-definition distinction to the `how-to-write-skills.md` guide as a Go gotcha                                                                 | Low        | Low        |~~ r:routed to ROADMAP 2026-11-10
 
 ---
 
@@ -187,7 +187,7 @@ and make the project-repo skills superb.
 
 | #     | Gap                                                                                                                                                                                                  | Priority |
 | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1     | `website-launch/SKILL.md` is 797 lines (should be <500)                                                                                                                                              | Medium   |
+~~| 1     | `website-launch/SKILL.md` is 797 lines (should be <500)                                                                                                                                              | Medium   |~~ r:routed to TODO_LIST 2026-11-10
 | ~~2~~ | ~~`copywriting`, `find-skills`, `frontend-design`, etc. exist only in `.agents`~~ **Won't implement — resolved 15:04: third-party installs with lockfile sources, intentionally outside this repo.** | ~~Low~~  |
-| 3     | Several skills still duplicate the "READ, UNDERSTAND..." footer                                                                                                                                      | Low      |
-| 4     | No empirical trigger testing in Crush                                                                                                                                                                | Medium   |
+~~| 3     | Several skills still duplicate the "READ, UNDERSTAND..." footer                                                                                                                                      | Low      |~~ r:routed to ROADMAP 2026-11-10
+~~| 4     | No empirical trigger testing in Crush                                                                                                                                                                | Medium   |~~ v:empirical evals ran — website-launch old-vs-new eval (wave-2 T24: 4/7 vs 7/7) + trigger-first guard check 6 (T1)

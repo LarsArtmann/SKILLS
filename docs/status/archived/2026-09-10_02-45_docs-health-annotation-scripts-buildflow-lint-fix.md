@@ -62,7 +62,7 @@ ruff-check-fix
 | ~~Live write, rows `2:p:2026-08-01`~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~annotated, "(shape verified)" — read-back guard intact~~ |
 | ~~Dry-run fixture, prose `1:p:-`~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~`1. ~~alpha~~ done (docs-health pass 2026-09-10)`~~ |
 | ~~`buildflow -s ruff-check-fix --format finding`~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~exit 0, `"findings": []`, `ruff> All checks passed!`~~ |
-| `buildflow format` (~~full~~ _fast mode; ruff n/a — corrected 02-55 d1_) | `FORMAT_EXIT=0`, `18 success, 0 failed, 0 skipped (+25 via config)` |
+| ~~`buildflow format` (**full** _fast mode; ruff n/a — corrected 02-55 d1_)~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~`FORMAT_EXIT=0`, `18 success, 0 failed, 0 skipped (+25 via config)`~~ |
 | ~~Repo-wide exec-bit audit (`git ls-files -s` on all `*.py`/`*.sh`)~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~no further 644-with-shebang files~~ |
 | ~~`scripts/check-skills.sh`~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~exit 0, 27/27 skills pass, 140 files link-clean~~ |
 | ~~`git status` / `git worktree list`~~ done — verified 2026-09-10 (fix commit 5f67dfc; see 02-55 review + 2026-09-18 correction appendix) | ~~clean / master only (buildflow fsprobe temp file self-cleaned)~~ |

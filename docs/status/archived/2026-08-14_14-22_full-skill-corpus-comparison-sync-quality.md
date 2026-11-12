@@ -26,20 +26,20 @@
 
 ## b) PARTIALLY DONE
 
-1. **"Superb" is not a well-defined quality gate.** I interpreted it as: valid frontmatter, no broken links, no thin skills, good trigger descriptions, and synced runtime copy. But there are other dimensions I did not systematically check:
+~~1. **"Superb" is not a well-defined quality gate.** I interpreted it as: valid frontmatter, no broken links, no thin skills, good trigger descriptions, and synced runtime copy. But there are other dimensions I did not systematically check:~~ v:dimensions since closed — compile checks (T6 2026-08-21), evals (wave-2 T24/T10), link checker (T12), trigger guard (T1); enforcement = check-skills.sh combined gate
    - Empirical trigger accuracy in Crush
    - Whether each reference file is up to date with current tool/library versions
    - Whether code examples compile
    - Whether cross-references between skills are complete and current
    - Whether each skill's body actually produces the output it claims
 
-2. **Only one weak description was fixed.** The automated check flagged only `html-report-kit`, but manual review of the other 24 descriptions might reveal more that are feature-list-like or missing trigger phrases.
+~~2. **Only one weak description was fixed.** The automated check flagged only `html-report-kit`, but manual review of the other 24 descriptions might reveal more that are feature-list-like or missing trigger phrases.~~ v:all 25 descriptions reviewed trigger-first (rewritten 2026-08-11, validated 2026-08-14) and enforced by check-skills.sh check 6 trigger guard (T1)
 
 3. ~~**The sync script is operational but not integrated.** It exists and works, but it is not yet referenced from `AGENTS.md`, `README.md`, or any CI/pre-commit hook. An agent or user has to know it exists.~~ done at `6efb022 — superseded by the link manager`, `documented in AGENTS.md 5.10`
 
 4. ~~**Orphan skills in `.agents` were identified but not added to the project repo.** They are outside the canonical source and could be lost on a fresh install.~~ done at `6efb022 — resolved 15:04 as wrong premise`
 
-5. **The `website-launch` over-length issue was noted but not fixed.** It's 797 lines; the `check-skills.sh` allowlist hides this. Trimming it would require moving content to `references/`, which is non-trivial.
+~~5. **The `website-launch` over-length issue was noted but not fixed.** It's 797 lines; the `check-skills.sh` allowlist hides this. Trimming it would require moving content to `references/`, which is non-trivial.~~ r:routed to TODO_LIST 2026-11-10
 
 ---
 
@@ -47,14 +47,14 @@
 
 1. ~~**Did not add the orphan `.agents` skills to the project repo.** `copywriting`, `find-skills`, `frontend-design`, `improve-codebase-architecture`, `skill-creator` are not under version control in `/home/lars/projects/SKILLS/`.~~ **Won't implement — wrong premise — third-party installs tracked by the skills CLI lockfile; never belonged in this repo (resolved 15:04).**
 2. ~~**Did not document the sync workflow in `AGENTS.md` or `README.md`.**~~ done at `6efb022`
-3. **Did not add the sync script to CI or pre-commit hooks.** There's no automated enforcement that `.agents` stays in sync.
+~~3. **Did not add the sync script to CI or pre-commit hooks.** There's no automated enforcement that `.agents` stays in sync.~~ r:routed to ROADMAP 2026-11-10
 4. **Did not run empirical skill tests in Crush.** We have no evidence that any skill's description triggers correctly for its intended tasks.
 5. **Did not verify code snippets compile.** Many skills contain Go examples; only the alias-vs-definition section was partially verified by reading the httputil code.
-6. **Did not update `how-to-golang/SKILL.md` with a decision-tree entry** for alias-vs-definition.
-7. **Did not add trigger phrases for alias/definition to `how-to-golang/SKILL.md` description.**
-8. **Did not cross-reference `go-error-modernization`** from the alias-vs-definition section.
-9. **Did not fix the `DOMAIN_LANGUAGE.md` lie in httputil** (calls a type definition an "alias").
-10. **Did not trim `website-launch/SKILL.md` below 500 lines.**
+~~6. **Did not update `how-to-golang/SKILL.md` with a decision-tree entry** for alias-vs-definition.~~ v:done — decision-tree entry in how-to-golang/SKILL.md:49 (wave-2 T2)
+~~7. **Did not add trigger phrases for alias/definition to `how-to-golang/SKILL.md` description.**~~ v:done — trigger phrases in how-to-golang/SKILL.md description (wave-2 T2)
+~~8. **Did not cross-reference `go-error-modernization`** from the alias-vs-definition section.~~ r:routed to TODO_LIST 2026-11-10
+~~9. **Did not fix the `DOMAIN_LANGUAGE.md` lie in httputil** (calls a type definition an "alias").~~ v:done — T17 fixed httputil DOMAIN_LANGUAGE.md 2026-08-21 (21-57 report a10, external repo)
+~~10. **Did not trim `website-launch/SKILL.md` below 500 lines.**~~ r:routed to TODO_LIST 2026-11-10
 11. ~~**Did not check whether the vendored `html-report-kit` assets in consumer skills are in sync** after the description change. The `sync-html-kit.sh` script should be run.~~ done (sync-html-kit.sh --check green (verified 2026-08-21))
 12. ~~**Did not verify the new sync script is portable.** It hardcodes `/home/lars/projects/SKILLS` and `/home/lars/.agents/skills`.~~ **Won't implement — script deleted 15:04 — replaced by link-skills-to-agents.sh.**
 13. ~~**Did not add `--help` output test or any tests for `scripts/sync-skills-to-agents.sh`.**~~ **Won't implement — script deleted 15:04.**
@@ -81,7 +81,7 @@
 
 ## e) WHAT WE SHOULD IMPROVE
 
-1. **Define and enforce "superb" as a checkable quality gate.** Currently it's subjective. A `scripts/skill-quality-check.sh` could verify: frontmatter, line counts, broken links, trigger-description heuristics, and cross-reference freshness.
+~~1. **Define and enforce "superb" as a checkable quality gate.** Currently it's subjective. A `scripts/skill-quality-check.sh` could verify: frontmatter, line counts, broken links, trigger-description heuristics, and cross-reference freshness.~~ w:won't implement as a separate script — check-skills.sh IS the combined gate (15 checks incl. links), per f18 decision
 
 2. ~~**Document the source-of-truth rule.** Add a section to `AGENTS.md` stating that `/home/lars/projects/SKILLS/` is canonical, `.agents` is a runtime copy, and edits must be made in the repo followed by `scripts/sync-skills-to-agents.sh`.~~ done at `6efb022`
 
@@ -89,17 +89,17 @@
 
 4. ~~**Bring orphan skills into the repo.** `copywriting`, `find-skills`, `frontend-design`, `improve-codebase-architecture`, and `skill-creator` should be in the project repo or explicitly removed from `.agents`.~~ **Won't implement — wrong premise — third-party, stay out.**
 
-5. **Trim `website-launch`.** At 797 lines it's the only over-limit skill. Move reference-level detail out of `SKILL.md`.
+~~5. **Trim `website-launch`.** At 797 lines it's the only over-limit skill. Move reference-level detail out of `SKILL.md`.~~ r:routed to TODO_LIST 2026-11-10
 
-6. **Fix the `how-to-golang` SKILL.md entrypoint.** Add a decision-tree entry and better trigger phrases for alias-vs-definition.
+~~6. **Fix the `how-to-golang` SKILL.md entrypoint.** Add a decision-tree entry and better trigger phrases for alias-vs-definition.~~ v:done — decision tree + trigger phrases shipped (wave-2 T2, how-to-golang/SKILL.md:49)
 
-7. **Add a link-checker to CI.** The current check was ad-hoc Python; it should be a script that fails CI on broken links.
+~~7. **Add a link-checker to CI.** The current check was ad-hoc Python; it should be a script that fails CI on broken links.~~ v:done — scripts/check-skill-links.sh shipped and wired into check-skills.sh as check 12 (T12, 2026-08-21); repo has no hosted CI — local gate is the enforcement
 
 8. ~~**Make the sync script safer.** Add `--dry-run`, require `--force` for destructive sync, and back up `.agents` before deleting.~~ **Won't implement — script deleted — moot.**
 
-9. **Run `sync-html-kit.sh --check` in CI.** Consumer skills vendor the HTML report kit; it's easy for copies to drift.
+~~9. **Run `sync-html-kit.sh --check` in CI.** Consumer skills vendor the HTML report kit; it's easy for copies to drift.~~ r:routed to ROADMAP 2026-11-10
 
-10. **Empirically test skill triggers.** At least spot-check that Crush loads the right skill for representative user prompts.
+~~10. **Empirically test skill triggers.** At least spot-check that Crush loads the right skill for representative user prompts.~~ v:done — website-launch old-vs-new eval (wave-2 T24: 4/7 vs 7/7), go-release evals (79%→95%), trigger-first guard check 6 (T1)
 
 ---
 
@@ -113,10 +113,10 @@
 | ~~4~~  | ~~Add pre-commit hook that runs `sync-skills-to-agents.sh --check`~~ done — routed to ROADMAP Open Questions — enforcement level (symlink model has no copying to enforce)                               | ~~Medium~~ | ~~Low~~    |
 | ~~5~~  | ~~Bring orphan `.agents` skills (`copywriting`, `find-skills`, etc.) into the project repo~~ **Won't implement — wrong premise — third-party installs, stay out (resolved 15:04).**                      | ~~High~~   | ~~Medium~~ |
 | ~~6~~  | ~~Decide whether to delete orphan skills from `.agents` if they are not repo-worthy~~ **Won't implement — managed third-party installs — kept, never deleted.**                                          | ~~Medium~~ | ~~Low~~    |
-| 7      | Trim `website-launch/SKILL.md` to <500 lines by moving detail to `references/`                                                                                                                           | Medium     | High       |
+~~| 7      | Trim `website-launch/SKILL.md` to <500 lines by moving detail to `references/`                                                                                                                           | Medium     | High       |~~ r:routed to TODO_LIST 2026-11-10
 | ~~8~~  | ~~Add alias-vs-definition decision tree entry to `how-to-golang/SKILL.md`~~ done — wave-2 T2 (decision-tree entry shipped)                                                                               | ~~High~~   | ~~Low~~    |
 | ~~9~~  | ~~Add trigger phrases to `how-to-golang/SKILL.md` description~~ done — wave-2 T2 (trigger phrases added)                                                                                                 | ~~High~~   | ~~Low~~    |
-| 10     | Cross-reference `go-error-modernization` from the alias-vs-definition section                                                                                                                            | Medium     | Low        |
+~~| 10     | Cross-reference `go-error-modernization` from the alias-vs-definition section                                                                                                                            | Medium     | Low        |~~ r:routed to TODO_LIST 2026-11-10
 | ~~11~~ | ~~Fix the type-alias mislabel in httputil `DOMAIN_LANGUAGE.md`~~ **Won't implement — external repo — httputil owns the fix.**                                                                            | ~~Medium~~ | ~~Low~~    |
 | ~~12~~ | ~~Create `scripts/check-skill-links.sh` for CI-grade broken-link detection~~ done — check-skill-links shipped + wired as check 12                                                                        | ~~High~~   | ~~Medium~~ |
 | ~~13~~ | ~~Run `scripts/sync-html-kit.sh --check` and fix any drift~~ done (sync-html-kit.sh --check green (2026-08-21))                                                                                          | ~~Medium~~ | ~~Low~~    |
@@ -125,28 +125,28 @@
 | ~~16~~ | ~~Verify Go code snippets in `go-error-modernization` references compile~~ done — 2026-08-21 compile pass                                                                                                | ~~High~~   | ~~Medium~~ |
 | ~~17~~ | ~~Verify Go code snippets in `samber-do-best-practices` references compile~~ done — 2026-08-21 compile pass                                                                                              | ~~Medium~~ | ~~Medium~~ |
 | ~~18~~ | ~~Add a `skill-quality-check.sh` script that combines frontmatter, links, line counts, etc.~~ **Won't implement — resolved by decision — check-skills.sh IS the combined gate (15 checks incl. links).** | ~~High~~   | ~~Medium~~ |
-| 19     | Run empirical trigger tests for the 5 most-used skills                                                                                                                                                   | Medium     | High       |
+~~| 19     | Run empirical trigger tests for the 5 most-used skills                                                                                                                                                   | Medium     | High       |~~ v:done — trigger-first guard (T1) + old-vs-new evals (wave-2 T24: 4/7 vs 7/7) + wave-2 T27 trigger test
 | ~~20~~ | ~~Update `how-to-write-skills.md` to mention the new sync script~~ **Won't implement — moot — the sync script was deleted the same day (replaced by the symlink model).**                                | ~~Low~~    | ~~Low~~    |
 | ~~21~~ | ~~Add `--help` smoke test for `scripts/sync-skills-to-agents.sh`~~ **Won't implement — moot — script deleted 15:04.**                                                                                    | ~~Low~~    | ~~Low~~    |
 | ~~22~~ | ~~Make `scripts/sync-skills-to-agents.sh` derive repo dir from script location instead of hardcoding~~ **Won't implement — moot — script deleted 15:04.**                                                | ~~Low~~    | ~~Low~~    |
 | ~~23~~ | ~~Back up `.agents/skills` before destructive sync in the script~~ **Won't implement — moot — script deleted 15:04 (symlinks make destructive sync impossible).**                                        | ~~Medium~~ | ~~Low~~    |
-| 24     | Add CI workflow step for `scripts/check-skills.sh`                                                                                                                                                       | Medium     | Low        |
+~~| 24     | Add CI workflow step for `scripts/check-skills.sh`                                                                                                                                                       | Medium     | Low        |~~ r:routed to ROADMAP 2026-11-10
 | ~~25~~ | ~~Add CI workflow step for `scripts/sync-skills-to-agents.sh --check`~~ **Won't implement — moot — script deleted 15:04; link-skills-to-agents.sh --check is the successor.**                            | ~~Medium~~ | ~~Low~~    |
-| 26     | Review `status-report` skill for overlap with `docs-health`                                                                                                                                              | Low        | Medium     |
+~~| 26     | Review `status-report` skill for overlap with `docs-health`                                                                                                                                              | Low        | Medium     |~~ r:routed to TODO_LIST 2026-11-10
 | ~~27~~ | ~~Review `verify-external-claims` / `verify-before-filing` pair for consistency~~ done (e50929d clarified directions before this report; AGENTS.md 5.5 refreshed 2026-08-21)                             | ~~Low~~    | ~~Medium~~ |
-| 28     | Check whether `go-release` references are up to date with latest GoReleaser/GitHub features                                                                                                              | Low        | Medium     |
-| 29     | Audit `nix-review` for any Nix language changes since it was written                                                                                                                                     | Low        | Medium     |
-| 30     | Audit `website-launch` dependency versions (Firebase, Astro, Starlight, Tailwind)                                                                                                                        | Low        | Medium     |
+~~| 28     | Check whether `go-release` references are up to date with latest GoReleaser/GitHub features                                                                                                              | Low        | Medium     |~~ r:routed to TODO_LIST 2026-11-10
+~~| 29     | Audit `nix-review` for any Nix language changes since it was written                                                                                                                                     | Low        | Medium     |~~ r:routed to TODO_LIST 2026-11-10
+~~| 30     | Audit `website-launch` dependency versions (Firebase, Astro, Starlight, Tailwind)                                                                                                                        | Low        | Medium     |~~ r:routed to TODO_LIST 2026-11-10
 | ~~31~~ | ~~Add a CONTRIBUTING section explaining how to add a new skill~~ done — CONTRIBUTING add-skill flow (T20)                                                                                                | ~~Low~~    | ~~Low~~    |
-| 32     | Remove duplicated "READ, UNDERSTAND..." footers if they are now redundant                                                                                                                                | Low        | Medium     |
-| 33     | Add line-count warning to `check-skills.sh` for reference files that are >300 lines without ToC                                                                                                          | Low        | Low        |
-| 34     | Verify `architecture-visualization` D2 examples still render with current `d2` CLI                                                                                                                       | Low        | Medium     |
-| 35     | Check `deduplicate-code` `art-dupl` references for accuracy                                                                                                                                              | Low        | Medium     |
+~~| 32     | Remove duplicated "READ, UNDERSTAND..." footers if they are now redundant                                                                                                                                | Low        | Medium     |~~ r:routed to ROADMAP 2026-11-10
+~~| 33     | Add line-count warning to `check-skills.sh` for reference files that are >300 lines without ToC                                                                                                          | Low        | Low        |~~ r:routed to ROADMAP 2026-11-10
+~~| 34     | Verify `architecture-visualization` D2 examples still render with current `d2` CLI                                                                                                                       | Low        | Medium     |~~ r:routed to TODO_LIST 2026-11-10
+~~| 35     | Check `deduplicate-code` `art-dupl` references for accuracy                                                                                                                                              | Low        | Medium     |~~ r:routed to TODO_LIST 2026-11-10
 | ~~36~~ | ~~Check `code-quality-scan` tool guidance for stale commands~~ done (tool-guidance.md matrix refreshed 2026-08-04)                                                                                       | ~~Low~~    | ~~Medium~~ |
 | ~~37~~ | ~~Review `full-code-review` for duplicated pareto-planning content~~ done (delegation completed 2026-08-04 — predates this report)                                                                       | ~~Low~~    | ~~Medium~~ |
-| 38     | Ensure every skill with HTML output references the vendored `html-report-kit`                                                                                                                            | Low        | Low        |
-| 39     | Add a skill inventory JSON or machine-readable index                                                                                                                                                     | Low        | Medium     |
-| 40     | Create a test fixture skill for validating the skill format itself                                                                                                                                       | Low        | Medium     |
+~~| 38     | Ensure every skill with HTML output references the vendored `html-report-kit`                                                                                                                            | Low        | Low        |~~ v:grep 2026-11-12 — review/report skills (architecture-review, brutal-self-review, code-quality-scan, data-model-review, full-code-review, go-modularize, library-deep-dive, naming-review, pareto-planning, ...) all reference the kit
+~~| 39     | Add a skill inventory JSON or machine-readable index                                                                                                                                                     | Low        | Medium     |~~ r:routed to ROADMAP 2026-11-10
+~~| 40     | Create a test fixture skill for validating the skill format itself                                                                                                                                       | Low        | Medium     |~~ r:routed to ROADMAP 2026-11-10
 
 ---
 
