@@ -22,44 +22,44 @@ checks green.
 
 ## Done (with evidence)
 
-1. **f33 — SESSION-START session-end rules** — added: TODO-rows-are-claims
+~~1. **f33 — SESSION-START session-end rules** — added: TODO-rows-are-claims~~ done — SESSION-START.md session-end rules verified in the file 2026-11-10
    check (`find + wc -l` before trusting framing), worktree sweep, and
    evidence-artifact triage before trashing (the wave-2 d1 incident).
    `SESSION-START.md`.
-2. **f44 — AGENTS.md advisories cleared** — §5.2 rewritten to current truth
+~~2. **f44 — AGENTS.md advisories cleared** — §5.2 rewritten to current truth~~ done — AGENTS §5.2/§10 rewritten to current truth (CHANGELOG wave-3 entry)
    ("guarded", points at the check-skills guard); §10 `formerly` → "old
    name:". check-agents-md.sh: 2 advisories → 1 (remaining = the 36 KB
    size advisory = f31, deferred as its own M-L task).
-3. **f12 — backlink loop anchor-aware** — `${link%\#*}` strips `#anchor`
+~~3. **f12 — backlink loop anchor-aware** — `${link%\#*}` strips `#anchor`~~ done — anchor-aware backlink loop in scripts/check-skills.sh
    before file resolution; proven end-to-end in a scratch dir (anchor link
    resolves, genuine dangling still caught).
-4. **f13 — verification-canon guard (warn)** — check-skills.sh now warns
+~~4. **f13 — verification-canon guard (warn)** — check-skills.sh now warns~~ done — verification-canon guard live; samber-do conversion recorded in CHANGELOG wave-3 entry
    when a skill shows block-shaped verification signals (blockquotes,
    stray headings, ≥2 compound claims) without the canonical
    `## Verification status` table. It immediately caught a REAL drift the
    T28 wave missed: **samber-do-best-practices** still had a blockquote
    verification block — converted to the canonical Claim/Status/Source
    table (checked against the §5 template).
-5. **f24 — --triggers prints matched phrases** — every skill's row now
+~~5. **f24 — --triggers prints matched phrases** — every skill's row now~~ done — --triggers prints matched phrases (verified in scripts/check-skills.sh 2026-11-10)
    shows WHICH marker phrases and quoted phrases matched (count-based
    verdicts unchanged; pareto-planning 3 markers + 9 quotes = 12 spot-
    checked by hand).
-6. **f17 — spec-template.go compile-verified** — instantiated in a scratch
+~~6. **f17 — spec-template.go compile-verified** — instantiated in a scratch~~ done — bdd-testing/assets/spec-template.go + the import note; 4/4 specs pass recorded in CHANGELOG
    module (ginkgo latest + gomega v1.43.0): `go vet` clean, then ran with
    the SKILL.md-documented bootstrap → **4/4 specs pass**. Found and fixed
    a real template gap: no note that the package-under-test import cannot
    be pre-written (placeholders). (gopls errors on the asset file itself
    are expected: `//go:build ignore`, outside any module.)
-7. **f45 — ginkgo CLI claims verified** — local ginkgo v2.32.1 present;
+~~7. **f45 — ginkgo CLI claims verified** — local ginkgo v2.32.1 present;~~ done — ginkgo v2.32.1 + unfocus claims verified (CHANGELOG wave-3 entry)
    `ginkgo unfocus` is a real subcommand (help text confirmed). The three
    SKILL.md/references claims about `unfocus` are accurate.
-8. **f14 — mechanical eval grader** —
+~~8. **f14 — mechanical eval grader** —~~ done — mechanical-grade.sh + mechanical-grading.txt on disk (verified 2026-11-10)
    `website-launch/evals/iteration-1/eval-1-rerun/mechanical-grade.sh`
    regex-grades all 7 assertions; results committed in
    `mechanical-grading.txt`. Agreement with the LLM judge: EXACT (old 4/7,
    new 7/7). One grader bug fixed during validation (Unicode `×` in
    `1200×630`).
-9. **f2 — scripts/hf-env.sh** — the ~25-store-path LD_LIBRARY_PATH prose is
+~~9. **f2 — scripts/hf-env.sh** — the ~25-store-path LD_LIBRARY_PATH prose is~~ done — scripts/hf-env.sh on disk, referenced from demo-video.md (verified 2026-11-10)
    now an executable: runtime resolution via `nix build --print-out-paths`
    (never hardcoded), `ldd` gate on chrome-headless-shell (zero "not
    found"), `--install` / `--libs` / `-- <cmd>` modes. demo-video.md's
@@ -67,7 +67,7 @@ checks green.
    gated exec under real nix node v24.19.0. Dogfooded through the f1
    renders below. (One bug found+fixed during verification: my glob had an
    extra path level; the doc's recipe was right.)
-10. **f1 — T22 ground-truth fixtures committed** —
+~~10. **f1 — T22 ground-truth fixtures committed** —~~ done — website-launch/assets/demo-compositions/{16x9,9x16} on disk (verified 2026-11-10)
     `website-launch/assets/demo-compositions/{16x9,9x16}/index.html` +
     README + `render-log.txt` per fixture. Both rendered through hf-env.sh
     (`check`: 0 errors, contrast 9/9 AA; render draft: h264 5.0s 150
@@ -75,12 +75,12 @@ checks green.
     deterministic; 9x16 ~184 KB). MP4s deliberately NOT committed — binary
     policy is open question g2. Transient teardown `assert(!this.paused)`
     observed once on 9x16, non-reproducible, artifact ffprobe-valid.
-11. **f5+f6 — emeet-pixyd DoD placement fixes** — `id="demo"` +
+~~11. **f5+f6 — emeet-pixyd DoD placement fixes** — `id="demo"` +~~ done — emeet-pixyd fixes live-verified 2026-09-09 (id="demo" + README badge)
     `scroll-mt-24` on the video container (ShowcaseSection.astro); README
     docs bar gained the "Watch the 25s demo" badge → `/#demo`. Built
     (astro build clean), deployed, **live-verified**: `id="demo"` present
     in served HTML.
-12. **f4 — emeet-pixyd redeploy + header fix (closed, with a twist)** —
+~~12. **f4 — emeet-pixyd redeploy + header fix (closed, with a twist)** —~~ done — immutable headers live on all four sites after the firebase.json reorder (46d73b0)
     first redeploy did NOT fix caching → investigation → **new root cause**
     (below). After the firebase.json order fix + redeploy: live HEAD
     `/demo.mp4` AND `/js/theme-init.js` return `public, max-age=31536000,
