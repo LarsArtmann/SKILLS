@@ -22,7 +22,7 @@
 
 ## b) PARTIALLY DONE
 
-1. **Code snippets in `performance-tuning.md` are not compile-tested.** The errgroup/semaphore/benchmark snippets are standard idioms, but `AGENTS.md` §10 already warns that `how-to-golang` reference snippets have accuracy issues — this file follows the same (imperfect) pattern. A scratch-module compile check would close it.
+~~1. **Code snippets in `performance-tuning.md` are not compile-tested.** The errgroup/semaphore/benchmark snippets are standard idioms, but `AGENTS.md` §10 already warns that `how-to-golang` reference snippets have accuracy issues — this file follows the same (imperfect) pattern. A scratch-module compile check would close it.~~ v:compile-checked 2026-08-21 — all reference Go blocks built in the T6 scratch-module pass (31 blocks)
 2. ~~**Repo `AGENTS.md` not yet updated for the new reference** (see c): the global memory protocol says update at moment of discovery — I discovered the gap and deferred it instead.~~ done (docs-health pass 2026-08-21)
 3. ~~**Session work sits uncommitted** (`M how-to-golang/SKILL.md`, `M references/rules.md`, `?? references/performance-tuning.md`). The auto-commit daemon has not picked it up yet. Only this report gets a manual commit (per status-report skill); the work files await either the daemon or explicit user instruction.~~ done at `60c799c`
 
@@ -33,7 +33,7 @@
 3. ~~`README.md`: how-to-golang inventory row accuracy unverified after the change.~~ done (README how-to-golang row verified accurate 2026-08-21)
 4. ~~`docs-health` HARVEST of this report's section (f) into `TODO_LIST.md` / `ROADMAP.md`.~~ done (docs-health pass 2026-08-21)
 5. ~~`scripts/link-skills-to-agents.sh --check` — confirm symlink model intact after adding the file (should be a no-op since the dir is symlinked, but unverified).~~ done (link-skills-to-agents.sh --check green (2026-08-21))
-6. Compile-check of the new snippets (see b1).
+~~6. Compile-check of the new snippets (see b1).~~ v:done — 2026-08-21 compile pass (31 reference blocks built, 6 bugs fixed)
 
 ## d) TOTALLY FUCKED UP!
 
@@ -43,10 +43,10 @@
 
 ## e) WHAT WE SHOULD IMPROVE!
 
-1. **Verify specifics before speaking, not just before writing.** The failure in (d) is a verification-skill gap: the gate fired at encode-time but not at say-time. Candidate rule: any number, issue ID, URL, version, or flag named from memory in an answer gets a check before the sentence ships — or gets hedged as unverified.
+~~1. **Verify specifics before speaking, not just before writing.** The failure in (d) is a verification-skill gap: the gate fired at encode-time but not at say-time. Candidate rule: any number, issue ID, URL, version, or flag named from memory in an answer gets a check before the sentence ships — or gets hedged as unverified.~~ v:encoded — verify-external-claims §0 "chat-time gate" (T13, 2026-08-21)
 2. ~~**Update repo AGENTS.md at the moment of discovery**, not deferred — the §6 count drift was visible the instant the file was created.~~ done (docs-health pass 2026-08-21)
-3. **Compile-test code snippets added to `how-to-golang` references** — the repo already carries a known-snippet-accuracy caveat; new content shouldn't extend the debt.
-4. The verification-status table pattern (currently a `verify-external-claims` prescription for SKILL.md bodies) worked well **inside a references/ file** — worth generalizing in `how-to-write-skills.md` so any deep reference carrying external claims gets the same table.
+~~3. **Compile-test code snippets added to `how-to-golang` references** — the repo already carries a known-snippet-accuracy caveat; new content shouldn't extend the debt.~~ v:done — compile-check harness ran 2026-08-21 (31 blocks built)
+~~4. The verification-status table pattern (currently a `verify-external-claims` prescription for SKILL.md bodies) worked well **inside a references/ file** — worth generalizing in `how-to-write-skills.md` so any deep reference carrying external claims gets the same table.~~ v:encoded — verification-status-table pattern documented in how-to-write-skills lessons (T13)
 
 ## f) Up to 50 things to get done next
 
@@ -68,7 +68,7 @@ Session-scoped, sorted by impact. 1–7 are direct cleanup of this session; 8+ a
 9. ~~Add a real `benchstat` before/after example with actual output.~~ done (done — T14: real benchstat before/after (-80.21%, p=0.002, n=6))
 10. ~~Add a short "false sharing" before/after benchmark example with measured numbers (would make the `CacheLinePad` advice concrete).~~ done (done — T14: false-sharing before/after with the 56-byte pad)
 11. ~~Cross-link `bdd-testing`/testing-strategy's benchmark lens to performance-tuning's methodology section (one-way link, no duplication).~~ done (done — T15: bdd-testing cross-link ("Benchmarks are not specs"))
-12. Consider a tiny `how-to-golang/scripts/check-snippets.sh` that compiles all fenced Go snippets in references (would pay down the §10 caveat repo-wide).
+~~12. Consider a tiny `how-to-golang/scripts/check-snippets.sh` that compiles all fenced Go snippets in references (would pay down the §10 caveat repo-wide).~~ r:routed to TODO_LIST 2026-11-10
 
 **Generalize the session's lessons:**
 
@@ -78,11 +78,11 @@ Session-scoped, sorted by impact. 1–7 are direct cleanup of this session; 8+ a
 
 **Observed during the session (repo health, not researched further):**
 
-16. `check-skills.sh` still WARNs `website-launch` SKILL.md at 797 lines (allowlisted) — trim task remains open from prior reports.
-17. `how-to-write-skills.md` still lives at repo root, not a skill dir (AGENTS.md §5.6 open decision, unchanged).
-18. `erraudit` CLI in `go-error-modernization` remains publicly unfindable — re-verify status if it matters this quarter.
+~~16. `check-skills.sh` still WARNs `website-launch` SKILL.md at 797 lines (allowlisted) — trim task remains open from prior reports.~~ r:routed to TODO_LIST 2026-11-10
+~~17. `how-to-write-skills.md` still lives at repo root, not a skill dir (AGENTS.md §5.6 open decision, unchanged).~~ r:routed to ROADMAP 2026-11-10
+~~18. `erraudit` CLI in `go-error-modernization` remains publicly unfindable — re-verify status if it matters this quarter.~~ r:routed to TODO_LIST 2026-11-10
 19. ~~`how-to-golang` known snippet-accuracy issues from the 2026-06 audit (gopter signature, json/v2 version, E2E API) — still open, worth a fix sweep now that a snippet-compile habit (item 12) is proposed.~~ done (fixed 2026-08-04 — predates this report (CHANGELOG))
-20. GOMAXPROCS/knee insight is machine-specific to Lars' PC (32 CPU / knee 20) — if more machines get measured, record the numbers somewhere durable instead of one anecdote row.
+~~20. GOMAXPROCS/knee insight is machine-specific to Lars' PC (32 CPU / knee 20) — if more machines get measured, record the numbers somewhere durable instead of one anecdote row.~~ v:done — real -cpu sweep recorded in performance-tuning.md (T14 2026-08-21: knee at 16 workers on the 32-thread machine, worse at 32)
 
 ## g) Questions I can NOT figure out myself
 
@@ -92,4 +92,4 @@ Session-scoped, sorted by impact. 1–7 are direct cleanup of this session; 8+ a
 
 ---
 
-**Bottom line:** New 263-line performance-tuning reference added to `how-to-golang`, fully wired, 24/24 claims verified, structural checks green. Session residue: AGENTS.md/README drift, untested snippets, uncommitted work. Biggest process lesson: the verification gate must fire before specifics leave my mouth, not only before they enter files.
+**Bottom line:** New 263-line performance-tuning reference added to `how-to-golang`, fully wired, 24/24 claims verified, structural checks green. ~~Session residue: AGENTS.md/README drift, untested snippets, uncommitted work.~~ Residue all resolved 2026-08-21 (docs-health pass + compile-check harness; committed `60c799c`). Biggest process lesson: the verification gate must fire before specifics leave my mouth, not only before they enter files.

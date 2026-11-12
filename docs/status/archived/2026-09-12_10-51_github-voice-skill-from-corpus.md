@@ -21,23 +21,23 @@ qualitatively, and shipped the `github-voice` skill (SKILL.md + 2 references
 
 | a) Fully done | b) Partially done | c) Not started | d) Fucked up | e) Improvements | f) Next | g) Questions |
 | ------------- | ----------------- | -------------- | ------------ | --------------- | ------- | ------------ |
-| 8             | 2                 | 3              | 2            | 3               | 4       | 1            |
+| ~~8~~ done — counts match the a)–g) sections below (8/2/3/2/3/4/1) | ~~2~~ | ~~3~~ | ~~2~~ | ~~3~~ | ~~4~~ | ~~1~~ |
 
 ## a) FULLY DONE
 
-1. **Session-start checklist executed** — feedback/new read (2026-09-11
+~~1. **Session-start checklist executed** — feedback/new read (2026-09-11~~ done — verified — checklist executed; lessons applied (see d1/d2 here and the 10-55 redo)
    quality-session file: not directly relevant, no skill owned the task),
    newest status report TL;DR read (02-55 self-review: its "quote exit
    codes" lesson was applied live — see d1/d2), TODO_LIST read (T30/T33/
    T34/T35 unrelated), ROADMAP grepped (no voice/writing idea existed —
    nothing to reconcile), check-skills run with EXIT quoted (0).
-2. **API surface empirically verified before building** — search counts
+~~2. **API surface empirically verified before building** — search counts~~ done — verified — findings live in the skill's Verification status table (github-voice/SKILL.md)
    probed (9,397 authored issues / 623 PRs / 7,341 commented threads —
    all above the 1000-result cap → date-windowing required); REST
    `.../versions` endpoints 404 (both comment and issue body variants);
    GraphQL `userContentEdits` works and returns full revision snapshots.
    All findings encoded in the skill's Verification status table.
-3. **`collect-corpus.py`** (github-voice/scripts/) — REST search
+~~3. **`collect-corpus.py`** (github-voice/scripts/) — REST search~~ done — verified — collector shipped; ported to Go 2026-10-11 (github-voice/scripts/collect-corpus)
    discovery (recursively date-windowed), own/external classification
    (own-owners = LarsArtmann, Artmann-Games), agent-filed-body flagging
    ("Task ID:", "Impact Score" markers), comment/review/inline-review
@@ -48,21 +48,21 @@ qualitatively, and shipped the `github-voice` skill (SKILL.md + 2 references
    created/reactions/edits). Smoke-tested on 2026-only window first,
    then full run: **10,682 items, 4,158 comments, 271 edited, 2,749s,
    exit 0**.
-4. **`analyze-corpus.py`** — segment stats (external bodies / external
+~~4. **`analyze-corpus.py`** — segment stats (external bodies / external~~ done — verified — analyzer shipped; now a Go program with --since (github-voice/scripts/analyze-corpus)
    comments / own bodies / own comments): length quantiles, formatting
    features, opening buckets, bigrams/trigrams, reactions, per-year
    volume. Output: `analysis.json` + `ANALYSIS.md` in the corpus dir.
-5. **Voice analysis (quantitative)** — external comments median 44
+~~5. **Voice analysis (quantitative)** — external comments median 44~~ done — verified — stats recorded in the voice profile (github-voice/references/voice-profile.md)
    chars, external bodies median 241; 5 greetings in 372 external
    bodies; own-repo segments are template-contaminated ("success
    criteria" ×2,720, "closing as" ×769) → external writing weighted
    highest in the profile.
-6. **Voice analysis (qualitative)** — read stratified samples: recent
+~~6. **Voice analysis (qualitative)** — read stratified samples: recent~~ done — verified — patterns distilled into voice-profile.md
    external issue bodies (12), external PR bodies (6), recent external
    comments (25), multi-version revision diffs (old era 12, modern era
    9), review bodies (8), own-repo closing formulas (8), top-reacted
    comments (10). Patterns distilled below in "Findings".
-7. **Skill authored** — `github-voice/SKILL.md` (112 lines: procedure,
+~~7. **Skill authored** — `github-voice/SKILL.md` (112 lines: procedure,~~ done — verified — github-voice/ shipped and wired (AGENTS §5.5, README)
    quick rules, corpus sampling + refresh instructions, verification
    table) + `references/voice-profile.md` (11 sections: universals, 7
    genre skeletons with real examples, Do/Never table, era note) +
@@ -72,7 +72,7 @@ qualitatively, and shipped the `github-voice` skill (SKILL.md + 2 references
    the forward pointer; github-voice disambiguates back + names
    jj-fork-pr-workflow), AGENTS §5.5 graph entry (incl. corpus-outside-
    repo rule and the API findings' canonical home).
-8. **All gates green** — check-skills.sh EXIT=0 (29 skills, 146 md
+~~8. **All gates green** — check-skills.sh EXIT=0 (29 skills, 146 md~~ done — verified — gates quoted green in this report; skill still present and check-clean
    files, no broken links), --triggers EXIT=0 (github-voice STRONG,
    12 markers, desc 840 chars), link-skills-to-agents.sh + --check
    EXIT=0, ruff EXIT=0 on both scripts (fixes applied: PLW1510
@@ -112,38 +112,38 @@ qualitatively, and shipped the `github-voice` skill (SKILL.md + 2 references
 
 ## b) PARTIALLY DONE
 
-1. **Corpus coverage is near-total, not absolute.** Own-repo
+~~1. **Corpus coverage is near-total, not absolute.** Own-repo~~ done — verified — coverage budget documented as a deliberate decision (10-55 b1)
    authored∧commented threads: most recent 1,500 of 6,508 hydrated
    (follow-up comments are stylistically homogeneous; REST budget is
    5,000/hr). Edit-history fetch capped at first 10 versions per item
    (`truncated` flag set; the 10-version item was an agent-regeneration
    case anyway). Discussions (GitHub Discussions API) not collected —
    different API, marginal voice value.
-2. **agent_suspect heuristic undercounts** — flags 191 bodies, but
+~~2. **agent_suspect heuristic undercounts** — flags 191 bodies, but~~ done — verified — heuristic documented as heuristic; external writing weighted highest
    bigram analysis shows template sections ("success criteria" ×2,720)
    in far more. Mitigation: the profile weights external writing
    highest and documents the marker list as heuristic, not truth.
 
 ## c) NOT STARTED (deliberate)
 
-1. **Eval harness (skill-creator loop)** — writing-style skill =
+1. **Eval harness (skill-creator loop)** — writing-style skill = **→ routed to TODO_LIST 2026-11-10**
    subjective output; per skill-creator and how-to-write-skills,
    quantitative assertions are the wrong tool. Human review prompts
    offered instead (see f2).
-2. **Description-optimization loop** — `scripts/run_loop.py` needs the
+~~2. **Description-optimization loop** — `scripts/run_loop.py` needs the~~ **Won't implement — decided skip — trigger density already STRONG (10-55 c2).**
    `claude` CLI; trigger density is already STRONG (12 markers).
-3. **dprint/markdownlint pass over new markdown** — same standing
+3. **dprint/markdownlint pass over new markdown** — same standing **→ routed to TODO_LIST 2026-11-10**
    advisory backlog as every session (exits ✔ by config).
 
 ## d) FUCKED UP (caught in-session, fixed)
 
-1. **Pipe-masked ruff exit on the first lint run** — `ruff | tail -5;
+~~1. **Pipe-masked ruff exit on the first lint run** — `ruff | tail -5;~~ done — verified — caught and re-run unfiltered in-session; the pipe-exit class was encoded 2026-09-13 (0f70bdb)
    echo $?` reported the tail's exit (0) while ruff had found 4 errors
    (RUFF_EXIT=0 printed next to "Found 4 errors"). The exact
    SESSION-START step-5 / AGENTS §5.11 failure mode, caught because the
    output contradicted itself. Re-ran unfiltered with `$?` quoted
    immediately after.
-2. **Three script bugs shipped to disk before compile/lint**: an
+~~2. **Three script bugs shipped to disk before compile/lint**: an~~ done — verified — all three caught by ruff/py_compile smoke before any real run
    `af"` f-string typo introduced by my own multiedit, a stray `}` from
    the original write (found only by ast.parse after ruff pointed at
    line 79), and an invalid regex (`|+1|` → `nothing to repeat`) in an
@@ -152,21 +152,21 @@ qualitatively, and shipped the `github-voice` skill (SKILL.md + 2 references
 
 ## e) IMPROVEMENTS (knowledge encoded)
 
-1. AGENTS §5.5 now documents the github-voice graph position + the
+~~1. AGENTS §5.5 now documents the github-voice graph position + the~~ done — verified — AGENTS §5.5 carries the github-voice graph entry + API findings home
    canonical home of the GitHub-API findings (windowed search, REST
    versions-404, GraphQL userContentEdits).
-2. The collector's resume flags (`--skip-discover/--skip-hydrate`) make
+~~2. The collector's resume flags (`--skip-discover/--skip-hydrate`) make~~ done — verified — resume flags survive in the Go collector port
    corpus refreshes incremental-friendly after crashes.
-3. Corpus lives at `~/.cache/github-voice-corpus/` (XDG cache) — never
+~~3. Corpus lives at `~/.cache/github-voice-corpus/` (XDG cache) — never~~ done — verified — corpus-outside-repo rule in AGENTS §5.5
    committed; the repo carries only distilled patterns.
 
 ## f) NEXT
 
-1. **Human review of the skill output**: try it on a real prompt — e.g.
+1. **Human review of the skill output**: try it on a real prompt — e.g. **→ routed to TODO_LIST 2026-11-10**
    "file this bug against <repo> for <symptom>" or "reword my comment
    on crush#NNN in my voice" — and check the draft against the Do/Never
    table. Adjust the profile where reality disagrees.
-2. **After first successful real use**: age 🆕 → 🟢 in README (same
+2. **After first successful real use**: age 🆕 → 🟢 in README (same **→ routed to TODO_LIST 2026-11-10**
    convention as collector-extraction).
 3. ~~**Optional: full own-repo hydration** — re-run collect with~~ **Won't implement — user decision (carried as 10-55 f11 / 11-25 f16 — never requested).**
    ~~`--own-followup-sample 6508` overnight if the maintainer-voice~~
@@ -177,7 +177,7 @@ qualitatively, and shipped the `github-voice` skill (SKILL.md + 2 references
 
 ## g) QUESTIONS
 
-1. Should GitHub Discussions be collected too (separate GraphQL
+~~1. Should GitHub Discussions be collected too (separate GraphQL~~ **Won't implement — decided skip — Discussions opt-in only, low voice-value (10-55 c4/g2).**
    schema)? Skipped as low voice-value; say the word if wanted.
 
 ## Evidence

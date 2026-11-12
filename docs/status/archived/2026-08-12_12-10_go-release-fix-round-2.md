@@ -87,28 +87,28 @@ None.
 
 | Claim                                                 | Status                 | Evidence                                                     |
 | ----------------------------------------------------- | ---------------------- | ------------------------------------------------------------ |
-| GoReleaser `version: 2` required                      | ✅ Verified            | goreleaser.com + own source                                  |
-| GoReleaser hooks use direct `exec.CommandContext`     | ✅ Verified            | `internal/shell/shell.go:27` in v2.17.1 source               |
-| Docker v2 syntax (`images`, `tags`, `platforms`)      | ✅ Verified            | GoReleaser's own `.goreleaser.yaml` + `pkg/config/config.go` |
-| Homebrew `brews` deprecated, `homebrew_casks` current | ✅ Verified            | `pkg/config/config.go` + own `.goreleaser.yaml`              |
-| Scoop `scoops` config                                 | ✅ Verified            | `pkg/config/config.go` + own `.goreleaser.yaml`              |
-| Cosign v3 `--bundle` migration                        | ✅ Verified in round 1 |                                                              |
-| SLSA `actions/attest-build-provenance@v2`             | ✅ Verified in round 1 |                                                              |
-| `go mod edit -retract=vX.Y.Z`                         | ✅ Verified in round 1 | `go help mod edit`                                           |
-| GOPROXY comma-vs-pipe                                 | ✅ Verified in round 1 | Go toolchain source                                          |
+~~| GoReleaser `version: 2` required                      | ✅ Verified            | goreleaser.com + own source                                  |~~ v:verified in the 12-10 session (round 2)
+~~| GoReleaser hooks use direct `exec.CommandContext`     | ✅ Verified            | `internal/shell/shell.go:27` in v2.17.1 source               |~~ v:verified in the 12-10 session (round 2)
+~~| Docker v2 syntax (`images`, `tags`, `platforms`)      | ✅ Verified            | GoReleaser's own `.goreleaser.yaml` + `pkg/config/config.go` |~~ v:verified in the 12-10 session (round 2)
+~~| Homebrew `brews` deprecated, `homebrew_casks` current | ✅ Verified            | `pkg/config/config.go` + own `.goreleaser.yaml`              |~~ v:verified in the 12-10 session (round 2)
+~~| Scoop `scoops` config                                 | ✅ Verified            | `pkg/config/config.go` + own `.goreleaser.yaml`              |~~ v:verified in the 12-10 session (round 2)
+~~| Cosign v3 `--bundle` migration                        | ✅ Verified in round 1 |                                                              |~~ v:verified in round 1 (`85e4b55`)
+~~| SLSA `actions/attest-build-provenance@v2`             | ✅ Verified in round 1 |                                                              |~~ v:verified in round 1 (`85e4b55`)
+~~| `go mod edit -retract=vX.Y.Z`                         | ✅ Verified in round 1 | `go help mod edit`                                           |~~ v:verified in round 1 (`85e4b55`)
+~~| GOPROXY comma-vs-pipe                                 | ✅ Verified in round 1 | Go toolchain source                                          |~~ v:verified in round 1 (`85e4b55`)
 
 ---
 
 ## e) WHAT REMAINS (future work, not blocking)
 
-1. **Re-run evals after the binary-major-version clarification** — The v2.0.0 CLI
+~~1. **Re-run evals after the binary-major-version clarification** — The v2.0.0 CLI~~ v:done — evals re-run: iteration-2 on disk (f1)
    confusion was fixed in SKILL.md; a fresh eval run would likely push the with-skill
    pass rate above 80%.
 
-2. **Add more eval prompts** — Multi-module GoReleaser, retracting a version, private
+~~2. **Add more eval prompts** — Multi-module GoReleaser, retracting a version, private~~ w:duplicate — the eval-expansion matrix is already in ROADMAP §1 (12-15 f31-44)
    dependency release, v2+ migration.
 
-3. **Use the skill-creator runtime for automated evals** — The current run used
+~~3. **Use the skill-creator runtime for automated evals** — The current run used~~ r:routed to ROADMAP 2026-11-10
    subagents because `claude -p` is unavailable in this environment. The skill-creator
    `run_eval.py` / `run_loop.py` would give trigger-accuracy metrics and variance
    analysis.

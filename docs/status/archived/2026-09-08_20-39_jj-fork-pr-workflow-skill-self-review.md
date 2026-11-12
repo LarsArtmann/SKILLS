@@ -70,10 +70,10 @@ where rigor slipped. No, it was not the best I can do — it was about 85%.
    ~~fetched directly. Mitigated in-file ("Researched 2026-09-08... treat per-repo~~
    ~~specifics as unverified"), but the claim chain has one AI-summarizer hop in it.~~
    ~~Effort: S (fetch 2 raw files).~~
-4. **Behavioral trigger test** — description passes the structural trigger-first
+~~4. **Behavioral trigger test** — description passes the structural trigger-first~~ done — verified 2026-11-10: wave-2 T27 behavioral trigger test passed both directions in fresh sessions (TODO_LIST T30 evidence cites it)
    guard, but no realistic-prompt activation test exists (needs a fresh Crush
    session; README "Contributing" item 4 explicitly asks for this). Effort: S.
-5. **`verify-external-claims` format alignment** — the skill carries a verification
+~~5. **`verify-external-claims` format alignment** — the skill carries a verification~~ done — wave-2 T28 canonical Claim/Status/Source table adopted; how-to-write-skills.md names §5 the only format
    status block written ad hoc; that skill may define a canonical block format
    (AGENTS.md §10 references "verification-status blocks" in three other skills).
    Never compared. Effort: S.
@@ -86,10 +86,10 @@ where rigor slipped. No, it was not the best I can do — it was about 85%.
 2. ~~**End-to-end scratch-repo validation** of the full lifecycle (init fake upstream,~~ done (scripts/validate-workflow.sh, 11/11)
    ~~2 sibling PR changes, simulate upstream move, run sync loop, simulate squash-merge,~~
    ~~run Phase 5 cleanup).~~
-3. **README "Quality & Status" aging note** — the 🆕 New legend says it ages into 🟢
+~~3. **README "Quality & Status" aging note** — the 🆕 New legend says it ages into 🟢~~ **→ routed to TODO_LIST 2026-11-10 (T30 BLOCKED on the first real PR run)**
    "after a documented successful run"; no tracking line exists for this skill yet
    (correct for now — it has had zero runs).
-4. **Per-org generalization** — `references/charmbracelet.md` is a one-off; a
+~~4. **Per-org generalization** — `references/charmbracelet.md` is a one-off; a~~ **→ routed to TODO_LIST 2026-11-10**
    `references/<org>.md` pattern for future target orgs is designed but unstarted.
 
 ## d) TOTALLY FUCKED UP
@@ -136,32 +136,32 @@ where rigor slipped. No, it was not the best I can do — it was about 85%.
 
 ## e) WHAT WE SHOULD IMPROVE
 
-1. **Verify-then-write, for every binary, no exceptions** — every CLI string that
+~~1. **Verify-then-write, for every binary, no exceptions** — every CLI string that~~ done — encoded: SESSION-START.md mandates quoting the exit status, never the output tail
    enters a skill file gets its `--help` run first, even (especially) for familiar
    tools. Both shipped defects were `gh` strings; both binaries were installed.
    Impact: eliminates this entire defect class. Cost: seconds per command.
-2. **E2E scratch validation for workflow skills** — a skill that teaches a workflow
+~~2. **E2E scratch validation for workflow skills** — a skill that teaches a workflow~~ done — scripts/validate-workflow.sh 11/11 (wave-2 T22 ground truth)
    (not just flags) should be exercised once in a throwaway repo before shipping:
    `jj git init` a fake upstream, create sibling changes, move the trunk, run the
    sync loop, dry-run the pushes. Impact: converts "reasoned from help text" into
    "executed successfully". Cost: ~20 minutes.
-3. **No AI-summarizer hops for file-level facts** — when a claim is about a specific
+~~3. **No AI-summarizer hops for file-level facts** — when a claim is about a specific~~ done — raw GitHub-API verification of the charmbracelet template + CONTRIBUTING (wave-2)
    file's contents (a PR template's sections, a CONTRIBUTING rule), fetch the raw
    file; do not let an `agentic_fetch` summary stand as the only source. The
    charmbracelet reference's "unverified until checked" marker was the right
    instinct — applying it BEFORE writing would have been better.
-4. **Session-start checklist as an actual artifact** — read AGENTS.md §8 + §11,
+~~4. **Session-start checklist as an actual artifact** — read AGENTS.md §8 + §11,~~ done — SESSION-START.md created (wave-2 T32), wired as AGENTS §8 step 0
    scan `docs/feedback/new/`, open the newest `docs/status/` report. This session
    proves the memory of "I know the rules" is not execution.
-5. **Executable loop helper** — encode Phase 4 as
+~~5. **Executable loop helper** — encode Phase 4 as~~ done — scripts/sync-all-prs.sh shipped + live-tested (wave-2)
    `jj-fork-pr-workflow/scripts/sync-all-prs.sh` (fetch → rebase roots → push changed
    bookmarks) so agents run one script instead of retyping three commands. Also a
    candidate for `allowed-tools` per AGENTS.md §5.8.
-6. **Canonical verification-block format** — read `verify-external-claims` and align
+~~6. **Canonical verification-block format** — read `verify-external-claims` and align~~ done — wave-2 T28; verification-canon guard (wave-3 f13) enforces it
    this skill's block to whatever format the three existing verification-status
    skills use; if no shared format exists, this is a split-brain seed worth
    resolving once in `how-to-write-skills.md`.
-7. **Per-org reference scaling** — rename nothing now, but when a second org gets a
+~~7. **Per-org reference scaling** — rename nothing now, but when a second org gets a~~ **→ routed to TODO_LIST 2026-11-10**
    references file, add a selector list in SKILL.md (the multi-domain pattern from
    `how-to-write-skills.md` "Organizing Multi-Domain Skills").
 
@@ -197,12 +197,12 @@ Repo-wide items noticed this session (from check-skills inventory, for HARVEST r
 
 ## g) Questions I cannot answer myself
 
-1. **Where did "jj mergemerge" come from?** I proved it does not exist in jj 0.45.1
+~~1. **Where did "jj mergemerge" come from?** I proved it does not exist in jj 0.45.1~~ **→ routed to ROADMAP 2026-11-10 (mergemerge origin — user-only answer, still open)**
    (command list, official docs, source search). If you encountered it in a real
    tool, alias file, or another agent's output, tell me where — something else may
    need investigating. If it was shorthand for "merge my PRs with upstream," the
    skill's Phase 4 is the answer and nothing more is needed.
-2. **Should this skill stay jj-only?** On machines without `jj` installed, the skill
+~~2. **Should this skill stay jj-only?** On machines without `jj` installed, the skill~~ **→ routed to ROADMAP 2026-11-10 (jj git-fallback scope — never decided; skill stayed jj-only)**
    currently has no fallback (it verifies `jj --version` in pre-flight and stops). A
    pure-git equivalent section (fork + `git fetch upstream` + per-branch
    `rebase --onto` + `push --force-with-lease`) would double maintenance for a

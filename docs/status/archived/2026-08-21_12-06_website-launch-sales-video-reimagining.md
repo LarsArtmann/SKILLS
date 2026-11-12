@@ -54,16 +54,16 @@ Evidence: `git diff --stat` → 4 files changed; `check-skills.sh` → pass;
 
 ## b) PARTIALLY DONE
 
-1. **Intra-file split brain (link bar).** Phase 2 got the demo-link note, but
+~~1. **Intra-file split brain (link bar).** Phase 2 got the demo-link note, but~~ v:done — T11: Phase 2 badge/link-bar replaced by pointer to readme-template incl. demo variant (2fc1b46 wave; f1)
    Phase 6's "Documentation link bar" section still shows the old two-link
    bars with no demo variant. Two restatements of the same bar now disagree.
    Fix: S effort, high value.
-2. **Retrofit checklist gap.** `content-patterns.md` "Retrofitting existing
+~~2. **Retrofit checklist gap.** `content-patterns.md` "Retrofitting existing~~ v:done — demo-video audit item present in content-patterns.md retrofit checklist (f5; :229)
    sites" (the checklist SKILL.md §0.0 points at) has no demo-video item,
    while `demo-video.md` says maintenance-mode sites get one. S fix.
-3. **CHANGELOG.md entry not added.** Repo convention: change history lives in
+~~3. **CHANGELOG.md entry not added.** Repo convention: change history lives in~~ v:done — 08-21 CHANGELOG entry backfilled by the 21-25 pass (f6)
    `CHANGELOG.md`; this session's changes are undocumented there. S fix.
-4. **Unverified claims encoded as truth** (the honest big one — violates this
+~~4. **Unverified claims encoded as truth** (the honest big one — violates this~~ v:done — wave-2 T5 softened/corrected both HyperFrames claims against the skill bodies; 9:16 claim ffprobe-verified (T22)
    repo's own `verify-external-claims` discipline):
    - "`npx hyperframes ...` fails in approve-builds prompt loops the same way
      on `skills update` as on `render`" — extrapolated from the known
@@ -72,23 +72,23 @@ Evidence: `git diff --stat` → 4 files changed; `check-skills.sh` → pass;
      composition" — plausible, but compositions may hardcode 1920x1080;
      re-render at another aspect is unproven.
      Mitigation: soften wording or verify in the next HyperFrames session.
-5. **`README.md` skills-table row** for website-launch still generic — not
+~~5. **`README.md` skills-table row** for website-launch still generic — not~~ v:done — README row mentions the demo-video sales engine (verified 22-51 a11; f9)
    wrong, but doesn't mention the sales-video default. S fix, low priority.
 
 ## c) NOT STARTED
 
-1. **Eval pass (skill-creator loop).** Loaded skill-creator as guidance; never
+~~1. **Eval pass (skill-creator loop).** Loaded skill-creator as guidance; never~~ v:done — wave-2 T24: eval-1 re-run on fictional repo, old 4/7 vs new 7/7 with mechanical grader
    ran 2-3 realistic launch prompts (old vs new skill, with/without). No
    evidence the new instructions actually change agent behavior for the
    better — the rewrite is reasoned, not measured.
-2. **Ground-truth validation.** No real launch has run against the updated
+~~2. **Ground-truth validation.** No real launch has run against the updated~~ v:done — T22 executed 2026-09-08/09: real render incl. 9:16 variant, ffprobe-verified
    skill; every new placement/SEO/tier rule is untested in a real repo.
-3. **Cross-check against `hyperframes-cli` / `hyperframes-core` skill bodies.**
+~~3. **Cross-check against `hyperframes-cli` / `hyperframes-core` skill bodies.**~~ v:done — wave-2 T5: hyperframes-cli/core bodies read; routing/tier claims corrected
    My claims about what the HyperFrames workflow "owns" (publishing, media)
    come only from the entry-point routing table; I never read those two
    SKILL.md bodies. Distribution tiers were written without knowing what
    `publish`/`cloudrun` actually offer.
-4. **HARVEST of section (f)** into TODO_LIST.md — deferred; user said
+~~4. **HARVEST of section (f)** into TODO_LIST.md — deferred; user said~~ v:done — harvested by the 2026-08-21/09-18 docs-health passes (f18)
    "WAIT FOR INSTRUCTIONS".
 
 ## d) TOTALLY FUCKED UP
@@ -110,22 +110,22 @@ Nothing broken, nothing lost, no wrong content shipped. Honest stumbles:
 
 ## e) WHAT WE SHOULD IMPROVE
 
-1. **Canonical-path discipline:** when a skill directory is reachable both
+~~1. **Canonical-path discipline:** when a skill directory is reachable both~~ v:done — AGENTS.md §5.10 rule 6 (canonical-path discipline) added by the 2026-08-21 audit pass
    via repo and via `~/.agents`/`~/.config` symlinks, resolve and read+edit
    ONLY through the repo path. This belongs in repo AGENTS.md §5.10 as one
    sentence. (This exact stumble will hit every future session otherwise.)
-2. **Apply `verify-external-claims` to our own new prose.** I encoded two
+~~2. **Apply `verify-external-claims` to our own new prose.** I encoded two~~ v:done — verify-external-claims §0 chat-time gate encoded (T13, 2026-08-21)
    unverified HyperFrames CLI claims while literally having that skill
    available. Rule of thumb: any new sentence about an external tool's
    behavior gets "verified: <how/date>" or gets hedged.
-3. **Story-doctrine boundary.** `demo-video.md` now restates value-first
+~~3. **Story-doctrine boundary.** `demo-video.md` now restates value-first~~ v:done — website-launch ↔ hyperframes-creative pair tracked in AGENTS.md §5.5 (added 2026-08-21 audit)
    story rules that `hyperframes-creative/story-spine.md` owns. I added a
    "not a rival" note, but this is a new inter-skill pair of the kind
    AGENTS.md §5.5 tracks — it should be checked whenever either side changes.
-4. **SKILL.md length:** now 848 lines (check-skills warns; allowlisted). The
+~~4. **SKILL.md length:** now 848 lines (check-skills warns; allowlisted). The~~ r:routed to TODO_LIST 2026-11-10
    §3.11 expansion made it worse. Phase 2's badge/link-bar markdown
    duplicates `readme-template.md` — extracting it trims ~60 lines.
-5. **Status-report format divergence:** the skill's canonical output is a
+~~5. **Status-report format divergence:** the skill's canonical output is a~~ v:one-off override confirmed working — flag protocol functioned (same verdict as 08-16 f15)
    styled HTML dashboard; this report is `.md` per explicit user request.
    One-off override — do not let it drift into becoming the default.
 
@@ -151,20 +151,20 @@ Nothing broken, nothing lost, no wrong content shipped. Honest stumbles:
 | ~~16~~ | ~~Check emeet-pixyd's live site against new placement rules (poster, #demo, og:image)~~ done — T21: emeet audited 4/9; fixes landed wave-3 f5/f6                                                            | ~~Medium~~ | ~~S~~      | ~~Quality~~       |
 | ~~17~~ | ~~Add "Watch the demo" mention to Phase 6 badge/link-bar guidance (pairs with #1)~~ done — via T11 pointer (template carries the demo-link variant)                                                         | ~~Medium~~ | ~~S~~      | ~~Documentation~~ |
 | ~~18~~ | ~~HARVEST this report's (f) into TODO_LIST.md via docs-health (after user instruction)~~ done (docs-health pass 2026-09-18 — harvested by the 21-25 pass and this pass)                                     | ~~Medium~~ | ~~S~~      | ~~Process~~       |
-| 19     | Consider a `scripts/` frame-check helper for the sales gates (ffmpeg extract + assert)                                                                                                                      | Low        | M          | Feature           |
+~~| 19     | Consider a `scripts/` frame-check helper for the sales gates (ffmpeg extract + assert)                                                                                                                      | Low        | M          | Feature           |~~ r:routed to ROADMAP 2026-11-10
 | ~~20~~ | ~~ROADMAP fuel: automated "does the landing page video match the README value prop" audit for maintenance mode~~ done — routed to ROADMAP §7 (social-preview/video tooling theme — raw idea)                | ~~Low~~    | ~~L~~      | ~~Feature~~       |
 
 ## g) Questions I cannot answer myself
 
-1. **Click-to-play or muted autoplay+loop?** I defaulted the landing video to
+~~1. **Click-to-play or muted autoplay+loop?** I defaulted the landing video to~~ r:routed to ROADMAP 2026-11-10
    click-to-play with a selling poster (autoplay wastes bandwidth and can
    annoy; loop can cheapen a technical brand). This is a brand/performance
    tradeoff only you can settle — it changes the poster rule too (autoplay
    wants first-paint, click-to-play wants the money shot).
-2. **Is the 9:16 social cut Tier 1 (launch-blocking) or Tier 2 (same-day)?**
+~~2. **Is the 9:16 social cut Tier 1 (launch-blocking) or Tier 2 (same-day)?**~~ r:routed to ROADMAP 2026-11-10
    I placed it Tier 2 so launches never block on social assets — but if you
    intend to actually post launches to Shorts/TikTok, it should be Tier 1.
-3. **Pure-API libraries: mandatory video or stay Optional?** Current matrix
+~~3. **Pure-API libraries: mandatory video or stay Optional?** Current matrix~~ r:routed to ROADMAP 2026-11-10
    says Optional (animated code/data-flow diagram). "Every launch sells
    superbly" argues for mandatory; craft reality argues some libraries have
    nothing worth animating. Which wins?

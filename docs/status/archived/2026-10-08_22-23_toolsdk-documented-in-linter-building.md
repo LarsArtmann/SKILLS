@@ -13,7 +13,7 @@ coverage).
 
 ## a) FULLY DONE ✅
 
-1. **Research (source-read, not doc-trust):** all 6 non-test files of
+~~1. **Research (source-read, not doc-trust):** all 6 non-test files of~~ done — verified: distribution.md carries the "BuildFlow provider (toolsdk self-registration)" section (source-read 2026-10-08 rows present)
    `go-finding/toolsdk` (doc, spec, registry, options, triggers, dryrun;
    tagged `toolsdk/v1.15.0`, 2026-10-05) + `go.mod` + CHANGELOG. Consumers
    verified: 10 blank imports in `BuildFlow/tools/providers/sdk_imports.go`;
@@ -21,7 +21,7 @@ coverage).
    HealthCheck, advisory severity cap + `original-severity-` tag) and
    dependabot-auto-configure's provider (Repair + `DryRunFromContext` +
    `RepairerFunc`) read in full as the two exemplars.
-2. **`linter-building/references/distribution.md`** — new section
+~~2. **`linter-building/references/distribution.md`** — new section~~ done — verified: distribution.md section + verification rows present in repo today
    "BuildFlow provider (toolsdk self-registration)": minimal Spec example,
    field-rules table (Name/Description/Repair-anti-lie/Trigger+
    NotRequires deference/DependsOn/ModuleFanOut CWD rule/SwitchCases mutual
@@ -30,16 +30,16 @@ coverage).
    lessons. Layer-stack diagram gains the provider front; 2 verification
    rows added (source-read 2026-10-08). Author/consumer split vs the
    `buildflow` skill stated in the intro.
-3. **`linter-building/references/ecosystem.md`** — stack table row
+~~3. **`linter-building/references/ecosystem.md`** — stack table row~~ done — verified: ecosystem.md toolsdk stack row present
    "BuildFlow provider contract" (sub-module, v1.15.0, 10 consumers) +
    decision shortcut ("Make a tool runnable by BuildFlow → pkg/provider +
    Register") + provenance note updated.
-4. **`linter-building/SKILL.md`** — description gains "BuildFlow provider" /
+~~4. **`linter-building/SKILL.md`** — description gains "BuildFlow provider" /~~ done — verified: SKILL.md description/verification carry toolsdk + BuildFlow-provider phrases
    "toolsdk spec" trigger phrases; step 7 layer list includes the provider
    front (and "never four implementations" → "never multiple" — the count
    had already drifted from the listed fronts); verification table gains the
    toolsdk row (2026-10-08).
-5. **`FEATURES.md`** — linter-building row updated (toolsdk front
+~~5. **`FEATURES.md`** — linter-building row updated (toolsdk front~~ done — verified: FEATURES.md linter-building row names toolsdk front documented + verified 2026-10-08
    documented + verified 2026-10-08), per SESSION-START step 6.
 
 ## b) Verification

@@ -67,44 +67,44 @@
 
 ## b) PARTIALLY DONE
 
-1. **Annotation style not fully uniform.** File 08-11's b/c `###`-heading
+~~1. **Annotation style not fully uniform.** File 08-11's b/c `###`-heading~~ v:resolved — full-corpus re-read executed 2026-09-18; 08-11 heading-style markers left as-is (defensible variant, f1)
    items got prose "— fixed" markers instead of the canonical `~~…~~` format
    (headings aren't list items; defensible but improvised). Same file treats
    the identical skill-creator question inconsistently: c1 left unmarked
    (open), g1 struck as "routed to ROADMAP". Same content, two signals.
-2. **Dry-run discipline: 6 of 9 files.** Files 08-12 11:08, 08-14 15:04, and
+~~2. **Dry-run discipline: 6 of 9 files.** Files 08-12 11:08, 08-14 15:04, and~~ w:won't implement retroactively — historical gap; tooling since hardened (duplicate keys hard-error, loud-failing atomic writes in annotate.go)
    08-16 03-32 got live batch runs without a prior dry-run of the first spec
    (their shapes matched already-proven shapes; scripts are atomic and
    loud-failing — but the skill says ALWAYS dry-run a new file shape first).
-3. **Spot-check instead of full re-read.** Annotated output verified by
+~~3. **Spot-check instead of full re-read.** Annotated output verified by~~ v:resolved — full end-to-end re-read pass executed 2026-09-18 (f1)
    `sed -n` spot-checks on 2 of 9 files, not an end-to-end re-read of all
    nine — the exact gap the 14:22 report flagged in a predecessor
    ("did not re-read the whole report end-to-end").
-4. **Markdown not dprint-validated.** dprint is off PATH and no npx /
+~~4. **Markdown not dprint-validated.** dprint is off PATH and no npx /~~ w:won't implement — moot; auto-commit daemon normalizes formatting, check-skills link gate green (matches f2)
    node_modules exist (verified — genuinely unavailable), but I did not try
    the documented alternates (`nix run`, `bunx`) before accepting the
    blocker. The 15:04 report's lesson is literally "bunx missing from PATH
    was treated as a blocker instead of trying npx."
-5. **Session-residue tasks not folded into TODO_LIST.** The re-read pass
+~~5. **Session-residue tasks not folded into TODO_LIST.** The re-read pass~~ w:won't implement — superseded by later wave renumbering (T21-T26); no separate residue rows needed (matches f4)
    (b3), dprint run (b4), and 08-21 12:06 routed-markers (c2) are listed in
    this report's (f) but carry no T-ids yet.
 
 ## c) NOT STARTED
 
-1. **S-effort code fixes routed, not executed** — T1 (trigger-first guard in
+~~1. **S-effort code fixes routed, not executed** — T1 (trigger-first guard in~~ v:both shipped — T1 trigger guard (check-skills.sh check 6, 2026-09-08 wave) and T2 alias decision tree (wave-2, how-to-golang/SKILL.md:49)
    `check-skills.sh`) and T2 (alias-vs-definition decision-tree entry in
    `how-to-golang/SKILL.md`) were both <30-minute edits inside this session's
    capacity. Routing was docs-health-scoped and correct, but "keep going
    until everything works" arguably asked for execution.
-2. **The 2026-08-21 12:06 website-launch report was harvested but not
+~~2. **The 2026-08-21 12:06 website-launch report was harvested but not~~ v:resolved — the 12-06 report now annotated inline (2026-09-18 pass; f3)
    annotated.** Out of the user's `08-1*` scope; its items are genuinely open
    (unmarked = correct), but "routed to T4/T5/T10/T11/T19" markers would
    speed a future reader.
-3. **No structural AGENTS.md prune.** Still 32.8 KB against the 30 KB
+~~3. **No structural AGENTS.md prune.** Still 32.8 KB against the 30 KB~~ w:won't implement — AGENTS size advisory accepted at 36 KB by decision (f24); prune tracked when it crosses the hard line
    advisory threshold (was 32.85 KB pre-session — I trimmed my own additions
    but touched no pre-existing bloat; candidates: resolved-gotcha narratives
    §5.2/§5.3, feedback-loop origin history §11).
-4. **No machine-readable TODO ↔ report-item crosscheck** — the T-id →
+~~4. **No machine-readable TODO ↔ report-item crosscheck** — the T-id →~~ w:won't implement — idea parked by decision (f25); revisit if TODO↔report drift recurs
    evidence mapping lives only in TODO_LIST prose.
 
 ## d) TOTALLY FUCKED UP!
@@ -131,20 +131,20 @@
 
 ## e) WHAT WE SHOULD IMPROVE!
 
-1. **Dry-run every new file shape — no "it looked similar" exemptions.**
+~~1. **Dry-run every new file shape — no "it looked similar" exemptions.**~~ v:encoded — annotate.go hardened: loud-failing atomic writes, duplicate-spec hard error, verify-first workflow (docs-health/SKILL.md tooling canon)
    Atomicity is a safety net, not a substitute for the pre-flight check.
-2. **Decide annotation style per file BEFORE the campaign** (headings vs list
+~~2. **Decide annotation style per file BEFORE the campaign** (headings vs list~~ r:routed to ROADMAP 2026-11-10
    items vs tables; routed-markers for questions) — not improvised file by
    file, which is how the c1/g1 inconsistency happened.
-3. **Never state a count that didn't come from a command.** Marker totals,
+~~3. **Never state a count that didn't come from a command.** Marker totals,~~ v:encoded — verify-before-say chat-time gate in verify-external-claims §0 (T13, 2026-08-21)
    item totals, file totals: run the grep first, speak second.
-4. **Tool-unavailable protocol:** PATH miss → `nix run` → `bunx` → manual
+~~4. **Tool-unavailable protocol:** PATH miss → `nix run` → `bunx` → manual~~ r:routed to ROADMAP 2026-11-10
    fallback → only then "blocked". Encode in AGENTS.md §5.10 or the global
    memory so it stops being relearned.
-5. **Post-annotation re-read gate:** after any batch annotation campaign, a
+~~5. **Post-annotation re-read gate:** after any batch annotation campaign, a~~ r:routed to TODO_LIST 2026-11-10
    full-file view pass is part of the work, not optional polish. The
    resolving-items flow should say so.
-6. **Scope rule for on-sight fixes:** docs-health runs surface S-effort
+~~6. **Scope rule for on-sight fixes:** docs-health runs surface S-effort~~ r:routed to ROADMAP 2026-11-10
    fixes; either execute them or write "routed, not done, scope=X" in the
    report so the choice is visible (this report does it; make it a habit).
 
@@ -204,16 +204,16 @@ TODO_LIST (verified-open items live there with evidence — do not duplicate).
 > Not authored by this session; left untouched per the respect-existing-changes
 > rule. If it lands green, T1 closes.
 
-1. **On-sight scope policy:** when docs-health surfaces S-effort code fixes
+~~1. **On-sight scope policy:** when docs-health surfaces S-effort code fixes~~ r:routed to ROADMAP 2026-11-10
    (this session: T1 trigger guard, T2 alias entry), should later sessions
    execute them immediately, or is strict routing to TODO_LIST the intent?
    This session routed; your "do not be lazy" instruction reads either way.
-2. **skill-creator upstream conflict:** the 08-11 report identifies the
+~~2. **skill-creator upstream conflict:** the 08-11 report identifies the~~ r:routed to ROADMAP 2026-11-10
    third-party `skill-creator` skill (lockfile-tracked, never-edit rule in
    AGENTS.md §5.10) as the upstream source of the description-first
    anti-pattern. Update it on this machine anyway, fork it into this repo,
    or leave it and rely on the T1 guard to catch regressions?
-3. **AGENTS.md size:** 32.8 KB vs the 30 KB advisory threshold (hard-fail is
+~~3. **AGENTS.md size:** 32.8 KB vs the 30 KB advisory threshold (hard-fail is~~ w:won't implement — decided: size advisory accepted at 36 KB (f24); taste not hygiene (hard-fail is 100 KB)
    100 KB, so this is taste, not hygiene). Prune the resolved-history
    sections now, or accept until it grows further?
 
