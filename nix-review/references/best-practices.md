@@ -281,7 +281,7 @@ pkgs.buildGoModule {
 | --------------------------------------- | ----------------------------- |
 | `"github:owner/repo"`                   | Public GitHub repos — fastest |
 | `"github:owner/repo/ref"`               | Pin to branch/tag/commit      |
-| `"git+ssh://git@github.com/owner/repo"` | Private repos                 |
+| `"github:owner/repo/ref"` + `access-tokens` | Private repos (fleet truth; PAT via nix.conf or CI `extra-conf`) |
 | `"path:./relative"`                     | Local development only        |
 | `"https://example.com/archive.tar.gz"`  | Tarball archives              |
 

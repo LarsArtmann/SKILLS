@@ -42,17 +42,17 @@ Override the glob via `go-standard.privateGlobPattern = "github.com/myorg/*";`.
 
     # The helper itself
     go-nix-helpers = {
-      url = "git+ssh://git@github.com/LarsArtmann/go-nix-helpers?ref=master";
+      url = "github:LarsArtmann/go-nix-helpers/master";
       flake = false;
     };
 
-    # Private deps (flake = false, fetched via SSH outside the sandbox)
+    # Private deps (flake = false, fetched with your GitHub token outside the sandbox)
     go-cqrs-lite = {
-      url = "git+ssh://git@github.com/LarsArtmann/go-cqrs-lite?ref=master";
+      url = "github:LarsArtmann/go-cqrs-lite/master";
       flake = false;
     };
     go-branded-id = {
-      url = "git+ssh://git@github.com/LarsArtmann/go-branded-id?ref=master";
+      url = "github:LarsArtmann/go-branded-id/master";
       flake = false;
     };
   };
@@ -118,8 +118,8 @@ Override the glob via `go-standard.privateGlobPattern = "github.com/myorg/*";`.
 
 ## How `mkPreparedSource` Works
 
-1. Each private dep is added as a flake input with `git+ssh://` URL and `flake = false`.
-2. `nix flake update` fetches them via SSH **outside** the sandbox (where your keys work).
+1. Each private dep is added as a flake input with a `github:` URL and `flake = false`.
+2. `nix flake update` fetches them **outside** the sandbox using nix `access-tokens` (a GitHub PAT in `~/.config/nix/nix.conf`).
 3. `mkPreparedSource` copies the deps into `_local_deps/` and injects `replace` directives into `go.mod`.
 4. The Go toolchain resolves everything locally — zero network inside the sandbox.
 

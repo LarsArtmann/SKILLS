@@ -17,8 +17,8 @@ Use this checklist when moving a Go project from committed `vendor/` to a hermet
 
 ## Flake changes
 
-- [ ] Add `go-nix-helpers` as a flake input with `flake = false;` and `git+ssh://` URL.
-- [ ] Add one flake input per private repo (not per sub-module) with `flake = false;` and `git+ssh://` URL.
+- [ ] Add `go-nix-helpers` as a flake input with `flake = false;` and a `github:` URL.
+- [ ] Add one flake input per private repo (not per sub-module) with `flake = false;` and a `github:` URL.
 - [ ] Import `mkPreparedSource` in the `let` block.
 - [ ] Build `preparedSrc` with `mkPreparedSource` and the `deps` map keyed by exact module-path case.
 - [ ] Set `vendorHash = pkgs.lib.fakeHash;` temporarily.

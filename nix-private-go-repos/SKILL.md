@@ -1,7 +1,7 @@
 ---
 name: nix-private-go-repos
 description: |
-  Use when building Go projects with Nix flakes that depend on private GitHub repositories. Triggers on phrases like "private Go repo in Nix", "vendor/ in Nix", "mkPreparedSource", "GOPRIVATE", "publicDeps", "validatePrivateDeps", "could not read Username", "410 Gone from proxy.golang.org", or when migrating a Go project from committed vendor/ to a hermetic Nix build. Covers flake inputs, mkPreparedSource, vendorHash, GOPRIVATE in devShells, and CI SSH authentication.
+  Use when building Go projects with Nix flakes that depend on private GitHub repositories. Triggers on phrases like "private Go repo in Nix", "vendor/ in Nix", "mkPreparedSource", "GOPRIVATE", "publicDeps", "validatePrivateDeps", "could not read Username", "410 Gone from proxy.golang.org", or when migrating a Go project from committed vendor/ to a hermetic Nix build. Covers flake inputs, mkPreparedSource, vendorHash, GOPRIVATE in devShells, and CI token authentication.
 allowed-tools: bash view edit grep
 metadata:
   tags: nix, flakes, go, golang, private-repos, github, vendor, mkPreparedSource, GOPRIVATE, reproducibility
@@ -22,7 +22,7 @@ Canonical block format per `verify-external-claims/SKILL.md` §5. All claims ver
 
 | Claim                                                                                                                                                                                                    | Status      | Source                                                           |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ---------------------------------------------------------------- |
-| `GOPRIVATE`, `vendorHash`, `buildGoModule`, `replace` directives, and `git+ssh://` flake inputs                                                                                                          | ✅ Verified | Public, documented Nix and Go concepts                           |
+| `GOPRIVATE`, `vendorHash`, `buildGoModule`, `replace` directives, and `github:` flake inputs with `access-tokens` auth                                                      | ✅ Verified | Public, documented Nix and Go concepts                           |
 | The `mkPreparedSource` function, the `flakeModules.go-standard` module, and their specific APIs (`deps` map, `validatePrivateDeps`, `publicDeps`, `postPatchExtra`, `privateGlobPattern`, `requireDeps`) | ✅ Verified | Current source in `/home/lars/projects/go-nix-helpers`           |
 | The `go-standard` module has 39 options total (this skill covers the private-dep subset)                                                                                                                 | ✅ Verified | `go-nix-helpers` source (2026-08-12)                             |
 | Committed `vendor/` problems (massive diffs, stale deps, merge conflicts, repo bloat)                                                                                                                    | ✅ Verified | Widely documented; independently observed in this repo's history |
@@ -60,12 +60,12 @@ inputs = {
     inputs.nixpkgs-lib.follows = "nixpkgs";
   };
   go-nix-helpers = {
-    url = "git+ssh://git@github.com/LarsArtmann/go-nix-helpers?ref=master";
+    url = "github:LarsArtmann/go-nix-helpers/master";
     inputs.nixpkgs.follows = "nixpkgs";
   };
   # Private deps (flake = false)
   go-cqrs-lite = {
-    url = "git+ssh://git@github.com/LarsArtmann/go-cqrs-lite?ref=master";
+    url = "github:LarsArtmann/go-cqrs-lite/master";
     flake = false;
   };
 };
@@ -104,18 +104,20 @@ workarounds. The module handles everything when `deps` is non-empty.
 | FOD `go mod tidy`         | Runs `go mod tidy` + `go mod vendor` in the FOD, syncs go.mod/go.sum to main build |
 | Sub-module auto-discovery | Recursively scans each dep for all `go.mod` files at any depth                     |
 
+**Auth prerequisite for `github:` inputs to private repos:** nix needs a token — `access-tokens = github.com=<token>` in `~/.config/nix/nix.conf` (get one with `gh auth token`). CI uses the same setting via nix-installer's `extra-conf` (see §4). Fleet truth since 2026-10-23: inputs are `github:owner/repo/ref`, not `git+ssh://`.
+
 ### Option B: Manual mkPreparedSource (for projects not using go-standard)
 
 For projects not using the `go-standard` module from `github.com/LarsArtmann/go-nix-helpers`:
 
-1. Add each private dependency as a flake input with `git+ssh://` and `flake = false`.
+1. Add each private dependency as a flake input with a `github:` URL and `flake = false`.
 2. Import `mkPreparedSource` from `github.com/LarsArtmann/go-nix-helpers` and list the private deps in the `deps` map.
 3. Set `vendorHash` with `pkgs.lib.fakeHash`, run `nix build .#default`, and copy the correct hash from the error.
 4. Add `GOPRIVATE = "github.com/larsartmann/*,github.com/LarsArtmann/*";` to **every** devShell and CI shell.
-5. Configure local git to rewrite HTTPS GitHub URLs to SSH:
+5. Let git supply your gh token for the devShell's private `go` fetches (GOPRIVATE forces git transport):
 
    ```bash
-   git config --global url."git@github.com:".insteadOf "https://github.com/"
+   gh auth setup-git
    ```
 
 For a full annotated `flake.nix` example, load [./references/implementation-guide.md](./references/implementation-guide.md).
@@ -136,12 +138,21 @@ Follow the checklist in [./references/migration-checklist.md](./references/migra
 
 ## 4. CI Authentication
 
-CI runners need to resolve `git+ssh://` flake inputs but have no SSH keys. Use one of:
+CI runners must resolve `github:` flake inputs for private repos, and the Actions `GITHUB_TOKEN` cannot read sibling private repos. Store a fine-grained PAT (read-only Contents on every private flake-input repo) as a secret and pass it to nix:
 
-- **Deploy keys:** one SSH key pair, public key added as a read-only deploy key to each private repo, private key stored as a GitHub Actions secret.
-- **`GITHUB_TOKEN` with `insteadOf`:** rewrite `git@github.com:` and `ssh://git@github.com/` URLs to HTTPS with `x-access-token` auth.
+```yaml
+- uses: DeterminateSystems/nix-installer-action@v16
+  with:
+    extra-conf: access-tokens = github.com=${{ secrets.FLAKE_PAT }}
+```
 
-Load [./references/ci-auth.md](./references/ci-auth.md) for copy-paste workflows.
+If a job enters a devShell and runs `go` (private module fetches go over git transport), rewrite the git URLs with the same token:
+
+```yaml
+- run: git config --global url."https://x-access-token:${FLAKE_PAT}@github.com/".insteadOf "https://github.com/"
+```
+
+Load [./references/ci-auth.md](./references/ci-auth.md) for copy-paste workflows, including the legacy `git+ssh://` + deploy-key strategies.
 
 ## 5. Common Gotchas
 
@@ -155,6 +166,8 @@ Load [./references/ci-auth.md](./references/ci-auth.md) for copy-paste workflows
 | nixpkgs `gotools` Go skew           | treefmt `goimports` check fails in-sandbox trying to download a newer toolchain ("no network") | Don't add `goimports` to the sandboxed formatter when `go.mod` requires a newer Go than `gotools` bundles; pin the matching `go_N_M` in devShells and enforce imports via golangci-lint outside the sandbox instead (securitymd 2026-10-09: gotools bundled Go 1.26, `go.mod` required 1.27) |
 | Dependency sweep drifts `vendorHash` | `nix build` fails with a hash mismatch days after a deps-only session; preflight WARNs "go.sum was modified after the hash was last set" | External dep BUMPS change `go.sum` exactly like new imports — re-verify the FOD hash (`nix build`) in the SAME session that touched go.mod/go.sum, or route the stale-hash fact into the handoff explicitly (pim-sync 2026-11-10: a cmdguard bump shipped a broken `nix run` to the user; "deps-only diff" never implies "nix-safe diff") |
 | The FOD tidies `go.sum` internally | A hash that verifies for the LOCAL tree fails in the sandbox, or sandbox builds leave `go.sum` differently ordered | `buildGoModule` runs its own `go mod` passes inside the fixed-output derivation; go.sum is an OUTPUT of the FOD's environment (toolchain version matters), not a stable input — hash against what the sandbox produces, not what your devShell produced |
+| FOD output-path collision | You changed go.mod or postPatch but nix still compiles stale vendor/ — compile errors ignore your edits | A go-modules FOD's store path derives from the DECLARED vendorHash, not its inputs: once a hash's output path exists, nix silently skips the rebuild. Set `vendorHash = "sha256-AAAA…A="` (exactly 43 chars + `=`), build, paste the real `got:` hash (Code-Quality-Agent 2026-11-11: ~4 wasted build cycles before this was understood) |
+| Duplicate `deps` keys → one repo | mkPreparedSource fails with an opaque `Permission denied` inside `_local_deps/` | One `deps` entry per repo; sub-modules are auto-discovered (`autoSubModules`) — never add separate `/submodule` entries for the same input |
 
 For the full gotcha list, load [./references/implementation-guide.md](./references/implementation-guide.md).
 

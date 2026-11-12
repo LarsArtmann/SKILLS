@@ -61,7 +61,7 @@ Completely non-portable — only works on one machine.
 inputs.cmdguard = { url = "path:/home/lars/projects/cmdguard"; flake = false; };
 ```
 
-**Fix**: Use `git+ssh://` for private repos, or `path:./relative-path` for local development with a fallback.
+**Fix**: Use `github:` inputs with nix `access-tokens` (`access-tokens = github.com=<PAT>` in nix.conf; CI: nix-installer `extra-conf`) for private repos, or `path:./relative-path` for local development with a fallback.
 
 ---
 
