@@ -104,7 +104,7 @@ cross-referencing its open items is deliberately out of scope here.
    "(Python-era incident, fact still true)".
 3. Implement + test the stray-fence lint in `scripts/check-skills.sh` (new check 16).
 4. Add `__pycache__/`, `*.pyc` to `.gitignore`.
-5. Run the full buildflow gate once over this session's changed files.
+5. Run the full buildflow gate once over this session's changed files. <!-- fresh:skip — every token here is generic; the work is rowed as TODO_LIST T99 (2026-11-10 harvest) -->
 6. Decide agent-commit policy (question 1) and encode it in SESSION-START.md or §7.
 7. HARVEST this report's (f) into TODO_LIST.md (docs-health) once instructed.
 8. Push-time review of `d855786`'s bundling (gmail-drafts + 7 nix files from a

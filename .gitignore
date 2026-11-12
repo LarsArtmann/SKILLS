@@ -77,3 +77,8 @@ yarn-error.log*
 # a project-scoped `modern-web-guidance install` run here writes both.
 .agents/
 skills-lock.json
+
+# Stale Python bytecode from the pre-2026-10-11 converted-away implementations
+# (one __pycache__ dir survived untracked until 2026-11-12)
+__pycache__/
+*.pyc
