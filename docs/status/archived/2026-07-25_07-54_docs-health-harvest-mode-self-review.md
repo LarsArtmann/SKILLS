@@ -179,7 +179,7 @@ The user's status-report prompt explicitly halts the agent. This is intentional 
 21. ~~ Add guidance: what if the latest report is `.html` and extraction fails? (fall back to manual, flag to user)~~ w:covered — fallback guidance present
 22. ~~ Add guidance: HARVEST when TODO_LIST doesn't exist yet (create it, don't skip)~~ done — TODO_LIST created when absent
 23. ~~ Add guidance: HARVEST when `docs/status/` has 100+ reports (default window = 1–3 most recent — already in SKILL.md, needs an example)~~ done — window documented with example
-24. ~~ Add a per-report-coverage checklist: "I read reports X, Y, Z; extracted N items; M already done; K routed to ROADMAP"~~ w:covered — coverage checklist exists
+24.  Add a per-report-coverage checklist: "I read reports X, Y, Z; extracted N items; M already done; K routed to ROADMAP" w:covered — coverage checklist exists
 
 ### Template fixes
 

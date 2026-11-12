@@ -316,6 +316,31 @@ consequences for agents:
    wakes; scope control for bundled commits happens at push review, not
    in the working tree.
 
+### 5.13 docs-gates Battery Adopted Repo-Side (2026-11-10)
+
+The five docs-health gates run as the standalone binary:
+`nix run github:Artmann-Technologies/docs-gates -- run .` — the canonical
+quality gate for documentation health, alongside `scripts/check-skills.sh`
+(structure). Battery state as adopted: freshness/routing/cadence/audit-all
+PASS; **annotate is pinned** via `.docs-gates.json` `annotate_max: 372` —
+a measured-debt ratchet, not a green light. The 372 findings are almost
+entirely the pre-canon archived corpus (May–July 2026 reports annotated
+before the `done at`-marker canon existed), cell-boundary strikes in
+`docs/planning/archived/`, verdicts citing paths in OTHER repos, and 8
+F/spacing lines in point-in-time artifacts (drafts, eval outputs) that
+should not be rewritten. Per docs-health's own doctrine a long-lived
+archive legitimately holds pre-canon files — do NOT "repair" them
+wholesale; drain the ratchet only via a dedicated corpus campaign, and
+treat any count ABOVE 372 as new damage (the pin fails red on
+regression). The 2026-11-10 corpus sweep archived 90 reports
+(2026-06→2026-10 + both June HTML snapshots + the reviews HTML) with
+every item struck-with-verdict, won't-implement, NOT-DO, or routed;
+`docs/status/` now holds only the recent 5, and routed items live in
+TODO_LIST T71–T121 + ROADMAP (Open Questions + themes 9/10). Pre-flight
+TODO/ROADMAP rows with `docs-gates freshness . --pre-flight` BEFORE
+writing them — candidate lines can genericize tokens other reports
+depend on (hit 7× on the first draft, 2026-11-10).
+
 ---
 
 ## 6. High-Value Reference Files

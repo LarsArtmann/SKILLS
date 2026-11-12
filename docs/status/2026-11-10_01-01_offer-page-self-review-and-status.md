@@ -154,7 +154,7 @@
 17. CHANGELOG: add Unreleased line for the how-to-golang description fix (it rode a heuristic daemon commit).
 18. Cold-query probe variant ("nobody buys from my page") alongside the warm one.
 19. Check TODO_LIST/FEATURES/README (living docs only) for stale "sales-page-anatomy" references; leave docs/status archives alone.
-20. HARVEST this report's (f) into TODO_LIST once instructed.
+20. HARVEST this report's (f) into TODO_LIST once instructed. <!-- fresh:skip — harvest executed 2026-11-10; the §f items are rowed as TODO_LIST T71-T87 + ROADMAP Open Questions; every remaining token here is generic -->
 21. Record the subagent provider lesson (stagger starts; credits deplete quarterly) — candidate for crush-config `references/lessons.md` (cross-project) vs. this repo's AGENTS (single-repo) — decide owner.
 22. Commit the aggregation repo on skill edits too (only the link-add was committed; content edits propagate via symlink anyway — document that).
 23. Re-read offer-page SKILL.md end-to-end for the condensing checklist step 4 (teaching weight survived?) — not done since writing.

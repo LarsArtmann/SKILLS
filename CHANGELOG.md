@@ -53,6 +53,40 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   because CHANGELOG is the authoritative change record, not the commit
   message.
 
+### Changed (2026-11-10 — docs-health full-corpus sweep: annotate, archive, harvest)
+
+- **Corpus archived: 77 files.** Every `2026-0*` status report (June→Sept),
+  the full October corpus, both June HTML snapshots, both September planning
+  docs, and the October reviews HTML — each item struck-with-verdict
+  (`done at`/verified), Won't-implement, NOT-DO, or routed; gates
+  (`check-rows --strict` + `bare-rows`) green on every file before its
+  `git mv`. `docs/status/` now holds only the 5 most recent reports.
+- **Harvested into TODO_LIST: rows T71–T121** (the 2026-11-10 offer-page
+  self-review §f + every docs-gates UNHARVESTED item + routed corpus
+  clusters), all pre-flighted SAFE (`--pre-flight` — the first draft would
+  have genericized 7 tokens other reports depended on). ROADMAP gained 8
+  Open Questions (offer-page eval spend/scope/live-chat restore,
+  synthetic.new quota, version-train boundary, cmdguard depth,
+  first-customers product choices) + theme-9 html-report-kit raw ideas +
+  theme-10 routed raw ideas + theme-1/2/6 cluster additions.
+- **docs-gates battery adopted repo-side** (`nix run
+  github:Artmann-Technologies/docs-gates -- run .`): freshness, routing,
+  cadence, and audit-all all PASS (104 reports replayed, 0 unharvested);
+  annotate pinned at the measured pre-canon debt (`annotate_max: 372` in
+  `.docs-gates.json`) — regression past the pin fails red. Rationale and
+  drain policy recorded in AGENTS §5.13.
+- Fix-on-sight during VERIFY: linter-building step 8 names toolsdk;
+  FEATURES how-to-golang dated note (2026-10-17 additions) + drift fixes
+  (gmail-drafts `SOLID`→`FULLY_FUNCTIONAL` legend vocabulary, docs-health
+  10→12 refs, check-skills 14→15 checks, website-launch 797→835 lines);
+  README "never hardcoded" claim softened to checker-enforced totals +
+  hand-verified name lists; AGENTS §5.10 rule 7 repoint recorded
+  (go-cqrs-lite → working checkout, verified live) + aggregation-commit
+  clarification; textstat row added to docs/external-dependencies.md;
+  `.gitignore` `__pycache__/`+`*.pyc` prophylaxis; rule-F inline-code
+  spacing fixes in SESSION-START, docs-health SKILL.md, website-launch
+  common-pitfalls.
+
 ### Added (2026-11-03 — design-to-code skill + frontend-design upstream refresh)
 
 - **`design-to-code`** (new skill): the engineering layer between a design
