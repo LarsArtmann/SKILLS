@@ -61,7 +61,8 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   (`done at`/verified), Won't-implement, NOT-DO, or routed; gates
   (`check-rows --strict` + `bare-rows`) green on every file before its
   `git mv`. `docs/status/` now holds only the 5 most recent reports.
-- **Harvested into TODO_LIST: rows T71–T121** (the 2026-11-10 offer-page
+- **Harvested into TODO_LIST: rows T71–T121 (49 rows; T73/T82 folded
+  into done-work, never minted)** (the 2026-11-10 offer-page
   self-review §f + every docs-gates UNHARVESTED item + routed corpus
   clusters), all pre-flighted SAFE (`--pre-flight` — the first draft would
   have genericized 7 tokens other reports depended on). ROADMAP gained 8

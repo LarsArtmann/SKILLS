@@ -175,7 +175,7 @@ The 2026-09-14 merge assessment found NO further skill-directory merges warrante
 
 ### 5.6 `how-to-write-skills.md` Location
 
-This file is currently at the repo root. The status report recommends either converting it to a proper skill directory (`skill-creator/` or `how-to-write-skills/`) or moving it to `docs/`. It is not currently installed as a skill.
+This file is currently at the repo root. The status report recommends converting it to a proper skill directory (`how-to-write-skills/` — not `skill-creator/`, which is a third-party upstream skill whose name a repo skill must not collide with) or moving it to `docs/`. It is not currently installed as a skill.
 
 ### 5.7 No `crush.json` Present
 
