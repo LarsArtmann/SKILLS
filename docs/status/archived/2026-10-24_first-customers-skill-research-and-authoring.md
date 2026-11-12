@@ -53,9 +53,9 @@ run, `check-skills.sh` exit 0, `--signal` clean (filler=0, jargon=0).
 
 ## Open items
 
-- The new symlink shows **untracked** in the `~/.agents/skills` aggregation
-  repo — cosmetic per AGENTS §5.10; commit there when convenient.
-- Skill ages 🆕→🟢 only after a real 0→1 launch run exercises it.
-- Two-way description disambiguation with `copywriting` is one-way by
+- ~~The new symlink shows **untracked** in the `~/.agents/skills` aggregation
+  repo — cosmetic per AGENTS §5.10; commit there when convenient.~~ done at `4100313` (committed 2026-10-27 via temporary worktree).
+- ~~Skill ages 🆕→🟢 only after a real 0→1 launch run exercises it.~~ routed to TODO_LIST 2026-11-10 (real-run gate still open).
+- ~~Two-way description disambiguation with `copywriting` is one-way by
   necessity (third-party skill, must-not-edit) — boundary lives in
-  first-customers' description + AGENTS §5.5.
+  first-customers' description + AGENTS §5.5.~~ done — boundary verified in place 2026-11-10.

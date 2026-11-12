@@ -320,6 +320,17 @@ These are blockers that need a human decision before they can become tasks:
   it did not author without asking. Held in T71.
 - **synthetic.new quota exhaustion** (`2026-10-24_18-49` f39): investigate +
   billing/upgrade decision — spend appetite is the owner's, not discoverable.
+- **Version-train triangle boundary** (`2026-10-17` §g, routed 2026-11-10):
+  is the go-modularize / go-release / go-ecosystem-upgrade split at the right
+  granularity, and are the 4 deliberately-excluded skills still right to
+  exclude? Includes: when does HARVEST run relative to ANNOTATE (timing
+  canon).
+- **cmdguard review depth** (`2026-10-17_00-52` §g, routed 2026-11-10):
+  link-intent verification, review depth vs fix-on-sight balance, and whether
+  the cmdguard skill's own review loop stays in-repo or upstream.
+- **first-customers product choices** (`2026-10-24_17-28` §g, routed
+  2026-11-10): worked-example product choice, trigger precedence vs
+  offer-page after the split, and research-budget appetite.
 
 ## Non-goals
 
