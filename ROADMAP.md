@@ -202,6 +202,13 @@ Ideas routed out of the archived 2026-08 status corpus during the
   already an Open Question)
 - Stack direction: go-branded-id as the canonical branded-ID dependency;
   `skills update -g` side-effect pin discipline (post-2026-11-03 lesson)
+- Infra smalls (routed 2026-11-10): SKILLS_LOCKFILE documentation in
+  AGENTS; agent-skills aggregation-repo README; `.replaced-*` gitignore;
+  shellcheck/markdownlint standing sweeps
+- buildflow upstream feature wishes (routed 2026-11-10; upstream repo's
+  territory, re-triage there): eval loop, benchmark pass, allowed-tools,
+  `--semantic` trim, step catalog, README/HOW_TO_USE fixes, BuildFlow↔AGENTS
+  cross-doc
 
 ## Open Questions
 

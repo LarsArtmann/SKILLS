@@ -20,29 +20,29 @@ all checks green (exit 0). ~~18 of 30 skills needed nothing.~~ _(corrected 2026-
 
 ## a) FULLY DONE
 
-1. **SESSION-START executed** — feedback/new empty; newest report (09-16
+~~1. **SESSION-START executed** — feedback/new empty; newest report (09-16~~ v: session-log claim — corroborated by gates-green runs recorded in the 2026-09-18/09-24 waves
    18-47 docs-health audit) TL;DR read; TODO_LIST read (T30/T33/T34/T35 open,
    none touched by this task); AGENTS §8/§9 in context; `check-skills.sh`
    exit 0 (30 skills, 149 md files, 0 thin).
-2. **Doctrine mapped to skill-authoring** — the four doc principles
+~~2. **Doctrine mapped to skill-authoring** — the four doc principles~~ v: session-log claim — the doctrine is canon as Principle 7 (`5116703`, verified present in how-to-write-skills.md)
    translate 1:1 onto existing repo doctrine: delete-90% ≈ Principle 7
    signal density; physical-world test ≈ "what tool call does this line
    produce"; behavioral control ≈ "if deleting loses no behavior, delete";
    clear-over-clever ≈ jargon glossary + plain constraints. Conclusion: the
    repo already had 80% of this (Patterns 9/10, Common Mistakes) — the gaps
    were the per-paragraph action test and the jargon glossary.
-3. **Concurrent-session collision handled** — while auditing,
+~~3. **Concurrent-session collision handled** — while auditing,~~ done at `5116703`
    `how-to-write-skills.md` changed under me (mtime 21:27): another session
    had added Principle 7 + the `--signal` checker flag (commit `5116703`).
    My planned "Pattern 12" would have duplicated it — **skipped, not
    duplicated** (a split brain about split brains). This session took the
    complementary half: applying the doctrine to bodies.
-4. **Audit** — read-only sub-agent swept all 30 bodies with the four tests
+~~4. **Audit** — read-only sub-agent swept all 30 bodies with the four tests~~ v: session-log claim — CHANGELOG 2026-09-17 records the same 30-body sweep
    (preamble / non-actionable prose / jargon / buried lede; linter-building
    excluded while it carried foreign uncommitted changes). 18 files clean,
    zero buried-ledes. Every finding independently re-verified against source
    before editing (no single tool output drove a semantic change).
-5. **Fixes applied** (all re-read post-edit; full diff reviewed, every
+~~5. **Fixes applied** (all re-read post-edit; full diff reviewed, every~~ v: verified — CHANGELOG 2026-09-17 enumerates the same fixes; spot-checked live: full-code-review Mindset section gone, jj-fork-pr-workflow/references/prior-art.md exists (website-launch later grew to 835 lines in subsequent waves)
    removed line accounted for):
    - `full-code-review` — Mindset pep-talk section deleted (persona already
      lives in the description); both noise items gone; verschlimmbessern
@@ -70,13 +70,13 @@ all checks green (exit 0). ~~18 of 30 skills needed nothing.~~ _(corrected 2026-
    - `docs-health` — Verschlimmbesserung glossed; `status-report` — entombed,
      ghost system, split brain glossed; `architecture-review`, `naming-review`,
      `nix-review`, `go-error-modernization` (cargo-cult) — first-use glosses.
-6. **Verification** — `check-skills.sh` exit 0 after all edits; internal
+~~6. **Verification** — `check-skills.sh` exit 0 after all edits; internal~~ v: session-log claim — corroborated by the CHANGELOG 2026-09-17 verification bullets
    links OK across 150 md files (incl. new prior-art.md); `--signal` deltas
    as expected (website-launch prose 10→9/preamble 19→14, jj prose 2→0,
    nix-review prose 2→0, etc.). Remaining advisory hits are deliberate
    keeps (execution-mode directives, self-glossing contexts like
    linter-building:105 and buildflow:18) — restraint is success.
-7. **CHANGELOG** — dated "signal-only prose pass" entry added under
+~~7. **CHANGELOG** — dated "signal-only prose pass" entry added under~~ v: verified — CHANGELOG section "2026-09-17 — signal-only prose pass over skill bodies" exists
    Unreleased, crediting the concurrent session for Principle 7.
 
 ## b) PARTIALLY DONE
@@ -105,8 +105,8 @@ all checks green (exit 0). ~~18 of 30 skills needed nothing.~~ _(corrected 2026-
 
 ## e) NEXT
 
-1. Optional: run `--signal` over the b)-list long tail in a quiet session.
-2. T35 (annotate pre-09-09 status reports) remains the oldest open TODO row.
+~~1. Optional: run `--signal` over the b)-list long tail in a quiet session.~~ v: done — the long tail audited by T52 (2026-09-24 wave): remaining prose judged load-bearing; github-voice/go-release compressed (CHANGELOG 2026-09-24)
+~~2. T35 (annotate pre-09-09 status reports) remains the oldest open TODO row.~~ v: done — T35 closed by the 2026-09-18 corpus pass (CHANGELOG 2026-09-18); T36–T56 wave followed 2026-09-24
 
 ## f) Forward work for HARVEST
 
