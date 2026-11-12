@@ -248,7 +248,7 @@ When a new skill needs HTML reports: (1) reference `./assets/html-report-kit/...
 4. Adding a new skill: create the directory here, run `scripts/link-skills-to-agents.sh`. Done.
 5. Removing a skill: `git rm` the directory, then remove the `~/.agents/skills/<skill>` symlink.
 6. Always read AND edit skill files through the repo path. Edit tools track paths, not symlink identity — reading via `~/.agents/...` or `~/.config/crush/...` then editing via the repo path fails with "file modified since last read" (hit 2026-08-14 and again 2026-08-21).
-7. `~/.config/crush/skills/` also holds three one-off entries that are neither repo skills nor drift: `font-design` (→ a project-local skill), `go-cqrs-lite` (→ nix store), `templ-components` (real directory). Do not "repair" them.
+7. `~/.config/crush/skills/` also holds three one-off entries that are neither repo skills nor drift: `font-design` (→ a project-local skill, DiscordSync), `go-cqrs-lite` (→ the go-cqrs-lite repo's own working checkout at `~/projects/go-cqrs-lite/.agents/skills/go-cqrs-lite`; repointed from the nix store by that repo, verified 2026-11-10 — still satisfies the never-pin-to-store rule), `templ-components` (real directory). Do not "repair" them.
 
 ### 5.11 buildflow Runs Over This Repo (external tool)
 

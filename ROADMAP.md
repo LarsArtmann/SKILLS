@@ -219,6 +219,13 @@ Ideas routed out of the archived 2026-08 status corpus during the
 - FEATURES vocabulary: exercise the BUILD-mode status vocabulary
   (FULLY_FUNCTIONAL/PARTIALLY_FUNCTIONAL/DEMAND_GATED/...) on one real
   run to prove the labels carry (routed 2026-11-10 from 2026-09-16)
+- Open policy questions routed 2026-11-10 (from the archived 2026-10
+  corpus, low-stakes): should toolsdk graduate to its own skill?; a
+  git-branch-hygiene skill?; evidence-permanence policy for /tmp
+  fixtures; go-aichat SummaryStore intent + aggregation-layer policy +
+  fan-out doctrine ownership; website-launch pilot target (next launch
+  vs go-output first); formal i18n/RSS accepted out-of-scope; timestamp
+  format canon for status reports; who may tick the check-draft box
 
 ## Open Questions
 
