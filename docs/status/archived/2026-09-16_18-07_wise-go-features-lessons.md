@@ -9,14 +9,14 @@ research, reflect, execute, verify.
 
 ## a) FULLY DONE
 
-1. **Studied the exemplar.** wise-go's FEATURES.md is a mature specimen of the
+~~1. **Studied the exemplar.** wise-go's FEATURES.md is a mature specimen of the~~ s: superseded by `2026-09-16_18-17_wise-go-features-lessons-comprehensive.md` (the authoritative version of this session — harvest that one, not this file)
    format the `docs-health` skill prescribes: 8 status labels each answering
    ONE question ("does working code exist — and if not, why not?"), a
    dedicated evidence column with `file:line` refs on every row, an
    external-truth sweep date-stamped in the doc ("audited 2026-09-16 against
    the live Wise Platform API reference"), and count claims gate-checked by
    `nix run .#doc-verify` against the compiled surface.
-2. **Five lessons extracted and encoded into docs-health** (SKILL.md +
+~~2. **Five lessons extracted and encoded into docs-health** (SKILL.md +~~ s: superseded by `2026-09-16_18-17_wise-go-features-lessons-comprehensive.md` a3 (same five lessons, authoritative wording; CHANGELOG 2026-09-16 records the transplant)
    FEATURES-template + build-guide + verify-checklist + common-mistakes):
    - `DISABLED` split out of `BROKEN` — code that is correct but externally
      switched off (flag, credential, CI) has a different remedy (flip, not
@@ -29,20 +29,20 @@ research, reflect, execute, verify.
    - "Zero BROKEN rows is itself information" — failure states stay nameable.
    - Counts verifiable + external sweeps date-stamped; prefer a standing gate
      over hand-maintained numbers.
-3. **Transplanted the doc-verify pattern** into `scripts/check-skills.sh` as
+~~3. **Transplanted the doc-verify pattern** into `scripts/check-skills.sh` as~~ s: superseded by `2026-09-16_18-17_wise-go-features-lessons-comprehensive.md` a4 — check 14 verified live in `scripts/check-skills.sh` (coverage gate)
    check 14 (FEATURES coverage guard): every skill directory must have a row
    in FEATURES.md. **First run caught real drift**: buildflow,
    collector-extraction, github-voice, jj-fork-pr-workflow, linter-building
    shipped 09-08..09-14 with no row. Line counts deliberately NOT gated
    (derivable from the script; two copies of the same number always rot).
-4. **Fixed the drift it found:** FEATURES.md gained the 5 missing rows (all
+~~4. **Fixed the drift it found:** FEATURES.md gained the 5 missing rows (all~~ s: superseded by `2026-09-16_18-17_wise-go-features-lessons-comprehensive.md` a6 (13-of-24 recount is the shipped number, CHANGELOG 2026-09-16)
    honestly 🆕 NEW — trigger evidence grepped from docs/status, T30/T34 still
    open), the per-skill `Lines` column was removed (~~12~~ 13 of 24 rows had
    drifted — count corrected by the 18-17 self-review, `5dd75e2` era), the website-launch gap note updated 848→803, and a new
    "GitHub & Open Source" section holds jj-fork-pr-workflow + github-voice.
-5. **Wiring:** AGENTS.md §4 step 4 now includes the FEATURES.md row (gated);
+~~5. **Wiring:** AGENTS.md §4 step 4 now includes the FEATURES.md row (gated);~~ s: superseded by `2026-09-16_18-17_wise-go-features-lessons-comprehensive.md` a7 — verified live at AGENTS.md §4 step 4 (FEATURES row, gated)
    CHANGELOG entry added.
-6. **Verification:** `check-skills.sh` exit 0 (quoted, all 30 skills, zero
+~~6. **Verification:** `check-skills.sh` exit 0 (quoted, all 30 skills, zero~~ s: superseded by `2026-09-16_18-17_wise-go-features-lessons-comprehensive.md` a8 (final verification record)
    FAILs — the coverage guard fires correctly when a row is missing, proven
    live before the fix); `shfmt -l scripts/` clean; dprint fmt applied;
    `check-agents-md.sh` exit 0 (same 1 pre-existing bloat advisory);
@@ -51,16 +51,16 @@ research, reflect, execute, verify.
 
 ## b) PARTIALLY DONE
 
-1. The vocabulary change is reasoning-verified, not behaviorally validated —
+~~1. The vocabulary change is reasoning-verified, not behaviorally validated —~~ s: superseded by `2026-09-16_18-17_wise-go-features-lessons-comprehensive.md` b1
    no fresh-session run has built a FEATURES.md with the new labels yet.
-2. dprint fmt touched two historical status reports (2026-09-14) as
+~~2. dprint fmt touched two historical status reports (2026-09-14) as~~ s: superseded by `2026-09-16_18-17_wise-go-features-lessons-comprehensive.md` d2 (formatter-scope incident, later routed to ROADMAP)
    formatting-only side effects of the full-repo fmt run; content untouched.
 
 ## c) NOT STARTED
 
-1. wise-go-side: nothing needed — its FEATURES.md is the source exemplar, not
+~~1. wise-go-side: nothing needed — its FEATURES.md is the source exemplar, not~~ s: superseded by `2026-09-16_18-17_wise-go-features-lessons-comprehensive.md` c1
    a target of these changes.
-2. Rolling the new labels into any existing consumer project's FEATURES.md
+~~2. Rolling the new labels into any existing consumer project's FEATURES.md~~ s: superseded by `2026-09-16_18-17_wise-go-features-lessons-comprehensive.md` c2
    (wise-go already uses the full 8; no other project audited this session).
 
 ## d) TOTALLY FUCKED UP
@@ -71,10 +71,10 @@ the AGENTS.md edit was correctly rejected once for not reading the file first.
 
 ## e) WHAT WE SHOULD IMPROVE
 
-1. The 5 missing FEATURES rows existed because new-skill sessions (buildflow
+~~1. The 5 missing FEATURES rows existed because new-skill sessions (buildflow~~ s: superseded by `2026-09-16_18-17_wise-go-features-lessons-comprehensive.md` (same lesson, a5/e-section)
    2026-09-14 included) wired README + AGENTS §5.5 + ROADMAP but skipped
    FEATURES.md — now structurally impossible (check 14 fails the build).
-2. Hand-maintained line counts in living docs are pure rot surface; removed
+~~2. Hand-maintained line counts in living docs are pure rot surface; removed~~ s: superseded by `2026-09-16_18-17_wise-go-features-lessons-comprehensive.md` (Lines column removed — CHANGELOG 2026-09-16)
    here, but the pattern could recur elsewhere (grep for count claims when
    docs feel stale).
 
@@ -82,6 +82,6 @@ the AGENTS.md edit was correctly rejected once for not reading the file first.
 
 | #     | Task                                                                                                                                                                                           | Why / size                           |
 | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| 1     | On the next real docs-health BUILD/VERIFY run in a consumer project, exercise the new vocabulary                                                                                               | Behavioral validation (natural)      |
+~~| 1     | On the next real docs-health BUILD/VERIFY run in a consumer project, exercise the new vocabulary                                                                                               | Behavioral validation (natural)      |~~ → routed to ROADMAP 2026-11-10
 | ~~2~~ | ~~Existing T30/T34 remain the aging path for the 5 🆕 NEW rows~~ **Won't implement — duplicate — T30/T34 already tracked verbatim in TODO_LIST.**                                              | ~~Already tracked~~                  |
 | ~~3~~ | ~~Consider whether TODO_LIST/ROADMAP want a "why not" split analogous to absent-why labels~~ **Won't implement — superseded by the 18-17 comprehensive report f9 (same idea, tracked there).** | ~~Same conflation exists there (S)~~ |

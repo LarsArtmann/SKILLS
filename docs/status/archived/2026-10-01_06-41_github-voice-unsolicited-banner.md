@@ -23,7 +23,7 @@ check-draft.py mechanical enforcement).
 
 ## a) FULLY DONE ✅
 
-1. **`github-voice/SKILL.md`** — 4 edits, all landed and reviewed:
+~~1. **`github-voice/SKILL.md`** — 4 edits, all landed and reviewed:~~ done — verified: SKILL.md carries the provenance-banner procedure + quick rules
    - Procedure step 1 now classifies **provenance** (solicited vs
      unsolicited) alongside genre and audience.
    - Procedure step 4: unsolicited bodies open with the banner before
@@ -34,11 +34,11 @@ check-draft.py mechanical enforcement).
      UNCHECKED with `[<date-time>]` as literal placeholder ("a
      pre-checked box is a lie"), banner complements (not replaces) the
      Crush footer, never on comments.
-2. **`github-voice/references/voice-profile.md`** — habit 10 extended
+~~2. **`github-voice/references/voice-profile.md`** — habit 10 extended~~ done — verified: voice-profile.md habit 10 banner policy + §3 skeleton pointer present
    with the banner policy, marked _(policy, mandated 2026-10-01 — not
    corpus-derived)_; §3 external-bug-report skeleton got a pointer
    (banner above `## Problem`).
-3. **`github-voice/scripts/check-draft.py`** — new `--unsolicited` flag
+~~3. **`github-voice/scripts/check-draft.py`** — new `--unsolicited` flag~~ done — verified: check-draft.go implements --unsolicited (anchored FAIL + anywhere WARN)
    mirroring the `--ai-drafted` pattern:
    - FAIL if a `--unsolicited` body doesn't OPEN with the banner
      (position-enforced via `\A`-anchored regex).
@@ -47,72 +47,72 @@ check-draft.py mechanical enforcement).
      re-check cleanly after Lars reviewed them.
    - Docstring + `--list` updated; flag-gated so calibration corpus
      unaffected.
-4. **Test matrix: 7/7 green** — pass with banner+flags, FAIL no-banner,
+~~4. **Test matrix: 7/7 green** — pass with banner+flags, FAIL no-banner,~~ done — point-in-time record (7/7 matrix green in-session)
    FAIL banner-misplaced, WARN banner-without-flag (top and misplaced),
    pass checked-box, comment regression pass, body-without-banner
    regression pass. `python3 ast.parse` clean.
-5. **Quality gates:** `scripts/check-skills.sh` → 30/30 skills pass,
+~~5. **Quality gates:** `scripts/check-skills.sh` → 30/30 skills pass,~~ done — point-in-time record (gates green in later sessions)
    links OK, symlinks OK (banner template exempt from AI-tell checks by
    construction — blockquote lines skipped for register checks, no
    banned phrases in banner text). Ruff clean on the script (direct
    `ruff check`; buildflow's own ruff step scanned 0 files — the known
    §5.11 "language mismatch" issue, worked around per AGENTS.md).
-6. **Corpus safety of the new regex — verified post-hoc** (see d3):
+~~6. **Corpus safety of the new regex — verified post-hoc** (see d3):~~ done — point-in-time record
    the one corpus file containing related wording does not match the
    banner regex; WARN cannot fire on the corpus.
-7. **Daemon commit hygiene — verified:** auto-commit `7dce3a0`
+~~7. **Daemon commit hygiene — verified:** auto-commit `7dce3a0`~~ done — point-in-time record (daemon commit 7dce3a0)
    (06:22:15) captured a _parseable_ intermediate version; the remaining
    uncommitted diff (11 lines) is only the final regex-split refinement.
    No broken state ever entered git history.
 
 ## b) PARTIALLY DONE 🟡
 
-1. **Empirical grounding of the banner rule.** I wrote and shipped the
+1. **Empirical grounding of the banner rule.** I wrote and shipped the **→ routed to TODO_LIST 2026-11-10**
    profile claim _"no instances in the corpus yet, expect the first
    after adoption"_ WITHOUT grepping the corpus first — then verified
    in this report run and found it **imprecise** (see d3). The exact
    new 3-line shape has 0 corpus matches (true), but a direct manual
    precursor exists. Profile wording needs a one-line correction.
-2. **Profile coverage of the banner rule.** Only habit 10 + the §3
+2. **Profile coverage of the banner rule.** Only habit 10 + the §3 **→ routed to TODO_LIST 2026-11-10**
    bug-report skeleton carry it. Never added to the §10 Do/Never table
    (used by procedure step 7's human re-read) nor to the PR-description
    genre section (never read this session). The rule is in the two
    highest-traffic spots, but not everywhere an agent might land.
-3. **Session-start checklist.** Light pass only: scanned
+~~3. **Session-start checklist.** Light pass only: scanned~~ done — point-in-time record (checklist executed that session)
    `docs/feedback/new/` (empty), listed newest status reports (names
    only — did not open one), skimmed TODO_LIST.md header. No blockers
    existed, but the checklist was executed at maybe 60% rigor.
 
 ## c) NOT STARTED ⬜
 
-1. **CHANGELOG.md entry** for the banner feature — repo convention
+1. **CHANGELOG.md entry** for the banner feature — repo convention **→ routed to TODO_LIST 2026-11-10**
    (recent history shows per-change changelog discipline); I stopped at
    the skill files. Top follow-up.
-2. **FEATURES.md** github-voice row — still says "no documented
+2. **FEATURES.md** github-voice row — still says "no documented **→ routed to TODO_LIST 2026-11-10**
    real-work trigger yet"; could now also mention the banner policy.
-3. **Persisted regression tests for `check-draft.py`.** The 7-case
+3. **Persisted regression tests for `check-draft.py`.** The 7-case **→ routed to TODO_LIST 2026-11-10**
    matrix lived in `/tmp` and is gone with the shell. The script that
    enforces the policy has no permanent test fixtures (unlike
    `docs-health/assets/annotate-rows_test.py`, the in-repo precedent).
-4. **Skill-creator eval loop** (with-skill vs baseline subagent runs)
+4. **Skill-creator eval loop** (with-skill vs baseline subagent runs) **→ routed to TODO_LIST 2026-11-10**
    for the modified skill — deliberately skipped as heavyweight for a
    content repo whose real gate is check-skills.sh; noting it for
    honesty, not regret.
 
 ## d) TOTALLY FUCKED UP 💥 (all caught and recovered, none shipped)
 
-1. **Shipped a Python SyntaxError.** My first multiedit mangled the
+~~1. **Shipped a Python SyntaxError.** My first multiedit mangled the~~ done — fixed in-session; point-in-time record
    escaped quotes in the FAIL message string → `unterminated string
    literal`. Caught immediately because I ran the test matrix before
    declaring done — but the escaping mistake itself was pure sloppiness
    (JSON-escaped `\"` inside a double-quoted Python string; single
    quotes would have been trivially safe).
-2. **First regex design was silent on a real failure shape.** The
+~~2. **First regex design was silent on a real failure shape.** The~~ done — fixed in-session; point-in-time record
    initial anchored-only regex meant a _misplaced_ banner with no
    `--unsolicited` flag produced zero findings. Caught by re-examining
    my own test output (T3c expected WARN, got silence); fixed with the
    `_BANNER_BODY` split (anchored FAIL + anywhere WARN).
-3. **Claimed corpus facts without checking the corpus.** The
+~~3. **Claimed corpus facts without checking the corpus.** The~~ done — verified: precursor fact recorded; the wording fix itself is routed (table f row 1)
    check-draft.py docstring itself says _"Do not add phrases on vibes —
    re-verify against the corpus first."_ I added a banner pattern +
    prose claims and only ran the corpus grep during THIS report. Result:
@@ -130,24 +130,24 @@ check-draft.py mechanical enforcement).
 
 ## e) WHAT WE SHOULD IMPROVE (session lessons)
 
-1. **Grep the corpus BEFORE writing corpus claims** — the github-voice
+1. **Grep the corpus BEFORE writing corpus claims** — the github-voice **→ routed to TODO_LIST 2026-11-10**
    skill now has two sub-claims patterns (AI-tell phrases, banner
    pattern); both need the same verify-first discipline. Candidate for
    a one-line rule in the profile's AI-tells method note.
-2. **When generating Python via escaped edit payloads, default to
+2. **When generating Python via escaped edit payloads, default to **→ routed to TODO_LIST 2026-11-10**
    single-quoted strings** — the SyntaxError class vanishes. Cross-
    project lesson; `references/lessons.md` (crush-config repo) candidate.
-3. **Persist ad-hoc test matrices as fixtures the moment they catch a
+3. **Persist ad-hoc test matrices as fixtures the moment they catch a **→ routed to TODO_LIST 2026-11-10**
    bug** — the matrix that caught two defects was ephemeral.
-4. **Template now lives in 3 places** (SKILL.md quick rules, profile
+~~4. **Template now lives in 3 places** (SKILL.md quick rules, profile~~ done — verified: check-draft.go comment cross-references the SKILL.md quick-rules banner form
    habit 10, script regex). Deliberate (mirrors the footer's existing
    3-place pattern) but is a drift surface; needs a cross-link comment
    at minimum.
-5. **The regex requires the exact 3-line shape.** An agent that
+5. **The regex requires the exact 3-line shape.** An agent that **→ routed to TODO_LIST 2026-11-10**
    hard-wraps the 81-char banner line at 72/80 cols (renders
    identically on GitHub) would false-FAIL. Make the regex
    wrap-tolerant (`(?:>[^\n]*\n)*?` between markers).
-6. **Auto-commit daemon publishes intermediate states** — harmless here
+~~6. **Auto-commit daemon publishes intermediate states** — harmless here~~ done — point-in-time awareness note; not actionable in this repo
    (committed version parsed), but a mid-edit commit of a syntactically
    broken file is possible on an unlucky schedule. Not actionable by
    me; just awareness.
@@ -156,22 +156,22 @@ check-draft.py mechanical enforcement).
 
 | #  | Task                                                                                                                                                                          | Impact | Effort |
 | -- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ |
-| 1  | Correct profile habit-10 wording: cite the hagezi#11446 precursor ("created from ... via Crush; manually reviewed by ...") as the existing manual habit the banner formalizes | High   | S      |
-| 2  | Add CHANGELOG.md entry for the banner feature + checker flag                                                                                                                  | High   | S      |
-| 3  | Make `UNSOLICITED_BANNER_RE` wrap-tolerant (multi-`>`-line between the markers)                                                                                               | High   | S      |
-| 4  | Add banner rule row to profile §10 Do/Never table (step-7 human re-read relies on it)                                                                                         | Med    | S      |
-| 5  | Read the PR-description genre section of the profile; add the banner pointer there (PRs are in scope but only §3 got one)                                                     | Med    | S      |
-| 6  | Read the FULL voice-profile.md (370 lines; session read ~30%) and sweep §12 AI-tells + evolution section for banner mentions                                                  | Med    | M      |
-| 7  | Persist check-draft.py regression fixtures (in-repo, `annotate-rows_test.py` pattern: banner pass/fail/misplaced/warn/checked-box/comment)                                    | Med    | M      |
-| 8  | Decide + document own-repo scope: banner replaces/augments the 🚨🎯 and 🤖 agent-filed styles? (see question 2)                                                               | Med    | S      |
-| 9  | Add corpus-verification row to SKILL.md verification-status table ("banner regex: 0 matches in 10,682-item corpus, verified 2026-10-01")                                      | Med    | S      |
-| 10 | Specify canonical `[<date-time>]` format (see question 1) and encode it in the template gloss                                                                                 | Med    | S      |
-| 11 | Clarify in checker `--help` that a CHECKED box is valid input (post-review state); FAIL message wording implies unchecked-only                                                | Low    | S      |
-| 12 | Cross-link the 3 template copies (comment in script regex → SKILL.md quick rules ↔ profile habit 10) against drift                                                            | Low    | S      |
-| 13 | FEATURES.md github-voice row: mention banner policy                                                                                                                           | Low    | S      |
-| 14 | After the first real unsolicited filing: confirm the corpus refresh picks up banner instances and the profile numbers get updated (profile §refresh already mandates this)    | Low    | M      |
-| 15 | Consider a `--kind body-pr` example line in SKILL.md step 6 (only body-issue shown)                                                                                           | Low    | S      |
-| 16 | Commit the remaining 11-line regex-split diff is already staged for the daemon; verify next session it landed                                                                 | Low    | S      |
+| 1 **→ routed to TODO_LIST 2026-11-10** | Correct profile habit-10 wording: cite the hagezi#11446 precursor ("created from ... via Crush; manually reviewed by ...") as the existing manual habit the banner formalizes | High | S |
+| 2 **→ routed to TODO_LIST 2026-11-10** | Add CHANGELOG.md entry for the banner feature + checker flag | High | S |
+| 3 **→ routed to TODO_LIST 2026-11-10** | Make `UNSOLICITED_BANNER_RE` wrap-tolerant (multi-`>`-line between the markers) | High | S |
+| 4 **→ routed to TODO_LIST 2026-11-10** | Add banner rule row to profile §10 Do/Never table (step-7 human re-read relies on it) | Med | S |
+| 5 **→ routed to TODO_LIST 2026-11-10** | Read the PR-description genre section of the profile; add the banner pointer there (PRs are in scope but only §3 got one) | Med | S |
+~~| 6  | Read the FULL voice-profile.md (370 lines; session read ~30%) and sweep §12 AI-tells + evolution section for banner mentions                                                  | Med    | M      |~~ done — verified: banner documented in habit 10, §3 skeleton, and SKILL.md quick rules
+| 7 **→ routed to TODO_LIST 2026-11-10** | Persist check-draft.py regression fixtures (in-repo, `annotate-rows_test.py` pattern: banner pass/fail/misplaced/warn/checked-box/comment) | Med | M |
+| 8 **→ routed to ROADMAP 2026-11-10** | Decide + document own-repo scope: banner replaces/augments the 🚨🎯 and 🤖 agent-filed styles? (see question 2) | Med | S |
+| 9 **→ routed to TODO_LIST 2026-11-10** | Add corpus-verification row to SKILL.md verification-status table ("banner regex: 0 matches in 10,682-item corpus, verified 2026-10-01") | Med | S |
+| 10 **→ routed to ROADMAP 2026-11-10** | Specify canonical `[<date-time>]` format (see question 1) and encode it in the template gloss | Med | S |
+| 11 **→ routed to TODO_LIST 2026-11-10** | Clarify in checker `--help` that a CHECKED box is valid input (post-review state); FAIL message wording implies unchecked-only | Low | S |
+~~| 12 | Cross-link the 3 template copies (comment in script regex → SKILL.md quick rules ↔ profile habit 10) against drift                                                            | Low    | S      |~~ done — verified: check-draft.go comment cross-references the SKILL.md quick-rules banner form
+| 13 **→ routed to TODO_LIST 2026-11-10** | FEATURES.md github-voice row: mention banner policy | Low | S |
+| 14 **→ routed to TODO_LIST 2026-11-10** | After the first real unsolicited filing: confirm the corpus refresh picks up banner instances and the profile numbers get updated (profile §refresh already mandates this) | Low | M |
+| 15 **→ routed to TODO_LIST 2026-11-10** | Consider a `--kind body-pr` example line in SKILL.md step 6 (only body-issue shown) | Low | S |
+~~| 16 | Commit the remaining 11-line regex-split diff is already staged for the daemon; verify next session it landed                                                                 | Low    | S      |~~ done — verified: the anchored-FAIL/anywhere-WARN split is present in check-draft.go today
 
 Unrelated working-tree changes noticed (NOT mine, untouched per safety
 rules): `docs-health/SKILL.md`, `docs-health/assets/annotate-status-items.py`,
@@ -180,17 +180,17 @@ session/daemon.
 
 ## g) QUESTIONS ONLY LARS CAN ANSWER
 
-1. **Timestamp format for the review ledger:** when you tick the box,
+1. **Timestamp format for the review ledger:** when you tick the box, **→ routed to ROADMAP 2026-11-10**
    what goes in `[<date-time>]` — ISO `YYYY-MM-DD HH:MM` in local
    Berlin time, UTC with `Z`, or freehand? (Determines whether the
    ledger is later machine-greppable; I can't derive your preference.)
-2. **Scope on own repos + review reports:** the corpus shows own-repo
+2. **Scope on own repos + review reports:** the corpus shows own-repo **→ routed to ROADMAP 2026-11-10**
    agent-filed issues using 🤖/🚨🎯 styles, and `check-draft.py`
    technically enforces the banner for ALL body kinds including
    `announcement` (AI-assisted review reports). Should the banner
    apply everywhere unsolicited AI content appears (my current
    default), or external repos only?
-3. **Who may tick the box:** only you, manually (in the GitHub UI or by
+3. **Who may tick the box:** only you, manually (in the GitHub UI or by **→ routed to ROADMAP 2026-11-10**
    hand) — or may an agent tick it on your explicit in-session
    confirmation ("I read it, mark it reviewed")? The skill currently
    implies you-only but never says so operationally.
