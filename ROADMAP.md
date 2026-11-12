@@ -123,6 +123,13 @@ Raw ideas:
   reproducible builds, release health metrics
 - HTML eval report via `html-report-kit` + `eval-viewer/generate_review.py`
 - A `go-release-check` CI gate wrapping `pre-release-check.sh`
+- 2026-08-12 corpus cluster (routed 2026-11-10): go-release ↔ html-report-kit
+  report integration; refactor project-specific release skills onto the
+  go-release base; shared release-readiness checklist; pre-commit-hook
+  failure + `--no-verify` guidance; how-to-golang → go-release versioning
+  cross-reference; `pre-release-check.sh` `--race`/`--lint`/multi-module/
+  remote-replace variants; publishing legs exercised in real CI; runtime
+  (non-`claude -p`) skill-creator eval loop
 
 ### 7. Social-preview tooling extraction
 
@@ -170,6 +177,31 @@ corpus archive; none is scheduled:
   container-query layout, copy-code buttons
 - Conventions: report slug format, date format, SVG icon set
 - `architecture-visualization` HTML report wrap (D2 → styled HTML)
+
+### 10. Routed raw ideas (2026-08 corpus archive, 2026-11-10)
+
+Ideas routed out of the archived 2026-08 status corpus during the
+2026-11-10 sweep. None scheduled; re-triage only on demand:
+
+- how-to-write-skills content: alias-vs-definition as a Go gotcha section;
+  README trigger-first description examples; `trigger-phrases` metadata tag;
+  "Distinct from" clause always-last rule; the runtime-symlink install
+  pattern (also TODO T104); READ-UNDERSTAND footer duplication check +
+  per-reference line-count warnings; ROADMAP/TODO cross-check as a
+  wave-complete checklist step
+- Quality-gate ideas: skill inventory JSON + a deliberately-broken test
+  fixture skill; old-vs-new behavioral eval as a standard rewrite gate;
+  500-line allowlist re-justification on each renewal; CHANGELOG
+  milestone-wave commit hyperlinks
+- Process lessons → how-to-write-skills Hard-Won Lessons: annotation style
+  per file type; tool-unavailable protocol (verify-external-claims inbound
+  leg); fix-on-sight scope policy; skill-creator upstream-conflict
+  check; state-file surgery prefers the owning tool; ask a directional
+  question before large rewrites; empirical same-session check
+- website-launch: `scripts/` frame-check helper (video policy g1-g3
+  already an Open Question)
+- Stack direction: go-branded-id as the canonical branded-ID dependency;
+  `skills update -g` side-effect pin discipline (post-2026-11-03 lesson)
 
 ## Open Questions
 
