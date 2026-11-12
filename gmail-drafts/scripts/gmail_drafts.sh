@@ -388,6 +388,10 @@ for ((i = 0; i < n; i++)); do
 	moji=OK
 	[[ $rendered == *"Ã"* || $rendered == *"Ä"* ]] && moji="[MOJIBAKE!]"
 	echo "$moji $draft_id -> $to :: $rendered"
-	[[ -n ${from:-} ]] && echo "  from: $stored_from$([[ $stored_from == "$from" ]] || echo '  [WARNING: Gmail stored a different From - check the alias]')"
-	[[ -n $stored_irt ]] && echo "  in-reply-to: $stored_irt"
+	if [[ -n ${from:-} ]]; then
+		echo "  from: $stored_from$([[ $stored_from == "$from" ]] || echo '  [WARNING: Gmail stored a different From - check the alias]')"
+	fi
+	if [[ -n $stored_irt ]]; then
+		echo "  in-reply-to: $stored_irt"
+	fi
 done
