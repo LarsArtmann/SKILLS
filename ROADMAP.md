@@ -21,7 +21,10 @@ Raw ideas:
   wrong-tag recovery, checksum-mismatch recovery, `-rc.1` handling
 - Run the full `skill-creator` evaluation loop (`run_eval.py` / `run_loop.py`,
   variance analysis, blind comparison) once `claude -p` is available in this
-  environment — the go-release run approximated it with subagents
+  environment — the go-release run approximated it with subagents. The
+  2026-08-02 description-migration corpus (9 skills) still awaits this loop:
+  11 eval items from `2026-08-02_*` were routed here 2026-11-10 during the
+  corpus archive
 - Establish a "graduated from 🆕 to 🟢" criterion: a skill ages into 🟢 only
   after a documented successful run against real work, not just structural
   validation
@@ -50,6 +53,9 @@ Raw ideas:
 - Decide enforcement level for `link-skills-to-agents.sh --check` (manual,
   pre-commit hook, or GitHub Action) — blocked on the user decision in Open
   Questions
+- Automated HTML-report render test (headless screenshot diff) as a
+  check-skills-adjacent hook — NOT CI wiring (repo bans CI, AGENTS §9); from
+  the `2026-06-17` HTML report obligations, routed 2026-11-10
 
 ### 3. Feedback loop maturity
 
@@ -153,6 +159,18 @@ deliberately outside first-customers' 0→1 scope. The strategy-vs-prose
 boundary with third-party `copywriting` lives under Open Questions g2 +
 AGENTS §5.5.
 
+### 9. html-report-kit evolution (raw ideas, June 2026, unrouted since)
+
+Clustered from the June 2026 HTML status reports during the 2026-11-10
+corpus archive; none is scheduled:
+
+- Minimal slim template variant (single-purpose, no sidebar)
+- Per-skill example reports demonstrating each template
+- Template enhancements: dark-mode toggle, print stylesheet,
+  container-query layout, copy-code buttons
+- Conventions: report slug format, date format, SVG icon set
+- `architecture-visualization` HTML report wrap (D2 → styled HTML)
+
 ## Open Questions
 
 These are blockers that need a human decision before they can become tasks:
@@ -234,6 +252,18 @@ These are blockers that need a human decision before they can become tasks:
   AGENTS §5.10. Still open from the same batch: float on `npx … update` vs pin
   `computedHash` in `~/skills-lock.json`, and whether this Go-heavy repo's
   README should mention a web-platform skill at all.
+- **offer-page eval spend** (`2026-11-10_01-01` g2): run the full eval battery
+  now (trigger-eval + negative probes + two-arm build eval — several subagent
+  sessions of spend), or age the skill on real page work first and only fix
+  transcript persistence? Held in T75.
+- **offer-page scope** (`2026-11-10_01-01` g3): grow a non-SaaS walkthrough
+  (course / service page), or stay lean as built? Product-direction call.
+- **Deleted live-chat guidance** (`2026-11-10_01-01` g1): restore the
+  Forrester/CampaignMonitor live-chat conversion block into first-customers,
+  or was it fair to cut during the anatomy move? The session deleted content
+  it did not author without asking. Held in T71.
+- **synthetic.new quota exhaustion** (`2026-10-24_18-49` f39): investigate +
+  billing/upgrade decision — spend appetite is the owner's, not discoverable.
 
 ## Non-goals
 
