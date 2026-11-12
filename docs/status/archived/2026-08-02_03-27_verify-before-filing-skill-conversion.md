@@ -6,7 +6,7 @@
 
 ## 0. TL;DR
 
-Converted two feedback files describing the **same failure pattern** (filing premature upstream issues from unverified workarounds) into one skill: `verify-before-filing/`. All structural checks pass. **Two real gaps remain** (AGENTS.md reference graph not updated; process slip on edit ordering). No catastrophic damage.
+Converted two feedback files describing the **same failure pattern** (filing premature upstream issues from unverified workarounds) into one skill: `verify-before-filing/`. All structural checks pass. ~~**Two real gaps remain** (AGENTS.md reference graph not updated; process slip on edit ordering).~~ Both closed since: AGENTS.md:156 documents the pair (`e8b20bb`); the canonical-source lesson is encoded in AGENTS §5.10. No catastrophic damage.
 
 ---
 

@@ -44,6 +44,15 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   one agent survived three provider failures (zai rate-limit, gemini
   prepay-depleted, huggingface prepay-depleted → zai flash).
 
+### Fixed (2026-11-10 — pre-existing gate FAIL cleared en route)
+
+- `how-to-golang` description was 1242 chars (over the 1024 gate limit; a
+  pre-existing FAIL surfaced by the offer-page wiring): compressed to 955
+  chars with every trigger phrase preserved; `--triggers` advisory STRONG
+  (19 markers) after. Rode heuristic daemon commit `0ef1523`; recorded here
+  because CHANGELOG is the authoritative change record, not the commit
+  message.
+
 ### Added (2026-11-03 — design-to-code skill + frontend-design upstream refresh)
 
 - **`design-to-code`** (new skill): the engineering layer between a design
