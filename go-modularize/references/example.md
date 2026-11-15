@@ -150,7 +150,7 @@ boilerplate (go.mod, CI job, replace directives) that priced a boundary
 nobody composes across.
 
 The same seam PASSES six months later when the committed plan row "dashboard
-consumes the engine via wire types only (pipe test)" lands its consumer:
+consumes the engine via wire types only (pipe payoff)" lands its consumer:
 now a real second composition exists that imports `validate` without any
 sibling — the boundary earns its keep, and the extraction is mechanical
 because the packages already passed gates 1–4.
@@ -158,6 +158,38 @@ because the packages already passed gates 1–4.
 Lesson: gates fail boundaries, not ambitions. A failed gate 2 is a deferral
 with a named trigger, not a rejection — re-run the gate when the trigger
 fires.
+
+## When policy payoff pays — the carve no consumer will ever justify
+
+The dissolution above is a library story. The app-monorepo story is its
+mirror image, and applying only the pipe currency there dissolves everything
+at any size:
+
+A single-binary monorepo carries a committed root-slim policy ("keep the
+root under 20k LOC") while its root module sits at 84k. A session gates the
+strongest candidate, `internal/agent` (4,900 LOC, cohesive, direction-clean):
+
+| Step                  | Evidence requested                                  | What the repo has                                         |
+| --------------------- | --------------------------------------------------- | --------------------------------------------------------- |
+| Gate 2, pipe payoff   | A consumer composing `agent` without siblings       | Structurally none — one binary consumes everything; every |
+|                       |                                                     | consumer is a root-side sibling by definition             |
+| Gate 2, policy payoff | A committed policy the boundary measurably advances | The root-slim policy: −4,900 LOC from a root 4× over its  |
+|                       |                                                     | own ceiling, plus per-module CI for the brain             |
+
+Verdict: PASS on the policy currency — and the pipe currency being
+unavailable in a one-app repo cannot count against the candidate. The other
+gates still bite: purpose ("own the agent brain"), direction (fix any
+feature-layer imports first, as packages), surface (`internal/`), solo build
+(`GOWORK=off`). Had the repo no committed policy, the same candidate
+dissolves — but the dissolution then carries the FM#11 finding (an 84k root
+bundling unrelated sub-domains is under-modularized by the skill's own
+catalog) plus the owner question: ratify a size policy or accept the
+monolith on the record. Never a silent "nothing to do".
+
+Lesson: gate 2 prices a boundary in one of two currencies — pipe payoff
+(someone composes across it) or policy payoff (a committed policy it
+advances). A gate-2 that only ever weighs the first is not direction
+neutrality; it is a keep-the-monolith bias wearing a gate's clothes.
 
 ## When gate 5 fails — a workspace fiction caught by the solo build
 

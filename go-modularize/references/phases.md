@@ -25,19 +25,32 @@ examine — the five gates decide. (The old "3+ High signals → stop" rule
 is retired; count-based verdicts let monoliths hide god-packages.)
 
 1. For each candidate boundary, evaluate the five gates from SKILL.md's
-   Unix-gate section (Purpose, Pipe test, Direction, Surface, Solo build)
+   Unix-gate section (Purpose, Payoff, Direction, Surface, Solo build)
    against real codebase evidence gathered in Phase 2. Gates 1–4 apply to
    packages inside a monolith with full force; gate 5 means `GOWORK=off`
    build/test green for an existing module.
-2. A boundary that fails gate 2 at the evidence bar (consumer neither in
-   code today nor a NAMED consumer in a committed artifact with a trigger)
-   **dissolves to packages**: record the dissolution and stop — do not
-   carry the proposal through Phases 1–7 hoping evidence appears later.
-   The proposal can return only when the trigger lands in a committed
-   artifact. Worked example:
+2. Gate 2 passes in EITHER currency (see SKILL.md's evidence bar) —
+   evaluate both before dissolving. Pipe payoff: a consumer, real or
+   named-with-trigger in a committed artifact, composes the candidate
+   without siblings. Policy payoff: a committed size/ownership/CI policy
+   the boundary measurably advances — grep the repo's plans, ADRs, and
+   TODO rows for size ceilings ("root-slim", LOC budgets) and ownership
+   maps. In a single-app monorepo pipe payoff is structurally unavailable;
+   policy payoff is the only live currency. A boundary with NEITHER
+   currency **dissolves to packages**: record the dissolution and stop —
+   do not carry the proposal through Phases 1–7 hoping evidence appears
+   later. The proposal returns when a trigger or a ratified policy lands
+   in a committed artifact. Worked examples:
    [../references/example.md](../references/example.md) ("When the gate
-   fails").
-3. Record every gate verdict; Phase 3's proposal reuses them as its
+   fails", "When policy payoff pays").
+3. **Dissolve-symmetry check** before closing on a pile of dissolves: does
+   the module the candidates stay inside violate a committed size policy
+   or match god-package shape (Phase 2.3)? If yes, the dissolutions carry
+   an FM#11 standing finding plus one owner question — ratify the policy
+   (policy payoff now exists; re-run gate 2 with it) or retire it and
+   accept the monolith on the record. "Nothing to extract" is a seam
+   verdict, never "nothing to do".
+4. Record every gate verdict; Phase 3's proposal reuses them as its
    evidence section, and Phase 4's self-review checks the proposal against
    them.
 
@@ -103,7 +116,7 @@ no composability payoff). Do not default to either merging or splitting. Before 
    - **Coupling:** Does this module depend on things it should not? (1–5, lower is better)
    - **Independence:** Can this module be built, tested, and versioned alone? (yes/no)
    - **Depth:** Right level of abstraction, or bundling sub-domains that could each stand alone? (right / too-coarse / too-fine)
-   - **Composability payoff:** Is there at least one consumer that imports this module without its siblings? (yes/no)
+   - **Payoff:** Pipe (a consumer imports this module without its siblings) or policy (a committed policy the boundary advances)? (yes/no + currency)
 
 2. **Identify wrong seams** — Common patterns:
    - **Layer-based split** (all handlers in one module, all storage in another) → should be
@@ -653,7 +666,7 @@ answer them for the final state:
    Go conventions?
 7. **Granularity & depth** — Are modules at the right depth? Should any split
    further (god-package survived, sub-domains bundled together) or merge (no
-   composability payoff)? Apply the Unix-pipe test to each.
+   payoff)? Apply gate 2 — both currencies — to each.
 8. **Error types** — Can `errors.Is`/`errors.As` work across all module boundaries
    that need it? Are sentinel errors in the right modules?
 9. **internal/ hygiene** — Are `internal/` packages truly internal? Any accidental

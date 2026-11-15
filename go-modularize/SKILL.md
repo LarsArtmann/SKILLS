@@ -66,26 +66,58 @@ five gates. Gates 1–4 apply verbatim to packages inside a monolith (a
 god-package is FM#11 at a smaller scale); gate 5 becomes "no hidden coupling
 to siblings". No gate is waived by project size.
 
-| # | Gate       | Pass condition                                                                                       | On failure                                          |
-| - | ---------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| 1 | Purpose    | The module's responsibility is one sentence with one verb                                            | Split or merge — the boundary is wrong              |
-| 2 | Pipe test  | At least one consumer, real or credibly planned, composes it without importing any sibling           | No composability payoff — dissolve the seam         |
-| 3 | Direction  | Dependencies run policy → mechanism: app/infra may import domain; domain imports zero infrastructure | You have layering, not modules — redraw             |
-| 4 | Surface    | Everything `internal/` by default; the exported contract is enumerable at a glance                   | Shrink the surface or extract a contract module     |
-| 5 | Solo build | `GOWORK=off go build ./... && GOWORK=off go test ./...` green inside the module alone                | The module is a workspace fiction — fix or merge it |
+| # | Gate       | Pass condition                                                                                                          | On failure                                          |
+| - | ---------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| 1 | Purpose    | The module's responsibility is one sentence with one verb                                                               | Split or merge — the boundary is wrong              |
+| 2 | Payoff     | Pipe payoff — a consumer composes it without siblings. Policy payoff — it advances a committed size/ownership/CI policy | No payoff in either currency — dissolve the seam    |
+| 3 | Direction  | Dependencies run policy → mechanism: app/infra may import domain; domain imports zero infrastructure                    | You have layering, not modules — redraw             |
+| 4 | Surface    | Everything `internal/` by default; the exported contract is enumerable at a glance                                      | Shrink the surface or extract a contract module     |
+| 5 | Solo build | `GOWORK=off go build ./... && GOWORK=off go test ./...` green inside the module alone                                   | The module is a workspace fiction — fix or merge it |
 
-**Gate 2 evidence bar.** "Real" means the consumer exists in code today.
-"Credibly planned" means a NAMED consumer in a committed artifact — a plan
-row, ADR, issue, or TODO that states what it composes and the trigger that
-fires it (a metric, a date, a second consumer). "Someone might someday" is
-not evidence; neither is a consumer that exists only in the module's own
-tests. When the trigger lapses without the consumer appearing, dissolve the
-seam — the plan's death retires the boundary's justification. A worked
-gate-2 failure and its later pass are in `references/example.md`.
+**Gate 2 evidence bar — two payoff currencies.** A boundary earns its go.mod
+in one of two currencies. Both demand named, committed artifacts — not vibes.
+
+- **Pipe payoff** — a consumer composes the module without importing any
+  sibling. "Real" means the consumer exists in code today. "Credibly
+  planned" means a NAMED consumer in a committed artifact — a plan row,
+  ADR, issue, or TODO that states what it composes and the trigger that
+  fires it (a metric, a date, a second consumer). "Someone might someday"
+  is not evidence; neither is a consumer that exists only in the module's
+  own tests. When the trigger lapses without the consumer appearing,
+  dissolve the seam — the plan's death retires the boundary's justification.
+- **Policy payoff** — the boundary measurably advances a policy the repo
+  has committed to in writing: a size/complexity ceiling the containing
+  module violates (a root-slim LOC policy), an ownership boundary between
+  lanes with conflicting churn, or per-module CI the monolith measurably
+  needs (test isolation, build time, blast radius). Note: inside a single
+  module `internal/` blocks nothing between sibling packages — the
+  compile-time import ban is exactly what a module boundary buys. Evidence
+  bar: name the artifact (policy doc, plan row, ADR) AND show the boundary
+  advances it (root LOC drops by the candidate's size, the module maps to
+  one owner, CI gains a leg). An unratified "big repos should be smaller"
+  feeling is not a policy.
+
+In a single-app monorepo the only consumer is the app itself — a sibling
+by definition — so pipe payoff is structurally unavailable and policy
+payoff is the only live currency. Weighing only the pipe currency there
+makes "nothing to extract" the only possible output at any repo size;
+that is a keep-the-monolith bias wearing a gate's clothes, not direction
+neutrality. Worked examples in `references/example.md` (a gate-2 failure,
+its later pass, a policy-payoff carve).
 
 A boundary that passes all five is worth its overhead at almost any project
 size; one that fails is wrong at any size. Size changes how many boundaries
 you can defend, never whether a given boundary is correct.
+
+**Dissolve symmetry: a failed gate 2 blesses nothing.** Dissolving a seam is
+a verdict about the seam, never about the module the candidate stays inside.
+Before recording a dissolve, check the container: if the module that remains
+violates a committed size policy or matches god-package shape, the dissolve
+carries an FM#11 standing finding plus one owner question — ratify the
+policy (policy payoff now exists; re-run gate 2 with it) or retire it and
+accept the monolith on the record. "Nothing to extract" is a seam verdict;
+reporting it as "nothing to do" while a god-module finding is open repeats
+the retired stop-rule's failure from the other direction.
 
 ### Direction Neutrality — split and merge are equally valid
 
@@ -101,10 +133,11 @@ Two questions replace "should I merge or split?":
 
 1. **Decomposition depth** — Is each module at the right level of abstraction?
    A `domain/` module bundling `battle/`, `voting/`, `media/` "does one thing"
-   (domain) at the wrong depth: each sub-domain could compose independently and
-   deserves its own module. Conversely, a `userdto/` module with one struct is
-   too deep — a boundary with no composability payoff.
-2. **Composability payoff** — Does the boundary let consumers import only what
+   (domain) at the wrong depth when a consumer of one sub-domain is forced to
+   import another's types — that forced import is pipe evidence, grep for it.
+   Conversely, a `userdto/` module with one struct is
+   too deep — a boundary with no payoff in either currency.
+2. **Pipe payoff** — Does the boundary let consumers import only what
    they need? If every consumer imports modules A and B together, the seam earns
    nothing. If some consume A without B, it earns its keep.
 
@@ -120,12 +153,12 @@ CI complexity. But overhead prices a boundary; it does not veto one. The Unix
 gate decides whether a boundary is right. These signals only decide how many
 boundaries to draw now:
 
-| Signal                       | What it actually tells you                                                                       | Action                                                                                                                                    |
-| ---------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Small project (<10 packages) | There is surface for at most one defensible boundary                                             | Draw zero or one, not five. Not a stop.                                                                                                   |
-| No consumer variance         | Every consumer imports A and B together — the seam earns nothing (the FM#8 test)                 | Redraw or dissolve. "No external consumers" is NOT this signal: import bans and per-module CI are payoffs without a single external user. |
-| Prototype / spike            | Seams are not stable yet — boundaries drawn now get drawn wrong                                  | Defer the split; run gates 1–4 on packages now so the later extraction is mechanical.                                                     |
-| Everything changes together  | Co-change: evidence to examine, never a verdict (see Direction Neutrality); normal in young code | Check consumer variance before concluding anything.                                                                                       |
+| Signal                       | What it actually tells you                                                                       | Action                                                                                                                                                                  |
+| ---------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Small project (<10 packages) | There is surface for at most one defensible boundary                                             | Draw zero or one, not five. Not a stop.                                                                                                                                 |
+| No consumer variance         | Every consumer imports A and B together — no pipe payoff (the FM#8 test)                         | Redraw or dissolve — unless gate 2's policy currency covers the seam: import bans, per-module CI, and committed size policies are payoffs with zero external consumers. |
+| Prototype / spike            | Seams are not stable yet — boundaries drawn now get drawn wrong                                  | Defer the split; run gates 1–4 on packages now so the later extraction is mechanical.                                                                                   |
+| Everything changes together  | Co-change: evidence to examine, never a verdict (see Direction Neutrality); normal in young code | Check consumer variance before concluding anything.                                                                                                                     |
 
 The old stop-rule ("3+ High signals → stop") is retired: it let monoliths hide
 god-packages behind "too small to modularize". Staying one module is a fine
@@ -145,12 +178,13 @@ The table above governs the _initial_ split decision. The converse — should an
 already-split project _merge_ modules or _split deeper_? — has its own
 anti-signals. Do NOT merge when:
 
-| Signal                                             | Weight | Why                                                                                                                               |
-| -------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| Some consumers import one module without the other | High   | The boundary has a composability payoff. Merging destroys it.                                                                     |
-| Modules share only a cross-cutting concern         | High   | Co-change is driven by a shared dependency (timestamps, `eventtest`), not real coupling. Extract the shared concern; don't merge. |
-| Duplicated `replace` directives                    | —      | A go.mod hygiene problem, NOT a boundary problem. Fix in place; merging is the wrong cure (see FM#4).                             |
-| Test-only deps leaking into production go.mod      | —      | A hygiene problem (see FM#3). Fix in place; merging to "hide" the leak treats the symptom, not the cause.                         |
+| Signal                                               | Weight | Why                                                                                                                               |
+| ---------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| Some consumers import one module without the other   | High   | The boundary has pipe payoff. Merging destroys it.                                                                                |
+| A committed size/ownership policy relies on the seam | High   | The boundary has policy payoff — merging violates a ratified policy.                                                              |
+| Modules share only a cross-cutting concern           | High   | Co-change is driven by a shared dependency (timestamps, `eventtest`), not real coupling. Extract the shared concern; don't merge. |
+| Duplicated `replace` directives                      | —      | A go.mod hygiene problem, NOT a boundary problem. Fix in place; merging is the wrong cure (see FM#4).                             |
+| Test-only deps leaking into production go.mod        | —      | A hygiene problem (see FM#3). Fix in place; merging to "hide" the leak treats the symptom, not the cause.                         |
 
 **The hygiene trap:** Consolidation is NEVER the right fix for duplicated
 `replace` directives or test-dep leaks. Those are go.mod hygiene issues — solve
@@ -160,9 +194,11 @@ real boundary to fix an imaginary one.
 **When to split further:** A module "does one thing" but at the wrong depth
 when it bundles sub-domains that could each compose independently. A `domain/`
 module spanning `battle/`, `voting/`, `media/` is under-modularized if a
-consumer of battle logic is forced to import voting types. Test: could each
-sub-package stand alone as a module that composes like a Unix pipe? If yes, the
-boundary is one level too coarse — split deeper.
+consumer of battle logic is forced to import voting types — forced imports
+are measurable pipe evidence. With no forced imports and no committed policy
+covering the seam, the sub-domains stay packages (gates 1–4 police them);
+"could stand alone someday" is the "someone might someday" the gate-2
+evidence bar rejects.
 
 ---
 
@@ -183,7 +219,7 @@ execution — if you hit one, the mitigation is here.
 | 8  | **Over-modularization**        | Micro-modules with no composability payoff — every consumer imports A and B together                                                                             | `git log --stat` shows same files changed together AND no consumer imports one without the other    | Examine the boundary — do NOT auto-merge. Merge only if no consumer benefits from the seam (see Direction Neutrality). Co-change alone is not a verdict.                                                                                                                                                                                                                                                        |
 | 9  | **Stale go.work**              | `go.work` references deleted or renamed modules                                                                                                                  | `go work sync` reports errors or `go build` fails at root                                           | Run `go work sync` after every structural change. Commit `go.work` and `go.work.sum` together.                                                                                                                                                                                                                                                                                                                  |
 | 10 | **Build system breakage**      | Build system references old module paths                                                                                                                         | `nix build`, `make`, or CI fails after module moves                                                 | Update build system immediately after each module move.                                                                                                                                                                                                                                                                                                                                                         |
-| 11 | **Under-modularization**       | God-modules bundling unrelated sub-domains at the wrong depth                                                                                                    | One go.mod with 14+ packages; importing feature X drags in feature Y's types                        | Split along sub-domain boundaries so each composes independently. The inverse of FM#8 — "too few" is as real a failure as "too many."                                                                                                                                                                                                                                                                           |
+| 11 | **Under-modularization**       | God-modules bundling unrelated sub-domains at the wrong depth                                                                                                    | One go.mod with 14+ packages; importing feature X drags in feature Y's types                        | Split along sub-domain boundaries that pass gate 2 in either currency (forced-import evidence or a committed policy). The inverse of FM#8 — "too few" is as real a failure as "too many."                                                                                                                                                                                                                       |
 | 12 | **Workspace-only testing**     | Tests pass with `go.work` but fail in isolation — version mismatches, missing replace directives, or stale module references                                     | `GOWORK=off go build ./...` fails per-module but `go build ./...` at root passes                    | Test every module with `GOWORK=off` in CI. See [./references/real-world-patterns.md](./references/real-world-patterns.md) §CI Verification.                                                                                                                                                                                                                                                                     |
 
 ---
