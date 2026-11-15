@@ -54,13 +54,64 @@ If ambiguous, default to AUDIT.
 
 ---
 
-## The battery tool (docs-gates, extracted 2026-11-03)
+## The tooling: two halves, one grammar (2026-11-15)
+
+The ritual is two programs with one shared contract, not two implementations
+of the same thing:
+
+| Half  | Program                                                                              | Does                                                                                                                                                                    | Does NOT                      |
+| ----- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| JUDGE | [docs-gates](https://github.com/Artmann-Technologies/docs-gates)                     | reads a corpus and returns a verdict (0 clean / 1 findings / 2 usage): freshness, annotate, routing, cadence, and the read-only row gates `docs-gates rows`            | write, strike, or repair      |
+| WRITE | [./assets/annotate.go](./assets/annotate.go)                                          | mutates a report (`rows`, `prose`, `status-items`, `repair`, `unwrap`, `repair-mangle`, `repair-partial`) and prints keys (`emit-keys`)                                  | decide corpus health          |
+
+The split is deliberate: a public binary may judge a corpus, it may not
+rewrite one. The read-only row gates moved into docs-gates; the mutators stay
+here until the migration design (input model, shim, rollback) is proven and
+every caller is converted. **Callers run the writer as `go run`** — there is
+no prebuilt `assets/annotate` binary (deleted 2026-11-15; it sat 12 days
+behind its source and missed four subcommands).
+
+**One grammar.** The writer renders seven marker kinds (`h/v/p/w/n/r/s`);
+the judge recognises the rendered phrase, never the kind letter. A fixture in
+docs-gates (`internal/docsannotate/markers_test.go`) pins every rendered
+marker against the judge's vocabulary, with a sabotage case that fails when a
+phrase is renamed. Change a marker in `markerFor` and that test is the alarm.
+`r` is a ROUTED marker, not a strike verdict: it resolves an unstruck item,
+so the annotate gate never sees it; `docs-gates rows` counts the arrow form
+as ROUTED.
+
+### Writer subcommand map (pinned)
+
+<!-- subcommand-map:start -->
+
+| Subcommand       | Kind  | Owner (2026-11-15)                      |
+| ---------------- | ----- | --------------------------------------- |
+| `rows`           | write | annotate.go                             |
+| `prose`          | write | annotate.go                             |
+| `status-items`   | write | annotate.go                             |
+| `emit-keys`      | read  | annotate.go                             |
+| `check-rows`     | read  | docs-gates `rows` (writer alias kept)   |
+| `bare-rows`      | read  | docs-gates `rows --bare` (alias kept)   |
+| `prose-items`    | read  | annotate.go                             |
+| `repair`         | write | annotate.go                             |
+| `unwrap`         | write | annotate.go                             |
+| `repair-mangle`  | write | annotate.go                             |
+| `repair-partial` | write | annotate.go                             |
+| `self-test`      | read  | annotate.go                             |
+
+<!-- subcommand-map:end -->
+
+`scripts/check-skills.sh` extracts both sides and fails when this table and
+the source dispatch disagree, so the map cannot silently rot.
+
+### The battery
 
 The five standing gates behind this skill's ritual — freshness (newest
 report's open §f items harvested), annotate (struck items carry resolvable
 verdicts + rule F inline-code spacing), routing (non-§f rows represented in
 the living docs), cadence (struck-row backlog + archive age) — are one
-standalone stdlib-only Go binary: [docs-gates](https://github.com/Artmann-Technologies/docs-gates).
+standalone stdlib-only Go binary:
+[docs-gates](https://github.com/Artmann-Technologies/docs-gates).
 
 ```console
 nix run github:Artmann-Technologies/docs-gates -- run .   # the whole battery, one matrix
@@ -214,9 +265,9 @@ Old reports contain numbered items (lists `1. 2. 3.` or table rows). **You must 
 **Id-shape traps (2026-10-30 corpus sweep):** the item parsers accept `N.` (spaced) and, since the sweep, `N-M.` range ids and `N.text` missing-space ids — but a bare digit after the dot still never parses (version numbers like "3.5" are not item 3). Two corollaries that cost the sweep real time: (1) an id-shape the parser refuses comes back as "not a numbered row", which reads like the FILE's fault — run `emit-keys` on the exact lines BEFORE writing a spec against an unfamiliar file shape, so refusals surface on the read path instead of as silent skips; (2) a range id ("5-7.") is ONE item — a spec key of "5", "6", or "7" all resolve into it (`tokMatchesKey` range semantics), so emit one spec entry, not three. `self-test` pins both shapes plus the version-number non-shape.
 
 **Bulk strikethrough sweeps** (whole-f-section strikes with per-item verdicts, the art-dupl 2026-09-28/29 pattern): `go run ./assets/annotate.go status-items ...` (keys via `go run ./assets/annotate.go emit-keys <file> <lineno...>`). Different job from rows: it strikes numbered/table/checkbox lines as `~~line~~ verdict` (the exact form the `grep '~~'` completeness gate counts), across a WHOLE file, with `N@substring` disambiguation for files with restarting numbered lists. Hardened after the June-batch incident (silent dict-overwrite mis-struck 4 files): duplicate spec keys are a HARD ERROR, open-family verdicts are refused (open items stay BARE), specs are generated mechanically via emit-keys (never hand-typed from memory), and `--verify` prints every key's matched line before any write. Read that verify output IN FULL when building the verdict map: construct the map FROM the emitted keys and their matched lines, never from remembered greps or tails of the output (2026-11-01 nix-email lesson: one verdict was mapped a line off and only a full re-read caught it — the map is wrong exactly when you are sure it is right). Atomic per file; fixture tests: [./assets/annotate-status-items_test.sh](./assets/annotate-status-items_test.sh) (run it after edits — 46 assertions; `annotate.go self-test` covers markers + rows/prose guards + the strict/bare-rows gates).
-`go run ./assets/annotate.go check-rows [--strict] <file>...` (row-level completeness gate) classifies every data row of every table as COMPLETE (uniformly struck), UNTOUCHED (no strike at all), or PARTIAL (mixed struck/unstruck cells or rows — the planted-miss class behind the 2026-09-16 F12.3 miss); exit 1 lists offenders. Default mode fails on PARTIAL rows and mixed tables only — a WHOLLY-unstruck table passes by design (bare rows are OPEN items, "only strike with evidence"); `--strict` additionally flags every wholly-unstruck table as `UNTOUCHED (0/N rows struck)` — the archive-decision gate: a file about to be archived must not carry tables nobody ever inventoried (the 2026-11-04 corpus sweep's blind spot: 9 planning files carried untouched item tables and had been archived as resolved). Run it over every annotated file before declaring a pass done: the grep gate above proves presence, check-rows proves uniformity. A `<!-- check-rows:ledger -->` line above a table exempts exactly that table — for LEDGER tables whose open rows are the point (per-row inline verdicts, e.g. upstream-issue or clone ledgers; blank lines between marker and table are allowed, the exemption never leaks to a following table). The exemption is reported as a `LEDGER-EXEMPT` note per table, never silent.
+`docs-gates rows [--strict] <file>...` (row-level completeness gate; the writer still accepts `annotate.go check-rows [--strict] <file>...` as an alias) classifies every data row of every table as COMPLETE (uniformly struck), UNTOUCHED (no strike at all), or PARTIAL (mixed struck/unstruck cells or rows — the planted-miss class behind the 2026-09-16 F12.3 miss); exit 1 lists offenders. Default mode fails on PARTIAL rows and mixed tables only — a WHOLLY-unstruck table passes by design (bare rows are OPEN items, "only strike with evidence"); `--strict` additionally flags every wholly-unstruck table as `UNTOUCHED (0/N rows struck)` — the archive-decision gate: a file about to be archived must not carry tables nobody ever inventoried (the 2026-11-04 corpus sweep's blind spot: 9 planning files carried untouched item tables and had been archived as resolved). Run it over every annotated file before declaring a pass done: the grep gate above proves presence, check-rows proves uniformity. A `<!-- check-rows:ledger -->` line above a table exempts exactly that table — for LEDGER tables whose open rows are the point (per-row inline verdicts, e.g. upstream-issue or clone ledgers; blank lines between marker and table are allowed, the exemption never leaks to a following table). The exemption is reported as a `LEDGER-EXEMPT` note per table, never silent.
 
-`go run ./assets/annotate.go bare-rows <file>...` (row-level moved-file gate, 2026-11-04) lists every BARE data row (CLEAN classification) of every NON-ledger table as `<file>:<line>: BARE row: <snippet>` and exits 1 if any exist — an archived file must carry zero bare rows outside ledger tables. PARTIAL rows stay check-rows' jurisdiction (not repeated here); both gates share one table scanner so their ledger semantics cannot drift apart (self-test + fixtures pin both).
+`docs-gates rows --bare <file>...` (row-level moved-file gate, 2026-11-04; `annotate.go bare-rows` remains the writer alias) lists every BARE data row (CLEAN classification) of every NON-ledger table as `<file>:<line>: BARE row: <snippet>` and exits 1 if any exist — an archived file must carry zero bare rows outside ledger tables. PARTIAL rows stay check-rows' jurisdiction (not repeated here); both gates share one table scanner so their ledger semantics cannot drift apart (self-test + fixtures pin both).
 
 **check-rows blind spot — continuation rows (2026-11-01 note; continuation-aware classification proposed, parked):** a table row whose leading cells are EMPTY (spill-over continuing the item above, e.g. after a formatter wrap) carries the parent's meaning for the reader but is classified independently by the gate, so a bare continuation under a struck/routed parent can pass while LOOKING resolved to anyone skimming (the 2026-10-26 nix-email 20-48 catch was manual). The 2026-11-04 `--strict` UNTOUCHED gate flags wholly-unstruck TABLES but does not classify continuations. Until the continuation mode exists: annotate continuations explicitly (`**→ (row N verdict covers this continuation)**`) and audit table ROW COUNTS against the item count at verify time — not just the gate exit.
 

@@ -765,6 +765,30 @@ if [[ -z "$fixture_root" ]]; then
 	fi
 fi
 
+# --- docs-health subcommand map pin (2026-11-15) ---------------------------------
+# SKILL.md's writer subcommand table and annotate.go's dispatch switch are two
+# hand-maintained lists of the same vocabulary. Extract both and compare: a
+# subcommand present in one but not the other is drift, whether it was added
+# to the tool or dropped from the docs. The map lives between HTML sentinels
+# so unrelated tables cannot be mistaken for it.
+map_file="docs-health/SKILL.md"
+tool_file="docs-health/assets/annotate.go"
+if [[ -f "$map_file" && -f "$tool_file" ]]; then
+	tool_cases=$(sed -n 's/^[[:space:]]*case "\([a-z][a-z-][a-z-]*\)":$/\1/p' "$tool_file" | sort -u)
+	map_rows=$(sed -n '/<!-- subcommand-map:start -->/,/<!-- subcommand-map:end -->/s/^| `\([a-z][a-z-]*\)`.*/\1/p' "$map_file" | sort -u)
+	if [[ -z "$tool_cases" || -z "$map_rows" ]]; then
+		echo "FAIL docs-health: subcommand map is empty or annotate.go's dispatch switch could not be parsed." >&2
+		failed=1
+	else
+		drift=$(comm -3 <(printf '%s\n' "$tool_cases") <(printf '%s\n' "$map_rows"))
+		if [[ -n "$drift" ]]; then
+			echo "FAIL docs-health: SKILL.md subcommand map and annotate.go dispatch disagree (left = tool, right = docs):" >&2
+			printf '%s\n' "$drift" >&2
+			failed=1
+		fi
+	fi
+fi
+
 # --- docs-health tooling artifact gate (2026-11-15) ------------------------------
 # docs-health ships a SINGLE-FILE Go tool, run as `go run annotate.go`. An
 # `assets/annotate` binary sat beside it for 12 days as a second, stale
