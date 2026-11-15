@@ -58,12 +58,12 @@ When designing an interface, ask in order: can I remove a method, can I simplify
 
 Classify every candidate; the category decides whether a seam is warranted at all.
 
-| Category                | Meaning                                                                     | Seam verdict                                        |
-| ----------------------- | --------------------------------------------------------------------------- | --------------------------------------------------- |
-| `in-process`            | Same process, same language, no external resource.                          | No seam. Deepen by collapsing wrappers.             |
-| `local-substitutable`   | Real dependency has a faithful local stand-in (in-memory repo, temp dir).    | Seam only if tests already need the substitute.     |
-| `ports & adapters`      | External boundary: network, database, payment, clock, filesystem contract.   | Real seam — two or more adapters must exist.        |
-| `mock`                  | No faithful substitute; only a test double can stand in.                    | Last resort. Prefer reshaping until a real seam appears. |
+| Category              | Meaning                                                                    | Seam verdict                                             |
+| --------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `in-process`          | Same process, same language, no external resource.                         | No seam. Deepen by collapsing wrappers.                  |
+| `local-substitutable` | Real dependency has a faithful local stand-in (in-memory repo, temp dir).  | Seam only if tests already need the substitute.          |
+| `ports & adapters`    | External boundary: network, database, payment, clock, filesystem contract. | Real seam — two or more adapters must exist.             |
+| `mock`                | No faithful substitute; only a test double can stand in.                   | Last resort. Prefer reshaping until a real seam appears. |
 
 **Replace, don't layer.** Deepening means the new module absorbs the old shallow ones. Adding a deeper module on top of the shallow ones and leaving them in the call path is not a deepening — it is a second interface to learn.
 

@@ -79,22 +79,22 @@ Make no edits and no TODO_LIST rows until the user confirms a shared understandi
 
 ## 7. Hand off
 
-| Next question                         | Skill                                                          |
-| ------------------------------------- | -------------------------------------------------------------- |
-| How healthy is the architecture now?  | [`architecture-review`](../architecture-review/SKILL.md)       |
+| Next question                         | Skill                                                                  |
+| ------------------------------------- | ---------------------------------------------------------------------- |
+| How healthy is the architecture now?  | [`architecture-review`](../architecture-review/SKILL.md)               |
 | Draw current vs target structure      | [`architecture-visualization`](../architecture-visualization/SKILL.md) |
-| Sequence the refactor into small wins | [`pareto-planning`](../pareto-planning/SKILL.md)               |
-| Reshape the module's types/invariants | [`data-model-review`](../data-model-review/SKILL.md)           |
-| Audit every file, not just structure  | [`full-code-review`](../full-code-review/SKILL.md)             |
+| Sequence the refactor into small wins | [`pareto-planning`](../pareto-planning/SKILL.md)                       |
+| Reshape the module's types/invariants | [`data-model-review`](../data-model-review/SKILL.md)                   |
+| Audit every file, not just structure  | [`full-code-review`](../full-code-review/SKILL.md)                     |
 
 ## Anti-patterns
 
-| Don't                                                    | Why                                                                     |
-| -------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Propose interfaces in the brief                          | Step 5 exists to compare alternatives; pre-committing kills them        |
-| Introduce a seam with one adapter                        | One adapter is a hypothetical seam; two adapters make it real           |
-| Rewrite an ADR into a "fix" without flagging it          | Reopen it explicitly, with the friction that justifies it               |
-| Score or grade modules                                   | That is architecture-review; here the output is candidates              |
-| Write to `/tmp`                                          | The report is the deliverable, not a scratch file                       |
-| Pad with "component", "service", "API", "boundary"       | Vocabulary drift hides the actual design decision                       |
-| Deepen modules that have not changed in years            | YAGNI: depth pays back only where future change will cross the interface |
+| Don't                                              | Why                                                                      |
+| -------------------------------------------------- | ------------------------------------------------------------------------ |
+| Propose interfaces in the brief                    | Step 5 exists to compare alternatives; pre-committing kills them         |
+| Introduce a seam with one adapter                  | One adapter is a hypothetical seam; two adapters make it real            |
+| Rewrite an ADR into a "fix" without flagging it    | Reopen it explicitly, with the friction that justifies it                |
+| Score or grade modules                             | That is architecture-review; here the output is candidates               |
+| Write to `/tmp`                                    | The report is the deliverable, not a scratch file                        |
+| Pad with "component", "service", "API", "boundary" | Vocabulary drift hides the actual design decision                        |
+| Deepen modules that have not changed in years      | YAGNI: depth pays back only where future change will cross the interface |

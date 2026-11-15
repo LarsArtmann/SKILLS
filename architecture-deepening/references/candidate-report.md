@@ -19,13 +19,13 @@ Edit the canonical `html-report-kit/` at the repo root and run `scripts/sync-htm
 
 ## Page structure
 
-| Section                | Content                                                                                     |
-| ---------------------- | ------------------------------------------------------------------------------------------- |
-| Hero                   | Repo name, date, commit scanned, one-line scope statement (what was looked at, what was not) |
-| Legend                 | Solid box = module, dashed line = seam, red arrow = leakage, thick box = deep module         |
-| Candidate cards        | One per candidate, ordered by recommendation strength                                        |
-| Top recommendation     | One card: candidate name, one sentence on why, anchor link to its card                       |
-| Footer                 | `Generated YYYY-MM-DD · Reviewed against <commit>`                                           |
+| Section            | Content                                                                                      |
+| ------------------ | -------------------------------------------------------------------------------------------- |
+| Hero               | Repo name, date, commit scanned, one-line scope statement (what was looked at, what was not) |
+| Legend             | Solid box = module, dashed line = seam, red arrow = leakage, thick box = deep module         |
+| Candidate cards    | One per candidate, ordered by recommendation strength                                        |
+| Top recommendation | One card: candidate name, one sentence on why, anchor link to its card                       |
+| Footer             | `Generated YYYY-MM-DD · Reviewed against <commit>`                                           |
 
 No introduction paragraph. No executive summary. The cards carry the report.
 

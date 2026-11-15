@@ -52,3 +52,7 @@ Generate D2 diagrams that capture the current and ideal architecture. D2 produce
   `docs/architecture-understanding/` directory. Use it when the user wants
   judgment rather than diagrams; diagrams and reviews are companion artifacts
   of one investigation.
+- **architecture-deepening** — shortlists refactors (deepen shallow modules,
+  relocate seams, restore locality) and grills the chosen one. Its candidate
+  brief stays self-contained HTML; route any graph-shaped diagram that needs
+  real layout here, where D2 renders it.

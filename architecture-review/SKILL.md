@@ -69,3 +69,7 @@ Map the review to visual components:
   same `docs/architecture-understanding/` directory. When the user wants pictures
   of the current vs. ideal structure rather than a scored assessment, use it; the
   two compose — visualize the structure first, then review it.
+- **architecture-deepening** — when the user does not want a scorecard but a
+  shortlist of refactors (deepen shallow modules, relocate seams, restore
+  locality), use it. It writes a candidate brief into the same directory, then
+  grills the chosen candidate; this skill grades the whole structure.
