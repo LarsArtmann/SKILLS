@@ -159,13 +159,8 @@ g1–g3 remain open.
    (nested tables) or corrupt evidence ("fixing" compiled artifacts). The
    dprint.json exclude list is now the repo's encoding of that boundary —
    extend it, never delete it, when new frozen-evidence dirs appear.
-5. Upstream observation (not filed): a `buildflow -s <tool> --fix` run
-   launched seconds after a dprint.json edit re-applied stale scope —
-   suspected result-cache/config race; BuildFlow#47 made dprint.json
-   cache-key material. Until clarified, always `git status` after a fix
-   run that follows a config edit by less than a minute.
 
-## f) NEXT (up to 50; honest count: 4 — the rest are already T-rows)
+## f) NEXT (up to 50; honest count: 5 — the rest are already T-rows)
 
 1. T122–T126 in TODO_LIST (CV re-adjudication, CV breadcrumb, CV metric
    record, eval corpus, production-run watch) — all owner-gated or
@@ -180,11 +175,12 @@ g1–g3 remain open.
    "read-your-own-authoring-guide" item could gain one line — "bash
    head/cat/rg is NOT a View; the edit tool tracks View reads only"
    (candidate for T111's cluster).
-5. Upstream observation (not filed): a `buildflow -s <tool> --fix` run
-   launched seconds after a dprint.json edit re-applied stale scope —
-   suspected result-cache/config race; BuildFlow#47 made dprint.json
-   cache-key material. Until clarified, always `git status` after a fix
-   run that follows a config edit by less than a minute.
+5. Upstream observation (not filed): corruption rounds 2 and 4 lack a
+   clean explanation (round 2: a fix run seconds after a dprint.json
+   edit — suspected result-cache/config race, BuildFlow#47 made dprint
+   config cache-key material; round 4: no formatter ran in the window at
+   all). Until explained, `git status` after every buildflow run, and
+   twice after ones that follow a config edit.
 
 ## g) QUESTIONS ONLY THE OWNER CAN ANSWER
 

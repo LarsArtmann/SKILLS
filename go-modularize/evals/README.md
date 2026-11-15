@@ -18,3 +18,8 @@ skip them:
   (see skill-creator SKILL.md "Running and evaluating test cases").
 
 Owner gate: runs happen only after the R15/R16 push answers (R-plan §11).
+
+**2026-11-15 exception:** iteration-1 (evals 4–5, the gate-2 two-currency
+flip test) ran under the owner's direct commission ("last change to
+perfect the skill", executing f1 of the 13-22 self-review). The R16 full
+battery remains owner-gated.
