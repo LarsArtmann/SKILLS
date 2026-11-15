@@ -78,8 +78,8 @@ deduped in the 14-20 report), f2–f12 routed as TODO rows T127–T135
    owner-gated on 13-22 g1/g2.
 2. T125 corpus shapes (library monorepo, over-modularized) + the full R16
    battery — owner-gated per `evals/README.md`.
-3. `evals/README.md` owner-gate note — ~~one line missing (f-item 1)~~ done
-   at 15:20 harvest — iteration-1 exception note added.
+3. `go-modularize/evals/README.md` owner-gate note — ~~one line missing
+   (f-item 1)~~ done at 15:20 harvest — iteration-1 exception note added.
 4. BuildFlow-side root fix (staged copy without repo configs) — the
    owner's repo; not touched (g1).
 
