@@ -99,3 +99,6 @@ skills-lock.json
 # (one __pycache__ dir survived untracked until 2026-11-12)
 __pycache__/
 *.pyc
+
+# docs-gates local land-parity ledger (never shared)
+.docs-gates-preflight.json
