@@ -1,0 +1,31 @@
+{
+  "run_id": "eval-4-policy-payoff-carve-with_skill",
+  "graded": "2026-11-15",
+  "expectations": [
+    {
+      "text": "Evaluates the policy-payoff currency explicitly (names a committed policy artifact and the measurable advance), not only the pipe/consumer test",
+      "passed": true,
+      "evidence": "'Policy payoff: present, and it meets the evidence bar twice over. Named committed artifact: the dated planning doc carrying the root-slim policy (root < 20k LOC)... The boundary measurably advances it: root drops by the candidate's size (~4,900 LOC, ~85k → ~80k)'."
+    },
+    {
+      "text": "Final verdict is extraction-PASS via policy payoff, OR a dissolve that carries an explicit FM#11/under-modularization standing finding plus an owner ratify-vs-retire question",
+      "passed": true,
+      "evidence": "'Verdict: yes — extract internal/agent as its own module. It passes all five gates, with gate 2 paying in the policy currency.' The prior review's dissolve is instead flagged as failing the dissolve-symmetry check."
+    },
+    {
+      "text": "Does NOT conclude a bare 'nothing to extract / keep it all in the root' with no policy-currency reasoning and no standing finding",
+      "passed": true,
+      "evidence": "Verdict is extraction; the answer additionally frames 'nothing to extract' as 'a keep-the-monolith bias wearing a gate's clothes, not a neutral finding'."
+    },
+    {
+      "text": "Recognizes pipe payoff is structurally unavailable in a single-app monorepo (the only consumer is a sibling by definition) rather than treating the missing second consumer as a defect of the candidate",
+      "passed": true,
+      "evidence": "'Pipe payoff: structurally unavailable, and that counts for nothing against the candidate... You cannot fail a candidate on a currency your repository geometry makes impossible to earn.'"
+    }
+  ],
+  "bonus_observations": [
+    "Applies the same-day policy-lapse rule unprompted: 'if the root-slim policy is ever retired, the boundary's justification dies with it. Re-run gate 2 before keeping the seam alive on a lapsed policy.'",
+    "Applies the predates-the-session distinction: 'Because it predates this assessment in a committed artifact, it counts on its face — no ratification question needed.'"
+  ],
+  "score": "4/4"
+}

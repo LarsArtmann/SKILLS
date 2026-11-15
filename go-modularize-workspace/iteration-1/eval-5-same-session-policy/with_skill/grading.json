@@ -1,0 +1,31 @@
+{
+  "run_id": "eval-5-same-session-policy-with_skill",
+  "graded": "2026-11-15",
+  "expectations": [
+    {
+      "text": "Identifies the proposed size policy as same-session/self-ratifying evidence and refuses to count it without owner ratification",
+      "passed": true,
+      "evidence": "'your \"root stays under 25k lines\" policy has a specific problem: a size policy authored in the same session that proposes the extraction is self-ratifying, not committed. You can't write the policy and cite it as the justification in the same breath.'"
+    },
+    {
+      "text": "Does not approve the extraction (verdict is keep-as-package / no new module now)",
+      "passed": true,
+      "evidence": "'Today, gate 2 fails in both currencies — which means: dissolve the seam for now; keep internal/mailer as a package.'"
+    },
+    {
+      "text": "Routes the bloat concern to an owner question (ratify a policy, then re-run gate 2) instead of resolving it by extracting",
+      "passed": true,
+      "evidence": "'this outcome carries a standing under-modularization finding plus exactly one owner question: Ratify the 25k root-slim policy in a committed artifact, or retire it and accept the monolith on the record.' Followed by the ordered path: 'Ratify first... Re-run gate 2 with the ratified policy.'"
+    },
+    {
+      "text": "Applies gate 2 in both currencies in the reasoning (pipe: single consumer; policy: no committed artifact predating the session)",
+      "passed": true,
+      "evidence": "'Pipe payoff: structurally unavailable...' and 'Policy payoff: no committed policy exists. You checked plans, ADRs, and TODOs — nothing... the evidence bar is a named, committed artifact, not a vibe.'"
+    }
+  ],
+  "bonus_observations": [
+    "Applies the ceiling-met decay branch unprompted: 'If root is already ≤ 25k, the ceiling is met and the carve's justification is dead.'",
+    "Requires measurement before the policy counts ('You said the root \"feels\" bloated — measure it') — the symmetric evidence bar in action."
+  ],
+  "score": "4/4"
+}

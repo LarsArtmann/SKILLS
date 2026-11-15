@@ -13,6 +13,40 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Fixed (2026-11-15 — go-modularize: gate 2 pays in two currencies; single-app monorepos unblocked)
+
+- **The bug:** the 2026-10-29/30 rebalance (`7eeeac7`/`446ed94`/`08b8091`)
+  gave gate 2 exactly one payoff currency — a second consumer composing the
+  candidate without siblings. In a single-app monorepo that consumer is
+  structurally impossible, so the skill could only ever output "nothing to
+  extract" at any repo size. Observed live in CV (root module 223,209 raw
+  lines vs a committed <20k root-slim policy; 2026-11-15 session dissolved
+  all 7 candidates, 0 extractions).
+- **The fix:** two payoff currencies with symmetric evidence bars — pipe
+  payoff (bar unchanged) OR policy payoff (a committed size/ownership/CI
+  policy the boundary measurably advances: name the artifact AND show the
+  advance). Dissolve symmetry: every dissolve inside a policy-violating or
+  god-package-shaped container carries an FM#11 standing finding plus one
+  owner ratify-or-retire question — "nothing to extract" is a seam verdict,
+  never "nothing to do."
+- **The same-day hardening:** policy payoff decays like pipe payoff (policy
+  retired or ceiling already met → re-run gate 2 before keeping the seam on
+  a dead justification); a size policy authored in the same session as the
+  extraction proposal is self-ratifying and counts only after an owner
+  question ratifies it; vocabulary pass finished the two-currency rename
+  (FM#8 row, phases.md 1.5, evals.json eval 2).
+- **Behavioral eval (the skill's first probe run):** fresh subagent
+  sessions on the CV-shaped prompt — old doctrine (`e1d8a05`) dissolves the
+  seam and rules the committed policy inadmissible (2/4, failing exactly
+  the two assertions the repair targets); fixed doctrine extracts via
+  policy currency naming artifact + advance (4/4), and rejects a
+  same-session policy proposal as self-ratifying with an owner-ratify-first
+  path (4/4). Prompts added as evals 4–5 in `go-modularize/evals/evals.json`;
+  artifacts persisted in `go-modularize-workspace/iteration-1/`.
+- **Generalized lesson** landed in `how-to-write-skills.md` Hard-Won Process
+  Lessons: a decision gate that recognizes exactly one payoff currency is a
+  structural bias against every population that can never pay in it.
+
 ### Added (2026-11-10 — offer-page skill: the page-assembly layer of the Growth & Sales stack)
 
 - **`offer-page`** (new skill): build/audit a page that SELLS one paid offer

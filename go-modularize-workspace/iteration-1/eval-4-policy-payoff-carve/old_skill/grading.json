@@ -1,0 +1,28 @@
+{
+  "run_id": "eval-4-policy-payoff-carve-old_skill",
+  "graded": "2026-11-15",
+  "baseline_note": "Expected to fail the two assertions the repair targets — this run documents the pre-fix behavior the CV incident exhibited, not a gate failure of the eval.",
+  "expectations": [
+    {
+      "text": "Evaluates the policy-payoff currency explicitly (names a committed policy artifact and the measurable advance), not only the pipe/consumer test",
+      "passed": false,
+      "evidence": "Explicitly rules the committed policy inadmissible as a gate currency: 'A dated planning-doc ceiling is not composability evidence — it cannot promote internal/agent from gate-2 failure to extraction.' The policy is treated as a quota outside the gate, per the pre-fix single-currency doctrine."
+    },
+    {
+      "text": "Final verdict is extraction-PASS via policy payoff, OR a dissolve that carries an explicit FM#11/under-modularization standing finding plus an owner ratify-vs-retire question",
+      "passed": false,
+      "evidence": "'Verdict: No... it fails the pipe test (gate 2)... It stays as package(s) in the root module.' No FM#11 standing finding and no owner ratify-vs-retire question is attached to the dissolve (the dissolve-symmetry section did not exist in the pre-fix skill)."
+    },
+    {
+      "text": "Does NOT conclude a bare 'nothing to extract / keep it all in the root' with no policy-currency reasoning and no standing finding",
+      "passed": true,
+      "evidence": "Not bare: the answer flags the prior blanket review as suspect ('Blanket keep-everything verdicts are the mirror image of blanket split-everything verdicts') and offers 'revise or re-date the policy' — but as side commentary, without the mandated FM#11 + owner-question machinery."
+    },
+    {
+      "text": "Recognizes pipe payoff is structurally unavailable in a single-app monorepo (the only consumer is a sibling by definition) rather than treating the missing second consumer as a defect of the candidate",
+      "passed": true,
+      "evidence": "'The binary is the composition root: it imports agent and everything else by definition.' — yet the old gate table still weighs that structurally-impossible currency as decisive, which is the demonstrated bias."
+    }
+  ],
+  "score": "2/4 (fails exactly the two assertions the two-currency repair targets)"
+}
