@@ -47,6 +47,22 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   Lessons: a decision gate that recognizes exactly one payoff currency is a
   structural bias against every population that can never pay in it.
 
+### Changed (2026-11-15 — dprint scope: frozen evidence excluded)
+
+- `dprint.json` now excludes `docs/status/archived/**`,
+  `docs/planning/archived/**`, `**/outputs/**`, and `*-workspace/**`.
+  Rationale: dprint crashes on tables nested in list items inside frozen
+  archived reports, and a bulk format rewrites point-in-time evidence
+  (compiled eval output artifacts got reformatted by a repair run before
+  being restored — the exclude list encodes the frozen/live boundary).
+  The 9-file live formatting drift (whitespace + table alignment only,
+  hunks inspected) was repaired in the same pass, taking the buildflow
+  dprint-format step from red to green. A repair run racing the config
+  edit re-corrupted the four output artifacts and the auto-commit daemon
+  committed that state (`2a1b72a`); the artifacts were restored
+  byte-for-byte (`5e585c4`) and the step verified green afterward with
+  the artifacts untouched.
+
 ### Added (2026-11-10 — offer-page skill: the page-assembly layer of the Growth & Sales stack)
 
 - **`offer-page`** (new skill): build/audit a page that SELLS one paid offer

@@ -62,11 +62,24 @@ g1–g3 remain open.
 
 ## b) PARTIALLY DONE
 
-1. **buildflow full battery** ran in the background at report-writing
-   time; verdict recorded in the session transcript and reconciled below
-   (§"verification addendum" if amended). Known permanent noise per AGENTS
-   §5.11 (markdownlint advisories, shellcheck warnings, lychee's two
-   unfixable findings) is expected to remain — exit code is the verdict.
+1. **buildflow full battery: every step green, exit 69 from the known
+   pinned noise only.** Sequence: first run failed `dprint-format` on a
+   78-file pre-existing drift; the repair loop then CRASHED (dprint errors
+   on tables nested in list items inside frozen archived reports) after
+   reformatting 4 frozen eval OUTPUT artifacts (~1,000 lines of compiled
+   CSS evidence) — restored via `git restore`, but a second `--fix`
+   launched seconds after the dprint.json edit re-applied the corruption
+   (config/result-cache race) and the auto-commit daemon committed it in
+   `2a1b72a`; the byte-for-byte restore landed as `5e585c4`. dprint.json
+   now excludes frozen-evidence paths (`docs/status/archived/**`,
+   `docs/planning/archived/**`, `**/outputs/**`, `*-workspace/**`), the
+   live drift was formatted (9 files, all whitespace/table-alignment, each
+   hunk inspected), and the full battery then ran 86 success / 0 failed /
+   lychee ✔ / docs-gates ✔. Exit 69 is solely the 4 pre-existing
+   `file-size-check:go-file-too-large` findings on the single-file Go
+   assets (annotate.go, analyze-corpus.go, ...) — T69's standing noise,
+   routed 2026-11-10; splitting those files would contradict §1's
+   deliberate single-file convention, so the disposition stays with T69.
 
 ## c) NOT STARTED (deliberately)
 
@@ -94,6 +107,22 @@ g1–g3 remain open.
    both, same class as 13-22 d1/d2. Fourth and fifth recorded strikes of
    the "bash-read counts as read" fallacy. The guard is the only reason
    these are honest notes instead of silent corruption.
+3. **Quoted `tail`'s exit code as buildflow's** (`buildflow | tail; echo $?`)
+   and read "exit 0" while the log above it said ERROR — the exact
+   SESSION-START failure mode ("quote the exit status, never the output
+   tail") reproduced against a pipeline instead of a tail. Fixed in the
+   next invocation (`buildflow > log; echo $?` → 69).
+4. **`buildflow --fix` reformatted frozen eval OUTPUT artifacts** (compiled
+   CSS snapshots in `design-to-code/evals/**/outputs/`) before crashing —
+   an automated repair corrupting point-in-time evidence. Caught because
+   `git diff -w --stat` refused to collapse (1,003 deletions), restored via
+   `git restore` within the minute. The exclude fix (b1) is the systemic
+   cure; the near-miss is why frozen artifacts now sit OUTSIDE dprint
+   scope instead of trusting the formatter to be gentle. Post-fix
+   verification: `buildflow -s dprint-format` check-mode ✔ with the
+   artifacts untouched (git status clean over design-to-code/), and the
+   definitive full battery 86 success / 0 failed, exit 69 = T69's four
+   findings only.
 
 ## e) WHAT WE SHOULD IMPROVE (systemic)
 
@@ -108,6 +137,16 @@ g1–g3 remain open.
 3. **Pre-flight via stdin is the docs-gates contract** — candidate lines
    on stdin, verdict on the last line; feeding it the exact future rows
    caught nothing this time but costs seconds.
+4. **Bulk formatters must be scoped away from frozen evidence**: a format
+   gate that includes archived reports and eval outputs will either crash
+   (nested tables) or corrupt evidence ("fixing" compiled artifacts). The
+   dprint.json exclude list is now the repo's encoding of that boundary —
+   extend it, never delete it, when new frozen-evidence dirs appear.
+5. Upstream observation (not filed): a `buildflow -s <tool> --fix` run
+   launched seconds after a dprint.json edit re-applied stale scope —
+   suspected result-cache/config race; BuildFlow#47 made dprint.json
+   cache-key material. Until clarified, always `git status` after a fix
+   run that follows a config edit by less than a minute.
 
 ## f) NEXT (up to 50; honest count: 4 — the rest are already T-rows)
 
@@ -120,10 +159,15 @@ g1–g3 remain open.
 3. T74-analog: render `go-modularize-workspace/iteration-1` through
    skill-creator's `generate_review.py --static` if a human review pass
    is ever wanted (headless this session; not blocking).
-4. Sixth read-discipline strike prevention: the authoring-guide's
+4. **Sixth read-discipline strike prevention**: the authoring-guide's
    "read-your-own-authoring-guide" item could gain one line — "bash
    head/cat/rg is NOT a View; the edit tool tracks View reads only"
    (candidate for T111's cluster).
+5. Upstream observation (not filed): a `buildflow -s <tool> --fix` run
+   launched seconds after a dprint.json edit re-applied stale scope —
+   suspected result-cache/config race; BuildFlow#47 made dprint.json
+   cache-key material. Until clarified, always `git status` after a fix
+   run that follows a config edit by less than a minute.
 
 ## g) QUESTIONS ONLY THE OWNER CAN ANSWER
 
