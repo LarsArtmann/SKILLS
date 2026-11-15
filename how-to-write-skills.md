@@ -282,7 +282,7 @@ In SKILL.md, include decision logic:
 | Pattern                                        | Example                                                                                 | Why It Works                                                |
 | ---------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
 | **Design thinking framework**                  | `frontend-design` — defines aesthetic analysis steps before coding                      | Forces the agent to think before acting                     |
-| **Glossary + domain language**                 | `improve-codebase-architecture` — enforces precise terms                                | Consistent output across sessions                           |
+| **Glossary + domain language**                 | `architecture-deepening` — enforces precise terms                                       | Consistent output across sessions                           |
 | **Multi-phase process**                        | Explore → Present candidates → Iterate loop                                             | Structures complex tasks                                    |
 | **Rule files per topic**                       | `remotion-best-practices` — 30+ `rules/*.md` files                                      | Progressive disclosure; agent loads only what's needed      |
 | **Bundled scripts**                            | `skill-creator` — grading, benchmarking, packaging scripts                              | Eliminates redundant work on every invocation               |

@@ -7,12 +7,12 @@ Destination: `docs/architecture-understanding/YYYY-MM-DD_HH-mm_<slug>-deepening.
 ## Before writing
 
 1. List the destination directory and skim the most recent 1-3 reports: reused candidates, resolved findings, and earlier recommendations change what counts as new.
-2. Copy [`../assets/html-report-kit/assets/report-template.html`](../assets/html-report-kit/assets/report-template.html) and edit it. Never re-type CSS from memory or from a rendered report — transcription drift reintroduces bugs the kit already fixed.
-3. Pick the **editorial-light** variant: a brief reads better on paper stock than on a dashboard ground.
+2. Copy [`../assets/html-report-kit/assets/report-template-editorial.html`](../assets/html-report-kit/assets/report-template-editorial.html) and edit it. Never re-type CSS from memory or from a rendered report — transcription drift reintroduces bugs the kit already fixed.
+3. Use the editorial-light template, not `report-template.html` (the dark dashboard): a brief reads better on paper stock.
 
 Vendored kit files:
 
-- Template: `../assets/html-report-kit/assets/report-template.html`
+- Template: `../assets/html-report-kit/assets/report-template-editorial.html`
 - Design spec and component catalog: `../assets/html-report-kit/references/html-output-guide.md`
 
 Edit the canonical `html-report-kit/` at the repo root and run `scripts/sync-html-kit.sh`; the copy inside `assets/` is a build artifact.
@@ -36,7 +36,7 @@ Each candidate is one `<article class="card">`:
 - **Title** — names the deepening, not the symptom: "Collapse the Order intake pipeline", not "Order code is messy".
 - **Badge row** — recommendation strength via `.badge`: `Strong` → `.badge-critical`, `Worth exploring` → `.badge-high`, `Speculative` → `.badge-low`. Add a second badge for the dependency category (`in-process`, `local-substitutable`, `ports & adapters`, `mock`).
 - **Files** — monospaced list with `.where` styling.
-- **Before / after** — the centrepiece, two columns (`.compare-header` + `.compare-row`, or `.grid-2` with hand-built diagram divs).
+- **Before / after** — the centrepiece, two columns: `table.compare` (editorial), `.compare-header` + `.compare-row`, or `.grid-2` with hand-built diagram divs.
 - **Problem** — one sentence: what hurts, in glossary terms.
 - **Solution** — one sentence: what changes.
 - **Wins** — at most six bullets of six words or fewer: "Tests hit one interface", "Pricing stops leaking", "Deletes four shallow wrappers".

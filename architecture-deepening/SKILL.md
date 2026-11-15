@@ -50,7 +50,7 @@ Destination: `docs/architecture-understanding/YYYY-MM-DD_HH-mm_<slug>-deepening.
 
 Follow the kit's series discipline: list the target directory, skim the most recent 1-3 reports (TOC + findings), and copy the template — never transcribe CSS.
 
-- Template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html) (editorial-light suits a brief)
+- Template: [./assets/html-report-kit/assets/report-template-editorial.html](./assets/html-report-kit/assets/report-template-editorial.html) (the editorial-light variant; a brief reads better on paper stock than on a dashboard ground)
 - Design spec: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
 
 One card per candidate: title naming the deepening, strength badge (`Strong` / `Worth exploring` / `Speculative`), files, before/after diagram pair, one-sentence problem, one-sentence solution, wins as bullets of six words or fewer, and an ADR-conflict callout when relevant. End with **Top recommendation** and why. Then open it (`xdg-open` / `open` / `start`) and report the absolute path.
