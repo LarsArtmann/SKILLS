@@ -1,0 +1,15 @@
+{
+  "eval_id": 5,
+  "eval_name": "same-session-policy",
+  "prompt": "Our single-module Go repo has ~30 packages and no committed size policy anywhere — I checked plans, ADRs, and TODOs. I want to carve out internal/mailer (~2,000 LOC) into its own module. Honestly the root is feeling bloated — I'd say we should adopt a 'root stays under 25k lines' policy, and this carve would be the first step toward it. Only our one app imports mailer; no second consumer is planned. Should we extract it?",
+  "configs": {
+    "with_skill": "fixed doctrine (HEAD after 2026-11-15 hardening — includes the anti-self-ratification clause)"
+  },
+  "no_baseline_rationale": "The anti-gaming clause does not exist in the pre-fix skill (e1d8a05); an old-skill run would merely repeat eval 2's known no-consumer dissolve. The doctrine under test is new-behavior-only.",
+  "assertions": [
+    "Identifies the proposed size policy as same-session/self-ratifying evidence and refuses to count it without owner ratification",
+    "Does not approve the extraction (verdict is keep-as-package / no new module now)",
+    "Routes the bloat concern to an owner question (ratify a policy, then re-run gate 2) instead of resolving it by extracting",
+    "Applies gate 2 in both currencies in the reasoning (pipe: single consumer; policy: no committed artifact predating the session)"
+  ]
+}

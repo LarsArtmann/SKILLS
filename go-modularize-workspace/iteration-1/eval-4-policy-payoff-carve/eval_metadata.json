@@ -1,0 +1,15 @@
+{
+  "eval_id": 4,
+  "eval_name": "policy-payoff-carve",
+  "prompt": "Our repo is a single-binary Go application monorepo: one root module with ~1,000 Go files (~220k raw lines; ~85k prod-LOC) next to 12 already-extracted submodule directories. There are no external consumers — the binary is the only consumer, so every package is a sibling import by definition. We have a committed root-slim policy from a dated planning doc: the root module stays under 20k LOC, and it currently measures ~85k against that ceiling. One candidate keeps coming up: internal/agent, ~4,900 LOC, cohesive (one verb: orchestrate agent turns), imports zero infrastructure, and no second consumer is ever planned. A prior modularization review concluded 'nothing to extract, keep it all in the root.' Run your assessment: should internal/agent become its own module?",
+  "configs": {
+    "with_skill": "fixed doctrine (HEAD after 2026-11-15 gate-2 repair + hardening)",
+    "old_skill": "pre-fix doctrine (git e1d8a05, pipe-only gate 2) — expected to FAIL assertions 1-2 and trip assertion 3; this is the baseline the repair was measured against"
+  },
+  "assertions": [
+    "Evaluates the policy-payoff currency explicitly (names a committed policy artifact and the measurable advance), not only the pipe/consumer test",
+    "Final verdict is extraction-PASS via policy payoff, OR a dissolve that carries an explicit FM#11/under-modularization standing finding plus an owner ratify-vs-retire question",
+    "Does NOT conclude a bare 'nothing to extract / keep it all in the root' with no policy-currency reasoning and no standing finding",
+    "Recognizes pipe payoff is structurally unavailable in a single-app monorepo (the only consumer is a sibling by definition) rather than treating the missing second consumer as a defect of the candidate"
+  ]
+}
