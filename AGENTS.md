@@ -292,6 +292,28 @@ design. Per-file Go quality is verified per convention: `go vet` + `gofmt`
   It can also hard-fail the whole run (buildflow exit 69) when a real host is
   unreachable: `crush.land` did on 2026-10-30 and was replaced with the live
   upstream URL.
+* `dprint-format` is SKIPPED in `.buildflow.yml` (2026-11-15, same class as
+  the lychee entry): BuildFlow's full-pipeline executor stages a copy of the
+  repo WITHOUT repo config files (`format_roundtrip.go` in the BuildFlow
+  repo), so its dprint step formats on a generated exclude-less config and
+  REWRITES frozen eval output artifacts (`**/outputs/**`, `*-workspace/`) —
+  observed 4× on 2026-11-15, twice laundered into history by the auto-commit
+  daemon and restored (`5e585c4`, `7ce09d9`); it also crashes on tables
+  nested in list items in archived reports. Formatting discipline is manual:
+  `dprint fmt <files>` with the repo `dprint.json`, whose excludes encode the
+  frozen/live boundary (archived status/planning reports, eval outputs,
+  workspaces). The local pre-commit hook carries a frozen-evidence guard
+  that fails any commit staging a file under an eval `outputs/` dir without
+  `FROZEN_OK=1` (validated both directions 2026-11-15; hook is local-only —
+  recreate it after fresh clones, see the hook file header). A fourth
+  corruption round appeared with NO identifiable formatter run in the window
+  — if artifacts flip dirty again, check `git log` for daemon commits before
+  assuming a live process (2026-11-15 self-review, d1).
+* The findings gate: a plain `buildflow` run here exits 69 from exactly 4
+  `file-size-check:go-file-too-large` findings on the deliberate
+  single-file Go assets (`docs-health/assets/annotate.go`,
+  `github-voice/scripts/*/**.go`) — T69 owns the triage; splitting them
+  would contradict §1. All steps ✔ with exit 69 = this repo's green.
 * `docs-health/assets/annotate.go self-test` runs the ported
   marker/guard/prose assertions; `docs-health/assets/annotate-status-items_test.sh`
   is the 26-assertion fixture harness against the Go program; both gmail
