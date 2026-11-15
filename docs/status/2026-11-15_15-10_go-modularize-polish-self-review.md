@@ -18,6 +18,13 @@ whether the auto-commit daemon's commit path honors a failing pre-commit
 hook (guard validated by direct invocation only — a daemon commit might
 use `--no-verify`; untested).
 
+**Harvest addendum (15:20):** the battery correctly went RED on this
+report's own unharvested f-items the moment it landed (freshness,
+audit-all) — the docs-health loop working as designed. Harvest executed:
+f1 and f7 done on-sight (evals/README exception note; e/f duplicate
+deduped in the 14-20 report), f2–f12 routed as TODO rows T127–T135
+(pre-flighted SAFE), final battery re-run quoted in the closing state.
+
 ---
 
 ## a) FULLY DONE
@@ -71,9 +78,8 @@ use `--no-verify`; untested).
    owner-gated on 13-22 g1/g2.
 2. T125 corpus shapes (library monorepo, over-modularized) + the full R16
    battery — owner-gated per `evals/README.md`.
-3. `evals/README.md` owner-gate note — iteration-1 ran under owner
-   commission, but the README still says runs are gated on R15/R16
-   answers; one line missing (f-item 1).
+3. `evals/README.md` owner-gate note — ~~one line missing (f-item 1)~~ done
+   at 15:20 harvest — iteration-1 exception note added.
 4. BuildFlow-side root fix (staged copy without repo configs) — the
    owner's repo; not touched (g1).
 
@@ -104,9 +110,10 @@ use `--no-verify`; untested).
    bash-head/rg inspection) — tool guard caught both; strikes 4 and 5 of
    the "bash-read counts as read" fallacy.
 5. **Partial-multiedit misdiagnosis**: an "Applied 3 of 4" result — I
-   GUESSED which edit failed, "fixed" a section that wasn't broken (an
-   item landed in section e, intended for f), and discovered the real
-   failure (commits line) two batches later from another mismatch.
+   GUESSED which edit failed, "fixed" a section that wasn't broken, and
+   the item ended up DUPLICATED in both section e and section f (deduped
+   during the 15:20 harvest; the real failure — the commits line — was
+   found two batches later from another mismatch).
 6. **`git add -A` in the closing commit** — against §5.12 scope discipline
    (bundled-hunk risk); it happened to grab only my two files.
 7. **The report was written while the incident was live**: b1/d4 needed
@@ -150,8 +157,9 @@ use `--no-verify`; untested).
    (`format_roundtrip.go`) — owner's call (g1).
 6. Investigate the round-4 trigger via `buildflow history` / cache
    inspection when BuildFlow work next happens.
-7. Move the upstream-observation item from section e to section f of the
-   14-20 report (trivial, cosmetic).
+7. ~~Move the upstream-observation item from section e to section f of
+   the 14-20 report~~ — done in the 15:20 harvest (it was duplicated in
+   both; e copy removed, f copy reworded with the round-4 facts).
 8. Single home for eval assertions (`evals.json` expected_output vs
    `eval_metadata.json` — they can drift).
 9. dprint plugin pinning (doctor warns of network-fetched plugins;
