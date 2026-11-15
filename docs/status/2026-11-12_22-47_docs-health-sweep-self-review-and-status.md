@@ -6,11 +6,11 @@
 
 ## a) FULLY DONE
 
-| Item | Evidence |
-| --- | --- |
-| The full docs-health corpus sweep (77 files annotated + archived, harvest, gates adopted — see `2026-11-12_22-18_*`) | commits 2493c64, c386bab, 551e09b, 8385b24 |
-| All 5 docs-gates PASS at sweep close (annotate within the 372 ratchet pin); check-skills.sh exit 0; link-check clean | battery matrix, sweep report §e |
-| **Self-review corrections landed on sight** (found while writing this report): row-count miscount 51→49 fixed in CHANGELOG + sweep report; T94/AGENTS §5.6 `skill-creator/` install-collision hazard removed (that name is a third-party upstream skill — a repo skill of the same name would be rm-rf'd/replaced by the skills CLI on install) | this commit |
+| Item                                                                                                                                                                                                                                                                                                                                            | Evidence                                   |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| The full docs-health corpus sweep (77 files annotated + archived, harvest, gates adopted — see `2026-11-12_22-18_*`)                                                                                                                                                                                                                            | commits 2493c64, c386bab, 551e09b, 8385b24 |
+| All 5 docs-gates PASS at sweep close (annotate within the 372 ratchet pin); check-skills.sh exit 0; link-check clean                                                                                                                                                                                                                            | battery matrix, sweep report §e            |
+| **Self-review corrections landed on sight** (found while writing this report): row-count miscount 51→49 fixed in CHANGELOG + sweep report; T94/AGENTS §5.6 `skill-creator/` install-collision hazard removed (that name is a third-party upstream skill — a repo skill of the same name would be rm-rf'd/replaced by the skills CLI on install) | this commit                                |
 
 ## b) PARTIALLY DONE
 
@@ -114,7 +114,7 @@
 11. docs-health SKILL.md: ledger-marker exact-string rule (e).
 12. docs-health SKILL.md: status-items specfile form (e).
 13. crush-config `references/lessons.md`: the ≤4-concurrent-subagent ceiling
-    + count-from-artifacts rule (merge with T83's provider lesson).
+    - count-from-artifacts rule (merge with T83's provider lesson).
 14. F/spacing tail: the github-voice draft line 21 (1-line reword; the
     stack-selection eval artifact stays untouched by design).
 15. TODO_LIST header: note the 2026-11-12 corpus harvest in the

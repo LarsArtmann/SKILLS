@@ -277,13 +277,13 @@ pkgs.buildGoModule {
 
 ### Input URL Formats
 
-| Format                                  | Use When                      |
-| --------------------------------------- | ----------------------------- |
-| `"github:owner/repo"`                   | Public GitHub repos — fastest |
-| `"github:owner/repo/ref"`               | Pin to branch/tag/commit      |
+| Format                                      | Use When                                                         |
+| ------------------------------------------- | ---------------------------------------------------------------- |
+| `"github:owner/repo"`                       | Public GitHub repos — fastest                                    |
+| `"github:owner/repo/ref"`                   | Pin to branch/tag/commit                                         |
 | `"github:owner/repo/ref"` + `access-tokens` | Private repos (fleet truth; PAT via nix.conf or CI `extra-conf`) |
-| `"path:./relative"`                     | Local development only        |
-| `"https://example.com/archive.tar.gz"`  | Tarball archives              |
+| `"path:./relative"`                         | Local development only                                           |
+| `"https://example.com/archive.tar.gz"`      | Tarball archives                                                 |
 
 **Avoid**: `path:/absolute/path` — non-portable, only works on your machine.
 

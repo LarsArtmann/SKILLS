@@ -55,11 +55,11 @@ Migrate away by rewriting inputs to `github:owner/repo/ref` and relocking (`nix 
 
 ## Which to Choose
 
-| Situation                                    | Recommendation                                |
-| -------------------------------------------- | --------------------------------------------- |
+| Situation                                      | Recommendation                                               |
+| ---------------------------------------------- | ------------------------------------------------------------ |
 | Fleet-standard `github:` inputs (all new work) | PAT + `access-tokens` — one secret, no key rotation per repo |
-| Legacy flakes still on `git+ssh://`          | Deploy keys until migrated to `github:`       |
-| Cross-organization private deps              | PAT with access to all repos, or per-org PATs |
+| Legacy flakes still on `git+ssh://`            | Deploy keys until migrated to `github:`                      |
+| Cross-organization private deps                | PAT with access to all repos, or per-org PATs                |
 
 ## Verify
 

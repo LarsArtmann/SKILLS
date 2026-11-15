@@ -59,10 +59,10 @@ If ambiguous, default to AUDIT.
 The ritual is two programs with one shared contract, not two implementations
 of the same thing:
 
-| Half  | Program                                                                              | Does                                                                                                                                                                    | Does NOT                      |
-| ----- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| JUDGE | [docs-gates](https://github.com/Artmann-Technologies/docs-gates)                     | reads a corpus and returns a verdict (0 clean / 1 findings / 2 usage): freshness, annotate, routing, cadence, and the read-only row gates `docs-gates rows`            | write, strike, or repair      |
-| WRITE | [./assets/annotate.go](./assets/annotate.go)                                          | mutates a report (`rows`, `prose`, `status-items`, `repair`, `unwrap`, `repair-mangle`, `repair-partial`) and prints keys (`emit-keys`)                                  | decide corpus health          |
+| Half  | Program                                                          | Does                                                                                                                                                        | Does NOT                 |
+| ----- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| JUDGE | [docs-gates](https://github.com/Artmann-Technologies/docs-gates) | reads a corpus and returns a verdict (0 clean / 1 findings / 2 usage): freshness, annotate, routing, cadence, and the read-only row gates `docs-gates rows` | write, strike, or repair |
+| WRITE | [./assets/annotate.go](./assets/annotate.go)                     | mutates a report (`rows`, `prose`, `status-items`, `repair`, `unwrap`, `repair-mangle`, `repair-partial`) and prints keys (`emit-keys`)                     | decide corpus health     |
 
 The split is deliberate: a public binary may judge a corpus, it may not
 rewrite one. The read-only row gates moved into docs-gates; the mutators stay
@@ -84,20 +84,20 @@ as ROUTED.
 
 <!-- subcommand-map:start -->
 
-| Subcommand       | Kind  | Owner (2026-11-15)                      |
-| ---------------- | ----- | --------------------------------------- |
-| `rows`           | write | annotate.go                             |
-| `prose`          | write | annotate.go                             |
-| `status-items`   | write | annotate.go                             |
-| `emit-keys`      | read  | annotate.go                             |
-| `check-rows`     | read  | docs-gates `rows` (writer alias kept)   |
-| `bare-rows`      | read  | docs-gates `rows --bare` (alias kept)   |
-| `prose-items`    | read  | annotate.go                             |
-| `repair`         | write | annotate.go                             |
-| `unwrap`         | write | annotate.go                             |
-| `repair-mangle`  | write | annotate.go                             |
-| `repair-partial` | write | annotate.go                             |
-| `self-test`      | read  | annotate.go                             |
+| Subcommand       | Kind  | Owner (2026-11-15)                    |
+| ---------------- | ----- | ------------------------------------- |
+| `rows`           | write | annotate.go                           |
+| `prose`          | write | annotate.go                           |
+| `status-items`   | write | annotate.go                           |
+| `emit-keys`      | read  | annotate.go                           |
+| `check-rows`     | read  | docs-gates `rows` (writer alias kept) |
+| `bare-rows`      | read  | docs-gates `rows --bare` (alias kept) |
+| `prose-items`    | read  | annotate.go                           |
+| `repair`         | write | annotate.go                           |
+| `unwrap`         | write | annotate.go                           |
+| `repair-mangle`  | write | annotate.go                           |
+| `repair-partial` | write | annotate.go                           |
+| `self-test`      | read  | annotate.go                           |
 
 <!-- subcommand-map:end -->
 

@@ -6,7 +6,7 @@ gmail-drafts skill?" → diagnosis, on-sight repair of trivial defects, then thi
 **Scope line (verified vs not):**
 Verified by fresh commands this session: `scripts/check-skills.sh` (full gate, twice),
 `bash gmail-drafts/scripts/gmail_{drafts,eml_export}.sh --self-test` (both pass),
-`bash -n` on both scripts, fence inventory `grep -n '```' gmail-drafts/SKILL.md`
+`bash -n` on both scripts, fence inventory ``grep -n '```' gmail-drafts/SKILL.md``
 (now 8 fences, 4 correctly paired blocks), `EmailMessage` residue count (0),
 `git show`/`git status`/`git log` (working tree clean; daemon commit `cfe7b63`
 carries exactly this session's SKILL.md fix, 4+/6-).
@@ -134,5 +134,5 @@ cross-referencing its open items is deliberately out of scope here.
 
 ---
 
-*Point-in-time snapshot. Report written, agent now WAITING for instructions per user
-directive. HARVEST deliberately not run (user: "THEN WAIT").*
+_Point-in-time snapshot. Report written, agent now WAITING for instructions per user
+directive. HARVEST deliberately not run (user: "THEN WAIT")._
