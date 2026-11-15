@@ -109,7 +109,7 @@ workspace mode).** Skip for monoliths.
 
 If modules already exist, the existing boundaries may be wrong in EITHER
 direction — too coarse (god-modules, under-decomposed) or too fine (atomized,
-no composability payoff). Do not default to either merging or splitting. Before proposing anything new:
+no payoff in either currency). Do not default to either merging or splitting. Before proposing anything new:
 
 1. **Score existing boundaries** — For each current module, rate:
    - **Cohesion:** Do all packages in this module belong together? (1–5)
