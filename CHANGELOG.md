@@ -56,12 +56,14 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   (compiled eval output artifacts got reformatted by a repair run before
   being restored — the exclude list encodes the frozen/live boundary).
   The 9-file live formatting drift (whitespace + table alignment only,
-  hunks inspected) was repaired in the same pass, taking the buildflow
-  dprint-format step from red to green. A repair run racing the config
-  edit re-corrupted the four output artifacts and the auto-commit daemon
-  committed that state (`2a1b72a`); the artifacts were restored
-  byte-for-byte (`5e585c4`) and the step verified green afterward with
-  the artifacts untouched.
+  hunks inspected) was repaired in the same pass. The corruption kept
+  returning because BuildFlow's full-pipeline executor stages the repo
+  without its config files (format_roundtrip.go), so the dprint step
+  formats on a generated exclude-less config — `dprint-format` is now
+  skipped in `.buildflow.yml` with rationale (one corruption was
+  auto-committed as `2a1b72a` and restored byte-for-byte in `5e585c4`).
+  Formatting discipline stays manual: `dprint fmt <files>` with the repo
+  dprint.json, whose excludes encode the frozen/live boundary.
 
 ### Added (2026-11-10 — offer-page skill: the page-assembly layer of the Growth & Sales stack)
 

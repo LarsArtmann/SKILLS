@@ -80,6 +80,15 @@ g1–g3 remain open.
    assets (annotate.go, analyze-corpus.go, ...) — T69's standing noise,
    routed 2026-11-10; splitting those files would contradict §1's
    deliberate single-file convention, so the disposition stays with T69.
+   Final resolution of the dprint conflict: the FULL pipeline stages the
+   repo without its config files (BuildFlow `format_roundtrip.go`), so
+   its dprint step formatted on an exclude-less generated config and
+   re-corrupted the artifacts on every full run (3× observed) —
+   `dprint-format` is now skipped in `.buildflow.yml` with rationale
+   (`639e143`, go-structure-linter precedent); manual `dprint fmt` with
+   the repo dprint.json remains the format discipline. Definitive final
+   battery: 85 success / 0 failed, artifacts untouched, exit 69 = T69
+   only.
 
 ## c) NOT STARTED (deliberately)
 
@@ -123,6 +132,14 @@ g1–g3 remain open.
    artifacts untouched (git status clean over design-to-code/), and the
    definitive full battery 86 success / 0 failed, exit 69 = T69's four
    findings only.
+5. **The corruption outlived two restores**: the full-pipeline executor
+   re-applied it after every seemingly-green verification (the `-s`
+   single-step mode runs against CWD and respects repo config; the full
+   pipeline stages a copy WITHOUT repo configs — mechanism found in
+   BuildFlow source, `format_roundtrip.go`). Third restore + the
+   `.buildflow.yml` skip (`639e143`) ended it. Lesson: verify a fix under
+   the SAME execution mode that exhibited the bug — a green single-step
+   run proved nothing about the pipeline path.
 
 ## e) WHAT WE SHOULD IMPROVE (systemic)
 
@@ -179,7 +196,9 @@ flow conservatively either way, so g3 is convenience, not correctness.)
 
 ---
 
-**Commits this session:** `08a64ae` (daemon, hardening content — f2/f3/f4/
-f7/evals), `995a2ff` (TODO harvest T122–T126 + gitignore), plus this
-report, CHANGELOG, FEATURES, and the workspace artifacts (committed with
-this report).
+**Commits this session:** `08a64ae` (daemon: f2/f3/f4/f7 hardening +
+evals), `995a2ff` (TODO harvest T122–T126 + gitignore), `bc92cec` +
+`70f7d8a` (daemon: workspace artifacts, CHANGELOG/FEATURES first pass),
+`2a1b72a` (daemon: format batch — carried the artifact corruption),
+`5e585c4` (artifact restore), `639e143` (dprint-format skip + third
+restore), plus this report's final commit.
