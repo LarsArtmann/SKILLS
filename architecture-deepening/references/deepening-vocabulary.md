@@ -58,14 +58,14 @@ When designing an interface, ask in order: can I remove a method, can I simplify
 
 Classify every candidate; the category decides whether a seam is warranted at all.
 
-| Category              | Meaning                                                                    | Seam verdict                                             |
-| --------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------- |
-| `in-process`          | Same process, same language, no external resource.                         | No seam. Deepen by collapsing wrappers.                  |
-| `local-substitutable` | Real dependency has a faithful local stand-in (in-memory repo, temp dir).  | Seam only if tests already need the substitute.          |
-| `ports & adapters`    | External boundary: network, database, payment, clock, filesystem contract. | Real seam — two or more adapters must exist.             |
-| `mock`                | No faithful substitute; only a test double can stand in.                   | Last resort. Prefer reshaping until a real seam appears. |
+| Category                           | Meaning                                                                           | Seam verdict                                                                                     |
+| ---------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `in-process`                       | Pure computation, in-memory state, no I/O.                                        | No adapter. Merge the modules and test through the new interface.                                |
+| `local-substitutable`              | The dependency has a faithful local stand-in (PGLite for Postgres, in-memory FS). | Deepenable if the stand-in exists. The seam stays internal; no port at the external interface.   |
+| `ports & adapters` (remote, owned) | Your own service across a network boundary (microservice, internal API).          | Define a port at the seam; HTTP/gRPC/queue adapter in production, in-memory adapter in tests.    |
+| `mock` (true external)             | A third-party service you do not control (Stripe, Twilio).                        | Take it as an injected port; tests use a mock adapter. The logic still lives in the deep module. |
 
-**Replace, don't layer.** Deepening means the new module absorbs the old shallow ones. Adding a deeper module on top of the shallow ones and leaving them in the call path is not a deepening — it is a second interface to learn.
+**Replace, don't layer.** Deepening means the new module absorbs the old shallow ones. Adding a deeper module on top of the shallow ones and leaving them in the call path is not a deepening — it is a second interface to learn. Old unit tests on the shallow modules become waste once tests exist at the new interface: delete them, and assert observable outcomes through the interface rather than internal state.
 
 ## Testability signals
 
@@ -87,4 +87,4 @@ A **module** has exactly one **interface**. **Depth** is measured on that interf
 
 ## Provenance
 
-Adapted 2026-11-15 from the third-party `codebase-design` skill in `mattpocock/skills`, which the upstream `improve-codebase-architecture` calls but never ships alongside itself in a per-skill install. This repo owns the copy from here on.
+Adapted 2026-11-15 from the third-party `codebase-design` skill in `mattpocock/skills` (`SKILL.md` and `DEEPENING.md`), which the upstream `improve-codebase-architecture` calls but never ships alongside itself in a per-skill install. This repo owns the copy from here on.

@@ -69,6 +69,8 @@ Facts are your job: dispatch a read-only sub-agent for anything the filesystem c
 
 Cover at least: the constraint that makes this hurt, the dependency category (`in-process`, `local-substitutable`, `ports & adapters`, `mock`), the shape of the module behind the seam, what stays outside it, which tests survive, and what the interface promises to callers.
 
+When the interface shape is contested, design it twice: frame the constraints for the user, then dispatch 3+ read-only sub-agents in parallel, each with a radically different brief (minimal interface; maximal flexibility; optimize for the most common caller; ports & adapters where a cross-seam dependency exists). Each returns the interface, a usage example, what the implementation hides, the dependency strategy, and where leverage is thin. Present them sequentially, compare on depth, locality, and seam placement, then recommend one — or a hybrid — instead of offering a menu.
+
 Make no edits and no TODO_LIST rows until the user confirms a shared understanding.
 
 ## 6. Record what crystallised
