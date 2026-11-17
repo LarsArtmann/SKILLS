@@ -29,6 +29,10 @@
       on 2026-09-09 the script exited 1 silently (zero-count grep aborts
       under pipefail) while a session read its output as green. A
       green-looking run with a non-zero exit is a FAIL.
+      **The selftest is a separate leg — run `scripts/check-skills.sh
+      --selftest` too.** On 2026-11-17 the plain check had been green while
+      the selftest leg was red (an unconditional `cd` in a docs-health gate
+      broke it): the gate was passing rules it could no longer evaluate.
 - [ ] **6.** If today's work creates a new skill, follow the new-skill
       wiring checklist in `how-to-write-skills.md` (README row + counts,
       FEATURES.md row — gated by `check-skills.sh` check 14, CHANGELOG entry,

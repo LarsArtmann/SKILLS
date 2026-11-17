@@ -13,6 +13,45 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Fixed (2026-11-17 — architecture-deepening fork: wrong template variant gated, fork wired end to end)
+
+- **The wrong-template class is now a gate.** Five kit consumers named the
+  dark dashboard while the kit's own mapping assigns editorial to architecture
+  reviews, audit briefs, and long-form findings (`architecture-review`,
+  `brutal-self-review`, `data-model-review`, `full-code-review`,
+  `naming-review`; `architecture-deepening` and `library-deep-dive` were
+  already right). The assignment now lives once, in the kit guide's
+  `variant-assignments` table, and `check-skills.sh` check 17 fails when a
+  skill's links contradict its row, when the assigned template is not
+  vendored into that skill, or when a named kit template does not exist. Both
+  directions were exercised with a throwaway fixture tree.
+- **The structural gate could not pass its own selftest.** The docs-health
+  artifact gate ran `cd docs-health/assets` unconditionally, so
+  `check-skills.sh --selftest` failed in fixture trees that carry no tooling
+  (broken since the 2026-11-15 tooling split; found while adding check 17).
+  It now skips with a NOTE when the directory is absent; all three selftest
+  legs are green again.
+- **The fork is proven reachable and correctly routed.** Fresh-session probes
+  after removing the third-party skill show the architecture-* inventory no
+  longer contains `improve-codebase-architecture`, and three routing prompts
+  land on `architecture-deepening`, `architecture-review`, and
+  `full-code-review` respectively. Recorded in
+  `architecture-deepening/evals/probe-2026-11-17.md`.
+- **The brief has a shape to copy.** `architecture-deepening/assets/sample-candidate-brief.html`
+  renders two candidates in the real editorial classes (before/after pair,
+  `table.compare`, both badge tiers) with zero external references, balanced
+  tags, and every class defined. Verified structurally, not in a browser:
+  headless browser launches are blocked in this environment.
+- **Design-it-twice is its own reference** (`references/design-it-twice.md`)
+  instead of one dense paragraph, and the vocabulary gained **port** plus a
+  worked four-module example that separates an internal seam from a port.
+- **Output-path precedence is explicit and exercised**: `ARCH_DEEPENING_OUT`
+  then `ARCH_REVIEW_OUT`; a value ending in `.html` is the file, anything else
+  is the directory. Four cases run against a dummy repo.
+- **crush-config's fan-out doc no longer describes the removed skill**: it
+  records the fork and the fact that `architecture-deepening` appears in
+  session skill lists normally.
+
 ### Fixed (2026-11-15 — go-modularize: gate 2 pays in two currencies; single-app monorepos unblocked)
 
 - **The bug:** the 2026-10-29/30 rebalance (`7eeeac7`/`446ed94`/`08b8091`)

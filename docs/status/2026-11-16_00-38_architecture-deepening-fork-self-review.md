@@ -191,24 +191,38 @@ change is uncommitted.
 
 ## f) NEXT (up to 50; honest count: 17)
 
-1. Commit the aggregation-layer topology change, verify no dangling links in
-   other agent dirs (T137).
-2. Retry the fresh-session discovery probe and record the evidence (T138).
+1. ~~Commit the aggregation-layer topology change, verify no dangling links in
+   other agent dirs (T137).~~ done at 2026-11-17 — aggregation commit `fa4aeec` in the `agent-skills` repo; no dangling links found.
+2. ~~Retry the fresh-session discovery probe and record the evidence (T138).~~ done at
+   `architecture-deepening/evals/probe-2026-11-17.md` — discovery plus 3/3 routing.
 3. First real triggered run against a repo (T136).
-4. Author the trigger eval, including negative routing cases (T139).
+4. ~~Author the trigger eval, including negative routing cases (T139).~~ done at
+   `architecture-deepening/evals/trigger-eval.json` — 10 positive / 10 negative; running
+   the battery is the remainder (T139 re-scoped).
 5. Comment on mattpocock/skills#1437 with the fork outcome (T140).
 6. File the sibling-dependency issue through `verify-before-filing` (T141).
-7. Audit kit template variants across all consumers (T142).
-8. Add and render a sample candidate brief (T143).
-9. Add the `check-skills.sh` variant guard (T144).
-10. Add `port` to the glossary and split out design-it-twice (T145).
-11. Test the `ARCH_*_OUT` override precedence (T146).
-12. Fix the README verification-date claim and re-check counts (T147).
+7. ~~Audit kit template variants across all consumers (T142).~~ done at 2026-11-17 —
+   five consumers were on the wrong variant; assignment table now lives in the kit guide.
+8. ~~Add and render a sample candidate brief (T143).~~ done at
+   `architecture-deepening/assets/sample-candidate-brief.html` — structural render proof
+   only; headless browsers are blocked in this environment.
+9. ~~Add the `check-skills.sh` variant guard (T144).~~ done at 2026-11-17 — check 17,
+   validated in both directions with a fixture tree.
+10. ~~Add `port` to the glossary and split out design-it-twice (T145).~~ done at
+    `architecture-deepening/references/design-it-twice.md` plus a worked
+    internal-seam-vs-port example in the vocabulary.
+11. ~~Test the `ARCH_*_OUT` override precedence (T146).~~ done at 2026-11-17 — four cases
+    against a dummy repo; precedence documented in both files.
+12. ~~Fix the README verification-date claim and re-check counts (T147).~~ done at 2026-11-17 —
+    parity re-verified against all 36 skill directories.
 13. Extract fork provenance and shrink AGENTS.md (T148).
-14. Run `markdown-lint` + `codespell` over the new files (T149).
+14. ~~Run `markdown-lint` + `codespell` over the new files (T149).~~ done at 2026-11-17 —
+    markdown-lint is not applicable standalone (no config); codespell reports nothing in
+    the new files.
 15. Decide the upstream-sync policy (T150).
 16. Decide the third-party reinstall policy (T151).
-17. Check the crush-config repo for a skill inventory to update (T152).
+17. ~~Check the crush-config repo for a skill inventory to update (T152).~~ done at 2026-11-17 —
+    the fan-out README's stale `disable-model-invocation` rule now records the fork.
 
 ## g) QUESTIONS ONLY THE OWNER CAN ANSWER
 

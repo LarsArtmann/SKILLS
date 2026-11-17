@@ -56,6 +56,11 @@
 #        template file that does not exist. A link checker cannot see a
 #        wrong-but-existing variant (2026-11-15: architecture-review shipped
 #        pointing at the dark dashboard while the kit assigns editorial).
+#    18. Kit-artifact HTML sanity: any HTML in a skill directory that carries
+#        the kit's token vocabulary must be self-contained (no network
+#        references), have balanced block tags, and resolve its in-page
+#        anchors. Report artifacts are read offline and sometimes years later.
+#        Scoped to skill dirs; the frozen reports under docs/ are historical.
 #
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
@@ -660,6 +665,42 @@ for d in "${skill_dirs[@]}"; do
 			failed=1
 		fi
 	done < <(grep -rhoE '[a-z-]*report-template(-editorial)?\.html' "$d" --include='*.md' 2>/dev/null | grep -v '^assets/' | sort -u || true)
+done
+
+# --- Kit-artifact HTML sanity (2026-11-17) --------------------------------------
+# Report artifacts must stay readable with no network and no server: they are
+# opened years later, sometimes from an archive. Three mechanical properties
+# cover the failures actually seen — CDN tags (the reason this repo forked its
+# architecture skill), a hand-spliced body that lost a closing tag, and a TOC
+# anchor pointing at an id that was renamed. Scoped to HTML inside skill
+# directories that carries the kit's token vocabulary; reports under docs/ are
+# frozen history and are never edited, so they are out of scope by design.
+for d in "${skill_dirs[@]}"; do
+	while IFS= read -r -d '' hf; do
+		grep -q -- '--surface' "$hf" || continue
+		ext=$(grep -oE '(src|href)="https?://[^"]*"' "$hf" | wc -l || true)
+		if [[ "$ext" -gt 0 ]]; then
+			echo "FAIL ${hf#./}: $ext network reference(s) — kit artifacts must read offline" >&2
+			failed=1
+		fi
+		# `|| true` matters: with pipefail, a template with no anchors would make
+		# the substitution exit non-zero and abort the whole script silently.
+		anchors=$(grep -o 'href="#[^"]*"' "$hf" | sed 's/href="#//; s/"$//' || true)
+		for anchor in $anchors; do
+			grep -q "id=\"$anchor\"" "$hf" || {
+				echo "FAIL ${hf#./}: anchor #$anchor has no target id" >&2
+				failed=1
+			}
+		done
+		for tag in section article main aside script; do
+			opened=$(grep -o "<$tag[ >]" "$hf" | wc -l || true)
+			closed=$(grep -o "</$tag>" "$hf" | wc -l || true)
+			if [[ "$opened" -ne "$closed" ]]; then
+				echo "FAIL ${hf#./}: unbalanced <$tag> ($opened open, $closed close)" >&2
+				failed=1
+			fi
+		done
+	done < <(find "$d" -type f -name '*.html' -print0 2>/dev/null)
 done
 
 # --- Feedback-loop staleness ----------------------------------------------------
