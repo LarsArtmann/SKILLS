@@ -19,6 +19,8 @@ _Avoid_: boundary (overloaded with DDD's bounded context).
 
 **Adapter** — a concrete thing that satisfies an interface at a seam. Names the role (which slot it fills), not the substance (what is inside).
 
+**Port** — the interface at a seam that crosses a process or network boundary to a dependency you own (your own service, not a vendor). The port is owned by the module that needs the capability; every adapter implements it. Say "port" only where the category is `ports & adapters`; for an in-process or `local-substitutable` dependency say "interface" — there is no port, because nothing crosses a boundary.
+
 **Leverage** — what callers get from depth: more capability per unit of interface learned. One implementation pays back across N call sites and M tests.
 
 **Locality** — what maintainers get from depth: change, bugs, knowledge, and verification concentrate in one place instead of spreading across callers. Fix once, fixed everywhere.
@@ -66,6 +68,19 @@ Classify every candidate; the category decides whether a seam is warranted at al
 | `mock` (true external)             | A third-party service you do not control (Stripe, Twilio).                        | Take it as an injected port; tests use a mock adapter. The logic still lives in the deep module. |
 
 **Replace, don't layer.** Deepening means the new module absorbs the old shallow ones. Adding a deeper module on top of the shallow ones and leaving them in the call path is not a deepening — it is a second interface to learn. Old unit tests on the shallow modules become waste once tests exist at the new interface: delete them, and assert observable outcomes through the interface rather than internal state.
+
+### Worked example: internal seam vs port
+
+Four modules from one codebase, four different verdicts. The category decides the shape, not taste.
+
+| Module          | Dependency                         | Category              | Decision                                                                                   |
+| --------------- | ---------------------------------- | --------------------- | ------------------------------------------------------------------------------------------ |
+| `Pricing`       | None: pure computation on orders   | `in-process`          | No seam. Absorb it into `OrderIntake`; tests call the new interface.                       |
+| `ReceiptStore`  | Postgres                           | `local-substitutable` | Seam stays internal: the repository keeps its interface, tests use its in-memory stand-in. |
+| `UsageMetering` | Our own metering service over HTTP | `ports & adapters`    | Real seam. `Meter` is the port; HTTP adapter in production, in-memory adapter in tests.    |
+| `Payments`      | Stripe, a vendor we do not own     | `mock`                | Injected port, mock adapter in tests. Billing logic stays inside the deep module.          |
+
+`Pricing` and `ReceiptStore` get no port: nothing crosses a boundary, so a port would be a second interface to learn. Only the two that leave the process earn one.
 
 ## Testability signals
 
