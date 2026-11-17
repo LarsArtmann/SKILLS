@@ -152,6 +152,8 @@ If a job enters a devShell and runs `go` (private module fetches go over git tra
 - run: git config --global url."https://x-access-token:${FLAKE_PAT}@github.com/".insteadOf "https://github.com/"
 ```
 
+**OCI image push carries no private-dep requirements.** `mkPreparedSource` copies the private deps into the source tree and injects the `_local_deps/` replaces before the Go build, so the private code is compiled into the binary and its layers at build time. The resulting image and the `image-push` app therefore need no SSH keys, no `GOPRIVATE`, and no GitHub tokens at push or runtime; the only credential involved is normal registry auth (what `skopeo` uses to talk to the registry).
+
 Load [./references/ci-auth.md](./references/ci-auth.md) for copy-paste workflows, including the legacy `git+ssh://` + deploy-key strategies.
 
 ## 5. Common Gotchas
