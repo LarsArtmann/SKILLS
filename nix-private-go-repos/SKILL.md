@@ -106,6 +106,33 @@ workarounds. The module handles everything when `deps` is non-empty.
 
 **Auth prerequisite for `github:` inputs to private repos:** nix needs a token — `access-tokens = github.com=<token>` in `~/.config/nix/nix.conf` (get one with `gh auth token`). CI uses the same setting via nix-installer's `extra-conf` (see §4). Fleet truth since 2026-10-23: inputs are `github:owner/repo/ref`, not `git+ssh://`.
 
+#### Monorepos: `packages` + private deps
+
+`go-standard.packages` renders each entry as its own `buildGoModule` (own `pname`, `subPackages`, `description`, `meta.mainProgram`), while everything private-dep related stays top-level and repo-wide. Semantics verified against `modules/go-standard.nix` (2026-11-17):
+
+```nix
+go-standard = {
+  # deps, vendorHash(es), goPkgAttr, src, ... stay top-level and shared
+  packages = {
+    server.subPackages = [ "cmd/server" ];
+    server.description = "API server";
+    worker.subPackages = [ "cmd/worker" ];
+    worker.extraBuildAttrs.ldflags = [ "-X main.workerMode=true" ];
+  };
+};
+```
+
+| Question                          | Answer                                                                                                                                                                                                    |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What does each entry own?         | `subPackages` (default `[ "." ]`), `description`, and `extraBuildAttrs` (static attrset or `pkgs: attrs` function, evaluated with perSystem `pkgs` at render time)                                          |
+| What is shared?                   | The whole private-dep pipeline: `deps` feeds ONE `mkPreparedSource` output and every package builds from that same `_local_deps/`-patched source; `goPkg`, `ldflags`, `enableCheck`, `buildFlags`, and the templ/completion toggles also come from top-level config |
+| Per-package build tweaks?         | `extraBuildAttrs` per entry: the six concat keys (`nativeBuildInputs`, `buildInputs`, `checkInputs`, `configureFlags`, `preBuild`, `postInstall`) append per-package values after top-level values; every other key overrides via `//`, per-package winning over top-level and the merged result sitting on top of the module's own attrs |
+| `vendorHashes` scope?             | Per-SYSTEM, not per-package: a `vendorHashes.<system>` entry replaces `vendorHash` for that system and applies to EVERY package in the set (one effective hash for the whole monorepo build set)             |
+| Per-package vendor hash?          | No typed option, but `vendorHash` is not a concat key, so `extraBuildAttrs.vendorHash` (top-level or per-package) overrides it via the same `//` merge. Rarely needed; treat a diverging hash as a smell first |
+| Containerizing one entry?         | `container.packageName` selects the main package (default) or any `packages` entry by name; the image-push story from §4 applies unchanged                                                                   |
+
+`deps` cannot be scoped per package: one repo, one `deps` map. Validation (`validatePrivateDeps`, `publicDeps`) runs while preparing the single shared source, so it covers every entry alike.
+
 ### Option B: Manual mkPreparedSource (for projects not using go-standard)
 
 For projects not using the `go-standard` module from `github.com/LarsArtmann/go-nix-helpers`:
