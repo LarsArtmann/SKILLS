@@ -205,6 +205,7 @@ if [ -n "$audit_owner" ]; then
 	fi
 	printf '%-45s %-8s %-10s %s\n' "REPO" "STATUS" "BYTES" "CONTENT-TYPE"
 	total=0 custom_hint=0
+	# shellcheck disable=SC2013  # words are lines here: grep -o emits one match per line and GitHub full names contain no spaces
 	for repo in $(grep -o '"full_name": *"[^"]*"' "$audit_tmp" | sed 's/"full_name": *"//;s/"$//'); do
 		total=$((total + 1))
 		repo_html="$(curl -fsSL "https://github.com/$repo" 2>/dev/null || true)"

@@ -693,7 +693,7 @@ for d in "${skill_dirs[@]}"; do
 			}
 		done
 		for tag in section article main aside script; do
-			opened=$(grep -o "<$tag[ >]" "$hf" | wc -l || true)
+			opened=$(grep -o "<${tag}[ >]" "$hf" | wc -l || true)
 			closed=$(grep -o "</$tag>" "$hf" | wc -l || true)
 			if [[ "$opened" -ne "$closed" ]]; then
 				echo "FAIL ${hf#./}: unbalanced <$tag> ($opened open, $closed close)" >&2
@@ -751,9 +751,7 @@ done
 # forgets to update the TOC, silently breaking navigation. This guard catches
 # that drift. It checks: headings <= toc_entries (extra TOC entries for ###
 # subsections are fine; missing headings from the TOC is a FAIL).
-for f in \
-	$(find "${skill_dirs[@]}" -name '*.md' -type f \
-		-exec grep -liE '^## (Contents|Table of [Cc]ontents)' {} \;); do
+while IFS= read -r -d '' f; do
 	heading_count=$(awk '
 		BEGIN { in_code = 0 }
 		/^```/ { in_code = !in_code; next }
@@ -770,7 +768,8 @@ for f in \
 		echo "FAIL ${f#./}: TOC drift — $heading_count ## headings but only $toc_count TOC entries. Add missing headings to the TOC."
 		failed=1
 	fi
-done
+done < <(find "${skill_dirs[@]}" -name '*.md' -type f \
+	-exec grep -qiE '^## (Contents|Table of [Cc]ontents)' {} \; -print0)
 
 # --- Marker-vocabulary guard ----------------------------------------------------
 # docs-health ANNOTATE owns the resolution-marker vocabulary (done at, Won't
@@ -901,6 +900,7 @@ map_file="docs-health/SKILL.md"
 tool_file="docs-health/assets/annotate.go"
 if [[ -f "$map_file" && -f "$tool_file" ]]; then
 	tool_cases=$(sed -n 's/^[[:space:]]*case "\([a-z][a-z-][a-z-]*\)":$/\1/p' "$tool_file" | sort -u)
+	# shellcheck disable=SC2016  # \1 is sed's backreference, intentional single quotes
 	map_rows=$(sed -n '/<!-- subcommand-map:start -->/,/<!-- subcommand-map:end -->/s/^| `\([a-z][a-z-]*\)`.*/\1/p' "$map_file" | sort -u)
 	if [[ -z "$tool_cases" || -z "$map_rows" ]]; then
 		echo "FAIL docs-health: subcommand map is empty or annotate.go's dispatch switch could not be parsed." >&2

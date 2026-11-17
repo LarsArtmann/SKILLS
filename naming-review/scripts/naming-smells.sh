@@ -357,7 +357,7 @@ if [[ -z "$LANG_FILTER" || "$LANG_FILTER" == "go" ]]; then
 				while IFS='|' read -r name2 fields2; do
 					if [[ "$name1" < "$name2" ]]; then
 						# Count overlapping fields
-						overlap=$(echo "$fields1" | tr ',' '\n' | grep -xFf <(echo "$fields2" | tr ',' '\n') 2>/dev/null | wc -l || true)
+						overlap=$(echo "$fields1" | tr ',' '\n' | grep -cxFf <(echo "$fields2" | tr ',' '\n') 2>/dev/null || true)
 						total1=$(echo "$fields1" | tr ',' '\n' | wc -l || true)
 						total2=$(echo "$fields2" | tr ',' '\n' | wc -l || true)
 						min_fields=$((total1 < total2 ? total1 : total2))

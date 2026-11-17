@@ -36,6 +36,7 @@ build_libs() {
 
 gate_browser() {
 	local bin missing
+	# shellcheck disable=SC2012  # newest-first (mtime) ordering is the point; puppeteer controls these pathnames
 	bin="$(ls -t ~/.cache/puppeteer/chrome-headless-shell/*/chrome-headless-shell-linux64/chrome-headless-shell 2>/dev/null | head -1 || true)"
 	if [[ -z "$bin" ]]; then
 		echo "ERROR: puppeteer's cached chrome-headless-shell not found under ~/.cache/puppeteer." >&2
