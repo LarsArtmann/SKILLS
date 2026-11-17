@@ -1,0 +1,82 @@
+[
+  {
+    "query": "this codebase is a pain to change; where are the shallow modules?",
+    "should_trigger": true
+  },
+  {
+    "query": "our modules are shallow, where should we deepen the design",
+    "should_trigger": true
+  },
+  {
+    "query": "deepen the architecture of the billing package",
+    "should_trigger": true
+  },
+  {
+    "query": "improve codebase architecture — I keep bouncing between six files to understand one concept",
+    "should_trigger": true
+  },
+  {
+    "query": "which nearby modules should we collapse into one?",
+    "should_trigger": true
+  },
+  {
+    "query": "where should the seam go between pricing and order intake?",
+    "should_trigger": true
+  },
+  {
+    "query": "the notification module is hard to test through its current interface",
+    "should_trigger": true
+  },
+  {
+    "query": "what architecture refactor candidates do you see in this repo?",
+    "should_trigger": true
+  },
+  {
+    "query": "give me deepening opportunities ranked by payoff",
+    "should_trigger": true
+  },
+  {
+    "query": "should this wrapper module be deleted, or is it earning its keep?",
+    "should_trigger": true
+  },
+  {
+    "query": "give my architecture a scored structural assessment with an action roadmap",
+    "should_trigger": false
+  },
+  {
+    "query": "draw a D2 diagram of our current vs target service structure",
+    "should_trigger": false
+  },
+  {
+    "query": "review every file in this repo as a senior architect and fix what you find",
+    "should_trigger": false
+  },
+  {
+    "query": "redesign this struct's invariants so invalid states cannot be represented",
+    "should_trigger": false
+  },
+  {
+    "query": "break this refactor into a prioritized task list with effort estimates",
+    "should_trigger": false
+  },
+  {
+    "query": "rename all the Manager classes in this codebase",
+    "should_trigger": false
+  },
+  {
+    "query": "why does this function return nil on empty input? here is the stack trace",
+    "should_trigger": false
+  },
+  {
+    "query": "pick the dependency stack for a new Go service I am starting",
+    "should_trigger": false
+  },
+  {
+    "query": "our CI takes 12 minutes, make the build faster",
+    "should_trigger": false
+  },
+  {
+    "query": "write a status report of what is done and what is left in this project",
+    "should_trigger": false
+  }
+]
