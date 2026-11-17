@@ -46,7 +46,7 @@ Ask the sub-agent to return `file:line` evidence, the seam location, and one sen
 
 ## 3. Write the candidate brief
 
-Destination: `docs/architecture-understanding/YYYY-MM-DD_HH-mm_<slug>-deepening.html` in the repo under review. Honor `ARCH_DEEPENING_OUT` (or the older `ARCH_REVIEW_OUT`) when set to a directory or file path. Never default to the OS temp directory: reports are artifacts the user keeps, reviews the candidate, and references later — upstream's `/tmp` default is why this skill was forked locally.
+Destination: `docs/architecture-understanding/YYYY-MM-DD_HH-mm_<slug>-deepening.html` in the repo under review. `ARCH_DEEPENING_OUT` overrides it, then the older `ARCH_REVIEW_OUT`; a value ending in `.html` is the file itself, any other value is the directory. Never default to the OS temp directory: reports are artifacts the user keeps, reviews the candidate, and references later, and upstream's `/tmp` default is why this skill was forked locally. Full precedence: [./references/candidate-report.md](./references/candidate-report.md).
 
 Follow the kit's series discipline: list the target directory, skim the most recent 1-3 reports (TOC + findings), and copy the template — never transcribe CSS.
 

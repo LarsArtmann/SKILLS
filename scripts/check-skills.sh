@@ -627,9 +627,18 @@ if [[ -f "$kit_guide" ]]; then
 				echo "FAIL kit-variant: $sk does not vendor $expect (assigned $variant) — run scripts/sync-html-kit.sh" >&2
 				failed=1
 			fi
-			# Collect template filenames the skill mentions, linked or inline-coded:
-			# both are instructions an agent will follow.
-			linked=$(grep -rhoE '[a-z-]*report-template(-editorial)?\.html' "$sk/SKILL.md" "$sk/references" 2>/dev/null | sort -u | tr '\n' ' ' || true)
+			# Collect template filenames the skill's OWN docs mention (linked or
+			# inline-coded: both are instructions an agent will follow). The
+			# vendored kit under assets/ is excluded — it mentions both variants
+			# by design and would make every skill look correct.
+			skill_md=()
+			while IFS= read -r -d '' mdf; do skill_md+=("$mdf"); done < <(
+				find "$sk" -type f -name '*.md' -not -path '*/assets/*' -print0 2>/dev/null
+			)
+			linked=""
+			if [[ ${#skill_md[@]} -gt 0 ]]; then
+				linked=$(grep -hoE '[a-z-]*report-template(-editorial)?\.html' "${skill_md[@]}" 2>/dev/null | sort -u | tr '\n' ' ' || true)
+			fi
 			if [[ -z "$linked" ]]; then
 				echo "FAIL kit-variant: $sk is assigned '$variant' but names no kit template" >&2
 				failed=1
@@ -881,7 +890,12 @@ if [[ -d docs-health/assets/.ruff_cache ]]; then
 	echo "FAIL docs-health/assets/.ruff_cache: stale Python cache in a stdlib-Go tool directory." >&2
 	failed=1
 fi
-if command -v go >/dev/null 2>&1; then
+if [[ ! -d docs-health/assets ]]; then
+	# Fixture trees (--selftest) and partial checkouts carry no tooling; the
+	# binary/cache gates above are inert there, and an unconditional `cd` made
+	# the whole gate fail its own selftest (found 2026-11-15).
+	echo "NOTE: docs-health/assets not present — annotate tooling gates skipped"
+elif command -v go >/dev/null 2>&1; then
 	if ! (cd docs-health/assets && go run annotate.go self-test >/dev/null 2>&1); then
 		echo "FAIL docs-health/assets/annotate.go: self-test failed — the annotation tooling is broken." >&2
 		failed=1

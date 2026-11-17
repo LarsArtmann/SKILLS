@@ -2,13 +2,23 @@
 
 The report is a brief for choosing one refactor, not an assessment. It renders as a single self-contained HTML file (no CDN, no network at read time), using the shared `html-report-kit`.
 
-Destination: `docs/architecture-understanding/YYYY-MM-DD_HH-mm_<slug>-deepening.html`. Honor `ARCH_DEEPENING_OUT` / `ARCH_REVIEW_OUT` when set. Never the OS temp directory.
+## Destination
+
+Default: `docs/architecture-understanding/YYYY-MM-DD_HH-mm_<slug>-deepening.html` in the repo under review. Resolve the path in this order, then stop:
+
+1. `ARCH_DEEPENING_OUT` when set; otherwise the older `ARCH_REVIEW_OUT`.
+2. A value ending in `.html` is the report file, used verbatim. Create its parent directory if missing.
+3. Any other value is the report directory; the file inside it keeps the default name.
+4. Neither variable set → the default directory above.
+
+If both variables are set, `ARCH_DEEPENING_OUT` wins and `ARCH_REVIEW_OUT` is ignored. Never the OS temp directory: the brief is an artifact the user keeps (that hard-coded default is why the skill was forked).
 
 ## Before writing
 
 1. List the destination directory and skim the most recent 1-3 reports: reused candidates, resolved findings, and earlier recommendations change what counts as new.
 2. Copy [`../assets/html-report-kit/assets/report-template-editorial.html`](../assets/html-report-kit/assets/report-template-editorial.html) and edit it. Never re-type CSS from memory or from a rendered report — transcription drift reintroduces bugs the kit already fixed.
 3. Use the editorial-light template, not `report-template.html` (the dark dashboard): a brief reads better on paper stock.
+4. [`../assets/sample-candidate-brief.html`](../assets/sample-candidate-brief.html) is a rendered fixture showing two candidates in the real classes (before/after pair, one `table.compare`, both badge tiers). Read it for shape, never edit it as if it were a template.
 
 Vendored kit files:
 
