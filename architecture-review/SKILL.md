@@ -27,10 +27,12 @@ the directory if it doesn't exist.
    and skim the most recent 1-3 (TOC + scores + roadmaps) — cross-reference prior
    reviews and their still-open roadmap items instead of re-deriving them as new.
 2. **Copy the template, never transcribe.** Start from
-   [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
+   [./assets/html-report-kit/assets/report-template-editorial.html](./assets/html-report-kit/assets/report-template-editorial.html)
    by copying the file and editing its content — never re-type CSS or structure from
    memory or another report's rendered source; hand-transcribed CSS drifts from the kit
-   and re-introduces bugs the kit already fixed.
+   and re-introduces bugs the kit already fixed. The editorial-light variant is the kit's
+   assignment for an architecture review; the dark dashboard suits scan output and
+   high-density metric pages, not a judged assessment.
 
 Use the shared design system from the `html-report-kit` skill:
 

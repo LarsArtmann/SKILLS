@@ -55,7 +55,7 @@ visual treatment.
    most recent 1-3 (TOC + findings tables) — cross-reference prior reviews and
    their unresolved findings instead of re-discovering them as new.
 2. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
-3. **Copy the template, never transcribe.** Start from [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html) by copying the file and editing its content — never re-type CSS or structure from memory or another report's rendered source; hand-transcribed CSS drifts from the kit and re-introduces bugs the kit already fixed.
+3. **Copy the template, never transcribe.** Start from [./assets/html-report-kit/assets/report-template-editorial.html](./assets/html-report-kit/assets/report-template-editorial.html) by copying the file and editing its content — never re-type CSS or structure from memory or another report's rendered source; hand-transcribed CSS drifts from the kit and re-introduces bugs the kit already fixed. The editorial-light variant is the kit's assignment for an audit brief; the dark dashboard is for scan output and status pages.
 4. Map findings to visual components:
    - **Stat cards** for files reviewed / issues found / split brains / TODOs added / fixed on the spot
    - **`.card-problem`** for type-safety issues, split brains, duplications

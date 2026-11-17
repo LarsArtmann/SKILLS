@@ -21,6 +21,39 @@ primitive values in `:root`.
 See [`bauhaus-tokens.md`](./bauhaus-tokens.md) for the full token architecture
 spec and the rationale behind the unified vocabulary.
 
+### Consumer variant assignments
+
+Each consumer gets one variant, decided once here instead of being re-guessed
+per report. `scripts/check-skills.sh` (check 16) reads this table: a skill that
+links a template contradicting its row fails the build, and so does a row whose
+named template file does not exist or is not vendored into that skill. Adding a
+consumer means adding a row — a skill that only points at the kit to route work
+elsewhere is `n/a` and is skipped.
+
+<!-- variant-assignments:start -->
+
+| Skill                  | Variant   | Why                                                    |
+| ---------------------- | --------- | ------------------------------------------------------ |
+| architecture-deepening | editorial | candidate brief: long-form judgement, read on paper    |
+| architecture-review    | editorial | judged architecture assessment, not a metric dump      |
+| brutal-self-review     | editorial | audit brief, long-form findings                        |
+| code-quality-scan      | dark      | scan results and high-density metric dashboard         |
+| data-model-review      | editorial | audit brief                                            |
+| design-to-code         | n/a       | routes to the kit, never renders a report itself       |
+| full-code-review       | editorial | audit brief, long-form findings                        |
+| go-modularize          | dark      | phase plan dominated by metric and before/after tables |
+| library-deep-dive      | editorial | utilization audit                                      |
+| naming-review          | editorial | audit brief                                            |
+| pareto-planning        | dark      | impact matrix dashboard                                |
+| status-report          | dark      | status dashboard                                       |
+
+<!-- variant-assignments:end -->
+
+Series discipline still wins over this table: when a directory already holds a
+report series, copy the most recent file's variant so the series stays visually
+continuous, and note the deviation in the new report. The assignment governs the
+first report in a series.
+
 ## When to Use HTML vs Markdown
 
 The `Artifact` decision rule (see `how-to-write-skills.md`):

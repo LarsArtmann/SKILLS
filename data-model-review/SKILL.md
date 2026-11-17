@@ -103,18 +103,20 @@ Key patterns:
    review series reads as one continuous conversation, not isolated
    documents.
 2. **Copy the template, never transcribe.** Start from
-   `./assets/html-report-kit/assets/report-template.html` by copying the
-   file and editing its content. Never re-type CSS or structure from
-   memory or from another report's rendered source — hand-transcribed CSS
-   drifts from the kit (wrong tokens, missing classes) and re-introduces
-   bugs the kit already fixed.
+   `./assets/html-report-kit/assets/report-template-editorial.html` by
+   copying the file and editing its content. Never re-type CSS or structure
+   from memory or from another report's rendered source — hand-transcribed
+   CSS drifts from the kit (wrong tokens, missing classes) and re-introduces
+   bugs the kit already fixed. The editorial-light variant is the kit's
+   assignment for an audit brief; the dark dashboard is for scan output and
+   status pages.
 
 Write a self-contained, zero-dependency HTML file at `docs/reviews/YYYY-MM-DD_<slug>.html`.
 
 Use the **shared design system** from the `html-report-kit` skill:
 
 - Design spec: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
-- Template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
+- Template: [./assets/html-report-kit/assets/report-template-editorial.html](./assets/html-report-kit/assets/report-template-editorial.html)
 
 For data-model-specific output guidance (section structure, Go syntax highlighting
 examples), also load [./references/output-guide.md](references/output-guide.md).

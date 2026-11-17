@@ -50,6 +50,12 @@
 #        into ~/.agents/skills (AGENTS.md §5.10) — a wrong link means agents
 #        silently run a stale or absent skill. Skipped with a NOTE when the
 #        runtime dir doesn't exist (portable checkouts); gated when it does.
+#    17. Kit-variant guard: every html-report-kit consumer must link the
+#        template variant assigned to it in the kit guide's table, must have
+#        that template vendored under assets/, and no skill may name a kit
+#        template file that does not exist. A link checker cannot see a
+#        wrong-but-existing variant (2026-11-15: architecture-review shipped
+#        pointing at the dark dashboard while the kit assigns editorial).
 #
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
@@ -575,6 +581,76 @@ for d in "${skill_dirs[@]}"; do
 			grep -oE '\]\((\.+/[^)]+)\)' |
 			sed -E 's/^\]\(//; s/\)$//'
 	)
+done
+
+# --- Kit-variant guard (2026-11-15) ---------------------------------------------
+# The html-report-kit ships two templates sharing one token vocabulary. Which
+# consumer gets which is a DECISION, recorded once in the guide's
+# variant-assignments table rather than re-guessed per report. Three failures
+# this catches, none visible to an existence-only link checker:
+#   * a skill links the wrong variant (architecture-review pointed at the dark
+#     dashboard while the kit assigns editorial to judged assessments);
+#   * a skill never vendors the template it is assigned (a per-skill install
+#     would then dangle);
+#   * a skill names a kit template file that does not exist at all.
+kit_guide="html-report-kit/references/html-output-guide.md"
+if [[ -f "$kit_guide" ]]; then
+	variant_rows=$(sed -n '/<!-- variant-assignments:start -->/,/<!-- variant-assignments:end -->/p' "$kit_guide" |
+		awk -F'|' '/^\|/ {
+			for (i = 2; i <= 3; i++) { gsub(/^[ \t]+/, "", $i); gsub(/[ \t]+$/, "", $i) }
+			if ($2 != "" && $2 != "Skill" && $2 !~ /^-+$/) print $2 "|" $3
+		}')
+	if [[ -z "$variant_rows" ]]; then
+		echo "FAIL: kit variant-assignments table is empty or unparsable in $kit_guide" >&2
+		failed=1
+	else
+		while IFS='|' read -r sk variant; do
+			[[ -z "$sk" ]] && continue
+			if [[ "$variant" == "n/a" ]]; then
+				continue
+			fi
+			case "$variant" in
+			dark) expect="report-template.html" ;;
+			editorial) expect="report-template-editorial.html" ;;
+			*)
+				echo "FAIL kit-variant: '$sk' has unknown variant '$variant' — use dark, editorial, or n/a" >&2
+				failed=1
+				continue
+				;;
+			esac
+			if [[ ! -d "$sk" ]]; then
+				echo "FAIL kit-variant: '$sk' is assigned a variant but no such skill directory exists" >&2
+				failed=1
+				continue
+			fi
+			if [[ ! -f "$sk/assets/html-report-kit/assets/$expect" ]]; then
+				echo "FAIL kit-variant: $sk does not vendor $expect (assigned $variant) — run scripts/sync-html-kit.sh" >&2
+				failed=1
+			fi
+			# Collect template filenames the skill mentions, linked or inline-coded:
+			# both are instructions an agent will follow.
+			linked=$(grep -rhoE '[a-z-]*report-template(-editorial)?\.html' "$sk/SKILL.md" "$sk/references" 2>/dev/null | sort -u | tr '\n' ' ' || true)
+			if [[ -z "$linked" ]]; then
+				echo "FAIL kit-variant: $sk is assigned '$variant' but names no kit template" >&2
+				failed=1
+			elif [[ " $linked " != *" $expect "* ]]; then
+				echo "FAIL kit-variant: $sk names '${linked% }' but is assigned $variant ($expect) — see $kit_guide" >&2
+				failed=1
+			fi
+		done <<<"$variant_rows"
+	fi
+fi
+
+# Every kit template filename any skill names must exist in the canonical kit,
+# or the skill is teaching an agent to copy a file that is not there.
+for d in "${skill_dirs[@]}"; do
+	while IFS= read -r tpl; do
+		[[ -z "$tpl" ]] && continue
+		if [[ ! -f "html-report-kit/assets/$tpl" ]]; then
+			echo "FAIL ${d#./}: names kit template '$tpl', which does not exist in html-report-kit/assets/" >&2
+			failed=1
+		fi
+	done < <(grep -rhoE '[a-z-]*report-template(-editorial)?\.html' "$d" --include='*.md' 2>/dev/null | grep -v '^assets/' | sort -u || true)
 done
 
 # --- Feedback-loop staleness ----------------------------------------------------
