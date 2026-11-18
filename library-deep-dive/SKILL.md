@@ -197,3 +197,45 @@ shipped the report and missed the rest, and each gap cost a same-day closeout
 - [ ] **Screenshot preserved in-repo:** the render screenshot is copied into
       the project's docs assets and linked from the report or index, never
       left only in /tmp — run traces in /tmp die with the next reboot.
+
+## Fleet Runs: the multi-library audit runbook (born nextd, 2026-11-17)
+
+A fleet run audits N libraries of one ecosystem in a single sitting
+(nextd's first run: 22 first-party Go libs, 5 sub-agent groups). Phases
+0–8 above still govern every individual report; this runbook is the
+batch orchestration on top:
+
+1. **Inventory + grouping.** List the fleet's libraries (dependency
+   files, project inventory), then group ~4–5 related libs per
+   sub-agent. Cap concurrency at 3 — five parallel groups on one
+   provider rate-limit-cascaded and cost ~40 minutes on the first run;
+   sequential groups lose nothing (each failure predates any output).
+2. **One report contract for every group.** Each lib gets: a verdict
+   (ADOPTED / UNDERUSED-<degree> / NOT-ADOPTED / NOT-APPLICABLE), a
+   _derived_ score (M leveraged of A applicable, Phase-4 rubric — the
+   inputs ship with the score), a capability inventory with evidence in
+   BOTH the library repo and the consumer, a gap analysis with code
+   snippets, version currency (`git describe --tags` on the local
+   checkout — label it "latest local tag" unless remotes were fetched),
+   the fleet argument, ranked opportunities, and a verify block the
+   AUTHOR executes before shipping.
+3. **A justified no beats a lazy no.** Every NOT-ADOPTED names its flip
+   trigger (the condition that would change the verdict); every N/A
+   carries its one-line reason. The verdict list IS the deliverable —
+   the reports just hold it up.
+4. **QC sampling.** The orchestrator re-verifies the FIRST report of
+   every group (citations + score recount) before declaring done —
+   trust is sampled, not assumed. Reports whose verdicts drive real
+   decisions (the adoption candidates) are re-verified too.
+5. **Index + done bars.** One dashboard page (stat cards, per-lib table
+   rows, verdict summary, verify appendix). Structural checks (row/link
+   counts) are the floor; when a headless browser is available, Phase
+   8's screenshot bar applies to the index as well — a dashboard that
+   was never rendered is styling on hope.
+6. **Route findings at write time.** Every numbered finding in the
+   run's status report ends with its routing marker (TODO row / ROADMAP
+   line) as it is written — a post-hoc routing pass is what reds
+   freshness gates and loses findings.
+7. **Provenance.** Record which sub-agent group produced each report
+   (header line) — QC sampling needs the group boundaries to sample
+   from.
