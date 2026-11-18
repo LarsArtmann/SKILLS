@@ -74,13 +74,13 @@ This tells you immediately:
 
 ### 1.2 Classify the starting state
 
-| State            | Indicators                                                                   | Approach                                                                         |
-| ---------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Monolith         | Single go.mod, all packages in one tree                                      | Full modularization from scratch                                                 |
-| Partial split    | Multiple go.mods with `replace` directives, some packages still coupled      | Refine boundaries, fix leaks                                                     |
-| Workspace mode   | go.work file coordinating multiple modules                                   | Audit workspace structure                                                        |
+| State            | Indicators                                                                   | Approach                                                                                                  |
+| ---------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Monolith         | Single go.mod, all packages in one tree                                      | Full modularization from scratch                                                                          |
+| Partial split    | Multiple go.mods with `replace` directives, some packages still coupled      | Refine boundaries, fix leaks                                                                              |
+| Workspace mode   | go.work file coordinating multiple modules                                   | Audit workspace structure                                                                                 |
 | Over-modularized | 10+ modules, high inter-module coupling, modules that always change together | Examine each boundary (see Default Posture in [../SKILL.md](../SKILL.md)) — some merge, some split deeper |
-| Already split    | Clean DAG, minimal replace, independent CI per module                        | Skip to Phase 7 reflection only                                                  |
+| Already split    | Clean DAG, minimal replace, independent CI per module                        | Skip to Phase 7 reflection only                                                                           |
 
 ### 1.3 Map the existing module landscape
 
@@ -286,18 +286,18 @@ READ, UNDERSTAND, RESEARCH, REFLECT before proposing anything.
 
 For every module (existing or new):
 
-| Field               | Content                                                                  |
-| ------------------- | ------------------------------------------------------------------------ |
-| Name & path         | Domain modules named for the sub-domain (`/battle`, `/voting`); implementation modules named for the mechanism (`/storage`, `/projection`) |
-| Sub-domain / feature | The domain cluster this module serves (from Phase 2.1) — "all of them" or a technical layer ("handlers", "storage") is a wrong seam, redraw |
-| Purpose             | One sentence (if you cannot, the module is too broad)                    |
-| Owned types         | The data model this module exclusively owns and exports — its contract; types co-owned with a sibling mean the boundary is entangled, fix before splitting |
-| Dependencies (prod) | Which other sub-modules it imports in production code                    |
-| Dependencies (test) | Which sub-modules it imports only in `_test.go` files                    |
-| Public API          | Types and functions exposed to other modules                             |
-| Internal packages   | Packages not meant for external consumption                              |
-| Error types         | Sentinel errors and custom error types, with justification for placement |
-| External deps       | go.mod requirements (third-party libraries)                              |
+| Field                | Content                                                                                                                                                    |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Name & path          | Domain modules named for the sub-domain (`/battle`, `/voting`); implementation modules named for the mechanism (`/storage`, `/projection`)                 |
+| Sub-domain / feature | The domain cluster this module serves (from Phase 2.1) — "all of them" or a technical layer ("handlers", "storage") is a wrong seam, redraw                |
+| Purpose              | One sentence (if you cannot, the module is too broad)                                                                                                      |
+| Owned types          | The data model this module exclusively owns and exports — its contract; types co-owned with a sibling mean the boundary is entangled, fix before splitting |
+| Dependencies (prod)  | Which other sub-modules it imports in production code                                                                                                      |
+| Dependencies (test)  | Which sub-modules it imports only in `_test.go` files                                                                                                      |
+| Public API           | Types and functions exposed to other modules                                                                                                               |
+| Internal packages    | Packages not meant for external consumption                                                                                                                |
+| Error types          | Sentinel errors and custom error types, with justification for placement                                                                                   |
+| External deps        | go.mod requirements (third-party libraries)                                                                                                                |
 
 ### 3.2 Enforce DAG structure
 
