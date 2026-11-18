@@ -79,7 +79,7 @@ This tells you immediately:
 | Monolith         | Single go.mod, all packages in one tree                                      | Full modularization from scratch                                                 |
 | Partial split    | Multiple go.mods with `replace` directives, some packages still coupled      | Refine boundaries, fix leaks                                                     |
 | Workspace mode   | go.work file coordinating multiple modules                                   | Audit workspace structure                                                        |
-| Over-modularized | 10+ modules, high inter-module coupling, modules that always change together | Examine each boundary (see Direction Neutrality) — some merge, some split deeper |
+| Over-modularized | 10+ modules, high inter-module coupling, modules that always change together | Examine each boundary (see Default Posture in [../SKILL.md](../SKILL.md)) — some merge, some split deeper |
 | Already split    | Clean DAG, minimal replace, independent CI per module                        | Skip to Phase 7 reflection only                                                  |
 
 ### 1.3 Map the existing module landscape
@@ -158,12 +158,26 @@ and coupling hotspots.
 
 ### 2.1 Explore the codebase
 
-Read every package. Map:
+**Map sub-domains and features BEFORE dependency graphs.** Boundaries follow
+domain clusters (Default Posture), so enumerate the clusters first:
+
+- List the project's features/sub-domains from package and type names, `cmd/`
+  binaries, README/FEATURES bullets, and `docs/DOMAIN_LANGUAGE.md` when present
+- Cluster files by feature — a feature vertical spans its handlers, logic,
+  storage, and types; record which packages belong to which cluster
+- Run `git log --stat` grouped by cluster: commits touching only one cluster
+  are seam candidates; commits straddling clusters mark coupling to break
+- Name each cluster in domain vocabulary (`battle`, `voting`); a cluster you
+  cannot name is either two features or none — split or merge the cluster
+  until it has a name
+
+Then read every package. Map:
 
 - Package dependency graph (who imports whom) — use tooling from above
 - Domain concepts vs infrastructure concerns
 - Public API surface per package (exported types, interfaces, functions)
-- Shared types and utilities
+- Shared types and utilities — flag every type shared across cluster
+  boundaries; these decide where the data models entangle
 - Test patterns and testhelpers
 - Error types and where they are defined (critical for cross-module `errors.Is`/`errors.As`)
 
@@ -247,6 +261,10 @@ Map all `go:generate` directives and their cross-module dependencies.
 Present findings as:
 
 - Current dependency graph (table or D2 diagram)
+- Sub-domain map: feature clusters, per-cluster co-change, and the cluster
+  each candidate module would own
+- Owned-types map: which module would own each exported type; types shared
+  across sub-domains flagged for redraw at the type level
 - Module boundary candidates with rationale
 - God-package decomposition candidates
 - `internal/` access violations after proposed split
@@ -270,8 +288,10 @@ For every module (existing or new):
 
 | Field               | Content                                                                  |
 | ------------------- | ------------------------------------------------------------------------ |
-| Name & path         | e.g. `/core`, `/storage`, `/projection`                                  |
+| Name & path         | Domain modules named for the sub-domain (`/battle`, `/voting`); implementation modules named for the mechanism (`/storage`, `/projection`) |
+| Sub-domain / feature | The domain cluster this module serves (from Phase 2.1) — "all of them" or a technical layer ("handlers", "storage") is a wrong seam, redraw |
 | Purpose             | One sentence (if you cannot, the module is too broad)                    |
+| Owned types         | The data model this module exclusively owns and exports — its contract; types co-owned with a sibling mean the boundary is entangled, fix before splitting |
 | Dependencies (prod) | Which other sub-modules it imports in production code                    |
 | Dependencies (test) | Which sub-modules it imports only in `_test.go` files                    |
 | Public API          | Types and functions exposed to other modules                             |

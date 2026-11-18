@@ -8,8 +8,10 @@ description: >
   apart Go project", "too coupled", "Go package boundaries", "remodularize",
   "re-modularize", "merge modules", "too many modules", "over-modularized",
   "consolidate modules", "unix-style", "decompose deeper", "too few modules",
-  "god-module", "composable modules". Splits or merges Go modules, refining go.mod
-  boundaries. Direction-neutral.
+  "god-module", "composable modules". Splits or merges Go modules along
+  sub-domain/feature seams, refining go.mod boundaries. Strongly prefers
+  small, domain-shaped modules with superb boundaries and self-contained,
+  composable data models; merging must earn its evidence.
 metadata:
   tags: go, modularization, monorepo, multi-module, go.mod, architecture, refactoring,
     go.work, replace-directives, versioning, re-modularization, merge-modules,
@@ -53,7 +55,9 @@ These principles guide every decision in this skill. When in doubt, return here.
 | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Do one thing well**          | Each module has a single, clear purpose. If you cannot describe it in one sentence, the boundary is wrong.                                                  |
 | **Small is beautiful**         | Prefer many small, focused modules over few large ones. A module with 2 packages is fine. A module with 20 is a red flag.                                   |
+| **Domain-shaped boundaries**   | Modules own sub-domains or features (`battle/`, `voting/`), never technical layers. "All handlers" or "all storage" across every feature is a wrong seam; layers are packages inside a module. |
 | **Composition over monoliths** | Modules compose via interfaces. Consumers import what they need, never the whole system.                                                                    |
+| **Data model is the contract** | A module's exported types are its whole interface: self-contained, strongly typed, composable. No cross-domain shared types module, no union god-structs. |
 | **Thin textual interfaces**    | Go interfaces are the "pipes" of module architecture — thin, explicit, easy to inspect. Define what, not how.                                               |
 | **Mechanism, not policy**      | Core modules define _what_ (interfaces, types, domain logic). Infrastructure modules define _how_ (implementations). Never mix them.                        |
 | **Fail noisily**               | Build failures at module boundaries are _good_ — they catch coupling early. Do not suppress them with `replace` hacks or clever workarounds.                |
@@ -125,17 +129,45 @@ accept the monolith on the record. "Nothing to extract" is a seam verdict;
 reporting it as "nothing to do" while a god-module finding is open repeats
 the retired stop-rule's failure from the other direction.
 
-### Direction Neutrality — split and merge are equally valid
+### Default Posture — Small, Domain-Shaped, Composable
 
-This skill is NOT biased toward splitting, and NOT biased toward merging. Both
-"too many modules" and "too few modules" are failures of the same kind: a
-boundary sits at the wrong place. The Unix principle "small is beautiful" is a
-statement about _focus_, not _count_. `grep`, `sed`, and `awk` ship together,
-release together, and co-change constantly — yet merging them into one binary
-would destroy their composability. **Co-change is evidence to examine, never a
+This skill's goal state is **many small modules, each owning one sub-domain or
+feature, each with a self-contained, strongly-typed data model, composing
+through thin interfaces**. When the gates leave the verdict genuinely
+ambiguous — evidence balanced in both directions — the tie breaks toward the
+smaller module, because the costs are asymmetric: merging two modules with a
+clean interface between them is mechanical (delete a go.mod, fix import
+paths), while a god-module accretes coupling until it can no longer be
+unwound. Splitting is the cheaper mistake to correct; under-splitting
+compounds.
+
+The tie-break decides close calls only — it is not a license to skip gate 2.
+A boundary with no payoff in either currency is still FM#8 atomization, and
+merging remains the right verdict whenever the evidence says so. What the
+posture changes is the burden of proof: a split rides the default, a merge
+must argue for itself. `grep`, `sed`, and `awk` ship together, release
+together, and co-change constantly — yet merging them into one binary would
+destroy their composability. **Co-change is evidence to examine, never a
 verdict to merge.**
 
-Two questions replace "should I merge or split?":
+**Domain-shaped, never layer-shaped.** Module boundaries follow sub-domains
+and features, never technical layers — a module holding "all handlers" or
+"all storage" across every feature is a wrong seam no matter how clean its
+DAG looks (Phase 1.5 in [./references/phases.md](./references/phases.md)).
+Layers are packages inside a module; the feature is the module. Module names
+come from the domain vocabulary, not from architecture roles.
+
+**The data model is the contract.** A superb boundary leaves each module
+owning a self-contained data model: its exported types are the whole story of
+what it offers — strongly typed, impossible states unrepresentable, composable
+with siblings via embedding and interfaces rather than union god-structs. A
+shared `types/`/`common/` module that siblings import across multiple
+sub-domains is a boundary smell: the owning modules are missing and the types
+have no home. (A contract module for ONE sub-domain — the `domain/event`
+pattern from [./references/example.md](./references/example.md) — is the
+canonical shape, not the smell.)
+
+Three questions replace "should I merge or split?":
 
 1. **Decomposition depth** — Is each module at the right level of abstraction?
    A `domain/` module bundling `battle/`, `voting/`, `media/` "does one thing"
@@ -146,9 +178,13 @@ Two questions replace "should I merge or split?":
 2. **Pipe payoff** — Does the boundary let consumers import only what
    they need? If every consumer imports modules A and B together, the seam earns
    nothing. If some consume A without B, it earns its keep.
+3. **Model self-containment** — Could this module's types stand alone in a
+   consumer that imports nothing else from the repo? If using type `X` drags
+   in an unrelated sub-domain's types, the model — not just the module — is
+   entangled; redraw at the type level first, then re-run the gates.
 
-When the evidence points to merging, merge. When it points to splitting, split.
-Let the evidence decide — never a default bias in either direction.
+When the evidence points to merging, merge. When it points to splitting,
+split. When it whispers both ways, split.
 
 ---
 
@@ -164,7 +200,7 @@ boundaries to draw now:
 | Small project (<10 packages) | There is surface for at most one defensible boundary                                             | Draw zero or one, not five. Not a stop.                                                                                                                                 |
 | No consumer variance         | Every consumer imports A and B together — no pipe payoff (the FM#8 test)                         | Redraw or dissolve — unless gate 2's policy currency covers the seam: import bans, per-module CI, and committed size policies are payoffs with zero external consumers. |
 | Prototype / spike            | Seams are not stable yet — boundaries drawn now get drawn wrong                                  | Defer the split; run gates 1–4 on packages now so the later extraction is mechanical.                                                                                   |
-| Everything changes together  | Co-change: evidence to examine, never a verdict (see Direction Neutrality); normal in young code | Check consumer variance before concluding anything.                                                                                                                     |
+| Everything changes together  | Co-change: evidence to examine, never a verdict (see Default Posture); normal in young code | Check consumer variance before concluding anything.                                                                                                                     |
 
 The old stop-rule ("3+ High signals → stop") is retired: it let monoliths hide
 god-packages behind "too small to modularize". Staying one module is a fine
@@ -222,7 +258,7 @@ execution — if you hit one, the mitigation is here.
 | 5  | **Broken consumers**           | External import paths change without redirect                                                                                                                    | Consumer project fails to `go get` after modularization                                             | Use `go.mod` redirect tags or `// Deprecated` annotations.                                                                                                                                                                                                                                                                                                                                                      |
 | 6  | **internal/ access breakage**  | Moving a package behind `internal/` blocks cross-module access                                                                                                   | `go build` fails with "use of internal package" from another module                                 | Remember: `internal/` restricts access to the _module_ tree, not just the package tree. A sub-module's `internal/` is invisible to all other modules.                                                                                                                                                                                                                                                           |
 | 7  | **Error type inaccessibility** | `errors.Is`/`errors.As` fail because error types moved to a module the consumer doesn't import                                                                   | Tests pass locally (workspace provides all modules) but fail in isolation or for external consumers | Keep **contract** errors in the interface module (domain), not in implementations. Implementation-specific errors live in the implementation module. See [./references/real-world-patterns.md](./references/real-world-patterns.md) §Error Architecture.                                                                                                                                                        |
-| 8  | **Over-modularization**        | Micro-modules with no payoff in either currency — every consumer imports A and B together                                                                        | `git log --stat` shows same files changed together AND no consumer imports one without the other    | Examine the boundary — do NOT auto-merge. Merge only if no consumer benefits from the seam (see Direction Neutrality). Co-change alone is not a verdict.                                                                                                                                                                                                                                                        |
+| 8  | **Over-modularization**        | Micro-modules with no payoff in either currency — every consumer imports A and B together                                                                        | `git log --stat` shows same files changed together AND no consumer imports one without the other    | Examine the boundary — do NOT auto-merge. Merge only if no consumer benefits from the seam (see Default Posture). Co-change alone is not a verdict.                                                                                                                                                                                                                                                        |
 | 9  | **Stale go.work**              | `go.work` references deleted or renamed modules                                                                                                                  | `go work sync` reports errors or `go build` fails at root                                           | Run `go work sync` after every structural change. Commit `go.work` and `go.work.sum` together.                                                                                                                                                                                                                                                                                                                  |
 | 10 | **Build system breakage**      | Build system references old module paths                                                                                                                         | `nix build`, `make`, or CI fails after module moves                                                 | Update build system immediately after each module move.                                                                                                                                                                                                                                                                                                                                                         |
 | 11 | **Under-modularization**       | God-modules bundling unrelated sub-domains at the wrong depth                                                                                                    | One go.mod with 14+ packages; importing feature X drags in feature Y's types                        | Split along sub-domain boundaries that pass gate 2 in either currency (forced-import evidence or a committed policy). The inverse of FM#8 — "too few" is as real a failure as "too many."                                                                                                                                                                                                                       |
