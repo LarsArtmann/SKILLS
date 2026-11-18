@@ -141,6 +141,11 @@ paths), while a god-module accretes coupling until it can no longer be
 unwound. Splitting is the cheaper mistake to correct; under-splitting
 compounds.
 
+A tie is a precise state: gate-2 evidence exists in at least one currency
+but is thin or contested — few co-changes, disputed ownership, a policy
+payoff just short of its bar. Absent evidence is not a tie but a gate-2
+FAIL (FM#8); the posture has no vote on a FAIL.
+
 The tie-break decides close calls only — it is not a license to skip gate 2.
 A boundary with no payoff in either currency is still FM#8 atomization, and
 merging remains the right verdict whenever the evidence says so. What the
