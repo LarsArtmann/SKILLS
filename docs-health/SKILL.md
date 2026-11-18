@@ -297,6 +297,17 @@ without a manifest is invisible history — the next audit cannot tell a
 resolved-and-archived file from one that was never classified. Single-file
 archives skip this (the commit message is the manifest).
 
+**Heading-mode canon (decided 2026-11-18, T71):** markdown HEADINGS stay
+bare — never strike or marker-annotate a heading line, even when the
+heading's text describes partial work (the `### 1. Gotcha table…` shape in
+2026-08-12-era reports). The verdict belongs on the first NON-heading line
+under it (a table row or a prose bullet the annotate grammar can target).
+annotate.go deliberately has no heading-item mode; a heading carrying a
+`~~` strike renders as struck navigation, not a struck claim. When a
+report's §b headings describe work, resolve them via the §f verdicts and
+leave the headings untouched — this is the codified judgment call, not a
+per-session decision.
+
 ### Placement: inline before appendix
 
 Correct stale claims **in place**: `~~Nothing committed.~~ Committed as a7b8159.` If the opening/TL;DR has stale claims, inline-correct them — a reader forms their impression from the opening. An end-of-file `## Resolution (date)` appendix is supplementary context, **never the only annotation. Appendix-only on a file with numbered items = the #1 failure mode.**
