@@ -13,6 +13,30 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Changed (2026-11-18 — go-modularize: posture flip to small, domain-shaped modules)
+
+- **Direction neutrality retired; small-module default adopted.** The skill's
+  goal state is now explicitly many small modules, each owning one sub-domain
+  or feature, each with a self-contained, strongly-typed data model, composing
+  through thin interfaces. When gate evidence is genuinely ambiguous, the tie
+  breaks toward splitting — merging two interface-clean modules is mechanical
+  while god-modules accrete coupling until they cannot be unwound. Merging
+  remains a valid verdict but now carries the burden of proof.
+- **Domain-shaped, never layer-shaped.** New principle row plus posture
+  section: module boundaries follow sub-domains/features ("all handlers" or
+  "all storage" across every feature is a wrong seam); Phase 2.1 now maps
+  feature clusters (incl. `docs/DOMAIN_LANGUAGE.md`, per-cluster `git log
+  --stat`) BEFORE dependency graphs, and Phase 3.1 module definitions gained
+  Sub-domain/feature and Owned-types fields.
+- **The data model is the contract.** Third decision question
+  (model self-containment: could this module's types stand alone in a consumer
+  that imports nothing else?) plus an owned-types map in Phase 2.8. A shared
+  `types/`/`common/` module spanning multiple sub-domains is now documented as
+  a boundary smell; a per-sub-domain contract module remains canonical.
+- **What did NOT change:** gates 1–5 and the two-currency gate 2 evidence bar
+  are untouched (FM#8 still polices atomization; the tie-break decides close
+  calls only), so the persisted 2026-11-15 eval results remain valid.
+
 ### Fixed (2026-11-17 — architecture-deepening fork: wrong template variant gated, fork wired end to end)
 
 - **The wrong-template class is now a gate.** Five kit consumers named the
