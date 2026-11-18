@@ -12,7 +12,9 @@
 # is enforced per module, not just at the root. Requires of the project's
 # OWN module tree (sibling product modules like profileagent/cloudbrowser)
 # are checked against the "## Wiring order" section instead of Chosen
-# foundation — siblings are structure, not library choices.
+# foundation — siblings are structure, not library choices. The sibling
+# boundary is the PROJECT ROOT module path: portalapply requiring
+# profileagent/cloudbrowser is still a sibling of the project.
 #
 # Per-module wiring matrix: if STACK.md carries a "## Wiring order"
 # section, every extracted require must ALSO be named in that module's
@@ -56,6 +58,14 @@ if sed -n '/^## Wiring order/,/^## /p' "$stack_file" | head -n -1 | grep -q .; t
 	wiring_section="$(sed -n '/^## Wiring order/,/^## /p' "$stack_file" | head -n -1)"
 fi
 
+# Sibling boundary: the PROJECT ROOT module path. Requires under it are
+# sibling product modules (structure), not library choices.
+if [[ -f "$project_dir/go.mod" ]]; then
+	project_module="$(awk '/^module / { print $2; exit }' "$project_dir/go.mod")"
+else
+	project_module="$(awk '/^module / { print $2; exit }' "$(echo "$go_mod_files" | head -1)")"
+fi
+
 # Extract the wiring entry text for one module label. Entry blocks start
 # at `<n>. **<label>…`; a block runs until the next numbered entry.
 wiring_entry() {
@@ -81,9 +91,6 @@ while IFS= read -r go_mod_file; do
 		label="$(basename "$module_dir")"
 	fi
 
-	# Main module path — sibling requires (own tree) are structure, not libs.
-	main_module="$(awk '/^module / { print $2; exit }' "$go_mod_file")"
-
 	# Direct first-party requires: strip github.com/larsartmann/, keep the
 	# first path segment, drop /vN major suffixes. Requires inside the
 	# project's own module tree are tagged "sibling:<name>".
@@ -99,8 +106,8 @@ while IFS= read -r go_mod_file; do
 			}
 		' "$go_mod_file" |
 			while IFS= read -r req; do
-				if [[ -n "$main_module" && "$req" == "$main_module"* ]]; then
-					echo "sibling:${req#"$main_module"/}"
+				if [[ -n "$project_module" && "$req" == "$project_module"* ]]; then
+					echo "sibling:${req#"$project_module"/}"
 				else
 					echo "${req#github.com/larsartmann/}"
 				fi
@@ -136,12 +143,12 @@ while IFS= read -r go_mod_file; do
 
 		lib_name="${lib%%/*}"
 		if grep -qF "$lib_name" <<<"$chosen_section"; then
-			wired="OK"
 			if [[ -n "$wiring_section" ]] && ! grep -qF "$lib_name" <<<"$entry"; then
-				wired="DRIFT(wiring): $label requires $lib_name (declared in Chosen foundation) but the Wiring order entry for $label does not name it"
+				echo "DRIFT(wiring): $label requires $lib_name (declared in Chosen foundation) but the Wiring order entry for $label does not name it"
 				failures=$((failures + 1))
+			else
+				echo "OK: $label — $lib_name declared in Chosen foundation"
 			fi
-			[[ "$wired" == "OK" ]] && echo "OK: $label — $lib_name declared in Chosen foundation"
 		elif grep -qF "$lib_name" <<<"$excluded_section"; then
 			echo "DRIFT(contradiction): $label requires $lib_name but STACK.md lists it as deliberately excluded — either the exclusion is stale or the import is accidental"
 			failures=$((failures + 1))
