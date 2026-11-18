@@ -149,6 +149,40 @@ For projects not using the `go-standard` module from `github.com/LarsArtmann/go-
 
 For a full annotated `flake.nix` example, load [./references/implementation-guide.md](./references/implementation-guide.md).
 
+### Monorepos with private deps (go-standard)
+
+The go-standard module's monorepo `packages` option and private deps interact
+through ONE prepared source:
+
+- Shared config — `deps`, `subModules`, `vendorHash`, `goPkg` — comes from the
+  TOP-LEVEL `go-standard` config. Every per-package build shares the same
+  prepared source and the same `_local_deps/` replaces; there is no per-package
+  dep set.
+- Per-package divergence (`ldflags`, `subPackages`, `description`) goes in
+  `go-standard.packages.<name>`. The six keys `nativeBuildInputs`,
+  `buildInputs`, `checkInputs`, `configureFlags`, `preBuild`, `postInstall`
+  APPEND to top-level values; everything else overrides with `//`.
+- Per-package `extraBuildAttrs` accepts a `pkgs: attrs` function form when a
+  package needs perSystem-built derivations.
+- A monorepo entry whose code lives in a separate in-tree Go module still needs
+  that module's deps in the top-level `deps` (or auto-discovered via
+  `subModules`) — the whole repo builds from one patched source tree.
+
+### Container images with private deps
+
+`go-standard.container.enable` works unchanged with `deps` set: the private
+deps are resolved at BUILD time into the image's Go binary, so the shipped
+image layers contain only the compiled closure — nothing about `_local_deps/`
+or the private repos leaks into the image. `nix run .#<pname>-image-push`
+pushes it like any public image.
+
+### Shell scripts in skills
+
+Every shell script a skill ships must pass
+`nix run nixpkgs#shellcheck -- scripts/*.sh` — style severity included (one
+info-level SC code fails CI in LarsArtmann repos). Repo pre-commit hooks wrap
+exactly that command; run it before committing script changes.
+
 ## 3. Migrate from `vendor/`
 
 Follow the checklist in [./references/migration-checklist.md](./references/migration-checklist.md). The high-level steps are:
