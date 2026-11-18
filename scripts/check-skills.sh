@@ -111,7 +111,9 @@ while [[ $# -gt 0 ]]; do
 	shift
 done
 
-repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+self_path="$script_dir/$(basename "${BASH_SOURCE[0]}")"
+repo_root="$(cd "$script_dir/.." && pwd)"
 if [[ -n "$fixture_root" ]]; then
 	repo_root="$(cd "$fixture_root" && pwd)"
 fi
@@ -125,9 +127,9 @@ cd "$repo_root"
 # check-15 FAIL plus its remediation line; the --signal counters must reproduce
 # the signal-fixture pins exactly. Any drift = broken gate, loud exit 1.
 if [[ "$selftest" -eq 1 ]]; then
-	fix="$repo_root/scripts/fixtures/check-skills"
+	fix="$script_dir/fixtures/check-skills"
 	st=0
-	pass_out="$(bash "$0" --root "$fix/pass" check 2>&1)" || st=1
+	pass_out="$(bash "$self_path" --root "$fix/pass" check 2>&1)" || st=1
 	if [[ "$st" -ne 0 ]] || ! grep -q '^OK: all 2 skills pass structural checks\.$' <<<"$pass_out"; then
 		echo "SELFTEST FAIL: pass tree must exit 0 AND print the final OK line (the 2026-09-09 silent-exit class)" >&2
 		printf '%s\n' "$pass_out" >&2
@@ -135,7 +137,7 @@ if [[ "$selftest" -eq 1 ]]; then
 	fi
 	echo "selftest 1/3 green: pass tree exits 0 with the OK line"
 	st=0
-	fail_out="$(bash "$0" --root "$fix/fail" check 2>&1)" || st=1
+	fail_out="$(bash "$self_path" --root "$fix/fail" check 2>&1)" || st=1
 	n_fail="$(grep '^FAIL' <<<"$fail_out" | grep -vc '^FAIL: one or more' || true)"
 	if [[ "$st" -eq 0 ]] || [[ "$n_fail" -ne 1 ]] || ! grep -q '^FAIL throat-clearer: throat-clearing prose' <<<"$fail_out" || ! grep -q '^  Fix: delete the sentence' <<<"$fail_out"; then
 		echo "SELFTEST FAIL: throat-clearer must yield exactly one check-15 FAIL with its remediation line (got $n_fail FAIL lines)" >&2
@@ -143,7 +145,7 @@ if [[ "$selftest" -eq 1 ]]; then
 		exit 1
 	fi
 	echo "selftest 2/3 green: fail tree yields exactly one check-15 FAIL + remediation"
-	sig_out="$(bash "$0" --root "$fix/pass" --signal 2>&1)"
+	sig_out="$(bash "$self_path" --root "$fix/pass" --signal 2>&1)"
 	if ! grep -Eq '^  signal-fixture +preamble=6 +prose=1 +filler=0 +jargon=1 *$' <<<"$sig_out"; then
 		echo "SELFTEST FAIL: --signal counters drifted from the signal-fixture pins (expected preamble=6 prose=1 filler=0 jargon=1)" >&2
 		printf '%s\n' "$sig_out" >&2
@@ -871,7 +873,7 @@ fi
 # the SKILL.md-only backlink loop above (kept as a belt-and-braces subset).
 link_args=()
 if [[ -n "$fixture_root" ]]; then link_args=(--root "$fixture_root"); fi
-if ! "$(dirname "${BASH_SOURCE[0]}")/check-skill-links.sh" ${link_args[@]+"${link_args[@]}"}; then
+if ! "$script_dir/check-skill-links.sh" ${link_args[@]+"${link_args[@]}"}; then
 	failed=1
 fi
 
@@ -881,7 +883,7 @@ fi
 # --root (fixtures have no runtime links) and when the runtime dir is absent.
 if [[ -z "$fixture_root" ]]; then
 	if [[ -d "${AGENTS_DIR:-$HOME/.agents/skills}" ]]; then
-		if ! scripts/link-skills-to-agents.sh --check; then
+		if ! "$script_dir/link-skills-to-agents.sh" --check; then
 			echo "FAIL: runtime link drift — run scripts/link-skills-to-agents.sh to repair (AGENTS.md §5.10)" >&2
 			failed=1
 		fi
