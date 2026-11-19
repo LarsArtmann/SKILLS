@@ -133,6 +133,23 @@ Goal: distinguish "Fully Leveraged" from "Partially Used" and catch anti-pattern
 **Layer 4 — Currency:** What's new since the installed version? Goal: version
 currency assessment and "features you're missing by not upgrading."
 
+### Negative-Claim Recall Test (added 2026-11-19)
+
+A NEGATIVE claim ("ZERO imports of X", "0 tags", "no consumer exists") is the
+easiest claim to get wrong and the hardest to notice being wrong: grep patterns
+with wrong globs silently return zero hits and the audit ships a false
+universal. Before writing any negative claim:
+
+1. **Re-derive it with the widest sane pattern**: `rg -n "X" --glob '**/go.mod'`
+   (a bare `--glob 'go.mod'` matches the root module only — nested modules
+   exist in monorepos), plus a repo-wide source grep, plus the dependency
+   graph (`go mod graph | grep X`).
+2. **Calibrate against a known positive**: run the SAME pattern for something
+   that MUST match (e.g. the module's own require block); if the positive
+   returns zero hits, the pattern is broken, not the claim.
+3. **State the pattern in the report** so a fresh reader can replay the
+   negative claim instead of trusting it.
+
 ### Capability Categories Expanded
 
 For every library, systematically check these categories. Not all apply to every

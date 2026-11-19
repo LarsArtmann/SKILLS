@@ -74,7 +74,7 @@ This is the core of the deep dive. The goal is to build an exhaustive map of wha
    - Migration guides and version-specific features
 2. **Fetch official docs** via `agentic_fetch` for topics Context7 doesn't cover deeply — especially configuration reference, middleware/hooks/plugins, performance tuning, and lesser-known features.
 3. **Search for best practices and anti-patterns** via `agentic_fetch` — community guides, "tips and tricks", "advanced usage", "common mistakes with <library>".
-4. **Check the changelog / release notes** for the installed version and newer versions. What features were added that the project may not know about? Are they behind on a major version?
+4. **Check the changelog / release notes** for the installed version and newer versions. What features were added that the project may not know about? Are they behind on a major version? READ the dependency's LOCAL `CHANGELOG.md` and `TODO_LIST.md` in full, not just released tags — release intent, tag ETA, and owner-gated blockers live in `[Unreleased]` prose (the 2026-11-19 go-compliance run found "the tag itself waits for the owner's go" there, which reframed the whole adoption timeline).
 5. **Enumerate these capability categories** for every library:
 
 | Category                         | What to Look For                                                                   |
@@ -188,7 +188,12 @@ shipped the report and missed the rest, and each gap cost a same-day closeout
 - [ ] **Browser:** the committed HTML is screenshot-verified in a headless
       browser (renders, no broken layout, score cards show the derived numbers).
       An unrendered report has shipped with broken markup before; the screenshot
-      is the run trace.
+      is the run trace. If the auditing model cannot view images, the visual
+      verdict MUST come from a VISION-CAPABLE subagent dispatched to eyeball the
+      screenshot — structural checks alone (section greps, DOM presence) do not
+      satisfy this bar. Mind viewer limits: most text-model image viewers cap
+      around 200 KB, so pre-generate scaled renditions (ffmpeg/ImageMagick) and
+      send those to the vision subagent.
 - [ ] **Verify blocks executed:** every "how to verify" command block in the
       report is replayed literally as written before shipping — an audit
       whose own verify commands fail on first run (`rg --g`-class typos)
@@ -196,7 +201,13 @@ shipped the report and missed the rest, and each gap cost a same-day closeout
       fresh reader can re-derive every claim.
 - [ ] **Screenshot preserved in-repo:** the render screenshot is copied into
       the project's docs assets and linked from the report or index, never
-      left only in /tmp — run traces in /tmp die with the next reboot.
+      left only in /tmp — run traces in /tmp die with the next reboot. The
+      capture must be FULL-PAGE: over-tall window (e.g. 1440x20000) then
+      auto-crop to content (ImageMagick `-trim` / `%@` bounding box) — a
+      viewport-guessed height truncates long reports and the shipped trace
+      misses the appendix (2026-11-19: 3800px capture vs 6126px content).
+      Replace the asset UNDER THE SAME NAME so a write-once report needs no
+      retro-edit of its links.
 
 ## Fleet Runs: the multi-library audit runbook (born nextd, 2026-11-17)
 
@@ -205,6 +216,14 @@ A fleet run audits N libraries of one ecosystem in a single sitting
 0–8 above still govern every individual report; this runbook is the
 batch orchestration on top:
 
+0. **Single-report QC pass (mandatory, added 2026-11-19).** Before a
+   report ships, dispatch an independent READ-ONLY QC subagent to
+   re-verify at least 10 `path:line` citations against the real files,
+   recount the appendix/score numbers against the prose claims, and
+   re-run the report's own verify block. The first application caught
+   two stale citations and superseded provenance hashes in a freshly
+   shipped report. Corrections land as errata rows (TODO_LIST), never
+   as retro-edits of a write-once report.
 1. **Inventory + grouping.** List the fleet's libraries (dependency
    files, project inventory), then group ~4–5 related libs per
    sub-agent. Cap concurrency at 3 — five parallel groups on one
