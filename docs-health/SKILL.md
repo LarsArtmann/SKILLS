@@ -204,7 +204,7 @@ When the surface is large (SDK endpoints, API families), split the no-code cases
 
 Never round up. If you cannot confirm a feature works, it is PARTIALLY_FUNCTIONAL at best.
 
-**Rules:** Code wins when doc and code disagree. Cite evidence (`path/to/file:NN`) — a dedicated Evidence column beats burying it in Notes. Verify each claim — many documented TODOs are already done. Compute counts from the repo, date-stamp any sweep against an external source of truth (e.g. "audited 2026-09-16 against the upstream API reference"), and prefer a standing gate that re-derives doc numbers over hand-maintained ones — duplicated counts rot. Detect project type and adapt which docs are needed.
+**Rules:** Report, plan, and audit headers carry an author-run provenance line (`**Created:** date · author/agent · backlog basis`) — a reader must know which session produced the artifact without git archaeology (fleet convention, 2026-11-19). Code wins when doc and code disagree. Cite evidence (`path/to/file:NN`) — a dedicated Evidence column beats burying it in Notes. Verify each claim — many documented TODOs are already done. Compute counts from the repo, date-stamp any sweep against an external source of truth (e.g. "audited 2026-09-16 against the upstream API reference"), and prefer a standing gate that re-derives doc numbers over hand-maintained ones — duplicated counts rot. Detect project type and adapt which docs are needed.
 
 For BUILD procedures, examples, quality checklists, and AGENTS.md scoring, load [./references/build-guide.md](./references/build-guide.md) and [./references/agents-quality-guide.md](./references/agents-quality-guide.md). Templates: [./assets/](./assets/) — one per doc type.
 
