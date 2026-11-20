@@ -110,3 +110,11 @@ Additional structural smells to reject:
 - After changes, run `go build ./...` and the project’s test suite.
 - Ensure every `do.New()` has a matching `.Shutdown()` call reachable on the cleanup path.
 - Confirm no `do.MustInvoke` remains in runtime request paths or CLI action handlers.
+
+## Works with (fleet pairings)
+
+- **cmdguard** — cmdguard's `Scope` IS samber/do/v2, so these rules govern every
+  service a cmdguard CLI registers: `v5.Provide`/`Override` call sites,
+  `do.ShutdownerWithError`/`do.HealthcheckerWithContext` implementations that the
+  auto `doctor` command surfaces, and the reverse-invocation-order shutdown that
+  `WithGracefulShutdown()` triggers.
