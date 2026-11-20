@@ -151,6 +151,28 @@ func withNewline(new, orig string) string {
 
 var reStripDone = regexp.MustCompile(`^done\b[\s:—-]*`)
 var reStripArrow = regexp.MustCompile(`^→\s*`)
+var reStripCloseBold = regexp.MustCompile(`\.\*\*$`)
+
+// stripRenderedWrapper removes a marker a spec author pasted back in
+// pre-rendered (the 2026-11-20 double-wrap: value "**Won't implement — x.**"
+// rendered as "**Won't implement — **Won't implement — x.**.**"). Kind v has
+// stripped its pasted prefix since inception; w/n/r/s get the same tolerance.
+func stripRenderedWrapper(kind, value string) string {
+	v := strings.TrimSpace(value)
+	switch kind {
+	case "w":
+		v = strings.TrimPrefix(v, "**Won't implement — ")
+	case "n":
+		v = strings.TrimPrefix(v, "**NOT-DO — ")
+	case "s":
+		v = strings.TrimPrefix(v, "**Superseded — ")
+	case "r":
+		v = strings.TrimPrefix(v, "**")
+		v = strings.TrimSuffix(v, "**")
+	}
+	v = reStripCloseBold.ReplaceAllString(v, "")
+	return strings.TrimSpace(v)
+}
 
 func markerFor(kind, value string) (string, error) {
 	switch kind {
@@ -173,17 +195,17 @@ func markerFor(kind, value string) (string, error) {
 		}
 		return "done (docs-health pass " + date + ")", nil
 	case "w":
-		return "**Won't implement — " + value + ".**", nil
+		return "**Won't implement — " + stripRenderedWrapper("w", value) + ".**", nil
 	case "n":
-		return "**NOT-DO — " + value + ".**", nil
+		return "**NOT-DO — " + stripRenderedWrapper("n", value) + ".**", nil
 	case "r":
-		verdict := reStripArrow.ReplaceAllString(strings.TrimSpace(value), "")
+		verdict := reStripArrow.ReplaceAllString(stripRenderedWrapper("r", value), "")
 		if verdict == "" {
 			return "**→ resolved**", nil
 		}
 		return "**→ " + verdict + "**", nil
 	case "s":
-		pointer := strings.TrimSpace(value)
+		pointer := stripRenderedWrapper("s", value)
 		if pointer == "" {
 			return "", fail("superseded kind requires the successor pointer (path or id)")
 		}
@@ -2249,6 +2271,10 @@ func selfTest() error {
 	check("p UTC default", mustMarker("p", "-"), "done (docs-health pass "+time.Now().UTC().Format("2006-01-02")+")")
 	check("w", mustMarker("w", "gated upstream"), "**Won't implement — gated upstream.**")
 	check("w user decision", mustMarker("w", "user decision"), "**Won't implement — user decision.**")
+	check("w strips pasted wrapper", mustMarker("w", "**Won't implement — gated upstream.**"), "**Won't implement — gated upstream.**")
+	check("n strips pasted wrapper", mustMarker("n", "**NOT-DO — duplicate row.**"), "**NOT-DO — duplicate row.**")
+	check("s strips pasted wrapper", mustMarker("s", "**Superseded — successor.md.**"), "**Superseded — successor.md.**")
+	check("r strips pasted wrapper", mustMarker("r", "**→ routed to ROADMAP**"), "**→ routed to ROADMAP**")
 	check("r open", mustMarker("r", "open — owner lane (TODO_LIST row)"), "**→ open — owner lane (TODO_LIST row)**")
 	check("r done", mustMarker("r", "done — landed at 4cea337"), "**→ done — landed at 4cea337**")
 	check("r strips leading arrow", mustMarker("r", "→ routed to ROADMAP"), "**→ routed to ROADMAP**")
