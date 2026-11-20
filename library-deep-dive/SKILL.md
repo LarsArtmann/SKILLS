@@ -258,3 +258,52 @@ batch orchestration on top:
 7. **Provenance.** Record which sub-agent group produced each report
    (header line) — QC sampling needs the group boundaries to sample
    from.
+8. **Mechanical citation sweep (born summit-planner, 2026-11-19/20).**
+   Ship a `scripts/citation-sweep.py` with the run: it extracts every
+   `file:line` citation from the reports and verifies file existence +
+   line range against the app repo AND the library checkouts (absolute,
+   repo-relative, `<lib>/`-qualified cross-repo, bare-basename fallback).
+   Exit 0 is the ship gate; re-run after ANY report edit. It caught a
+   silently-deleted rationale, an unqualified cross-repo cite, and — when
+   a parallel migration shifted the code — all 11 stale anchors at once.
+   Normalize en-dashes in ranges (`:636–642` silently escaped the first
+   regex; normalize before matching).
+9. **Own-command verification tier for stamped facts.** Versions, tags,
+   line numbers, go.mod pins that get written into a report are re-derived
+   by the orchestrator's own commands — subagents are for discovery, not
+   for numbers that get stamped. The 2026-11-20 run's research subagent
+   returned 6 wrong submodule tags of 11; only the `git tag --list`
+   re-check caught them. Corollary: NEVER read the latest tag as
+   `git tag | tail` — tags sort lexicographically (v1.9.0 > v1.27.2);
+   semver-sort with a numeric key, and expect per-train tags
+   (`subdir/vX.Y.Z` alongside root `vX.Y.Z`) in multi-module repos.
+10. **Replay the verify blocks pre-ship.** The author executes each
+    report's own verify block before shipping; on the 2026-11-20 run
+    this caught 4 defects in first drafts (wrong counts, a wrong line
+    range, a nonexistent filename, a typo). Cheapest quality instrument
+    the run has.
+11. **Parallel-session collision doctrine.** Before code work in a repo
+    that may have another live session: `git status` + read the newest
+    `docs/status`/`docs/planning` files; foreign in-flight files are
+    their lease (never edit, never revert); commit only explicitly-mine
+    paths; re-derive all line citations after any foreign commit lands.
+    Summit-planner had three same-day collisions from skipping this
+    check; the doctrine costs one minute.
+
+### Audit brief template (per-library, given to each auditor subagent)
+
+```
+Library: <name> (checkout: ~/projects/<name>)
+Consumer: <repo> @ <HEAD sha>
+Task: utilization audit — what the consumer DOES use vs what the library COULD do for it.
+Read: consumer's import sites (rg '<module>' consumer/), library README + the
+  submodules the profile plausibly touches.
+Deliver: fact table (module list + latest LOCAL tag @ HEAD, used y/n, verdict,
+  score Σleveraged/Σapplicable with the inputs), usage evidence with file:line
+  citations (QUALIFY cross-repo cites as <lib>/path:line), ranked gaps with
+  snippets, RECONSIDER-WHEN trigger (the condition that flips the verdict),
+  and a verify block of commands YOU ran (the orchestrator replays them).
+NOT your job: changing verdicts of sibling reports, editing consumer code,
+  trusting your own version/line numbers without re-running them (orchestrator
+  re-derives stamped facts).
+```
