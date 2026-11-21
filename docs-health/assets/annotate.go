@@ -1486,14 +1486,16 @@ func repairRun(argv []string, out io.Writer) error {
 
 	byFile := map[string][]repairSpec{}
 
-	for _, ln := range strings.Split(strings.TrimSpace(string(raw)), "\n") {
+	for i, ln := range strings.Split(strings.TrimSpace(string(raw)), "\n") {
+		lineNo := i + 1
+
 		if strings.TrimSpace(ln) == "" || strings.HasPrefix(ln, "#") {
 			continue
 		}
 
 		parts := strings.Split(ln, "\t")
 		if len(parts) < 3 {
-			return fail("repair: bad spec line %q (want path\\tlines\\tkind[\\tvalue])", ln)
+			return fail("repair: bad spec line %d %q (want path\\tlines\\tkind[\\tvalue])", lineNo, ln)
 		}
 
 		spec := repairSpec{path: parts[0], kind: parts[2]}
@@ -1501,20 +1503,24 @@ func repairRun(argv []string, out io.Writer) error {
 			spec.value = parts[3]
 		}
 
+		if err := validateRepairSpec(lineNo, spec); err != nil {
+			return err
+		}
+
 		if strings.Contains(parts[1], "-") {
 			if _, err := fmt.Sscanf(parts[1], "%d-%d", &spec.lo, &spec.hi); err != nil {
-				return fail("repair: bad linespec %q", parts[1])
+				return fail("repair: spec line %d: bad linespec %q", lineNo, parts[1])
 			}
 		} else {
 			if _, err := fmt.Sscanf(parts[1], "%d", &spec.lo); err != nil {
-				return fail("repair: bad linespec %q", parts[1])
+				return fail("repair: spec line %d: bad linespec %q", lineNo, parts[1])
 			}
 
 			spec.hi = spec.lo
 		}
 
 		if spec.lo < 1 || spec.hi < spec.lo {
-			return fail("repair: linespec %q out of range", parts[1])
+			return fail("repair: spec line %d: linespec %q out of range", lineNo, parts[1])
 		}
 
 		byFile[spec.path] = append(byFile[spec.path], spec)
@@ -1553,6 +1559,33 @@ type repairSpec struct {
 	lo, hi int
 	kind   string
 	value  string
+}
+
+// repairKinds is the marker vocabulary a repair spec may name, shared with
+// markerFor so the batch pass cannot drift from the single-line commands.
+const repairKinds = "hvpwnrs"
+
+// validateRepairSpec checks one spec row before anything is applied: the
+// kind must be a single letter of the marker vocabulary, and the raw value
+// must satisfy the kind's requirement (h/p/w/n/s render nothing usable from
+// an empty column; v and r legitimately allow one). Errors carry the
+// spec-file line number so a corpus pass fails at the offending ROW during
+// parse — before any target file is touched — instead of full-file and late
+// (the 2026-11-20 §f5 shape: a kind of "done" surfaced only when its file
+// was already being mutated).
+func validateRepairSpec(lineNo int, spec repairSpec) error {
+	if len(spec.kind) != 1 || !strings.ContainsRune(repairKinds, rune(spec.kind[0])) {
+		return fail("repair: spec line %d: bad kind %q (use h/v/p/w/n/r/s)", lineNo, spec.kind)
+	}
+
+	switch spec.kind {
+	case "h", "p", "w", "n", "s":
+		if strings.TrimSpace(spec.value) == "" {
+			return fail("repair: spec line %d: kind %q requires a non-empty value column", lineNo, spec.kind)
+		}
+	}
+
+	return nil
 }
 
 // repairFile applies one file's specs. Returns the number of lines changed
@@ -2548,6 +2581,51 @@ func selfTest() error {
 
 	rAfter, _ := os.ReadFile(rTarget)
 	check("repair re-run is a no-op (already-done guard)", string(rAfter), string(rAgain))
+
+	// ----- repair: per-row spec validation (the 2026-11-20 §f5 shape) -----
+	// A spec whose kind is outside the vocabulary used to fail full-file and
+	// late: parsing accepted it, and the error surfaced only when the apply
+	// loop reached the file — after earlier files in the same pass had
+	// already been mutated. Validation now fires per row at parse time with
+	// the spec line number, before any target is touched.
+	badTarget := repairDir + "/badkind.md"
+	if err := os.WriteFile(badTarget, []byte(rSample), 0o644); err != nil {
+		return err
+	}
+
+	badSpec := repairDir + "/bad.tsv"
+	// The bad kind sits on content line 4 (after the header comment), past a
+	// valid row — the failure must name LINE 4, not the file as a whole.
+	badContent := strings.Join([]string{
+		"# path\tlines\tkind\tvalue",
+		badTarget + "\t7-7\th\tabc1234",
+		badTarget + "\t8-8\tw\tnever wanted",
+		badTarget + "\t10-10\tdone\tshipped",
+	}, "\n")
+	if err := os.WriteFile(badSpec, []byte(badContent), 0o644); err != nil {
+		return err
+	}
+
+	badErr := repairRun([]string{badSpec, "--dry-run"}, io.Discard)
+	check("repair bad kind errors", badErr != nil, true)
+	if badErr != nil {
+		check("repair bad kind names the row",
+			strings.Contains(badErr.Error(), `spec line 4: bad kind "done"`), true)
+	}
+
+	badAfter, _ := os.ReadFile(badTarget)
+	check("repair bad spec mutates nothing", string(badAfter), rSample)
+
+	emptyErr := validateRepairSpec(2, repairSpec{path: "x", lo: 1, hi: 1, kind: "w", value: "   "})
+	check("repair empty w value rejected", emptyErr != nil &&
+		strings.Contains(emptyErr.Error(), `spec line 2: kind "w" requires a non-empty value column`), true)
+
+	check("repair empty v value allowed",
+		validateRepairSpec(3, repairSpec{path: "x", lo: 1, hi: 1, kind: "v"}) == nil, true)
+	check("repair empty r value allowed",
+		validateRepairSpec(3, repairSpec{path: "x", lo: 1, hi: 1, kind: "r"}) == nil, true)
+	check("repair multi-letter kind rejected",
+		validateRepairSpec(5, repairSpec{path: "x", lo: 1, hi: 1, kind: "hh", value: "a"}) != nil, true)
 
 	// ----- unwrap: formatter-wrapped struck rows -----
 	uTarget := repairDir + "/wrapped.md"
