@@ -13,6 +13,16 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Fixed (2026-11-21 — docs-health: second stale binary caught, guard generalized)
+
+- **A 37-day-old compiled `docs-health/annotate` binary** — one directory
+  ABOVE its source, added 2026-10-14 — survived the 2026-11-15 cleanup
+  because the artifact gate watched exactly one path. The gate now scans
+  the whole skill directory: any `annotate`/`annotate.exe` file, any file
+  over 512 KB, and any `.ruff_cache` directory fails the check, proven
+  both directions with a planted binary. Nothing referenced it; every
+  caller runs `go run annotate.go`.
+
 ### Changed (2026-11-18 — go-modularize: posture flip to small, domain-shaped modules)
 
 - **Direction neutrality retired; small-module default adopted.** The skill's
@@ -127,6 +137,21 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   auto-committed as `2a1b72a` and restored byte-for-byte in `5e585c4`).
   Formatting discipline stays manual: `dprint fmt <files>` with the repo
   dprint.json, whose excludes encode the frozen/live boundary.
+
+### Changed (2026-11-15 — docs-health: judge/writer tooling split, one grammar)
+
+- **The annotate tooling is two halves with one shared contract.**
+  [docs-gates](https://github.com/Artmann-Technologies/docs-gates) (the
+  public binary) judges a corpus and never rewrites it;
+  `docs-health/assets/annotate.go` (run via `go run`) is the writer.
+  SKILL.md now carries a JUDGE/WRITE table, the one-grammar paragraph,
+  and a pinned 12-row subcommand map that `check-skills.sh` diffs
+  against the source dispatch, so the map cannot silently rot. The
+  read-only row gates (`check-rows`, `bare-rows`) moved into docs-gates
+  as the `rows` verb (v0.4.0); the writer aliases stay for callers.
+  The stale `assets/annotate` binary (12 days behind its source,
+  missing four subcommands) was deleted — a checked-in binary is not a
+  distribution channel.
 
 ### Added (2026-11-10 — offer-page skill: the page-assembly layer of the Growth & Sales stack)
 

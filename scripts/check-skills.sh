@@ -918,24 +918,32 @@ if [[ -f "$map_file" && -f "$tool_file" ]]; then
 fi
 
 # --- docs-health tooling artifact gate (2026-11-15) ------------------------------
-# docs-health ships a SINGLE-FILE Go tool, run as `go run annotate.go`. An
-# `assets/annotate` binary sat beside it for 12 days as a second, stale
-# executable (missing prose-items, bare-rows, repair-mangle, and
-# `check-rows --strict`; found by the 2026-11-15 tooling-split audit). The
-# source is the only artifact: a built binary here is drift by definition,
-# because nothing keeps it in step and every caller already uses `go run`.
-# The self-test leg keeps the source itself honest.
-if [[ -f docs-health/assets/annotate ]]; then
-	echo "FAIL docs-health/assets/annotate: a built binary must not sit beside its only source — callers run 'go run annotate.go' (policy 2026-11-15)." >&2
-	failed=1
-fi
-if [[ -d docs-health/assets/.ruff_cache ]]; then
-	echo "FAIL docs-health/assets/.ruff_cache: stale Python cache in a stdlib-Go tool directory." >&2
-	failed=1
+# docs-health ships a SINGLE-FILE Go tool, run as `go run annotate.go`. Built
+# binaries here are drift by definition: nothing keeps them in step and every
+# caller already uses `go run`. Found twice — assets/annotate (12 days stale,
+# 2026-11-15) and docs-health/annotate (37 days stale, one directory above the
+# source, 2026-11-21, survived the first cleanup because the gate watched one
+# path) — so the gate scans the whole skill directory for compiled artifacts
+# instead of watching known paths. The self-test leg keeps the source honest.
+if [[ -d docs-health ]]; then
+	while IFS= read -r -d '' bin; do
+		echo "FAIL docs-health: compiled binary '$bin' must not live in the skill — callers run 'go run annotate.go' (policy 2026-11-15)." >&2
+		failed=1
+	done < <(find docs-health -type f \( -name 'annotate' -o -name 'annotate.exe' \) -print0)
+
+	while IFS= read -r -d '' blob; do
+		echo "FAIL docs-health: oversized artifact '$blob' — no legitimate file in a markdown+Go skill exceeds half a megabyte." >&2
+		failed=1
+	done < <(find docs-health -type f -size +512k -print0)
+
+	while IFS= read -r -d '' cachedir; do
+		echo "FAIL docs-health: stale Python cache '$cachedir' in a stdlib-Go tool directory." >&2
+		failed=1
+	done < <(find docs-health -type d -name '.ruff_cache' -print0)
 fi
 if [[ ! -d docs-health/assets ]]; then
 	# Fixture trees (--selftest) and partial checkouts carry no tooling; the
-	# binary/cache gates above are inert there, and an unconditional `cd` made
+	# artifact gates above are inert there, and an unconditional `cd` made
 	# the whole gate fail its own selftest (found 2026-11-15).
 	echo "NOTE: docs-health/assets not present — annotate tooling gates skipped"
 elif command -v go >/dev/null 2>&1; then
