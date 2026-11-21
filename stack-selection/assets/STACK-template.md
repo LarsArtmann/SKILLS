@@ -25,6 +25,7 @@
 
 | Category         | Choice (first-party = ★) | Why this, not that                                     | Owning skill / docs | Revisit when                       |
 | ---------------- | ------------------------ | ------------------------------------------------------ | ------------------- | ---------------------------------- |
+| Service base     | ★ go-appkit preset       | fleet default for NEW services (owner ruling 2026-11-21); scaffold: go-service-template | appkit README "Start here" | a written fit/doctrine reason to decline |
 | CLI framework    | ★ cmdguard               | typed flags + DI + exit-code contract; raw cobra leaks | `cmdguard` skill    | command set stabilizes differently |
 | Output rendering | ★ go-output              | one data structure → every format                      | README + pkg.go.dev | output needs exceed its formats    |
 | Validation       | sivchari/govalid         | codegen, zero allocs (how-to-golang policy)            | how-to-golang       | —                                  |

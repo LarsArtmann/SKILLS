@@ -123,6 +123,15 @@ For every concern the profile actually has, decide BUILD-ON or SKIP:
 - **Default to the smallest foundation that makes the profile impossible to
   get wrong.** YAGNI is the primary guard: a lib must map to a concrete need
   in the profile, not to a plausible future.
+- **FLEET DEFAULT (owner ruling, 2026-11-21): a NEW Go HTTP service or
+  daemon starts on ★ go-appkit — the `preset` spine — scaffolded from the
+  [go-service-template](https://github.com/LarsArtmann/go-service-template)
+  repo.** This is a recorded fleet policy, not a per-project debate: when
+  the profile names an HTTP service/daemon shape, the Chosen-foundation
+  table carries the appkit row with "fleet default" as the why, and the
+  decision log cites the ruling date. Declining the default is allowed but
+  is a DECISION: a fit/doctrine reason in the Deliberately-excluded table
+  (the same bar every other rejected candidate already meets).
 - A first-party lib wins over a third-party equivalent when it exists and is
   verified — that is the point of maintaining the ecosystem. Third-party wins
   when the need is generic and the third-party lib is the how-to-golang
@@ -158,6 +167,11 @@ The selection is not done until the wiring path is named. Per selection:
   linter-building, deduplicate-code, ...) → "load <skill> next" in the wiring
   order. The owning skills contain integration contracts this skill does not
   duplicate.
+- go-appkit preset (the service default) → start from the
+  [go-service-template](https://github.com/LarsArtmann/go-service-template)
+  repo (preset spine pre-wired, refresh-stamped), else follow the appkit
+  README "Start here" section; the httpx/cqrs/realtime/security batteries
+  document their own wiring in their module READMEs.
 - Nix packaging → `go-nix-helpers` (+ `nix-private-go-repos` skill when any
   dependency is a private repo).
 - Multi-module future likely → `go-modularize` skill owns that decision;
