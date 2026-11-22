@@ -33,10 +33,19 @@ never buys credibility (NN/g).
 | 9  | Rhythm         | Average sentence ≤ ~20 words; at least one one-line sentence per section; passes read-aloud — sounds like speech, not a brochure                           |
 | 10 | Honesty        | Refund/cancel/trial terms stated as concrete plain actions ("cancel in one click, no questions asked"); at least one admitted limitation or disqualifier   |
 
-Checking 1-2 mechanically: `textstat` (Python) exposes
-`flesch_kincaid_grade()`, `difficult_words()`; the Hemingway app and
-readable.com do it interactively. If no tool runs, count syllables by hand on
-the hero — the hero alone must pass.
+Checking 1-2 mechanically, in the order that works on this machine:
+
+1. **Hemingway app (hemingwayapp.com) or readable.com** — paste the hero,
+   get grade + hard-word highlights interactively. Primary local path.
+2. **Hand-count** — grade ≈ 0.39·(words/sentences) + 11.8·(syllables/words)
+   − 15.59; count three-syllable words by marking them. The hero alone must
+   pass; on a full page, hand-count the hero and spot-check the worst section.
+   (Decision 2026-11-22: hand-count suffices — no syllable script; a script
+   would re-create what Hemingway already does for free.)
+
+`textstat` (Python) is **NOT installed locally** (verified 2026-11-10:
+`python3 -c "import textstat"` → ModuleNotFoundError; see
+docs/external-dependencies.md). Do not plan around it.
 
 ## Why each gate earns its place (source ledger)
 
@@ -60,10 +69,13 @@ the hero — the hero alone must pass.
   unretrievable.
 - Basecamp "sign up in 60 seconds" — not found on current or archived pages.
 - Eisenberg We-We ratio as an effect size — heuristic only, no A/B.
-- (Corrected 2026-11-10: the widely-quoted "+68%" gym-CTA lift is wrong; the
-  archived primary says +213.16%.)
+- The widely-quoted "+68%" gym-CTA lift is wrong — corrected figure and its
+  provenance live in [page-anatomy.md](page-anatomy.md) (CTA section), the
+  canonical home of that correction.
 
-## Worked micro-example
+## Worked micro-examples
+
+### Consumer / freelancer (Invoicer)
 
 Before (fails 6 of 10 gates):
 
@@ -80,3 +92,25 @@ After (passes):
 
 Grade 5 · you:we 6:1 · audience named · verbatim phrase · numbers on the
 promise · verb-first CTA naming the get.
+
+### B2B / technical (on-call monitoring)
+
+Before (fails — we-voice, jargon, no numbers):
+
+> **Enterprise-Grade Observability Reimagined** — We provide best-in-class,
+> synergistic observability solutions empowering enterprises to holistically
+> optimize their MTTR across the enterprise. [Request Demo]
+
+After (passes):
+
+> **Your pager stops firing at 2 a.m. — or you know why in 90 seconds.** For
+> SRE teams of 3-10 running 50+ services who, in your words, "spend the
+> first 20 minutes just figuring out WHICH service is pageing". Alertflow
+> correlates your alerts and names the culprit service. [Start free — 14-day
+> trial, no credit card]
+
+Grade 6 · you:we 5:1 · audience named (SRE teams of 3-10, 50+ services) ·
+verbatim phrase · numbers on the promise (90 seconds) · verb-first CTA naming
+the get + friction reducer. Jargon that survived ("MTTR"→ cut; "correlates")
+stays only because the audience uses it daily — plain language for experts
+means cutting vendor-speak, not their own vocabulary.

@@ -86,9 +86,12 @@ Audit before proposing anything; do not rewrite during the audit. Order:
 available; (5) offer sharpness — stack, anchor, guarantee; (6) friction and
 leaks vs the cut list; (7) voice gates; (8) FAQ: researched or invented.
 Output: a numbered fix list ordered by expected impact — one fix per item,
-each citing the finding that motivated it. Rewrite only after the user picks
-fixes. If the page is fine but there is no traffic or no activation, that is
-a funnel problem — first-customers.
+each citing the finding that motivated it. **Persist the fix list to disk**
+(default `<target-repo>/docs/offer-page-audit.md`, or wherever the user
+prefers) — a chat-only audit evaporates; the file is the before/after
+evidence when fixes get picked. Rewrite only after the user picks fixes. If
+the page is fine but there is no traffic or no activation, that is a funnel
+problem — first-customers.
 
 ## Honesty rules (always)
 
