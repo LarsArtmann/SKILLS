@@ -85,6 +85,9 @@ ocean, makers (agency owners try before buying), TTV ~10 minutes →
 
 ## Step 4 — Sales page (offer-page skill's page-anatomy reference)
 
+The page rules live in the **offer-page** skill; this section is the worked
+instance of them for StatusHawk, not a second rulebook.
+
 9-section arc, each section's draft thesis:
 
 1. Hero. Headline candidates (drafted 20, kept mechanism-led for the

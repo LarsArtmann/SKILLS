@@ -2,6 +2,22 @@
 
 Crush follows the [Agent Skills](https://agentskills.io) open standard. A skill is simply a **directory containing a `SKILL.md`** file.
 
+## Table of Contents
+
+| Section                                              | What it covers                                                                     |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| [File Structure](#file-structure)                    | Directory layout and the subdirectory guide                                        |
+| [SKILL.md Format](#skillmd-format)                   | Required frontmatter and body anatomy                                              |
+| [Where to Place Skills](#where-to-place-skills)      | Install locations and runtime resolution                                           |
+| [Key Principles](#key-principles)                    | The rules behind every good skill, with bad/good examples                          |
+| [Organizing Multi-Domain Skills](#organizing-multi-domain-skills) | Splitting big domains into SKILL.md + references                    |
+| [Proven Patterns from Real Skills](#proven-patterns-from-real-skills) | Recurring structural patterns worth copying                          |
+| [Essential Skill Patterns](#essential-skill-patterns-learned-from-real-sessions) | Session-learned patterns (triggers, disambiguation, condensing) |
+| [Common Mistakes](#common-mistakes)                  | The failure modes every new skill author hits                                      |
+| [Testing Your Skill](#testing-your-skill)            | How to verify a skill actually triggers and works                                  |
+| [Hard-Won Process Lessons](#hard-won-process-lessons) | War stories encoded as rules (from real sessions)                                 |
+| [Minimal Starter Template](#minimal-starter-template) | Copy-paste starting point                                                           |
+
 ## File Structure
 
 ```

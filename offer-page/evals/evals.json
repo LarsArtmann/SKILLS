@@ -1,0 +1,23 @@
+{
+  "skill_name": "offer-page",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm selling a $49 self-paced course: 'Figma for Frontend Developers' (figmafordevs.com). Stripe checkout is wired, I have 3 testimonials from beta readers, and my email list has 600 subscribers. Build me the sales page — what sections, what order, and draft the hero.",
+      "expected_output": "Build procedure in order: 5-second contract first (what/who/next), then section selection from the 9-section arc with skip rules applied (warm email traffic + $49 price argues mid-length, not long-form), length set by traffic temperature, hero drafted with awareness-stage-matched headline and a CTA naming the get + friction reducer. Proof limited to what exists (3 named testimonials, founder identity); value stack + guarantee adjacent to price in the offer block; FAQ mined from real objections. Ends by running the ten voice gates and the cut list, and hands line-level polish to the copywriting skill via assets/copy-brief.md instead of polishing inline. Does NOT drift into pricing/positioning strategy (first-customers territory) — the $49 price and audience are taken as inputs.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Tear down my pricing page before we ship next week — deployhub.io, a deployment tool for small dev teams. I think the 4 tiers are confusing and the buttons just say 'Sign Up'. Audit only, don't rewrite yet.",
+      "expected_output": "Audit mode, in the prescribed order, no rewriting: (1) 5-second test, (2) headline vs the traffic's actual awareness stage, (3) section gaps vs the arc, (4) proof claimed vs legitimately available, (5) offer sharpness — 4 tiers flagged against the ~3-tier guidance with a reason, anchor and guarantee checked, (6) friction/leaks vs the cut list ('Sign Up' buttons flagged: no verb-named get), (7) voice gates, (8) FAQ sourced or invented. Output: a numbered fix list ordered by expected impact, one fix per item, each citing its finding — and persisted to a file (docs/offer-page-audit.md default), not chat-only. Rewrites only offered after the user picks fixes.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "My waitlist page (notionaddons.com) gets 300 visits/month from a launch Reddit thread but only converts at 1%. Friends say they can't tell what the product does in 5 seconds. Fix the page.",
+      "expected_output": "Recognizes ONE goal = join waitlist. Diagnoses the 5-second failure first (headline/promise unclear) before anything else; audits against the arc and cut list; rebuilds the hero: plain-language headline naming WHO it's for and the outcome, subhead = mechanism, CTA naming the get ('Reserve my spot — 30 seconds'), friction reducer, micro-proof. Applies voice gates (grade ≤ 7, you ≥ 3× we, verbatim customer words from the Reddit thread itself as the customer-phrase source). Does NOT treat it as a traffic/funnel problem — traffic exists and the 5-second failure is a page problem; a funnel diagnosis would be first-customers territory and is out of scope here.",
+      "files": []
+    }
+  ]
+}

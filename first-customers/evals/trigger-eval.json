@@ -12,7 +12,7 @@
     "should_trigger": true
   },
   {
-    "query": "need to design the pricing page for uptimeguru.io — 3 tiers or one? per seat or flat rate? also is a lifetime deal a good idea for launch or does it cheapen the product",
+    "query": "figuring out pricing for uptimeguru.io — 3 tiers or one? per seat or flat rate? also is a lifetime deal a good idea for launch or does it cheapen the product",
     "should_trigger": true
   },
   {
@@ -25,7 +25,7 @@
   },
   {
     "query": "my landing page gets decent traffic from a hacker news post but converts at 0.8%, something is wrong with the page itself I think. here's the URL",
-    "should_trigger": true
+    "should_trigger": false
   },
   {
     "query": "thinking of doing a Show HN for my open source log viewer. what are the actual rules and how do I not get buried",
