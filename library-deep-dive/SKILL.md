@@ -229,6 +229,14 @@ batch orchestration on top:
    sub-agent. Cap concurrency at 3 — five parallel groups on one
    provider rate-limit-cascaded and cost ~40 minutes on the first run;
    sequential groups lose nothing (each failure predates any output).
+   **Dispatch auditor groups SEQUENTIALLY and resume failures in place**
+   (2026-11-22, go-cqrs-lite 23-lib run): provider rate-limits and 502s
+   killed three of five parallel groups plus one retry — re-dispatching
+   from scratch re-derives (and re-bills) the whole context, while
+   sending a follow-up message to the failed agent resumes its session
+   with the partial work intact. One group at a time also keeps the
+   orchestrator's pre-derived facts (pins, tags, HEADs) the only source
+   of numbers — sub-agents are for discovery, not arithmetic.
 2. **One report contract for every group.** Each lib gets: a verdict
    (ADOPTED / UNDERUSED-<degree> / NOT-ADOPTED / NOT-APPLICABLE), a
    _derived_ score (M leveraged of A applicable, Phase-4 rubric — the
