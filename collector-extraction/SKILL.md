@@ -124,7 +124,12 @@ warnings + test), `docs/` (status/, DOMAIN_LANGUAGE.md), `examples/`
    `CollectorBackend<S>` impl(s), domain change enum, `BaselineDiff` key/value.
    Tests for parser/diff logic come over too. No monitor365 types.
 3. **Create the sibling repo** from the template; port logic; add examples.
-   Delete nothing in monitor365 yet.
+   Delete nothing in monitor365 yet. **Register the new repo in `meta` — it
+   MUST carry the `collector` tag** (`meta tags --project <name> --add
+   collector`, writes `.config/metadata.yaml`). Every family sibling is
+   tagged `collector` (verified across all seven, 2026-11-22), and fleet
+   queries (`meta list`, stack-selection, census tooling) only see tagged
+   repos — an untagged collector is invisible to inventory-driven discovery.
 4. **Verify the sibling standalone**: `cargo test`, `cargo clippy --all-targets
    -- -D warnings`, `cargo fmt --check`, `cargo doc` (missing_docs is deny).
 5. **Write the thin adapter** in monitor365 (keep it under ~150 lines; the
