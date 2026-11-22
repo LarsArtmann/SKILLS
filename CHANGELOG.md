@@ -13,6 +13,24 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Fixed (2026-11-22 — round-5 corruption root-caused: tailwind-build, not dprint)
+
+- **The frozen-evidence corruptor was never dprint-only.** A full buildflow
+  run with dprint-format already skipped still rewrote four frozen
+  design-to-code eval css files — the `tailwind-build` step regenerates
+  them with tailwindcss v4.3.3, semantically changing build artifacts (a
+  utility rule dropped). Caught live with the triggering invocation logged
+  (T130, open since 2026-11-15); the daemon laundered it into `3123c19`
+  within 40 seconds and it was restored byte-for-byte (`a917805`). Round 4
+  ("no formatter in window") is most plausibly the same step. `tailwind-build`
+  and `prettier-format` (by mechanism: `--fix` writes with no excludes in
+  the staged copy) are now skipped in `.buildflow.yml`; a verification run
+  confirmed all skips active, 83 steps green, tree clean (T135).
+- **The auto-commit daemon bypasses all git hooks** (T133, verified by
+  service-unit source read): `core.hooksPath=/var/empty` — the pre-commit
+  frozen guard can never fire on a daemon commit, which round 5 then
+  demonstrated live. AGENTS §5.11/§5.12 document the boundary.
+
 ### Added (2026-11-22 — doctrine-eval protocol + paired eval harness, T127/T128)
 
 - **`docs/doctrine-eval-protocol.md`** — the bar for shipping any gate or
