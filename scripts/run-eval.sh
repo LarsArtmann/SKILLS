@@ -181,6 +181,7 @@ ts="$(date -u +%Y-%m-%dT%H-%M-%SZ)"
 pair_id="$(basename "$eval_dir")-$ts"
 prompt="$(cat "$prompt_file")"
 prompt_sha="$(printf '%s' "$prompt" | sha256sum | cut -d' ' -f1)"
+default_model="$(crush stats 2>/dev/null | grep -oE 'model:[[:space:]]*[^ ]+' | head -1 | sed 's/model:[[:space:]]*//' || true)"
 
 run_arm() {
 	local arm="$1" arm_skill_dir="$2" run_dir="$3" workdir
@@ -232,7 +233,7 @@ $prompt"
 		--arg cwd "$workdir" \
 		--arg skill_dir "${arm_skill_dir:-installed-skills}" \
 		--arg skill_ref "$([[ $arm == old ]] && printf '%s' "$old_skill_ref" || printf 'WORKTREE')" \
-		--arg model "${model:-default}" \
+		--arg model "${model:-${default_model:-default}}" \
 		--arg prompt_sha256 "$prompt_sha" \
 		--argjson exit_code "$exit_code" \
 		--argjson duration $((end - start)) \
