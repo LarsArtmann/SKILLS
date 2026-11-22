@@ -15,6 +15,24 @@
 # nested in list items in archived status reports. Formatting stays manual
 # per AGENTS §1: `dprint fmt <files>` with the repo dprint.json, whose
 # excludes encode the frozen/live boundary.
+# tailwind-build (skipped 2026-11-22, round 5 — root cause of the "dprint"
+# corruption class): this step REBUILDS css files with tailwindcss v4.3.3,
+# and the design-to-code eval outputs ARE tailwind build artifacts — the
+# step regenerates frozen evidence with a different tailwind version,
+# SEMANTICALLY changing it (round 5: .resize utility dropped, 4 files,
+# caught live with the triggering invocation logged; the daemon committed
+# the corruption as 3123c19 within 40s and it was restored in a917805).
+# Round 4 (2026-11-15, "no formatter in window") is most plausibly this
+# same step in a non-fix run — misattributed to dprint because dprint was
+# the known corruptor.
+# prettier-format (skipped 2026-11-22, same class as dprint by mechanism):
+# detect mode only warns today, but `buildflow --fix` runs prettier --write,
+# which has NO exclude mechanism in the staged copy (same missing-config
+# root cause as dprint) and flags the same frozen css files. Formatting
+# doctrine for this repo is manual dprint (above); prettier adds a live
+# corruption vector under --fix without adding coverage dprint lacks.
 skip_steps:
   - go-structure-linter
   - dprint-format
+  - tailwind-build
+  - prettier-format

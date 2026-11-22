@@ -314,6 +314,20 @@ design. Per-file Go quality is verified per convention: `go vet` + `gofmt`
   corruption round appeared with NO identifiable formatter run in the window
   — if artifacts flip dirty again, check `git log` for daemon commits before
   assuming a live process (2026-11-15 self-review, d1).
+* **Round 5 (2026-11-22) root-caused: the corruptor was `tailwind-build`,
+  not dprint.** A full pipeline run with dprint-format SKIPPED still
+  rewrote four frozen design-to-code eval css files — `tailwind-build`
+  regenerates them with tailwindcss v4.3.3, SEMANTICALLY changing frozen
+  build artifacts (a utility rule dropped), and the daemon laundered it
+  into `3123c19` within 40 seconds (restored `a917805`). Round 4 ("no
+  formatter in window") is most plausibly the same step in a non-fix run.
+  `tailwind-build` AND `prettier-format` are therefore SKIPPED in
+  `.buildflow.yml` (prettier by mechanism: `buildflow --fix` would run
+  `prettier --write` on the same files with no exclude mechanism in the
+  staged copy). The skip entry in `.buildflow.yml` carries the full
+  evidence. Correcting the record: the "dprint corruption" incident class
+  was tailwind-build corruption for at least rounds 4-5; rounds 1-3
+  followed `buildflow --fix` runs where BOTH dprint and tailwind ran.
 * The findings gate: a plain `buildflow` run here exits 69 from exactly 4
   `file-size-check:go-file-too-large` findings on the deliberate
   single-file Go assets (`docs-health/assets/annotate.go`,
