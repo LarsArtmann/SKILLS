@@ -13,6 +13,45 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
 
 ## [Unreleased]
 
+### Added (2026-11-22 — doctrine-eval protocol + paired eval harness, T127/T128)
+
+- **`docs/doctrine-eval-protocol.md`** — the bar for shipping any gate or
+  doctrine change: ≥3 runs per arm, the old arm archived from git (never a
+  hand-copied approximation), one cross-model arm, and an independent
+  grader (skill-creator grader-agent pattern: assertions + output only,
+  evidence-quoted verdicts, assertion critique). Covers both directions —
+  a gate relaxation must also prove it does not become a license.
+  Linked from `how-to-write-skills.md` and the go-modularize evals README.
+- **`scripts/run-eval.sh` paired-arm mode** — `--old-skill <git-ref>`
+  git-archives the skill from the ref and runs both arms back-to-back in
+  one invocation (same-turn pairing, fresh fixture per arm); `--grade`
+  seeds `grading.template.json` from assertions; `--model` passes through
+  to `crush run -m` for the cross-model arm; meta.json gains arm, git-ref,
+  pair-id, and prompt-hash provenance. Smoke-tested end-to-end (both arms
+  SMOKE-OK, artifacts persisted under `go-modularize-workspace/harness-smoke/`).
+  Paths resolve absolute after finding this host's jq 1.8.2 opens file
+  arguments against the child-env `$PWD` (stale after `cd`), not the
+  post-cd cwd.
+
+### Fixed (2026-11-22 — daemon hook bypass verified; eval assertions single home; dprint offline)
+
+- **The auto-commit daemon's commits bypass ALL git hooks** (T133): the
+  daemon (`projects-management-automation`, system service) runs git with
+  `core.hooksPath=/var/empty` — the pre-commit frozen-evidence guard can
+  never fire on a daemon commit, so the dprint excludes + buildflow skip
+  are the only defenses against daemon-swept corruption. Documented in
+  AGENTS §5.11/§5.12 (verified by service-unit source read; live test
+  deliberately skipped — it would require committing corrupted evidence).
+- **Eval assertions had two homes** (T131): `evals.json`
+  `expected_output` prose vs workspace `eval_metadata.json` assertions —
+  evals 4–5 now carry machine-checkable `assertions` (verbatim from the
+  frozen iteration-1 grading texts); workspace metadata files are declared
+  frozen run provenance, never updated.
+- **dprint no longer fetches plugins from the network** (T132): the four
+  plugin .wasm files are vendored under `.dprint-plugins/` (~3.5 MB,
+  outside the buildflow-managed `vendor/` gitignore); versions unchanged,
+  `dprint check` verified against the vendored copies.
+
 ### Fixed (2026-11-21 — docs-health: second stale binary caught, guard generalized)
 
 - **A 37-day-old compiled `docs-health/annotate` binary** — one directory
