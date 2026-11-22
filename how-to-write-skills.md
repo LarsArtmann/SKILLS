@@ -594,6 +594,10 @@ Use the `skill-creator` skill for a full eval/benchmarking workflow with automat
 
 Every eval run must persist, immediately per run: `evals/iteration-N/eval-X/{config}/output.md` plus a `grading.json` with per-assertion pass/fail **and evidence quotes**. Outputs that live only in the session transcript are lost — an empty eval directory is invisible to git, and "we ran it" without artifacts is indistinguishable from "we didn't."
 
+### Doctrine changes carry a higher bar
+
+A change to a skill's decision gates or doctrine (text that flips verdicts in future sessions) is not shipped by a single-probe flip demo: it needs ≥3 runs per arm, an old-skill arm archived from git, one cross-model arm, and an independent grader. The full bar and procedure: [`docs/doctrine-eval-protocol.md`](docs/doctrine-eval-protocol.md); the mechanics are `scripts/run-eval.sh` (`--old-skill`, `--model`, `--grade`).
+
 ## Hard-Won Process Lessons
 
 Each of these cost a real session time; all are verified by a status report in `docs/status/`.
