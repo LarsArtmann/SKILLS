@@ -134,6 +134,25 @@ working. A repo adopting the ritual: install the binary, optionally seed
 pbx-artmann's `scripts/docs-gates.sh` for the composition shape — dprint
 first, battery, then repo-specific gates).
 
+Audit-all matcher facts (source-verified 2026-11-22 at docs-gates master
+`c81685b` — TODO #179, recorded so the next session does not re-derive
+them; TODO_LIST.md#179):
+
+- distinctive token = ≥ `MinTokenLen` chars, `const MinTokenLen = 4`
+  (`internal/docsfreshness/tokens.go:38`);
+- an item passes freshness when ≥ `matchQuorum = 2` of its distinctive
+  tokens appear in living docs (`internal/docsfreshness/check.go:28`);
+- a token appearing on ≥ `DefaultGenericDF = 8` living lines corpus-wide is
+  GENERIC and drops out of the distinctive set
+  (`internal/config/config.go:33`) — generic-only items can never pass, so
+  mint §f items with at least two rare tokens;
+- skip exemption: any item whose text contains `<!-- fresh:skip` — the
+  plain and `<!-- fresh:skip: reason -->` suffixed forms both match the
+  prefix constant `SkipMarker` (`internal/docsfreshness/check.go:18`);
+  freshness skips it, margins treats it as forever-exempt;
+- `--explain-item <needle>` prints the token table for any open item — use
+  it BEFORE rewriting an item to see which tokens it must keep alive.
+
 Battery behavior notes (2026-11-05, updated 2026-11-06): each gate prints
 a wall-time heartbeat and the verdict matrix carries durations; audit-all
 prints its replay shape (reports × living lines) with a worst-case
