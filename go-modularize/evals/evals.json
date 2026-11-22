@@ -1,5 +1,6 @@
 {
   "skill_name": "go-modularize",
+  "field_rules": "Each eval carries exactly ONE expected-behavior field: 'assertions' (machine-checkable array — the graded form, used by run-eval.sh --grade and the grader) or 'expected_output' (prose summary, for evals not yet converted). Never both; never a second copy elsewhere. Workspace eval_metadata.json files under go-modularize-workspace/ are FROZEN run provenance — they record what was asserted at run time and are never updated to match later edits here.",
   "evals": [
     {
       "id": 1,
@@ -22,13 +23,23 @@
     {
       "id": 4,
       "prompt": "Our repo is a single-binary Go application monorepo: one root module with ~1,000 Go files (~220k raw lines; ~85k prod-LOC) next to 12 already-extracted submodule directories. There are no external consumers — the binary is the only consumer, so every package is a sibling import by definition. We have a committed root-slim policy from a dated planning doc: the root module stays under 20k LOC, and it currently measures ~85k against that ceiling. One candidate keeps coming up: internal/agent, ~4,900 LOC, cohesive (one verb: orchestrate agent turns), imports zero infrastructure, and no second consumer is ever planned. A prior modularization review concluded 'nothing to extract, keep it all in the root.' Run your assessment: should internal/agent become its own module?",
-      "expected_output": "Agent evaluates BOTH gate-2 currencies before any dissolve. Pipe payoff correctly ruled out (single app: the only consumer is a sibling by definition — structurally unavailable, not a defect). Policy payoff: names the committed artifact (the dated root-slim planning row) AND shows the measurable advance (root LOC drops by the candidate's ~4.9k toward the 20k ceiling). Verdict: PASS gate 2 via policy currency — extraction justified — or, if it dissolves anyway, the dissolve carries an FM#11 standing finding plus an owner question (ratify-vs-retire the policy). A bare 'nothing to extract' with no policy-currency reasoning and no FM#11 finding is a FAIL: that is the keep-the-monolith bias the two-currency gate exists to prevent.",
+      "assertions": [
+        "Evaluates the policy-payoff currency explicitly (names a committed policy artifact and the measurable advance), not only the pipe/consumer test",
+        "Final verdict is extraction-PASS via policy payoff, OR a dissolve that carries an explicit FM#11/under-modularization standing finding plus an owner ratify-vs-retire question",
+        "Does NOT conclude a bare 'nothing to extract / keep it all in the root' with no policy-currency reasoning and no standing finding",
+        "Recognizes pipe payoff is structurally unavailable in a single-app monorepo (the only consumer is a sibling by definition) rather than treating the missing second consumer as a defect of the candidate"
+      ],
       "files": []
     },
     {
       "id": 5,
       "prompt": "Our single-module Go repo has ~30 packages and no committed size policy anywhere — I checked plans, ADRs, and TODOs. I want to carve out internal/mailer (~2,000 LOC) into its own module. Honestly the root is feeling bloated — I'd say we should adopt a 'root stays under 25k lines' policy, and this carve would be the first step toward it. Only our one app imports mailer; no second consumer is planned. Should we extract it?",
-      "expected_output": "Agent does NOT let the same-session policy count as gate-2 evidence: a size policy authored in the same session (or breath) that proposes the extraction is self-ratifying, not committed — the agent surfaces an owner question to ratify the policy first and notes it may not cite its own proposal as the policy. Without a ratified policy, gate 2 fails in both currencies (no consumer variance for pipe; no committed policy artifact) → keep internal/mailer as a package, do not extract. The bloat concern is routed to the owner (ratify a policy, then re-run gate 2), never resolved by quietly extracting. Verdict must not flip to PASS just because the user asserted a policy in the prompt.",
+      "assertions": [
+        "Identifies the proposed size policy as same-session/self-ratifying evidence and refuses to count it without owner ratification",
+        "Does not approve the extraction (verdict is keep-as-package / no new module now)",
+        "Routes the bloat concern to an owner question (ratify a policy, then re-run gate 2) instead of resolving it by extracting",
+        "Applies gate 2 in both currencies in the reasoning (pipe: single consumer; policy: no committed artifact predating the session)"
+      ],
       "files": []
     }
   ]

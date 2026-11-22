@@ -13,9 +13,17 @@ skip them:
   baseline subagents at the snapshot.
 - **Spawn with-skill AND baseline runs in the same turn** — never
   sequentially.
-- **Assertions are drafted DURING the runs**, then added to
-  `eval_metadata.json` per eval; grade with `eval-viewer/generate_review.py`
-  (see skill-creator SKILL.md "Running and evaluating test cases").
+- **Assertions live in `evals.json` and ONLY there** (added 2026-11-22,
+  T131): each eval carries one expected-behavior field — `assertions`
+  (machine-checkable, the graded form) or `expected_output` (prose, not yet
+  converted). Draft them during the runs if you must, but they land in
+  `evals.json`. The `eval_metadata.json` files inside
+  `go-modularize-workspace/` are FROZEN run provenance — they record what
+  was asserted at that run's grading time and are never updated; when they
+  and `evals.json` disagree, `evals.json` is canonical going forward and the
+  workspace file is the historical record. Grade with a fresh grader session
+  per the doctrine-eval protocol (`docs/doctrine-eval-protocol.md`);
+  `scripts/run-eval.sh --grade` seeds the grading file.
 
 Owner gate: runs happen only after the R15/R16 push answers (R-plan §11).
 
