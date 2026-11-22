@@ -1,0 +1,14 @@
+{
+  "timestamp_utc": "2026-11-22T19:22:26Z",
+  "arm": "old",
+  "pair_id": "smoke-eval-2026-11-22T19-21-51Z",
+  "eval_dir": "/tmp/smoke-eval",
+  "cwd": "/tmp/tmp.kip0Rxmo5n",
+  "skill_dir": "/tmp/tmp.ng9Cdhh8RY/architecture-visualization",
+  "skill_ref": "HEAD",
+  "model": "default",
+  "prompt_sha256": "b1098ceff1f7e252efd917a551fe3318486fddbe63ecc075db91e1b4c2f2fa95",
+  "exit_code": 0,
+  "duration_seconds": 17,
+  "harness": "crush run --quiet (fresh non-interactive session)"
+}

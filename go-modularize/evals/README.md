@@ -23,7 +23,7 @@ skip them:
   and `evals.json` disagree, `evals.json` is canonical going forward and the
   workspace file is the historical record. Grade with a fresh grader session
   per the doctrine-eval protocol
-  ([`../../../docs/doctrine-eval-protocol.md`](../../../docs/doctrine-eval-protocol.md));
+  ([`../../docs/doctrine-eval-protocol.md`](../../docs/doctrine-eval-protocol.md));
   `scripts/run-eval.sh --grade` seeds the grading file.
 
 Owner gate: runs happen only after the R15/R16 push answers (R-plan §11).

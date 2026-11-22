@@ -66,6 +66,10 @@ eval_dir="${1:-}"
 case "$eval_dir" in
 -*) usage ;;
 esac
+# Absolute from here on: this host's jq 1.8.2 resolves file arguments against
+# the CHILD-ENV $PWD (the shell's launch dir), not the post-cd cwd — relative
+# jq paths break under any cd. Absolute paths are immune.
+eval_dir="$(cd "$eval_dir" && pwd)"
 prompt_file="$eval_dir/prompt.txt"
 [[ -f "$prompt_file" ]] || {
 	echo "error: $prompt_file missing" >&2
