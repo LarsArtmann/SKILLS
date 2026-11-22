@@ -309,7 +309,8 @@ design. Per-file Go quality is verified per convention: `go vet` + `gofmt`
   workspaces). The local pre-commit hook carries a frozen-evidence guard
   that fails any commit staging a file under an eval `outputs/` dir without
   `FROZEN_OK=1` (validated both directions 2026-11-15; hook is local-only —
-  recreate it after fresh clones, see the hook file header). A fourth
+  recreate it after fresh clones, see the hook file header; it covers only
+  agent/human commits — the daemon bypasses hooks entirely, §5.12). A fourth
   corruption round appeared with NO identifiable formatter run in the window
   — if artifacts flip dirty again, check `git log` for daemon commits before
   assuming a live process (2026-11-15 self-review, d1).
@@ -341,6 +342,19 @@ consequences for agents:
    Path-scoped edit discipline therefore only holds until the daemon
    wakes; scope control for bundled commits happens at push review, not
    in the working tree.
+3. **The daemon's commits bypass ALL git hooks** (verified 2026-11-22 by
+   service-unit source read, T133): the daemon is
+   `projects-management-automation` (system service,
+   `/etc/systemd/system/projects-management-automation.service`) and runs
+   git with `core.hooksPath=/var/empty` via `GIT_CONFIG_KEY_0/VALUE_0` —
+   the §5.11 pre-commit frozen-evidence guard can NEVER fire on a daemon
+   commit. The hook protects only agent/human commits; against daemon
+   sweeps the ONLY defenses are the dprint.json excludes and the
+   `.buildflow.yml` skip. If a formatter corrupts frozen evidence again,
+   expect the daemon to commit the corruption — check `git log` for
+   heuristic commits before assuming a live process (2026-11-15 round-4
+   rule stands). Live test deliberately not performed: it would require
+   deliberately committing corrupted frozen evidence.
 
 ### 5.13 docs-gates Battery Adopted Repo-Side (2026-11-10)
 
