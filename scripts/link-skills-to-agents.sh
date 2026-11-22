@@ -152,6 +152,19 @@ if [[ "${1:-}" == "--list" ]]; then
 			echo "  ORPHAN   $link_name (points into repo, skill no longer exists)"
 		fi
 	done < <(find "$AGENTS_DIR" -maxdepth 1 -type l -print0)
+	# Lockfile-count summary (drift-check vision e6): totals from the
+	# skills-CLI lockfile, split third-party vs overlapping own skills.
+	lockfile="${SKILLS_LOCKFILE:-$HOME/.local/state/skills/.skill-lock.json}"
+	if [[ -f "$lockfile" ]]; then
+		mapfile -t lock_names < <(jq -r 'if type == "object" then keys[] else empty end' "$lockfile" 2>/dev/null || true)
+		overlap=0
+		for lock_name in "${lock_names[@]}"; do
+			[[ -n "$lock_name" && -v "repo_skill_names[$lock_name]" ]] && overlap=$((overlap + 1))
+		done
+		echo "Lockfile ($lockfile):"
+		echo "  $(( ${#lock_names[@]} - overlap )) third-party skills tracked"
+		((overlap > 0)) && echo "  $overlap OVERLAP with repo skills (rule-2 hazard: 'skills update' would rm -rf those symlinks)"
+	fi
 	exit 0
 fi
 

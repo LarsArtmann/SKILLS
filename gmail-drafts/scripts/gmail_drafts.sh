@@ -272,6 +272,17 @@ self_test() {
 	check "raw has To" "$(extract_header "$decoded" To)" "to@x"
 	check "raw subject decodes" "$(rfc2047_decode "$(extract_header "$decoded" Subject)")" "Betreff Präzise"
 	check "raw body intact" "$(awk '{ sub(/\r$/, "") } f {print} /^$/{f=1}' "$decoded" | base64 -d)" "$(cat "$bodyfile")"
+	# Trailing-newline fixture: $( ) strips trailing newlines on BOTH sides
+	# of the check above, so it cannot detect a lost final body newline.
+	# Compare exact bytes instead (bodyfile ends with \n by construction).
+	local exactbody
+	exactbody=$(mktemp)
+	awk '{ sub(/\r$/, "") } f {print} /^$/{f=1}' "$decoded" | base64 -d >"$exactbody"
+	if ! cmp -s "$exactbody" "$bodyfile"; then
+		echo "SELF-TEST FAIL: raw body byte-exact incl. trailing newline" >&2
+		failures=1
+	fi
+	rm -f "$exactbody"
 	hdrfile2=$(mktemp)
 	printf 'In-Reply-To: <parent@x>\n' >"$hdrfile2"
 	raw=$(build_raw "to@x" "" "" "Threaded" "$bodyfile" "from@x" "$hdrfile2")
