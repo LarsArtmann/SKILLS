@@ -50,6 +50,7 @@ stampede lesson). Each reader gets N files (25-30 per agent) and this
 prompt, filled per file:
 
 > Read <path> in full. Produce a digest with EXACTLY these five lines:
+>
 > - Domain: one sentence naming the business/domain problem.
 > - Terms: the glossary's actual terms, comma-separated (verbatim term
 >   names, not paraphrases; note the count).
@@ -62,8 +63,8 @@ prompt, filled per file:
 > - Conventions: doc shape (tables? context column? verification date
 >   stamp? citation column "where it lives"? anti-language section?).
 > - Distinctive: the one thing this doc does that no other would.
-> If the file matches the bare scaffold template (placeholder rows like
-> "Example Term"), output exactly: STUB (byte-identical template candidate).
+>   If the file matches the bare scaffold template (placeholder rows like
+>   "Example Term"), output exactly: STUB (byte-identical template candidate).
 
 Persist each batch's digests to
 `~/projects/docs/status/evidence/<date>_domain-language-census-digests.md`

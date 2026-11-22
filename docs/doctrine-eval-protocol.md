@@ -31,12 +31,12 @@
 
 ## The bar (all four required before the change is called shipped)
 
-| # | Requirement | Why |
-| - | ----------- | ---- |
-| 1 | **≥3 runs per arm** (new skill, old skill) with the same prompt and fixture | measures variance; a flip that appears in 2 of 3 runs is signal, 1 of 3 is noise |
-| 2 | **Old arm from git** — the archived pre-change skill (`run-eval.sh --old-skill <ref>`), never a hand-copied approximation | the baseline is exactly what users ran yesterday; approximations drift |
-| 3 | **One cross-model arm** — at least one new-skill run on a different model than the authoring session (`--model <id>`) | catches single-model readable doctrine |
-| 4 | **Independent grader** — a fresh session that receives assertions + `output.md` only, never the doctrine diff, the session's rationale, or the expected verdict | removes author-grader bias |
+| # | Requirement                                                                                                                                                     | Why                                                                              |
+| - | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| 1 | **≥3 runs per arm** (new skill, old skill) with the same prompt and fixture                                                                                     | measures variance; a flip that appears in 2 of 3 runs is signal, 1 of 3 is noise |
+| 2 | **Old arm from git** — the archived pre-change skill (`run-eval.sh --old-skill <ref>`), never a hand-copied approximation                                       | the baseline is exactly what users ran yesterday; approximations drift           |
+| 3 | **One cross-model arm** — at least one new-skill run on a different model than the authoring session (`--model <id>`)                                           | catches single-model readable doctrine                                           |
+| 4 | **Independent grader** — a fresh session that receives assertions + `output.md` only, never the doctrine diff, the session's rationale, or the expected verdict | removes author-grader bias                                                       |
 
 Plus the standing rule from the 2026-11-15 eval: **cover both directions.**
 A gate relaxation needs a probe that shows it does NOT become a license
