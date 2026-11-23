@@ -1,21 +1,20 @@
 ---
 name: website-launch
 description: >-
-  Use this skill when the user asks to create a project website, build a documentation
-  site, deploy to Firebase, configure DNS, set up GitHub metadata for a project, rewrite
-  a README for public presence, "make a website", "publish docs", "set up Firebase
-  hosting", configure custom domains, or any task involving the sibling-project website
-  pattern (go-atomic-write, gogenfilter, dynamic-markdown-site, go-output,
-  samber-do-auditlog, go-workflow-auditlog, etc.). Also triggers on "website launch",
-  "public presence overhaul", "deploy website", or "lars.software domain". Launches a
-  public documentation website for a Go project (library OR application/server) by
-  scaffolding the private LarsArtmann Go SSG template (github.com/LarsArtmann/
-  website-template: pure Go + templ + Tailwind CSS v4 + Firebase Hosting) via the
-  websitelaunch CLI, then deploying through DNS/SSL go-live. Legacy Astro/Starlight
-  sites (18 live) get maintenance audits only — no new Astro sites. Every launch
+  Use this skill when the user asks to create a project website, build a
+  documentation site, deploy to Firebase, configure DNS, set up GitHub metadata,
+  rewrite a README for public presence, "make a website", "publish docs", "set
+  up Firebase hosting", configure custom domains, or any task involving the
+  sibling-project website pattern (go-atomic-write, gogenfilter, go-output,
+  etc.). Also triggers on "website launch", "public presence overhaul",
+  "deploy website", "lars.software domain". Launches a public docs site for a
+  Go project by scaffolding the private Go SSG template
+  (github.com/LarsArtmann/website-template: Go + templ + Tailwind v4 + Firebase
+  Hosting) via the websitelaunch CLI, then DNS/SSL go-live. Legacy Astro sites
+  (18 live) get maintenance audits only — no new Astro sites. Every launch
   sells the project with a rendered demo video (HyperFrames HTML→MP4) as the
-  landing page's centerpiece by default — trigger on "demo video", "product tour",
-  "promo clip", or "make the launch sell the project" for the site too.
+  landing page centerpiece by default — trigger on "demo video", "product
+  tour", "promo clip", "make the launch sell the project" too.
 metadata:
   tags: website, firebase, go-ssg, dns, deployment, documentation
 allowed-tools: bash view edit write grep fetch
