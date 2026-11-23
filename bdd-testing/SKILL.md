@@ -18,7 +18,7 @@ READ, UNDERSTAND, RESEARCH, REFLECT before writing any spec.
 
 2. **Discover behaviors, not functions.** Walk the subject's public surface and list the behaviors a user would notice: "reports the weight in grams", "rejects an empty title", "retries on transient failure". One behavior → one `It`.
 
-3. **Group behaviors into scenarios.** Cluster behaviors under `Context`/`When` blocks that name the precondition ("when the book has no author"). The nesting should read as a sentence top-down.
+3. **Group behaviors into scenarios.** Cluster behaviors under `Context`/`When` blocks that name the precondition ("when the book has no author"). The nesting should read as a sentence top-down. Design decisions beyond naming — granularity, Context semantics, nesting depth, error-path specs, migration from table tests: [./references/spec-design.md](references/spec-design.md).
 
 4. **Implement with Ginkgo + Gomega.** Use the syntax reference for exact APIs:
    [./references/ginkgo-syntax.md](references/ginkgo-syntax.md). Start from the

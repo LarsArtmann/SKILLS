@@ -12,6 +12,8 @@
 # USAGE
 #   scripts/scratch.sh <name>     # print path of /tmp/scratch-<name> (created)
 #                                 #   usage: dir=$(scripts/scratch.sh mytest)
+#   scripts/scratch.sh --adopt D  # register an existing /tmp dir into the
+#                                 #   manifest so --clean covers it too
 #   scripts/scratch.sh --list     # show registered scratch dirs
 #   scripts/scratch.sh --clean    # trash every registered scratch dir
 #
@@ -27,6 +29,23 @@ if ! command -v trash >/dev/null 2>&1; then
 fi
 
 case "${1:-}" in
+--adopt)
+	[[ -d "${2:-}" ]] || {
+		echo "usage: scratch.sh --adopt <existing-dir>" >&2
+		exit 2
+	}
+	dir=$(realpath "$2")
+	case "$dir" in
+	/tmp/*) : ;;
+	*)
+		echo "error: refusing to adopt outside /tmp (manifest stays /tmp-scoped)" >&2
+		exit 2
+		;;
+	esac
+	touch "$manifest"
+	grep -qxF "$dir" "$manifest" 2>/dev/null || echo "$dir" >>"$manifest"
+	echo "adopted $dir"
+	;;
 --list)
 	[[ -f "$manifest" ]] && cat "$manifest" || echo "(no scratch dirs registered)"
 	;;
