@@ -226,7 +226,10 @@ for f in "${files[@]}"; do
 		awk '/^```/{f=!f; next} !f' "$f" | grep -nE '(bumped from v|version bump|released v[0-9]|TODO #[0-9]|Phase [0-9]+ (complete|in progress)|~?[0-9]+% (complete|done|implemented)|^#+\s+.*\((v[0-9]|added [0-9]{4}|[0-9]{4}-[0-9]{2}-[0-9]{2})\)|As of v[0-9]|was .*,? now )' |
 			sed 's/^/    /' || echo "    (none)"
 		if [[ -n "$fix_budget" && "$size_bytes" -gt "$budget" ]] && ! grep -q 'agents-md-size-budget:' "$f"; then
-			sed -i.bak "2i\\\\\n<!-- agents-md-size-budget: $fix_budget -->" "$f" && rm -f "$f.bak"
+			awk -v marker="<!-- agents-md-size-budget: $fix_budget -->" '
+				NR == 2 { print ""; print marker }
+				{ print }
+			' "$f" >"$f.agentsfix" && mv "$f.agentsfix" "$f"
 			echo "  --fix: inserted size-budget marker ($fix_budget bytes) after line 1"
 		fi
 	fi
