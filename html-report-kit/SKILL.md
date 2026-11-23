@@ -75,6 +75,9 @@ The `Artifact` decision rule (see `how-to-write-skills.md`):
 
 ## Design Principles
 
+- **Web-platform behaviour is owned by the installed `modern-web-guidance`
+  skill** — this kit does not restate its guidance; query it when a report
+  needs platform behaviour beyond the kit's own CSS
 - **Single file, zero dependencies** — no CDN, no JS, no build step, no external fonts by default
 - **Two themes** — dark dashboard and warm editorial light, both using CSS custom properties
 - **Semantic color coding** — problem/solution/warning meanings are consistent across both themes

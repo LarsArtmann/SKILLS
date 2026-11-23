@@ -85,6 +85,26 @@ chain through it). Consequences worth encoding early:
   invisible to already-running sessions — probe a new session before
   concluding an install failed.
 
+### Install, don't wrap: check for an installer before authoring
+
+When a task makes you want a skill around a third-party tool or a URL you
+keep pasting, stop: check whether the tool already ships an installer or
+official skill first (`skills add <owner>/<repo>`, the tool's own `install`
+command, its docs). Author a local skill only when nothing upstream exists.
+
+- **Why:** a wrapper restates the upstream instruction set, so it drifts the
+  moment upstream ships. The 2026-10-30 modern-web-guidance wrapper was
+  authored, found redundant against the installed CLI's own instruction
+  set, and reverted the same day.
+- **When layering IS right:** add mechanics the upstream file does not
+  contain (design-to-code under frontend-design), or fork deliberately when
+  upstream is broken on your machine (architecture-deepening) — then the
+  local file owns the job and upstream is not installed alongside.
+- **Pointer rule for layered skills:** the repo skill must say which
+  installed skill owns the adjacent territory and must NOT restate the
+  third-party body — per-skill installs make that body invisible to your
+  readers, so any restatement drifts silently.
+
 ## Key Principles
 
 ### 1. The `description` is trigger context — it tells the agent _when_ to use the skill.

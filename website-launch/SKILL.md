@@ -767,6 +767,11 @@ Before declaring complete, verify EVERY item on the checklist in
 
 ## Common Pitfalls
 
+Web-platform behaviour questions (dialog/popover semantics, `:has()`,
+container queries, view transitions, Baseline support) are owned by the
+installed `modern-web-guidance` skill — query it, do not restate its
+guidance here.
+
 Load the [common pitfalls reference](./references/common-pitfalls.md) for the
 full list. The most critical:
 
