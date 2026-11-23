@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # check-snippets.sh — parse-sweep the Go snippets in this skill's markdown
-# and compile the references/<topic>-NN example programs.
+# and in the references/<topic>-NN example files.
 #
 # WHY THIS EXISTS
 #   A guide whose snippets do not parse rots silently. The one-off
@@ -11,23 +11,27 @@
 #
 # WHAT IT DOES
 #   1. Extracts every ```go block from SKILL.md + references/*.md.
-#      Most blocks are illustrative fragments, so each is parsed under up
-#      to three wrappers (as-is / package p / package p + func _ body);
-#      a block that still fails AND contains `...` is a deliberate
-#      placeholder snippet -> SKIP (counted, never silently dropped).
-#   2. Builds every references/*/main.go example as its own temp module
-#      (go mod init + tidy + build). Examples whose deps cannot be
-#      fetched (offline / private auth) are SKIPs with the reason, not
-#      failures — the parse sweep above already covers their syntax.
+#      Almost all are illustrative fragments, so each is parsed under up
+#      to five wrappers (as-is / +package p / func _ body / imports
+#      hoisted + decls / imports hoisted + func _ body) — a snippet the
+#      guide shows as "usage after import" is valid under a wrapper and
+#      passes. A block that still fails AND contains `...` is a
+#      deliberate placeholder snippet -> SKIP (counted, never silently
+#      dropped); anything else that fails is a real guide defect.
+#   2. references/<topic>-NN/main.go example files get the same parse
+#      treatment. The rare example that IS a complete program (has a
+#   `package` clause) is compiled in its own temp module; deps that
+#      cannot be fetched (offline / private auth) are SKIPs with the
+#      reason, not failures.
 #
-#   gofmt -e is the parser: exit 0 = the snippet is syntactically valid Go.
+#   gofmt -e is the parser: exit 0 = syntactically valid Go.
 #
 # USAGE
 #   how-to-golang/scripts/check-snippets.sh    # from anywhere; exit 1 = FAIL
 #
 # OUTPUT
 #   One line per FAIL/SKIP with file:line, then a machine-greppable
-#   summary: "check-snippets: PASS 33 blocks, 31 examples (0 fail, N skip)"
+#   summary: "check-snippets: PASS 64 OK, 0 fail, N skip".
 #
 set -euo pipefail
 
@@ -43,6 +47,54 @@ pass=0
 fail=0
 skip=0
 failed_labels=()
+
+parses() { printf '%s' "$1" | gofmt -e /dev/stdin >/dev/null 2>&1; }
+
+# build_wrappers FILE — read a Go fragment and set w1..w5 candidate texts.
+# w4/w5 hoist single-line `import x` and parenthesized import groups to the
+# top (markdown snippets legitimately show imports mid-block or followed by
+# bare usage statements).
+build_wrappers() {
+	local src line imports_text rest_text in_group
+	src=$(cat "$1")
+	imports_text=""
+	rest_text=""
+	in_group=0
+	while IFS= read -r line; do
+		if ((in_group)); then
+			imports_text+="$line"$'\n'
+			[[ "$line" =~ ^\) ]] && in_group=0
+		elif [[ "$line" =~ ^import[[:space:]]*\($ ]]; then
+			imports_text+="$line"$'\n'
+			in_group=1
+		elif [[ "$line" =~ ^import[[:space:]] ]]; then
+			imports_text+="$line"$'\n'
+		else
+			rest_text+="$line"$'\n'
+		fi
+	done <<<"$src"
+	w1=$src
+	w2=$(printf 'package p\n\n%s' "$src")
+	w3=$(printf 'package p\n\nfunc _() {\n%s}\n' "$src")
+	w4=$(printf 'package p\n\n%s\n%s' "$imports_text" "$rest_text")
+	w5=$(printf 'package p\n\n%sfunc _() {\n%s}\n' "$imports_text" "$rest_text")
+}
+
+check_fragment() { # $1 = file, $2 = label
+	build_wrappers "$1"
+	if parses "$w1" || parses "$w2" || parses "$w3" || parses "$w4" || parses "$w5"; then
+		pass=$((pass + 1))
+	elif grep -q '\.\.\.' "$1"; then
+		skip=$((skip + 1))
+		echo "SKIP  $2 (placeholder \`...\` snippet)"
+	else
+		fail=$((fail + 1))
+		failed_labels+=("$2")
+		echo "FAIL  $2"
+		printf 'package p\n\n%s' "$(cat "$1")" | gofmt -e /dev/stdin 2>&1 |
+			head -2 | sed 's/^/      /' || true
+	fi
+}
 
 # --- 1. Extract ```go blocks with their opening line numbers ---
 for md in "$skill_dir/SKILL.md" "$skill_dir"/references/*.md; do
@@ -68,34 +120,24 @@ for md in "$skill_dir/SKILL.md" "$skill_dir"/references/*.md; do
 	' "$md"
 done
 
-# --- 2. Parse each block (three wrapper attempts) ---
+# --- 2. Parse each markdown block ---
 for meta in "$blocks_dir"/*.meta; do
 	[[ -e "$meta" ]] || continue
 	label=$(cat "$meta")
-	block_file=${meta%.meta}
-	block=$(cat "$block_file")
-
-	if printf '%s' "$block" | gofmt -e /dev/stdin >/dev/null 2>&1 ||
-		printf 'package p\n\n%s\n' "$block" | gofmt -e /dev/stdin >/dev/null 2>&1 ||
-		printf 'package p\n\nfunc _() {\n%s\n}\n' "$block" | gofmt -e /dev/stdin >/dev/null 2>&1; then
-		pass=$((pass + 1))
-	elif printf '%s' "$block" | grep -q '\.\.\.'; then
-		skip=$((skip + 1))
-		echo "SKIP  $label (placeholder \`...\` snippet)"
-	else
-		fail=$((fail + 1))
-		failed_labels+=("$label")
-		echo "FAIL  $label"
-		printf '%s' "$block" | gofmt -e /dev/stdin 2>&1 | head -2 | sed 's/^/      /'
-	fi
+	check_fragment "${meta%.meta}" "$label"
 done
 
-# --- 3. Compile each references/<topic>-NN example in its own temp module ---
+# --- 3. Example files: complete programs compile, fragments parse ---
 example_n=0
 for d in "$skill_dir"/references/*/; do
 	[[ -f "$d/main.go" ]] || continue
 	example_n=$((example_n + 1))
 	rel=${d#"$skill_dir"/}
+	rel=${rel%/}
+	if ! grep -q '^package ' "$d/main.go"; then
+		check_fragment "$d/main.go" "$rel/main.go (fragment)"
+		continue
+	fi
 	ex_tmp=$tmp/ex$example_n
 	mkdir -p "$ex_tmp"
 	cp "$d"/*.go "$ex_tmp/"
@@ -107,7 +149,7 @@ for d in "$skill_dir"/references/*/; do
 	); then
 		skip=$((skip + 1))
 		reason=$(printf '%s' "$gomod_out" | grep -Ev '^(go: downloading|go: found)' | tail -1)
-		echo "SKIP  ${rel%/} (dep unavailable: ${reason:-unknown})"
+		echo "SKIP  $rel (dep unavailable: ${reason:-unknown})"
 	else
 		pass=$((pass + 1))
 	fi
@@ -115,11 +157,10 @@ done
 
 # --- Summary ---
 for label in "${failed_labels[@]}"; do
-	echo "  failing block: $label"
+	echo "  failing: $label"
 done
-total=$((pass + fail))
 if [[ $fail -gt 0 ]]; then
-	echo "check-snippets: FAIL $total blocks+examples OK, $fail fail, $skip skip"
+	echo "check-snippets: FAIL $pass OK, $fail fail, $skip skip"
 	exit 1
 fi
-echo "check-snippets: PASS $pass blocks+examples OK, $fail fail, $skip skip"
+echo "check-snippets: PASS $pass OK, $fail fail, $skip skip"

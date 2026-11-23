@@ -603,6 +603,36 @@ report, two non-negotiable steps:
    deliberate, documented additions), verifiable by diffing against the
    template.
 
+## Report-Integrity Checklist
+
+Symbol-honesty gates (doc-check, md-go validators) scan `.md` files — code
+sketches and scorecard numbers inside an HTML report pass through unverified.
+Observed failure mode (2026-11-21, go-cqrs-lite research report): a code
+sketch captioned "today's shape, unchanged" shipped an API that does not
+exist, alongside a scorecard count that had never been tallied. Run this
+checklist before any HTML report ships:
+
+1. **Symbol-honesty.** rg-verify every package-qualified symbol cited as
+   TODAY's API against the source tree. Sketches of PROPOSED API must say so
+   in-place ("new package", "proposed") — a labeled proposal is design, an
+   unlabeled invention of existing API is a lie.
+2. **Compile-or-strike code sketches.** A sketch claiming current reality must
+   be valid against the current API; fix it or label it, never leave a
+   would-not-compile sketch standing as fact.
+3. **Recount every scorecard number** with a grep before publishing. A
+   consistency number that was never counted is the exact failure the report
+   would criticize elsewhere.
+4. **Raw-fetch load-bearing exact strings** (versions, dates, sizes, star
+   counts) from primary sources — registry or API endpoints, not search
+   snippets or summarizer renderings — recording source + date per row.
+   Anything not verified gets an explicit UNVERIFIED label.
+5. **Mechanical checks.** HTML parse (python3 `html.parser`), anchor
+   cross-check (every `href="#x"` has `id="x"`), placeholder grep
+   (TODO/FIXME/PLACEHOLDER/lorem/TBD), and one render screenshot for the
+   record.
+
+Amendments to a SHIPPED report are dated, never silent rewrites.
+
 ## Filename Convention
 
 ```
