@@ -95,11 +95,16 @@
 - **Trigger-eval execution** — natural-trigger probe passed (above); the
   20-query formal eval remains unexecuted. offer-page stays 🆕 until a real
   production page run; the aging rule from first-customers applies ("aged
-  only after a real launch run").
+  only after a real launch run"). → routed — TODO_LIST T75 (eval spend
+  decision, owner-gated); T74's probe transcript was re-run and persisted
+  2026-11-22 (`evals/iteration-1/trigger-probe.md`)
 - **Aggregation-layer commit** — `~/.agents/skills` shows the new untracked
   symlink; commit it there (`git -C ~/.agents/skills status --short`).
+  ~~commit it there~~ done at `847df5b` (aggregation repo)
 - first-customers FEATURES row now claims 10 refs + 1 asset — re-verify
-  counts if that skill gains references back.
+  counts if that skill gains references back. ~~re-verify
+  counts~~ done (re-verified 2026-11-22: 10 reference files + 1 asset on
+  disk — count still true)
 
 ## Decisions made (and why)
 

@@ -151,8 +151,11 @@ deduped in the 14-20 report), f2–f12 routed as TODO rows T127–T135
    persist + grade) — hand-rolled twice now (go-release, go-modularize).
 3. Probe variance protocol: 3 runs per arm + one cross-model arm for
    doctrine-flip evals.
-4. Independent-grader arm (skill-creator `agents/grader.md` pattern)
-   instead of author-grading.
+4. ~~Independent-grader arm (skill-creator `agents/grader.md` pattern)
+   instead of author-grading.~~ done at `e7f3882` (2026-11-22 T127/T128:
+   `scripts/run-eval.sh --grade` seeds grading templates, and
+   `docs/doctrine-eval-protocol.md` canonizes the independent grader per the
+   skill-creator grader pattern)
 5. BuildFlow root decision + possible fix: staged-copy-without-config
    (`format_roundtrip.go`) — owner's call (g1).
 6. Investigate the round-4 trigger via `buildflow history` / cache

@@ -115,10 +115,13 @@ genre as the 07:31 report per AGENTS.md §5.5. User's explicit format demand
 1. **eval-6 behavioral probe** — owner-gated (question g2 below).
 2. **HARVEST** of the 07:31 report's 16-item (f) plus this report's (f) —
    owner-gated (question g3 below).
-3. **Cross-skill link doctrine decision** (finding 6 in the review
+3. ~~**Cross-skill link doctrine decision** (finding 6 in the review
    artifact): scope §5.5's name-only rule to distributed pairs, or codify a
    two-tier rule in the canon. Not mine to decide: the canon itself pins the
-   HARVEST links with a guard.
+   HARVEST links with a guard.~~ done (2026-11-22 TODO-sweep session: two-tier
+   rule codified at the head of AGENTS §5.5 — tier 1 name-only for
+   independently installed pairs, tier 2 guard-pinned relative links; the
+   gates already enforced exactly this, the canon now says it)
 4. **gmail-drafts verification-status table** conversion (standing WARN).
 5. **T83 lesson update** in crush-config `references/lessons.md` (that
    install is read-only from here; needs a commit in the crush-config repo).
