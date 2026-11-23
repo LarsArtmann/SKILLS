@@ -8,21 +8,33 @@ description: >-
   pattern (go-atomic-write, gogenfilter, dynamic-markdown-site, go-output,
   samber-do-auditlog, go-workflow-auditlog, etc.). Also triggers on "website launch",
   "public presence overhaul", "deploy website", or "lars.software domain". Launches a
-  public documentation website for a Go project (library OR application/server) using
-  the LarsArtmann Astro + Starlight + Tailwind v4 + Firebase Hosting pattern. Every
-  launch sells the project with a rendered demo video (HyperFrames HTML→MP4) as the
+  public documentation website for a Go project (library OR application/server) by
+  scaffolding the private LarsArtmann Go SSG template (github.com/LarsArtmann/
+  website-template: pure Go + templ + Tailwind CSS v4 + Firebase Hosting) via the
+  websitelaunch CLI, then deploying through DNS/SSL go-live. Legacy Astro/Starlight
+  sites (18 live) get maintenance audits only — no new Astro sites. Every launch
+  sells the project with a rendered demo video (HyperFrames HTML→MP4) as the
   landing page's centerpiece by default — trigger on "demo video", "product tour",
   "promo clip", or "make the launch sell the project" for the site too.
 metadata:
-  tags: website, firebase, astro, starlight, dns, deployment, documentation
+  tags: website, firebase, go-ssg, dns, deployment, documentation
 allowed-tools: bash view edit write grep fetch
 ---
 
 # Website Launch
 
 Launches a public documentation website for a Go project (library or
-application/server) using the deterministic Astro + Starlight + Tailwind v4 +
-Firebase Hosting pattern shared across all LarsArtmann projects.
+application/server) by scaffolding the canonical **`website-template`** Go
+SSG stack (decided 2026-10-27, `docs/decisions/2026-10-27_open-decisions.md`
+§A: pure Go `cmd/site` + templ + Tailwind CSS v4 + Firebase Hosting; golden
+tests, CSP hash-pinning, and a link checker are built into the template).
+The `websitelaunch` CLI in the template repo mechanizes the launch phases:
+`doctor` (Phase 0), `init` (Phase 3 scaffold), `check` (Phase 4 DoD).
+
+> **Legacy Astro sites:** the 18 live Astro/Starlight sites get the manual
+> §0.0 audit for maintenance only. Do NOT create new Astro sites — the
+> Node/pnpm pitfall class (8 of 22 documented pitfalls) died with this
+> decision. Astro-specific references retained here are marked `[legacy]`.
 
 > **Path conventions:** This skill assumes the LarsArtmann project layout:
 > `~/projects/{repo}` for project repos and `~/projects/domains` for the DNS
@@ -37,13 +49,13 @@ All commands below assume a **Nix-based environment** and **Crush CLI tool
 constraints**. These apply throughout:
 
 - **`curl` is BANNED** in Crush. Use the `fetch` tool for HTTP requests, or
-  Node.js `https.request` for scripted API calls. Every `curl` in older
-  references has been replaced.
-- **`pnpm` / `node` are not in PATH by default.** Use:
-  ```bash
-  nix shell nixpkgs#nodejs -c pnpm install
-  nix shell nixpkgs#nodejs -c pnpm run build
-  ```
+  Go/Node.js for scripted API calls. Every `curl` in older references has
+  been replaced.
+- **`go` is on PATH; `templ`/`tailwindcss` may not be.** `websitelaunch
+  doctor` probes both — regenerating `.templ` sources needs templ at the
+  pinned version (the CLI rewrites import paths at scaffold time, so `init`
+  itself does not). Build via `bash build.sh` (tailwindcss via
+  `nix shell nixpkgs#tailwindcss_4` when absent).
 - **`firebase` CLI is not in PATH by default.** Use:
   ```bash
   nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c firebase --version
@@ -69,6 +81,18 @@ constraints**. These apply throughout:
 Run these checks first. If any fails, surface it to the user immediately before
 investing time in website creation.
 
+**Start with the mechanized pre-flight** — from a `website-template` clone:
+
+```bash
+go run ./cmd/websitelaunch doctor --repo github.com/LarsArtmann/{repo}
+```
+
+It checks the template tree, Go toolchain vs go.mod, the templ version pin
+(drift re-stamps every generated file), tool presence (WARNs), `gh` auth,
+and the repo name collision. Findings print as What/Why/Fix. The manual
+checks below cover what a CLI cannot: existing sites, credentials, and the
+human domain gate.
+
 **First decision (§0.6):** hosting target. The default is Firebase Hosting
 (custom domains, headers, the DNS pipeline in Phases 5–7). If the project
 needs none of that, GitHub Pages is a zero-infra alternative — decide early,
@@ -79,7 +103,7 @@ it changes which phases apply.
 Before starting any work, check if a website already exists:
 
 ```bash
-ls ~/projects/{repo}/website/package.json 2>/dev/null \
+ls ~/projects/{repo}/website/go.mod 2>/dev/null \
   && echo "INFO: website/ directory already exists — check if this is an update or a rebuild"
 ```
 
@@ -94,9 +118,10 @@ rebuild:
 - README: add "Who is this for?" and "When NOT to use this" if missing.
 - Docs pages: add a curated "Where to go next" to each page; repeat the
   comparison table inside the relevant docs page.
-- `astro.config.mjs`: enable `lastUpdated: true` and `editLink` (see §3.10).
+- Site chrome: git-derived `lastUpdated` and per-page edit links are
+  built into the template (`GitHubDefaultBranch` in data.go).
 - Swap bold-text warnings for `:::caution` / `:::tip` callouts.
-- **Demo video: if the landing page has none, produce one** (see §3.11 and the
+- **Demo video: if the landing page has none, produce one** (see §3.3 and the
   [demo video reference](./references/demo-video.md)) — it retrofits onto any
   existing site as a ShowcaseSection + `public/demo.mp4`. If one exists, audit
   it against the current value prop (headline/message match, hook frame, README
@@ -245,15 +270,15 @@ alternative (this is how the SP8D docs ship, for example).
 | Criterion              | Firebase Hosting (default)           | GitHub Pages (alternative)                |
 | ---------------------- | ------------------------------------ | ----------------------------------------- |
 | Custom domain + SSL    | Yes (Phases 5–6)                     | Yes (repo Settings → Pages; slower cert)  |
-| Security headers / CSP | Yes (`firebase.json`, `fix-csp.mjs`) | Limited (needs GH Actions to inject)      |
+| Security headers / CSP | Yes (firebase.json headers + hash-pinned CSP) | Limited (needs GH Actions to inject)      |
 | Cost / infra           | GCP project                          | None                                      |
 | Skill phases used      | All                                  | Skip Phase 5 (DNS/Terraform) + Phase 7 SA |
 
 **Pick Firebase unless the project explicitly asks for GitHub Pages.** If
-GitHub Pages is chosen: the build is still `astro build` (`output: 'static'`);
-deploy `dist/` via a `actions/deploy-pages` step; configure the custom domain
-in the repo's Pages settings, not Terraform. The README rewrite (Phase 2),
-website creation (Phase 3), and build verification (Phase 4) are identical.
+GitHub Pages is chosen: the build is still `bash build.sh`; deploy `dist/`
+via an `actions/deploy-pages` step; configure the custom domain in the
+repo's Pages settings, not Terraform. The README rewrite (Phase 2), website
+creation (Phase 3), and build verification (Phase 4) are identical.
 
 ---
 
@@ -413,7 +438,7 @@ callouts, feedback links).
 
 **The value proposition is written once.** The one-paragraph summary and
 "## Why?" section are the canonical sales narrative for the entire launch:
-the landing hero headline, the demo video's hook and value beat (§3.11),
+the landing hero headline, the demo video's hook and value beat (§3.3),
 and any launch post copy are all derived from them — never re-invented
 per surface. When these drift apart, the page fights itself and each
 element undersells.
@@ -435,7 +460,7 @@ Both live as copy-paste templates in the
 "Documentation Link Bar" sections): the library badge set (with the
 `{LICENSE}` placeholder — verify the real license, never assume MIT), the
 application variant (Docker instead of Go Reference), and the link bar —
-which gains a "Watch the {N}s demo" third link once the §3.11 video exists.
+which gains a "Watch the {N}s demo" third link once the §3.3 video exists.
 Do not re-invent either markup here; every restatement has historically
 drifted from the template.
 
@@ -443,74 +468,63 @@ drifted from the template.
 
 ## Phase 3: Create the Website
 
-Load the [file manifest](./references/file-manifest.md) to see exactly which
-files to copy verbatim, which to customize, and which to write fresh. The
-classification eliminates the need to read 60+ reference files via sub-agents.
-
 Before designing, load the [design inspiration reference](./references/design-inspiration.md)
-to calibrate what "nice" looks like (the Nextra-class docs aesthetic, and how
-Starlight reaches it via theme tuning — not a framework switch).
+to calibrate what "nice" looks like (the Nextra-class docs aesthetic —
+reached here via `site.css` `@theme` tuning and content patterns, not a
+framework switch).
 
-### 3.1 Choose the Reference Baseline
+### 3.1 Scaffold from the template
 
-Two reference repos exist. **Use gogenfilter (`~/projects/gogenfilter/website/`)
-as the baseline** — it has CSP hardening, OG images, and a CI/CD pipeline.
-go-atomic-write (`~/projects/go-atomic-write/website/`) is the older, simpler
-pattern without these features.
+```bash
+# Once per machine: clone the (private) template
+ git clone git@github.com:LarsArtmann/website-template ~/projects/website-template
 
-| Feature              | go-atomic-write | gogenfilter                                 |
-| -------------------- | --------------- | ------------------------------------------- |
-| Security headers     | No              | **Yes** (HSTS, X-Frame-Options, CORP, COOP) |
-| CSP hash injection   | No              | **Yes** (`fix-csp.mjs`)                     |
-| OG images            | No              | **Yes** (`astro-og-canvas`)                 |
-| Two-job CI           | No              | **Yes** (build, then deploy)                |
-| Service account auth | No              | **Yes** (`GOOGLE_APPLICATION_CREDENTIALS`)  |
+cd ~/projects/website-template
+go run ./cmd/websitelaunch doctor --repo github.com/LarsArtmann/{repo}
+go run ./cmd/websitelaunch init \
+  --name {Project} \
+  --repo github.com/LarsArtmann/{repo} \
+  --url https://{subdomain}.lars.software \
+  --dir ~/projects/{repo}/website
+```
 
-**Security headers vs CSP:** These are different things. Security headers
-(HSTS, X-Frame-Options, Permissions-Policy, etc.) go in `firebase.json`
-`headers` config. Content-Security-Policy (CSP) is a separate header that
-restricts script/style/font sources. `fix-csp.mjs` post-processes built HTML
-to inject SHA-256 hashes for inline scripts into the CSP header. Include
-security headers in `firebase.json` always; add CSP hardening optionally
-if the project needs it (copy from gogenfilter).
+`init` rewrites the module path (imports in `.go`/`.templ`/`_templ.go`,
+`go.mod`, README), the identity constants in `internal/pages/data.go`, and
+the firebase targets — count-verified, so a drifted template fails loudly.
+It does NOT copy the CLI itself. The site commits into the project repo at
+`{repo}/website/` (same layout as every live site).
 
-**Important:** Components are NOT verbatim copies between repos. They share
-the same data-driven architecture (consume data from `src/data/*.ts`) but
-differ in markup, styling, and sometimes structure. Copy from gogenfilter as
-the starting point, then customize per-project.
+After `init`, two regeneration steps are mandatory (both embed identity):
 
-### 3.2 Build the Website
+```bash
+cd ~/projects/{repo}/website
+GOWORK=off GOEXPERIMENT=jsonv2 go test ./internal/pages/ -count=1 -update  # goldens
+GOWORK=off GOEXPERIMENT=jsonv2 go run ./cmd/site --out dist --repo-root . --update-csp
+```
 
-1. **Copy verbatim** (~12 files) — see file manifest, "Copy verbatim" rows.
-   These need zero changes.
+### 3.2 What `init` does not do (the manual map)
 
-2. **Customize specific fields** (~15 files) — change project name, URLs,
-   accent color, sidebar structure. See file manifest, "Customize" rows.
+1. **Content** — docs pages as markdown in `content/docs/**/*.md` (`title`
+   + `description` frontmatter) PLUS a `DocRef` entry in the `docSidebar`
+   registry (`internal/pages/docs.go`). Both, or the page does not render;
+   the test suite fails on either orphaning.
+2. **Landing sections** — the content tables in `internal/pages/data.go`
+   (Features, ComparisonColumns, …) and the copy in `landing.templ` /
+   `sales.templ` / `hero.templ`. Hero code must be REAL captured output
+   (Phase 1 verification), never fabricated.
+3. **Accent color** — the `@theme` token block in `site.css`
+   (`--color-accent` + hover/dim/light pair; dark overrides under `.dark`).
+   No precomputed tables needed — change the tokens, rebuild.
+4. **Favicon and assets** — `public/favicon.svg` (28x28 viewBox, rounded
+   rect, literal accent HEX — SVG tabs do not resolve CSS variables; use the
+   dark-mode accent), `public/manifest.json`, `public/og/*.png` (1200x630).
+5. **Per-site CTA config** — `DemoURL` in data.go (linked as "Live Demo"
+   from hero/sales/404; point it at something real) and `PkgGoDevURL`
+   (libraries only; clear it for applications).
 
-3. **Write fresh** (~20 files) — project-specific content: features, hero code,
-   sections, all docs pages, logo, favicon, and section components (CTASection,
-   ComparisonSection, etc. — these follow the data-driven pattern from
-   gogenfilter but need per-project markup and styling).
+Full per-site adaptation contract: the template repo's `README.md`.
 
-### 3.3 Accent Color
-
-Load the [color palette reference](./references/color-palette.md) for
-pre-computed CSS token sets for each supported accent color. Do NOT manually
-compute `rgba()` values — use the table.
-
-### 3.4 Dependencies
-
-Load the [dependency version reference](./references/dependency-versions.md)
-for the verified package.json version matrix. Do NOT guess or bump versions —
-use the exact pins that are known to work together.
-
-### 3.5-3.10 Website creation details
-
-For favicon/logo design, MDX escaping, section component patterns, creation
-order, and Starlight config knobs, load
-[./references/website-creation-details.md](./references/website-creation-details.md).
-
-### 3.11 Demo video — the launch's sales engine (default for every project)
+### 3.3 Demo video — the launch's sales engine (default for every project)
 
 Produce a 20-30s video that SELLS the project and embed it on the landing
 page. This is part of the launch, not a bonus: a working-product video
@@ -541,26 +555,20 @@ the video as an immediate follow-up commit — but do not skip it.
 
 ## Phase 4: Build Verification
 
-```bash
-cd website
-nix shell nixpkgs#nodejs -c pnpm install
-nix shell nixpkgs#nodejs -c pnpm run build
-```
-
-If using pnpm v11+, native binary packages need approval:
+The mechanized half is one command, run from the site directory:
 
 ```bash
-nix shell nixpkgs#nodejs -c pnpm dlx approve-scripts esbuild sharp   # if blocked
+cd {repo}/website
+bash build.sh    # Go SSG + Tailwind; needs tailwindcss (nix shell nixpkgs#tailwindcss_4)
+go run ~/projects/website-template/cmd/websitelaunch check
 ```
 
-Expected output: N pages generated, sitemap, pagefind search index, 0 errors.
-
-Run type checking and HTML validation:
-
-```bash
-nix shell nixpkgs#nodejs -c pnpm dlx astro check          # 0 errors, 0 warnings
-nix shell nixpkgs#nodejs -c pnpm dlx html-validate "dist/**/*.html"
-```
+`check` fails red on: monorepo path leftovers, un-rewritten template
+identity, `go vet`/`go test ./...` failures (GOWORK=off GOEXPERIMENT=jsonv2
+are set by the check itself), and incomplete `dist/`. The Go suite already
+includes build integrity, CSP hash sync, link/anchor checks, the search
+index, sitemaps, and goldens — the classes that were manual `astro check`
+steps before.
 
 ### Error-Reference Readiness Gate (Go projects)
 
@@ -589,9 +597,9 @@ risk in the entire workflow.
 **Step 1: Start preview server and verify HTTP responses**
 
 ```bash
-# Start preview server
-nix shell nixpkgs#nodejs -c pnpm run preview &
-sleep 3
+# Start preview server (any static file server over dist/)
+nix shell nixpkgs#python3 -c python3 -m http.server 4321 --directory dist &
+sleep 2
 
 # Verify key pages return 200 (use fetch tool, not curl)
 # Check: http://localhost:4321/ — landing page
@@ -698,7 +706,7 @@ Phase 2 placed. The canonical markup (HTML `<p align="center">` form,
 libraries vs applications) lives in the
 [README template](./references/readme-template.md) "Documentation Link Bar"
 section, including the "Watch the {N}s demo" third link that gets appended
-once the §3.11 demo video exists. Verify the shipped README matches that
+once the §3.3 demo video exists. Verify the shipped README matches that
 template — a bold-link bar here and an HTML bar in the template is exactly
 the split brain that produced two different bars across launched repos.
 
@@ -734,16 +742,18 @@ rm /tmp/firebase-ci-key.json
 
 ### Step 2: Add CI workflow
 
-Load the [CI workflow reference](./references/ci-workflow.md) for the
-full template. It uses a two-job pattern:
+Two-job pattern (same as the legacy Astro flow, Go build):
 
-1. **build-website** — `pnpm install --frozen-lockfile`, `astro check`, `astro build`, HTML validation,
-   upload artifact
+1. **build-website** — checkout, `nix shell nixpkgs#go nixpkgs#tailwindcss_4 -c
+   bash website/build.sh`, upload `website/dist` artifact
 2. **deploy-website** — download artifact, deploy to Firebase via
-   `GOOGLE_APPLICATION_CREDENTIALS` secret
+   `GOOGLE_APPLICATION_CREDENTIALS` (the service-account secret from step 1)
 
-The reference also includes rollback commands (`firebase hosting:rollback`)
-for reverting a broken deploy.
+The template repo does not yet ship a ready-made workflow file (tracked as
+template follow-up, decision Q5: only the CI-deploy item migrates into the
+template). Until then write it per project — keep the branch name in sync
+with the repo's default (`master` here), and include rollback:
+`firebase hosting:rollback` reverts a broken deploy.
 
 ---
 
@@ -753,15 +763,38 @@ Commit at these checkpoints — never leave a session with uncommitted work:
 
 1. **After domain confirmed by user** — Phase 0.4 gate passed
 2. **After README rewrite** — verified correct against source code
-3. **After website builds successfully** — `astro check` = 0 errors,
-   `astro build` = success
+3. **After website builds successfully** — `websitelaunch check` = PASS
+   (vet, tests, goldens, leftovers, dist artifacts)
 4. **After Firebase deploy confirmed live** — HTTP 200 on web.app URL
 5. **After DNS records staged** — Terraform `fmt` + `validate` pass
 
 ### Definition of Done
 
-Before declaring complete, verify EVERY item on the checklist in
-[./references/definition-of-done.md](./references/definition-of-done.md).
+The build/deploy half is `websitelaunch check` PASS plus HTTP 200 on the
+web.app and custom URLs. The human-gate half (verify EVERY item):
+
+- [ ] GitHub homepage URL matches `https://{subdomain}.lars.software`
+- [ ] README: centered header with badges (library: Go Reference, CI, Go
+      Report Card; application: CI, Docker), docs link, pkg.go.dev link ONLY
+      for libraries, license badge matches the LICENSE file, no emojis in
+      headers, all code examples verified against Go source, comparison
+      table present
+- [ ] GitHub: description updated, homepage set, topics include `go`,
+      `golang`, + domain-specific
+- [ ] DNS (if credentials available): CNAME + ACME TXT records in
+      `domains/lars.software.tf`; `terraform validate` + `fmt -check` pass
+- [ ] Demo video: `website/public/demo.mp4` (< 3 MB, ~20-30s), beats derived
+      from the README value prop, visible without scrolling on 1440x900,
+      composition committed under `website/video/` (never `/tmp`), poster is
+      a selling frame, README bar links it with accurate runtime, `og:image`
+      from the poster (1200x630), `firebase.json` cache glob covers
+      `mp4|webm|mov`, `HEAD /demo.mp4` returns the immutable cache header
+- [ ] `flake.lock` committed; no temp files left behind (`git status` clean)
+- [ ] **Two repos awareness**: project repo (website files, README, CI) AND
+      domains repo (DNS) — `git status` in BOTH before declaring done
+- [ ] Status reports never hardcode unconfirmed URLs/domains — write
+      `{subdomain}.lars.software (pending DNS propagation)` until verified
+      live; a report referencing a renamed domain is a false historical record
 
 ---
 
@@ -773,67 +806,56 @@ installed `modern-web-guidance` skill — query it, do not restate its
 guidance here.
 
 Load the [common pitfalls reference](./references/common-pitfalls.md) for the
-full list. The most critical:
+full list (Astro/Node entries there are marked `[legacy]` — they apply only
+to maintaining the 18 live Astro sites). The most critical:
 
-1. **`curl` is BANNED in Crush** — use the `fetch` tool or Node.js
-   `https.request` for HTTP requests. Every command sample in this skill uses
-   Nix invocations and Node.js, not curl.
+1. **`curl` is BANNED in Crush** — use the `fetch` tool or scripted HTTP
+   from Go/Node.js. Every command sample in this skill uses Nix invocations,
+   not curl.
 2. **Terraform is unfree** — use `NIXPKGS_ALLOW_UNFREE=1 nix shell --impure
-nixpkgs#terraform` or `opentofu`.
-3. **`pnpm`, `node`, `firebase` are not in PATH** — always invoke via
-   `nix shell nixpkgs#{package} -c {command}`.
-4. **Vite override conflicts** — **Remove `vite` from overrides entirely.**
-   Astro 7 manages its own Vite version (Vite 8). Pinning `vite: 7.3.2`
-   (copied from gogenfilter's older lockfile) causes a build failure with
-   `rollupOptions.input should not be an html file when building for SSR`.
-   Keep only `brace-expansion`, `devalue`, and `yaml` in overrides. See
-   [dependency-versions.md](./references/dependency-versions.md).
-5. **`--legacy-peer-deps` trap** — If you must use it, create `.npmrc`
-   with `legacy-peer-deps=true`. Otherwise the lockfile is non-reproducible.
-6. **MDX character escaping** — `<`, `>`, `<=`, `>=` break `.mdx` files.
-7. **`package-lock.json` + `flake.lock`** — Must be generated and committed.
-8. **`GOEXPERIMENT=jsonv2`** — If the library uses `encoding/json/v2`,
-   document the build constraint in README.
-9. **Stray dependencies** — Never `pnpm install` a package as a debugging step
-   without removing it. Use `pnpm dlx` for one-off commands.
-10. **Firebase upload endpoint** — `upload-firebasehosting.googleapis.com` is a
-    different host. If unreachable, deploys fail. Verify before attempting.
-11. **bun vs Node.js for deploy** — `firebase deploy` uses the `re2` native
-    module which fails under bun. Use real Node.js from Nix.
-12. **Edit tool collateral damage** — When editing Terraform files, include
-    enough unique context and run `git diff` after every edit.
-13. **Committing before domain confirmation** — The subdomain name touches 8+
-    files. Never commit until the user confirms the domain (Phase 0.4).
-14. **Firebase custom domain API** — Use `customDomains` endpoint (not
+   nixpkgs#terraform` or `opentofu`.
+3. **`firebase` is not in PATH** — always invoke via
+   `nix shell nixpkgs#firebase-tools -c firebase …`.
+4. **templ version drift** — regenerating `.templ` with a templ CLI newer
+   than the template pin re-stamps every `_templ.go`; `doctor` warns, the
+   fix is `go run github.com/a-h/templ/cmd/templ@<pin> generate`.
+5. **`GOEXPERIMENT=jsonv2`** — the site module needs it; `websitelaunch
+   check` sets it, but manual `go` invocations must export it.
+6. **Identity drift is checkable** — `websitelaunch check` fails red on
+   monorepo path leftovers and un-rewritten template identity; never
+   hand-patch a scaffold, re-init.
+7. **Firebase upload endpoint** — `upload-firebasehosting.googleapis.com`
+   is a different host. If unreachable, deploys fail. Verify before
+   attempting.
+8. **bun vs Node.js for deploy** — `firebase deploy` uses the `re2` native
+   module which fails under bun. Use real Node.js from Nix.
+9. **Edit tool collateral damage** — When editing Terraform files, include
+   enough unique context and run `git diff` after every edit.
+10. **Committing before domain confirmation** — The subdomain name touches
+    8+ files. Never commit until the user confirms the domain (Phase 0.4).
+11. **Firebase custom domain API** — Use `customDomains` endpoint (not
     `domains`), body is `{}` with domain in query param, `x-goog-user-project`
     header is required. See [firebase-rest-api.md](./references/firebase-rest-api.md).
-15. **Fabricated hero code** — Hero terminal output or code snippets that
+12. **Fabricated hero code** — Hero terminal output or code snippets that
     don't match actual tool output. Always run the tool and capture real
     output for the hero section, or label it as illustrative.
-16. **Auth secret mismatch** — Upgrading from `FIREBASE_TOKEN` to
+13. **Auth secret mismatch** — Upgrading from `FIREBASE_TOKEN` to
     `FIREBASE_SERVICE_ACCOUNT` without adding the new secret first. Deploy
     fails on first push. Check which secret exists before changing the
     workflow.
-17. **Stale root-level docs** — Old documentation files (HOW_TO_USE.md,
+14. **Stale root-level docs** — Old documentation files (HOW_TO_USE.md,
     USAGE.md, etc.) that overlap with the new website create confusion.
     Consolidate, archive, or link from README.
-18. **Branch name in deploy workflow** — The CI workflow template uses
-    `master`. If the project uses a different default branch (e.g. `fork`,
-    `main`), update ALL branch references in the workflow YAML.
-19. **License mismatch** — Verify the LICENSE file, `.goreleaser.yaml`,
-    `flake.nix`, and `package.json` all declare the SAME license. Prior
-    session found `.goreleaser.yaml` claiming MIT while the LICENSE file
-    was proprietary — actively misleading Homebrew/Scoop/Nix repositories.
-20. **Lockfile package-manager mismatch** — If the dev environment uses
-    `bun install` but CI uses `pnpm install --frozen-lockfile`, there's no `package-lock.json`.
-    Either: (a) run `pnpm install` once to generate `package-lock.json`
-    for CI, or (b) update CI to use bun and commit `bun.lock` (remove
-    it from `.gitignore` first).
-21. **Application README claims wrong framework** — A README that claims
+15. **Branch name in deploy workflow** — the workflow assumes `master`; if
+    the repo defaults elsewhere, update ALL branch references.
+16. **License mismatch** — LICENSE, `.goreleaser.yaml`, and `flake.nix` must
+    declare the SAME license. A prior session found `.goreleaser.yaml`
+    claiming MIT while LICENSE was proprietary — actively misleading
+    Homebrew/Scoop/Nix repositories.
+17. **Application README claims wrong framework** — a README that claims
     Gin/Echo/Fiber when the code uses `net/http` destroys credibility.
-    Always verify `go.mod` for the actual HTTP framework before writing
-    the tech stack table.
-22. **Video composition left in `/tmp`** — HyperFrames work staged in `/tmp`
+    Verify `go.mod` before writing the tech stack table.
+18. **Video composition left in `/tmp`** — HyperFrames work staged in `/tmp`
     is lost on reboot (happened on emeet-pixyd; only the committed MP4
     survived). The composition lives in `{repo}/website/video/` from the
     first command. Also: `firebase.json` cache headers must cover `mp4|webm`,

@@ -4,7 +4,15 @@
 > 5-30 minutes of debugging. Following the SKILL.md procedure prevents all
 > of them.
 >
-> **Last updated:** 2026-07-13
+> **Last updated:** 2026-11-23
+>
+> **Ownership split (2026-11-23, T59):** new sites scaffold from the Go SSG
+> `website-template` and the `websitelaunch` CLI mechanizes the mechanical
+> checks — `doctor` (toolchain/templ-pin/repo-collision), `check` (monorepo
+> leftovers, template identity, vet/tests/dist). Pitfalls whose entire class
+> died with the Astro stack, and Astro/Node-specific entries kept only for
+> maintaining the 18 live legacy sites, are marked **[legacy]**. Everything
+> else still applies to every launch.
 
 ## Environment Failures
 
@@ -40,7 +48,7 @@ NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#terraform -c terraform plan
 nix run nixpkgs#opentofu -- plan
 ```
 
-### 19. pnpm/node/firebase not in PATH
+### [legacy Astro] 19. pnpm/node/firebase not in PATH
 
 **Symptom:** Commands fail with `executable file not found in $PATH`.
 
@@ -55,7 +63,7 @@ nix shell nixpkgs#nodejs nixpkgs#firebase-tools -c firebase deploy --only hostin
 
 ## Build Failures
 
-### 1. Vite override conflicts
+### [legacy Astro] 1. Vite override conflicts
 
 **Symptom:** Build fails with `rollupOptions.input should not be an html
 file when building for SSR` or similar Rollup error.
@@ -75,12 +83,12 @@ Pinning Vite to 7.x causes a fatal Rollup version mismatch.
 }
 ```
 
-**Prevention:** See [dependency-versions.md](./dependency-versions.md) —
+**Prevention [legacy]:** the Astro version matrix reference was retired with the stack (2026-11-23); the equivalent Go-SSG guidance is: dependency pins live in the template's go.mod — never hand-pin. Original text:
 the "Vite Override — Critical Fix" section documents this in detail. If
 you copy gogenfilter's `package.json`, delete the `"vite"` line before
 running `pnpm install`.
 
-### 2. pnpm v11 install scripts blocked
+### [legacy Astro] 2. pnpm v11 install scripts blocked
 
 **Symptom:** Build fails with missing `esbuild` or `sharp` binary.
 
@@ -94,7 +102,7 @@ pnpm approve-scripts esbuild sharp
 
 **Prevention:** If using bun, this is handled automatically.
 
-### 3. `--legacy-peer-deps` without `.npmrc`
+### [legacy Astro] 3. `--legacy-peer-deps` without `.npmrc`
 
 **Symptom:** `pnpm install` fails with `ERESOLVE` for contributors who
 clone the repo.
@@ -136,7 +144,7 @@ to verify the signature before writing it into documentation.
 
 **Prevention:** See the Code Example Verification section in SKILL.md.
 
-### 6. MDX character escaping
+### [legacy Astro] 6. MDX character escaping
 
 **Symptom:** Build fails on a `.mdx` file with a parser error pointing at
 `<`, `>`, `<=`, or `>=`.
@@ -218,7 +226,7 @@ everything is lost.
 
 **Fix:** Commit at defined checkpoints (see SKILL.md Commit Discipline).
 
-### 12. Stray dependencies
+### [legacy Astro] 12. Stray dependencies
 
 **Symptom:** `package.json` has `firebase-tools` in devDependencies.
 
@@ -232,7 +240,7 @@ used as a debugging step for deploy issues and never removed.
 pnpm remove firebase-tools  # or: bun remove firebase-tools
 ```
 
-### 13. Missing `package-lock.json` / `flake.lock`
+### [legacy Astro] 13. Missing `package-lock.json` / `flake.lock`
 
 **Symptom:** CI builds fail because lock files are missing.
 
@@ -334,7 +342,7 @@ the Phase 1 Code Example Verification checklist:
 6. Are time units correct? (500*time.Millisecond not 500*time.Second)
 ```
 
-### 24. pnpm run from wrong working directory
+### [legacy Astro] 24. pnpm run from wrong working directory
 
 **Symptom:** `pnpm error code ENOENT ... Could not read package.json: Error:
 ENOENT: no such file or directory, open '/home/lars/projects/{repo}/package.json'`
@@ -485,7 +493,7 @@ If the project is proprietary, use `"license": "UNLICENSED"` in
 `package.json`, `license = licenses.unfree` in `flake.nix`, and either
 omit the license badge or use `license-Proprietary-lightgrey.svg`.
 
-### 33. Lockfile package-manager mismatch
+### [legacy Astro] 33. Lockfile package-manager mismatch
 
 **Symptom:** CI fails with `pnpm install --frozen-lockfile` because `package-lock.json` doesn't
 exist. The dev environment used `bun install` which generated `bun.lock`
@@ -496,7 +504,7 @@ that CI needs.
 
 **Fix:** If CI uses pnpm, run `pnpm install` once to generate
 `package-lock.json` and commit it. The `bun.lock` stays gitignored. See
-[dependency-versions.md](./dependency-versions.md) Lockfile Decision table.
+the (retired) dependency-versions.md Lockfile Decision table.
 
 ### 34. Application README claims wrong HTTP framework
 
@@ -519,7 +527,7 @@ library `net/http`" instead of the framework name.
 
 ## Dependency Pin Fragility (fleet-wide, 2026-09-04)
 
-### 31. astro-og-canvas pulls a broken canvaskit-wasm — pin it DIRECTLY
+### [legacy Astro] 31. astro-og-canvas pulls a broken canvaskit-wasm — pin it DIRECTLY
 
 **Symptom:** Astro prerender crashes on `/og/*.png` with an emscripten
 error mentioning `__dirname` (or similar Node/ESM incompatibility) inside
@@ -541,7 +549,7 @@ entry, which a regen can overwrite:
 Re-widen only after upstream fixes the emscripten ESM issue. Applied to
 go-output (2026-09-03) and gogenfilter (2026-09-04).
 
-### 32. pnpm v11 traps that break deterministic builds
+### [legacy Astro] 32. pnpm v11 traps that break deterministic builds
 
 Three separate traps, each costing real debugging time:
 

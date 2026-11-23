@@ -70,7 +70,7 @@ The gap is _theme tuning_, not features. To close it:
    "professional".
 3. **Accent discipline** — one accent color, used sparingly (links, the
    active sidebar item, the logo). Nextra-class sites do not use
-   multi-color rainbows. See [`color-palette.md`](./color-palette.md).
+   multi-color rainbows. The precomputed token tables moved into the template's `site.css` `@theme` block (the color-palette reference was retired 2026-11-23).
 4. **Dark-first** — the warm dark base (`#0a0908`) already matches the
    aesthetic. Ensure dark is the default (it is, via `theme-init.js`).
 5. **Callouts over bold** — see [`content-patterns.md`](./content-patterns.md) §6.
