@@ -78,3 +78,8 @@ Do not push unless the user explicitly requests it.
 - **status-report** — work-item state inventory (a–g sections: done / partial /
   broken / Top-N next tasks). Use it when the user asks "where are we" rather
   than "what did we get wrong"; sessions frequently run both.
+- **architecture-review** — when a self-review finding is structural rather
+  than session-level (coupling, module boundaries, service orientation), hand
+  the codebase to architecture-review for the scored rubric + roadmap instead
+  of adjudicating architecture inline here; this skill critiques recent work,
+  it does not grade whole structures.

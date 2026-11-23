@@ -126,7 +126,12 @@ the canonical versions.
 Three original files (`todo-list-builder.md`, `features-audit.md`,
 `docs-freshness-check.md`) now seed skills that were consolidated into
 `docs-health`. They are kept for historical reference; the canonical
-skill is `docs-health/SKILL.md`.
+skill is `docs-health/SKILL.md`. A fourth orphan of the same class,
+`nix-flake-migration.md` (one-shot "write MIGRATION_TO_NIX_FLAKES_PROPOSAL.md"
+prompt), has no skill directory either — its territory is owned by
+`nix-review` (flake review + go-standard migration recommendations); found
+by the 2026-11-22 originals 1:1 audit, which otherwise confirmed every
+remaining seed maps to its skill directory.
 
 `communication-doctrine.md` (added 2026-09-24) is the one original that
 seeded a _principle_ rather than a skill directory: the 2026-09-17 user

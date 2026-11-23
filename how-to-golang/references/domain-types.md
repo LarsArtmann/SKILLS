@@ -273,3 +273,13 @@ conversions at call sites, you probably have a **definition** where an
 **alias** would be correct. If you find bugs where `Email` accepts any
 `string`, you probably have an **alias** where a **definition** would be
 correct.
+
+## Companion skills (cross-references)
+
+- **go-error-modernization** — when the domain types carry or classify errors:
+  Go 1.26+ `errors.AsType[E]` migration decisions and the sentinel-value
+  traps live there, not here.
+- **data-model-review** — when the model's SHAPE is the question (invariants,
+  optionality, lifecycle stages, making impossible states unrepresentable in
+  a full redesign), that skill owns the from-first-principles review; this
+  file is the how-to-golang policy layer underneath it.

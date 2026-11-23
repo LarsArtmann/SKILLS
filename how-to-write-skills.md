@@ -62,6 +62,29 @@ allowed-tools: ... # Optional: space-separated pre-approved tools
 | Global        | `~/.config/crush/skills/`                              |
 | Custom        | Set `options.skills_paths` in `crush.json`             |
 
+### The runtime-symlink install model (multi-agent machines)
+
+An agent's global skill dir is a **delivery layer, not a source**. The
+scalable pattern on a machine running several agents (Crush, Codex, Cursor,
+...): keep ONE editable checkout of your skills repo, and make each runtime
+dir hold a **relative symlink** per skill
+(`~/.agents/skills/<name>` → `../../projects/SKILLS/<name>`; other runtimes
+chain through it). Consequences worth encoding early:
+
+- Edits in the repo are live in every agent instantly — no sync step, no
+  drift possible. A copy-based model (`rsync`, duplicate dirs) reintroduces
+  exactly the drift the links eliminate.
+- The Agent Skills spec has **no dependency system**: a per-skill install
+  (`skills add owner/repo@one-skill`) copies only that one directory, so
+  never reference sibling skills by `../other-skill/...` file paths — link
+  by skill NAME and let each skill vendor what it needs.
+- Always read AND edit through the repo path. Editing through a runtime
+  symlink path trips "file modified since read" guards and confuses
+  diff tracking.
+- Skill discovery is a session-start snapshot: a freshly installed skill is
+  invisible to already-running sessions — probe a new session before
+  concluding an install failed.
+
 ## Key Principles
 
 ### 1. The `description` is trigger context — it tells the agent _when_ to use the skill.

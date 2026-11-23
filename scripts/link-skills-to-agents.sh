@@ -156,14 +156,16 @@ if [[ "${1:-}" == "--list" ]]; then
 	# skills-CLI lockfile, split third-party vs overlapping own skills.
 	lockfile="${SKILLS_LOCKFILE:-$HOME/.local/state/skills/.skill-lock.json}"
 	if [[ -f "$lockfile" ]]; then
-		mapfile -t lock_names < <(jq -r 'if type == "object" then keys[] else empty end' "$lockfile" 2>/dev/null || true)
+		mapfile -t lock_names < <(jq -r '(.skills // .) | if type == "object" then keys[] else empty end' "$lockfile" 2>/dev/null || true)
 		overlap=0
 		for lock_name in "${lock_names[@]}"; do
 			[[ -n "$lock_name" && -v "repo_skill_names[$lock_name]" ]] && overlap=$((overlap + 1))
 		done
 		echo "Lockfile ($lockfile):"
 		echo "  $(( ${#lock_names[@]} - overlap )) third-party skills tracked"
-		((overlap > 0)) && echo "  $overlap OVERLAP with repo skills (rule-2 hazard: 'skills update' would rm -rf those symlinks)"
+		if ((overlap > 0)); then
+			echo "  $overlap OVERLAP with repo skills (rule-2 hazard: 'skills update' would rm -rf those symlinks)"
+		fi
 	fi
 	exit 0
 fi
@@ -205,7 +207,7 @@ if [[ "${1:-}" == "--check" ]]; then
 	# symlink rm -rf'd by the next `skills update` (AGENTS.md rule 2).
 	lockfile="${SKILLS_LOCKFILE:-$HOME/.local/state/skills/.skill-lock.json}"
 	if [[ -f "$lockfile" ]]; then
-		mapfile -t lock_names < <(jq -r 'if type == "object" then keys[] else empty end' "$lockfile" 2>/dev/null || true)
+		mapfile -t lock_names < <(jq -r '(.skills // .) | if type == "object" then keys[] else empty end' "$lockfile" 2>/dev/null || true)
 		for lock_name in "${lock_names[@]}"; do
 			if [[ -n "$lock_name" && -v "repo_skill_names[$lock_name]" ]]; then
 				echo "own skill tracked by skills-CLI lockfile: $lock_name (next 'skills update' will rm -rf its symlink; AGENTS.md rule 2)"
