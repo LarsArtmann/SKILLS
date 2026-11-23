@@ -70,6 +70,13 @@ Use `pprof.Labels` to attach request/endpoint labels so production profiles aggr
 - `b.ReportAllocs()` on every benchmark — allocation regressions matter as much as time.
 - `b.RunParallel` when the hot path is contended; a single-goroutine benchmark hides lock convoying.
 - Compare with `benchstat` (golang.org/x/perf/cmd/benchstat), never by eyeballing ±5% noise: run `-count=10`, feed old and new output files to benchstat, and trust only deltas it marks significant. A worked end-to-end example (measure → fix → re-measure → compare) is in [Cache-aware data modeling](#cache-aware-data-modeling) below.
+- **benchstat harness invariants (rules, not rediscoveries):** the two runs
+  being compared must come from the SAME package and the SAME benchmark
+  names — benchstat pairs by (package, name) identity and refuses otherwise
+  (separate tables / geomean warnings, 2026-08-21). Same binary flag set
+  both sides, `-count` ≥ 6 (10 is comfortable), and the sequence is always
+  measure → apply fix → re-measure, never two pre-existing runs stitched
+  together.
 
 ## Finding the knee: measure, don't guess
 

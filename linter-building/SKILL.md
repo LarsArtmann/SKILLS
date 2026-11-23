@@ -115,6 +115,13 @@ Full matrix with project evidence and anti-patterns:
 - **Strict on export, lenient on import.** Your own output validates fully;
   foreign SARIF/JSON may legitimately lack fields — never silently drop
   valid external results for being incomplete.
+- **Triage the checker before the corpus (first-run rule).** When a freshly
+  written checker's first run reports N findings, hand-verify a sample of
+  2-3 BEFORE fixing any code: if the sample is mostly false positives, the
+  checker is the bug — fix it first. A new checker lighting up big is
+  expected (it has never been calibrated); reading that output as "mostly
+  genuine findings" and starting on the code wastes a pass (2026-08-21
+  lesson, applied late that session).
 
 ## Glossary
 

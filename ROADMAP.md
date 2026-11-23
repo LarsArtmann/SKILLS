@@ -227,6 +227,18 @@ Ideas routed out of the archived 2026-08 status corpus during the
   vs go-output first); formal i18n/RSS accepted out-of-scope; timestamp
   format canon for status reports; who may tick the check-draft box
 
+## Planned first real runs
+
+- **offer-page (aging run, planned 2026-11-23):** the first REAL page build
+  through the skill — target: a sales page for one of Lars's own live offers
+  (uptimeguru.io or InboxClean, owner picks at kickoff; both have real
+  traffic and real funnel data). Trigger: the owner asks to build or rewrite
+  the sales page. Acceptance: the 9-section arc assembled, all 10 voice
+  gates run with pass/fail recorded, objection-to-FAQ worksheet filled from
+  real support/review mining, pre-launch QA executed, page deployed. Aging
+  step: after the run, flip README + FEATURES from NEW to GREEN with a dated
+  run note (the two-stage rule requires a real triggered run, not probes).
+
 ## Open Questions
 
 These are blockers that need a human decision before they can become tasks:
