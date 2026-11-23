@@ -246,14 +246,15 @@ These are blockers that need a human decision before they can become tasks:
 - **How does Crush's skill-selection mechanism actually disambiguate?** When
   two skills match the same prompt, which wins? This determines whether
   trigger collision analysis is a real problem or self-resolving.
-- **Should `website-launch` stay at 848 lines or be refactored?** It is
-  allowlisted past the 500-line guideline (trimmed 1106 → 799 in 2026-08-04,
-  regrew to 848 with the sales-video expansion; 797 measured 2026-10-11).
-  Trim path exists (TODO T11); it keeps losing to feature work.
-  **Decision package answered (2026-10-27):** Q0 = Go SSG baseline,
-  repo `website-template`, Go stdlib CLI, gogenfilter rebuilt on the template
-  later, private visibility — `docs/decisions/2026-10-27_open-decisions.md`
-  §A. Close this question when T59 lands.
+- **~~Should `website-launch` stay at 848 lines or be refactored?~~**
+  **CLOSED 2026-11-23 (T59 landed):** refactored onto the Go SSG template
+  flow — SKILL.md 862 lines (DoD human gates folded inline from the retired
+  definition-of-done.md; net −966 lines across the 6 absorbed references),
+  Astro pitfall classes marked `[legacy]`, split brains (file-manifest vs
+  Phase 3, version pins vs go.mod, color tables vs @theme) eliminated. The
+  line count stays allowlisted past the 500-line guideline: the remaining
+  body is phases 0–7 + human gates that have no code home.
+  Decision record: `docs/decisions/2026-10-27_open-decisions.md` §A.
 - **DECIDED 2026-10-27** (`docs/decisions/2026-10-27_open-decisions.md` §D):
   backup retention (trashed), third-party policy (stay upstream-managed,
   fork only on first hard need), link-state enforcement (pre-commit hook in

@@ -106,7 +106,7 @@ Skills organized by domain — live count via `scripts/check-skills.sh` (never h
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | **docs-health**    | Creates, verifies, and maintains all project docs (living AND historical) — BUILD, HARVEST, VERIFY, ANNOTATE modes        | 🟢 Solid         |
 | **status-report**  | Full project status updates as Markdown reports (HTML dashboards for metric-heavy reports)                                | 🟡 Functional    |
-| **website-launch** | Launches documentation websites (Astro + Starlight + Firebase) with a HyperFrames demo video as the launch's sales engine | 🟢 Comprehensive |
+| **website-launch** | Launches documentation websites by scaffolding the Go SSG website-template (templ + Tailwind v4 + Firebase) via the websitelaunch CLI, with a HyperFrames demo video as the launch's sales engine | 🟢 Comprehensive |
 
 ## Quick Start
 
