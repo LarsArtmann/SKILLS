@@ -80,6 +80,18 @@ Skill counts cited below are verifiable with `scripts/check-skills.sh`.
   both directions with a planted binary. Nothing referenced it; every
   caller runs `go run annotate.go`.
 
+### Fixed (2026-11-12, entry late-landed 2026-11-22 — gmail-drafts SKILL.md repair)
+
+- **Four defects from the "is there a python dependency in the
+  gmail-drafts skill?" diagnosis** (session report
+  `docs/status/archived/2026-11-12_15-38_*`): two stray unbalanced code
+  fences removed, the RFC 2047 rule bullet + the mojibake failure-table row
+  rewritten to point at the bundled bash `rfc2047_encode` builder (the
+  Python `EmailMessage` vocabulary had survived the 2026-10-11
+  Python→bash conversion — 0 mentions now), and the leftover
+  `scripts/__pycache__/gmail_eml_export.cpython-314.pyc` from the deleted
+  Python implementation trashed. Committed as `cfe7b63`.
+
 ### Changed (2026-11-18 — go-modularize: posture flip to small, domain-shaped modules)
 
 - **Direction neutrality retired; small-module default adopted.** The skill's

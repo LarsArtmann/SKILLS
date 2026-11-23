@@ -123,8 +123,11 @@ genre as the 07:31 report per AGENTS.md §5.5. User's explicit format demand
    independently installed pairs, tier 2 guard-pinned relative links; the
    gates already enforced exactly this, the canon now says it)
 4. **gmail-drafts verification-status table** conversion (standing WARN).
-5. **T83 lesson update** in crush-config `references/lessons.md` (that
-   install is read-only from here; needs a commit in the crush-config repo).
+5. ~~**T83 lesson update** in crush-config `references/lessons.md` (that
+   install is read-only from here; needs a commit in the crush-config repo).~~
+   done at `3036120` (crush-config, 2026-11-22: cold-start/credit-depletion
+   protocol incl. the "2 failures → solo pivot" rule, hyper no-credits,
+   synthetic subscription limit, zai burst-throttle)
 
 ## d) TOTALLY FUCKED UP
 

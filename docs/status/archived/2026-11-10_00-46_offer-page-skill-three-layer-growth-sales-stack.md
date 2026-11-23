@@ -36,9 +36,11 @@
   Runyon carousel figures (primary site offline; listicle-only), HubSpot
   "+202%", Crazy Egg "+64%", Basecamp "60 seconds", Spiegel "270%" (banned
   from citation in the unverified-number ledger).
-- **Runtime sync through `~/.config/crush/skills/`** — symlink chain resolves
+- ~~**Runtime sync through `~/.config/crush/skills/`** — symlink chain resolves
   (`link-skills-to-agents.sh` green), but no fresh Crush session beyond the
-  probe was consulted.
+  probe was consulted.~~ done (superseded by later evidence: the 2026-11-22
+  three-prompt fresh-session probe loaded all three Growth/Docs skills
+  correctly through the fan-out)
 
 ## TL;DR
 

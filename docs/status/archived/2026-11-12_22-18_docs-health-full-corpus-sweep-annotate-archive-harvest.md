@@ -36,14 +36,22 @@ AGENTS §5.13). All six living docs re-verified against the tree.
    citing other repos' paths, 8 F/spacing in point-in-time artifacts, 1
    cross-repo hash (amended to name its repo). Draining needs a dedicated
    campaign (deliberate non-fix recorded, AGENTS §5.13).
-2. **docs-gates in buildflow** — the battery runs via nix; not yet wired
-   into `.buildflow.yml` as a standing step (candidate follow-up).
+   **Standing by design — ratchet holds** (re-measured 2026-11-22: 360/372,
+   no new damage; the pin fails red on regression, which is its job).
+2. ~~**docs-gates in buildflow** — the battery runs via nix; not yet wired
+   into `.buildflow.yml` as a standing step (candidate follow-up).~~ done
+   (docs-gates now runs as a buildflow step — observed live in the
+   2026-11-22 TODO-sweep session's `buildflow` run: "docs-gates 44ms",
+   findings surfaced through the findings gate)
 
 ## c) NOT STARTED
 
-1. TODO T71–T121 themselves (the harvested backlog — that is next sessions' work).
-2. The gmail-repair parallel session's own CHANGELOG entry (its session,
-   not mine; its report is `2026-11-12_15-38_*`).
+1. ~~TODO T71–T121 themselves (the harvested backlog — that is next sessions' work).~~ → routed — TODO_LIST T71–T121 stand as rows (many executed
+   by the 2026-11-22 TODO-sweep session; survivors remain open rows)
+2. ~~The gmail-repair parallel session's own CHANGELOG entry (its session,
+   not mine; its report is `2026-11-12_15-38_*`).~~ done (late-landed
+   2026-11-22 in CHANGELOG "Fixed (2026-11-12, entry late-landed
+   2026-11-22)" — better late than a false "already done")
 
 ## d) DEFECTS / LESSONS (self-caught)
 
