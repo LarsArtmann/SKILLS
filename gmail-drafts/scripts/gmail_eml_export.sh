@@ -31,6 +31,11 @@ DEFAULT_QUERIES=(
 usage() {
 	echo "usage: gmail_eml_export.sh --account main|work [--outdir <dir>] [--query <q>]... [--limit <n>]" >&2
 	echo "       gmail_eml_export.sh --self-test" >&2
+	echo "       --limit caps messages fetched PER QUERY (Gmail maxResults" >&2
+	echo "       page; default 25, max 500). Pagination is deliberately NOT" >&2
+	echo "       followed — this is a bounded evidence export; narrow the" >&2
+	echo "       --query or raise --limit to reach deeper history. (Decision" >&2
+	echo "       2026-11-22: document, don't auto-paginate.)" >&2
 	exit 2
 }
 
@@ -274,7 +279,9 @@ for query in "${QUERIES[@]}"; do
 	echo
 	echo "query: $query -> ${#ids[@]} message(s)"
 	if jq -e '.nextPageToken' <<<"$listing" >/dev/null 2>&1; then
-		echo "  NOTE: more results exist than fetched (pagination truncated)"
+		echo "  NOTE: pagination truncated — more results exist than the per-query cap."
+		echo "        Remedy: raise --limit (max 500) or narrow the --query. Auto-pagination"
+		echo "        is deliberately absent (bounded evidence export; decision 2026-11-22)."
 	fi
 	for mid in "${ids[@]}"; do
 		if [[ -n ${seen[$mid]:-} ]]; then
