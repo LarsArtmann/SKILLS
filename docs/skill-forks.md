@@ -97,3 +97,43 @@ restored byte-identical afterwards.
   already-running sessions. Verified 2026-10-30 via `crush logs` + a fresh
   `crush run` probe. Never judge an install by the current session's skill
   list — probe a new session.
+
+## 2026-09-14 merge assessment — full record (moved from AGENTS §5.5, T148)
+
+The assessment found NO further skill-directory merges warranted but closed
+three gaps, in full detail:
+
+1. **architecture-review ↔ architecture-visualization** — companion pair
+   sharing the `docs/architecture-understanding/` output directory — review
+   judges (rubric + roadmap), visualization draws (D2); two-way
+   disambiguation added in both descriptions + Related Skills sections.
+2. **status-report ↔ brutal-self-review** — trigger-collision zone ("what's
+   fucked up" vs "what's stupid/could be better") and empirically blended
+   (16 of 66 `docs/status/` reports are session self-reviews, e.g. the
+   2026-09-13 report is literally both in one document) — kept separate
+   (state inventory vs quality critique are different questions) with
+   two-way disambiguation added; the blending frequency was measured once
+   (2026-09-14: 16 of 66 reports carried "self-review" in the filename) —
+   a point-in-time observation, not a maintained count.
+3. **brutal-self-review/references/go-ecosystem.md** — an orphaned stale
+   fork of `how-to-golang`'s library domain: it still recommended
+   `LarsArtmann/uniflow` as the errors library after how-to-golang's
+   2026-08-21 correction marked it uncompilable at @latest; deleted
+   (SKILL.md's delegation to how-to-golang, line ~63, is the only path and
+   was already in place).
+
+## Growth & Sales stack — sourcing doctrine detail (moved from AGENTS §5.5, T148)
+
+- **first-customers**: page-conversion and PLG numbers are pinned to their
+  sources inline (Unbounce 2024, CXL, ProductLed 2022); the payments
+  reference records the 2026 market state (Stripe acquired Lemon Squeezy
+  2024, Stripe Managed Payments; Lemon Squeezy 5% + 50¢/txn verified from
+  the live pricing page 2026-10) with a verify-before-relying note.
+- **offer-page**: every conversion number traces to a named primary
+  (Unbounce CBR, Baymard, NN/g, Journal of Retailing / Marketing Science
+  DOIs, EU DSA Art. 25, FTC 16 CFR 465) or carries an explicit
+  unverified/secondary marker; `voice-and-gates.md` carries the
+  unverified-number ledger (HubSpot "+202%", Crazy Egg "+64%", Basecamp
+  "60 seconds", Spiegel "270%") and page-anatomy.md owns the corrected CTA
+  myth (the circulating "+68%" is wrong; the archived ContentVerve primary
+  says +213.16%).

@@ -22,10 +22,39 @@
 #   scripts/check-agents-md.sh                    # check ./AGENTS.md
 #   scripts/check-agents-md.sh /path/to/project   # check that project's AGENTS.md
 #   scripts/check-agents-md.sh /parent            # scan recursively for AGENTS.md
+#   scripts/check-agents-md.sh --fix [path]       # list every offending line with
+#                                                  # its line number (the actionable
+#                                                  # fix list) AND apply the only
+#                                                  # zero-risk mechanical fix: insert
+#                                                  # the size-budget marker when the
+#                                                  # size WARN fires AND --budget N is
+#                                                  # given. Content rewrites (dated
+#                                                  # headings, was/now prose, commit
+#                                                  # hashes) are deliberately NOT
+#                                                  # automated: in evidence-citing
+#                                                  # repos those patterns ARE the
+#                                                  # record; blind edits destroy it.
 
 set -euo pipefail
 
-target="${1:-.}"
+fix_mode=0
+fix_budget=""
+args=()
+for a in "$@"; do
+	case "$a" in
+	--fix) fix_mode=1 ;;
+	--budget) : # consumed with its value below via a second pass
+		;;
+	*) args+=("$a") ;;
+	esac
+done
+# extract --budget N wherever it appears
+prev=""
+for a in "$@"; do
+	if [[ "$prev" == "--budget" ]]; then fix_budget=$a; fi
+	prev=$a
+done
+target="${args[0]:-.}"
 
 # Collect AGENTS.md files
 mapfile -t files < <(
@@ -58,14 +87,22 @@ for f in "${files[@]}"; do
 	echo "  Size: ${size_kb} KB (${lines} lines)"
 
 	# --- Size budget ---
+	# A file may carry a justified repo-specific budget via a marker line:
+	#   <!-- agents-md-size-budget: 51200 -->
+	# (bytes). When present, that replaces the 30 KB bloated threshold; the
+	# >100 KB FAIL and <1 KB skeleton checks always apply. This is the T70
+	# "record a justified project-specific threshold" path: repos whose
+	# charter legitimately demands more context state the budget inline,
+	# next to the bytes it excuses, instead of leaving an un-actioned WARN.
+	budget=30720
+	if marker=$(grep -m1 -o 'agents-md-size-budget: [0-9]\+' "$f" 2>/dev/null); then
+		budget=${marker##* }
+	fi
 	if [[ "$size_bytes" -gt 102400 ]]; then
 		echo "  FAIL: > 100 KB — this is no longer AGENTS.md, it is an archive"
 		total_fail=$((total_fail + 1))
-	elif [[ "$size_bytes" -gt 51200 ]]; then
-		echo "  WARN: > 50 KB — severely bloated, major rewrite needed"
-		issues=$((issues + 1))
-	elif [[ "$size_bytes" -gt 30720 ]]; then
-		echo "  WARN: > 30 KB — bloated, likely contains temporal pollution or code dumps"
+	elif [[ "$size_bytes" -gt "$budget" ]]; then
+		echo "  WARN: > $((budget / 1024)) KB (repo budget $budget bytes) — bloat"
 		issues=$((issues + 1))
 	elif [[ "$size_bytes" -lt 1024 ]]; then
 		echo "  WARN: < 1 KB — skeleton, too thin to be useful"
@@ -173,6 +210,17 @@ for f in "${files[@]}"; do
 	if [[ -n "$gotcha_rows" ]]; then
 		echo "  WARN: gotcha table has $gotcha_rows rows (max 15-20 recommended)"
 		issues=$((issues + 1))
+	fi
+
+	# --- Fix mode (T101): locate offenders + optional budget marker ---
+	if ((fix_mode)); then
+		echo "  --fix: offending lines (edit by hand; the patterns are often deliberate evidence):"
+		awk '/^```/{f=!f; next} !f' "$f" | grep -nE '(bumped from v|version bump|released v[0-9]|TODO #[0-9]|Phase [0-9]+ (complete|in progress)|~?[0-9]+% (complete|done|implemented)|^#+\s+.*\((v[0-9]|added [0-9]{4}|[0-9]{4}-[0-9]{2}-[0-9]{2})\)|As of v[0-9]|was .*,? now )' \
+			| sed 's/^/    /' || echo "    (none)"
+		if [[ -n "$fix_budget" && "$size_bytes" -gt "$budget" ]] && ! grep -q 'agents-md-size-budget:' "$f"; then
+			sed -i.bak "2i\\\\\n<!-- agents-md-size-budget: $fix_budget -->" "$f" && rm -f "$f.bak"
+			echo "  --fix: inserted size-budget marker ($fix_budget bytes) after line 1"
+		fi
 	fi
 
 	# --- Summary ---
