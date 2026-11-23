@@ -97,6 +97,36 @@ restored byte-identical afterwards.
   already-running sessions. Verified 2026-10-30 via `crush logs` + a fresh
   `crush run` probe. Never judge an install by the current session's skill
   list — probe a new session.
+- **Sandboxed probe battery (2026-11-23, T103; CLI pinned
+  `pnpm dlx skills@1.5.22`, fake `$HOME` + `$XDG_STATE_HOME`):**
+  - **`skills remove --all -g` is symlink-safe but lockfile-leaky.** The
+    scan adds only `entry.isDirectory()` entries, so untracked symlinks
+    (the repo-skill fan-out shape) are invisible to it: real-dir skills
+    are removed from the canonical dir and per-agent dirs, symlinks in
+    both `~/.agents/skills/` and agent config dirs survive, and the
+    removed skill's LOCKFILE ENTRY SURVIVES too — `remove --all -g`
+    leaves a stale entry (v1.5.22). Also: `remove` without `-g` scans
+    the CWD, silently finding 0 — always pass `-g` for global work.
+  - **The false-green trigger is REPRODUCED and confirmed: per-source
+    tree-fetch failure.** With a lock entry whose source cannot be
+    fetched, `update -g` prints `✗ Failed to fetch tree for <source>`
+    and then concludes `✓ All global skills are up to date` — a fetch
+    failure is treated as no-change, not an error. And `skillFolderHash`
+    is never consulted by update (local mutations go undetected); the
+    hash is bookkeeping, not a drift check. Update the 2026-11-03
+    mechanism caveat above: "transient tree-fetch failure" is now the
+    confirmed candidate, not just a hypothesis.
+  - **"Well-known" providers decoded from source:** when `skills add
+    <https-url>` gets a non-github/gitlab/huggingface URL, it probes
+    `{origin}/.well-known/agent-skills/index.json` then
+    `/.well-known/skills/index.json` (at the URL path and at the root;
+    10s timeout; `X-Skills-Update-Check: 1` header) per the
+    agentskills.io discovery schema 0.2.0 — i.e. any self-hosted site
+    can be a skills source by publishing that index.
+  - **Lockfile location:** `$XDG_STATE_HOME/skills/.skill-lock.json`,
+    fallback `~/.agents/skill-lock.json` — a probe HOME alone does NOT
+    relocate the lockfile; export `XDG_STATE_HOME` too (this machine's
+    real path is `~/.local/state/skills/`, so the owner env sets it).
 
 ## 2026-09-14 merge assessment — full record (moved from AGENTS §5.5, T148)
 
