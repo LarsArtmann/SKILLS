@@ -27,7 +27,7 @@ scripts/sync-html-kit.sh --check      # verify vendored HTML kit copies are not 
 
 ## Adding a New Skill
 
-1. **Read the authoring guide first:** [`how-to-write-skills.md`](./how-to-write-skills.md).
+1. **Read the authoring guide first:** [`how-to-write-skills/SKILL.md`](./how-to-write-skills/SKILL.md).
    The `description` frontmatter is **trigger context** (tells the agent WHEN to
    activate the skill), not a description of the skill — the checker rejects
    description-first openings like "Reviews...".

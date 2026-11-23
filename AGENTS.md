@@ -29,7 +29,7 @@ If you are looking for source code to build, test, or lint: **there is none**. T
 ```
 SKILLS/
 ├── README.md                    # Project overview, skills table, installation
-├── how-to-write-skills.md       # Authoritative guide for writing new skills (currently at root)
+├── how-to-write-skills/SKILL.md       # Authoritative guide for writing new skills (currently at root)
 ├── originals/                   # Legacy raw prompt source material. DO NOT EDIT.
 │   └── <skill-name>.md            #   Raw prompts named after the skill they seeded.
 │                                 #   Two legacy source prompts produced
@@ -60,7 +60,7 @@ SKILLS/
 | `<skill-name>/scripts/*`       | Edit freely — but keep executable                             |
 | `originals/*.md`               | **NEVER EDIT** — legacy source material, superseded by skills |
 | `README.md`                    | Update when adding/removing skills                            |
-| `how-to-write-skills.md`       | Update when skill-writing guidance changes                    |
+| `how-to-write-skills/SKILL.md`       | Update when skill-writing guidance changes                    |
 
 ---
 
@@ -88,7 +88,7 @@ metadata:
 ### 3.2 Body Style
 
 - **Imperative steps**, not essays. The agent follows instructions literally.
-- **Signal density**: every line must map to a tool call, file read, command, or decision branch. Delete self-justifying preamble and decoration; keep the _why_ that flips a decision. Jargon (split brain, ghost system, ...) needs a plain gloss at first use. Canonical rule + glossary: `how-to-write-skills.md` Principle 7. Machine help: `scripts/check-skills.sh --signal` (advisory) and check 15 (hard-fails throat-clearing).
+- **Signal density**: every line must map to a tool call, file read, command, or decision branch. Delete self-justifying preamble and decoration; keep the _why_ that flips a decision. Jargon (split brain, ghost system, ...) needs a plain gloss at first use. Canonical rule + glossary: `how-to-write-skills/SKILL.md` Principle 7. Machine help: `scripts/check-skills.sh --signal` (advisory) and check 15 (hard-fails throat-clearing).
 - **Keep under ~500 lines**. Move detailed material to `references/` or `rules/`.
 - **Reference sibling files** with relative links: `[./references/details.md](./references/details.md)` — the agent will `view` them on demand.
 - **Explain the why**, not just the what. Agents follow reasoned instructions more reliably than rigid `ALWAYS`/`MUST`/`NEVER` directives.
@@ -108,7 +108,7 @@ Large reference files (>300 lines) should include a table of contents at the top
 
 ## 4. Authoring a New Skill
 
-1. Read `how-to-write-skills.md` at repo root — the authoritative guide.
+1. Read `how-to-write-skills/SKILL.md` at repo root — the authoritative guide.
 2. Create `my-skill/SKILL.md` with valid YAML frontmatter.
 3. Add optional `references/`, `scripts/`, `rules/`, `assets/` subdirectories as needed.
 4. Update `README.md` to include the new skill in the inventory table, and add a row to `FEATURES.md` — coverage is gated (`scripts/check-skills.sh` check 14; an undocumented skill fails the check).
@@ -141,7 +141,7 @@ remaining seed maps to its skill directory.
 
 `communication-doctrine.md` (added 2026-09-24) is the one original that
 seeded a _principle_ rather than a skill directory: the 2026-09-17 user
-paste ("SHUT UP AND COMMUNICATE") distilled into `how-to-write-skills.md`
+paste ("SHUT UP AND COMMUNICATE") distilled into `how-to-write-skills/SKILL.md`
 Principle 7, the `--signal` report, and check 15. The verbatim paste was
 never persisted; the file is a faithful reconstruction from the two
 processing reports, and says so in its provenance note.
@@ -188,9 +188,9 @@ The 2026-09-14 merge assessment found NO further skill-directory merges warrante
 
 `architecture-deepening` (added 2026-11-15) is a **local fork, not a wrapper** of the third-party `improve-codebase-architecture` skill (removed from the skills-CLI install the same day; aggregation commit `fa4aeec`). The fork was forced by three upstream findings — missing per-install sibling skills, tmpdir-hardcoded artifact (filed as mattpocock/skills#1437), CDN rendering vs the self-contained doctrine — and the sibling vocabulary lives in its `references/`. Full provenance, evidence pointers, and the open sync/removal decisions: [docs/skill-forks.md](docs/skill-forks.md). Ownership boundary with its companions: `architecture-review` grades the whole structure, `architecture-visualization` draws current vs target with D2, and `architecture-deepening` shortlists refactor candidates and grills the chosen one — all three share `docs/architecture-understanding/` and cross-reference each other in both directions.
 
-### 5.6 `how-to-write-skills.md` Location
+### 5.6 `how-to-write-skills/` Skill Directory
 
-This file is currently at the repo root. The status report recommends converting it to a proper skill directory (`how-to-write-skills/` — not `skill-creator/`, which is a third-party upstream skill whose name a repo skill must not collide with) or moving it to `docs/`. It is not currently installed as a skill.
+Converted to a proper skill directory 2026-11-23 (T94): `git mv how-to-write-skills.md how-to-write-skills/SKILL.md` + frontmatter; the 11 pattern bodies moved to `references/skill-patterns.md` (entry point keeps the summary table, 472 lines). Named `how-to-write-skills/` — NOT `skill-creator/`, which is the third-party upstream skill whose name a repo skill must not collide with (AGENTS §5.10).
 
 ### 5.7 No `crush.json` Present
 
@@ -214,7 +214,7 @@ Skills that produce point-in-time reports write self-contained HTML files instea
 
 **Sharp corners:** `--radius: 0` is the Bauhaus default. Override per-report if needed.
 
-**The Artifact decision rule** (encoded in `how-to-write-skills.md`): Snapshot + HumanReport → HTML; Living + ToolParsed/EndUserDoc → Markdown. Never convert living docs (`FEATURES.md`, `TODO_LIST.md`) to HTML.
+**The Artifact decision rule** (encoded in `how-to-write-skills/SKILL.md`): Snapshot + HumanReport → HTML; Living + ToolParsed/EndUserDoc → Markdown. Never convert living docs (`FEATURES.md`, `TODO_LIST.md`) to HTML.
 
 #### Vendoring model (fixes per-skill install)
 
@@ -419,7 +419,7 @@ depend on (hit 7× on the first draft, 2026-11-10).
 
 | File                                                         | Why It Matters                                                                                                                           |
 | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `how-to-write-skills.md`                                     | Complete guide for skill authoring — frontmatter rules, description-as-trigger, progressive disclosure, common mistakes                  |
+| `how-to-write-skills/SKILL.md`                                     | Complete guide for skill authoring — frontmatter rules, description-as-trigger, progressive disclosure, common mistakes                  |
 | `docs/status/2026-05-03_07-51_comprehensive-skills-audit.md` | Master audit: every skill graded, every issue catalogued, top 25 next tasks ranked by impact. Read this before any bulk improvement work |
 | `go-modularize/SKILL.md`                                     | Best example of a rich, well-structured skill with concrete examples, decision tables, and failure mode catalog                          |
 | `nix-review/SKILL.md`                                        | Best example of a checklist-driven review skill with severity guide                                                                      |
@@ -455,7 +455,7 @@ Before making changes:
 2. If fleshing out a thin skill, study `how-to-golang` or `go-modularize` as the pattern.
 3. If adding cross-references, check the audit's "Inter-skill cross-references" section for the intended graph.
 4. If fixing the `git commit <--` bug, check all four affected skills.
-5. If converting `how-to-write-skills.md` to a skill, read the guide itself — it describes the expected directory structure.
+5. If converting `how-to-write-skills/SKILL.md` to a skill, read the guide itself — it describes the expected directory structure.
 
 ---
 

@@ -48,7 +48,7 @@ whose tone matches the report audience.
 
 ## When to Use HTML vs Markdown
 
-The `Artifact` decision rule (see `how-to-write-skills.md`):
+The `Artifact` decision rule (see `how-to-write-skills/SKILL.md`):
 
 | lifecycle | audience    | mutability | → format |
 | --------- | ----------- | ---------- | -------- |

@@ -34,7 +34,7 @@
       the selftest leg was red (an unconditional `cd` in a docs-health gate
       broke it): the gate was passing rules it could no longer evaluate.
 - [ ] **6.** If today's work creates a new skill, follow the new-skill
-      wiring checklist in `how-to-write-skills.md` (README row + counts,
+      wiring checklist in `how-to-write-skills/SKILL.md` (README row + counts,
       FEATURES.md row — gated by `check-skills.sh` check 14, CHANGELOG entry,
       two-way description disambiguation, AGENTS §5.5 graph entry, ROADMAP
       reconciliation, `link-skills-to-agents.sh`, structural + trigger

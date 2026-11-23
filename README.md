@@ -147,7 +147,7 @@ The best skills keep `SKILL.md` under ~500 lines and move deep material into `re
 
 ## Writing New Skills
 
-See [`how-to-write-skills.md`](how-to-write-skills.md) for the authoritative guide on crafting effective skills — frontmatter rules, trigger descriptions, progressive disclosure, and common mistakes.
+See [`how-to-write-skills/SKILL.md`](how-to-write-skills/SKILL.md) for the authoritative guide on crafting effective skills — frontmatter rules, trigger descriptions, progressive disclosure, and common mistakes.
 
 New skills should follow the pattern of [`how-to-golang/`](how-to-golang/) (lean entrypoint + rich references) or [`architecture-visualization/`](architecture-visualization/) (focused, single-purpose).
 
@@ -157,7 +157,7 @@ This repository is honest about its state. The authoritative per-skill status in
 
 See [`docs/status/`](docs/status/) for detailed audit reports, including a comprehensive breakdown of every skill's strengths, gaps, and recommended next steps.
 
-Signal density is machine-checked: `scripts/check-skills.sh --signal` reports preamble size, non-actionable prose blocks, and unglossed jargon per skill (advisory), and check 15 hard-fails pure throat-clearing ("it is important to note" and kin). See `how-to-write-skills.md` Principle 7.
+Signal density is machine-checked: `scripts/check-skills.sh --signal` reports preamble size, non-actionable prose blocks, and unglossed jargon per skill (advisory), and check 15 hard-fails pure throat-clearing ("it is important to note" and kin). See `how-to-write-skills/SKILL.md` Principle 7.
 
 ## Contributing
 
@@ -168,4 +168,4 @@ Improvements welcome. The highest-impact contributions:
 3. **Validate code snippets** — wrong examples are worse than no examples
 4. **Test trigger descriptions** — verify skills activate on realistic user prompts
 
-Read `how-to-write-skills.md` before authoring new skills. Run `scripts/check-skills.sh` to validate structure and catch regressions (it fails on the `git commit <--` artifact, frontmatter mismatches, and missing fields).
+Read `how-to-write-skills/SKILL.md` before authoring new skills. Run `scripts/check-skills.sh` to validate structure and catch regressions (it fails on the `git commit <--` artifact, frontmatter mismatches, and missing fields).

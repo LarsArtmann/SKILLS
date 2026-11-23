@@ -122,7 +122,7 @@
 | sync-html-kit.sh         | 🟢 `FULLY_FUNCTIONAL`     | Vendoring automation with `--check` (CI) and `--list` (consumer inventory)                                                                                                                            |
 | link-skills-to-agents.sh | 🟢 `FULLY_FUNCTIONAL`     | Runtime symlink manager: idempotent repair, `--check` (CI), `--list`, `--force` recovery; replaced rsync copying 2026-08-14                                                                           |
 | check-agents-md.sh       | 🟢 `FULLY_FUNCTIONAL`     | AGENTS.md quality scorer (temporal pollution, content misplacement, size budget) added 2026-08-04                                                                                                     |
-| how-to-write-skills.md   | 🟡 `PARTIALLY_FUNCTIONAL` | Authoritative guide; at repo root (not a skill dir); 11 patterns incl. the Artifact decision rule and the Primary Failure Mode rule                                                                   |
+| how-to-write-skills        | 🟢 `FULLY_FUNCTIONAL`     | Authoritative authoring skill (converted from root file 2026-11-23, T94); 11 patterns in references/, Artifact decision rule, Primary Failure Mode rule                                                  |
 
 ## Verification Status (skills with unconfirmed external dependencies)
 

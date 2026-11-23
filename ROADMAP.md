@@ -305,9 +305,9 @@ These are blockers that need a human decision before they can become tasks:
 - **website-launch video policy** (`2026-08-21` g1-g3): click-to-play vs
   muted autoplay+loop; is the 9:16 social cut Tier 1 (launch-blocking) or
   Tier 2 (same-day); mandatory video for pure-API libraries or stay Optional?
-- **`how-to-write-skills.md` location** (`2026-09-08` f18): still at the repo
-  root. Convert to a proper skill directory, move to `docs/`, or leave? Every
-  new contributor session has to discover it via AGENTS.md §4.
+- **`how-to-write-skills/SKILL.md` location** (`2026-09-08` f18): RESOLVED
+  2026-11-23 (T94) — converted to a proper skill directory with the pattern
+  bodies in `references/skill-patterns.md`; symlinked into the fan-out.
 - **Where did "jj mergemerge" come from?** (`2026-09-08` g1): verified
   nonexistent in jj 0.45.1. If the user saw it in a real tool, alias file, or
   another agent's output, a hunt task follows; if it was shorthand, the

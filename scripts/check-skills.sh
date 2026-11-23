@@ -43,7 +43,7 @@
 #    15. Signal-density guard: hard-fail pure throat-clearing ("it is important
 #        to note") that can never change an agent action; everything else is
 #        the advisory --signal report (long code-free prose blocks, undefined
-#        house jargon). Rule: how-to-write-skills.md Principle 7.
+#        house jargon). Rule: how-to-write-skills/SKILL.md Principle 7.
 #        Fence- and quote-aware (T42): quotes inside fences/blockquotes pass;
 #        behavior pinned by --selftest fixtures.
 #    16. Runtime link integrity: every repo skill must be correctly symlinked
@@ -285,7 +285,7 @@ if [[ "$triggers_only" -eq 1 ]]; then
 fi
 
 # --- Signal-density report (informational) --------------------------------------
-# Principle 7 of how-to-write-skills.md: every line of a SKILL.md must map to a
+# Principle 7 of how-to-write-skills/SKILL.md: every line of a SKILL.md must map to a
 # tool call, file read, command, or decision branch. This report surfaces the
 # three mechanical candidates so an editor can judge them — it cannot decide,
 # because a "why" paragraph that flips a decision is signal and a proud
@@ -345,7 +345,7 @@ filler_scan() {
 filler_re="^(It is|It's|It’s) (important|worth) (to note|noting)|^[[:space:]]*(Please note|Needless to say|As we all know|In conclusion)[, ]"
 jargon_re='split[- ]brain|ghost system|trophy-case|cargo-cult|Verschlimmbesserung|entombed|epistemic|false green'
 if [[ "$signal_only" -eq 1 ]]; then
-	echo "Signal-density report (advisory — Principle 7, how-to-write-skills.md):"
+	echo "Signal-density report (advisory — Principle 7, how-to-write-skills/SKILL.md):"
 	for d in "${skill_dirs[@]}"; do
 		skill="${d#./}"
 		f="$d/SKILL.md"
@@ -361,7 +361,7 @@ if [[ "$signal_only" -eq 1 ]]; then
 	done
 	echo
 	echo "Judgment call: delete self-narration and decoration; keep the why that flips a decision (Pattern 10)."
-	echo "Gloss every jargon hit at first use using the table in how-to-write-skills.md Principle 7."
+	echo "Gloss every jargon hit at first use using the table in how-to-write-skills/SKILL.md Principle 7."
 	exit 0
 fi
 
@@ -457,7 +457,7 @@ for d in "${skill_dirs[@]}"; do
 	if [[ -n "$filler_hits" ]]; then
 		echo "FAIL $skill: throat-clearing prose (delete it — it changes no action):"
 		while IFS= read -r hit; do echo "  $hit"; done <<<"$filler_hits"
-		echo "  Fix: delete the sentence, or fold its content into the sentence it announces (how-to-write-skills.md Principle 7)."
+		echo "  Fix: delete the sentence, or fold its content into the sentence it announces (how-to-write-skills/SKILL.md Principle 7)."
 		failed=1
 	fi
 done
