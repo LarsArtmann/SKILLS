@@ -60,10 +60,16 @@ sync | "") action="sync" ;;
 esac
 
 # --- Discover consumers -------------------------------------------------------
-# SKILL.md files (not the kit's own) that mention the kit name.
+# SKILL.md files (not the kit's own) that mention the kit name. MENTIONING the
+# kit instructionally is not consuming it: how-to-write-skills teaches the
+# Artifact decision rule (snapshot reports → the kit) but never produces a
+# report, so it is excluded — vendoring 8 kit files into the authoring canon
+# would be dead weight re-vendored on every kit edit.
+kit_non_consumers=("how-to-write-skills")
 mapfile -t consumer_files < <(
 	grep -rl --include='SKILL.md' -F "$kit_name" "$repo_root" 2>/dev/null |
 		grep -v -F "$kit_src/SKILL.md" |
+		grep -v -F "/${kit_non_consumers[0]}/SKILL.md" |
 		sort -u ||
 		true
 )
