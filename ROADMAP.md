@@ -242,6 +242,12 @@ Ideas routed out of the archived 2026-08 status corpus during the
   templ-components' demo/visualtest/tc triangle is committed (`cf725c9d`);
   the loop needs the owner to pick a candidate (recommendation: the route
   manifest) and answer the design-tree rounds.
+- **two-currency gate 2 watch (routed from TODO_LIST T126, 2026-11-23):**
+  the first PRODUCTION run of gate 2 in a real CV session — verify the
+  policy payoff is applied with its evidence bar (named artifact + measured
+  advance), not as a split-license. Cannot be forced from the SKILLS repo;
+  watch for it during the next natural CV go-modularize session (the eval
+  arm already passed 2026-11-15; this is the production confirmation).
 - **Site-repo video/CI backlog (routed from TODO_LIST T33, 2026-11-23):**
   recreate emeet-pixyd's HyperFrames composition from the surviving MP4
   (commit under `website/video/`); the first real 20-30s product video
