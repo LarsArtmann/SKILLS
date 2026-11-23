@@ -527,7 +527,7 @@ library `net/http`" instead of the framework name.
 
 ## Dependency Pin Fragility (fleet-wide, 2026-09-04)
 
-### [legacy Astro] 31. astro-og-canvas pulls a broken canvaskit-wasm — pin it DIRECTLY
+### [legacy Astro] 35. astro-og-canvas pulls a broken canvaskit-wasm — pin it DIRECTLY
 
 **Symptom:** Astro prerender crashes on `/og/*.png` with an emscripten
 error mentioning `__dirname` (or similar Node/ESM incompatibility) inside
@@ -549,7 +549,7 @@ entry, which a regen can overwrite:
 Re-widen only after upstream fixes the emscripten ESM issue. Applied to
 go-output (2026-09-03) and gogenfilter (2026-09-04).
 
-### [legacy Astro] 32. pnpm v11 traps that break deterministic builds
+### [legacy Astro] 36. pnpm v11 traps that break deterministic builds
 
 Three separate traps, each costing real debugging time:
 
@@ -565,7 +565,7 @@ Three separate traps, each costing real debugging time:
    installs as `CI=true nix shell nixpkgs#nodejs -c pnpm install
    --frozen-lockfile` (or `--no-frozen-lockfile` when regenerating).
 
-### 33. Edited `firebase.json` headers but the live site still serves the old ones
+### 37. Edited `firebase.json` headers but the live site still serves the old ones
 
 **Symptom:** the repo's `firebase.json` promises
 `Cache-Control: public, max-age=31536000, immutable` for the asset glob,
