@@ -1,0 +1,1 @@
+Meanwhile I forked the skill (https://github.com/LarsArtmann/SKILLS/tree/master/architecture-deepening). That one writes the report to `docs/architecture-understanding/` in the repo under review, `ARCH_DEEPENING_OUT` or `ARCH_REVIEW_OUT` overrides it. Still stands for the published skill though.
