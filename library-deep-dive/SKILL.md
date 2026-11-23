@@ -209,7 +209,7 @@ shipped the report and missed the rest, and each gap cost a same-day closeout
       Replace the asset UNDER THE SAME NAME so a write-once report needs no
       retro-edit of its links.
 
-## Fleet Runs: the multi-library audit runbook (born nextd, 2026-11-17)
+## Fleet Runs: the multi-library audit runbook (born nextd, 2026-11-17; refined by the 2026-11-22/23 art-dupl 7-lib run)
 
 A fleet run audits N libraries of one ecosystem in a single sitting
 (nextd's first run: 22 first-party Go libs, 5 sub-agent groups). Phases
@@ -222,8 +222,9 @@ batch orchestration on top:
    recount the appendix/score numbers against the prose claims, and
    re-run the report's own verify block. The first application caught
    two stale citations and superseded provenance hashes in a freshly
-   shipped report. Corrections land as errata rows (TODO_LIST), never
-   as retro-edits of a write-once report.
+   shipped report. Corrections land as errata (dated callout in the
+   report for scope/re-dating changes, TODO_LIST rows for factual
+   fixes), never as silent retro-edits of a write-once report.
 1. **Inventory + grouping.** List the fleet's libraries (dependency
    files, project inventory), then group ~4–5 related libs per
    sub-agent. Cap concurrency at 3 — five parallel groups on one
@@ -275,7 +276,13 @@ batch orchestration on top:
    silently-deleted rationale, an unqualified cross-repo cite, and — when
    a parallel migration shifted the code — all 11 stale anchors at once.
    Normalize en-dashes in ranges (`:636–642` silently escaped the first
-   regex; normalize before matching).
+   regex; normalize before matching). **The sweep is CODE: ship it with
+   a `--self-test` of hermetic probes and run that self-test in the same
+   command chain after every edit** (2026-11-23, art-dupl run: the
+   sweep's own author broke its syntax and shipped it because testing
+   stopped at the corpus — a self-test would have caught it; the same
+   run's fixtures also proved probes need subdir placement to avoid
+   rglob ambiguity).
 9. **Own-command verification tier for stamped facts.** Versions, tags,
    line numbers, go.mod pins that get written into a report are re-derived
    by the orchestrator's own commands — subagents are for discovery, not
@@ -297,6 +304,23 @@ batch orchestration on top:
     paths; re-derive all line citations after any foreign commit lands.
     Summit-planner had three same-day collisions from skipping this
     check; the doctrine costs one minute.
+12. **Wire the run's gates into CI, not just the ship ritual (2026-11-23,
+    art-dupl run).** A gate the author must remember to run is a ghost
+    system — the failure mode this skill exists to kill. The art-dupl
+    run wired its gates into the repo's flake check / CI lane: the
+    citation sweep, an index-derivation check (`sync-review-index.py`:
+    the index README's version cells are DERIVED from the report header
+    tables and verified mechanically — kills the manual-sync drift
+    class), and a dashboard-screenshot freshness guard
+    (`check-review-screenshot.sh`: the dashboard's SHA-256 is stamped
+    at screenshot time and CI fails on any later dashboard edit without
+    a regen). A screenshot without a freshness stamp rots silently.
+13. **Errata inside the report, supersession in the index (2026-11-23,
+    art-dupl run).** A resolved or re-dated finding lands as a dated
+    errata callout IN the affected report (never a history rewrite), and
+    the index README records the supersession relationship. Corrections
+    that live only in TODO_LIST rows leave the report itself lying —
+    the report is what the next reader opens first.
 
 ### Audit brief template (per-library, given to each auditor subagent)
 
