@@ -81,7 +81,10 @@ Two rules stay here because they are funnel-level, not page-level: (1) a
 demo video (product-launch-video / website-launch) must restate the page
 headline promise — video and page telling different stories depress both;
 (2) page, onboarding, and email are one conversation — feed every observed
-objection back into the page FAQ and headline vocabulary.
+objection back into the page FAQ and headline vocabulary. Objection mining
+is THIS layer's job (VoC research, Step 2/3); the objection→FAQ worksheet
+(Part 1 mining / Part 2 page assembly) lives in the offer-page skill's
+assets — hand the filled mining half over with the page work.
 
 ## Step 5 — Wire proof, trust, and payment
 

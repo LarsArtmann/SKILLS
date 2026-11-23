@@ -58,7 +58,9 @@ foggy one; if the offer is the problem, stop and fix it upstream
    ~3 tiers with the recommended one centered. Urgency only with a true
    reason-why.
 6. **FAQ** — one entry per real objection, mined from reviews/support/communities,
-   never invented; each answer points back to the CTA.
+   never invented; each answer points back to the CTA. Fill
+   [./assets/objection-faq-worksheet.md](assets/objection-faq-worksheet.md)
+   (Part 1 = mining, owned by the first-customers strategy layer; Part 2 = assembly).
 7. **Final CTA + P.S.** — restate the promise and the risk reversal.
 8. **Voice gates** — run all ten mechanical pass/fail tests (grade ≤ 7,
    you ≥ 3× we, verbatim customer phrase, specificity, CTA shape, skim path,
