@@ -238,6 +238,18 @@ Ideas routed out of the archived 2026-08 status corpus during the
   real support/review mining, pre-launch QA executed, page deployed. Aging
   step: after the run, flip README + FEATURES from NEW to GREEN with a dated
   run note (the two-stage rule requires a real triggered run, not probes).
+- **architecture-deepening grilling (planned 2026-11-23):** the brief for
+  templ-components' demo/visualtest/tc triangle is committed (`cf725c9d`);
+  the loop needs the owner to pick a candidate (recommendation: the route
+  manifest) and answer the design-tree rounds.
+- **Site-repo video/CI backlog (routed from TODO_LIST T33, 2026-11-23):**
+  recreate emeet-pixyd's HyperFrames composition from the surviving MP4
+  (commit under `website/video/`); the first real 20-30s product video
+  (site choice open); demo video flows for go-atomic-write and
+  go-filewatcher; emeet og:image-from-poster upgrade. CI deploy workflow to
+  kill the manual-deploy class (pitfall 38): stays SEPARATE from the
+  website-template chain per decision Q5 2026-10-27 — only the CI-deploy
+  item may migrate into template CI once template CI exists.
 
 ## Open Questions
 

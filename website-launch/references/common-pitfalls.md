@@ -594,3 +594,40 @@ LAST; redeploy after any `firebase.json` change; verify with the DoD check
 suspect block order, not staleness. Applied and live-verified on all four
 lars.software sites 2026-09-09 (emeet-pixyd, gogenfilter, atomicwrite,
 filewatcher).
+
+**Merge semantics (verified live 2026-09-09):** when multiple `headers`
+blocks match one path, blocks COMBINE — for the same header key the LATER
+matching block's value wins, for different keys the values union. There is
+no glob-specificity tiebreaker: definition order is the only order. This is
+why the fix is ordering, not deleting the catch-all — the catch-all's
+`content-type` or security headers still apply to assets the immutable glob
+also matches.
+
+### 38. Deploy ran against the wrong Firebase site because the mapping was read after the fact
+
+**Symptom:** deploy "succeeds", but the live custom domain still shows the
+old content — the deploy went to a DIFFERENT site (often the shared
+`lars-software` project's default site instead of the per-repo hosting
+site), or `firebase hosting:sites:create` was skipped and a fresh deploy
+silently landed on the default site. The manual-deploy class from pitfall
+37's root cause 2, promoted to its own failure mode.
+
+**Cause:** running `firebase deploy` from a repo whose `.firebaserc` maps a
+named target (e.g. `"targets": {"hosting": {"<repo>": ["<site-id>"]}}`)
+without first reading that mapping — `firebase deploy --only hosting`
+deploys ALL targets in the current project when no target name is given,
+and a bare `firebase deploy` in the shared project can touch every site
+that project hosts.
+
+**Fix:** before ANY deploy, read the mapping and name the target
+explicitly:
+
+```bash
+cat website/.firebaserc            # which project + which named target?
+firebase deploy --only hosting:<target-name> --project <project-id>
+```
+
+The Phase 0 probes (SKILL.md "root `.firebaserc` found" + the
+shared-vs-standalone shape table) exist precisely to answer this BEFORE any
+deploy command runs; treat a deploy without a named target in the shared
+project as a bug.

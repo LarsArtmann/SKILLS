@@ -224,12 +224,28 @@ video/node_modules/
    ```json
    "source": "**/*.@(css|js|jpg|jpeg|gif|png|svg|ico|webp|avif|woff|woff2|mp4|webm|mov)"
    ```
+   Header-block order is load-bearing (pitfall 37 in
+   [common-pitfalls.md](./common-pitfalls.md)): Firebase applies `headers`
+   blocks in definition order and a later matching block overrides the same
+   key — define the catch-all (`**` with `max-age=0`) FIRST and the specific
+   immutable glob LAST, or the immutable cache header is silently clobbered
+   for every asset.
 8. **SEO:** add a `VideoObject` JSON-LD block (name, thumbnailUrl,
    contentUrl, uploadDate) to the landing layout alongside the
    SoftwareApplication JSON-LD.
 9. Verify live after deploy: `HEAD /demo.mp4` → 200/206 with
    `Cache-Control: public, max-age=31536000, immutable` and
-   `Content-Type: video/mp4`.
+   `Content-Type: video/mp4`. Also verify a Range request returns 206 with
+   `Content-Range` — Safari/iOS video streaming and seeking depend on it:
+   ```bash
+   nix shell nixpkgs#nodejs -c node -e '
+     fetch("https://{subdomain}.lars.software/demo.mp4",
+           { headers: { Range: "bytes=0-99" } })
+       .then(r => { console.log(r.status, r.headers.get("content-range"));
+                    process.exit(r.status === 206 ? 0 : 1); });
+   '
+   # expect: 206 bytes=0-99/<total>
+   ```
 
 ## Companion screenshots (same session, same quality gate)
 
@@ -270,7 +286,9 @@ The launch post copy reuses the one narrative: hook sentence (the README
 - [ ] Video visible without scrolling; container has `id="demo"`
 - [ ] README documentation bar links the demo with accurate runtime
 - [ ] `og:image` set from the poster (1200x630)
-- [ ] `firebase.json` cache glob covers `mp4|webm|mov`
+- [ ] `firebase.json` cache glob covers `mp4|webm|mov`; catch-all block FIRST,
+      immutable glob LAST (pitfall 37 order rule)
 - [ ] `VideoObject` JSON-LD added
-- [ ] Live `HEAD /demo.mp4` verified after deploy
+- [ ] Live `HEAD /demo.mp4` verified after deploy (immutable + video/mp4)
+- [ ] Live Range request returns 206 + `Content-Range` (iOS Safari streaming)
 - [ ] `video/node_modules/` gitignored
