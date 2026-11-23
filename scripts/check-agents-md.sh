@@ -40,19 +40,27 @@ set -euo pipefail
 fix_mode=0
 fix_budget=""
 args=()
-for a in "$@"; do
-	case "$a" in
-	--fix) fix_mode=1 ;;
-	--budget) : # consumed with its value below via a second pass
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+	--fix)
+		fix_mode=1
+		shift
 		;;
-	*) args+=("$a") ;;
+	--budget)
+		# value must be consumed WITH the flag: leaving it in args made it the
+		# scan target (silent "No AGENTS.md found under 2000") — T101 defect
+		[[ $# -ge 2 && "$2" =~ ^[0-9]+$ ]] || {
+			echo "usage: --budget N (bytes)" >&2
+			exit 2
+		}
+		fix_budget=$2
+		shift 2
+		;;
+	*)
+		args+=("$1")
+		shift
+		;;
 	esac
-done
-# extract --budget N wherever it appears
-prev=""
-for a in "$@"; do
-	if [[ "$prev" == "--budget" ]]; then fix_budget=$a; fi
-	prev=$a
 done
 target="${args[0]:-.}"
 
@@ -215,8 +223,8 @@ for f in "${files[@]}"; do
 	# --- Fix mode (T101): locate offenders + optional budget marker ---
 	if ((fix_mode)); then
 		echo "  --fix: offending lines (edit by hand; the patterns are often deliberate evidence):"
-		awk '/^```/{f=!f; next} !f' "$f" | grep -nE '(bumped from v|version bump|released v[0-9]|TODO #[0-9]|Phase [0-9]+ (complete|in progress)|~?[0-9]+% (complete|done|implemented)|^#+\s+.*\((v[0-9]|added [0-9]{4}|[0-9]{4}-[0-9]{2}-[0-9]{2})\)|As of v[0-9]|was .*,? now )' \
-			| sed 's/^/    /' || echo "    (none)"
+		awk '/^```/{f=!f; next} !f' "$f" | grep -nE '(bumped from v|version bump|released v[0-9]|TODO #[0-9]|Phase [0-9]+ (complete|in progress)|~?[0-9]+% (complete|done|implemented)|^#+\s+.*\((v[0-9]|added [0-9]{4}|[0-9]{4}-[0-9]{2}-[0-9]{2})\)|As of v[0-9]|was .*,? now )' |
+			sed 's/^/    /' || echo "    (none)"
 		if [[ -n "$fix_budget" && "$size_bytes" -gt "$budget" ]] && ! grep -q 'agents-md-size-budget:' "$f"; then
 			sed -i.bak "2i\\\\\n<!-- agents-md-size-budget: $fix_budget -->" "$f" && rm -f "$f.bak"
 			echo "  --fix: inserted size-budget marker ($fix_budget bytes) after line 1"
