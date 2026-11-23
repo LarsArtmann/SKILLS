@@ -184,7 +184,15 @@ extract_desc() {
       sub(/[[:space:]]+$/, "", line)
       if (desc != "") desc = desc " " line; else desc = line
     }
-    END { print desc }
+    END {
+      # Strip one pair of surrounding quotes: single-line YAML scalars may be
+      # quoted, and the quotes are YAML syntax, not content — leaving them on
+      # breaks the canonical-opening match. \x27 keeps the single quote
+      # escaped so the shell quoting of this awk program survives.
+      sub(/^[\x27"]/, "", desc)
+      sub(/[\x27"]$/, "", desc)
+      print desc
+    }
   ' "$1"
 }
 

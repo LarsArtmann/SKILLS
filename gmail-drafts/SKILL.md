@@ -188,3 +188,13 @@ what remains for them (fill placeholders, attach evidence, choose the From
 alias if the letter must go out as another address, press Send). If a case
 repo is involved, note the staged-drafts state in the case timeline so a
 future session does not re-stage.
+
+## Verification status
+
+| Claim                                                              | Status      | Source                                                                                                                                     |
+| ------------------------------------------------------------------ | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| OAuth grants at `/var/lib/inboxclean/token[-work].json` (mode 600, `inboxclean` user) | ✅ Verified | `ls -l` on this machine (2026-11-12 repair session; paths re-checked in the terrain table above)                                            |
+| `inboxclean` cannot read under `/home/lars` (mode 750, ACL mask `---`) | ✅ Verified | `getfacl /home/lars` on this machine (2026-11-12)                                                                                          |
+| InboxClean web :8099 `POST /compose` sends; no draft route         | ✅ Verified | InboxClean source (owner project), checked 2026-10-04 staging session                                                                      |
+| RFC 2047 encode/decode round-trips incl. chunked words + Q-form    | ✅ Verified | `gmail_drafts.sh --self-test` (no network; byte-exact fixtures, incl. trailing-newline body round-trip added 2026-11-22)                    |
+| Gmail drafts API `users.drafts.create` raw+base64url format        | ✅ Verified | Gmail API docs + live staging runs (case-glovo, 2026-10-04; idempotent re-stage verified)                                                  |
