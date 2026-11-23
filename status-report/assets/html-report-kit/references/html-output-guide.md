@@ -233,6 +233,44 @@ templates. The legacy aliases in parentheses still work.
 | Warning / risky | `--warning` (`--amber`)               | `.card-warning`, `.issue-important`, `.stat-warn`, `.score-warn`, `.severity-important`, `.callout-amber` |
 | Highlight       | `--accent`                            | `.hero-badge`, `.eyebrow`, `.tag.amber`, `h2 .num`, `.toc` left border                                    |
 
+## CSP-safe authoring (no inline handlers, no style attributes)
+
+Both templates are authored to a hard contract: **zero inline event handlers
+(`onclick=`, `onload=`, ...) and zero `style="..."` attributes**. Everything
+routes through classes defined in the single `<style>` block. Why: reports
+get served behind Content Security Policy (docs sites, preview hosts), where
+inline event handlers are blocked outright by `script-src` and style
+ATTRIBUTES cannot be rescued — CSP nonces/hashes exempt `<script>`/`<style>`
+elements, not style attributes (verified against the modern-web-guidance
+security guide: inline scripts and styles need "nonces, hashes, or
+refactoring"). Class-based styling keeps every violation surface down to the
+one `<style>` element the host can allow deliberately.
+
+The two patterns where inline style creeps in, done the CSP-safe way:
+
+```html
+<!-- WRONG: style attributes -->
+<div class="bar" style="width: 68%"></div>
+<span style="--accent: #b42625">flagged</span>
+
+<!-- CSP-SAFE: utility classes + variant class in the <style> block -->
+<div class="bar"><div class="bar-fill w-65"></div></div>
+<span class="flag-on-fire">flagged</span>
+```
+
+```css
+/* Add to the report's <style> block — never to elements */
+.bar { background: var(--surface-sunken); height: 6px; }
+.bar-fill { height: 100%; background: var(--accent); }
+.w-0 { width: 0%; } .w-5 { width: 5%; } .w-10 { width: 10%; }
+/* ... in 5% steps ... */ .w-100 { width: 100%; }
+.flag-on-fire { color: var(--problem); }
+```
+
+The scrollspy `<script>` block is the one inline script: under strict CSP it
+needs a nonce/hash from the host, or delete it — it is progressive
+enhancement and the anchor navigation keeps working without it.
+
 ## Component Catalog
 
 All components are defined in the templates. Copy what you need and delete the
@@ -602,6 +640,36 @@ report, two non-negotiable steps:
    finished report's CSS should be a clean subset of the template's (plus
    deliberate, documented additions), verifiable by diffing against the
    template.
+
+## Report-Integrity Checklist
+
+Symbol-honesty gates (doc-check, md-go validators) scan `.md` files — code
+sketches and scorecard numbers inside an HTML report pass through unverified.
+Observed failure mode (2026-11-21, go-cqrs-lite research report): a code
+sketch captioned "today's shape, unchanged" shipped an API that does not
+exist, alongside a scorecard count that had never been tallied. Run this
+checklist before any HTML report ships:
+
+1. **Symbol-honesty.** rg-verify every package-qualified symbol cited as
+   TODAY's API against the source tree. Sketches of PROPOSED API must say so
+   in-place ("new package", "proposed") — a labeled proposal is design, an
+   unlabeled invention of existing API is a lie.
+2. **Compile-or-strike code sketches.** A sketch claiming current reality must
+   be valid against the current API; fix it or label it, never leave a
+   would-not-compile sketch standing as fact.
+3. **Recount every scorecard number** with a grep before publishing. A
+   consistency number that was never counted is the exact failure the report
+   would criticize elsewhere.
+4. **Raw-fetch load-bearing exact strings** (versions, dates, sizes, star
+   counts) from primary sources — registry or API endpoints, not search
+   snippets or summarizer renderings — recording source + date per row.
+   Anything not verified gets an explicit UNVERIFIED label.
+5. **Mechanical checks.** HTML parse (python3 `html.parser`), anchor
+   cross-check (every `href="#x"` has `id="x"`), placeholder grep
+   (TODO/FIXME/PLACEHOLDER/lorem/TBD), and one render screenshot for the
+   record.
+
+Amendments to a SHIPPED report are dated, never silent rewrites.
 
 ## Filename Convention
 

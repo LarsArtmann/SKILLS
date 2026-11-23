@@ -233,6 +233,44 @@ templates. The legacy aliases in parentheses still work.
 | Warning / risky | `--warning` (`--amber`)               | `.card-warning`, `.issue-important`, `.stat-warn`, `.score-warn`, `.severity-important`, `.callout-amber` |
 | Highlight       | `--accent`                            | `.hero-badge`, `.eyebrow`, `.tag.amber`, `h2 .num`, `.toc` left border                                    |
 
+## CSP-safe authoring (no inline handlers, no style attributes)
+
+Both templates are authored to a hard contract: **zero inline event handlers
+(`onclick=`, `onload=`, ...) and zero `style="..."` attributes**. Everything
+routes through classes defined in the single `<style>` block. Why: reports
+get served behind Content Security Policy (docs sites, preview hosts), where
+inline event handlers are blocked outright by `script-src` and style
+ATTRIBUTES cannot be rescued — CSP nonces/hashes exempt `<script>`/`<style>`
+elements, not style attributes (verified against the modern-web-guidance
+security guide: inline scripts and styles need "nonces, hashes, or
+refactoring"). Class-based styling keeps every violation surface down to the
+one `<style>` element the host can allow deliberately.
+
+The two patterns where inline style creeps in, done the CSP-safe way:
+
+```html
+<!-- WRONG: style attributes -->
+<div class="bar" style="width: 68%"></div>
+<span style="--accent: #b42625">flagged</span>
+
+<!-- CSP-SAFE: utility classes + variant class in the <style> block -->
+<div class="bar"><div class="bar-fill w-65"></div></div>
+<span class="flag-on-fire">flagged</span>
+```
+
+```css
+/* Add to the report's <style> block — never to elements */
+.bar { background: var(--surface-sunken); height: 6px; }
+.bar-fill { height: 100%; background: var(--accent); }
+.w-0 { width: 0%; } .w-5 { width: 5%; } .w-10 { width: 10%; }
+/* ... in 5% steps ... */ .w-100 { width: 100%; }
+.flag-on-fire { color: var(--problem); }
+```
+
+The scrollspy `<script>` block is the one inline script: under strict CSP it
+needs a nonce/hash from the host, or delete it — it is progressive
+enhancement and the anchor navigation keeps working without it.
+
 ## Component Catalog
 
 All components are defined in the templates. Copy what you need and delete the
