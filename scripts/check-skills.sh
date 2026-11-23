@@ -62,6 +62,13 @@
 #        anchors. Report artifacts are read offline and sometimes years later.
 #        Scoped to skill dirs; the frozen reports under docs/ are historical.
 #
+# DELIBERATE NON-FIX (recorded 2026-11-22, was TODO T93): this script does
+# NOT structurally validate `.go` script assets (gofmt/vet presence,
+# one-main-per-dir). Go quality is already owned by two layers: AGENTS.md §1
+# (gofmt + `go vet <file.go>` + embedded self-test subcommands per file) and
+# buildflow's per-file Go quality legs (go vet runs in the pipeline). A third
+# structural gate here would duplicate both with no new failure mode caught.
+#
 # USAGE
 #   scripts/check-skills.sh            # run all checks, exit 1 on any failure
 #   scripts/check-skills.sh --thin     # list thin skills only (always exit 0)
