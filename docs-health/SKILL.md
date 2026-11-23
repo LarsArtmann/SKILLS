@@ -13,6 +13,10 @@ description: >
   plans, audits). Four modes: BUILD (create from code), HARVEST (pull forward items
   from status reports into TODO_LIST), VERIFY (check claims against code), ANNOTATE
   (resolve numbered items in old reports inline — not appendix-only).
+  Distinct from status-report: that skill GENERATES the point-in-time
+  snapshot ("what's done, what's broken, what's next"); docs-health then
+  maintains the doc corpus and harvests/routes that report's open items —
+  writing the report itself is not a docs-health mode.
 metadata:
   tags: documentation, freshness, features, todo, audit, consistency, verification, annotation, historical, harvest
 ---
