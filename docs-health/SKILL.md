@@ -13,7 +13,7 @@ description: >
   Four modes: BUILD (from code), HARVEST (pull report items into TODO_LIST), VERIFY
   (check claims against code), ANNOTATE (resolve old-report items inline, not
   appendix-only). Distinct from status-report, which GENERATES the point-in-time
-  snapshot; this skill maintains the corpus and harvests its open items.
+  snapshot; this skill maintains the corpus and harvests its items.
 metadata:
   tags: documentation, freshness, features, todo, audit, consistency, verification, annotation, historical, harvest
 ---

@@ -18,6 +18,7 @@
 5. [Rules for the strikethrough pattern](#rules-for-the-strikethrough-pattern)
 6. [Multi-item resolutions (5+): prefer a table](#multi-item-resolutions-5-prefer-a-table)
 7. [Tables with numbered rows](#tables-with-numbered-rows)
+8. [Post-annotation re-read gate (the last step, always)](#post-annotation-re-read-gate-the-last-step-always)
 
 ---
 
@@ -176,3 +177,25 @@ The stale value stays legible, the verdict is inline, and the row never
 trips the uniformity gate. Routed verdicts in any table row use the
 bold-arrow form (`**→ routed — TODO row**`) so the gate classifies the
 row ROUTED rather than PARTIAL.
+
+## Post-annotation re-read gate (the last step, always)
+
+Annotation edits a document in place — which means annotation can BREAK the
+document it is resolving (a strike that swallows a table pipe, a marker
+pasted into the wrong row, a renumber that shifted cross-references). The
+gate is a re-read, not a feeling:
+
+1. **Run the mechanical checker over the edited file** — `go run
+   docs-health/assets/annotate.go check-rows <file>` (prose files:
+   `prose`/`status-items` subcommands). Every marker must classify as a
+   known kind; PARTIAL rows mean a strike landed mid-row.
+2. **Re-read the file top to bottom as a reader.** Each annotated line must
+   still parse as the original claim plus a verdict — if the strikethrough
+   changed what the sentence says, restore and re-annotate.
+3. **Diff against the pre-annotation version** and account for every removed
+   line: annotation only ADDS markers (or arrows), it never deletes content.
+   A deletion you cannot explain is a corrupted annotation, not a resolution.
+
+A file is annotated when it passes all three — writing the markers is only
+step one. (Added 2026-11-22; the 2026-08-21 session had shipped a
+pipe-truncated evidence cell that only a diff-with-luck caught.)

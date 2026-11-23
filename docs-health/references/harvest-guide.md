@@ -49,6 +49,14 @@ Rules:
   section, the TODO row, and the queue's decision index — with idempotence
   against twins. Hand-minting drifts the three homes; use the scaffolder and
   extend its rows instead of writing fresh ones.
+- **Re-check each item's premise before rowing it, and stamp the check:**
+  a report item is a claim about a world that has since moved. Verify the
+  premise still holds (grep the code, read the current TODO/ROADMAP rows it
+  touches) BEFORE creating or merging a row, then append
+  `premise re-checked <date>` to the ledger row's reason. Un-stamped rows
+  are unverified claims; a later HARVEST must re-check them rather than
+  trust the row. This prevents the documented drift where a harvested row
+  outlives the condition that motivated it.
 
 ## Anti-patterns (not already stated in the body)
 
