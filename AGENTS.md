@@ -3,7 +3,7 @@
 > _Context for AI agents working in this repository._
 >
 > <!-- agents-md-size-budget: 52000 — justified (T70, 2026-11-22): this repo's
->      charter makes AGENTS.md the operating manual for 37 skills (§5 graph,
+>      charter makes AGENTS.md the operating manual for 38 skills (§5 graph,
 >      gates, daemon rules); provenance detail already extracted to
 >      docs/skill-forks.md. Growth beyond the budget means NEW provenance is
 >      being inline'd — extract to docs/ instead of raising this. -->

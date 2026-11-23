@@ -49,6 +49,7 @@ Skills organized by domain — live count via `scripts/check-skills.sh` (never h
 
 | Skill                      | What It Does                                                                                                                            | Status   |
 | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| **how-to-write-skills**    | The house authoring canon — description-as-trigger, progressive disclosure, signal density, 11 session-learned patterns, eval harnesses | 🟢 Comprehensive |
 | **github-voice**           | Draft GitHub issues/PRs/comments/reviews in Lars's own voice — corpus-derived patterns, per-genre skeletons, revision-informed drafting | 🆕 New   |
 | **verify-before-filing**   | Verify your diagnosis before filing issues/PRs to external projects                                                                     | 🆕 New   |
 | **verify-external-claims** | Verify external tool/library claims before encoding them into skills, code, or docs                                                     | 🟢 Solid |

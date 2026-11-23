@@ -23,19 +23,17 @@ Crush follows the [Agent Skills](https://agentskills.io) open standard. A skill 
 
 ## Table of Contents
 
-| Section                                              | What it covers                                                                     |
-| ---------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| [File Structure](#file-structure)                    | Directory layout and the subdirectory guide                                        |
-| [SKILL.md Format](#skillmd-format)                   | Required frontmatter and body anatomy                                              |
-| [Where to Place Skills](#where-to-place-skills)      | Install locations and runtime resolution                                           |
-| [Key Principles](#key-principles)                    | The rules behind every good skill, with bad/good examples                          |
-| [Organizing Multi-Domain Skills](#organizing-multi-domain-skills) | Splitting big domains into SKILL.md + references                    |
-| [Proven Patterns from Real Skills](#proven-patterns-from-real-skills) | Recurring structural patterns worth copying                          |
-| [Essential Skill Patterns](#essential-skill-patterns-learned-from-real-sessions) | Session-learned patterns (triggers, disambiguation, condensing) |
-| [Common Mistakes](#common-mistakes)                  | The failure modes every new skill author hits                                      |
-| [Testing Your Skill](#testing-your-skill)            | How to verify a skill actually triggers and works                                  |
-| [Hard-Won Process Lessons](#hard-won-process-lessons) | War stories encoded as rules (from real sessions)                                 |
-| [Minimal Starter Template](#minimal-starter-template) | Copy-paste starting point                                                           |
+- [File Structure](#file-structure) — directory layout and the subdirectory guide
+- [SKILL.md Format](#skillmd-format) — required frontmatter and body anatomy
+- [Where to Place Skills](#where-to-place-skills) — install locations and runtime resolution
+- [Key Principles](#key-principles) — the rules behind every good skill, with bad/good examples
+- [Organizing Multi-Domain Skills](#organizing-multi-domain-skills) — splitting big domains into SKILL.md + references
+- [Proven Patterns from Real Skills](#proven-patterns-from-real-skills) — recurring structural patterns worth copying
+- [Essential Skill Patterns](#essential-skill-patterns-learned-from-real-sessions) — session-learned patterns (triggers, disambiguation, condensing)
+- [Common Mistakes](#common-mistakes) — the failure modes every new skill author hits
+- [Testing Your Skill](#testing-your-skill) — how to verify a skill actually triggers and works
+- [Hard-Won Process Lessons](#hard-won-process-lessons) — war stories encoded as rules (from real sessions)
+- [Minimal Starter Template](#minimal-starter-template) — copy-paste starting point
 
 ## File Structure
 
@@ -254,7 +252,7 @@ Not all output should be Markdown. Use this decision rule:
 
 - **Snapshot reports** (status updates, reviews, plans, proposals, audits) are written
   once, read by humans, and never edited again → **HTML** with the shared
-  [`html-report-kit`](./html-report-kit/SKILL.md) design system.
+  [`html-report-kit`](../html-report-kit/SKILL.md) design system.
 - **Living docs** (`FEATURES.md`, `TODO_LIST.md`, `AGENTS.md`) are continuously edited,
   parsed by tooling, and kept up-to-date → **Markdown**.
 
@@ -429,7 +427,7 @@ Every eval run must persist, immediately per run: `evals/iteration-N/eval-X/{con
 
 ### Doctrine changes carry a higher bar
 
-A change to a skill's decision gates or doctrine (text that flips verdicts in future sessions) is not shipped by a single-probe flip demo: it needs ≥3 runs per arm, an old-skill arm archived from git, one cross-model arm, and an independent grader. The full bar and procedure: [`docs/doctrine-eval-protocol.md`](docs/doctrine-eval-protocol.md); the mechanics are `scripts/run-eval.sh` (`--old-skill`, `--model`, `--grade`).
+A change to a skill's decision gates or doctrine (text that flips verdicts in future sessions) is not shipped by a single-probe flip demo: it needs ≥3 runs per arm, an old-skill arm archived from git, one cross-model arm, and an independent grader. The full bar and procedure: [`docs/doctrine-eval-protocol.md`](../docs/doctrine-eval-protocol.md); the mechanics are `scripts/run-eval.sh` (`--old-skill`, `--model`, `--grade`).
 
 ## Hard-Won Process Lessons
 
