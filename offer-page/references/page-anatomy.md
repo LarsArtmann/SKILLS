@@ -86,7 +86,9 @@ hype: "Join 46,700 others" / "Save $3,500 in 16 weeks".
   (Lindgaard et al. 2006, [BIT](https://www.tandfonline.com/doi/abs/10.1080/01449290500330448))
   — the first viewport must look professional instantly.
 - **57% of viewing time is above the fold, 74% in the first two screenfuls**
-  ([NN/g scrolling & attention](https://www.nngroup.com/articles/scrolling-and-attention/));
+  ([NN/g scrolling & attention](https://www.nngroup.com/articles/scrolling-and-attention/);
+  independently re-verified from the raw article 2026-11-23 — all three
+  numbers appear verbatim, n=120 participants / 130k+ fixations);
   the top 20% of the page gets 42% of attention.
 - People do scroll (66% of attention is below the fold — Chartbeat), BUT
   **35% of desktop users leave before scrolling at all**
@@ -159,7 +161,9 @@ hype: "Join 46,700 others" / "Save $3,500 in 16 weeks".
   the cut list, item 6).
 - **Risk reversal raises purchase intent**: return-policy leniency increases
   purchase intentions (meta-analytic review, Journal of Retailing 2016,
-  [doi](https://doi.org/10.1016/j.jretai.2015.11.002)); some leniency
+  [doi](https://doi.org/10.1016/j.jretai.2015.11.002); independently
+  re-verified via Crossref 2026-11-23: Janakiraman/Syrdal/Freling, J.
+  Retailing 92(2), 226-235); some leniency
   (especially long time windows) raises return rates too — monitor refunds.
   Put a dated, unconditional money-back guarantee adjacent to price and CTA.
 - Value stack (Hormozi doctrine, aligned with the trust data): enumerate what
