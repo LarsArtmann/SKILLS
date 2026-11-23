@@ -41,6 +41,31 @@
         "Applies gate 2 in both currencies in the reasoning (pipe: single consumer; policy: no committed artifact predating the session)"
       ],
       "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Our repo is a Go library monorepo: one root module github.com/acme/kit (~90k lines: pkg/eventbus, pkg/metrics, pkg/httpclient, pkg/retry, and six more packages) plus two already-extracted library modules, github.com/acme/kit-log and github.com/acme/kit-config, that external teams import through the module proxy. External consumers import kit mostly for httpclient+retry together; kit-log has its own issue tracker and 40 stars. We want to extract pkg/httpclient into its own module github.com/acme/kit-http. Good idea?",
+      "files": [],
+      "assertions": [
+        "Applies the pipe-payoff test with REAL external consumers: checks whether any consumer composes httpclient WITHOUT the rest of kit (the no-consumer-variance/FM#8 test), not only internal sibling imports",
+        "Weighs the versioning cost specific to public libraries: once extracted, every kit-http change rides its own tag/release train and semver discipline — a cost an internal-only extraction does not carry",
+        "Does NOT justify the extraction by 'cleaner structure' or size alone: policy payoff must name a committed policy artifact, and for a public lib the consumer/import evidence dominates",
+        "Verdict is conditional on named evidence (proxy/import data showing httpclient-only importers, issue tracker signal), not a flat yes/no",
+        "If recommending extraction, names the transition mechanics: temporary replace directives, re-export shims, or the versioning-train handoff (go-release/go-ecosystem-upgrade by name is a plus, not required)"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Our Go repo has 23 modules. Six are test-helper modules (testfixture, testclock, testassert, testmatch, testbuilder, testretry) that every other module imports as one block. Three modules (platform-linux, platform-darwin, platform-windows) exist 'for a future platform split' but contain only build-tagged copies of the same file. GOWORK=off go build ./... fails in 9 of the 23 modules — they only build inside the workspace. CI runs 23 pipelines. Should we merge it all back into one module? Which modules survive?",
+      "files": [],
+      "assertions": [
+        "Applies gate 5 (solo build): the 9 workspace-fiction modules fail it and get a fix-or-merge verdict, not 'leave as-is'",
+        "Does NOT merge the platform-* trio on shared-code grounds alone: checks whether co-change is real coupling vs a build-tag/cross-cutting concern (the merge anti-signal)",
+        "Applies the container check before recording dissolves: if the merge target would become a god-package or breach a committed size policy, records an FM#11 standing finding plus an owner ratify question",
+        "Treats the six test helpers as a no-consumer-variance cluster (everyone imports all six together): proposes one shared testkit extraction or a reasoned per-helper verdict, not six independent merges",
+        "Gives per-module verdicts with a reason each, not a blanket 'merge it all back'",
+        "Names the merge mechanics somewhere: go.work/replace removal, consumer go.mod bumps, and a single release tag for the merged module"
+      ]
     }
   ]
 }
