@@ -39,6 +39,11 @@ report at that point.
   in the new `references/process-lessons.md` (distinctive-phrase grep, 9/9).
 - Upstream facts re-verified at a pinned commit (`abeeaf95`, shallow clone):
   the skill calls sibling skills at `SKILL.md` lines 13, 64, 66 and 71.
+- After the harvest (eight new rows T156–T163): `docs-gates freshness .` →
+  **exit 0** (this report: 0 unharvested §f items); `docs-gates rows
+  TODO_LIST.md` → exit 0; `docs-gates run .` → **exit 1** with audit-all FAIL
+  (7 unharvested, down from 9) and cadence FAIL (20 unarchived reports, oldest
+  21 days); `check-skills.sh` → exit 0.
 
 ## Scope line — NOT verified here
 
@@ -147,13 +152,14 @@ report at that point.
 - **Wrap-up:** strike and purge the done rows, CHANGELOG for segments 1–5,
   full gate battery (check-shell, buildflow expecting exit 69, docs-gates),
   FEATURES/README row refresh, closing report.
-- **Archive ritual:** docs-gates cadence is overdue (19 unarchived reports,
-  threshold 15, oldest 21 days) and audit-all lists 9 unharvested items. Of
-  the nine, six are work this sweep finished (T62, T94, common-pitfalls
-  numbering, link-canon doctrine, the kit TOC, the buildflow artifact watch)
-  and need a `done at` annotation; one is obsolete (`pyJSONString` fuzz: the
-  Python it targeted was removed); two need a check (stray-fence lint, the
-  two-tier link-canon guard, which is T115/T116 work).
+- **Archive ritual:** docs-gates cadence is overdue (20 unarchived reports,
+  threshold 15, oldest 21 days) and audit-all lists 7 unharvested items (9 at
+  the baseline; T157's row text now routes two of them without resolving
+  them). Of the nine found at the baseline, six are work this sweep finished
+  (T62, T94, common-pitfalls numbering, link-canon doctrine, the kit TOC, the
+  buildflow artifact watch) and need a `done at` annotation; one is obsolete
+  (`pyJSONString` fuzz: the Python it targeted was removed); two need a check
+  (stray-fence lint, the two-tier link-canon guard, which is T115/T116 work).
 - **Queued follow-ups:** run the website-launch trigger battery; the
   website-template CI workflow and the init CSP self-heal; the two
   skill-level rules from 06-59 §e1/e2.
@@ -253,7 +259,7 @@ report at that point.
     incremental-artifact rule** (→ T161).
 12. **Assemble-then-verify + tee-raw rules** (→ T162).
 13. **website-template CI workflow + init CSP self-heal** (→ T163, local
-   commits only until push consent).
+    commits only until push consent).
 14. **FEATURES.md row for how-to-write-skills** (→ T111): mention the
     process-lessons reference.
 15. **README inventory paragraph** (→ T156): count of 🆕 skills after the
@@ -304,24 +310,24 @@ Rows minted after `docs-gates freshness . --pre-flight` on the candidate
 lines (see scope line in the commit); each premise was re-checked
 2026-11-24 against the current tree.
 
-| Source (report §item)                         | Disposition                          | Destination / reason                                                                                          |
-| --------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| §f1, §f5, §f7, §f15 sweep wrap-up             | new row                             | T156 — no row owned the closing ritual                                                                       |
-| §f6 archive ritual + 9 audit-all items       | new row                             | T157 — cadence red, no owner row                                                                              |
-| §f8 website-launch trigger battery            | new row                             | T158 — battery authored today, never run                                                                     |
-| §f9 gh retry helper                           | new row                             | T159 — helper exists only in /tmp/scratch-bin                                                                 |
-| §f10 verify-before-filing expiry line        | new row                             | T160 — lesson from T141, no skill row yet                                                                   |
-| §f11 concurrency-cap lesson                  | new row (repo: crush-config)         | T161 — the fleet lesson states a cap that failed today                                                       |
-| §f12 assemble-then-verify + tee-raw           | new row                             | T162 — 06-59 §e1/e2 were never routed                                                                         |
-| §f13 website-template CI + CSP self-heal      | new row (repo: website-template)     | T163 — 06-09 §f32/f33 were never routed; local commits only until push consent                               |
-| §f2 finish T111                                | existing row                        | T111 — stays open, re-scoped to the verification remainder at wrap-up; premise re-checked 2026-11-24          |
-| §f3 T117/T89 verification                     | existing row                        | T117 — still unverified; premise re-checked 2026-11-24                                                      |
-| §f4 the ten bundle rows                       | existing row                        | T110, T112–T116, T118–T121 — unchanged; premise re-checked 2026-11-24                                        |
-| §f16–30 owner-gated rows and picks            | existing row / ROADMAP              | T30, T68, T71, T75, T122–T125, T129, T134, T150, T151; ROADMAP "Planned first real runs"; no change           |
-| §f31 DNS resolver defect                      | declined                            | owner machine configuration, not a repo task; §g/§e6 carry it                                                 |
-| §f32 two-tier link-canon guard                | existing row                        | T115/T116 gate-infra items absorb it; premise re-checked 2026-11-24                                         |
+| Source (report §item)                    | Disposition                      | Destination / reason                                                                                 |
+| ---------------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| §f1, §f5, §f7, §f15 sweep wrap-up        | new row                          | T156 — no row owned the closing ritual                                                               |
+| §f6 archive ritual + 9 audit-all items   | new row                          | T157 — cadence red, no owner row                                                                     |
+| §f8 website-launch trigger battery       | new row                          | T158 — battery authored today, never run                                                             |
+| §f9 gh retry helper                      | new row                          | T159 — helper exists only in /tmp/scratch-bin                                                        |
+| §f10 verify-before-filing expiry line    | new row                          | T160 — lesson from T141, no skill row yet                                                            |
+| §f11 concurrency-cap lesson              | new row (repo: crush-config)     | T161 — the fleet lesson states a cap that failed today                                               |
+| §f12 assemble-then-verify + tee-raw      | new row                          | T162 — 06-59 §e1/e2 were never routed                                                                |
+| §f13 website-template CI + CSP self-heal | new row (repo: website-template) | T163 — 06-09 §f32/f33 were never routed; local commits only until push consent                       |
+| §f2 finish T111                          | existing row                     | T111 — stays open, re-scoped to the verification remainder at wrap-up; premise re-checked 2026-11-24 |
+| §f3 T117/T89 verification                | existing row                     | T117 — still unverified; premise re-checked 2026-11-24                                               |
+| §f4 the ten bundle rows                  | existing row                     | T110, T112–T116, T118–T121 — unchanged; premise re-checked 2026-11-24                                |
+| §f16–30 owner-gated rows and picks       | existing row / ROADMAP           | T30, T68, T71, T75, T122–T125, T129, T134, T150, T151; ROADMAP "Planned first real runs"; no change  |
+| §f31 DNS resolver defect                 | declined                         | owner machine configuration, not a repo task; §g/§e6 carry it                                        |
+| §f32 two-tier link-canon guard           | existing row                     | T115/T116 gate-infra items absorb it; premise re-checked 2026-11-24                                  |
 
 ---
 
-*This report is a point-in-time artifact. Bring it current via docs-health →
-ANNOTATE.*
+_This report is a point-in-time artifact. Bring it current via docs-health →
+ANNOTATE._
