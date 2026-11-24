@@ -34,6 +34,7 @@ The shared design specification for all skills that produce HTML reports.
   - [Grid Layouts](#grid-layouts)
   - [Footer](#footer)
 - [Syntax Highlighting](#syntax-highlighting)
+- [Splice Workflow](#splice-workflow) — body fragments in, untouched CSS shell out
 - [Series Discipline](#series-discipline)
 - [Report-Integrity Checklist](#report-integrity-checklist)
 - [Filename Convention](#filename-convention)
@@ -657,6 +658,66 @@ Apply manually by wrapping tokens in spans:
 <span class="tok-punct">}</span></code></pre>
 ```
 
+## Splice Workflow
+
+Authors write body fragments; the stylesheet travels untouched. ~830 of the ~1080
+lines in each template are one `<style>` block the report author must not modify, so
+the authorship seam sits around it:
+
+- **Shell** (template-owned, never edited): `<!doctype>`, head, the full stylesheet,
+  `<body>`, the scrollspy `<script>`, document close.
+- **Fragment** (author-owned): everything from the top-bar line through `</main>`.
+
+### Span contract
+
+Both template variants share the same body scaffold, so one anchor pair covers both:
+the fragment replaces the template span from the top-bar start line (`<div class="top-bar">`,
+4-space indent) through the main close line (`</main>`, 6-space indent), inclusive of
+both — byte-exact anchor strings live in the header of `../assets/splice-report.sh`
+(run it with `--help`). The fragment therefore opens and closes its own `<main>`; the
+shell supplies the layout-closing `</div>`, the scrollspy script, and `</body></html>`.
+
+### Commands
+
+Run from the kit root (canonical checkout: `html-report-kit/`; vendored copy inside a
+consumer skill: `<skill>/assets/html-report-kit/`):
+
+```bash
+# 1. Dump the current scaffold as your starting fragment
+assets/splice-report.sh --extract assets/report-template.html > body.html
+
+# 2. Edit the fragment: top-bar (or drop it), sidebar TOC, <main> content, footer
+
+# 3. Splice it into the untouched shell
+assets/splice-report.sh assets/report-template.html docs/<category>/<date>_<slug>.html body.html
+```
+
+The script fails loudly when an anchor is missing or non-unique, the span is inverted,
+or the fragment does not end on the main close line — it never guesses spans. Its
+`--self-test` includes a round-trip identity check against every shipped template;
+run it after any template or anchor change.
+
+### Fragment rules
+
+- Last non-blank line must be exactly the main close line (`</main>` at 6-space
+  indent) — the shell closes everything after it.
+- The optional top-bar may be dropped for quieter reports; the anchor only has to
+  exist in the template, not in the fragment.
+- Build the interior from the [Component Catalog](#component-catalog) and delete the
+  scaffold sections you don't need.
+- `body.html` is scratch input — delete it after splicing; the spliced report is the
+  artifact.
+- Deliberate theming (rare): splice first, then edit the output's `:root` primitives
+  and document the deviation inside the report.
+
+### Fallback (no shell available)
+
+When bash is unavailable, copy the template file and edit its content directly — the
+finished CSS must remain a clean subset of the template's (plus deliberate,
+documented additions). Never re-type CSS from memory or from another report's
+rendered source; transcription drift is the exact failure this workflow exists to
+prevent.
+
 ## Series Discipline
 
 Reports are episodes of a series, not isolated documents. Before writing any
@@ -669,14 +730,16 @@ report, two non-negotiable steps:
    (2026-08-22): a review re-discovered findings an earlier review in the same
    directory had already made, because episode N was written without reading
    episode N-1.
-2. **Copy the template, never transcribe.** Start from a template file by
-   copying it and editing its content. Never re-type CSS or structure from
-   memory or from another report's rendered source. Observed failure mode
-   (2026-08-22): a hand-transcribed stylesheet carried a malformed `--text:`
-   token — transcription typos and token drift are the same risk class. The
-   finished report's CSS should be a clean subset of the template's (plus
-   deliberate, documented additions), verifiable by diffing against the
-   template.
+2. **Splice the template, never transcribe.** Preferred path: write only a body
+   fragment and inject it with `assets/splice-report.sh`
+   ([Splice Workflow](#splice-workflow)) — the CSS travels inside the untouched
+   shell, so transcription drift is impossible by construction. Fallback when no
+   shell is available: copy the template file and edit its content. Never re-type
+   CSS or structure from memory or from another report's rendered source. Observed
+   failure mode (2026-08-22): a hand-transcribed stylesheet carried a malformed
+   `--text:` token — transcription typos and token drift are the same risk class.
+   The finished report's CSS should be a clean subset of the template's (plus
+   deliberate, documented additions), verifiable by diffing against the template.
 
 ## Report-Integrity Checklist
 
@@ -721,20 +784,29 @@ Categories: `status/`, `planning/`, `architecture-understanding/`, `brainstormin
 
 1. Decide whether the report should feel like a **dashboard** (dark template)
    or an **audit brief** (editorial template).
-2. **Read the series first, then copy the template — never transcribe it**
-   (both rules and their failure modes: [Series Discipline](#series-discipline)).
-3. Copy the chosen template to the target path.
+2. **Read the series first** (rule and failure mode:
+   [Series Discipline](#series-discipline)).
+3. Extract the scaffold and write your fragment
+   ([Splice Workflow](#splice-workflow)):
+
+   ```bash
+   assets/splice-report.sh --extract assets/report-template.html > body.html
+   # edit body.html: top-bar, sidebar TOC, <main> content, footer
+   assets/splice-report.sh assets/report-template.html docs/<category>/<date>_<slug>.html body.html
+   ```
+
 4. Open [`example-editorial-report.html`](./example-editorial-report.html) to see a
    fully rendered report using every component in the Bauhaus editorial theme.
-5. Delete the example sections you don't need.
-6. Replace placeholder text, ids, and TOC links.
-7. Keep the CSS design tokens intact unless you are intentionally theming.
+5. Build the fragment from the [Component Catalog](#component-catalog); delete the
+   scaffold sections you don't need. The fragment must close its own `<main>`; the
+   optional top-bar may be dropped.
+6. Keep the shell's CSS design tokens intact unless you are intentionally theming.
    The semantic tokens (`--surface`, `--text`, `--problem`, `--solution`,
    `--warning`, `--accent`) are the same in both templates — swapping palettes
    means editing only the primitive values in `:root`.
-8. To theme for a different brand, override the **primitive** colors
+7. To theme for a different brand, override the **primitive** colors
    (`--color-red`, `--color-blue`, etc.) and the semantic layer follows.
-9. The optional `.hero-shapes` cluster (circle / square / triangle / bar) is the
+8. The optional `.hero-shapes` cluster (circle / square / triangle / bar) is the
    Bauhaus signature. Remove it for a quieter hero; keep it for reports that
    benefit from a strong visual anchor.
 

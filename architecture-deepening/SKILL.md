@@ -48,7 +48,7 @@ Ask the sub-agent to return `file:line` evidence, the seam location, and one sen
 
 Destination: `docs/architecture-understanding/YYYY-MM-DD_HH-mm_<slug>-deepening.html` in the repo under review. `ARCH_DEEPENING_OUT` overrides it, then the older `ARCH_REVIEW_OUT`; a value ending in `.html` is the file itself, any other value is the directory. Never default to the OS temp directory: reports are artifacts the user keeps, reviews the candidate, and references later, and upstream's `/tmp` default is why this skill was forked locally. Full precedence: [./references/candidate-report.md](./references/candidate-report.md).
 
-Follow the kit's series discipline: list the target directory, skim the most recent 1-3 reports (TOC + findings), and copy the template — never transcribe CSS.
+Follow the kit's series discipline: list the target directory, skim the most recent 1-3 reports (TOC + findings), and splice a body fragment — never transcribe CSS ([Splice Workflow](./assets/html-report-kit/references/html-output-guide.md#splice-workflow)).
 
 - Template: [./assets/html-report-kit/assets/report-template-editorial.html](./assets/html-report-kit/assets/report-template-editorial.html) (the editorial-light variant; a brief reads better on paper stock than on a dashboard ground)
 - Design spec: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)

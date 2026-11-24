@@ -54,7 +54,7 @@ A Pareto plan is a point-in-time snapshot with rich structure (tiers, tables, ex
 graphs) that benefits from visual treatment.
 
 1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
-2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
+2. Splice a body fragment into the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html) via [./assets/html-report-kit/assets/splice-report.sh](./assets/html-report-kit/assets/splice-report.sh) ([Splice Workflow](./assets/html-report-kit/references/html-output-guide.md#splice-workflow))
 3. Render the D2 execution graph to SVG via `d2 plan.d2 plan.svg`, then inline the SVG
    directly in the HTML `<body>` (no external file dependency).
 4. Map plan structure to components:

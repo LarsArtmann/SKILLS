@@ -26,11 +26,15 @@ the directory if it doesn't exist.
 1. **Read prior reports in the series.** List `docs/architecture-understanding/*.html`
    and skim the most recent 1-3 (TOC + scores + roadmaps) — cross-reference prior
    reviews and their still-open roadmap items instead of re-deriving them as new.
-2. **Copy the template, never transcribe.** Start from
+2. **Splice the template, never transcribe.** Write only a body fragment
+   (top-bar through `</main>`) and inject it into
    [./assets/html-report-kit/assets/report-template-editorial.html](./assets/html-report-kit/assets/report-template-editorial.html)
-   by copying the file and editing its content — never re-type CSS or structure from
-   memory or another report's rendered source; hand-transcribed CSS drifts from the kit
-   and re-introduces bugs the kit already fixed. The editorial-light variant is the kit's
+   with [./assets/html-report-kit/assets/splice-report.sh](./assets/html-report-kit/assets/splice-report.sh)
+   (`--extract` dumps the scaffold; contract:
+   [Splice Workflow](./assets/html-report-kit/references/html-output-guide.md#splice-workflow)).
+   The CSS travels inside the untouched shell, so hand-transcribed drift cannot
+   happen; never re-type CSS or structure from memory or another report's
+   rendered source. The editorial-light variant is the kit's
    assignment for an architecture review; the dark dashboard suits scan output and
    high-density metric pages, not a judged assessment.
 

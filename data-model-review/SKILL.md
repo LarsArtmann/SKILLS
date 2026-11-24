@@ -102,12 +102,15 @@ Key patterns:
    cross-reference them (companion reports, follow-up items resolved) — a
    review series reads as one continuous conversation, not isolated
    documents.
-2. **Copy the template, never transcribe.** Start from
-   `./assets/html-report-kit/assets/report-template-editorial.html` by
-   copying the file and editing its content. Never re-type CSS or structure
-   from memory or from another report's rendered source — hand-transcribed
-   CSS drifts from the kit (wrong tokens, missing classes) and re-introduces
-   bugs the kit already fixed. The editorial-light variant is the kit's
+2. **Splice the template, never transcribe.** Write only a body fragment
+   (top-bar through `</main>`) and inject it into
+   `./assets/html-report-kit/assets/report-template-editorial.html` with
+   [./assets/html-report-kit/assets/splice-report.sh](./assets/html-report-kit/assets/splice-report.sh)
+   (`--extract` dumps the scaffold; contract:
+   [Splice Workflow](./assets/html-report-kit/references/html-output-guide.md#splice-workflow)).
+   The CSS travels inside the untouched shell, so hand-transcribed drift
+   cannot happen; never re-type CSS or structure from memory or from
+   another report's rendered source. The editorial-light variant is the kit's
    assignment for an audit brief; the dark dashboard is for scan output and
    status pages.
 

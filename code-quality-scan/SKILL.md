@@ -36,7 +36,7 @@ Write a **self-contained styled HTML report** — a sorted issue dashboard.
    most recent 1-3 (TOC + findings) — cross-reference prior scans instead of
    re-reporting their known findings as new.
 2. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
-3. **Copy the template, never transcribe.** Start from [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html) by copying the file and editing its content — never re-type CSS or structure from memory or another report's rendered source; hand-transcribed CSS drifts from the kit and re-introduces bugs the kit already fixed.
+3. **Splice the template, never transcribe.** Write only a body fragment (top-bar through `</main>`) and inject it into [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html) with [./assets/html-report-kit/assets/splice-report.sh](./assets/html-report-kit/assets/splice-report.sh) (`--extract` dumps the scaffold; contract: [Splice Workflow](./assets/html-report-kit/references/html-output-guide.md#splice-workflow)) — the CSS travels inside the untouched shell, so hand-transcribed drift cannot happen.
 4. Write to `docs/reviews/<YYYY-MM-DD_HH-MM_code-quality-scan.html`
 5. Map issues to visual components:
    - **Stat cards** for counts (total issues / critical / high / medium / low)

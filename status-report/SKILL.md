@@ -67,7 +67,7 @@ an override).
 > `assets/html-report-kit/` for dashboard use.
 
 1. Load the shared design system: [./assets/html-report-kit/references/html-output-guide.md](./assets/html-report-kit/references/html-output-guide.md)
-2. Copy the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html)
+2. Splice a body fragment into the template: [./assets/html-report-kit/assets/report-template.html](./assets/html-report-kit/assets/report-template.html) via [./assets/html-report-kit/assets/splice-report.sh](./assets/html-report-kit/assets/splice-report.sh) ([Splice Workflow](./assets/html-report-kit/references/html-output-guide.md#splice-workflow))
 3. Map each status category to a visual component:
    - **Stat cards** for counts (done / partial / broken / fucked up)
    - **`.card-problem`** for TOTALLY FUCKED UP items
