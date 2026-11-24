@@ -376,19 +376,19 @@ pattern bodies (rationale, examples, anti-patterns) live in
 [./references/skill-patterns.md](./references/skill-patterns.md); load a
 pattern when writing a skill where it applies.
 
-| #  | Pattern                               | Prevents                                                    |
-| -- | ------------------------------------- | ----------------------------------------------------------- |
-| 1  | Pre-flight Checks                     | Discovered-too-late credential/tool/infra blockers           |
-| 2  | Commit Checkpoints                    | Session-end loss of work that exists only on disk           |
-| 3  | Common Mistakes Reference             | New skills repeating known failure modes                    |
-| 4  | Visual QA Gate                        | Shipping pages nobody rendered and looked at                |
-| 5  | Verify Code Examples Against Source   | Stale API examples drifting from the real signatures        |
-| 6  | Feedback-Driven Skill Creation        | A third feedback file proposing what should be a skill      |
-| 7  | Restraint & Verschlimmbesserung       | Unrequested rewrites that make things worse                 |
-| 8  | Cross-Skill Handoff Notes             | Split brains: two skills restating one doctrine             |
-| 9  | Primary Failure Mode in the tl;dr     | Wrong first impression of what the skill fixes              |
-| 10 | Condense Without Eroding Teaching Weight | Cuts that delete the WHY behind a rule                   |
-| 11 | Disambiguate Competing Skills         | Trigger collisions between adjacent skills                  |
+| #  | Pattern                                  | Prevents                                               |
+| -- | ---------------------------------------- | ------------------------------------------------------ |
+| 1  | Pre-flight Checks                        | Discovered-too-late credential/tool/infra blockers     |
+| 2  | Commit Checkpoints                       | Session-end loss of work that exists only on disk      |
+| 3  | Common Mistakes Reference                | New skills repeating known failure modes               |
+| 4  | Visual QA Gate                           | Shipping pages nobody rendered and looked at           |
+| 5  | Verify Code Examples Against Source      | Stale API examples drifting from the real signatures   |
+| 6  | Feedback-Driven Skill Creation           | A third feedback file proposing what should be a skill |
+| 7  | Restraint & Verschlimmbesserung          | Unrequested rewrites that make things worse            |
+| 8  | Cross-Skill Handoff Notes                | Split brains: two skills restating one doctrine        |
+| 9  | Primary Failure Mode in the tl;dr        | Wrong first impression of what the skill fixes         |
+| 10 | Condense Without Eroding Teaching Weight | Cuts that delete the WHY behind a rule                 |
+| 11 | Disambiguate Competing Skills            | Trigger collisions between adjacent skills             |
 
 ## Common Mistakes
 
