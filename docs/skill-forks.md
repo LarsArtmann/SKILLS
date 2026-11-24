@@ -14,12 +14,21 @@ copy was removed from the skills-CLI install the same day (aggregation commit
 1. **Missing siblings.** The upstream skill's first instruction is to call
    sibling skills `codebase-design`, `grilling`, and `domain-modeling`, which a
    per-skill `skills add` never installs — observed missing on this machine, so
-   the skill had no vocabulary and no interview loop. (Upstream issue candidate:
-   TODO T141.)
+   the skill had no vocabulary and no interview loop. **No new upstream issue
+   (T141 closed 2026-11-24): verify-before-filing gate 5 found it 4x filed
+   already** — #475 (the installer has no dependency concept; maintainer
+   triage `ready-for-human`), #1012 §2 (this skill's docs page says "None to
+   run it"; fix diff attached), #1393 and #1123 (the harness-specific `Skill`
+   tool wording) — and #775 closed a dependency map as not planned. The one
+   fact they lacked — `grilling` (`SKILL.md:64` at `abeeaf95`) is missing from
+   #1012's table row and diff — went up as a comment on #1012
+   (`issuecomment-7119048411`; draft in `docs/drafts/`).
 2. **tmpdir artifact.** It hard-codes the report to the OS temp directory
    (`/tmp` on Linux, tmpfs), so the artifact dies at reboot — filed upstream as
    mattpocock/skills#1437. The local copy writes to `docs/architecture-understanding/`
-   with `ARCH_DEEPENING_OUT` as override.
+   with `ARCH_DEEPENING_OUT` as override. Fork outcome commented on #1437
+   2026-11-24 (T140, `issuecomment-7119034552`): fork link, in-repo
+   destination, env override; the ask still stands for the published skill.
 3. **CDN rendering.** It renders through CDN Tailwind + Mermaid, which conflicts
    with this repo's self-contained HTML doctrine (AGENTS §5.9); the local copy
    uses the vendored `html-report-kit`.
