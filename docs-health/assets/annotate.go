@@ -110,7 +110,7 @@ usage: go run annotate.go <subcommand> ...
   bare-rows <file>...                 (exit 1 lists bare data rows outside ledger tables)
   prose-items <file>...               (list bare numbered/checkbox PROSE lines — the
                                        narrative-vs-item classification scanner)
-  repair [--dry-run] <specfile>        (spec: path<TAB>lines<TAB>kind[<TAB>value])
+  repair [--dry-run] [--assert-aligned] <specfile>        (spec: path<TAB>lines<TAB>kind[<TAB>value])
   unwrap [--dry-run] <file>:<lines>...  (rebuild formatter-wrapped struck rows)
   repair-partial [--dry-run] <file>... (strike bare cells of partially-struck rows)
   self-test
@@ -1462,12 +1462,19 @@ func cmdRepair(argv []string) error {
 // report (self-test passes a buffer).
 func repairRun(argv []string, out io.Writer) error {
 	dry := false
+	assertAligned := false
 
 	var files []string
 
 	for _, a := range argv {
 		if a == "--dry-run" {
 			dry = true
+
+			continue
+		}
+
+		if a == "--assert-aligned" {
+			assertAligned = true
 
 			continue
 		}
@@ -1536,7 +1543,7 @@ func repairRun(argv []string, out io.Writer) error {
 	total := 0
 
 	for _, p := range names {
-		n, err := repairFile(p, byFile[p], dry)
+		n, err := repairFile(p, byFile[p], dry, assertAligned)
 		if err != nil {
 			return err
 		}
@@ -1590,7 +1597,7 @@ func validateRepairSpec(lineNo int, spec repairSpec) error {
 
 // repairFile applies one file's specs. Returns the number of lines changed
 // (or that would change). Atomic per file: write to a temp sibling, rename.
-func repairFile(path string, specs []repairSpec, dry bool) (int, error) {
+func repairFile(path string, specs []repairSpec, dry, assertAligned bool) (int, error) {
 	abs := path
 
 	if !filepath.IsAbs(abs) {
@@ -1600,6 +1607,12 @@ func repairFile(path string, specs []repairSpec, dry bool) (int, error) {
 	_, lines, err := readLines(abs)
 	if err != nil {
 		return 0, err
+	}
+
+	if assertAligned {
+		if err := assertTableAlignment(lines, specs); err != nil {
+			return 0, err
+		}
 	}
 
 	apply := map[int]repairSpec{}
@@ -1667,6 +1680,37 @@ func repairFile(path string, specs []repairSpec, dry bool) (int, error) {
 	}
 
 	return changed, nil
+}
+
+// assertTableAlignment rejects multi-line table ranges that start AFTER a
+// table's first data row — the 2026-11-24 auditlog off-by-one signature,
+// where every verdict shifted one row and needed surgical correction. The
+// boundary is derived from the contiguous |-block containing the spec's
+// first line and its separator, the same derivation check-rows uses.
+// Single-line specs and prose ranges carry their alignment in the spec
+// itself and are not guarded.
+func assertTableAlignment(lines []string, specs []repairSpec) error {
+	for _, s := range specs {
+		if s.hi <= s.lo || s.lo > len(lines) || !strings.HasPrefix(strings.TrimSpace(lines[s.lo-1]), "|") {
+			continue
+		}
+
+		header := s.lo
+		for header > 1 && strings.HasPrefix(strings.TrimSpace(lines[header-2]), "|") {
+			header--
+		}
+
+		if header >= len(lines) || !isSeparator(strings.TrimSpace(lines[header])) {
+			continue
+		}
+
+		if first := header + 2; s.lo > first {
+			return fail("repair: spec %s lines %d-%d starts mid-table: header is line %d, first data row is line %d — re-derive the range from check-rows output before applying",
+				s.path, s.lo, s.hi, header, first)
+		}
+	}
+
+	return nil
 }
 
 func cwdOrDot() string {
@@ -2612,6 +2656,60 @@ func selfTest() error {
 		check("repair bad kind names the row",
 			strings.Contains(badErr.Error(), `spec line 4: bad kind "done"`), true)
 	}
+
+	// ----- repair: --assert-aligned (the 2026-11-24 auditlog off-by-one) -----
+	// A multi-line table range must start at (or before) the table's first
+	// data row; the guard derives the boundary from the contiguous |-block
+	// and its separator, so a check-rows-derived off-by-one fails loudly
+	// before any line is touched.
+	guardTarget := repairDir + "/guard.md"
+	if err := os.WriteFile(guardTarget, []byte(rSample), 0o644); err != nil {
+		return err
+	}
+
+	alignSpec := repairDir + "/align.tsv"
+	aligned := strings.Join([]string{
+		"# path\tlines\tkind\tvalue",
+		guardTarget + "\t7-8\tv\taligned strike",
+	}, "\n")
+	if err := os.WriteFile(alignSpec, []byte(aligned), 0o644); err != nil {
+		return err
+	}
+
+	check("guard: aligned range passes",
+		repairRun([]string{alignSpec, "--assert-aligned", "--dry-run"}, io.Discard) == nil, true)
+
+	misaligned := strings.Join([]string{
+		"# path\tlines\tkind\tvalue",
+		guardTarget + "\t8-9\tv\tmid-table strike",
+	}, "\n")
+	if err := os.WriteFile(alignSpec, []byte(misaligned), 0o644); err != nil {
+		return err
+	}
+
+	misErr := repairRun([]string{alignSpec, "--assert-aligned", "--dry-run"}, io.Discard)
+	check("guard: mid-table range fails", misErr != nil, true)
+	if misErr != nil {
+		check("guard: names the first data row",
+			strings.Contains(misErr.Error(), "first data row is line 7"), true)
+	}
+
+	guardAfter, _ := os.ReadFile(guardTarget)
+	check("guard: dry-run wrote nothing", string(guardAfter), rSample)
+
+	single := strings.Join([]string{
+		"# path\tlines\tkind\tvalue",
+		guardTarget + "\t8-8\tv\trow verdict",
+	}, "\n")
+	if err := os.WriteFile(alignSpec, []byte(single), 0o644); err != nil {
+		return err
+	}
+
+	check("guard: single-line spec skips the guard",
+		repairRun([]string{alignSpec, "--assert-aligned", "--dry-run"}, io.Discard) == nil, true)
+
+	withoutFlag := repairRun([]string{alignSpec}, io.Discard)
+	check("guard: without the flag mid-table applies", withoutFlag == nil, true)
 
 	badAfter, _ := os.ReadFile(badTarget)
 	check("repair bad spec mutates nothing", string(badAfter), rSample)
