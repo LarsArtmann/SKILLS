@@ -65,8 +65,8 @@ case "${1:-}" in
 	nix shell nixpkgs#nodejs -c pnpm add hyperframes
 	;;
 "")
-	sed -n '2,25p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
-	;;
+	awk 'NR > 1 && /^#/ { sub(/^# ?/, ""); print; next } NR > 1 { exit }' "${BASH_SOURCE[0]}"
+;;
 --)
 	shift
 	libs="$(build_libs)"

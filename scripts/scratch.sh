@@ -65,8 +65,8 @@ case "${1:-}" in
 	: >"$manifest"
 	;;
 --help | -h | "")
-	sed -n '2,15p' "$0"
-	;;
+	awk 'NR > 1 && /^#/ { print; next } NR > 1 { exit }' "$0"
+;;
 -*)
 	echo "unknown option: $1" >&2
 	exit 2
