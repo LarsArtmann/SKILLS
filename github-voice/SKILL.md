@@ -84,6 +84,7 @@ it without re-verifying against the corpus.
    ```bash
    go run scripts/check-draft/check-draft.go --kind comment draft.md          # exit 1 = fix
    go run scripts/check-draft/check-draft.go --kind body-issue --ai-drafted draft.md
+   go run scripts/check-draft/check-draft.go --kind body-pr --ai-drafted draft.md
    # unsolicited AI-found filings add --unsolicited (banner required)
    # release posts / AI-assisted review reports: --kind announcement
    ```
