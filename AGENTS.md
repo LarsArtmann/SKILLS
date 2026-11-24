@@ -239,6 +239,8 @@ After editing the canonical kit, re-vendor into every consumer and verify:
 
 When a new skill needs HTML reports: (1) reference `./assets/html-report-kit/...` from its `SKILL.md`, (2) run `./scripts/sync-html-kit.sh` to populate the vendored copy — the script auto-discovers any `SKILL.md` that mentions `html-report-kit`.
 
+**Splice workflow (2026-11-24):** report authors write body fragments only — the span from the top-bar start line (`<div class="top-bar">`, 4-space indent) through the main close line (`</main>`, 6-space indent) — and inject them into the untouched template shell with `html-report-kit/assets/splice-report.sh` (`--extract` dumps the scaffold; `--self-test` includes a round-trip identity check per shipped template). The ~830-line stylesheet is never agent-authored, read, or copied, making token drift structurally impossible; manual template-copy remains the documented fallback when no shell exists. The span contract lives in the script header (`--help`) and the guide's Splice Workflow section — consumer skills link it, never restate it. The 2026-11-22 `splice_report.py` prototype was removed, restoring the no-Python state (§5.11).
+
 ### 5.10 Runtime Sync Model — Symlinks, Not Copies
 
 `/home/lars/projects/SKILLS/` is the **only** copy of these skills. The runtime dir `~/.agents/skills/` holds a **relative symlink** per repo skill (`../../projects/SKILLS/<skill>`), so an edit in the repo is live in every agent (Crush, Codex, Cursor, ...) instantly — there is no sync step and no drift is possible. `~/.config/crush/skills/<skill>` chains through `~/.agents/skills/` (double indirection resolves fine).
