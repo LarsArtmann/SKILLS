@@ -14,13 +14,16 @@
 //
 //	go run check-draft.go --list
 //	go run check-draft.go --self-test
+//	go run check-draft.go --reverify-banlist <corpus-dir>
 package main
 
 import (
 	"bufio"
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
@@ -327,6 +330,99 @@ func selfTest() int {
 	return 0
 }
 
+// reverifyBanlist: mechanical freshness check for the ban lists (the
+// docstring rule "do not add phrases on vibes — re-verify against the
+// corpus first"). Greps every FAIL and WARN phrase over the corpus
+// markdown tree, counting hits only in EXTERNAL-repo texts created
+// >= 2024 (the segment the ban list was calibrated on). Exit 0 = no FAIL
+// phrase hit, 1 = at least one FAIL phrase hit, 2 = usage/read error.
+func reverifyBanlist(corpusDir string) int {
+	var files []string
+	for _, sub := range []string{"bodies", "comments"} {
+		root := filepath.Join(corpusDir, "markdown", sub)
+		walkErr := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			if !d.IsDir() && strings.HasSuffix(path, ".md") {
+				files = append(files, path)
+			}
+			return nil
+		})
+		if walkErr != nil {
+			fmt.Fprintf(os.Stderr, "reverify: %v\n", walkErr)
+			return 2
+		}
+	}
+	failHits := map[string]int{}
+	warnHits := map[string]int{}
+	texts := 0
+	for _, path := range files {
+		raw, err := os.ReadFile(path)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "reverify: %v\n", err)
+			return 2
+		}
+		text := string(raw)
+		front, body := splitFrontmatter(text)
+		if frontField(front, "own_repo") != "false" {
+			continue
+		}
+		if len(frontField(front, "created")) < 4 || frontField(front, "created")[:4] < "2024" {
+			continue
+		}
+		texts++
+		low := strings.ToLower(body)
+		for _, p := range failPhrases {
+			if strings.Contains(low, p) {
+				failHits[p]++
+			}
+		}
+		for _, w := range warnPhrases {
+			if n := strings.Count(low, w.phrase); n > 0 {
+				warnHits[w.phrase] += n
+			}
+		}
+	}
+	fmt.Printf("scanned %d/%d external texts (own_repo: false, created >= 2024)\n", texts, len(files))
+	for _, p := range failPhrases {
+		if n := failHits[p]; n > 0 {
+			fmt.Printf("FAIL-PHRASE HIT: %q x%d\n", p, n)
+		}
+	}
+	for _, w := range warnPhrases {
+		if n := warnHits[w.phrase]; n > 0 {
+			fmt.Printf("warn-phrase hits (tolerated): %q x%d\n", w.phrase, n)
+		}
+	}
+	if len(failHits) > 0 {
+		fmt.Printf("== %d FAIL phrase(s) no longer 0-hit — do NOT extend the ban list; investigate before re-banning\n", len(failHits))
+		return 1
+	}
+	fmt.Println("== all FAIL phrases still 0-hit; ban list fresh")
+	return 0
+}
+
+// splitFrontmatter splits a corpus markdown file at the leading --- block.
+func splitFrontmatter(text string) (front, body string) {
+	rest := strings.TrimPrefix(text, "---\n")
+	idx := strings.Index(rest, "\n---\n")
+	if idx < 0 {
+		return "", text
+	}
+	return rest[:idx], rest[idx+len("\n---\n"):]
+}
+
+// frontField returns the trimmed value of "key: value" in frontmatter.
+func frontField(front, key string) string {
+	for _, line := range strings.Split(front, "\n") {
+		if v, ok := strings.CutPrefix(line, key+": "); ok {
+			return strings.TrimSpace(v)
+		}
+	}
+	return ""
+}
+
 const usageText = `usage: go run check-draft.go --kind <kind> [--ai-drafted] [--unsolicited] <file|'-'>
 
 kinds: body-issue | body-pr | comment | review | announcement
@@ -334,12 +430,13 @@ kinds: body-issue | body-pr | comment | review | announcement
   headers, 'Hi,' openers, and AI footers are allowed there
   --ai-drafted  bodies then REQUIRE an attribution footer
   --unsolicited bodies then REQUIRE the provenance banner up top
-other: --list (show all checks and phrase lists), --self-test
+other: --list (show all checks and phrase lists), --self-test,
+  --reverify-banlist <corpus-dir> (grep ban lists vs external >=2024 texts)
 `
 
 func main() {
 	var kind, file string
-	aiDrafted, unsolicited, list, selfTestFlag := false, false, false, false
+	aiDrafted, unsolicited, list, selfTestFlag, reverifyFlag := false, false, false, false, false
 	args := os.Args[1:]
 	for i := 0; i < len(args); i++ {
 		a := args[i]
@@ -352,6 +449,8 @@ func main() {
 			list = true
 		case "--self-test":
 			selfTestFlag = true
+		case "--reverify-banlist":
+			reverifyFlag = true
 		case "--kind":
 			if i+1 >= len(args) {
 				fmt.Fprintln(os.Stderr, "usage error: --kind needs a value")
@@ -371,6 +470,14 @@ func main() {
 
 	if selfTestFlag {
 		os.Exit(selfTest())
+	}
+
+	if reverifyFlag {
+		if file == "" {
+			fmt.Fprintln(os.Stderr, "usage error: --reverify-banlist needs a corpus dir (e.g. ~/.cache/github-voice-corpus)")
+			os.Exit(2)
+		}
+		os.Exit(reverifyBanlist(file))
 	}
 
 	if list {

@@ -220,12 +220,13 @@ new corpus — the profile is data-derived and must stay that way.
 
 ## Verification status
 
-| Claim                                                  | Status      | Source                                                                                                                                  |
-| ------------------------------------------------------ | ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Corpus size 11,492 items / 4,555 comments / 338 edited | ✅ verified | `~/.cache/github-voice-corpus/summary.json`, generated 2026-11-10 (authenticated Go-collector run: rest_calls 4,764, graphql_calls 138) |
-| REST `.../versions` endpoints unusable                 | ✅ verified | 404 on `issues/comments/{id}/versions` and `issues/{n}/versions`, 2026-09-12                                                            |
-| GraphQL `userContentEdits` returns revision snapshots  | ✅ verified | live query 2026-09-12 (`IC_kwDOOt6mSM8AAAABTopgeQ`); 338 edited items re-fetched by the 2026-11-10 Go run                               |
-| Search 1000-result cap requires date windowing         | ✅ verified | windowed retrieval captured all 9,759 authored issues + 718 PRs (2026-11-10 run)                                                        |
+| Claim                                                  | Status      | Source                                                                                                                                               |
+| ------------------------------------------------------ | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Corpus size 11,492 items / 4,555 comments / 338 edited | ✅ verified | `~/.cache/github-voice-corpus/summary.json`, generated 2026-11-10 (authenticated Go-collector run: rest_calls 4,764, graphql_calls 138)              |
+| REST `.../versions` endpoints unusable                 | ✅ verified | 404 on `issues/comments/{id}/versions` and `issues/{n}/versions`, 2026-09-12                                                                         |
+| GraphQL `userContentEdits` returns revision snapshots  | ✅ verified | live query 2026-09-12 (`IC_kwDOOt6mSM8AAAABTopgeQ`); 338 edited items re-fetched by the 2026-11-10 Go run                                            |
+| Search 1000-result cap requires date windowing         | ✅ verified | windowed retrieval captured all 9,759 authored issues + 718 PRs (2026-11-10 run)                                                                     |
+| `PullRequestReview` also exposes `userContentEdits`    | ✅ verified | GraphQL `__type` probe 2026-11-24; note the collector's edit check covers issues/PRs/issue-comments only — review-body edit history is not collected |
 
 API-mechanics findings (windowing, versions-404s, `userContentEdits`)
 are canonically documented in AGENTS.md §5.5; this table carries the
