@@ -143,7 +143,9 @@ extract_header() {
 }
 
 # http <method> <url> [json-body]: response body on stdout; exits 1 with the
-# API error detail on 4xx/5xx.
+# API error detail on 4xx/5xx. One attempt, no retries (unlike the
+# github-voice collectors): a transient 5xx aborts the run, so re-run the
+# command; staging is idempotent by subject.
 http() {
 	local method=$1 url=$2 body=${3:-} resp code
 	local -a args=(curl -sS --max-time 60 -X "$method" -H "Authorization: Bearer $TOKEN")

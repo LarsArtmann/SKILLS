@@ -139,6 +139,10 @@ safe_name() {
 	printf '%s' "${text:-unnamed}"
 }
 
+# http <method> <url>: response body on stdout; exits 1 with the API error
+# detail on 4xx/5xx. One attempt, no retries (same contract as
+# gmail_drafts.sh): a transient 5xx aborts the run, so re-run the command;
+# the export is read-only, so a re-run is always safe.
 http() {
 	local method=$1 url=$2 resp code
 	resp=$(curl -sS --max-time 60 -X "$method" -H "Authorization: Bearer $TOKEN" -w $'\n%{http_code}' "$url")
