@@ -9,7 +9,8 @@ description: >-
   "improve this skill", "this skill never activates", "split this SKILL.md",
   "write a good description". Owns the house canon: description-as-trigger,
   progressive disclosure, signal density (Principle 7 + the glossary), the
-  eleven session-learned patterns, eval-harness shapes, the Artifact decision
+  eleven session-learned patterns plus six adopted from humanlayer/skills
+  (2026-11-24), eval-harness shapes, the Artifact decision
   rule (HTML vs Markdown), and install-don't-wrap. For generic third-party
   skill-creation guidance (the upstream skill-creator skill) this is the
   repo-specific authority — prefer it inside this repo.
