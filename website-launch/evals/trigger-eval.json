@@ -1,0 +1,82 @@
+[
+  {
+    "query": "I want a docs site for my Go library go-etag. set it up on a subdomain of lars.software",
+    "should_trigger": true
+  },
+  {
+    "query": "scaffold a website for my new project from the Go template, then deploy it to firebase hosting",
+    "should_trigger": true
+  },
+  {
+    "query": "websitelaunch doctor says my templ version is off. how do I get the scaffold passing check?",
+    "should_trigger": true
+  },
+  {
+    "query": "set up firebase hosting and DNS for a custom domain for my project site, SSL keeps failing",
+    "should_trigger": true
+  },
+  {
+    "query": "rewrite the README of my library so it sells the project before launch",
+    "should_trigger": true
+  },
+  {
+    "query": "launch my CLI tool's website and make the launch sell the project with a demo video",
+    "should_trigger": true
+  },
+  {
+    "query": "I forked the website template. how do I adapt the identity block and regenerate the goldens?",
+    "should_trigger": true
+  },
+  {
+    "query": "point docs.mysite.dev at my firebase-hosted docs and get the certificate working",
+    "should_trigger": true
+  },
+  {
+    "query": "one of my old astro docs sites needs a maintenance pass, lastUpdated is broken on it",
+    "should_trigger": true
+  },
+  {
+    "query": "public presence overhaul for go-filewatcher: site, GitHub repo metadata, docs",
+    "should_trigger": true
+  },
+  {
+    "query": "the hero of my landing page looks generic. give it a distinctive type system and palette",
+    "should_trigger": false
+  },
+  {
+    "query": "make a 30 second promo video for my SaaS launch",
+    "should_trigger": false
+  },
+  {
+    "query": "rewrite the copy on my pricing page so it converts better",
+    "should_trigger": false
+  },
+  {
+    "query": "deploy my Next.js app to Vercel with preview deployments",
+    "should_trigger": false
+  },
+  {
+    "query": "my flake.nix vendorHash is stale and the nix build fails",
+    "should_trigger": false
+  },
+  {
+    "query": "plan a product hunt launch for my task automation tool next tuesday",
+    "should_trigger": false
+  },
+  {
+    "query": "are my FEATURES.md and TODO_LIST.md still accurate? audit the docs",
+    "should_trigger": false
+  },
+  {
+    "query": "nobody buys from my sales page. tear it down and tell me what to remove",
+    "should_trigger": false
+  },
+  {
+    "query": "cut a new release of my Go module and update the changelog",
+    "should_trigger": false
+  },
+  {
+    "query": "fix the typos and broken links in my README",
+    "should_trigger": false
+  }
+]

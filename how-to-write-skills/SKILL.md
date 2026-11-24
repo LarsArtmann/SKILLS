@@ -32,7 +32,7 @@ Crush follows the [Agent Skills](https://agentskills.io) open standard. A skill 
 - [Essential Skill Patterns](#essential-skill-patterns-learned-from-real-sessions) — session-learned patterns (triggers, disambiguation, condensing)
 - [Common Mistakes](#common-mistakes) — the failure modes every new skill author hits
 - [Testing Your Skill](#testing-your-skill) — how to verify a skill actually triggers and works
-- [Hard-Won Process Lessons](#hard-won-process-lessons) — war stories encoded as rules (from real sessions)
+- [Hard-Won Process Lessons](#hard-won-process-lessons) — the most-re-hit rules; full dated catalog in [./references/process-lessons.md](./references/process-lessons.md)
 - [Minimal Starter Template](#minimal-starter-template) — copy-paste starting point
 
 ## File Structure
@@ -423,7 +423,7 @@ Use the `skill-creator` skill for a full eval/benchmarking workflow with automat
 
 ### An eval is not done until it is on disk
 
-Every eval run must persist, immediately per run: `evals/iteration-N/eval-X/{config}/output.md` plus a `grading.json` with per-assertion pass/fail **and evidence quotes**. Outputs that live only in the session transcript are lost — an empty eval directory is invisible to git, and "we ran it" without artifacts is indistinguishable from "we didn't."
+Every eval run must persist, immediately per run: `evals/iteration-N/eval-X/{config}/output.md` plus a `grading.json` with per-assertion pass/fail **and evidence quotes**. Persist the RAW transcript at dispatch time (tee as the report arrives) — a summary written later is a weaker artifact (2026-11-23 06-59 report, d5/e2). Outputs that live only in the session transcript are lost — an empty eval directory is invisible to git, and "we ran it" without artifacts is indistinguishable from "we didn't."
 
 ### Doctrine changes carry a higher bar
 
@@ -431,17 +431,18 @@ A change to a skill's decision gates or doctrine (text that flips verdicts in fu
 
 ## Hard-Won Process Lessons
 
-Each of these cost a real session time; all are verified by a status report in `docs/status/`.
+Each of these cost a real session time; all are verified by a status report
+in `docs/status/`. The five below are the most re-hit; the full catalog —
+grouped by theme (evidence and exit codes, editing, scripts and gates, repo
+environment, extractions, carried rules) — lives in
+[./references/process-lessons.md](./references/process-lessons.md). Load it
+when a session touches its theme.
 
-- **The Questions tool has a ~200-char limit per choice description.** Full skill descriptions run 300-700 chars — they do not fit. When asked to review long-form text with the user, write the candidates to a markdown review file the user can browse (or execute and present a diff) instead of burning rounds fighting the tool. (2026-08-11 report, d1)
-- **Any new sentence about an external tool's behavior gets "verified: how/date" or gets hedged.** Written prose is claim-encoding too — see the chat-time gate in the `verify-external-claims` skill. Unverified CLI/limit/flag claims written into a reference while that very skill was loaded happened on 2026-08-21 and had to be softened later.
-- **When a reference documents external tools whose behavior was checked, put a verification-status table in the reference** (claim / status / source, dated). See `how-to-golang/references/performance-tuning.md` and `domain-types.md` for the pattern. It tells the next session what is verified fact vs. plausible prose.
-- **SKILL.md-level verification blocks follow one canonical format**: the `## Verification status` table (Claim / Status / Source, ✅/❌) defined in `verify-external-claims/SKILL.md` §5. Do not invent a rival prose format — `jj-fork-pr-workflow/SKILL.md` shows the aligned example. (2026-09-08 report: three skills had drifted into three different shapes.)
-- **The trash rule applies to scratch and temp directories too.** `rm -rf /tmp/foo` in test commands violates the same safety rule as anywhere else — and sessions keep repeating this mistake while testing safety tooling (2026-08-12 and 2026-08-21 reports). Use `trash`, always, no path exceptions.
-- **Under `set -o pipefail`, never put an early-exit consumer downstream of a chatty producer.** `fc-list | grep -qi "$font"` reported both fonts MISSING on a machine with 96 matches: `grep -q` exits at first match, the producer gets SIGPIPE (141), pipefail promotes it, and the `if` takes the else branch (2026-09-11). Capture the producer's output to a variable and parse that; `grep -m1` is safe only as the last pipeline stage or on a variable. Skills shipping `scripts/*.sh` should audit for this pattern.
-- **After a scripted edit of a file, diff before/after and account for EVERY removed line — then make a test exercise the code the edit could have deleted.** Three python string-slice insertions into a shell script silently deleted a four-line `xml_escape` assignment; everything "worked" until a title containing `&` would have produced invalid SVG (2026-09-11). Only shellcheck's SC2154 caught it — which is the second rule: run shellcheck/shfmt BEFORE declaring a shell change done, and quote exit codes, not output tails.
-- **A decision gate that recognizes exactly one payoff currency is a structural bias.** Any population that can never pay in that currency (a single-app monorepo has no second consumer to compose a seam) gets "no action" as the only possible verdict at any repo size — the gate silently becomes a keep-the-monolith rule wearing neutrality's clothes. Give decision gates at least two payoff currencies (go-modularize gate 2: pipe payoff OR committed-policy payoff), each with its own evidence bar and its own decay rule, and probe a changed gate with a fresh-session eval before shipping the doctrine. (2026-11-15 reports, d4/e1; go-modularize evals 4–5 are the persisted probe)
-- **Markdown tables: never leave a literal pipe inside a cell, and after every formatter run verify `git diff -w` shows only whitespace.** dprint truncated an evidence cell mid-row on 2026-10-30 — a loss caught only by luck — because unescaped `|` inside cell text re-aligns (or truncates) the table under format-on-save. Escape it (`\|`) or describe around it; then diff with `-w` so a formatter that ate CONTENT (not whitespace) is caught immediately, not weeks later. (2026-10-30 03-48 report, d2/e1)
+- **Quote exit codes from redirected runs, never from a pipeline tail.** `$?` after `cmd | head` is `head`'s exit, not the command's; end piped verifications with `> /tmp/x.log 2>&1; echo "exit=$?"` (2026-09-10 02-55 b3, 2026-11-23 02-36 d4).
+- **`rg -n` only.** In ripgrep `-r` is `--replace`, not recursive — one run fabricated a repo-wide rename, and a host hook now blocks the flag after 4+ strikes (2026-09-14, 2026-11-23 ×2).
+- **Run `date` before naming any timestamped file.** A report was named `19-02` on a 22:23 evening (2026-10-08 d4), and after midnight a session's "today" is stale (2026-11-24).
+- **Verify numbers before shipping them, including your own counts.** "7 consumer repos" shipped from `go.mod` greps that never checked `// indirect` (2026-10-08 d5).
+- **Commit multi-file rewrites before the auto-commit daemon's next sweep.** Its timer is minutes; heuristic bundles swallowed three of four intended detailed commits in one sweep segment (2026-11-23 06-09 e7, 06-59 d7; AGENTS §7/§5.12 own the daemon rules).
 
 ## Minimal Starter Template
 
