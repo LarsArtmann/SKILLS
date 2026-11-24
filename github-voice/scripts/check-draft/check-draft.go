@@ -107,7 +107,7 @@ var (
 	footerRe      = regexp.MustCompile(`(?i)(generated with|co-authored-by|assisted-by)`)
 	evidenceRe    = regexp.MustCompile(`(?mi)(\x60\x60\x60|\]\(|https?://|^\s*\|)`)
 
-	bannerBody        = `> \[!NOTE\]\s*\n>[^\n]*via Crush[^\n]*\n>(?:[^\n]*\n>)?[^\n]*MANUALLY REVIEWED`
+	bannerBody        = `> \[!NOTE\]\s*\n(?:>[^\n]*\n)*?>[^\n]*via Crush[^\n]*\n(?:>[^\n]*\n)*?>[^\n]*MANUALLY REVIEWED`
 	unsolicitedBanner = regexp.MustCompile(`(?i)` + bannerBody)
 	unsolicitedTop    = regexp.MustCompile(`(?i)\A\s*` + bannerBody)
 )
@@ -229,8 +229,10 @@ func check(kind, text string, aiDrafted, unsolicited bool) []finding {
 		}
 		if unsolicited && !unsolicitedTop.MatchString(text) {
 			findings = append(findings, finding{"FAIL", "missing provenance banner",
-				"unsolicited AI-found filings open with the \"> [!IMPORTANT] ... found and " +
-					"reported by ... MANUALLY REVIEWED\" banner (box unchecked)"})
+				"unsolicited AI-found filings open with the \"> [!NOTE] ... drafted " +
+					"by <model> via Crush ... MANUALLY REVIEWED\" banner (box ships " +
+					"unchecked; a ticked box from an already-reviewed filing still matches; " +
+					"hard-wrapped banner lines are accepted)"})
 		}
 		if !unsolicited && unsolicitedBanner.MatchString(text) {
 			findings = append(findings, finding{"WARN", "banner without --unsolicited",
@@ -241,10 +243,14 @@ func check(kind, text string, aiDrafted, unsolicited bool) []finding {
 	return findings
 }
 
-// selfTest asserts the provenance-banner regex accepts both banner layouts:
-// the compact 3-line form shipped by earlier filings and the documented
-// 4-line form from the SKILL.md quick rules (blank `>` line between). A
-// body without the banner must fail. Wording corrected 2026-10-03.
+// selfTest asserts the provenance-banner regex accepts the banner layouts
+// seen in the wild: the compact 3-line form, the documented 4-line form from
+// the SKILL.md quick rules (blank `>` line between), the hard-wrapped form
+// (long via-Crush sentence split across quoted lines; wrap-tolerant regex,
+// 2026-11-24), and the ticked-box form of an already-reviewed filing. A
+// body without the banner must fail, and a misplaced banner must fail the
+// top-position check while still matching the anywhere-WARN check.
+// Wording corrected 2026-10-03.
 func selfTest() int {
 	compact := "> [!NOTE]\n" +
 		"> This filing was drafted by GLM-5.3 via Crush from an AI-run investigation, not at my request.\n" +
@@ -256,6 +262,20 @@ func selfTest() int {
 		"> - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`\n\n" +
 		"## Symptom\n\n" + strings.Repeat("x", 300)
 	missing := "## Symptom\n\n" + strings.Repeat("x", 300)
+	wrapped := "> [!NOTE]\n" +
+		"> This filing was drafted by GLM-5.3 via Crush from an AI-run\n" +
+		"> investigation, not at my request.\n" +
+		">\n" +
+		"> - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`\n\n" +
+		"## Symptom\n\n" + strings.Repeat("x", 300)
+	checked := "> [!NOTE]\n" +
+		"> This filing was drafted by GLM-5.3 via Crush from an AI-run investigation, not at my request.\n" +
+		"> - [x] MANUALLY REVIEWED by `@Lars Artmann` at `[2026-10-05 09:12]`\n\n" +
+		"## Symptom\n\n" + strings.Repeat("x", 300)
+	misplaced := "## Symptom\n\n" + strings.Repeat("x", 300) + "\n\n" +
+		"> [!NOTE]\n" +
+		"> This filing was drafted by GLM-5.3 via Crush from an AI-run investigation, not at my request.\n" +
+		"> - [ ] MANUALLY REVIEWED by `@Lars Artmann` at `[<date-time>]`\n"
 	// future-work promise cases (owner mandate 2026-11-05)
 	promiseCases := []struct {
 		name string
@@ -276,7 +296,10 @@ func selfTest() int {
 	}{
 		{"compact 3-line banner accepted", compact, true},
 		{"documented 4-line banner accepted", documented, true},
+		{"hard-wrapped banner accepted", wrapped, true},
+		{"ticked-box (reviewed) banner accepted", checked, true},
 		{"missing banner rejected", missing, false},
+		{"misplaced banner rejected as top banner", misplaced, false},
 	}
 	failures := 0
 	for _, c := range cases {
@@ -292,6 +315,10 @@ func selfTest() int {
 			fmt.Printf("SELF-TEST FAIL: promise rule %q (hit=%v, want=%v)\n", c.name, got, c.hit)
 			failures++
 		}
+	}
+	if !unsolicitedBanner.MatchString(misplaced) {
+		fmt.Println("SELF-TEST FAIL: misplaced banner should still match the anywhere check")
+		failures++
 	}
 	if failures > 0 {
 		return 1
