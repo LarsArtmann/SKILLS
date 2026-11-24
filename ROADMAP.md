@@ -200,6 +200,13 @@ Ideas routed out of the archived 2026-08 status corpus during the
   question before large rewrites; empirical same-session check
 - website-launch: `scripts/` frame-check helper (video policy g1-g3
   already an Open Question)
+- Unattended-agent pairing (2026-11-24, from humanlayer/skills analysis):
+  one skill serves interactive AND scheduled CI runs via a bundled
+  Actions-workflow reference (their `narrow-react-prop-types` model:
+  skill = judgement, workflow YAML = shipping vehicle, hidden-marker
+  `/iterate` comment routing, PR-bounding gate, agent-memory file with
+  good/bad entry doctrine). Open questions: do we want unattended agents
+  on this repo's skills at all, and which skill would pilot it
 - Stack direction: go-branded-id as the canonical branded-ID dependency;
   `skills update -g` side-effect pin discipline (post-2026-11-03 lesson)
 - Infra smalls (routed 2026-11-10): SKILLS_LOCKFILE documentation in
