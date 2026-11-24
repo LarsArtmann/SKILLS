@@ -143,7 +143,7 @@ in-flight state (04:55 report claims) not re-checked.
 
 ---
 
-*Evidence trail for this turn: commits `637c709` (split-brain fixes),
+_Evidence trail for this turn: commits `637c709` (split-brain fixes),
 `010377a`, `1491c7f`, `1e1e2e1`, `5a5acc8`; gates as named in the scope
 line; scratch clone `/tmp/hl-skills` at `4d69d20` (public repo,
-recloneable, not a committed fixture).*
+recloneable, not a committed fixture)._
