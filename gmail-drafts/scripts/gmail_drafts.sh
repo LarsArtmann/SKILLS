@@ -373,6 +373,12 @@ for ((i = 0; i < n; i++)); do
 		echo "SKIP (subject exists as draft $match_id): $subject"
 		continue
 	fi
+	for field in cc bcc; do
+		ftype=$(jq -r ".[$i].$field? | type" "$SPEC")
+		if [[ $ftype != array && $ftype != null ]]; then
+			die "spec entry $i: '$field' must be an array (got $ftype), e.g. \"$field\": [\"a@b.c\"]"
+		fi
+	done
 	cc=$(jq -r ".[$i].cc // [] | join(\", \")" "$SPEC")
 	bcc=$(jq -r ".[$i].bcc // [] | join(\", \")" "$SPEC")
 	from=$(jq -r ".[$i].from // \"\"" "$SPEC")
