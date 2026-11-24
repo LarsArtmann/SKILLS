@@ -221,3 +221,19 @@ Two honest outcomes:
 Lesson: gate 5 is the cheapest gate and the one teams skip most, because the
 workspace masks it. A module that only builds inside `go.work` is not a
 module — it is a directory with a go.mod.
+
+### Variant: facade instead of contract module
+
+When exactly one repo will ever consume the thin surface — a monolith
+serving its own extraction, or a federation member pinning the library —
+extracting `config/` as a shared contract module is not the only move.
+Keep everything in ONE module behind `internal/` and re-export the needed
+symbols from a facade package at the root, pinned by a freeze test. The
+compiler wall plays the role the go.mod boundary played in outcome 1
+above; renames inside stay free; no new module, version pin, or release
+staircase to maintain.
+
+Pick the contract module when a SECOND consumer wants a different slice of
+the same code. Pick the facade while there is one consumer and the surface
+is small. Full pattern with the freeze-test mechanics:
+[./real-world-patterns.md](./real-world-patterns.md) §Curated Facade over internal/.

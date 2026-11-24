@@ -1,7 +1,9 @@
 # Real-World Patterns from Production Go Multi-Module Projects
 
 > Reference for [../SKILL.md](../SKILL.md). Patterns distilled from three production
-> Go multi-module projects (46, 18, and 26 modules respectively).
+> Go multi-module projects (46, 18, and 26 modules respectively) plus a
+> single-consumer facade case (profileagent: 3 modules, 62-symbol facade over
+> 206 internal files).
 
 ## Table of Contents
 
@@ -11,6 +13,7 @@
   - [Version Train: published multi-module libraries](#version-train-published-multi-module-libraries)
 - [Interface Extraction Patterns](#interface-extraction-patterns)
   - [Extraction without breakage: re-export shims and tombstone modules](#extraction-without-breakage-re-export-shims-and-tombstone-modules)
+- [Curated Facade over internal/](#curated-facade-over-internal)
 - [Test Infrastructure Patterns](#test-infrastructure-patterns)
 - [Error Architecture Patterns](#error-architecture-patterns)
 - [Layer Enforcement](#layer-enforcement)
@@ -347,6 +350,53 @@ full alias surface of the new package, every symbol carrying
 cannot silently drift, and deleted at the next major (v1.0.0) with a
 migration note in the release. Consumers keep compiling; the removal is a
 planned, loudly-announced forcing function — not a surprise.
+
+## Curated Facade over internal/
+
+When a published library has exactly one external consumer, the cheapest
+thin surface is not a contract module — it is a facade: one root package
+re-exporting curated symbols from `internal/`, everything else behind the
+compiler wall. The consumer imports exactly one path; renaming, moving,
+and splitting implementation packages cannot break anyone.
+
+**Shape** (from profileagent): the root package is three files — `doc.go`
+(the contract), `api.go` (type aliases + var/const bindings over
+`internal/...` packages), and a freeze test. 206 implementation files live
+under `internal/`; the facade exports 62 symbols.
+
+**The freeze test.** The compiler pins the `internal/` wall but nothing
+pins the facade itself. Close that gap mechanically: parse the facade's
+exported symbols and fail on any add or remove unless the oracle table in
+the test is updated in the same change. "Public API" turns from review
+memory into a visible diff. Aliases can still drift semantically — a
+freeze pins names, not behavior — so treat the test as a tripwire, not a
+proof.
+
+**Root-level exceptions are placement decisions.** Packages the consumer
+already imports directly (profileagent's `accounts/`, `signupassist/`)
+stay at root level: public by necessity, pinned by the freeze oracle, and
+folded behind the facade once the consumer migrates. Any OTHER package
+appearing outside `internal/` is an accidental API leak — the compiler
+will not flag it, only the placement review (or freeze test coverage)
+will.
+
+**Price the ceremony honestly.** Every public symbol costs an alias plus
+a freeze row in the same change. That friction is deliberate — but watch
+what it does to lazy paths: helpers get pushed into permanent `internal/`
+hiding (FM#14 in [../SKILL.md](../SKILL.md)). The countermeasure is
+interior gates, not a thinner wall: package-size ceilings, duplication
+checks, and lint running inside `internal/` at the same severity as the
+public surface.
+
+**When a facade stops being right.** One facade per consumer need. When a
+second consumer wants a different slice of the interior, widening the one
+facade builds a god-facade (FM#13) — extract a contract module
+(§Interface Extraction) and let each consumer import its own seam.
+
+Contrast with §Extraction without breakage above: re-export shims and
+tombstone modules are transitional compatibility surfaces slated for
+deletion; a facade is a permanent contract. Same alias mechanics, opposite
+lifecycle.
 
 ---
 
