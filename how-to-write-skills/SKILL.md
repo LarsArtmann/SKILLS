@@ -355,18 +355,21 @@ In SKILL.md, include decision logic:
 
 ## Proven Patterns from Real Skills
 
-| Pattern                                        | Example                                                                                 | Why It Works                                                |
-| ---------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| **Design thinking framework**                  | `frontend-design` — defines aesthetic analysis steps before coding                      | Forces the agent to think before acting                     |
-| **Glossary + domain language**                 | `architecture-deepening` — enforces precise terms                                       | Consistent output across sessions                           |
-| **Multi-phase process**                        | Explore → Present candidates → Iterate loop                                             | Structures complex tasks                                    |
-| **Rule files per topic**                       | `remotion-best-practices` — 30+ `rules/*.md` files                                      | Progressive disclosure; agent loads only what's needed      |
-| **Bundled scripts**                            | `skill-creator` — grading, benchmarking, packaging scripts                              | Eliminates redundant work on every invocation               |
-| **Pre-flight checks**                          | `website-launch` — verifies credentials before writing any files                        | Surfaces blockers early, prevents wasted work               |
-| **Common mistakes reference**                  | `docs-health` — `references/common-mistakes.md`                                         | Prevents the same errors from recurring across sessions     |
-| **Commit checkpoints**                         | `website-launch` — defines mandatory commit points per phase                            | Prevents catastrophic loss of uncommitted work              |
-| **Visual QA gate**                             | `website-launch` — verifies rendered output before declaring done                       | Catches broken layouts, missing assets, CSS errors          |
-| **Restraint / Verschlimmbesserung prevention** | `docs-health` ANNOTATE — "so what?" test, per-file judgment, non-destructive annotation | Stops well-intentioned batch edits from making things worse |
+| Pattern                                        | Example                                                                                                         | Why It Works                                                               |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| **Design thinking framework**                  | `frontend-design` — defines aesthetic analysis steps before coding                                              | Forces the agent to think before acting                                    |
+| **Glossary + domain language**                 | `architecture-deepening` — enforces precise terms                                                               | Consistent output across sessions                                          |
+| **Multi-phase process**                        | Explore → Present candidates → Iterate loop                                                                     | Structures complex tasks                                                   |
+| **Rule files per topic**                       | `remotion-best-practices` — 30+ `rules/*.md` files                                                              | Progressive disclosure; agent loads only what's needed                     |
+| **Bundled scripts**                            | `skill-creator` — grading, benchmarking, packaging scripts                                                      | Eliminates redundant work on every invocation                              |
+| **Pre-flight checks**                          | `website-launch` — verifies credentials before writing any files                                                | Surfaces blockers early, prevents wasted work                              |
+| **Common mistakes reference**                  | `docs-health` — `references/common-mistakes.md`                                                                 | Prevents the same errors from recurring across sessions                    |
+| **Commit checkpoints**                         | `website-launch` — defines mandatory commit points per phase                                                    | Prevents catastrophic loss of uncommitted work                             |
+| **Visual QA gate**                             | `website-launch` — verifies rendered output before declaring done                                               | Catches broken layouts, missing assets, CSS errors                         |
+| **Restraint / Verschlimmbesserung prevention** | `docs-health` ANNOTATE — "so what?" test, per-file judgment, non-destructive annotation                         | Stops well-intentioned batch edits from making things worse                |
+| **Phase-router entry point**                   | `rpi` (humanlayer) — 81-line SKILL.md dispatches to `references/<step>/process.md` per phase                    | Each phase loads alone; the entry point stays a router, not a procedure    |
+| **Output review gate**                         | `rpi` (humanlayer) — after writing a doc, re-read it against `references/prose.md` + `show-me.md`               | One cross-cutting quality pass on every artifact, no per-phase restatement |
+| **Smallest-view menu**                         | `show-me` (humanlayer) — one exemplar per output shape, "pick the smallest view that makes the key point clear" | Teaching by canonical example fights diagram bloat                         |
 
 ## Essential Skill Patterns (Learned from Real Sessions)
 
@@ -389,6 +392,12 @@ pattern when writing a skill where it applies.
 | 9  | Primary Failure Mode in the tl;dr        | Wrong first impression of what the skill fixes         |
 | 10 | Condense Without Eroding Teaching Weight | Cuts that delete the WHY behind a rule                 |
 | 11 | Disambiguate Competing Skills            | Trigger collisions between adjacent skills             |
+
+Six further patterns — adopted 2026-11-24 from humanlayer/skills
+(external provenance; quotes verified against clone `4d69d20`) — live in
+the same file as Patterns 12–17: completion criterion per step,
+final-answer templates, findings headers that assert what is true, slot
+budgets, one-question interviews, provenance frontmatter on artifacts.
 
 ## Common Mistakes
 

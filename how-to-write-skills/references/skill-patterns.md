@@ -7,9 +7,6 @@ These patterns were identified from analyzing 80+ session feedback files
 across the LarsArtmann project ecosystem. Each pattern prevents a class of
 recurring mistake. Include them in skills where applicable.
 
-across the LarsArtmann project ecosystem. Each pattern prevents a class of
-recurring mistake. Include them in skills where applicable.
-
 ### Pattern 1: Pre-flight Checks
 
 Skills that depend on external infrastructure (credentials, API keys,
@@ -271,3 +268,105 @@ Example pairs (as of 2026-08-04):
 
 ---
 
+## Patterns adopted from humanlayer/skills (2026-11-24)
+
+Patterns 12–17 were distilled from `github.com/humanlayer/skills` (MIT),
+not from our session feedback. Every quote below was re-read in a local
+clone at commit `4d69d20` before encoding (epistemic hygiene); the full
+repo analysis lives in
+`docs/status/2026-11-24_06-24_humanlayer-skills-analysis-adopted-patterns.md`.
+Adopt only where the trigger applies — they are additions to the canon,
+not replacements for Patterns 1–11.
+
+### Pattern 12: Completion criterion per step
+
+Every numbered step in a procedure ends with an observable condition, not
+just an action. A step is done when its criterion holds, not when its verbs
+have been performed — this makes procedures self-verifying without a
+separate test pass.
+
+```markdown
+2. Determine the repo's validation commands.
+   Completion criterion: you can name the repo's package manager, install
+   command, likely validation commands, and existing workflow conventions.
+```
+
+Source applies it to every step, including interview steps ("every
+placeholder … has a chosen value or an explicit default").
+
+### Pattern 13: Final-answer template
+
+When a skill's closing message matters (phase handoffs, reports, PR
+bodies), ship a literal template for it that includes the exact next
+command to run. This makes handoffs copy-pasteable and consistent across
+sessions — the next phase starts from a known script, not from whatever
+the agent improvised last time.
+
+```text
+The usual next step is a TDD to describe how to build it:
+
+    <invocation> make a TDD <task-directory>; flow: prd
+
+Run it here, after compaction, or in a new session.
+```
+
+Mechanics: a `*_final_answer*.md` template lives next to the phase's
+process; the last process step is "Respond using that final answer
+template."
+
+### Pattern 14: Findings headers assert what is true
+
+In research/review output, section headers state the finding, not the
+topic. "Workers restore pending jobs before accepting new work" carries
+the conclusion; "Worker startup" carries only a subject. A reader skimming
+headers alone walks away with the findings.
+
+> "Give findings sections headers that assert what is true. A reader should
+> understand the main findings by skimming the headers alone."
+
+Apply to status reports, review output, research docs — anywhere headers
+summarize sections.
+
+### Pattern 15: Slot budgets in templates
+
+When a skill fills a template, give each slot a size budget and an explicit
+empty value. Without a budget every slot balloons to whatever fits the
+context window; without an empty convention, absent content becomes
+fabricated content.
+
+> "Keep \*\*Why the change\*\* to exactly one sentence." /
+> "Write `- None.` when there are no special considerations."
+
+Works with the Artifact decision rule (Principle 6): budgets constrain
+human-read output; tool-parsed output needs exact schemas instead.
+
+### Pattern 16: One question per message, with a recommendation
+
+Interview-style skills ask exactly one question per turn, frame it as 2-3
+options with tradeoffs plus a recommendation, then wait. Multiple
+questions in one message get partial answers; a question without a
+recommendation delegates the analysis back to the user.
+
+> "Ask one question per message and wait for the answer."
+> "Present one product decision at a time with two or three options,
+> tradeoffs, and a recommendation."
+
+Pairs with stop-points: name the condition that must be answered before
+the next step runs.
+
+### Pattern 17: Provenance frontmatter on artifacts
+
+Reports pin the code state they were produced against. A claim of
+"verified at HEAD" goes stale the moment HEAD moves; a pinned sha keeps
+the report falsifiable afterwards.
+
+```yaml
+repos:
+  - identifier: <repo>
+    sha: <commit>
+```
+
+Source enforces the field pair structurally (their template test asserts
+every `_template.md` carries exactly `identifier` + `sha`). Our status
+reports pin the sha in the scope line instead of frontmatter — same rule,
+Markdown-native shape.
