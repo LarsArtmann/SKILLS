@@ -2,6 +2,43 @@
 
 The shared design specification for all skills that produce HTML reports.
 
+## Table of Contents
+
+- [Two Template Variants](#two-template-variants) — which template a report uses, and the consumer assignments
+  - [Consumer variant assignments](#consumer-variant-assignments)
+- [When to Use HTML vs Markdown](#when-to-use-html-vs-markdown)
+- [Design Requirements](#design-requirements) — typography note, optional scrollspy
+- [CSS Design Tokens](#css-design-tokens)
+  - [Unified semantic vocabulary (BOTH templates)](#unified-semantic-vocabulary-both-templates)
+  - [Bauhaus Dark primitives](#bauhaus-dark-primitives)
+  - [Bauhaus Light primitives](#bauhaus-light-primitives)
+  - [`color-mix()` replaces glow tokens](#color-mix-replaces-glow-tokens)
+  - [Backward-compatible aliases](#backward-compatible-aliases)
+- [Semantic Color Coding](#semantic-color-coding)
+- [CSP-safe authoring (no inline handlers, no style attributes)](#csp-safe-authoring-no-inline-handlers-no-style-attributes)
+- [Component Catalog](#component-catalog)
+  - [Layout with Sidebar TOC](#layout-with-sidebar-toc)
+  - [Hero](#hero)
+  - [Stat / Score Cards](#stat--score-cards)
+  - [General Cards](#general-cards)
+  - [Issue Cards](#issue-cards)
+  - [Badges](#badges)
+  - [Callouts](#callouts)
+  - [Tables](#tables)
+  - [Before/After Comparison](#beforeafter-comparison)
+  - [Numbered Steps](#numbered-steps)
+  - [Numbered Section Headings](#numbered-section-headings)
+  - [Strengths List](#strengths-list)
+  - [Dependency Tree / ASCII Diagram](#dependency-tree--ascii-diagram)
+  - [Inline Diagrams](#inline-diagrams)
+  - [Grid Layouts](#grid-layouts)
+  - [Footer](#footer)
+- [Syntax Highlighting](#syntax-highlighting)
+- [Series Discipline](#series-discipline)
+- [Report-Integrity Checklist](#report-integrity-checklist)
+- [Filename Convention](#filename-convention)
+- [Quick Start](#quick-start)
+
 ## Two Template Variants
 
 The kit ships two self-contained templates. Both use the **Bauhaus** design
