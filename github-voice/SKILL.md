@@ -22,16 +22,16 @@ metadata:
 # GitHub Voice
 
 Draft GitHub issues, PRs, comments, and reviews the way Lars actually
-writes them — derived from his measured 10,682-item GitHub corpus
+writes them — derived from his measured 11,492-item GitHub corpus
 (composition, sampling, and weighting: profile §1), not from generic
 "good issue" advice.
 
 **The #1 failure mode is applying one register everywhere.** Since
 2025 Lars writes GitHub in two registers, split by stakes (see profile
 §1 "The two registers"): **bodies** (issues/PR descriptions) are long,
-structured, evidence-heavy, often AI-drafted-then-cut (~1,050-char
+structured, evidence-heavy, often AI-drafted-then-cut (~1,390-char
 median, `## Problem`/tables, Crush footer when Crush drafted) — while
-**comments** are handwritten-terse (~85-char median, one point, no
+**comments** are handwritten-terse (~89-char median, one point, no
 headers, imperfect grammar, no footer). Polish a comment into assistant
 prose, or write a body as a casual one-liner, and it is wrong even when
 its content is right.
@@ -116,10 +116,10 @@ it without re-verifying against the corpus.
 
 ## Quick rules (full detail in the profile)
 
-- Two registers, split by stakes: bodies long+structured (median ~1,050
-  chars since 2025-09, 69% headers); comments terse and plain (median
-  ~85 chars, 5% headers, never a report).
-- Open with the problem, never with a greeting. 5 greetings in 372
+- Two registers, split by stakes: bodies long+structured (median ~1,390
+  chars since 2025-09, 76% headers); comments terse and plain (median
+  ~89 chars, 4% headers, never a report).
+- Open with the problem, never with a greeting. 5 greetings in 429
   external bodies.
 - `## Problem` / `## Why` / `## What changed` headers in bodies;
   backticked `file:line` evidence; versions pinned ("do v2.1.0,
@@ -190,7 +190,7 @@ it without re-verifying against the corpus.
 
 ## Fresh examples from the live corpus
 
-The distilled profile carries exemplars, but the full corpus (10k+
+The distilled profile carries exemplars, but the full corpus (11k+
 markdown files, refreshable) is at `~/.cache/github-voice-corpus/markdown/`.
 Sample it when you need more instances of a genre:
 
@@ -220,12 +220,16 @@ new corpus — the profile is data-derived and must stay that way.
 
 ## Verification status
 
-| Claim                                                  | Status      | Source                                                                                |
-| ------------------------------------------------------ | ----------- | ------------------------------------------------------------------------------------- |
-| Corpus size 10,682 items / 4,158 comments / 271 edited | ✅ verified | `~/.cache/github-voice-corpus/summary.json`, generated 2026-09-12                     |
-| REST `.../versions` endpoints unusable                 | ✅ verified | 404 on `issues/comments/{id}/versions` and `issues/{n}/versions`, 2026-09-12          |
-| GraphQL `userContentEdits` returns revision snapshots  | ✅ verified | live query against comment `IC_kwDOOt6mSM8AAAABTopgeQ` + 271 edited items, 2026-09-12 |
-| Search 1000-result cap requires date windowing         | ✅ verified | author query returns 9,397 total; windowed retrieval succeeded                        |
+| Claim                                                  | Status      | Source                                                                                                                                  |
+| ------------------------------------------------------ | ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Corpus size 11,492 items / 4,555 comments / 338 edited | ✅ verified | `~/.cache/github-voice-corpus/summary.json`, generated 2026-11-10 (authenticated Go-collector run: rest_calls 4,764, graphql_calls 138) |
+| REST `.../versions` endpoints unusable                 | ✅ verified | 404 on `issues/comments/{id}/versions` and `issues/{n}/versions`, 2026-09-12                                                            |
+| GraphQL `userContentEdits` returns revision snapshots  | ✅ verified | live query 2026-09-12 (`IC_kwDOOt6mSM8AAAABTopgeQ`); 338 edited items re-fetched by the 2026-11-10 Go run                               |
+| Search 1000-result cap requires date windowing         | ✅ verified | windowed retrieval captured all 9,759 authored issues + 718 PRs (2026-11-10 run)                                                        |
+
+API-mechanics findings (windowing, versions-404s, `userContentEdits`)
+are canonically documented in AGENTS.md §5.5; this table carries the
+verification evidence.
 
 ---
 

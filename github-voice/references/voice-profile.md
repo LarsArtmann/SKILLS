@@ -1,10 +1,11 @@
 # Lars's GitHub Voice Profile
 
-> Derived 2026-09-12 from a 10,682-item corpus (all 10,020 bodies Lars
-> authored since 2016 — 9,397 issues + 623 PRs, post-verified complete —
-> plus 4,158 comments: 979 external-repo comments in full, own-repo
-> follow-ups sampled to the most recent 1,500 of 6,508 threads — and 271
-> items with edit histories). Refresh: `scripts/collect-corpus/collect-corpus.go` then
+> Derived 2026-09-12 from a 10,682-item corpus; refreshed 2026-11-10 from an
+> 11,492-item authenticated re-collection (all 10,477 bodies Lars authored
+> since 2016 — 9,759 issues + 718 PRs — plus 4,555 comments, 1,047 of them
+> in external repos, and 338 items with edit histories). Counts cite the
+> 2026-11-10 `summary.json`; era medians regenerated 2026-11-24 with
+> `--since 2025-09-01`. Refresh: `scripts/collect-corpus/collect-corpus.go` then
 > `scripts/analyze-corpus/analyze-corpus.go`. Corpus lives at `~/.cache/github-voice-corpus/`.
 
 ## Table of contents
@@ -24,13 +25,16 @@
 
 ## 1. Corpus basis and weighting
 
-| Segment                      | n      | Median length                                | Notes                                                               |
-| ---------------------------- | ------ | -------------------------------------------- | ------------------------------------------------------------------- |
-| External bodies (issues+PRs) | 372    | 241 chars all-time / **1,062 since 2025-09** | **highest voice weight** — lengthening fast, see registers below    |
-| External comments            | 979    | 44 chars all-time / **85 since 2025-09**     | **highest voice weight** — stayed terse                             |
-| Own-repo bodies              | ~8,700 | 2,355 chars                                  | heavily structured; much is agent-templated — secondary weight only |
-| Own-repo comments            | 3,179  | 668 chars                                    | mix of natural voice and automation formulas                        |
-| Items with 2+ revisions      | 271    | —                                            | revision diffs analyzed separately                                  |
+All counts: corpus snapshot 2026-11-10; era medians: `--since 2025-09-01`,
+regenerated 2026-11-24.
+
+| Segment                      | n     | Median length                                | Notes                                                               |
+| ---------------------------- | ----- | -------------------------------------------- | ------------------------------------------------------------------- |
+| External bodies (issues+PRs) | 429   | 368 chars all-time / **1,391 since 2025-09** | **highest voice weight** — lengthening fast, see registers below    |
+| External comments            | 1,047 | 47 chars all-time / **89 since 2025-09**     | **highest voice weight** — stayed terse                             |
+| Own-repo bodies (non-agent)  | 9,076 | 2,316 chars                                  | heavily structured; much is agent-templated — secondary weight only |
+| Own-repo comments            | 3,508 | 535 chars                                    | mix of natural voice and automation formulas                        |
+| Items with edit history      | 338   | —                                            | revision diffs analyzed separately                                  |
 
 Era-split medians are reproducible: `scripts/analyze-corpus/analyze-corpus.go --since
 2025-09-01` → `analysis-since-*.json` in the corpus dir.
@@ -42,10 +46,10 @@ and comments have diverged into two registers, split by stakes.**
 
 |                               | External bodies                     | External comments                      |
 | ----------------------------- | ----------------------------------- | -------------------------------------- |
-| Median length (since 2025-09) | **1,062 chars** (was 173 in 2025H1) | **85 chars** (stable for years)        |
-| Headers (`## X`)              | **69%** (was 36%)                   | 5% — never                             |
-| Emoji                         | 23%                                 | 9%                                     |
-| Questions                     | 14%                                 | 28% (rising: he asks maintainers more) |
+| Median length (since 2025-09) | **1,391 chars** (was 173 in 2025H1) | **89 chars** (stable for years)        |
+| Headers (`## X`)              | **76%** (was 36%)                   | 4% — never                             |
+| Emoji                         | 45%                                 | 8%                                     |
+| Questions                     | 13%                                 | 25% (rising: he asks maintainers more) |
 | AI attribution footer         | **~19-20%** since 2025H2 (was 0%)   | ~0-1% — never on one-liners            |
 
 What happened: AI drafting got adopted for **bodies** (long, structured,
@@ -72,10 +76,10 @@ criteria" sections) and are **not** his natural voice.
    "Measured on an 8-month-old 2.1 GB crush.db: 10,945 user messages /
    23 MB of `parts` parsed on every sessionless launch."
 2. **Terse in comments, structured in bodies.** Comments: say the thing,
-   stop (median 85 chars). Bodies: since 2025-09 the median is ~1,050
-   chars with headers and tables — that length is his, not padding. No
-   "I hope this helps", no "Please let me know if", no sign-offs — in
-   either register.
+   stop (median 89 chars since 2025-09). Bodies: since 2025-09 the median
+   is ~1,390 chars with headers and tables — that length is his, not
+   padding. No "I hope this helps", no "Please let me know if", no
+   sign-offs — in either register.
 3. **Imperfect grammar stays.** Real examples that shipped and stayed:
    "Does anybody this care about this PR?", "Did you tested it?",
    "that's should be keeped", "between to two modes", "I just flew over
@@ -148,7 +152,7 @@ Skeleton (recent, representative):
 ```
 
 - Opens with `## Problem` or a one-line summary, never with "Hi" or
-  "Thanks for the great project" (5 greetings in 372 external bodies).
+  "Thanks for the great project" (5 greetings in 429 external bodies).
   Unsolicited AI-found filings put the habit-10 provenance banner
   above `## Problem` — banner first, then the normal skeleton.
 - **Versions pinned early**: "do v2.1.0 (also re-verified on v2.0.0),
@@ -159,9 +163,9 @@ Skeleton (recent, representative):
   blocks when the bug is a transformation.
 - States verification provenance: "verified on v1.0.1, same for every
   tag", "fails identically at v1.6.0 and v1.8.0 — NOT a regression".
-- Length: the 2026 norm is ~800–1,400 chars of prose plus code (median
-  1,062 since 2025-09; it was ~170 in early 2025). Long and structured
-  is correct; padding and restating the same point is not.
+- Length: median 1,391 chars since 2025-09 (p10/p90: 231/3,526; corpus
+  2026-11-10); it was ~170 in early 2025. Long and structured is
+  correct; padding and restating the same point is not.
 
 Real opener: `` `loadPromptHistory` runs at UI init, on every session
 switch, and after every message send (`internal/ui/model/ui.go:521,795,1313`). ``
@@ -201,7 +205,8 @@ switch, and after every message send (`internal/ui/model/ui.go:521,795,1313`). `
 
 ## 6. External comment / reply
 
-The dominant genre. Median 44 chars. Buckets with real examples:
+The dominant genre. Median 47 chars all-time, 89 since 2025-09. Buckets
+with real examples:
 
 | Intent           | Example                                                                                                                |
 | ---------------- | ---------------------------------------------------------------------------------------------------------------------- |
@@ -366,8 +371,8 @@ world changed → name the one specific valuable part → thank.
 - **2026 — the pullback + two registers:** own-repo mass-filing
   collapsed (99 issues in 2026H2, emoji 2%, comments back to median
   ~420 chars — human scale). External bodies settled long+structured
-  (median ~1,062); external comments stayed terse. **This is the voice
-  to reproduce.**
+  (median ~1,391 since 2025-09); external comments stayed terse. **This
+  is the voice to reproduce.**
 - The corpus keeps all eras; always check `created:` in frontmatter
   before imitating an example, and prefer `--since 2025-09` stats for
   length expectations.
