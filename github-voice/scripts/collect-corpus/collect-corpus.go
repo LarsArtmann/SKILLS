@@ -6,7 +6,7 @@
 //
 //	[--own-owners LarsArtmann,Artmann-Games] [--year-start 2016]
 //	[--own-followup-sample 1500] [--own-edit-bodies 800]
-//	[--skip-discover] [--skip-hydrate]
+//	[--skip-discover] [--skip-hydrate] [-self-test]
 //
 // Requires: gh CLI, authenticated. ~45 min for a full run (rate-limit aware).
 //
@@ -1017,6 +1017,98 @@ func expandHome(path string) (string, error) {
 	return path, nil
 }
 
+// selfTest exercises the offline paths only: the resume loaders
+// (--skip-discover/--skip-hydrate -> loadItems/loadComments) against
+// fixtures written to a temp dir, pyJSONString astral-char escaping
+// (title above U+FFFF must become a surrogate pair, ensure_ascii), and
+// the rendered markdown frontmatter. No network, no gh calls.
+func selfTest() int {
+	failures := 0
+	check := func(name string, ok bool) {
+		if !ok {
+			fmt.Printf("SELF-TEST FAIL: %s\n", name)
+			failures++
+		}
+	}
+
+	title := "T\u00edtulo \U0001F680 \u00fc"
+	enc := pyJSONString(title)
+	check("pyJSONString escapes astral char as surrogate pair",
+		strings.Contains(enc, `\ud83d\ude80`))
+	ascii := true
+	for i := 0; i < len(enc); i++ {
+		if enc[i] > 0x7e {
+			ascii = false
+		}
+	}
+	check("pyJSONString is ensure_ascii (all bytes <= 0x7e)", ascii)
+	var roundTrip string
+	err := json.Unmarshal([]byte(enc), &roundTrip)
+	check("pyJSONString output round-trips through encoding/json",
+		err == nil && roundTrip == title)
+
+	dir, mkErr := os.MkdirTemp("", "collect-corpus-selftest")
+	if mkErr != nil {
+		fmt.Printf("SELF-TEST FAIL: temp dir: %v\n", mkErr)
+		return 1
+	}
+	defer os.RemoveAll(dir)
+	if err := os.MkdirAll(filepath.Join(dir, "raw"), 0o755); err != nil {
+		fmt.Printf("SELF-TEST FAIL: raw dir: %v\n", err)
+		return 1
+	}
+	item := &ghItem{
+		URL: "https://github.com/LarsArtmann/foo/issues/1", Repo: "LarsArtmann/foo",
+		Number: 1, Title: title, Body: "body text", Created: "2025-03-01T10:00:00Z",
+		State: "open", Author: "LarsArtmann", Reactions: 3, CommentsTotal: 1,
+		Authored: true, Commented: true,
+	}
+	comment := &ghComment{
+		Kind: "issue_comment", NodeID: "IC_x",
+		HTMLURL: "https://github.com/LarsArtmann/foo/issues/1#issuecomment-1",
+		Body:    "a comment", Created: "2025-03-02T10:00:00Z", Reactions: 1,
+		ParentURL: item.URL,
+	}
+	c := &collector{
+		out: dir, ownOwners: map[string]bool{"LarsArtmann": true},
+		items: map[string]*ghItem{}, edits: map[string]*editInfo{},
+	}
+	if err := c.saveJSON("items.json", []*ghItem{item}); err != nil {
+		fmt.Printf("SELF-TEST FAIL: write items fixture: %v\n", err)
+		return 1
+	}
+	if err := c.saveJSON("comments.json", []*ghComment{comment}); err != nil {
+		fmt.Printf("SELF-TEST FAIL: write comments fixture: %v\n", err)
+		return 1
+	}
+	if err := c.loadItems(); err != nil {
+		fmt.Printf("SELF-TEST FAIL: loadItems: %v\n", err)
+		return 1
+	}
+	if err := c.loadComments(); err != nil {
+		fmt.Printf("SELF-TEST FAIL: loadComments: %v\n", err)
+		return 1
+	}
+	check("loadItems restores item map and order",
+		len(c.items) == 1 && len(c.itemOrder) == 1 && c.itemOrder[0] == item.URL)
+	check("loadComments restores comment and links parent",
+		len(c.comments) == 1 && c.comments[0].Parent != nil &&
+			c.comments[0].Parent.Title == title)
+	if err := c.render(); err != nil {
+		fmt.Printf("SELF-TEST FAIL: render: %v\n", err)
+		return 1
+	}
+	md, rdErr := os.ReadFile(filepath.Join(dir, "markdown", "bodies", "LarsArtmann--foo--1.md"))
+	check("rendered frontmatter carries the escaped astral title",
+		rdErr == nil && strings.Contains(string(md), `\ud83d\ude80`))
+
+	if failures > 0 {
+		return 1
+	}
+	fmt.Println("SELF-TEST PASSED: resume-load fixtures + title escaping")
+	return 0
+}
+
 func main() {
 	user := flag.String("user", "LarsArtmann", "GitHub user")
 	out := flag.String("out", "~/.cache/github-voice-corpus", "output directory")
@@ -1026,7 +1118,12 @@ func main() {
 	ownEditBodies := flag.Int("own-edit-bodies", 800, "own-repo bodies to check for edits")
 	skipDiscover := flag.Bool("skip-discover", false, "reload raw/items.json from a previous run")
 	skipHydrate := flag.Bool("skip-hydrate", false, "reload raw/comments.json from a previous run")
+	selfTestFlag := flag.Bool("self-test", false, "offline self-test: resume loaders + title escaping")
 	flag.Parse()
+
+	if *selfTestFlag {
+		os.Exit(selfTest())
+	}
 
 	dir, err := expandHome(*out)
 	if err != nil {
