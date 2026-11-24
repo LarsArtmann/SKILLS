@@ -66,7 +66,7 @@ case "${1:-}" in
 	;;
 "")
 	awk 'NR > 1 && /^#/ { sub(/^# ?/, ""); print; next } NR > 1 { exit }' "${BASH_SOURCE[0]}"
-;;
+	;;
 --)
 	shift
 	libs="$(build_libs)"

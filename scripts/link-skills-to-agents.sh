@@ -162,7 +162,7 @@ if [[ "${1:-}" == "--list" ]]; then
 			[[ -n "$lock_name" && -v "repo_skill_names[$lock_name]" ]] && overlap=$((overlap + 1))
 		done
 		echo "Lockfile ($lockfile):"
-		echo "  $(( ${#lock_names[@]} - overlap )) third-party skills tracked"
+		echo "  $((${#lock_names[@]} - overlap)) third-party skills tracked"
 		if ((overlap > 0)); then
 			echo "  $overlap OVERLAP with repo skills (rule-2 hazard: 'skills update' would rm -rf those symlinks)"
 		fi
