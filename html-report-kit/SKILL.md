@@ -63,15 +63,26 @@ The `Artifact` decision rule (see `how-to-write-skills/SKILL.md`):
 
 1. Read [./references/html-output-guide.md](./references/html-output-guide.md) for the full
    design spec: required sections, color tokens, component catalog, syntax highlighting —
-   including the two **Series Discipline** rules: read prior reports in the target series
-   before writing, and copy the template file, never transcribe its CSS.
+   including the **Series Discipline** rules: read prior reports in the target series
+   before writing, and never transcribe template CSS.
 2. Choose a starting template:
    - Dashboard-style reports → [./assets/report-template.html](./assets/report-template.html)
    - Editorial/review-style reports → [./assets/report-template-editorial.html](./assets/report-template-editorial.html)
-3. Look at [./references/example-editorial-report.html](./references/example-editorial-report.html) for a fully rendered example.
-4. Strip components you don't need; keep the CSS design tokens intact.
-5. Write report-specific content into the body.
-6. Output to the skill's designated path (typically `docs/<category>/<date>_<slug>.html`).
+3. **Write only a body fragment; splice it into the untouched template shell** with
+   [./assets/splice-report.sh](./assets/splice-report.sh):
+
+   ```bash
+   ./assets/splice-report.sh --extract ./assets/report-template.html > body.html
+   #   edit body.html: top-bar, sidebar TOC, <main> content, footer
+   ./assets/splice-report.sh ./assets/report-template.html docs/status/<date>_<slug>.html body.html
+   ```
+
+   The fragment spans the top-bar line through `</main>` (exact contract:
+   [Splice Workflow](./references/html-output-guide.md#splice-workflow) in the guide);
+   the shell carries the ~830-line stylesheet, so agent-authored token drift is
+   impossible by construction. body.html is scratch — delete it after splicing.
+4. Look at [./references/example-editorial-report.html](./references/example-editorial-report.html) for a fully rendered example.
+5. Output to the skill's designated path (typically `docs/<category>/<date>_<slug>.html`).
 
 ## Design Principles
 

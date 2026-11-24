@@ -35,6 +35,12 @@
 #
 # Fails loudly (exit 1) whenever an anchor is missing or non-unique, the span
 # is inverted, or the fragment violates the contract — never guess spans.
+#
+# Implementation note: anchor validation happens in resolve_span in the CALLER
+# context, never inside a $(...) substitution — a die() inside command
+# substitution only exits the subshell, and under an if-condition (errexit
+# suspended) the caller would continue with empty line numbers (hit during
+# self-test development 2026-11-24).
 
 set -euo pipefail
 
@@ -48,30 +54,33 @@ die() {
 	exit 1
 }
 
-# Line number of the single whole-line match of $1 in $2; dies unless unique.
-anchor_line() {
-	local anchor="$1" file="$2" matches line
-	matches="$(grep -c -F -x -- "$anchor" "$file" || true)"
-	[[ "$matches" == "1" ]] ||
-		die "anchor not unique/missing in $file (expected 1, found ${matches:-0}): [$anchor]"
-	line="$(grep -n -F -x -- "$anchor" "$file" | cut -d: -f1)"
-	echo "$line"
-}
-
 require_file() {
 	[[ -f "$1" ]] || die "not a file: $1"
+}
+
+# Resolve the span for $1 into globals span_start/span_end, validating anchors
+# in caller context so die() terminates the script, not a subshell.
+resolve_span() {
+	local template="$1" matches
+	matches="$(grep -c -F -x -- "$START_ANCHOR" "$template" || true)"
+	[[ "$matches" == "1" ]] ||
+		die "start anchor not unique/missing in $template (expected 1, found ${matches:-0}): [$START_ANCHOR]"
+	matches="$(grep -c -F -x -- "$END_ANCHOR" "$template" || true)"
+	[[ "$matches" == "1" ]] ||
+		die "end anchor not unique/missing in $template (expected 1, found ${matches:-0}): [$END_ANCHOR]"
+	span_start="$(grep -n -F -x -- "$START_ANCHOR" "$template" | cut -d: -f1)"
+	span_end="$(grep -n -F -x -- "$END_ANCHOR" "$template" | cut -d: -f1)"
+	[[ "$span_start" =~ ^[0-9]+$ && "$span_end" =~ ^[0-9]+$ ]] ||
+		die "unresolvable span in $template"
+	[[ "$span_start" -lt "$span_end" ]] ||
+		die "inverted span in $template: start line $span_start >= end line $span_end"
 }
 
 splice() {
 	local template="$1" output="$2" body="$3"
 	require_file "$template"
 	require_file "$body"
-
-	local start end
-	start="$(anchor_line "$START_ANCHOR" "$template")"
-	end="$(anchor_line "$END_ANCHOR" "$template")"
-	[[ "$start" -lt "$end" ]] ||
-		die "inverted span in $template: start line $start >= end line $end"
+	resolve_span "$template"
 
 	local last_line
 	last_line="$(grep -v '^[[:space:]]*$' "$body" | tail -n 1)"
@@ -79,28 +88,22 @@ splice() {
 		die "body fragment must end on a line exactly matching [$END_ANCHOR] (last non-blank line: [$last_line])"
 
 	{
-		head -n "$((start - 1))" "$template"
+		head -n "$((span_start - 1))" "$template"
 		cat "$body"
-		tail -n "+$((end + 1))" "$template"
+		tail -n "+$((span_end + 1))" "$template"
 	} >"$output"
-	echo "spliced $template -> $output ($(wc -c <"$body" | tr -d ' ') body bytes, shell lines 1-$((start - 1)) + $((end + 1))-$(wc -l <"$template" | tr -d ' '))"
+	echo "spliced $template -> $output ($(wc -c <"$body" | tr -d ' ') body bytes; shell lines 1-$((span_start - 1)) and $((span_end + 1))-$(wc -l <"$template" | tr -d ' ') untouched)"
 }
 
 extract() {
 	local template="$1"
 	require_file "$template"
-
-	local start end
-	start="$(anchor_line "$START_ANCHOR" "$template")"
-	end="$(anchor_line "$END_ANCHOR" "$template")"
-	[[ "$start" -lt "$end" ]] ||
-		die "inverted span in $template: start line $start >= end line $end"
-
-	sed -n "${start},${end}p" "$template"
+	resolve_span "$template"
+	sed -n "${span_start},${span_end}p" "$template"
 }
 
 self_test() {
-	local tmp fixture_tpl body out
+	local tmp fixture_tpl body out expected broken badbody
 	tmp="$(mktemp -d)"
 	trap 'rm -rf "$tmp"' RETURN
 
@@ -130,7 +133,7 @@ EOF
 
 	out="$tmp/out.html"
 	splice "$fixture_tpl" "$out" "$body" >/dev/null
-	local expected="$tmp/expected.html"
+	expected="$tmp/expected.html"
 	cat >"$expected" <<EOF
 <!doctype html>
 <html>
@@ -146,30 +149,32 @@ $END_ANCHOR
   </body>
 </html>
 EOF
-	cmp -s "$out" "$expected" || die "fixture: spliced output != expected concatenation"
+	cmp -s "$out" "$expected" || die "fixture: spliced output != expected head+body+tail concatenation"
 
-	if extract "$fixture_tpl" | cmp -s - <(sed -n '7,9p' "$fixture_tpl"); then
-		:
-	else
+	extract "$fixture_tpl" | cmp -s - <(sed -n '7,9p' "$fixture_tpl") ||
 		die "fixture: --extract did not print exactly the span lines"
-	fi
 
-	local broken="$tmp/broken.html"
+	# Failure paths run in subshells: a die() inside them must terminate only
+	# the subshell, surfacing as a non-zero if-condition here.
+	broken="$tmp/broken.html"
 	sed 's/top-bar/no-bar/' "$fixture_tpl" >"$broken"
-	if splice "$broken" "$tmp/x.html" "$body" >/dev/null 2>&1; then
+	if (splice "$broken" "$tmp/x.html" "$body") >/dev/null 2>&1; then
 		die "fixture: splice must fail on missing start anchor"
 	fi
 	sed "s|$END_ANCHOR|      </main>\\n      </main>|" "$fixture_tpl" >"$broken"
-	if splice "$broken" "$tmp/x.html" "$body" >/dev/null 2>&1; then
+	if (splice "$broken" "$tmp/x.html" "$body") >/dev/null 2>&1; then
 		die "fixture: splice must fail on duplicate end anchor"
 	fi
-	local badbody="$tmp/badbody.html"
-	echo "      <p>no closing main</p>" >"$badbody"
-	if splice "$fixture_tpl" "$tmp/x.html" "$badbody" >/dev/null 2>&1; then
-		die "fixture: splice must fail when fragment does not close </main>"
+	badbody="$tmp/badbody.html"
+	echo "      <p>fragment that never closes main</p>" >"$badbody"
+	if (splice "$fixture_tpl" "$tmp/x.html" "$badbody") >/dev/null 2>&1; then
+		die "fixture: splice must fail when fragment does not end on </main>"
 	fi
 
-	local template roundtrip
+	# Round-trip identity against every shipped template: extract the span,
+	# splice it back unmodified, require byte-identical output. Guards the
+	# anchors against template drift.
+	local template roundtrip checked=0
 	for template in "$script_dir"/report-template*.html; do
 		[[ -f "$template" ]] || continue
 		roundtrip="$tmp/roundtrip.html"
@@ -177,9 +182,12 @@ EOF
 		splice "$template" "$roundtrip" "$body" >/dev/null
 		cmp -s "$template" "$roundtrip" ||
 			die "round-trip not byte-identical for $template — anchors drifted from the template scaffold"
+		checked=$((checked + 1))
 	done
+	[[ "$checked" -gt 0 ]] ||
+		die "no report-template*.html found in $script_dir — round-trip not verified"
 
-	echo "self-test OK: fixture splice/extract/failures + round-trip identity for $(ls "$script_dir"/report-template*.html | wc -l | tr -d ' ') template(s)"
+	echo "self-test OK: fixture splice/extract/failure paths + round-trip identity for $checked template(s)"
 }
 
 case "${1:-}" in
@@ -192,7 +200,7 @@ case "${1:-}" in
 	self_test
 	;;
 -h | --help | "")
-	sed -n '2,40p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+	sed -n '2,42p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
 	;;
 *)
 	[[ $# -eq 3 ]] || die "usage: $0 <template.html> <output.html> <body.html>"
