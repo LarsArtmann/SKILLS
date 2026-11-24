@@ -29,6 +29,13 @@ the reader has no way to tell a fresh command output from a remembered
 claim. Naming the gaps is the difference between a status report and a
 sales pitch.
 
+**Pin the commit the report describes.** End the scope line with the
+repo's `git rev-parse --short HEAD` (run at report time, quoted verbatim).
+A "verified" claim goes stale the moment HEAD moves; a pinned sha keeps
+the report falsifiable afterwards (adopted 2026-11-24 from humanlayer's
+`repos: [{identifier, sha}]` artifact convention — Pattern 17 in
+`how-to-write-skills`).
+
 For what each section should contain and common pitfalls, see
 [./references/section-quality-guide.md](./references/section-quality-guide.md).
 

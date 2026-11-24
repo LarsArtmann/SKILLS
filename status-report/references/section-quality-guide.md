@@ -24,7 +24,8 @@ is what it looks like when done well). Two halves, both mandatory:
 
 - **Verified here.** Name the artifact, not the impression: the command and
   its exit status, the run id, the file and the lines read, the probe and
-  its output. "CI is green" is not evidence; "`ci.yml` green on `9343193`,
+  its output, and the pinned `git rev-parse --short HEAD` the report
+  describes. "CI is green" is not evidence; "`ci.yml` green on `9343193`,
   read back from the run list at 07:10" is.
 - **NOT verified here.** Say what you did not check and why (blocked on a
   credential, out of scope, a remembered command rather than a fresh one).
