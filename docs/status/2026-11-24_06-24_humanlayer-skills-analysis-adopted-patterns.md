@@ -106,6 +106,23 @@ rg -n "Completion criterion" /tmp/hl-skills/plugins/build-iterated-agentic-loop
 ./scripts/check-skills.sh; echo "exit=$?"
 ```
 
+## Gate verdicts, including two reds this session did NOT cause
+
+Full battery at session end: `check-skills.sh` plain **exit 0**,
+`--selftest` **exit 0**, `check-shell.sh` **exit 0**, docs-gates
+freshness/annotate/stub/citations/stamps/vocabulary/agents all **PASS**
+over this session's files (my report: "no §f section — nothing to
+check"). Two docs-gates reds are the standing sweep's in-flight state,
+left to the session that owns it: **audit-all** — 7 unharvested items,
+every one from 2026-11-15 → 2026-11-23 sweep reports (none from this
+session's report; my one open flag — the website-launch FEATURES
+mismatch — carries no harvestable command tokens and is named above for
+the owner); **cadence ARCHIVE-OVERDUE** — 22 unarchived reports against
+a threshold of 15, oldest 21 days; it was already overdue at 21 before
+this report made it 22, and archiving a same-day report is not the
+ritual's intent. Verify with `rg -n FAIL` over a `docs-gates -- run .`
+log and confirm every UNHARVESTED cites a pre-2026-11-24 report.
+
 Encoded quotes trace to: `build-iterated-agentic-loop/SKILL.md:32,60,85,104`,
 `rpi/.../create-research/process.md:46`, `show-me/SKILL.md:7`,
 `rpi/.../create-prd/process.md:29,33`, `visual-pr/SKILL.md:29-30`,
