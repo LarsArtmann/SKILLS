@@ -321,6 +321,36 @@ batch orchestration on top:
     the index README records the supersession relationship. Corrections
     that live only in TODO_LIST rows leave the report itself lying —
     the report is what the next reader opens first.
+14. **Ask on the FIRST provider/permission failure (2026-11-25,
+    go-version-auto-configure utilization run).** A provider error,
+    rate-limit cascade, or a tool-permission wall (headless browser,
+    sudo) gets ONE ask to the user at first contact — not a workaround
+    spiral. The 2026-11-23 run burned a full screenshot phase on a
+    missing-firefox permission it could have asked about in minute one;
+    the answer (add chromium, mark the tool safe, or park the phase)
+    takes the user seconds and unblocks the whole deliverable.
+15. **Orchestrator semantic spot-check quota (2026-11-25, M17
+    closeout).** Beyond the sweep's existence checks, the orchestrator
+    personally re-reads at least 5 random cited regions per report
+    (the lines must SAY what the prose claims, not merely exist) and
+    records the verdicts in a dated appendix. The 2026-11-24 closeout
+    re-read 10 highest-stakes cites and found zero errata — the quota
+    proves the corpus, and the recorded verdicts make the proof
+    auditable.
+16. **Format canonicity declared, not discovered (2026-11-25, M17).**
+    When groups ship different table shapes (four-column inventory vs
+    compact grade), the brief declares ONE canonical format per verdict
+    class UP FRONT — one sentence in the brief beats an index legend
+    written after the divergence is discovered. Same information,
+    different shape, is a spec bug in the brief, not a sub-agent
+    failure.
+17. **Screenshot/render preflight before HTML deliverables (2026-11-25,
+    M19).** Before generating a report whose ship bar includes a
+    rendered screenshot, verify the render path EXISTS (headless
+    chromium/firefox in PATH, view permission granted); if not, ask the
+    owner first (item 14) or ship the HTML with the screenshot phase
+    explicitly parked — never silently skip the render bar and claim
+    the deliverable complete.
 
 ### Audit brief template (per-library, given to each auditor subagent)
 
@@ -335,6 +365,8 @@ Deliver: fact table (module list + latest LOCAL tag @ HEAD, used y/n, verdict,
   citations (QUALIFY cross-repo cites as <lib>/path:line), ranked gaps with
   snippets, RECONSIDER-WHEN trigger (the condition that flips the verdict),
   and a verify block of commands YOU ran (the orchestrator replays them).
+  Inventory tables use the literal four-column contract row — copy this shape
+  exactly: `| Capability | Status | Consumer evidence | Library evidence |`.
 NOT your job: changing verdicts of sibling reports, editing consumer code,
   trusting your own version/line numbers without re-running them (orchestrator
   re-derives stamped facts).
