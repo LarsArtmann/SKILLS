@@ -137,6 +137,35 @@ restored byte-identical afterwards.
     relocate the lockfile; export `XDG_STATE_HOME` too (this machine's
     real path is `~/.local/state/skills/`, so the owner env sets it).
 
+### 2026-11-26 — `diagram-design` install and lockfile drift
+
+- **Install:** `npx -y skills@latest add cathrynlavery/diagram-design -g -a crush -y`
+  (upstream `skills/diagram-design/SKILL.md`, MIT, upstream version 2.6,
+  commit `b228c5d`). 326 files, 6.3 MB: 387-line SKILL.md (description 971
+  chars, under the 1024 cap), 73 `references/` type + primitive + export
+  guides, `assets/`, and 9 stdlib-plus-playwright Python scripts
+  (`export_{png,svg,pdf}.py`, `{mermaid,drawio,excalidraw,plantuml}_extract.py`,
+  `verify_geometry.py`, `self_check.py`). Script audit: no network calls
+  (`urllib.parse` only), no `subprocess`/`eval`; Playwright is local
+  browser rendering. The CLI's Snyk badge reads "Med Risk" — it comes
+  from the bundled script surface, not from a finding in the code read.
+- **Layout correction:** `-a crush` copies a real directory into
+  `~/.config/crush/skills/` and does NOT populate the `~/.agents/skills/`
+  canonical root the summary line names. The fleet layout is real dir in
+  `~/.agents/skills/` plus a symlink from the Crush root (the
+  `copywriting`/`typesafe-ai` shape), so it was copied there, the Crush
+  copy trashed, and the symlink made by hand. The aggregation repo
+  (`agent-skills`) sees it as untracked until its topology commit lands.
+- **Lockfile drift discovered:** before this install,
+  `~/.local/state/skills/.skill-lock.json` listed `"skills": {}` — every
+  third-party skill installed before it (`copywriting`, `find-skills`,
+  `frontend-design`, `skill-creator`, `typesafe-ai`, both HeyGen-era
+  suites, `general-video`) is present on disk but unlocked, so
+  `skills update -g` cannot refresh them. The AGENTS §5.10 "15 entries as
+  of 2026-09-13" claim is obsolete; treat the installed directories, not
+  the lockfile, as the inventory. Restoring an entry means re-adding by
+  source (with the false-green caveat above), never editing the lockfile.
+
 ## 2026-09-14 merge assessment — full record (moved from AGENTS §5.5, T148)
 
 The assessment found NO further skill-directory merges warranted but closed
