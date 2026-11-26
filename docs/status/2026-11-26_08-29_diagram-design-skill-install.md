@@ -1,26 +1,28 @@
 # Status — `diagram-design` third-party skill: install, layout, doctrine update
 
-**Report time:** 2026-11-26 08:29 CET (`date`) · **Repo:** `LarsArtmann/SKILLS`
-**Pinned commit:** `b49ff19` (`git rev-parse --short HEAD`, auto-commit
-"chore: auto-commit 2 changed file(s)"), plus one uncommitted
-`docs/skill-forks.md` correction written during this report.
+**Report time:** 2026-11-26 08:29 CET (`date`, report text) · **Repo:** `LarsArtmann/SKILLS`
+**Pinned commit:** `6068a74` — the session's second auto-commit, which added
+the `AGENTS.md` change and the corrected `docs/skill-forks.md` section. The
+first (`b49ff19`) carried the first, partly-wrong version of that section.
+This report file itself is written after `6068a74` and is uncommitted at
+report time.
 
 ## Scope line
 
 **Verified here (fresh commands, exit status quoted):**
 
-| Claim | Evidence |
-| --- | --- |
-| Skill installs and resolves upstream | `npx -y skills@latest add cathrynlavery/diagram-design -g -a crush -y` exit 0; lock entry commit `b228c5d` |
-| Installed tree is a faithful copy | `sha256sum` SKILL.md = upstream `1a197a0a…f4600`; installed files 326 = upstream blob count 326 |
-| Canonical layout + Crush visibility | `~/.agents/skills/diagram-design` (real dir), `~/.config/crush/skills/diagram-design` → symlink, `readlink -f` resolves |
-| Fresh session discovers it | `crush run "… YES if a skill named diagram-design …"` → `YES` |
-| CLI sees the source | `npx skills ls -g` → `Agents: Crush, Pi, Zed`, `Source: cathrynlavery/diagram-design` |
-| Skill internals sound | 0 broken relative links across the skill's markdown; no `.git*` inside the tree |
-| Repo structure still green | `scripts/check-skills.sh` 0 (38 skills, 0 thin; 206 md links OK); `--selftest` 0 (3/3); `check-shell.sh` 0; `check-skill-links.sh` 0; `check-agents-md.sh` 0 with 2 advisories |
-| Upstream posture read | `PRIVACY.md` (no server/telemetry; Google Fonts at render; onboarding fetches a named site) |
-| Export dependency absent | `python3 -c "import playwright"` fails; `~/.cache/ms-playwright` holds only `ffmpeg-1013` |
-| Aggregation repo state | `git -C ~/.agents/skills status --short`: 77 untracked, 92 deleted, 69 modified; `?? diagram-design/` |
+| Claim                                | Evidence                                                                                                                                                                       |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Skill installs and resolves upstream | `npx -y skills@latest add cathrynlavery/diagram-design -g -a crush -y` exit 0; lock entry commit `b228c5d`                                                                     |
+| Installed tree is a faithful copy    | `sha256sum` SKILL.md = upstream `1a197a0a…f4600`; installed files 326 = upstream blob count 326                                                                                |
+| Canonical layout + Crush visibility  | `~/.agents/skills/diagram-design` (real dir), `~/.config/crush/skills/diagram-design` → symlink, `readlink -f` resolves                                                        |
+| Fresh session discovers it           | `crush run "… YES if a skill named diagram-design …"` → `YES`                                                                                                                  |
+| CLI sees the source                  | `npx skills ls -g` → `Agents: Crush, Pi, Zed`, `Source: cathrynlavery/diagram-design`                                                                                          |
+| Skill internals sound                | 0 broken relative links across the skill's markdown; no `.git*` inside the tree                                                                                                |
+| Repo structure still green           | `scripts/check-skills.sh` 0 (38 skills, 0 thin; 206 md links OK); `--selftest` 0 (3/3); `check-shell.sh` 0; `check-skill-links.sh` 0; `check-agents-md.sh` 0 with 2 advisories |
+| Upstream posture read                | `PRIVACY.md` (no server/telemetry; Google Fonts at render; onboarding fetches a named site)                                                                                    |
+| Export dependency absent             | `python3 -c "import playwright"` fails; `~/.cache/ms-playwright` holds only `ffmpeg-1013`                                                                                      |
+| Aggregation repo state               | `git -C ~/.agents/skills status --short`: 77 untracked, 92 deleted, 69 modified; `?? diagram-design/`                                                                          |
 
 **NOT verified here:**
 
@@ -67,30 +69,30 @@
    **18 invisible to `skills update -g`**.
 8. **Repo gates green** — structural, selftest, shell, links, AGENTS budget.
 9. **Formatter state classified** — `dprint fmt AGENTS.md` fails
-   "Formatting not stable. Bailed after 5 tries" on *both* the pre-session and
+   "Formatting not stable. Bailed after 5 tries" on _both_ the pre-session and
    post-session file; pre-existing, not caused by this change.
    `docs/skill-forks.md` formats clean.
 
 ## b) PARTIALLY DONE
 
 1. **Lockfile repair** — the drift is documented, not fixed. 18 third-party
-   skills need a per-source re-add to regain lock entries. *Open: re-add loop.
-   Effort M.*
+   skills need a per-source re-add to regain lock entries. _Open: re-add loop.
+   Effort M._
 2. **Aggregation commit** — `?? diagram-design/` sits untracked in
    `~/​.agents/skills` (git repo `agent-skills`), bundled with a pre-existing
    238-entry mess. Nothing staged, nothing committed (harness forbids commits
-   without an explicit request). *Effort S once policy is decided.*
+   without an explicit request). _Effort S once policy is decided._
 3. **Raster export** — HTML/SVG generation works; PNG/PDF cannot run on this
    machine. The dependency is documented by upstream and the skill refuses to
-   self-install. *Effort S/M to provision, decision needed.*
+   self-install. _Effort S/M to provision, decision needed._
 4. **Trigger disambiguation** — `diagram-design` (52 types, architecture /
    sequence / ER / Sankey / Gantt) overlaps `architecture-visualization`
    (D2 diagrams) and `html-report-kit` (report visuals). Neither owned skill
    mentions it; a plain "draw an architecture diagram" can now match two
-   skills. *Effort S, one-line description edits.*
+   skills. _Effort S, one-line description edits._
 5. **HARVEST of section (f)** — deliberately not run; the user said "then wait
    for instructions". `TODO_LIST.md`/`ROADMAP.md` are unchanged, so the
-   improvement list below exists only in this timestamped file. *Effort S.*
+   improvement list below exists only in this timestamped file. _Effort S._
 
 ## c) NOT STARTED
 
@@ -124,7 +126,7 @@
    integrity check; a truncated or partially-copied tree would have passed it
    and the good copy would already have been in the trash. The damage is nil
    (sha256 and blob count match upstream, verified afterwards), but the
-   *process* was unsafe and is exactly the class the safety rules exist for.
+   _process_ was unsafe and is exactly the class the safety rules exist for.
    **Severity: low impact / high risk. Root cause: convenience. Mitigation:
    none needed now; rule change proposed in (e).**
 2. **I wrote an unverified causal claim into a repo document.**
@@ -134,15 +136,15 @@
    was not opened, so no claim is made". **Severity: medium (fabrication risk
    in the provenance file that future sessions trust).**
 3. **I understated the network behaviour.** "No network calls
-   (`urllib.parse` only)" was true of the *scripts* and false of the
-   *artifacts*: upstream `PRIVACY.md` says generated HTML/templates load
+   (`urllib.parse` only)" was true of the _scripts_ and false of the
+   _artifacts_: upstream `PRIVACY.md` says generated HTML/templates load
    Google Fonts, and onboarding fetches a user-named site. Corrected.
    **Severity: medium (privacy-relevant claim).**
 4. **I got a count wrong in the same document** ("73 `references/`") — it is
    71 files, all markdown. Corrected. **Severity: low; the class is "eyeballed
    an `ls` instead of counting".**
 5. **PNG/PDF export is non-functional on this machine.** Not broken by me, but
-   it *is* the state of the capability I just installed: `import playwright`
+   it _is_ the state of the capability I just installed: `import playwright`
    fails, no Chromium. The skill's own docs tell the agent to stop and ask —
    so first use will produce a dead end unless provisioned.
 6. **The aggregation layer is materially out of sync** (92 deletions, 69
@@ -202,53 +204,53 @@
 Impact: Critical / High / Medium / Low. Effort: S (<30 min) / M (30 min–2 h) /
 L (>2 h).
 
-| # | Task | Impact | Effort | Category |
-| --- | --- | --- | --- | --- |
-| 1 | Smoke-test the skill: generate one architecture diagram for this repo, then run `verify_geometry.py` + `self_check.py` | High | M | Test |
-| 2 | Correct the Snyk line in `docs/skill-forks.md` — already corrected this session; verify by reading it back after the daemon commits | High | S | Documentation |
-| 3 | Verify the corrected network/PRIVACY paragraph survives formatting and reads accurately | High | S | Documentation |
-| 4 | Provision Playwright + Chromium (venv or `uv`) and prove `export_png.py` on a sample | High | M | Feature |
-| 5 | Decide and record whether raster/PDF export is a requirement at all | High | S | Decision |
-| 6 | Add `scripts/install-third-party-skill.sh` (add → relocate → symlink → checksum verify) | Medium | M | Quality |
-| 7 | Add `scripts/check-third-party.sh` reconciling real dirs vs lockfiles vs upstream HEAD | Medium | M | Quality |
-| 8 | Re-add the 18 unlocked third-party skills by source to restore lock entries | Medium | M | Quality |
-| 9 | Commit the aggregation topology for `diagram-design/` only (leave HyperFrames hunks untouched) | Medium | S | Cleanup |
-| 10 | Triage the aggregation repo's 92 deletions / 69 modifications (re-add vs accept) | Medium | M | Cleanup |
-| 11 | Add a disambiguation sentence to `architecture-visualization` pointing to `diagram-design` for HTML/SVG editorial output | High | S | Documentation |
-| 12 | Decide whether `html-report-kit` consumer skills should cite `diagram-design` for diagram blocks | Medium | S | Decision |
-| 13 | Run `docs-health` HARVEST over this report's section (f) once the user gives the go-ahead | High | S | Documentation |
-| 14 | Add "verify before trash" to AGENTS §5.10 rules | Medium | S | Documentation |
-| 15 | Replace the AGENTS third-party list with a pointer to a generated inventory file, freeing budget | Medium | M | Documentation |
-| 16 | Triage the dprint `AGENTS.md` 5-try instability (repro, then exclude or fix) | Medium | M | Bug |
-| 17 | Add `AGENTS.md` exclusion to dprint config if the plugin bug is unfixable | Low | S | Cleanup |
-| 18 | Add a session-start check for third-party dirs missing from any lockfile | Medium | M | Quality |
-| 19 | Test `skills update -g` against the hand-made `diagram-design` symlink and record the result | Medium | S | Test |
-| 20 | Probe Pi and Zed discovery instead of trusting `skills ls -g`'s Agents column | Low | S | Test |
-| 21 | Document the `~/.diagram-design/profiles/` location and decide repo vs home policy | Low | S | Decision |
-| 22 | Verify the skill's first-run style-guide gate behaves sanely in a branded project (option "e: keep default" path) | Medium | S | Test |
-| 23 | Pin the skills CLI version used for installs/probes (record 1.5.22 baseline) | Low | S | Documentation |
-| 24 | Add a one-line "install != capability" rule to `how-to-write-skills` or the install doctrine | Medium | S | Documentation |
-| 25 | Count-check every numeric claim added to `docs/skill-forks.md` (326, 6.3 MB, 71, 245, 9, 20, 18) in one pass | Medium | S | Documentation |
-| 26 | Clean the 6.3 MB duplicate out of the trash once satisfied | Low | S | Cleanup |
-| 27 | Test the tier-1 install path (`skills add owner/repo@diagram-design`) to confirm per-skill install works | Low | M | Test |
-| 28 | Measure the session-context cost of a 971-char skill description before adding more of them | Low | S | Quality |
-| 29 | Decide ownership of "diagram inside a report" (kit component vs skill output) | Medium | S | Decision |
-| 30 | Add `diagram-design`/`general-video`-class licence attribution to a single third-party inventory | Low | M | Documentation |
-| 31 | Verify AGENTS §5.10 rule 7's three one-off entries still match reality (font-design, go-cqrs-lite, templ-components) | Low | S | Documentation |
-| 32 | Add a guard that Crush-root entries are symlinks except the documented real dirs | Low | M | Quality |
-| 33 | Re-run `docs-gates` with a longer timeout and capture its real exit code (no pipe) | Medium | S | Test |
-| 34 | Re-run `buildflow` and confirm the 4 `go-file-too-large` findings are unchanged by this session | Low | M | Test |
-| 35 | Decide whether `style-sampling`/`reverse-any-video`/`general-video` are still wanted (three unlisted real dirs) | Low | S | Decision |
-| 36 | Add upstream-version staleness detection for third-party skills (metadata.version vs plugin.json) | Low | M | Feature |
-| 37 | Record the `-a crush` layout trap in the skills-CLI findings list (it is documented, but not as a trap) | Medium | S | Documentation |
-| 38 | Check whether diagram `assets/` example pages need to ship at all (4.9 MB of 6.3 MB) | Low | S | Cleanup |
-| 39 | If the assets are needed, document that the skill is 6.3 MB before fleet-wide rollout | Low | S | Documentation |
-| 40 | Add a "third-party skill audit" subsection template (install, sha, tree, scripts, network, deps) so the next install is mechanical | Medium | S | Documentation |
+| #  | Task                                                                                                                                | Impact | Effort | Category      |
+| -- | ----------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | ------------- |
+| 1  | Smoke-test the skill: generate one architecture diagram for this repo, then run `verify_geometry.py` + `self_check.py`              | High   | M      | Test          |
+| 2  | Correct the Snyk line in `docs/skill-forks.md` — already corrected this session; verify by reading it back after the daemon commits | High   | S      | Documentation |
+| 3  | Verify the corrected network/PRIVACY paragraph survives formatting and reads accurately                                             | High   | S      | Documentation |
+| 4  | Provision Playwright + Chromium (venv or `uv`) and prove `export_png.py` on a sample                                                | High   | M      | Feature       |
+| 5  | Decide and record whether raster/PDF export is a requirement at all                                                                 | High   | S      | Decision      |
+| 6  | Add `scripts/install-third-party-skill.sh` (add → relocate → symlink → checksum verify)                                             | Medium | M      | Quality       |
+| 7  | Add `scripts/check-third-party.sh` reconciling real dirs vs lockfiles vs upstream HEAD                                              | Medium | M      | Quality       |
+| 8  | Re-add the 18 unlocked third-party skills by source to restore lock entries                                                         | Medium | M      | Quality       |
+| 9  | Commit the aggregation topology for `diagram-design/` only (leave HyperFrames hunks untouched)                                      | Medium | S      | Cleanup       |
+| 10 | Triage the aggregation repo's 92 deletions / 69 modifications (re-add vs accept)                                                    | Medium | M      | Cleanup       |
+| 11 | Add a disambiguation sentence to `architecture-visualization` pointing to `diagram-design` for HTML/SVG editorial output            | High   | S      | Documentation |
+| 12 | Decide whether `html-report-kit` consumer skills should cite `diagram-design` for diagram blocks                                    | Medium | S      | Decision      |
+| 13 | Run `docs-health` HARVEST over this report's section (f) once the user gives the go-ahead                                           | High   | S      | Documentation |
+| 14 | Add "verify before trash" to AGENTS §5.10 rules                                                                                     | Medium | S      | Documentation |
+| 15 | Replace the AGENTS third-party list with a pointer to a generated inventory file, freeing budget                                    | Medium | M      | Documentation |
+| 16 | Triage the dprint `AGENTS.md` 5-try instability (repro, then exclude or fix)                                                        | Medium | M      | Bug           |
+| 17 | Add `AGENTS.md` exclusion to dprint config if the plugin bug is unfixable                                                           | Low    | S      | Cleanup       |
+| 18 | Add a session-start check for third-party dirs missing from any lockfile                                                            | Medium | M      | Quality       |
+| 19 | Test `skills update -g` against the hand-made `diagram-design` symlink and record the result                                        | Medium | S      | Test          |
+| 20 | Probe Pi and Zed discovery instead of trusting `skills ls -g`'s Agents column                                                       | Low    | S      | Test          |
+| 21 | Document the `~/.diagram-design/profiles/` location and decide repo vs home policy                                                  | Low    | S      | Decision      |
+| 22 | Verify the skill's first-run style-guide gate behaves sanely in a branded project (option "e: keep default" path)                   | Medium | S      | Test          |
+| 23 | Pin the skills CLI version used for installs/probes (record 1.5.22 baseline)                                                        | Low    | S      | Documentation |
+| 24 | Add a one-line "install != capability" rule to `how-to-write-skills` or the install doctrine                                        | Medium | S      | Documentation |
+| 25 | Count-check every numeric claim added to `docs/skill-forks.md` (326, 6.3 MB, 71, 245, 9, 20, 18) in one pass                        | Medium | S      | Documentation |
+| 26 | Clean the 6.3 MB duplicate out of the trash once satisfied                                                                          | Low    | S      | Cleanup       |
+| 27 | Test the tier-1 install path (`skills add owner/repo@diagram-design`) to confirm per-skill install works                            | Low    | M      | Test          |
+| 28 | Measure the session-context cost of a 971-char skill description before adding more of them                                         | Low    | S      | Quality       |
+| 29 | Decide ownership of "diagram inside a report" (kit component vs skill output)                                                       | Medium | S      | Decision      |
+| 30 | Add `diagram-design`/`general-video`-class licence attribution to a single third-party inventory                                    | Low    | M      | Documentation |
+| 31 | Verify AGENTS §5.10 rule 7's three one-off entries still match reality (font-design, go-cqrs-lite, templ-components)                | Low    | S      | Documentation |
+| 32 | Add a guard that Crush-root entries are symlinks except the documented real dirs                                                    | Low    | M      | Quality       |
+| 33 | Re-run `docs-gates` with a longer timeout and capture its real exit code (no pipe)                                                  | Medium | S      | Test          |
+| 34 | Re-run `buildflow` and confirm the 4 `go-file-too-large` findings are unchanged by this session                                     | Low    | M      | Test          |
+| 35 | Decide whether `style-sampling`/`reverse-any-video`/`general-video` are still wanted (three unlisted real dirs)                     | Low    | S      | Decision      |
+| 36 | Add upstream-version staleness detection for third-party skills (metadata.version vs plugin.json)                                   | Low    | M      | Feature       |
+| 37 | Record the `-a crush` layout trap in the skills-CLI findings list (it is documented, but not as a trap)                             | Medium | S      | Documentation |
+| 38 | Check whether diagram `assets/` example pages need to ship at all (4.9 MB of 6.3 MB)                                                | Low    | S      | Cleanup       |
+| 39 | If the assets are needed, document that the skill is 6.3 MB before fleet-wide rollout                                               | Low    | S      | Documentation |
+| 40 | Add a "third-party skill audit" subsection template (install, sha, tree, scripts, network, deps) so the next install is mechanical  | Medium | S      | Documentation |
 
 ## g) Questions I cannot answer myself
 
 1. **Aggregation repo policy:** should `~/.agents/skills` keep committing
-   third-party *content* (6.3 MB per skill, 238 dirty entries today), or should
+   third-party _content_ (6.3 MB per skill, 238 dirty entries today), or should
    it track only lockfile/pins and ignore the trees? That decides whether I
    stage `diagram-design/` (item 9) or add it to `.gitignore`.
 2. **Is raster/PDF export required?** If yes, I will provision a Python
@@ -263,7 +265,7 @@ L (>2 h).
 
 ## Self-review — the questions you asked, answered bluntly
 
-**What did you forget?** Run `check-skills.sh --selftest` at the *start*
+**What did you forget?** Run `check-skills.sh --selftest` at the _start_
 (SESSION-START step 5) — I ran the plain check first and only remembered the
 selftest while writing this report. Read the skill's `PRIVACY.md` before
 claiming "no network calls". Open the Snyk report before explaining its badge.
@@ -278,7 +280,7 @@ copies". Trusting `skills ls -g`'s "Agents:" column as proof of discovery.
 Keeping 18 third-party skills in a lockfile-less limbo and calling the
 directory listing the inventory.
 
-**What could you have done better?** Written the provenance doc *after* the
+**What could you have done better?** Written the provenance doc _after_ the
 verification pass (two of its three defects came from writing first). Pinned
 the CLI version. Verified the copy with `diff -rq`/sha before `trash`. Used
 `PIPESTATUS` for `docs-gates` so the report would not have needed a
@@ -292,7 +294,7 @@ the reconciliation check (item 7), make the trigger disambiguation edits
 **Did you lie to me?** No deliberate falsehood. Two claims were written
 without evidence (the Snyk cause; "no network calls") and one number was
 eyeballed (73 vs 71). All three were corrected in this session. One measurement
-was *misleading by construction*: `docs_gates_exit=0` came from `tail`, and the
+was _misleading by construction_: `docs_gates_exit=0` came from `tail`, and the
 report states it as inconclusive rather than green. The one standing
 inaccuracy before correction was the Snyk causal sentence — that is the closest
 thing to a lie in this session and it is fixed.
@@ -303,7 +305,7 @@ never read exit codes through pipes; disambiguate when you install.
 
 **Ghost systems?** One, and it is real: the raster/PDF export path exists,
 is documented, and cannot execute here. It is not a ghost in the repo — the
-capability is upstream and honest — but on *this machine* it is a wired-but-
+capability is upstream and honest — but on _this machine_ it is a wired-but-
 dead branch until Playwright exists. Second, milder: `diagram-design`'s brand
 onboarding writes `~/.diagram-design/profiles/`, a directory that does not
 exist yet and has no policy.
