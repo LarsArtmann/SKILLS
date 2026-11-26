@@ -142,13 +142,27 @@ restored byte-identical afterwards.
 - **Install:** `npx -y skills@latest add cathrynlavery/diagram-design -g -a crush -y`
   (upstream `skills/diagram-design/SKILL.md`, MIT, upstream version 2.6,
   commit `b228c5d`). 326 files, 6.3 MB: 387-line SKILL.md (description 971
-  chars, under the 1024 cap), 73 `references/` type + primitive + export
-  guides, `assets/`, and 9 stdlib-plus-playwright Python scripts
-  (`export_{png,svg,pdf}.py`, `{mermaid,drawio,excalidraw,plantuml}_extract.py`,
-  `verify_geometry.py`, `self_check.py`). Script audit: no network calls
-  (`urllib.parse` only), no `subprocess`/`eval`; Playwright is local
-  browser rendering. The CLI's Snyk badge reads "Med Risk" — it comes
-  from the bundled script surface, not from a finding in the code read.
+  chars, under the 1024 cap), 71 `references/` type + primitive + export
+  guides, 245 `assets/` example pages (4.9 MB of the tree), and 9 Python
+  scripts (`export_{png,svg,pdf}.py`,
+  `{mermaid,drawio,excalidraw,plantuml}_extract.py`, `verify_geometry.py`,
+  `self_check.py`).
+- **Script audit vs artifact behaviour:** the scripts make no network
+  calls and use no `subprocess`/`eval`; Playwright renders locally. The
+  _artifacts_ are not offline-pure: upstream `PRIVACY.md` states that
+  generated HTML and templates load Google Fonts
+  (`fonts.googleapis.com`, `fonts.gstatic.com`) whenever a browser or the
+  PNG/PDF export opens them, and brand onboarding fetches a site the user
+  names. No telemetry, no accounts, no server. The CLI's Snyk badge reads
+  "Med Risk"; that report was not opened, so no claim is made here about
+  what it scores or why.
+- **PNG/PDF export needs a provisioned browser:** `export_png.py` imports
+  `playwright.sync_api` at module load and `references/export.md`
+  instructs the agent to detect it and stop rather than install anything.
+  This machine has no Python `playwright` module and no Chromium under
+  `~/.cache/ms-playwright` (only `ffmpeg-1013`), so HTML/SVG output works
+  and raster/PDF export does not until Playwright + Chromium are
+  provisioned.
 - **Layout correction:** `-a crush` copies a real directory into
   `~/.config/crush/skills/` and does NOT populate the `~/.agents/skills/`
   canonical root the summary line names. The fleet layout is real dir in
@@ -156,15 +170,22 @@ restored byte-identical afterwards.
   `copywriting`/`typesafe-ai` shape), so it was copied there, the Crush
   copy trashed, and the symlink made by hand. The aggregation repo
   (`agent-skills`) sees it as untracked until its topology commit lands.
+  Integrity was verified _after_ the trash, not before: the installed
+  SKILL.md sha256 matches upstream
+  (`1a197a0a…f4600`) and the installed file count (326) equals upstream's
+  blob count — the unsafe part was trashing on a count alone.
 - **Lockfile drift discovered:** before this install,
-  `~/.local/state/skills/.skill-lock.json` listed `"skills": {}` — every
-  third-party skill installed before it (`copywriting`, `find-skills`,
-  `frontend-design`, `skill-creator`, `typesafe-ai`, both HeyGen-era
-  suites, `general-video`) is present on disk but unlocked, so
-  `skills update -g` cannot refresh them. The AGENTS §5.10 "15 entries as
-  of 2026-09-13" claim is obsolete; treat the installed directories, not
-  the lockfile, as the inventory. Restoring an entry means re-adding by
-  source (with the false-green caveat above), never editing the lockfile.
+  `~/.local/state/skills/.skill-lock.json` listed `"skills": {}`, and it
+  now holds only `diagram-design`. Of the 20 real third-party directories
+  in `~/.agents/skills/`, `modern-web-guidance` is tracked by its own
+  lockfile (`~/skills-lock.json`), so **18 are installed but invisible to
+  `skills update -g`**: `copywriting`, `find-skills`, `frontend-design`,
+  `skill-creator`, `typesafe-ai`, the ten-skill HyperFrames/HeyGen suite,
+  `general-video`, `style-sampling`, `reverse-any-video`. The AGENTS §5.10
+  "15 entries as of 2026-09-13" claim is obsolete; treat the installed
+  directories, not the lockfile, as the inventory. Restoring an entry
+  means re-adding by source (with the false-green caveat above), never
+  editing the lockfile.
 
 ## 2026-09-14 merge assessment — full record (moved from AGENTS §5.5, T148)
 
