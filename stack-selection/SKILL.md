@@ -163,7 +163,7 @@ decorative document — the drift check is what makes it enforceable.
 The selection is not done until the wiring path is named. Per selection:
 
 - First-party lib WITH an owning skill (cmdguard, go-cqrs-lite, cqrs-htmx,
-  go-aichat, templ-components, samber-do-best-practices, buildflow,
+  go-aichat, httputil, templ-components, samber-do-best-practices, buildflow,
   linter-building, deduplicate-code, ...) → "load <skill> next" in the wiring
   order. The owning skills contain integration contracts this skill does not
   duplicate.
